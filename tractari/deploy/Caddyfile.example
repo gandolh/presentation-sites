@@ -38,6 +38,9 @@
 	}
 
 	# --- AXA Tractări -> http://<ip>/tractari -----------------------------
+	# Bare "/tractari" (no trailing slash) doesn't match the /tractari/* matcher
+	# below, so redirect it to the canonical trailing-slash URL.
+	redir /tractari /tractari/ 308
 	handle_path /tractari/* {
 		root * /var/www/tractari
 		# Static site: serve the file, then dir index, then the pretty-URL

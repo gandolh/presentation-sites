@@ -3,6 +3,7 @@
   "private": true,
   "description": "Monorepo of presentation/marketing sites. Each site is a self-contained project in its own top-level directory.",
   "scripts": {
+    "deploy": "node scripts/deploy.mjs",
     "saloon": "npm --prefix saloon run",
     "saloon:install": "npm --prefix saloon install",
     "saloon:dev": "npm --prefix saloon run dev",

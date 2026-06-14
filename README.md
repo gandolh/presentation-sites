@@ -42,6 +42,22 @@ npm run saloon:deploy        # → saloon's deploy:push
 npm run saloon -- preview    # run any of saloon's own scripts
 ```
 
+### Deploy CLI
+
+`npm run deploy` is an interactive picker over all deployable sites. It
+auto-discovers any sibling project with a `deploy:push` script, then delegates
+to that site's deploy via the root passthrough.
+
+```bash
+npm run deploy                       # pick a project, then an action
+npm run deploy -- tractari           # project given, pick the action
+npm run deploy -- tractari deploy    # fully non-interactive
+npm run deploy -- --list             # list deployable projects
+npm run deploy -- tractari deploy --dry-run   # print the command, run nothing
+```
+
+Actions: `pre-deploy` (provision the server), `deploy` (build + upload), `all`.
+
 ## Adding a new site
 
 Keep each site self-contained so the repo can hold many without coupling:
