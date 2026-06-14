@@ -1,0 +1,55 @@
+---
+import { site, phones, telLink } from "../content/site";
+
+const year = 2026; // demo site; static year avoids build-time nondeterminism
+---
+<footer class="relative grain border-t border-[var(--color-outline-variant)] bg-[var(--color-surface-container-lowest)]">
+  <div class="roadline roadline--full" aria-hidden="true"></div>
+  <div class="container-page py-14 relative z-[2]">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="wordmark text-2xl text-[var(--color-on-surface)]">{site.name}</span>
+        </div>
+        <p class="mt-3 max-w-sm text-[var(--color-on-surface-variant)] text-[0.95rem]">
+          {site.tagline}
+        </p>
+        <div class="mt-5 badge-nonstop">
+          <span class="badge-nonstop__dot" aria-hidden="true"></span>
+          NON-STOP 24/7
+        </div>
+      </div>
+
+      <div>
+        <h2 class="eyebrow mb-4">Telefon</h2>
+        <ul class="space-y-3">
+          {phones.map((p) => (
+            <li>
+              <a href={telLink(p.e164)} class="group block">
+                <span class="block text-[0.72rem] uppercase tracking-wider text-[var(--color-on-surface-variant)]">{p.label}</span>
+                <span class="tnum text-[1.05rem] font-semibold text-[var(--color-on-surface)] group-hover:text-[var(--color-primary)] transition-colors">{p.display}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="eyebrow mb-4">Acoperire</h2>
+        <p class="text-[var(--color-on-surface-variant)] text-[0.95rem]">
+          {site.counties.join(" · ")}
+        </p>
+        <p class="mt-2 text-[var(--color-on-surface-variant)] text-[0.95rem]">
+          Toată regiunea {site.region}, deplasări și în afara județului.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-[var(--color-outline-variant)] flex flex-col md:flex-row gap-3 md:items-center md:justify-between text-[0.8rem] text-[var(--color-on-surface-variant)]">
+      <p>© {year} {site.legal.legalName} — site demonstrativ. Date fictive.</p>
+      <p>
+        {site.legal.cui} · {site.legal.regNumber}
+      </p>
+    </div>
+  </div>
+</footer>

@@ -10,9 +10,19 @@ project in its own top-level directory.
   the `deploy/` tool (Caddy, sub-path `/saloon`), and the `marketing/bots/`
   automation service. See [saloon/README.md](saloon/README.md) and
   [saloon/corpus/STATUS.md](saloon/corpus/STATUS.md) to get oriented.
+- **[auto-service/](auto-service/)** — BavAuto Gorj, a BMW-specialist auto
+  service in Târgu-Jiu (Astro, static). Deploy sub-path `/auto-service`.
+- **[subcort/](subcort/)** — Subcort, a demo event-tent rental site for
+  Gorj/Oltenia (Astro + React + Tailwind v4, static). Deploy sub-path
+  `/subcort`.
+- **[tractari/](tractari/)** — AXA Tractări, a demo car-towing site for Oltenia
+  (Astro + React + Tailwind v4, static). Minimalist, with a Three.js hero scene
+  of a tow truck driving a night road. Deploy sub-path `/tractari`. See
+  [tractari/PRODUCT.md](tractari/PRODUCT.md) and
+  [tractari/DESIGN.md](tractari/DESIGN.md).
 
-> Everything currently in the repo lives under `saloon/` — it is the only site
-> implemented so far. New sites get their own sibling directory.
+> Each site is self-contained in its own sibling directory; new sites get their
+> own. The repo root only carries the passthrough scripts and shared config.
 
 ## Working on a site
 

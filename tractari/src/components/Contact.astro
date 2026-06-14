@@ -1,0 +1,109 @@
+---
+import PhoneIcon from "./PhoneIcon.astro";
+import { phones, telLink } from "../content/site";
+import { site } from "../content/site";
+
+// STOP 4 — the destination. The drive ends here. The three numbers are the
+// brightest, largest thing on the page: the primary dispatcher dominates,
+// the other two sit beneath it, asymmetric — NOT a 3-card grid.
+const [primary, ...others] = phones;
+---
+<section id="contact" class="section relative overflow-hidden">
+  <div class="contact-glow" aria-hidden="true"></div>
+
+  <div class="container-page relative z-[2]">
+    <div class="lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:items-center">
+      <div class="reveal">
+        <span class="stop-label">Suntem pe drum</span>
+        <h2 class="heading-xl !text-[clamp(2.6rem,8vw,5rem)] mt-4">
+          Sună. <span class="glow-word">Răspundem.</span>
+        </h2>
+        <p class="mt-5 max-w-md text-lg text-[var(--color-on-surface-variant)]">
+          Oricând, în toată {site.region}. Alege linia potrivită — sau sună la
+          dispecerat și te direcționăm noi.
+        </p>
+      </div>
+
+      <div class="mt-10 lg:mt-0">
+        <!-- Primary number — dominant -->
+        <a href={telLink(primary.e164)} class="contact-primary reveal group">
+          <span class="contact-primary__icon">
+            <PhoneIcon class="w-6 h-6" />
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[0.78rem] uppercase tracking-[0.16em] text-[var(--color-on-accent)]/80">{primary.label} · sună acum</span>
+            <span class="block tnum font-display font-extrabold text-[clamp(1.9rem,6vw,2.8rem)] leading-none mt-1">{primary.display}</span>
+          </span>
+        </a>
+
+        <!-- The other two — secondary, side by side -->
+        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {others.map((p) => (
+            <a href={telLink(p.e164)} class="contact-secondary reveal group">
+              <span class="contact-secondary__icon"><PhoneIcon class="w-4 h-4" /></span>
+              <span class="min-w-0">
+                <span class="block text-[0.72rem] uppercase tracking-wider text-[var(--color-on-surface-variant)]">{p.label}</span>
+                <span class="block tnum text-[1.15rem] font-semibold text-[var(--color-on-surface)] group-hover:text-[var(--color-primary)] transition-colors truncate">{p.display}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <p class="mt-5 text-[0.88rem] text-[var(--color-on-surface-variant)] reveal">
+          Preferi scris? <a href={`mailto:${site.email}`} class="text-[var(--color-primary)] hover:underline">{site.email}</a>. Pentru urgențe, telefonul rămâne cel mai rapid.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-glow {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(55% 55% at 80% 35%, oklch(80% 0.16 80 / 0.2) 0%, oklch(80% 0.16 80 / 0) 60%),
+      radial-gradient(45% 45% at 95% 60%, oklch(95% 0.03 230 / 0.1) 0%, oklch(95% 0.03 230 / 0) 55%);
+  }
+
+  .contact-primary {
+    display: flex; align-items: center; gap: 1.1rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    text-decoration: none;
+    box-shadow: 0 16px 50px -14px oklch(68% 0.2 45 / 0.7);
+    transition: transform 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms ease;
+  }
+  .contact-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px -14px oklch(68% 0.2 45 / 0.85);
+  }
+  .contact-primary:active { transform: translateY(0); }
+  .contact-primary__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 3rem; height: 3rem; border-radius: var(--radius-full); flex: none;
+    background: oklch(100% 0 0 / 0.2);
+  }
+  @media (prefers-reduced-motion: reduce) { .contact-primary:hover { transform: none; } }
+
+  .contact-secondary {
+    display: flex; align-items: center; gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    text-decoration: none;
+    transition: border-color 200ms ease, background-color 200ms ease;
+  }
+  .contact-secondary:hover {
+    border-color: oklch(80% 0.16 80 / 0.5);
+    background-color: var(--color-surface-container-high);
+  }
+  .contact-secondary__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.2rem; height: 2.2rem; border-radius: var(--radius-full); flex: none;
+    background: var(--color-primary-container);
+    color: var(--color-primary);
+  }
+</style>

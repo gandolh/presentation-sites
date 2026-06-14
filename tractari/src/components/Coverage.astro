@@ -1,0 +1,150 @@
+---
+import { site } from "../content/site";
+
+// A stylized (not geographically exact) map of the Oltenia counties as nodes
+// radiating from the Târgu-Jiu hub. Pure SVG + CSS animation — no WebGL, works
+// everywhere. Node positions are hand-placed to roughly echo the real layout:
+//   Mehedinți (SW) · Gorj/hub (NW-center) · Vâlcea (NE) · Dolj (S) · Olt (SE)
+const hub = { x: 230, y: 150 };
+const nodes = [
+  { name: "Gorj", x: 230, y: 150, hub: true },
+  { name: "Vâlcea", x: 360, y: 110 },
+  { name: "Mehedinți", x: 110, y: 215 },
+  { name: "Dolj", x: 250, y: 280 },
+  { name: "Olt", x: 400, y: 245 },
+];
+const spokes = nodes.filter((n) => !n.hub);
+---
+<section id="acoperire" class="section relative grain bg-[var(--color-surface-container-lowest)]">
+  <div class="container-page relative z-[2]">
+    <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+      <div class="reveal">
+        <span class="stop-label">Unde ajungem</span>
+        <h2 class="heading-lg mt-4 max-w-xl">
+          Toată <span class="glow-word">Oltenia</span>, dintr-un singur apel.
+        </h2>
+        <p class="mt-5 max-w-md text-[var(--color-on-surface-variant)] text-lg">
+          Cu baza în {site.city}, ajungem rapid în {site.counties.length} județe.
+          Pe autostradă, pe drum național sau pe o uliță de țară — venim la tine.
+        </p>
+        <ul class="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-md">
+          {
+            nodes.map((n) => (
+              <li class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
+                <span class="font-semibold text-[var(--color-on-surface)]">{n.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="relative rounded-[var(--radius-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] p-4 overflow-hidden">
+          <svg viewBox="0 0 480 360" class="w-full h-auto coverage-map" role="img" aria-label={`Hartă de acoperire: ${site.counties.join(", ")}`}>
+            <defs>
+              <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.5" />
+                <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="var(--color-primary)" />
+                <stop offset="100%" stop-color="var(--color-accent)" />
+              </linearGradient>
+            </defs>
+
+            <!-- faint grid -->
+            <g stroke="var(--color-outline-variant)" stroke-width="0.5" opacity="0.4">
+              {Array.from({ length: 9 }).map((_, i) => (
+                <line x1={i * 60} y1="0" x2={i * 60} y2="360" />
+              ))}
+              {Array.from({ length: 7 }).map((_, i) => (
+                <line x1="0" y1={i * 60} x2="480" y2={i * 60} />
+              ))}
+            </g>
+
+            <!-- routes hub → each county -->
+            {
+              spokes.map((n, i) => (
+                <line
+                  class="route"
+                  x1={hub.x} y1={hub.y} x2={n.x} y2={n.y}
+                  stroke="url(#route)" stroke-width="2" stroke-linecap="round"
+                  style={`--d:${i * 0.4}s`}
+                />
+              ))
+            }
+
+            <!-- hub glow -->
+            <circle cx={hub.x} cy={hub.y} r="46" fill="url(#hubGlow)" class="hub-glow" />
+
+            <!-- county nodes -->
+            {
+              nodes.map((n, i) => (
+                <g class="node" style={`--d:${i * 0.25}s`}>
+                  {n.hub ? (
+                    <>
+                      <circle cx={n.x} cy={n.y} r="8" fill="var(--color-primary)" />
+                      <circle cx={n.x} cy={n.y} r="8" fill="none" stroke="var(--color-primary)" stroke-width="1.5" class="ping" />
+                    </>
+                  ) : (
+                    <circle cx={n.x} cy={n.y} r="5" fill="var(--color-accent)" stroke="var(--color-surface-container)" stroke-width="2" />
+                  )}
+                  <text
+                    x={n.x} y={n.y - 14}
+                    text-anchor="middle"
+                    fill="var(--color-on-surface)"
+                    font-size="13"
+                    font-family="var(--font-display)"
+                    font-weight="800"
+                    style="text-transform:uppercase;letter-spacing:0.04em"
+                  >{n.name}</text>
+                </g>
+              ))
+            }
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .coverage-map .route {
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    animation: route-draw 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--d, 0s);
+  }
+  .coverage-map .node {
+    opacity: 0;
+    animation: node-in 0.5s ease forwards;
+    animation-delay: calc(0.6s + var(--d, 0s));
+  }
+  .coverage-map .ping {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: map-ping 2.4s ease-out infinite;
+    animation-delay: 2s;
+  }
+  .coverage-map .hub-glow {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: hub-breathe 4s ease-in-out infinite;
+  }
+  @keyframes route-draw { to { stroke-dashoffset: 0; } }
+  @keyframes node-in { to { opacity: 1; } }
+  @keyframes map-ping {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(3.2); opacity: 0; }
+  }
+  @keyframes hub-breathe {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .coverage-map .route { stroke-dashoffset: 0; animation: none; }
+    .coverage-map .node { opacity: 1; animation: none; }
+    .coverage-map .ping, .coverage-map .hub-glow { animation: none; }
+  }
+</style>

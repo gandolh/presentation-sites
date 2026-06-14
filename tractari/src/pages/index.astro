@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import DemoBanner from "../components/DemoBanner.astro";
+import Nav from "../components/Nav.astro";
+import CallDock from "../components/CallDock.tsx";
+import Hero from "../components/Hero.astro";
+import Coverage from "../components/Coverage.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+---
+<Base path="/">
+  <DemoBanner />
+  <Nav />
+  <main id="main">
+    <Hero />
+    <Coverage />
+    <Contact />
+  </main>
+  <Footer />
+  <CallDock client:load />
+</Base>

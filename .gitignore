@@ -74,6 +74,7 @@ web_modules/
 saloon/src/content/site.local.ts
 auto-service/src/content/site.local.ts
 subcort/src/content/site.local.ts
+tractari/src/content/site.local.ts
 
 # Real photos — kept out of the repo (see public/images/real/README.md).
 # The directory itself stays tracked via .gitkeep + README; everything else is ignored.
@@ -167,3 +168,4 @@ vite.config.ts.timestamp-*
 saloon/deploy/Caddyfile
 auto-service/deploy/Caddyfile
 subcort/deploy/Caddyfile
+tractari/deploy/Caddyfile

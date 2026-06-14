@@ -7,6 +7,13 @@
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceFolder}/saloon"
+    },
+    {
+      "command": "./node_modules/.bin/astro dev",
+      "name": "tractari: dev server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/tractari"
     }
   ]
 }

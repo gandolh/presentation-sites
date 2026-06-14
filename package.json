@@ -27,6 +27,14 @@
     "subcort:preview": "npm --prefix subcort run preview",
     "subcort:deploy:pre": "npm --prefix subcort run deploy:pre",
     "subcort:deploy": "npm --prefix subcort run deploy:push",
-    "subcort:deploy:all": "npm --prefix subcort run deploy:all"
+    "subcort:deploy:all": "npm --prefix subcort run deploy:all",
+    "tractari": "npm --prefix tractari run",
+    "tractari:install": "npm --prefix tractari install",
+    "tractari:dev": "npm --prefix tractari run dev",
+    "tractari:build": "npm --prefix tractari run build",
+    "tractari:preview": "npm --prefix tractari run preview",
+    "tractari:deploy:pre": "npm --prefix tractari run deploy:pre",
+    "tractari:deploy": "npm --prefix tractari run deploy:push",
+    "tractari:deploy:all": "npm --prefix tractari run deploy:all"
   }
 }

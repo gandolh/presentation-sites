@@ -1,0 +1,509 @@
+@import "tailwindcss";
+
+/*
+  AXA Tractări — design tokens.
+
+  Creative North Star: "Headlights on a wet road at 3am." The site is DARK by
+  default — asphalt at night, not a white brochure. Light comes from the things
+  that rescue you: the truck's headlights, the rotating amber beacon, the road
+  markings. The whole RO towing market is red-on-white template factory; AXA
+  steps off red entirely and commits to amber — the actual colour of a tow
+  truck's warning light, and far more distinctive in the category.
+
+  Two accents do all the work: AMBER (beacon / signage / identity) and SAFETY
+  ORANGE (urgency / the one CTA that matters — the phone). Everything else is
+  asphalt and warm off-white.
+
+  Colours authored in OKLCH. Token names mirror the sibling projects
+  (Material-ish roles) so components read the same way across the monorepo.
+  Note: this project is DARK-FIRST — the base "surface" tokens ARE the dark
+  asphalt, and the "inverse" tokens are the rare light panels.
+*/
+
+@theme {
+  /* ---- Surfaces (asphalt at night — the default state) -------------------
+     Near-black with a cold blue-grey cast, never pure #000 which reads flat. */
+  --color-background: oklch(16% 0.012 250);          /* page bg, cold asphalt */
+  --color-surface: oklch(16% 0.012 250);
+  --color-surface-container-lowest: oklch(14% 0.011 250);
+  --color-surface-container-low: oklch(19% 0.013 250);
+  --color-surface-container: oklch(22% 0.015 250);   /* cards, panels */
+  --color-surface-container-high: oklch(26% 0.016 250);
+  --color-surface-container-highest: oklch(30% 0.017 250);
+
+  /* ---- Ink (warm off-white on asphalt) ------------------------------------
+     Warm near-white, NOT clinical pure white. Body clears AA comfortably. */
+  --color-on-surface: oklch(95% 0.008 90);           /* body + headings */
+  --color-on-surface-variant: oklch(72% 0.012 250);  /* secondary, ≥4.5:1 */
+  --color-outline: oklch(45% 0.014 250);
+  --color-outline-variant: oklch(30% 0.014 250);     /* hairlines on dark */
+
+  /* ---- Inverse (the RARE light panel — e.g. a callout) --------------------
+     When something must read as "paper" against the dark, it uses these. */
+  --color-inverse-surface: oklch(95% 0.008 90);      /* warm off-white panel */
+  --color-inverse-surface-2: oklch(90% 0.01 90);
+  --color-inverse-on-surface: oklch(20% 0.012 250);  /* dark ink on light */
+  --color-inverse-on-surface-variant: oklch(40% 0.014 250);
+
+  /* ---- Primary: AMBER beacon (the committed identity) --------------------
+     The seed (hue ~75). Bright enough to glow on asphalt. Used for the
+     wordmark mark, eyebrows, the 24/7 badge, signature lines, headlight glow.
+     DARK ink rides on the filled amber (amber is a light colour) → AA. */
+  --color-primary: oklch(80% 0.16 80);               /* amber #F5A623-ish */
+  --color-primary-hover: oklch(74% 0.155 78);
+  --color-on-primary: oklch(18% 0.02 80);            /* near-black on amber */
+  --color-primary-container: oklch(30% 0.05 80);     /* amber-tinted dark chip */
+  --color-on-primary-container: oklch(86% 0.13 82);
+  /* Softer amber used for large text / glows where full chroma is too loud. */
+  --color-primary-bright: oklch(84% 0.15 82);
+
+  /* ---- Accent: SAFETY ORANGE (urgency — the phone CTA) -------------------
+     The one colour reserved for "call now". Hotter and redder than amber so
+     it pops off the amber identity. White text on it clears AA. */
+  --color-accent: oklch(68% 0.2 45);                 /* safety orange #FF6B2B-ish */
+  --color-accent-hover: oklch(63% 0.205 42);
+  --color-on-accent: oklch(99% 0.004 90);            /* white on orange */
+  --color-accent-soft: oklch(32% 0.08 45);           /* orange-tinted dark wash */
+  --color-on-accent-soft: oklch(82% 0.14 50);
+  --color-accent-bright: oklch(74% 0.19 48);
+
+  /* ---- Headlight (cold xenon white-blue) — hero highlights only ---------- */
+  --color-headlight: oklch(95% 0.03 230);
+
+  /* ---- Status ------------------------------------------------------------- */
+  --color-success: oklch(72% 0.15 150);
+  --color-error: oklch(64% 0.21 27);
+  --color-on-error: oklch(99% 0 0);
+
+  /* ---- Typography ---------------------------------------------------------
+     Contrast pairing: an industrial CONDENSED display (Big Shoulders Display —
+     drawn from American highway/industrial signage, flat terminals, heavy
+     weights) against a neutral grotesque body (Inter). The condensed caps read
+     "signage, heavy-duty, urgent" — exactly the towing register — and avoid the
+     generic-SaaS and the corporate-blue traps alike. */
+  --font-display: "Big Shoulders Display Variable", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Archivo Variable", system-ui, sans-serif;
+
+  /* ---- Radius (hard, industrial — barely-rounded) ------------------------ */
+  --radius-sm: 0.1875rem;
+  --radius: 0.3125rem;
+  --radius-md: 0.4375rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.9375rem;
+  --radius-full: 9999px;
+
+  /* ---- Container ---------------------------------------------------------- */
+  --container-max-width: 1200px;
+
+  /* ---- Z-index scale ------------------------------------------------------ */
+  --z-canvas: 0;
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* anchor jumps clear the fixed banner + nav stack */
+    scroll-padding-top: calc(5rem + var(--banner-h, 0px));
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-on-surface);
+    background-color: var(--color-background);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: 0.005em; /* condensed caps breathe a touch */
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-page { padding-inline: 2rem; }
+  }
+
+  .section { padding-block: clamp(3.5rem, 7vw, 7rem); }
+
+  /* ---- The road-line (the signature) -------------------------------------
+     A thin two-tone bar evoking a lit lane marking: amber easing into safety
+     orange. Used as a divider, the mark beside the wordmark, a section edge. */
+  .roadline {
+    display: block;
+    height: 3px;
+    width: 60px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  }
+  .roadline--full { width: 100%; height: 3px; border-radius: 0; }
+
+  /* ---- Eyebrow — caps, tracked, amber. Used sparingly. ------------------- */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* ---- Section opener (replaces the 01/02/03 + eyebrow reflex) ------------
+     A stop on the road gets a short distance-marker label tied to the spine,
+     NOT a numbered editorial index. Used once per stop, reads as signage. */
+  .stop-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .stop-label::before {
+    content: "";
+    width: 1.6rem; height: 2px;
+    background: var(--color-primary);
+    flex: none;
+  }
+
+  /* ---- Display headings (condensed, heavy, signage-uppercase) ------------ */
+  .heading-xl {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.75rem, 9vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .heading-lg {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 0.96;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .heading-md {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  /* A single word in a heading gets the amber glow underline. */
+  .glow-word { color: var(--color-primary); text-shadow: 0 0 28px oklch(80% 0.16 80 / 0.55); }
+
+  /* ---- Wordmark ----------------------------------------------------------- */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* ---- 24/7 NON-STOP badge ------------------------------------------------ */
+  .badge-nonstop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid oklch(80% 0.16 80 / 0.4);
+    background: oklch(80% 0.16 80 / 0.08);
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .badge-nonstop__dot {
+    width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full);
+    background: var(--color-primary);
+    box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7);
+    animation: beacon-pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  @keyframes beacon-pulse {
+    0%   { box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7); }
+    70%  { box-shadow: 0 0 0 0.6rem oklch(80% 0.16 80 / 0); }
+    100% { box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .badge-nonstop__dot { animation: none; }
+  }
+
+  /* ---- Buttons ------------------------------------------------------------ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.95rem 1.6rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition:
+      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn:active { transform: translateY(1px); }
+
+  /* The PHONE button — safety orange, the one CTA that matters. */
+  .btn-call {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    box-shadow: 0 8px 30px -8px oklch(68% 0.2 45 / 0.6);
+  }
+  .btn-call:hover {
+    background-color: var(--color-accent-hover);
+    box-shadow: 0 10px 38px -8px oklch(68% 0.2 45 / 0.75);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--color-on-surface);
+    border-color: oklch(100% 0 0 / 0.28);
+  }
+  .btn-outline:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: oklch(80% 0.16 80 / 0.06);
+  }
+
+  /* ---- Card --------------------------------------------------------------- */
+  .card {
+    background-color: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem;
+    transition: border-color 220ms ease, transform 220ms ease, background-color 220ms ease;
+  }
+  .card-service:hover {
+    border-color: oklch(80% 0.16 80 / 0.5);
+    background-color: var(--color-surface-container-high);
+    transform: translateY(-3px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-service:hover { transform: none; }
+  }
+
+  /* Small uppercase chip/tag. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+  }
+
+  /* ---- Film grain over dark sections (so flat fills read as photographed) - */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- Process timeline (Cum funcționează) ------------------------------- */
+  .timeline { position: relative; display: grid; gap: 2rem; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    background: linear-gradient(var(--tl-dir, 90deg), var(--color-primary) 0%, var(--color-accent) 100%);
+    opacity: 0.5;
+    left: 1rem; top: 0.6rem; bottom: 0.6rem; width: 2px;
+    --tl-dir: 180deg;
+  }
+  .timeline__step { position: relative; padding-left: 3.5rem; }
+  .timeline__node {
+    position: absolute; left: 0; top: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1rem; height: 2.1rem;
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    font-family: var(--font-display);
+    font-weight: 800; font-size: 1.05rem;
+    color: var(--color-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 1024px) {
+    .timeline { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+    .timeline::before {
+      left: 1.05rem; right: 1.05rem; top: 1.05rem; bottom: auto;
+      width: auto; height: 2px; --tl-dir: 90deg;
+    }
+    .timeline__step { padding-left: 0; padding-top: 3.25rem; }
+  }
+
+  /* ---- Scroll reveal (visible by default; JS opts into hidden start) ------ */
+  .reveal { opacity: 1; transform: none; }
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 750ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .js-reveal .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .js-reveal .reveal.reveal-now { transition: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .js-reveal .reveal,
+    .js-reveal .reveal.is-visible { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---- Mobile menu overlay (MobileMenu.tsx island) ----------------------- */
+  .mobile-menu {
+    background-color: var(--color-surface-container-lowest);
+    background-image: radial-gradient(120% 90% at 100% 0%, oklch(80% 0.16 80 / 0.18) 0%, oklch(80% 0.16 80 / 0) 58%);
+    box-shadow: 0 8px 50px -12px oklch(0% 0 0 / 0.7);
+    animation: mobile-menu-in 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .mobile-menu__link {
+    animation: mobile-menu-link-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(70ms + var(--i, 0) * 45ms);
+  }
+  @keyframes mobile-menu-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes mobile-menu-link-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu, .mobile-menu__link { animation: none; }
+  }
+
+  /* ---- Call dock (mobile, CallDock.tsx) ----------------------------------
+     Persistent bottom bar — the load-bearing call action. */
+  .call-dock {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: var(--z-sticky);
+    padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(to top, oklch(11% 0.012 255) 60%, oklch(11% 0.012 255 / 0));
+  }
+  .call-dock__bar {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .call-dock__main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    text-decoration: none;
+    box-shadow: 0 8px 30px -8px oklch(68% 0.2 45 / 0.7);
+  }
+  .call-dock__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.2rem; height: 2.2rem; border-radius: var(--radius-full);
+    background: oklch(100% 0 0 / 0.18);
+  }
+  .call-dock__toggle {
+    width: 3rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-container-high);
+    color: var(--color-on-surface);
+    border: 1px solid var(--color-outline-variant);
+  }
+  .call-dock__more {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    margin-bottom: 0.5rem;
+    animation: dock-more-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .call-dock__more-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-container-high);
+    border: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+  @keyframes dock-more-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .call-dock__more { animation: none; } }
+  /* Page gets bottom padding on mobile so the dock never covers content. */
+  @media (max-width: 1023px) {
+    body { padding-bottom: 5.5rem; }
+  }
+}
+
+/* Utility: hide visually but keep for screen readers (skip link). */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
