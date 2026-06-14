@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
+import HeroScene from "../components/HeroScene.astro";
 import Footer from "../components/Footer.astro";
 import { site } from "../content/site";
 import { img } from "../content/images";
@@ -10,7 +11,8 @@ import { steps } from "../content/zone";
 import { gallery } from "../content/gallery";
 import { amenities } from "../content/tents";
 
-const heroImg = img("hero");
+// The hero scene is a self-contained animated component now (HeroScene.astro);
+// the static hero SVGs are kept for the OG card / fallbacks via img().
 // Show the three "incluse" amenities as the comfort teaser on the home page.
 const included = amenities.filter((a) => a.kind === "inclus");
 ---
@@ -21,74 +23,66 @@ const included = amenities.filter((a) => a.kind === "inclus");
 
   <main id="main">
     <!-- ============================ HERO ============================
-         Editorial blue-hour composition: an oversized slab headline carries
-         the page, with the lit-tent illustration anchored as a deliberate
-         right-hand panel (not a washed-out backdrop). The guy-line runs the
-         full width as real structure between headline and the inline facts. -->
-    <section class="hero-grain relative overflow-hidden bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
-      <!-- Illustration: a framed scene anchored to the right on desktop; a soft
-           band behind the text on mobile. Brightened so it reads as an image. -->
-      <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-        <img
-          src={heroImg}
-          alt=""
-          class="absolute right-0 top-0 h-full w-full object-cover opacity-[0.5] md:w-[58%] md:opacity-100"
-          loading="eager"
-          decoding="async"
-        />
-        <!-- left-to-right wash so the headline keeps full contrast over the art -->
-        <div
-          class="absolute inset-0"
-          style="background:linear-gradient(95deg, oklch(24% 0.05 155) 0%, oklch(24% 0.05 155) 34%, oklch(24% 0.05 155 / 0.78) 50%, oklch(24% 0.05 155 / 0.28) 72%, oklch(24% 0.05 155 / 0.55) 100%)"
-        >
-        </div>
-        <!-- top + bottom vignette to seat the nav and the next section -->
-        <div
-          class="absolute inset-x-0 top-0 h-32"
-          style="background:linear-gradient(180deg, oklch(20% 0.04 155 / 0.8), transparent)"
-        >
-        </div>
-      </div>
-
-      <div class="container-page relative pt-[calc(var(--nav-h,5rem)+3.5rem)] pb-16 md:pt-[calc(var(--nav-h,5rem)+5.5rem)] md:pb-24">
-        <div class="max-w-3xl">
-          <div class="reveal flex items-center gap-3">
-            <span class="section-index__num !text-[var(--color-accent-bright)]">01</span>
+         THE ONE MOVE: a split stage. The headline carries the left over the
+         deep canopy; the right is a living scene — a muted sun arcs dawn → day
+         → dusk → night on a loop, and the tent's INTERIOR lamp cross-fades with
+         it (dim by day, glowing warm at night, the canvas cooling as the light
+         leaves). Self-contained inline SVG + CSS (no WebGL, no JS); the
+         reduced-motion / no-JS frame rests at the lit blue-hour state. -->
+    <section
+      id="hero"
+      class="hero-split hero-grain relative overflow-hidden bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]"
+      aria-label="Subcort — corturi pentru evenimente"
+    >
+      <!-- LEFT: the headline column -->
+      <div class="hero-split__text container-page relative z-[2] pt-[calc(var(--nav-h,4.5rem)+3.5rem)] pb-14 md:py-0">
+        <div class="hero-split__inner">
+          <p class="hero-rise flex items-center gap-3 text-[var(--color-inverse-on-surface-variant)]" style="--rise-delay:140ms">
             <span class="guyline guyline--bright" aria-hidden="true"></span>
-            <span class="eyebrow text-[var(--color-inverse-on-surface-variant)]">
+            <span class="eyebrow !text-[var(--color-inverse-on-surface-variant)]">
               {site.county} · {site.region}
             </span>
-          </div>
+          </p>
 
-          <h1 class="reveal heading-xl mt-6 text-[var(--color-inverse-on-surface)]">
+          <h1
+            class="hero-rise mt-6 max-w-[15ch] font-display font-extrabold leading-[1.03] tracking-[-0.022em] text-[var(--color-inverse-on-surface)] text-[clamp(2.4rem,4.6vw,4.2rem)]"
+            style="--rise-delay:260ms"
+          >
             Un spațiu <span class="ink-mark ink-mark--bright">pregătit</span>,<br
             />oriunde ai nevoie de el.
           </h1>
 
-          <p class="reveal mt-7 max-w-xl text-lg leading-relaxed text-[var(--color-inverse-on-surface-variant)]">
+          <p
+            class="hero-rise mt-7 max-w-md text-lg leading-relaxed text-[var(--color-inverse-on-surface-variant)]"
+            style="--rise-delay:400ms"
+          >
             Aducem cortul la tine, îl montăm exact cum vrei și asigurăm încălzire
             sau răcire, în funcție de sezon. Tu te ocupi de eveniment, noi de
             spațiul în care are loc.
           </p>
+
+          <span class="hero-rise guyline guyline--bright guyline--full mt-10 !h-[3px] opacity-70" style="--rise-delay:540ms" aria-hidden="true"></span>
+
+          <dl class="hero-rise mt-7 grid grid-cols-2 gap-x-8 gap-y-6 max-w-md" style="--rise-delay:640ms">
+            <div>
+              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Capacitate</dt>
+              <dd class="mt-1.5 font-display text-2xl font-bold tnum text-[var(--color-inverse-on-surface)]">40 – 320 invitați</dd>
+            </div>
+            <div>
+              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Montaj complet</dt>
+              <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">La tine acasă</dd>
+            </div>
+            <div>
+              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Confort</dt>
+              <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">Cald sau răcoros</dd>
+            </div>
+          </dl>
         </div>
+      </div>
 
-        <!-- full-width guy-line, then the inline facts riding on it -->
-        <span class="guyline guyline--bright guyline--full reveal mt-12 !h-[3px] opacity-70" aria-hidden="true"></span>
-
-        <dl class="reveal mt-7 grid grid-cols-2 gap-x-8 gap-y-7 sm:flex sm:flex-wrap sm:gap-x-16 max-w-2xl">
-          <div>
-            <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Capacitate</dt>
-            <dd class="mt-1.5 font-display text-2xl font-bold tnum text-[var(--color-inverse-on-surface)]">40 – 320 invitați</dd>
-          </div>
-          <div>
-            <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Montaj complet</dt>
-            <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">La tine acasă</dd>
-          </div>
-          <div>
-            <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Confort</dt>
-            <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">Cald sau răcoros</dd>
-          </div>
-        </dl>
+      <!-- RIGHT: the living day→night scene -->
+      <div class="hero-split__scene">
+        <HeroScene />
       </div>
     </section>
 
@@ -196,12 +190,13 @@ const included = amenities.filter((a) => a.kind === "inclus");
                 class:list={[
                   "group relative overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-outline-variant)] bg-[var(--color-inverse-surface)]",
                   i === 0
-                    ? "sm:col-span-2 sm:row-span-2 aspect-[16/10] sm:aspect-auto"
+                    ? "parallax sm:col-span-2 sm:row-span-2 aspect-[16/10] sm:aspect-auto"
                     : "aspect-[4/3]",
                 ]}
+                data-parallax={i === 0 ? "" : undefined}
               >
                 <img
-                  src={img(g.name)}
+                  src={withBase(`/images/photos/${g.name}.jpg`)}
                   alt={g.alt}
                   loading="lazy"
                   decoding="async"

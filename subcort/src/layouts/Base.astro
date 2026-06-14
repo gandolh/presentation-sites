@@ -166,5 +166,55 @@ const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
         window.setTimeout(revealAll, 2500);
       })();
     </script>
+
+    <script is:inline>
+      // Gallery parallax: a single rAF tick reads scroll once per frame and
+      // writes --py on tagged tiles; the transform lives in CSS. Gated on
+      // reduced-motion. No-JS / reduced-motion leave the tiles static.
+      (function () {
+        var prefersReduced =
+          typeof matchMedia === "function" &&
+          matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReduced) return;
+
+        var parallaxTiles = Array.prototype.slice.call(
+          document.querySelectorAll("[data-parallax]"),
+        );
+        if (!parallaxTiles.length) return;
+
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var ticking = false;
+
+        function frame() {
+          ticking = false;
+
+          // Tile parallax: --py is the tile's centre offset from viewport centre,
+          // normalised to roughly [-1, 1].
+          for (var i = 0; i < parallaxTiles.length; i++) {
+            var el = parallaxTiles[i];
+            var r = el.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > vh) continue;
+            var centre = r.top + r.height / 2;
+            var p = (centre - vh / 2) / (vh / 2 + r.height / 2);
+            el.style.setProperty("--py", p.toFixed(3));
+          }
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(frame);
+          }
+        }
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener(
+          "resize",
+          function () { vh = window.innerHeight; onScroll(); },
+          { passive: true },
+        );
+        frame(); // prime once
+      })();
+    </script>
   </body>
 </html>

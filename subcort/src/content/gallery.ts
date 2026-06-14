@@ -1,6 +1,7 @@
-// Gallery strip on the home page. Logical image names resolve via img() to the
-// committed SVG mockups (empty/elegant tent interiors + setup scenes — neutral,
-// occasion-agnostic, and they sidestep the "no real photos" problem).
+// Gallery strip on the home page. Each name maps to a committed mock photo in
+// public/images/photos/<name>.jpg — neutral, occasion-agnostic placeholder
+// photography (empty/prepared tents and setup, never a celebration in progress).
+// These are stock placeholders for the demo; swap for real shots when available.
 
 export interface GalleryItem {
   /** Logical image base name (see src/content/images.ts). */

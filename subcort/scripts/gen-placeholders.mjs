@@ -20,41 +20,72 @@ const outDir = join(__dirname, "..", "public", "images");
 // against the dark hero/cards instead of dissolving into them. The dusk sky now
 // climbs from a deep canopy base into a warmer blue-hour band near the horizon.
 const C = {
-  sky0: "#16271d", // deepest canopy (top of sky)
-  sky1: "#274635", // deep canopy green (inverse-surface, lifted)
-  sky2: "#3a5b44", // lifted canopy
-  horizon: "#7a6e4e", // warm blue-hour band just above the field
-  field: "#223024", // dark grassy field at dusk
+  sky0: "#12211a", // deepest canopy (top of sky)
+  sky1: "#1f3a2c", // deep canopy green (inverse-surface)
+  sky2: "#365441", // lifted canopy
+  haze: "#4a6450", // mid-distance atmospheric haze
+  horizon: "#8a7853", // warm blue-hour band just above the field
+  horizonHot: "#c79a64", // the hottest sliver of the dusk horizon
+  field: "#1c2a20", // dark grassy field at dusk
+  fieldFar: "#2c4233", // far field, lifted by the horizon light
   line: "#5d7a64", // structural lines (brighter, reads as edges)
   canvasL: "#f3f4ec", // warm off-white canvas highlight
+  canvasSh: "#cdd2c2", // shaded canvas (the unlit side / folds)
   ink: "#f6f4ea", // warm near-white
   green: "#6fa178", // brighter green
   greenD: "#3a6b46",
   clay: "#d2864f", // warm clay (lamp glow)
   clayL: "#f0b985", // brighter clay glow
+  clayHot: "#fcd9a8", // the core of the lamp, near-white-warm
 };
 
 // Shared building blocks ----------------------------------------------------
 
-function defs() {
+function defs(lampCx = "50%", lampCy = "64%", lampR = "46%") {
   return `
   <defs>
-    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+    <!-- Dusk sky: deep canopy at the top easing through a mid haze into a warm
+         blue-hour band, with a hot sliver right at the horizon, then the dark
+         field. The extra stops give real atmospheric depth instead of a flat
+         two-tone wash. -->
+    <linearGradient id="dusk" x1="0" y1="0" x2="0.12" y2="1">
       <stop offset="0%" stop-color="${C.sky0}"/>
-      <stop offset="45%" stop-color="${C.sky1}"/>
-      <stop offset="74%" stop-color="${C.horizon}"/>
-      <stop offset="82%" stop-color="${C.sky2}"/>
+      <stop offset="32%" stop-color="${C.sky1}"/>
+      <stop offset="56%" stop-color="${C.haze}"/>
+      <stop offset="70%" stop-color="${C.horizon}"/>
+      <stop offset="75%" stop-color="${C.horizonHot}"/>
+      <stop offset="79%" stop-color="${C.sky2}"/>
+      <stop offset="86%" stop-color="${C.fieldFar}"/>
       <stop offset="100%" stop-color="${C.field}"/>
     </linearGradient>
-    <radialGradient id="lamp" cx="50%" cy="64%" r="46%">
-      <stop offset="0%" stop-color="${C.clayL}" stop-opacity="0.62"/>
-      <stop offset="50%" stop-color="${C.clay}" stop-opacity="0.18"/>
+    <!-- A wide, low glow sitting on the horizon line (the sun just gone). -->
+    <radialGradient id="horizonGlow" cx="50%" cy="76%" r="62%" fx="50%" fy="76%">
+      <stop offset="0%" stop-color="${C.horizonHot}" stop-opacity="0.5"/>
+      <stop offset="38%" stop-color="${C.horizon}" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="${C.horizon}" stop-opacity="0"/>
+    </radialGradient>
+    <!-- The lamp: a hot near-white core falling off through clay to nothing.
+         Three stops so the glow has a believable falloff, not a flat disc. -->
+    <radialGradient id="lamp" cx="${lampCx}" cy="${lampCy}" r="${lampR}">
+      <stop offset="0%" stop-color="${C.clayHot}" stop-opacity="0.85"/>
+      <stop offset="22%" stop-color="${C.clayL}" stop-opacity="0.5"/>
+      <stop offset="55%" stop-color="${C.clay}" stop-opacity="0.14"/>
       <stop offset="100%" stop-color="${C.clay}" stop-opacity="0"/>
     </radialGradient>
+    <!-- Soft vertical haze used to push distant elements back. -->
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${C.haze}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="${C.haze}" stop-opacity="0.5"/>
+    </linearGradient>
     <linearGradient id="guyline" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="${C.green}"/>
       <stop offset="100%" stop-color="${C.clayL}"/>
     </linearGradient>
+    <!-- A faint vignette to seat the composition. -->
+    <radialGradient id="vignette" cx="50%" cy="46%" r="75%">
+      <stop offset="62%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="${C.sky0}" stop-opacity="0.55"/>
+    </radialGradient>
   </defs>`;
 }
 
@@ -92,16 +123,43 @@ function tent(cx, baseY, scale = 1, glow = true) {
          Q${cx},${baseY - eave * 0.95} ${cx + 30 * scale},${baseY - eave * 0.78}
          L${cx + 30 * scale},${baseY} Z" fill="${C.ink}" opacity="0.85"/>`
     : "";
+  // The canvas is split down the ridge: the right bay catches the last warm
+  // light, the left bay falls into shade. That single split is what makes the
+  // structure read as a lit object in space rather than a flat cut-out.
+  const litHalf = `M${cx},${baseY - peak * 0.82}
+    L${midR},${baseY - peak} L${x1},${baseY - eave} L${x1},${baseY} L${cx},${baseY} Z`;
+  const shadeHalf = `M${cx},${baseY - peak * 0.82}
+    L${midL},${baseY - peak} L${x0},${baseY - eave} L${x0},${baseY} L${cx},${baseY} Z`;
+  const groundShadow = glow
+    ? `<ellipse cx="${cx}" cy="${baseY + 4 * scale}" rx="${w * 0.62}" ry="${10 * scale}" fill="${C.sky0}" opacity="0.4"/>`
+    : "";
   return `<g>
-    <path d="${body}" fill="${C.canvasL}" opacity="0.95"/>
-    <path d="${roof} L${x1},${baseY - eave}" fill="none" stroke="${C.greenD}" stroke-width="${2.5 * scale}" opacity="0.35"/>
-    <line x1="${midL}" y1="${baseY - peak}" x2="${midL}" y2="${baseY}" stroke="${C.greenD}" stroke-width="${1.5 * scale}" opacity="0.25"/>
-    <line x1="${midR}" y1="${baseY - peak}" x2="${midR}" y2="${baseY}" stroke="${C.greenD}" stroke-width="${1.5 * scale}" opacity="0.25"/>
+    ${groundShadow}
+    <path d="${body}" fill="${C.canvasL}" opacity="0.97"/>
+    <path d="${shadeHalf}" fill="${C.canvasSh}" opacity="0.55"/>
+    <path d="${litHalf}" fill="${C.clayL}" opacity="${glow ? 0.16 : 0}"/>
+    <path d="${roof} L${x1},${baseY - eave}" fill="none" stroke="${C.greenD}" stroke-width="${2.5 * scale}" opacity="0.32"/>
+    <line x1="${cx}" y1="${baseY - peak * 0.82}" x2="${cx}" y2="${baseY}" stroke="${C.greenD}" stroke-width="${1.5 * scale}" opacity="0.22"/>
+    <line x1="${midL}" y1="${baseY - peak}" x2="${midL}" y2="${baseY}" stroke="${C.greenD}" stroke-width="${1.5 * scale}" opacity="0.22"/>
+    <line x1="${midR}" y1="${baseY - peak}" x2="${midR}" y2="${baseY}" stroke="${C.greenD}" stroke-width="${1.5 * scale}" opacity="0.22"/>
     ${opening}
     <!-- guy ropes -->
-    <line x1="${x0}" y1="${baseY - eave}" x2="${x0 - 34 * scale}" y2="${baseY}" stroke="${C.green}" stroke-width="${1.5 * scale}" opacity="0.6"/>
-    <line x1="${x1}" y1="${baseY - eave}" x2="${x1 + 34 * scale}" y2="${baseY}" stroke="${C.green}" stroke-width="${1.5 * scale}" opacity="0.6"/>
+    <line x1="${x0}" y1="${baseY - eave}" x2="${x0 - 34 * scale}" y2="${baseY}" stroke="${C.green}" stroke-width="${1.5 * scale}" opacity="0.55"/>
+    <line x1="${x1}" y1="${baseY - eave}" x2="${x1 + 34 * scale}" y2="${baseY}" stroke="${C.green}" stroke-width="${1.5 * scale}" opacity="0.55"/>
   </g>`;
+}
+
+// A flat, hazed-back distant tent silhouette for the far field — depth cue only,
+// no interior detail. Drawn small and low-contrast so it sits behind the haze.
+function distantTent(cx, baseY, scale) {
+  const w = 360 * scale, peak = 150 * scale, eave = 80 * scale;
+  const x0 = cx - w / 2, x1 = cx + w / 2;
+  const midL = cx - w * 0.18, midR = cx + w * 0.18;
+  const body = `M${x0},${baseY - eave} L${midL},${baseY - peak}
+    L${cx},${baseY - peak * 0.82} L${midR},${baseY - peak} L${x1},${baseY - eave}
+    L${x1},${baseY} L${x0},${baseY} Z`;
+  return `<path d="${body}" fill="${C.haze}" opacity="0.55"/>
+    <path d="${body}" fill="${C.canvasL}" opacity="0.12"/>`;
 }
 
 // A string of warm bulbs across the frame.
@@ -123,12 +181,15 @@ function caption(w, h, label) {
   </g>`;
 }
 
-function frame(w, h, inner, label) {
+function frame(w, h, inner, label, lamp) {
+  const l = lamp || {};
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-  ${defs()}
+  ${defs(l.cx, l.cy, l.r)}
   <rect width="${w}" height="${h}" fill="url(#dusk)"/>
-  <rect width="${w}" height="${h}" fill="url(#lamp)"/>
+  <rect width="${w}" height="${h}" fill="url(#horizonGlow)"/>
   ${inner}
+  <rect width="${w}" height="${h}" fill="url(#lamp)"/>
+  <rect width="${w}" height="${h}" fill="url(#vignette)"/>
   ${guyline(w)}
   ${label ? caption(w, h, label) : ""}
 </svg>`;
@@ -136,14 +197,29 @@ function frame(w, h, inner, label) {
 
 // Scenes --------------------------------------------------------------------
 
-// Hero: a lit tent on a field at blue hour, string lights above.
+// Hero: a lit tent on a field at blue hour. Built in depth — a hazed far field
+// with two distant tents, the horizon line, then the subject tent set slightly
+// off-centre with a string of warm lights arcing above it. The lamp glow is
+// aimed at the subject's interior so it reads as the focal point.
 function sceneHero(w, h, label) {
-  const baseY = h * 0.82;
+  const baseY = h * 0.84;
+  const horizonY = h * 0.66;
+  // subject sits right-of-centre so a left-aligned headline has room to breathe
+  const subjectCx = w * 0.62;
+  const subjectScale = Math.min(w, h) / 480;
   const inner = `
-  <line x1="0" y1="${baseY}" x2="${w}" y2="${baseY}" stroke="${C.line}" stroke-width="2" opacity="0.4"/>
-  ${lights(w, h * 0.2)}
-  ${tent(w * 0.5, baseY, Math.min(w, h) / 520, true)}`;
-  return frame(w, h, inner, label);
+  <!-- far field, pushed back by haze -->
+  ${distantTent(w * 0.2, horizonY + h * 0.05, subjectScale * 0.42)}
+  ${distantTent(w * 0.82, horizonY + h * 0.07, subjectScale * 0.5)}
+  <line x1="0" y1="${horizonY}" x2="${w}" y2="${horizonY}" stroke="${C.horizonHot}" stroke-width="1.5" opacity="0.25"/>
+  <rect x="0" y="${horizonY}" width="${w}" height="${h * 0.1}" fill="url(#haze)"/>
+  <!-- ground plane -->
+  <line x1="0" y1="${baseY}" x2="${w}" y2="${baseY}" stroke="${C.line}" stroke-width="2" opacity="0.35"/>
+  <!-- string lights arc above the subject -->
+  ${lights(w, h * 0.22)}
+  ${tent(subjectCx, baseY, subjectScale, true)}`;
+  // aim the lamp at the subject tent's lit opening
+  return frame(w, h, inner, label, { cx: "61%", cy: "72%", r: "44%" });
 }
 
 // Empty prepared interior: a row of tables under the canopy, warm light.
@@ -216,15 +292,21 @@ async function main() {
 
   // Hero carries no baked-in caption (the page supplies the headline). The OG
   // card keeps its label since it travels standalone in link previews.
+  // Wide hero for the desktop full-bleed stage, and a taller portrait variant
+  // for narrow viewports so the subject tent stays in frame on mobile. Both
+  // carry no baked caption (the page lays its headline over the scene).
   await writeFile(join(outDir, "hero.svg"), sceneHero(1600, 1000, ""));
+  await writeFile(join(outDir, "hero-tall.svg"), sceneHero(1080, 1500, ""));
   await writeFile(join(outDir, "og-image.svg"), sceneHero(1200, 630, "Subcort · corturi pentru evenimente"));
 
-  await writeFile(join(outDir, "gallery-01.svg"), sceneInterior(1000, 750, "Interior pregătit"));
-  await writeFile(join(outDir, "gallery-02.svg"), sceneSetup(1000, 750, "Montaj la fața locului"));
-  await writeFile(join(outDir, "gallery-03.svg"), sceneLights(1000, 750, "Iluminat cald, seara"));
-  await writeFile(join(outDir, "gallery-04.svg"), sceneInterior(1000, 750, "Pardoseală și pereți"));
-  await writeFile(join(outDir, "gallery-05.svg"), sceneField(1000, 750, "Cort pe teren deschis"));
-  await writeFile(join(outDir, "gallery-06.svg"), sceneSetup(1000, 750, "Detaliu de structură"));
+  // No baked-in captions: the page renders its own <figcaption> from g.alt over
+  // each tile. Baking a label here too produced doubled, overlapping text.
+  await writeFile(join(outDir, "gallery-01.svg"), sceneInterior(1000, 750, ""));
+  await writeFile(join(outDir, "gallery-02.svg"), sceneSetup(1000, 750, ""));
+  await writeFile(join(outDir, "gallery-03.svg"), sceneLights(1000, 750, ""));
+  await writeFile(join(outDir, "gallery-04.svg"), sceneInterior(1000, 750, ""));
+  await writeFile(join(outDir, "gallery-05.svg"), sceneField(1000, 750, ""));
+  await writeFile(join(outDir, "gallery-06.svg"), sceneSetup(1000, 750, ""));
 
   // Favicon: a tiny tent peak mark.
   const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">

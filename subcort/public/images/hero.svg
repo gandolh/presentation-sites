@@ -1,55 +1,106 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
   
   <defs>
-    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#16271d"/>
-      <stop offset="45%" stop-color="#274635"/>
-      <stop offset="74%" stop-color="#7a6e4e"/>
-      <stop offset="82%" stop-color="#3a5b44"/>
-      <stop offset="100%" stop-color="#223024"/>
+    <!-- Dusk sky: deep canopy at the top easing through a mid haze into a warm
+         blue-hour band, with a hot sliver right at the horizon, then the dark
+         field. The extra stops give real atmospheric depth instead of a flat
+         two-tone wash. -->
+    <linearGradient id="dusk" x1="0" y1="0" x2="0.12" y2="1">
+      <stop offset="0%" stop-color="#12211a"/>
+      <stop offset="32%" stop-color="#1f3a2c"/>
+      <stop offset="56%" stop-color="#4a6450"/>
+      <stop offset="70%" stop-color="#8a7853"/>
+      <stop offset="75%" stop-color="#c79a64"/>
+      <stop offset="79%" stop-color="#365441"/>
+      <stop offset="86%" stop-color="#2c4233"/>
+      <stop offset="100%" stop-color="#1c2a20"/>
     </linearGradient>
-    <radialGradient id="lamp" cx="50%" cy="64%" r="46%">
-      <stop offset="0%" stop-color="#f0b985" stop-opacity="0.62"/>
-      <stop offset="50%" stop-color="#d2864f" stop-opacity="0.18"/>
+    <!-- A wide, low glow sitting on the horizon line (the sun just gone). -->
+    <radialGradient id="horizonGlow" cx="50%" cy="76%" r="62%" fx="50%" fy="76%">
+      <stop offset="0%" stop-color="#c79a64" stop-opacity="0.5"/>
+      <stop offset="38%" stop-color="#8a7853" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#8a7853" stop-opacity="0"/>
+    </radialGradient>
+    <!-- The lamp: a hot near-white core falling off through clay to nothing.
+         Three stops so the glow has a believable falloff, not a flat disc. -->
+    <radialGradient id="lamp" cx="61%" cy="72%" r="44%">
+      <stop offset="0%" stop-color="#fcd9a8" stop-opacity="0.85"/>
+      <stop offset="22%" stop-color="#f0b985" stop-opacity="0.5"/>
+      <stop offset="55%" stop-color="#d2864f" stop-opacity="0.14"/>
       <stop offset="100%" stop-color="#d2864f" stop-opacity="0"/>
     </radialGradient>
+    <!-- Soft vertical haze used to push distant elements back. -->
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a6450" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#4a6450" stop-opacity="0.5"/>
+    </linearGradient>
     <linearGradient id="guyline" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#6fa178"/>
       <stop offset="100%" stop-color="#f0b985"/>
     </linearGradient>
+    <!-- A faint vignette to seat the composition. -->
+    <radialGradient id="vignette" cx="50%" cy="46%" r="75%">
+      <stop offset="62%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#12211a" stop-opacity="0.55"/>
+    </radialGradient>
   </defs>
   <rect width="1600" height="1000" fill="url(#dusk)"/>
-  <rect width="1600" height="1000" fill="url(#lamp)"/>
+  <rect width="1600" height="1000" fill="url(#horizonGlow)"/>
   
-  <line x1="0" y1="820" x2="1600" y2="820" stroke="#5d7a64" stroke-width="2" opacity="0.4"/>
-  <path d="M0,200 Q800,228 1600,200" fill="none" stroke="#5d7a64" stroke-width="1.5" opacity="0.5"/><circle cx="0.0" cy="200.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="177.8" cy="209.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="355.6" cy="218.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="533.3" cy="224.2" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="711.1" cy="227.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="888.9" cy="227.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1066.7" cy="224.2" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1244.4" cy="218.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1422.2" cy="209.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1600.0" cy="200.0" r="3.5" fill="#f0b985" opacity="0.9"/>
+  <!-- far field, pushed back by haze -->
+  <path d="M162.5,640 L263.3,578.75
+    L320,602.375 L376.7,578.75 L477.5,640
+    L477.5,710 L162.5,710 Z" fill="#4a6450" opacity="0.55"/>
+    <path d="M162.5,640 L263.3,578.75
+    L320,602.375 L376.7,578.75 L477.5,640
+    L477.5,710 L162.5,710 Z" fill="#f3f4ec" opacity="0.12"/>
+  <path d="M1124.5,646.6666666666666 L1244.5,573.75
+    L1312,601.875 L1379.5,573.75 L1499.5,646.6666666666666
+    L1499.5,730 L1124.5,730 Z" fill="#4a6450" opacity="0.55"/>
+    <path d="M1124.5,646.6666666666666 L1244.5,573.75
+    L1312,601.875 L1379.5,573.75 L1499.5,646.6666666666666
+    L1499.5,730 L1124.5,730 Z" fill="#f3f4ec" opacity="0.12"/>
+  <line x1="0" y1="660" x2="1600" y2="660" stroke="#c79a64" stroke-width="1.5" opacity="0.25"/>
+  <rect x="0" y="660" width="1600" height="100" fill="url(#haze)"/>
+  <!-- ground plane -->
+  <line x1="0" y1="840" x2="1600" y2="840" stroke="#5d7a64" stroke-width="2" opacity="0.35"/>
+  <!-- string lights arc above the subject -->
+  <path d="M0,220 Q800,248 1600,220" fill="none" stroke="#5d7a64" stroke-width="1.5" opacity="0.5"/><circle cx="0.0" cy="220.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="177.8" cy="229.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="355.6" cy="238.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="533.3" cy="244.2" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="711.1" cy="247.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="888.9" cy="247.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1066.7" cy="244.2" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1244.4" cy="238.0" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1422.2" cy="229.6" r="3.5" fill="#f0b985" opacity="0.9"/><circle cx="1600.0" cy="220.0" r="3.5" fill="#f0b985" opacity="0.9"/>
   <g>
-    <path d="M453.8461538461538,666.1538461538462
-    L675.3846153846154,531.5384615384615
-    L800,583.4615384615385
-    L924.6153846153846,531.5384615384615
-    L1146.1538461538462,666.1538461538462
-    L1146.1538461538462,820
-    L453.8461538461538,820 Z" fill="#f3f4ec" opacity="0.95"/>
-    <path d="M453.8461538461538,666.1538461538462
-    L675.3846153846154,531.5384615384615
-    L800,583.4615384615385
-    L924.6153846153846,531.5384615384615
-    L1146.1538461538462,666.1538461538462 L1146.1538461538462,666.1538461538462" fill="none" stroke="#3a6b46" stroke-width="4.8076923076923075" opacity="0.35"/>
-    <line x1="675.3846153846154" y1="531.5384615384615" x2="675.3846153846154" y2="820" stroke="#3a6b46" stroke-width="2.8846153846153846" opacity="0.25"/>
-    <line x1="924.6153846153846" y1="531.5384615384615" x2="924.6153846153846" y2="820" stroke="#3a6b46" stroke-width="2.8846153846153846" opacity="0.25"/>
-    <path d="M711.5384615384615,820
-         L711.5384615384615,678.4615384615385
-         Q800,643.0769230769231 888.4615384615385,678.4615384615385
-         L888.4615384615385,820 Z" fill="#f0b985" opacity="0.9"/>
-       <path d="M742.3076923076923,820
-         L742.3076923076923,700
-         Q800,673.8461538461538 857.6923076923077,700
-         L857.6923076923077,820 Z" fill="#f6f4ea" opacity="0.85"/>
+    <ellipse cx="992" cy="848.3333333333334" rx="465" ry="20.833333333333336" fill="#12211a" opacity="0.4"/>
+    <path d="M617,673.3333333333333
+    L857,527.5
+    L992,583.75
+    L1127,527.5
+    L1367,673.3333333333333
+    L1367,840
+    L617,840 Z" fill="#f3f4ec" opacity="0.97"/>
+    <path d="M992,583.75
+    L857,527.5 L617,673.3333333333333 L617,840 L992,840 Z" fill="#cdd2c2" opacity="0.55"/>
+    <path d="M992,583.75
+    L1127,527.5 L1367,673.3333333333333 L1367,840 L992,840 Z" fill="#f0b985" opacity="0.16"/>
+    <path d="M617,673.3333333333333
+    L857,527.5
+    L992,583.75
+    L1127,527.5
+    L1367,673.3333333333333 L1367,673.3333333333333" fill="none" stroke="#3a6b46" stroke-width="5.208333333333334" opacity="0.32"/>
+    <line x1="992" y1="583.75" x2="992" y2="840" stroke="#3a6b46" stroke-width="3.125" opacity="0.22"/>
+    <line x1="857" y1="527.5" x2="857" y2="840" stroke="#3a6b46" stroke-width="3.125" opacity="0.22"/>
+    <line x1="1127" y1="527.5" x2="1127" y2="840" stroke="#3a6b46" stroke-width="3.125" opacity="0.22"/>
+    <path d="M896.1666666666666,840
+         L896.1666666666666,686.6666666666666
+         Q992,648.3333333333333 1087.8333333333333,686.6666666666666
+         L1087.8333333333333,840 Z" fill="#f0b985" opacity="0.9"/>
+       <path d="M929.5,840
+         L929.5,710
+         Q992,681.6666666666666 1054.5,710
+         L1054.5,840 Z" fill="#f6f4ea" opacity="0.85"/>
     <!-- guy ropes -->
-    <line x1="453.8461538461538" y1="666.1538461538462" x2="388.46153846153845" y2="820" stroke="#6fa178" stroke-width="2.8846153846153846" opacity="0.6"/>
-    <line x1="1146.1538461538462" y1="666.1538461538462" x2="1211.5384615384617" y2="820" stroke="#6fa178" stroke-width="2.8846153846153846" opacity="0.6"/>
+    <line x1="617" y1="673.3333333333333" x2="546.1666666666666" y2="840" stroke="#6fa178" stroke-width="3.125" opacity="0.55"/>
+    <line x1="1367" y1="673.3333333333333" x2="1437.8333333333333" y2="840" stroke="#6fa178" stroke-width="3.125" opacity="0.55"/>
   </g>
+  <rect width="1600" height="1000" fill="url(#lamp)"/>
+  <rect width="1600" height="1000" fill="url(#vignette)"/>
   <rect x="0" y="0" width="1600" height="5" fill="url(#guyline)"/>
   
 </svg>
