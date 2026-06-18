@@ -3,59 +3,58 @@ import HeroCanvas from "./hero/HeroCanvas.tsx";
 import PhoneIcon from "./PhoneIcon.astro";
 import { site, primaryPhone, telLink } from "../content/site";
 
-// Split hero: copy on the LEFT, the 3D chase-cam tow-truck scene on the RIGHT.
-// The 3D scene is the main accent of the whole (minimalist) site. All copy is
-// real HTML — the no-JS / reduced-motion / SEO source of truth. The truck panel
-// degrades to a CSS night-road backdrop when WebGL can't run.
+// FULL-BLEED CINEMATIC HERO. The redesign promotes the 3D chase-cam tow-truck
+// scene from a boxed right-hand panel to the FULL background of the opening
+// viewport — a film frame. Copy is overlaid lower-left (film-title framing),
+// a dark scrim keeps it legible, and the road spine runs in from the bottom.
+// All copy is real HTML (the no-JS / reduced-motion / SEO source of truth);
+// the WebGL scene degrades to the CSS night-road backdrop.
 ---
 <section
   id="hero"
   class="hero-root relative isolate overflow-hidden"
   aria-label="AXA Tractări — tractări auto pe platformă, non-stop în Oltenia"
 >
-  <div class="container-page relative z-[3]">
-    <div class="hero-grid grid lg:grid-cols-[1fr_1.05fr] gap-8 lg:gap-10 items-center min-h-[100svh] pb-[clamp(2rem,6vh,4rem)]">
-      <!-- LEFT: copy -->
-      <div class="order-2 lg:order-1">
-        <p class="hero-kicker reveal">
-          <span class="hero-beacon" aria-hidden="true"></span>
-          Non-stop 24/7 · {site.region}
-        </p>
+  <!-- The scene fills the whole hero, behind everything. -->
+  <div class="hero-stage" aria-hidden="true">
+    <div class="hero-stage__backdrop"></div>
+    <HeroCanvas client:only="react" />
+  </div>
+  <!-- Cinematic scrims: darken the bottom-left for the copy, vignette the edges. -->
+  <div class="hero-scrim" aria-hidden="true"></div>
 
-        <h1 class="hero-title reveal">
-          <span class="block text-[var(--color-on-surface)]">Tractări auto</span>
-          <span class="block glow-word">pe platformă.</span>
-        </h1>
+  <div class="container-page relative z-[3] flex min-h-[100svh] flex-col justify-end pb-[clamp(4.5rem,11vh,8rem)]">
+    <div class="hero-copy max-w-[44rem]">
+      <p class="hero-kicker reveal">
+        <span class="hero-beacon" aria-hidden="true"></span>
+        Non-stop 24/7 · {site.region}
+      </p>
 
-        <p class="hero-lede reveal">
-          Ai rămas pe drum în {site.counties.slice(0, -1).join(", ")} sau
-          {site.counties.at(-1)}? Venim cu platforma și ducem mașina în
-          siguranță acolo unde ai nevoie. La orice oră.
-        </p>
+      <h1 class="hero-title reveal">
+        <span class="block text-[var(--color-on-surface)]">Tractări auto</span>
+        <span class="block glow-word">pe platformă.</span>
+      </h1>
 
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 reveal">
-          <a href={telLink(primaryPhone.e164)} class="btn btn-call text-[1.05rem] !py-4 !px-7">
-            <PhoneIcon class="w-5 h-5" />
-            Sună acum · <span class="tnum">{primaryPhone.display}</span>
-          </a>
-          <a href="#contact" class="btn btn-outline text-[1.05rem] !py-4 !px-7">
-            Toate numerele
-          </a>
-        </div>
-      </div>
+      <p class="hero-lede reveal">
+        Ai rămas pe drum în {site.counties.slice(0, -1).join(", ")} sau
+        {site.counties.at(-1)}? Venim cu platforma și ducem mașina în
+        siguranță acolo unde ai nevoie. La orice oră.
+      </p>
 
-      <!-- RIGHT: the 3D scene -->
-      <div class="order-1 lg:order-2 relative">
-        <div class="hero-stage">
-          <div class="hero-stage__backdrop" aria-hidden="true"></div>
-          <HeroCanvas client:only="react" />
-        </div>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 reveal">
+        <a href={telLink(primaryPhone.e164)} class="btn btn-call text-[1.05rem] !py-4 !px-7">
+          <PhoneIcon class="w-5 h-5" />
+          Sună acum · <span class="tnum">{primaryPhone.display}</span>
+        </a>
+        <a href="#servicii" class="btn btn-outline text-[1.05rem] !py-4 !px-7">
+          Ce facem
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- scroll cue -->
-  <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] hidden lg:flex flex-col items-center gap-2 text-[var(--color-on-surface-variant)]">
+  <!-- scroll cue, bottom-right so it doesn't fight the copy -->
+  <div class="hero-cue absolute bottom-6 right-6 z-[3] hidden lg:flex flex-col items-center gap-2 text-[var(--color-on-surface-variant)]">
     <span class="text-[0.68rem] uppercase tracking-[0.24em]">Derulează</span>
     <span class="scroll-cue" aria-hidden="true"></span>
   </div>
@@ -63,51 +62,45 @@ import { site, primaryPhone, telLink } from "../content/site";
 
 <style>
   .hero-root {
+    min-height: 100svh;
     background:
-      radial-gradient(60% 50% at 20% 30%, oklch(68% 0.2 45 / 0.07) 0%, oklch(68% 0.2 45 / 0) 55%),
+      radial-gradient(60% 50% at 50% 20%, oklch(68% 0.2 45 / 0.06) 0%, oklch(68% 0.2 45 / 0) 55%),
       linear-gradient(180deg, oklch(13% 0.012 250) 0%, oklch(16% 0.013 250) 100%);
   }
 
-  /* Clear the fixed banner + nav stack at every width so neither the copy nor
-     the 3D panel slides under the bar. Nav is ~4rem tall; add the banner height. */
-  .hero-grid { padding-top: calc(5rem + var(--banner-h, 0px)); }
-  @media (min-width: 1024px) {
-    /* desktop: the grid is centered in the viewport, but still needs the stack
-       cleared at the top so the tall 3D panel doesn't tuck under the nav */
-    .hero-grid { padding-top: calc(4.5rem + var(--banner-h, 0px)); padding-bottom: clamp(2rem, 5vh, 4rem); }
-  }
-
-  /* The 3D stage — a tall framed panel on the right. Rounded, bordered, with its
-     own night-road backdrop so it reads as a window onto the road even before
-     (or without) WebGL. */
+  /* The 3D stage now fills the entire hero as the background plate. */
   .hero-stage {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-xl);
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     overflow: hidden;
-    border: 1px solid var(--color-outline-variant);
-    box-shadow: 0 30px 80px -30px oklch(0% 0 0 / 0.8);
   }
-  @media (min-width: 1024px) {
-    .hero-stage { aspect-ratio: 3 / 4; max-height: 78svh; }
-  }
-  /* The WebGL canvas fills the stage, above the backdrop. */
   :global(.hero-canvas) { position: absolute; inset: 0; z-index: 1; }
   :global(.hero-canvas canvas) { width: 100%; height: 100%; display: block; }
 
   .hero-stage__backdrop {
     position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(70% 45% at 50% 18%, oklch(80% 0.16 80 / 0.22) 0%, oklch(80% 0.16 80 / 0) 60%),
-      radial-gradient(50% 40% at 50% 8%, oklch(95% 0.03 230 / 0.12) 0%, oklch(95% 0.03 230 / 0) 55%),
+      radial-gradient(60% 38% at 50% 16%, oklch(80% 0.16 80 / 0.2) 0%, oklch(80% 0.16 80 / 0) 60%),
+      radial-gradient(46% 32% at 50% 8%, oklch(95% 0.03 230 / 0.12) 0%, oklch(95% 0.03 230 / 0) 55%),
       linear-gradient(180deg, oklch(10% 0.012 255) 0%, oklch(15% 0.013 250) 55%, oklch(9% 0.012 255) 100%);
   }
   .hero-stage__backdrop::after {
     content: "";
     position: absolute; inset: 0;
-    background: conic-gradient(from 90deg at 50% 128%, transparent 0deg, oklch(45% 0.014 250 / 0.32) 10deg, transparent 20deg);
+    background: conic-gradient(from 90deg at 50% 118%, transparent 0deg, oklch(45% 0.014 250 / 0.3) 10deg, transparent 20deg);
     opacity: 0.8;
+  }
+
+  /* Legibility scrim — heavier toward the bottom-left where the copy lives,
+     plus a gentle full-frame vignette so the scene reads as a photographed
+     plate and the type never floats on a bright patch. */
+  .hero-scrim {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background:
+      linear-gradient(to top, oklch(11% 0.012 255 / 0.92) 0%, oklch(13% 0.012 255 / 0.55) 28%, oklch(13% 0.012 255 / 0) 58%),
+      linear-gradient(to right, oklch(11% 0.012 255 / 0.7) 0%, oklch(11% 0.012 255 / 0) 55%),
+      radial-gradient(120% 80% at 50% 30%, oklch(11% 0.012 255 / 0) 55%, oklch(8% 0.012 255 / 0.6) 100%);
   }
 
   .hero-kicker {
@@ -129,17 +122,19 @@ import { site, primaryPhone, telLink } from "../content/site";
     margin-top: 1.1rem;
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    line-height: 0.9;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 0.88;
     letter-spacing: 0.005em;
     text-transform: uppercase;
+    text-shadow: 0 2px 30px oklch(0% 0 0 / 0.5);
   }
   .hero-lede {
     margin-top: 1.4rem;
     max-width: 42ch;
     font-size: clamp(1.05rem, 1.5vw, 1.25rem);
     line-height: 1.55;
-    color: var(--color-on-surface-variant);
+    color: var(--color-on-surface);
+    text-shadow: 0 1px 16px oklch(0% 0 0 / 0.6);
   }
 
   .scroll-cue {

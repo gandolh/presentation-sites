@@ -8,6 +8,8 @@ import { withBase } from "../content/url";
 // element: pinned right on desktop, always tappable. Mobile gets a separate
 // bottom CallDock, so here the burger is enough.
 const links = [
+  { href: "#servicii", label: "Servicii" },
+  { href: "#cum-functioneaza", label: "Cum funcționează" },
   { href: "#acoperire", label: "Acoperire" },
   { href: "#contact", label: "Contact" },
 ];
@@ -25,7 +27,7 @@ const links = [
       <span class="wordmark text-xl md:text-[1.55rem] text-[var(--color-on-surface)]">{site.name}</span>
     </a>
 
-    <nav class="hidden lg:flex items-center gap-8" aria-label="Navigare principală">
+    <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navigare principală">
       {
         links.map((link) => (
           <a href={link.href} class="nav-link text-[0.92rem] font-semibold transition-colors">

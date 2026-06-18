@@ -160,6 +160,91 @@
 
   .section { padding-block: clamp(3.5rem, 7vw, 7rem); }
 
+  /* ====================================================================== */
+  /*  THE ROAD SPINE — the one structural move made literal.                */
+  /*  A continuous lit lane-marking runs down the whole page. Each section   */
+  /*  is a STOP pinned to it by a glowing distance-marker node, so the drive */
+  /*  is no longer just a metaphor in the docs — it is the page's backbone.  */
+  /*  Desktop: the spine lives in a left gutter. Mobile: it collapses to a    */
+  /*  hairline at the far-left edge so content keeps full width.             */
+  /* ====================================================================== */
+  .road { position: relative; }
+
+  /* The lane line: a dashed centre-marking streaming down the page, amber
+     easing to safety-orange. A repeating mask makes it read as painted road
+     dashes rather than a solid bar. */
+  .road__line {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: clamp(1.4rem, 3.5vw, 3.5rem);
+    width: 3px;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(var(--color-primary), var(--color-accent));
+    -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
+            mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
+    opacity: 0.5;
+  }
+  @media (max-width: 1023px) {
+    .road__line { left: 0.5rem; opacity: 0.32; }
+  }
+  /* A soft amber glow travelling down the dashes — the truck's light moving
+     along the road. Pure decoration; off under reduced motion. */
+  .road__line::after {
+    content: "";
+    position: absolute;
+    left: -7px; right: -7px;
+    height: 20vh;
+    border-radius: var(--radius-full);
+    background: radial-gradient(50% 50% at 50% 50%, oklch(82% 0.16 82 / 0.85) 0%, oklch(82% 0.16 82 / 0) 72%);
+    filter: blur(6px);
+    animation: road-travel 9s linear infinite;
+  }
+  @keyframes road-travel {
+    0%   { top: -20vh; opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .road__line::after { animation: none; opacity: 0; }
+  }
+
+  /* A STOP: a section anchored to the spine. On desktop its content is pushed
+     past the rail; the marker node sits ON the line. */
+  .stop { position: relative; }
+  @media (min-width: 1024px) {
+    .stop > .container-page { padding-left: clamp(5rem, 8vw, 8rem); }
+  }
+  .stop__marker {
+    position: absolute;
+    top: clamp(3.5rem, 7vw, 7rem);    /* aligns with the section top padding */
+    left: clamp(1.4rem, 3.5vw, 3.5rem);
+    transform: translateX(-50%);
+    z-index: 1;
+    display: none;
+    width: 1.15rem; height: 1.15rem;
+    border-radius: var(--radius-full);
+    background: var(--color-background);
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 0 0 5px var(--color-background), 0 0 22px 2px oklch(80% 0.16 80 / 0.5);
+  }
+  .stop__marker::before {
+    content: "";
+    position: absolute; inset: 3px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+  }
+  @media (min-width: 1024px) { .stop__marker { display: block; } }
+
+  /* The destination node — end of the drive. Larger, safety-orange, filled. */
+  .stop__marker--end {
+    width: 1.5rem; height: 1.5rem;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 5px var(--color-background), 0 0 28px 3px oklch(68% 0.2 45 / 0.6);
+  }
+  .stop__marker--end::before { background: var(--color-accent); inset: 4px; }
+
   /* ---- The road-line (the signature) -------------------------------------
      A thin two-tone bar evoking a lit lane marking: amber easing into safety
      orange. Used as a divider, the mark beside the wordmark, a section edge. */
@@ -339,6 +424,70 @@
   @media (prefers-reduced-motion: reduce) {
     .card-service:hover { transform: none; }
   }
+
+  /* ---- Service tiles (Servicii stop) -------------------------------------
+     An asymmetric set of capability tiles. The first tile is the hero one
+     (the actual job: tractări pe platformă) and spans wider; the rest are
+     supporting. Not an equal-box 4-grid — the lead tile dominates. */
+  .svc-grid {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+    }
+    .svc-grid__lead { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .svc-grid { grid-template-columns: repeat(3, 1fr); }
+    .svc-grid__lead { grid-column: 1 / 3; grid-row: span 1; }
+  }
+  .svc-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    overflow: hidden;
+    transition: border-color 220ms ease, background-color 220ms ease, transform 220ms ease;
+  }
+  .svc-tile:hover {
+    border-color: oklch(80% 0.16 80 / 0.45);
+    background-color: var(--color-surface-container-high);
+    transform: translateY(-3px);
+  }
+  @media (prefers-reduced-motion: reduce) { .svc-tile:hover { transform: none; } }
+  /* The lead tile carries an amber edge-glow so it reads as the real product. */
+  .svc-tile--lead {
+    background:
+      radial-gradient(80% 120% at 0% 0%, oklch(80% 0.16 80 / 0.12) 0%, oklch(80% 0.16 80 / 0) 55%),
+      var(--color-surface-container);
+    border-color: oklch(80% 0.16 80 / 0.3);
+  }
+  .svc-tile__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.6rem; height: 2.6rem; flex: none;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-container);
+    color: var(--color-primary);
+  }
+  .svc-tile__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.0;
+    font-size: 1.2rem;
+    color: var(--color-on-surface);
+  }
+  .svc-tile--lead .svc-tile__title { font-size: clamp(1.5rem, 3vw, 2rem); }
+  .svc-tile__body { color: var(--color-on-surface-variant); font-size: 0.95rem; line-height: 1.5; }
 
   /* Small uppercase chip/tag. */
   .chip {

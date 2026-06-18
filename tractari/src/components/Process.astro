@@ -1,0 +1,40 @@
+---
+// STOP 2 — Cum funcționează. Three steps, the whole interaction. Reuses the
+// `.timeline` component styles (vertical on mobile, horizontal road on lg+).
+// Keeps the promise honest: one call, then we drive.
+const steps = [
+  {
+    title: "Suni",
+    body: "Un singur apel, la orice oră. Ne spui unde ești și ce mașină ai.",
+  },
+  {
+    title: "Pornim spre tine",
+    body: "Confirmăm prețul pe loc și plecăm imediat cu platforma către locația ta.",
+  },
+  {
+    title: "Te ducem în siguranță",
+    body: "Încărcăm, ancorăm și transportăm mașina exact acolo unde ai nevoie.",
+  },
+];
+---
+<section id="cum-functioneaza" class="stop section relative bg-[var(--color-surface-container-low)]">
+  <span class="stop__marker" aria-hidden="true"></span>
+  <div class="container-page relative z-[2]">
+    <div class="reveal max-w-2xl">
+      <span class="stop-label">Cum funcționează</span>
+      <h2 class="heading-lg mt-4">
+        Un apel, <span class="glow-word">și suntem pe drum.</span>
+      </h2>
+    </div>
+
+    <ol class="timeline mt-10 reveal" style="--tl-dir:180deg;">
+      {steps.map((s, i) => (
+        <li class="timeline__step">
+          <span class="timeline__node" aria-hidden="true">{i + 1}</span>
+          <h3 class="heading-md text-[var(--color-on-surface)]">{s.title}</h3>
+          <p class="mt-2 text-[var(--color-on-surface-variant)]">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

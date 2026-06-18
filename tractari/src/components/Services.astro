@@ -1,0 +1,64 @@
+---
+import PhoneIcon from "./PhoneIcon.astro";
+import { primaryPhone, telLink } from "../content/site";
+
+// STOP 1 — Servicii. What we actually do. The one job (tractări pe platformă)
+// is the LEAD tile, wide and amber-edged; the rest are supporting capabilities.
+// Asymmetric on purpose — not an equal-box icon grid (the RO-template reflex).
+const lead = {
+  title: "Tractări pe platformă",
+  body: "Platformă omologată pentru orice autoturism — defect, accidentat sau fără roți. Ridicăm și transportăm fără să atingem asfaltul.",
+};
+const tiles = [
+  { title: "Intervenții rapide", body: "Pornim din Târgu-Jiu spre tine în câteva minute, ziua sau noaptea." },
+  { title: "Asistență la fața locului", body: "Pană, baterie descărcată, ai rămas fără combustibil — uneori te punem pe drum pe loc." },
+  { title: "Transport în siguranță", body: "Ancorare corectă, mașina ajunge la service exact cum a plecat." },
+  { title: "Prețuri transparente", body: "Îți spunem costul la telefon, înainte să pornim. Fără surprize." },
+];
+---
+<section id="servicii" class="stop section relative">
+  <span class="stop__marker" aria-hidden="true"></span>
+  <div class="container-page relative z-[2]">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="reveal max-w-2xl">
+        <span class="stop-label">Ce facem</span>
+        <h2 class="heading-lg mt-4">
+          Un singur lucru, <span class="glow-word">făcut bine.</span>
+        </h2>
+        <p class="mt-5 max-w-md text-lg text-[var(--color-on-surface-variant)]">
+          Tractări auto pe platformă, non-stop. Restul sunt lucrurile care fac
+          intervenția rapidă și fără bătăi de cap.
+        </p>
+      </div>
+      <a href={telLink(primaryPhone.e164)} class="btn btn-call shrink-0 reveal">
+        <PhoneIcon class="w-5 h-5" />
+        <span class="tnum">{primaryPhone.display}</span>
+      </a>
+    </div>
+
+    <div class="svc-grid mt-10 reveal">
+      <article class="svc-tile svc-tile--lead svc-grid__lead">
+        <span class="svc-tile__icon" aria-hidden="true">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7h11v8H3z" /><path d="M14 10h4l3 3v2h-7z" />
+            <circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" />
+          </svg>
+        </span>
+        <h3 class="svc-tile__title">{lead.title}</h3>
+        <p class="svc-tile__body max-w-md">{lead.body}</p>
+      </article>
+
+      {tiles.map((t) => (
+        <article class="svc-tile">
+          <span class="svc-tile__icon" aria-hidden="true">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+            </svg>
+          </span>
+          <h3 class="svc-tile__title">{t.title}</h3>
+          <p class="svc-tile__body">{t.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

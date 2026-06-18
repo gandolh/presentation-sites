@@ -57,18 +57,31 @@ jitter. Hero title ceiling ≤ 6rem.
 
 - Asphalt-dark sections; one quiet lighter band (Coverage). Radius is hard /
   industrial (`--radius` ~0.3rem).
-- **Split hero**: copy left, the 3D scene in a framed `.hero-stage` panel right.
-  Film-title composition, not a centered stack.
+- **The road spine (`.road` / `.road__line` / `.stop`)** — the one structural
+  move made literal. Below the hero, a single dashed, two-tone (amber→orange)
+  lane line runs down the page in a left gutter, with a travelling amber glow
+  (off under reduced motion). Every section is a `.stop` pinned to it by a
+  glowing `.stop__marker` node; Contact gets the larger safety-orange
+  `--end` destination node. The "stops on one drive" idea is now the page's
+  actual backbone, not just prose in the docs.
+- **Full-bleed cinematic hero**: the 3D scene fills the entire opening viewport
+  as the background plate; copy is overlaid lower-left (film-title framing) over
+  a bottom-left legibility scrim + edge vignette (`.hero-scrim`). No boxed panel.
 - **Sticky demo banner** fixed at the very top; the fixed nav sits directly
   beneath it (offset by `--banner-h`). The phone is load-bearing: a `btn-call`
   in the nav (desktop) and a persistent full-width `.call-dock` at the bottom
   (mobile).
+- **Servicii** (`.svc-grid`): asymmetric capability tiles — the real job
+  (tractări pe platformă) is the wide amber-edged `--lead` tile, the rest
+  support it. Not an equal-box icon grid.
+- **Cum funcționează**: the 3-step `.timeline` (vertical on mobile, a horizontal
+  road on lg+). One call → we drive → safe transport.
 - **Coverage**: asymmetric copy-left / animated-SVG-map-right (the 5 Oltenia
   counties radiating from the Târgu-Jiu hub). Pure SVG + CSS, works without JS.
 - **Contact**: the destination. The primary owner number dominates (large,
   safety-orange); the other two sit beneath, asymmetric — not a 3-card grid.
-- A single quiet `.stop-label` (small amber tracked label) opens Coverage and
-  Contact. One deliberate cadence, not an eyebrow on every section.
+- A single quiet `.stop-label` (small amber tracked label) opens each stop.
+  One deliberate cadence, not an eyebrow on every section.
 
 ## The 3D hero scene (`src/components/hero/`)
 
