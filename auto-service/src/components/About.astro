@@ -24,12 +24,12 @@ const { bare = false } = Astro.props;
       {
         !bare && (
           <>
-            <span class="m-stripe" aria-hidden="true" />
-            <h2 class="heading-lg mt-4">O familie, o pasiune: BMW</h2>
+            <h2 class="heading-lg">O familie, o pasiune: BMW</h2>
+            <span class="m-stripe mt-5" aria-hidden="true" />
           </>
         )
       }
-      <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed text-[var(--color-on-surface-variant)]">
+      <div class:list={["space-y-4 text-[1.02rem] leading-relaxed text-[var(--color-on-surface-variant)]", bare ? "mt-0" : "mt-7"]}>
         <p>
           {site.name} e un atelier mic, de familie, din {site.city}. Suntem
           câțiva oameni care reparăm BMW-uri de ani buni, pentru că asta ne place
@@ -60,16 +60,28 @@ const { bare = false } = Astro.props;
     </div>
 
     <div class="reveal order-1 lg:order-2">
-      <div class="relative">
+      <figure class="about-photo relative">
         <img
           src={portrait}
           alt="Motor BMW M deschis în atelierul BavAuto Gorj"
-          class="w-full rounded-xl border border-[var(--color-outline-variant)] object-cover aspect-[4/3]"
+          class="w-full rounded-xl object-cover aspect-[4/3]"
           loading="lazy"
           decoding="async"
         />
         <span class="m-stripe m-stripe--full absolute bottom-0 left-0 rounded-b-xl" aria-hidden="true"></span>
-      </div>
+      </figure>
     </div>
   </div>
+
+  <style>
+    /* The image reads as a lit panel on the dark floor: a hairline frame plus a
+       soft drop so it sits above the graphite, not flush with it. */
+    .about-photo {
+      border-radius: var(--radius-xl);
+      box-shadow:
+        0 0 0 1px var(--color-outline-variant),
+        0 24px 60px -28px oklch(8% 0.02 257 / 0.9);
+    }
+    .about-photo img { display: block; }
+  </style>
 </section>

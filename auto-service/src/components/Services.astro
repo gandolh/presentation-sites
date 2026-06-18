@@ -24,43 +24,112 @@ const icons: Record<string, string> = {
 };
 ---
 
-<section id="servicii" class="section bg-[var(--color-surface)]">
+<!-- Services = a spec sheet bolted to the pit wall. The default page floor; the
+     menu itself is a single bordered panel whose rows are split by hairlines,
+     not nine identical glowing cards. -->
+<section id="servicii" class="section bg-[var(--color-background)]">
   <div class="container-page">
     {
       !bare && (
-        <div class="reveal max-w-2xl">
-          <span class="m-stripe" aria-hidden="true" />
-          <h2 class="heading-lg mt-4">Ce facem pe BMW</h2>
-          <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
-            De la revizia de rutină la lucrările pe care nu le face oricine. Dacă
-            nu găsești aici ce ai nevoie, sună-ne, probabil o rezolvăm.
-          </p>
+        <div class="reveal grid items-start gap-x-10 gap-y-5 lg:grid-cols-[auto_minmax(0,1fr)]">
+          <span class="m-stripe--v hidden lg:block" aria-hidden="true" />
+          <div class="max-w-2xl">
+            <span class="m-stripe lg:hidden" aria-hidden="true" />
+            <h2 class="heading-lg mt-4 lg:mt-0">Ce facem pe BMW</h2>
+            <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
+              De la revizia de rutină la lucrările pe care nu le face oricine. Dacă
+              nu găsești aici ce ai nevoie, sună-ne, probabil o rezolvăm.
+            </p>
+          </div>
         </div>
       )
     }
 
+    <!-- The menu sheet. One framed panel; each service is a row divided by a
+         hairline. Reads top-to-bottom like a printed service list, and on wider
+         viewports doubles into two columns so it never sprawls. -->
     <ul
       class:list={[
-        "grid gap-px bg-[var(--color-outline-variant)] sm:grid-cols-2 lg:grid-cols-3 rounded-xl overflow-hidden border border-[var(--color-outline-variant)]",
-        bare ? "mt-0" : "mt-10",
+        "services-sheet overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-lowest)] md:grid md:grid-cols-2",
+        bare ? "mt-0" : "mt-12",
       ]}
     >
       {
-        services.map((s) => (
-          <li class="reveal group bg-[var(--color-surface-container-lowest)] p-6 md:p-7 transition-colors hover:bg-[var(--color-primary-container)]">
-            <span class="inline-flex h-11 w-11 items-center justify-center rounded-md bg-[var(--color-primary-container)] text-[var(--color-primary)] transition-colors group-hover:bg-[var(--color-surface-container-lowest)]" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.id] ?? ""} />
+        services.map((s, i) => (
+          <li
+            class:list={[
+              "services-row reveal group relative flex items-start gap-4 px-5 py-5 transition-colors duration-200 hover:bg-[var(--color-surface-container)] sm:px-6 sm:py-6",
+              "border-b border-[var(--color-outline-variant)] last:border-b-0",
+              // On the 2-up grid, drop the bottom rule for the last row of each column.
+              i % 2 === 0 ? "md:border-r" : "",
+              i >= services.length - (services.length % 2 === 0 ? 2 : 1)
+                ? "md:border-b-0"
+                : "",
+            ]}
+          >
+            {/* Steel tile holding the line-art icon; the M-tab ticks blue on hover. */}
+            <span
+              class="services-tile mt-0.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-high)] text-[var(--color-primary-bright)]"
+              aria-hidden="true"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={icons[s.id] ?? ""}
+              />
             </span>
-            <h3 class="heading-md mt-4 !text-[1.2rem]">{s.title}</h3>
-            <p class="mt-0.5 text-sm font-semibold text-[var(--color-primary)]">{s.subtitle}</p>
-            <p class="mt-2.5 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">{s.description}</p>
+
+            <div class="min-w-0">
+              <h3 class="heading-md !text-[1.15rem] text-[var(--color-on-surface)]">
+                {s.title}
+              </h3>
+              <p class="services-label mt-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--color-primary-bright)]">
+                {s.subtitle}
+              </p>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">
+                {s.description}
+              </p>
+            </div>
           </li>
         ))
       }
     </ul>
 
-    <p class="reveal mt-8 text-[var(--color-on-surface-variant)]">
-      Nu ești sigur ce are mașina? <a href={telLink()} class="font-semibold text-[var(--color-primary)] underline underline-offset-2 hover:text-[var(--color-primary-hover)]">Sună-ne</a> și îți spunem din vorbă, fără obligații.
+    <p class="reveal mt-8 flex flex-wrap items-baseline gap-x-2 text-[var(--color-on-surface-variant)]">
+      <span>Nu găsești aici ce ai nevoie?</span>
+      <a
+        href={telLink()}
+        class="font-semibold text-[var(--color-primary-bright)] underline decoration-[var(--color-outline)] underline-offset-4 transition-colors hover:text-[var(--color-on-surface)] hover:decoration-[var(--color-primary-bright)]"
+        >Sună-ne</a
+      >
+      <span>și îți spunem din vorbă, fără obligații.</span>
     </p>
   </div>
+
+  <style>
+    /* The icon tile lights up like a lit indicator on hover — steel to blue. */
+    .services-tile {
+      transition:
+        border-color 200ms var(--ease-out),
+        background-color 200ms var(--ease-out),
+        box-shadow 200ms var(--ease-out);
+    }
+    .services-row:hover .services-tile {
+      border-color: var(--color-primary-bright);
+      box-shadow: 0 0 0 1px var(--color-primary-bright),
+        0 0 16px -6px oklch(78% 0.12 244 / 0.6);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .services-tile {
+        transition: none;
+      }
+    }
+  </style>
 </section>

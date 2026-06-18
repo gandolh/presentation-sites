@@ -30,14 +30,17 @@ export default function MapConsent({ lat, lng, label }: Props) {
   }
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 bg-[var(--color-surface-container)] p-6 text-center">
+    // This placeholder sits inside the bright "service bay" (Contact). Surfaces
+    // and ink are the LIGHT-panel inversion set so everything reads AA-safe on
+    // the slab; the consent flow itself is unchanged.
+    <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 bg-[var(--color-inverse-surface-2)] p-6 text-center">
       {/* faux map grid, pure CSS — zero external requests */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0 opacity-70"
         style={{
           backgroundImage:
-            "linear-gradient(var(--color-outline-variant) 1px, transparent 1px), linear-gradient(90deg, var(--color-outline-variant) 1px, transparent 1px)",
+            "linear-gradient(oklch(0% 0 0 / 0.08) 1px, transparent 1px), linear-gradient(90deg, oklch(0% 0 0 / 0.08) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
@@ -46,7 +49,7 @@ export default function MapConsent({ lat, lng, label }: Props) {
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
           <circle cx="12" cy="10" r="3" />
         </svg>
-        <p className="max-w-xs text-sm text-[var(--color-on-surface-variant)]">
+        <p className="max-w-xs text-sm text-[var(--color-inverse-on-surface-variant)]">
           Harta Google nu se încarcă automat, ca să-ți protejăm
           confidențialitatea. Apasă mai jos pentru a o încărca.
         </p>
@@ -54,7 +57,7 @@ export default function MapConsent({ lat, lng, label }: Props) {
           <button type="button" onClick={() => setLoaded(true)} className="btn btn-primary">
             Încarcă harta
           </button>
-          <a href={directionsHref} target="_blank" rel="noopener" className="btn btn-outline">
+          <a href={directionsHref} target="_blank" rel="noopener" className="btn btn-outline-inverse">
             Deschide în Google Maps
           </a>
         </div>

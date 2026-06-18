@@ -25,13 +25,16 @@ const items = [
 ];
 ---
 
-<section class="border-b border-[var(--color-outline-variant)] bg-[var(--color-surface-container-lowest)]">
+{/* A reading on the instrument cluster — sits directly on the dark floor as a
+    thin band, framed by top/bottom hairlines so it reads as a strip wired into
+    the hero above it (no panel fill; the next section lifts off this floor). */}
+<section class="border-y border-[var(--color-outline-variant)] bg-[var(--color-background)]">
   <div class="container-page">
-    <ul class="grid grid-cols-2 lg:grid-cols-4 divide-y divide-[var(--color-outline-variant)] lg:divide-y-0 lg:divide-x">
+    <ul class="grid grid-cols-2 lg:grid-cols-4 divide-y divide-[var(--color-outline-variant)] lg:divide-y-0 lg:divide-x lg:divide-[var(--color-outline-variant)]">
       {
         items.map((it) => (
-          <li class="flex items-start gap-3 py-5 lg:py-7 lg:px-7 first:lg:pl-0 last:lg:pr-0">
-            <span class="mt-0.5 shrink-0 text-[var(--color-primary)]" aria-hidden="true">
+          <li class="trust-cell flex items-start gap-3 py-5 lg:py-7 lg:px-7 first:lg:pl-0 last:lg:pr-0">
+            <span class="trust-icon mt-0.5 shrink-0 text-[var(--color-primary-bright)]" aria-hidden="true">
               {it.icon === "bmw" && (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4M12 12l-6.4 6.4"/></svg>
               )}
@@ -54,4 +57,12 @@ const items = [
       }
     </ul>
   </div>
+
+  <style>
+    /* The blue icon reads as a lit indicator on the dark floor; a faint glow
+       wires it into the same worklamp language as the hero. */
+    .trust-icon {
+      filter: drop-shadow(0 0 6px oklch(78% 0.12 244 / 0.28));
+    }
+  </style>
 </section>

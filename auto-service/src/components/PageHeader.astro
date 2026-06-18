@@ -11,18 +11,18 @@ interface Props {
 const { eyebrow, title, lead } = Astro.props;
 ---
 
-<section class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
+<section class="bg-[var(--color-background)] text-[var(--color-on-surface)]">
   <div class="container-page pt-12 pb-12 md:pt-16 md:pb-16">
     <div class="reveal flex items-center gap-3">
       <span class="m-stripe" aria-hidden="true"></span>
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)]">{eyebrow}</span>
+      <span class="kicker">{eyebrow}</span>
     </div>
-    <h1 class="reveal heading-xl mt-4 !text-[clamp(2rem,5vw,3.25rem)] text-[var(--color-inverse-on-surface)]">
+    <h1 class="reveal heading-xl mt-4 !text-[clamp(2rem,5vw,3.25rem)] text-[var(--color-on-surface)]">
       {title}
     </h1>
     {
       lead && (
-        <p class="reveal mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-inverse-on-surface-variant)]">
+        <p class="reveal mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-on-surface-variant)]">
           {lead}
         </p>
       )

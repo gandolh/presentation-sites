@@ -1,101 +1,110 @@
 @import "tailwindcss";
 
 /*
-  BavAuto Gorj — design tokens.
+  BavAuto Gorj — design tokens. REBRAND: "Pit Wall / Garage Floor".
 
-  Strategy: COMMITTED. One saturated brand blue carries the hero + every primary
-  CTA; a clean daylit-workshop light base (true off-whites, graphite ink) keeps
-  it from reading as a cold corporate dealership. The BMW "M" motorsport
-  tri-color (light blue → indigo → red) is a PRECISE signature accent — a thin
-  stripe on dividers, the wordmark tick, CTA edges — never a fill, never a logo.
+  Strategy: COMMITTED DARK. The page lives on a deep graphite-steel base — the
+  workshop at night with the lift lights on, not a corporate showroom in
+  daylight. One electric BavAuto blue carries every primary CTA and link; the
+  BMW "M" motorsport tri-color (light blue -> indigo -> red) is no longer kept
+  under glass — the red especially carries real enthusiast energy as a single-
+  element accent. Light surfaces ("service bay" panels) are deliberate
+  inversions, not the default.
 
   This is an INDEPENDENT specialist: enthusiast colour language, no BMW roundel.
 
-  Colours authored in OKLCH; hex fallbacks kept alongside in comments where it
-  helps. Token names mirror the sibling `saloon` project (Material-ish roles) so
-  components read the same way.
+  Colours authored in OKLCH. Token names keep their Material-ish roles so the
+  components read the same way; the VALUES are what the rebrand changes — the
+  former "inverse" (dark) surfaces are now the page default, and a `inverse`
+  set now carries the light-panel ("service bay") inversions.
 */
 
 @theme {
-  /* ---- Surfaces (clean, daylit workshop) ---------------------------------
-     A true near-white with the faintest cool tint toward the brand blue, so
-     white cards lift off it. Not warm/cream (that's the beauty register). */
-  --color-background: oklch(98.4% 0.004 250);        /* page bg, ~#f7f8fa */
-  --color-surface: oklch(98.4% 0.004 250);
-  --color-surface-container-lowest: oklch(100% 0 0); /* pure white cards */
-  --color-surface-container-low: oklch(97% 0.006 250);
-  --color-surface-container: oklch(95.3% 0.008 250);
-  --color-surface-container-high: oklch(93% 0.01 250);
-  --color-surface-container-highest: oklch(90.5% 0.012 250);
+  /* ---- Surfaces (the dark garage floor) ----------------------------------
+     A deep graphite-steel carrying the brand-blue hue. Panels step UP in
+     lightness (not down) to lift off the floor; the ramp does the shadow work. */
+  --color-background: oklch(20% 0.022 256);          /* page floor, ~#10151d */
+  --color-surface: oklch(20% 0.022 256);
+  --color-surface-container-lowest: oklch(23.5% 0.026 256); /* default panel */
+  --color-surface-container-low: oklch(25.5% 0.028 256);
+  --color-surface-container: oklch(28% 0.03 257);
+  --color-surface-container-high: oklch(31% 0.032 257);
+  --color-surface-container-highest: oklch(34.5% 0.034 258);
 
-  /* ---- Ink ----------------------------------------------------------------
-     Graphite-blue near-black for text (carries the brand hue without going
-     pure-black-cold). Body clears AA comfortably on every surface above. */
-  --color-on-surface: oklch(24% 0.03 255);           /* ~#16202e, body/heads */
-  --color-on-surface-variant: oklch(43% 0.025 255);  /* ~#4a586a, secondary */
-  --color-outline: oklch(62% 0.02 255);
-  --color-outline-variant: oklch(89% 0.012 255);     /* hairlines */
+  /* ---- Ink (light, on the dark floor) ------------------------------------
+     Near-white carrying the faintest cool tint. Body clears AA on every
+     surface above (white-ish on the floor ~ 13:1). */
+  --color-on-surface: oklch(96% 0.006 250);          /* ~#eef1f5 body/heads */
+  --color-on-surface-variant: oklch(78% 0.014 255);  /* ~#aeb7c4 secondary */
+  --color-outline: oklch(55% 0.02 256);
+  --color-outline-variant: oklch(40% 0.022 256);     /* hairlines on dark */
 
-  /* ---- Inverse (dark sections: hero, footer) ------------------------------ */
-  --color-inverse-surface: oklch(24% 0.035 257);     /* graphite navy ~#141d2b */
-  --color-inverse-surface-2: oklch(28% 0.04 257);    /* slightly lifted panel */
-  --color-inverse-on-surface: oklch(96% 0.006 250);  /* near-white on dark */
-  --color-inverse-on-surface-variant: oklch(78% 0.015 255);
+  /* ---- Inverse = the light "service bay" panel ---------------------------
+     Used deliberately for one or two bright panels (a quote/contact slab, a
+     spec sheet). Graphite ink reverses onto it. NOT the default surface. */
+  --color-inverse-surface: oklch(97% 0.004 250);     /* bright bay ~#f6f7f9 */
+  --color-inverse-surface-2: oklch(100% 0 0);        /* pure-white card on bay */
+  --color-inverse-on-surface: oklch(23% 0.03 255);   /* graphite ink ~#15202e */
+  --color-inverse-on-surface-variant: oklch(43% 0.025 255);
 
   /* ---- Primary: BavAuto / BMW-enthusiast blue ----------------------------
-     The committed brand colour. Deep enough that WHITE text on it clears AA
-     (white on the base ~5.8:1). Hover deepens. */
-  --color-primary: oklch(52% 0.16 252);              /* ~#1f5fd0 */
-  --color-primary-hover: oklch(46% 0.155 252);
+     Electric blue, bright enough to read as a lit indicator on the dark floor
+     yet deep enough that WHITE label text on the fill clears AA. */
+  --color-primary: oklch(58% 0.17 250);              /* ~#2f74e0 CTA fill */
+  --color-primary-hover: oklch(64% 0.16 248);        /* brightens up on hover */
   --color-on-primary: oklch(99% 0 0);
-  --color-primary-container: oklch(93% 0.04 250);    /* tint for chips/panels */
-  --color-on-primary-container: oklch(38% 0.12 252);
-  /* Lighter blue for accents/links ON DARK surfaces (AA on inverse-surface). */
-  --color-primary-bright: oklch(72% 0.13 245);       /* ~#5aa0ef */
+  --color-primary-container: oklch(30% 0.07 252);    /* dim blue panel/chip */
+  --color-on-primary-container: oklch(85% 0.08 250);
+  /* The link/accent blue used as TEXT on the dark floor (must clear AA on it). */
+  --color-primary-bright: oklch(78% 0.12 244);       /* ~#7db4f2 links on dark */
 
-  /* ---- M motorsport tri-color (signature accent, used precisely) ---------
-     The canonical M stripe order: light blue → dark indigo → red. */
-  --color-m-blue: oklch(62% 0.16 245);               /* ~#2e9ee3 light blue */
-  --color-m-indigo: oklch(36% 0.13 285);             /* ~#3a2d7a indigo/violet */
-  --color-m-red: oklch(55% 0.21 27);                 /* ~#e2231a racing red */
+  /* ---- M motorsport tri-color (signature accent, now energised) ----------
+     Canonical M stripe order: light blue -> dark indigo -> red. */
+  --color-m-blue: oklch(68% 0.15 242);               /* light blue */
+  --color-m-indigo: oklch(46% 0.16 285);             /* indigo/violet (lifted for dark) */
+  --color-m-red: oklch(60% 0.22 27);                 /* racing red, AA on dark */
 
   /* ---- Status ------------------------------------------------------------- */
-  --color-success: oklch(58% 0.13 150);              /* "deschis acum" dot */
-  --color-error: oklch(55% 0.2 27);
+  --color-success: oklch(72% 0.16 150);              /* "deschis acum" dot */
+  --color-error: oklch(64% 0.22 27);
   --color-on-error: oklch(99% 0 0);
 
-  /* ---- WhatsApp (secondary contact CTA) ----------------------------------
-     Deepened from #25D366 so white label clears AA. */
-  --color-whatsapp: oklch(57% 0.14 153);             /* ~#1a9e52 */
-  --color-whatsapp-hover: oklch(51% 0.13 153);
+  /* ---- WhatsApp (secondary contact CTA) ----------------------------------- */
+  --color-whatsapp: oklch(62% 0.15 153);
+  --color-whatsapp-hover: oklch(68% 0.14 153);
 
-  /* ---- Typography --------------------------------------------------------- */
+  /* ---- Typography (committed brand families — preserved) ------------------ */
   --font-display: "Archivo Variable", "Arial Narrow", system-ui, sans-serif;
   --font-body: "Hanken Grotesk Variable", system-ui, sans-serif;
 
-  /* ---- Radius (mechanical, restrained — not pill-soft like the salon) ----- */
-  --radius-sm: 0.25rem;
-  --radius: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* ---- Radius (mechanical, even tighter than before — a machined control) - */
+  --radius-sm: 0.1875rem;
+  --radius: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
   --radius-full: 9999px;
 
   /* ---- Container ---------------------------------------------------------- */
-  --container-max-width: 1180px;
+  --container-max-width: 1200px;
 
   /* ---- Z-index scale ------------------------------------------------------ */
   --z-sticky: 100;
   --z-nav: 200;
   --z-mobile-bar: 250;
   --z-overlay: 300;
+
+  /* ---- Motion (shared easing — exponential ease-out, no bounce) ----------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    /* Anchor jumps land below the fixed nav. */
     scroll-padding-top: 5rem;
+    /* The garage floor extends past any short page so the dark never clips. */
+    background-color: var(--color-background);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -109,7 +118,8 @@
     color: var(--color-on-surface);
     background-color: var(--color-background);
     font-size: 16px;
-    line-height: 1.55;
+    /* Light type on a dark floor reads lighter; give it more air. */
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -117,8 +127,8 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
@@ -127,14 +137,27 @@
   }
 
   ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+    background-color: var(--color-m-red);
+    color: oklch(99% 0 0);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-primary-bright);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
+  }
+
+  /* Subtle dot-grain texture on the floor so the dark base reads as a material,
+     not a flat fill. Cheap, GPU-free, reduced-motion safe, sits behind content. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.022;
+    background-image: radial-gradient(oklch(100% 0 0) 0.5px, transparent 0.5px);
+    background-size: 3px 3px;
   }
 }
 
@@ -144,6 +167,8 @@
     max-width: var(--container-max-width);
     margin-inline: auto;
     padding-inline: 1.25rem;
+    position: relative;
+    z-index: 1;
   }
 
   @media (min-width: 768px) {
@@ -153,12 +178,11 @@
   }
 
   .section {
-    padding-block: clamp(3rem, 7vw, 6.5rem);
+    padding-block: clamp(3.5rem, 8vw, 7rem);
   }
 
   /* ---- The M tri-color stripe (the signature) ----------------------------
-     A thin, precise three-band bar. Used as a section divider, under the
-     wordmark, and as an edge on the hero. NOT a fill, NOT a logo. */
+     A thin, precise three-band bar. Section divider, wordmark tick, hero edge. */
   .m-stripe {
     display: block;
     height: 4px;
@@ -173,21 +197,36 @@
   }
   .m-stripe--full {
     width: 100%;
+    height: 3px;
     border-radius: 0;
   }
+  /* A vertical M edge — left rule on the hero / pit-wall numbers. */
+  .m-stripe--v {
+    width: 4px;
+    height: auto;
+    align-self: stretch;
+    min-height: 2.5rem;
+    border-radius: var(--radius-full);
+    background: linear-gradient(
+      180deg,
+      var(--color-m-blue) 0 33.33%,
+      var(--color-m-indigo) 33.33% 66.66%,
+      var(--color-m-red) 66.66% 100%
+    );
+  }
 
-  /* Eyebrow used SPARINGLY (the brand register warns against one-per-section).
-     Reserved for the hero + one or two key sections, paired with the stripe. */
-  .eyebrow {
+  /* Kicker — the ONE deliberate brand label. Reserved for the hero + page
+     headers, ALWAYS paired with the stripe. Never one-per-section. */
+  .kicker {
     font-family: var(--font-body);
     font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-on-surface-variant);
   }
 
-  /* ---- Buttons (mechanical: small radius, firm, confident) ---------------- */
+  /* ---- Buttons (mechanical: tight radius, firm, confident) ---------------- */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -204,85 +243,93 @@
     cursor: pointer;
     border: 1.5px solid transparent;
     transition:
-      background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+      background-color 200ms var(--ease-out-quart),
+      border-color 200ms var(--ease-out-quart),
+      color 200ms var(--ease-out-quart),
+      box-shadow 200ms var(--ease-out-quart),
+      transform 120ms var(--ease-out-quart);
   }
   .btn:active { transform: translateY(1px); }
 
-  /* PRIMARY = the phone call. The single most important action on the site. */
+  /* PRIMARY = the phone call. The single brightest element on the dark floor:
+     an electric-blue control that glows like a lit button on a dash. */
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 10px 28px -14px oklch(52% 0.16 252 / 0.7);
+    box-shadow: 0 8px 26px -12px oklch(58% 0.17 250 / 0.85);
   }
-  .btn-primary:hover { background-color: var(--color-primary-hover); }
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: 0 0 22px -2px oklch(64% 0.16 248 / 0.45), 0 10px 30px -12px oklch(58% 0.17 250 / 0.9);
+  }
 
   .btn-whatsapp {
     background-color: var(--color-whatsapp);
-    color: #fff;
+    color: oklch(15% 0.03 153);
   }
-  .btn-whatsapp:hover { background-color: var(--color-whatsapp-hover); }
+  .btn-whatsapp:hover {
+    background-color: var(--color-whatsapp-hover);
+    box-shadow: 0 0 20px -4px oklch(62% 0.15 153 / 0.4);
+  }
 
-  /* Outline secondary — adapts to light or dark context via currentColor. */
+  /* Outline secondary — sits on the dark floor by default (light border/text). */
   .btn-outline {
     background-color: transparent;
     color: var(--color-on-surface);
-    border-color: var(--color-outline);
+    border-color: oklch(100% 0 0 / 0.28);
   }
   .btn-outline:hover {
-    border-color: var(--color-on-surface);
-    background-color: var(--color-surface-container);
+    border-color: oklch(100% 0 0 / 0.6);
+    background-color: oklch(100% 0 0 / 0.06);
   }
-  /* Outline variant for placement on dark/hero surfaces. */
+  /* Inverse outline — for placement on the LIGHT bay panels. */
   .btn-outline-inverse {
     background-color: transparent;
     color: var(--color-inverse-on-surface);
-    border-color: oklch(100% 0 0 / 0.35);
+    border-color: oklch(0% 0 0 / 0.2);
   }
   .btn-outline-inverse:hover {
     border-color: var(--color-inverse-on-surface);
-    background-color: oklch(100% 0 0 / 0.08);
+    background-color: oklch(0% 0 0 / 0.05);
   }
 
   .btn-lg { padding: 1.05rem 2rem; font-size: 1.02rem; }
 
-  /* ---- Headings ----------------------------------------------------------- */
+  /* ---- Headings (pushed harder: more contrast, machined confidence) ------- */
   .heading-xl {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2.4rem, 6vw, 4.25rem);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
     text-wrap: balance;
   }
   .heading-lg {
     font-family: var(--font-display);
-    font-weight: 750;
-    font-size: clamp(1.9rem, 4vw, 2.9rem);
-    line-height: 1.06;
-    letter-spacing: -0.025em;
+    font-weight: 800;
+    font-size: clamp(2rem, 4.5vw, 3.1rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
   .heading-md {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(1.35rem, 2.6vw, 1.8rem);
-    line-height: 1.12;
-    letter-spacing: -0.015em;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 
   /* ---- Wordmark ----------------------------------------------------------- */
   .wordmark {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     line-height: 1;
     text-transform: none;
   }
 
-  /* ---- Card --------------------------------------------------------------- */
+  /* ---- Card (a steel panel lifting off the floor) ------------------------- */
   .card {
     background-color: var(--color-surface-container-lowest);
     border: 1px solid var(--color-outline-variant);
@@ -290,36 +337,35 @@
     padding: 1.75rem;
   }
 
-  /* ---- Inputs ------------------------------------------------------------- */
+  /* ---- Inputs (on dark floor by default) ---------------------------------- */
   .input {
     width: 100%;
     padding: 0.8rem 1rem;
     border-radius: var(--radius-md);
-    background-color: var(--color-surface-container-lowest);
+    background-color: var(--color-surface-container-low);
     border: 1.5px solid var(--color-outline-variant);
     font-family: var(--font-body);
     font-size: 1rem;
     color: var(--color-on-surface);
-    transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+    transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
   }
-  .input::placeholder { color: var(--color-on-surface-variant); opacity: 0.85; }
+  .input::placeholder { color: var(--color-on-surface-variant); opacity: 0.8; }
   .input:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px oklch(52% 0.16 252 / 0.15);
+    border-color: var(--color-primary-bright);
+    box-shadow: 0 0 0 3px oklch(78% 0.12 244 / 0.18);
   }
   textarea.input { border-radius: var(--radius-md); resize: vertical; min-height: 6.5rem; }
   select.input { appearance: none; }
 
-  /* ---- Scroll reveal (mirrors saloon: visible by default, JS opts into
-     hidden start; failsafe in Base.astro guarantees it never ships blank). -- */
+  /* ---- Scroll reveal (visible by default; JS opts into hidden start) ------ */
   .reveal { opacity: 1; transform: none; }
   .js-reveal .reveal {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
     transition:
-      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 720ms var(--ease-out),
+      transform 720ms var(--ease-out);
   }
   .js-reveal .reveal.is-visible { opacity: 1; transform: translateY(0); }
   .js-reveal .reveal.reveal-now { transition: none; }
@@ -335,17 +381,17 @@
 
   /* ---- Mobile menu overlay (MobileMenu.tsx island) ------------------------ */
   .mobile-menu {
-    background-color: var(--color-inverse-surface);
+    background-color: oklch(17% 0.022 256);
     background-image: radial-gradient(
       120% 90% at 100% 0%,
-      oklch(52% 0.16 252 / 0.35) 0%,
-      oklch(52% 0.16 252 / 0) 60%
+      oklch(58% 0.17 250 / 0.3) 0%,
+      oklch(58% 0.17 250 / 0) 60%
     );
-    box-shadow: 0 8px 50px -12px oklch(20% 0.03 257 / 0.6);
-    animation: mobile-menu-in 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    box-shadow: 0 8px 50px -12px oklch(10% 0.03 257 / 0.7);
+    animation: mobile-menu-in 300ms var(--ease-out) both;
   }
   .mobile-menu__link {
-    animation: mobile-menu-link-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: mobile-menu-link-in 420ms var(--ease-out) both;
     animation-delay: calc(70ms + var(--i, 0) * 45ms);
   }
   @keyframes mobile-menu-in { from { opacity: 0; } to { opacity: 1; } }

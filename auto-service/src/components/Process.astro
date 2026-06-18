@@ -26,7 +26,11 @@ const steps = [
 ];
 ---
 
-<section id="proces" class="section bg-[var(--color-surface)]">
+<!-- Process = the pit-stop sequence. Lifted off the floor onto a surface panel
+     so it reads distinct from the Services sheet above. A single M tri-color
+     rail threads all five steps; each step is pinned by a big instrument-panel
+     numeral 01–05. -->
+<section id="proces" class="section bg-[var(--color-surface-container-lowest)]">
   <div class="container-page">
     <div class="reveal max-w-2xl">
       <span class="m-stripe" aria-hidden="true"></span>
@@ -37,23 +41,88 @@ const steps = [
       </p>
     </div>
 
-    <ol class="mt-12 grid gap-y-10 md:grid-cols-5 md:gap-x-6">
+    <!-- The timeline. The M rail runs through the row of numerals (horizontal on
+         desktop, vertical on mobile); numerals sit on top as machined markers. -->
+    <ol class="process-rail relative mt-14 grid gap-y-10 md:grid-cols-5 md:gap-x-6">
       {
         steps.map((s, i) => (
-          <li class="reveal relative">
-            <div class="flex items-center gap-3 md:block">
-              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-[var(--color-primary)] font-display text-lg font-extrabold text-[var(--color-on-primary)] tabular-nums">
-                {i + 1}
-              </span>
-              {i < steps.length - 1 && (
-                <span class="hidden md:block absolute top-[22px] left-12 right-[-12px] h-px bg-[var(--color-outline-variant)]" aria-hidden="true" />
-              )}
+          <li class="process-step reveal relative pl-[4.25rem] md:pl-0">
+            {/* The connecting M tri-color rail segment. */}
+            {i < steps.length - 1 && (
+              <span
+                class="process-connector absolute z-0 bg-[var(--color-outline-variant)] md:left-[calc(50%+1.65rem)] md:right-[-1.5rem] md:top-[1.65rem] md:h-[3px] md:w-auto"
+                aria-hidden="true"
+              />
+            )}
+
+            {/* Instrument-panel numeral: big tabular numerals in a steel marker. */}
+            <span
+              class="process-num absolute left-0 top-0 z-10 inline-flex h-[3.3rem] w-[3.3rem] items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-outline)] bg-[var(--color-surface-container-high)] font-display text-[1.5rem] font-extrabold leading-none tabular-nums text-[var(--color-on-surface)] md:relative md:h-[3.3rem] md:w-[3.3rem]"
+              aria-hidden="true"
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
+            <div class="md:mt-5">
+              <h3 class="heading-md !text-[1.1rem] md:!text-[1.15rem] text-[var(--color-on-surface)]">
+                {s.title}
+              </h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">
+                {s.body}
+              </p>
             </div>
-            <h3 class="heading-md mt-4 !text-[1.1rem] md:!text-[1.15rem]">{s.title}</h3>
-            <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">{s.body}</p>
           </li>
         ))
       }
     </ol>
   </div>
+
+  <style>
+    /* Mobile: a single vertical M rail down the left, behind the numerals. */
+    .process-connector {
+      left: calc(1.65rem - 1.5px);
+      top: 3.3rem;
+      width: 3px;
+      bottom: -2.5rem;
+      background: linear-gradient(
+        180deg,
+        var(--color-m-blue) 0%,
+        var(--color-m-indigo) 50%,
+        var(--color-m-red) 100%
+      );
+    }
+
+    @media (min-width: 768px) {
+      /* Desktop: horizontal M segment between adjacent numerals. */
+      .process-connector {
+        background: linear-gradient(
+          90deg,
+          var(--color-m-blue) 0%,
+          var(--color-m-indigo) 50%,
+          var(--color-m-red) 100%
+        );
+        bottom: auto;
+      }
+    }
+
+    /* The numeral marker glows blue when its step scrolls into view, like a
+       gauge lighting up in sequence. */
+    .process-num {
+      transition:
+        border-color 360ms var(--ease-out),
+        color 360ms var(--ease-out),
+        box-shadow 360ms var(--ease-out);
+    }
+    .process-step.is-visible .process-num,
+    .process-step:hover .process-num {
+      border-color: var(--color-primary-bright);
+      box-shadow: 0 0 18px -6px oklch(78% 0.12 244 / 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .process-num {
+        transition: none;
+      }
+    }
+  </style>
 </section>

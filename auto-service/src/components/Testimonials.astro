@@ -10,12 +10,12 @@ import { testimonials } from "../content/testimonials";
     <section id="recenzii" class="section bg-[var(--color-surface)]">
       <div class="container-page">
         <div class="reveal max-w-2xl">
-          <span class="m-stripe" aria-hidden="true" />
-          <h2 class="heading-lg mt-4">Ce spun clienții</h2>
+          <h2 class="heading-lg">Ce spun clienții</h2>
+          <span class="m-stripe mt-5" aria-hidden="true" />
         </div>
         <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t) => (
-            <li class="reveal card">
+            <li class="reveal card t-card">
               {/* Rating stars in M Racing Red — the sanctioned enthusiast accent
                   (see DESIGN.md › The M-Color Rule). Filled stars carry the red;
                   empty stars drop to a muted outline so the score reads at a
@@ -44,6 +44,24 @@ import { testimonials } from "../content/testimonials";
           ))}
         </ul>
       </div>
+
+      <style>
+        /* Lifted steel panels. A hairline brightens and the card rises a touch
+           on hover — the only motion, reduced-motion safe. */
+        .t-card {
+          transition:
+            transform 240ms var(--ease-out),
+            border-color 240ms var(--ease-out),
+            box-shadow 240ms var(--ease-out);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .t-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--color-outline);
+            box-shadow: 0 20px 44px -26px oklch(8% 0.02 257 / 0.9);
+          }
+        }
+      </style>
     </section>
   )
 }
