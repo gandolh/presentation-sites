@@ -74,6 +74,16 @@ export const projects: Project[] = [
     shotWidth: 1600,
     shotHeight: 1000,
   },
+  {
+    index: "06",
+    slug: "farm-valley",
+    name: "Farm Valley",
+    blurb: "Four AI farmers compete over 100 days — you watch, they play",
+    category: "games",
+    stack: ["typescript", "ecs", "canvas", "wasm", "websocket"],
+    shotWidth: 1600,
+    shotHeight: 1000,
+  },
 ];
 
 /** A named group of projects, rendered as one `ls ./<slug>` section. */
@@ -93,6 +103,11 @@ export const categories: Category[] = [
     slug: "presentation-sites",
     name: "presentation sites",
     blurb: "small business marketing sites",
+  },
+  {
+    slug: "games",
+    name: "games",
+    blurb: "simulations and toys built on a custom engine",
   },
 ];
 
