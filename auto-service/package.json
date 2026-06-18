@@ -12,10 +12,7 @@
     "build": "astro build",
     "preview": "PUBLIC_IMAGE_SOURCE=real astro preview",
     "preview:mock": "astro preview",
-    "astro": "astro",
-    "deploy:pre": "node deploy/deploy.ts pre-deploy",
-    "deploy:push": "node deploy/deploy.ts deploy",
-    "deploy:all": "node deploy/deploy.ts all"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "5.0.6",

@@ -33,4 +33,5 @@ To add or change a project, edit `src/content/projects.ts`.
 
 ## Deploy
 
-See [deploy/README.md](deploy/README.md). Sub-path `/showcase`, Caddy, static.
+Static `dist/` served by Caddy under the `/showcase` sub-path on the VPS. The
+build + upload tooling lives outside this repo.

@@ -42,19 +42,9 @@ Built with **Astro + React + Tailwind v4**. Pure static output, hostable on any 
 
 ## Deploy
 
-The build produces a fully static `dist/` directory. A zero-dependency Node +
-TypeScript deploy tool (`deploy/`) builds locally with the sub-path base baked
-in and `rsync`s `dist/` to a Hetzner VPS served by **Caddy** under the
-`/saloon` sub-path. There is no Node process on the server.
-
-```bash
-npm run deploy:pre     # provision server (first time / after Caddyfile change)
-npm run deploy:push    # build + upload (everyday release)
-npm run deploy:all     # both, in order
-```
-
-Server-specific config lives in the git-ignored `deploy/.env` (copy
-`deploy/.env.example`). See [deploy/README.md](deploy/README.md) for details.
+The build produces a fully static `dist/` directory, served by **Caddy** under
+the `/saloon` sub-path on a Hetzner VPS. There is no Node process on the server.
+The build + upload tooling lives outside this repo.
 
 ## Real personal/business data (kept out of Git)
 

@@ -162,10 +162,3 @@ vite.config.ts.timestamp-*
 
 # Astro
 .astro/
-
-# Node deploy tool: secrets live in deploy/.env (ignored via the dotenv rule
-# near the top). The shared Caddyfile lives at infrastructure/Caddyfile and is
-# server-specific (real host + site layout) → keep it out of the repo. The
-# committed infrastructure/Caddyfile.example is a generic, data-free template.
-infrastructure/Caddyfile
-!infrastructure/Caddyfile.example

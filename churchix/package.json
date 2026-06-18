@@ -21,9 +21,6 @@
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "format": "prettier --write .",
-    "deploy:pre": "node --env-file=.env scripts/deploy.ts pre-deploy",
-    "deploy:push": "node --env-file=.env scripts/deploy.ts deploy",
-    "deploy:all": "npm run deploy:pre && npm run deploy:push"
+    "format": "prettier --write ."
   }
 }

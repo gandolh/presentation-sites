@@ -6,9 +6,9 @@ project in its own top-level directory.
 ## Sites
 
 - **[saloon/](saloon/)** — Ana Saloon, a boutique nail salon in Târgu-Jiu
-  (Astro + React + Tailwind v4, static). Includes its own docs (`corpus/`),
-  the `deploy/` tool (Caddy, sub-path `/saloon`), and the `marketing/bots/`
-  automation service. See [saloon/README.md](saloon/README.md) and
+  (Astro + React + Tailwind v4, static). Includes its own docs (`corpus/`)
+  and the `marketing/bots/` automation service. Deployed at sub-path `/saloon`
+  . See [saloon/README.md](saloon/README.md) and
   [saloon/corpus/STATUS.md](saloon/corpus/STATUS.md) to get oriented.
 - **[auto-service/](auto-service/)** — BavAuto Gorj, a BMW-specialist auto
   service in Târgu-Jiu (Astro, static). Deploy sub-path `/auto-service`.
@@ -43,36 +43,24 @@ cd saloon && npm install && npm run dev
 npm run saloon:install
 npm run saloon:dev
 npm run saloon:build
-npm run saloon:deploy        # → saloon's deploy:push
 npm run saloon -- preview    # run any of saloon's own scripts
 ```
 
-### Deploy CLI
+### Deploy
 
-`npm run deploy` is an interactive picker over all deployable sites. It
-auto-discovers any sibling project with a `deploy:push` script, then delegates
-to that site's deploy via the root passthrough.
-
-```bash
-npm run deploy                       # pick a project, then an action
-npm run deploy -- tractari           # project given, pick the action
-npm run deploy -- tractari deploy    # fully non-interactive
-npm run deploy -- --list             # list deployable projects
-npm run deploy -- tractari deploy --dry-run   # print the command, run nothing
-```
-
-Actions: `pre-deploy` (provision the server), `deploy` (build + upload), `all`.
+Deployment is not part of this repo. Each site builds to a static `dist/` and is
+served by **Caddy** under its own sub-path (e.g. `/saloon`) on the VPS; the
+build + upload tooling lives outside this repo.
 
 ## Adding a new site
 
 Keep each site self-contained so the repo can hold many without coupling:
 
 1. Create a sibling directory (e.g. `studio/`) with its own `package.json`,
-   `node_modules`, and build/deploy — mirror `saloon/`'s layout.
+   `node_modules`, and build — mirror `saloon/`'s layout.
 2. Add `<site>:*` passthrough scripts to the root `package.json`, following the
    `saloon:*` pattern (`npm --prefix <site> run <script>`).
 3. Add a `<site>: dev server` entry to `.vscode/launch.json` with
    `"cwd": "${workspaceFolder}/<site>"`.
 4. List it under **Sites** above, and prefix any of its repo-root-anchored
    `.gitignore` rules with `<site>/`.
-
