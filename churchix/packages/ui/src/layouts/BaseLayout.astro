@@ -1,0 +1,102 @@
+---
+import '../styles/tokens.css';
+import { ViewTransitions } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { withBase } from '../lib/base.ts';
+import type { SiteConfig } from '@churchix/schemas';
+
+interface Props {
+  site: SiteConfig;
+  title?: string;
+  description?: string;
+  path?: string;
+  /** Skip-to-content link text. Externalization point: defaults to RO (the
+   * chrome's base language); pass the localized string on non-RO pages. */
+  skipToContentLabel?: string;
+}
+
+const {
+  site,
+  title,
+  description,
+  path = '/',
+  skipToContentLabel = 'Sari la conținut',
+} = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const lang = site.defaultLocale ?? 'ro';
+const b = site.brand;
+
+// "Site in lucru" (work-in-progress) banner. Off by default; enable per build by
+// setting PUBLIC_SITE_WIP (e.g. PUBLIC_SITE_WIP=1 npm run build). Any non-empty,
+// non-"false"/"0" value turns it on. Shared across all churches via the layout.
+const wipFlag = import.meta.env.PUBLIC_SITE_WIP;
+const showWip = !!wipFlag && wipFlag !== 'false' && wipFlag !== '0';
+
+// Per-church brand tokens, emitted from content (no per-church code).
+// We emit ONLY the M3 SEEDS — the derived roles (containers, on-*, variants,
+// surface tints, outlines, …) recompute from these seeds via color-mix() in
+// tokens.css. Never emit the full palette per church (white-label discipline).
+// `b.secondary` is the canonical gold (was `b.accent`); the legacy `--brand-*`
+// aliases stay until tier-B components migrate to M3 utilities.
+const brandVars = [
+  // M3 seeds
+  `--primary:${b.primary}`,
+  `--secondary:${b.secondary}`,
+  b.surface && `--surface:${b.surface}`,
+  b.error && `--error:${b.error}`,
+  b.onPrimary && `--on-primary:${b.onPrimary}`,
+  // Typography / shape overrides
+  b.fontHeading && `--font-heading:${b.fontHeading}`,
+  b.fontBody && `--font-body:${b.fontBody}`,
+  b.radius && `--radius:${b.radius}`,
+  // Legacy aliases (back-compat for pre-M3 components/pages)
+  `--brand-primary:${b.primary}`,
+  `--brand-accent:${b.secondary}`,
+  b.surface && `--brand-surface:${b.surface}`,
+  b.onPrimary && `--brand-on-primary:${b.onPrimary}`,
+]
+  .filter(Boolean)
+  .join(';');
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    {b.favicon && <link rel="icon" href={withBase(b.favicon)} />}
+    {site.url && <link rel="canonical" href={new URL(path, site.url).href} />}
+    <ViewTransitions />
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    {b.ogImage && <meta property="og:image" content={b.ogImage} />}
+    <meta property="og:type" content="website" />
+    <style set:html={`:root{${brandVars}}`}></style>
+  </head>
+  <body>
+    {
+      showWip && (
+        <div
+          role="status"
+          class="bg-secondary px-gutter py-2 text-center font-label-md text-label-md uppercase text-on-secondary"
+        >
+          Site în lucru
+        </div>
+      )
+    }
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-gutter focus:top-md focus:z-[100] focus:rounded-full focus:bg-primary focus:px-6 focus:py-3 focus:font-label-md focus:text-label-md focus:uppercase focus:text-on-primary focus:no-underline focus:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+    >
+      {skipToContentLabel}
+    </a>
+    <Header site={site} path={path} transition:persist />
+    <main id="main" transition:animate="fade">
+      <slot />
+    </main>
+    <Footer site={site} transition:persist />
+  </body>
+</html>

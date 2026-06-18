@@ -1,0 +1,35 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import AnnouncementList from '@churchix/ui/components/AnnouncementList.astro';
+import EmptyState from '@churchix/ui/components/EmptyState.astro';
+import Icon from '@churchix/ui/components/Icon.astro';
+
+const site = (await getEntry('site', 'config'))!.data;
+const locale = `${site.defaultLocale ?? 'ro'}-RO`;
+const anunturi = (await getCollection('announcements')).map((e) => ({ slug: e.id, ...e.data }));
+---
+
+<BaseLayout site={site} title="Anunțuri" path="/anunturi">
+  <section class="cx-section">
+    <div class="cx-container">
+      <div class="flex items-center gap-sm mb-md">
+        <Icon name="campaign" size={28} class="text-primary" />
+        <h1 class="font-headline-lg text-headline-lg text-on-surface">Anunțuri</h1>
+      </div>
+
+      {
+        anunturi.length > 0 ? (
+          <AnnouncementList items={anunturi} locale={locale} />
+        ) : (
+          <EmptyState
+            as="h2"
+            icon="campaign"
+            title="Niciun anunț momentan"
+            message="Reveniți curând pentru noutățile parohiei."
+          />
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

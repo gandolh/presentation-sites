@@ -1,0 +1,192 @@
+---
+/**
+ * `<CampaignCard>` — fundraising campaign with a goal thermometer (Ecclesia Digitalis).
+ *
+ * Two layouts share one goal bar:
+ *  - `variant="card"` (default): compact, for campaign lists/grids.
+ *  - `variant="project"`: the donate-page featured treatment — optional image header,
+ *    "Proiect Special" badge, gold thermometer, full-width gold OUTLINE CTA.
+ *
+ * Money is always rendered with `Intl.NumberFormat` + the campaign's explicit currency
+ * (integer minor units → major units, no floats kept). The thermometer FILL is the gold
+ * `secondary` accent on a muted `surface-variant` track — decorative; progress is ALSO
+ * conveyed as text ("X%" + "Strâns … din …") and on `role="progressbar"` aria-value*,
+ * never color-only. The percentage text is burgundy `text-primary` (AA-safe), never gold
+ * on cream.
+ *
+ * Static-first: the bar reflects the last-known `raisedAmountMinor` at build time with NO
+ * real-time implication. Live totals are out of scope here (they belong to the optional
+ * per-church API as a gated island); this component never fetches.
+ *
+ * Status-aware CTA:
+ *  - `active`    → links `cardUrl` ("Contribuie" / "Susține Proiectul" for the project variant).
+ *  - `completed` → thank-you state ("Obiectiv atins — mulțumim!"), no CTA.
+ *  - `archived`  → no CTA, no thank-you (quietly historical).
+ *
+ * Re-skins entirely by token swap; no per-church values, no raw hex.
+ *
+ * @prop {Campaign} campaign  The campaign data (shape = `campaignSchema` inferred type:
+ *        { title, summary?, goalAmountMinor, raisedAmountMinor, currency, deadline?,
+ *          status, cardUrl?, cover?, order }).
+ * @prop {'card'|'project'} [variant='card']  Layout. `card` = list/grid; `project` =
+ *        donate-page featured (image header + outline CTA).
+ * @prop {string} [class]  Extra classes appended last (override-friendly).
+ *
+ * @example List/grid use
+ *   ---
+ *   import CampaignCard from '@churchix/ui/components/CampaignCard.astro';
+ *   ---
+ *   <CampaignCard campaign={c} />
+ *
+ * @example Donate-page featured project
+ *   <CampaignCard campaign={c} variant="project" />
+ */
+import type { campaignSchema } from '@churchix/schemas';
+import type { z } from 'zod';
+import Card from './Card.astro';
+import Badge from './Badge.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+
+type Campaign = z.infer<typeof campaignSchema>;
+
+interface Props {
+  campaign: Campaign;
+  variant?: 'card' | 'project';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { campaign, variant = 'card', class: className, ...rest } = Astro.props;
+
+// Money: integer minor units + EXPLICIT currency, always. No floats retained.
+const money = (minor: number) =>
+  new Intl.NumberFormat('ro-RO', {
+    style: 'currency',
+    currency: campaign.currency || 'RON',
+    maximumFractionDigits: 0,
+  }).format(minor / 100);
+
+// Last-known progress at build time (no real-time implication).
+const pct =
+  campaign.goalAmountMinor > 0
+    ? Math.min(100, Math.round((campaign.raisedAmountMinor / campaign.goalAmountMinor) * 100))
+    : 0;
+
+const deadlineFmt = campaign.deadline
+  ? new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' }).format(
+      campaign.deadline,
+    )
+  : null;
+
+const isProject = variant === 'project';
+const isActive = campaign.status === 'active';
+const isCompleted = campaign.status === 'completed';
+
+const ctaLabel = isProject ? 'Susține Proiectul' : 'Contribuie';
+const categoryLabel = isProject ? 'Proiect Special' : 'Campanie';
+
+// Project variant uses the featured gold bottom-border accent + edge-to-edge media header.
+---
+
+<Card
+  as="article"
+  featured={isProject}
+  radius="lg"
+  padding="none"
+  class:list={['cx-campaign-card flex flex-col', className]}
+  {...rest}
+>
+  {
+    isProject && campaign.cover && (
+      <img
+        src={campaign.cover}
+        alt={campaign.title}
+        class="h-48 w-full object-cover bg-surface-variant"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  {
+    isProject && !campaign.cover && (
+      <div
+        class="flex h-48 w-full flex-col items-center justify-center gap-sm bg-primary/5 text-on-surface-variant"
+        aria-hidden="true"
+      >
+        <Icon name="church" size={40} class="text-primary/30" />
+        <span class="font-label-md text-label-md text-on-surface-variant/60">Proiect parohial</span>
+      </div>
+    )
+  }
+
+  <div class="flex flex-1 flex-col gap-sm p-md">
+    <div>
+      <Badge tone={isProject ? 'secondary' : 'neutral'}>{categoryLabel}</Badge>
+    </div>
+
+    <h3 class="font-headline-md text-headline-md text-primary">{campaign.title}</h3>
+
+    {
+      campaign.summary && (
+        <p class="font-body-md text-body-md text-on-surface-variant">{campaign.summary}</p>
+      )
+    }
+
+    {/* Goal thermometer — gold fill on a muted track; progress is text + bar, never color-only. */}
+    <div class="mt-xs">
+      <div class="mb-2 flex items-baseline justify-between font-label-md text-label-md">
+        <span class="text-on-surface-variant">Stadiu</span>
+        <span class="font-bold text-primary">{pct}%</span>
+      </div>
+
+      <div
+        class="h-2 w-full overflow-hidden rounded-full bg-surface-variant"
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Progres: ${pct}% din obiectiv`}
+      >
+        <div class="h-full rounded-full bg-secondary" style={`width:${pct}%`}></div>
+      </div>
+
+      <p class="mt-2 font-caption text-caption text-on-surface-variant tabular-nums">
+        <span class="text-primary font-bold">{money(campaign.raisedAmountMinor)}</span>
+        strâns · Obiectiv: {money(campaign.goalAmountMinor)}
+      </p>
+    </div>
+
+    {
+      deadlineFmt && (
+        <p class="font-caption text-caption text-on-surface-variant">Termen: {deadlineFmt}</p>
+      )
+    }
+
+    <div class="mt-auto pt-xs">
+      {
+        isActive && campaign.cardUrl && (
+          <Button
+            href={campaign.cardUrl}
+            variant={isProject ? 'secondary' : 'primary'}
+            shape="rounded"
+            block
+            trailingIcon="arrow_forward"
+            rel="noopener"
+            target="_blank"
+          >
+            {ctaLabel}
+          </Button>
+        )
+      }
+      {
+        isCompleted && (
+          <p class="flex items-center gap-xs font-label-md text-label-md text-primary">
+            <Icon name="payments" size={18} />
+            Obiectiv atins — mulțumim!
+          </p>
+        )
+      }
+    </div>
+  </div>
+</Card>

@@ -1,0 +1,69 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import EmptyState from '@churchix/ui/components/EmptyState.astro';
+import Button from '@churchix/ui/components/Button.astro';
+import PomelnicForm from '@churchix/ui/islands/PomelnicForm.tsx';
+import { withBase } from '@churchix/ui/lib/base.ts';
+
+const site = (await getEntry('site', 'config'))!.data;
+const endpoint = site.giving?.pomelniceEndpoint || undefined;
+const currency = site.giving?.currency ?? 'RON';
+const enabled = site.features.pomelnice;
+---
+
+<BaseLayout site={site} title="Pomelnice" path="/pomelnice">
+  {
+    enabled ? (
+      <section class="cx-section cx-pomelnice-bg relative">
+        <div class="cx-pomelnice-pattern" aria-hidden="true"></div>
+        <div class="cx-container relative">
+          <SectionHeading
+            as="h1"
+            title="Trimite un pomelnic"
+            subtitle="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
+          />
+          <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
+        </div>
+      </section>
+    ) : (
+      <section class="cx-section">
+        <div class="cx-container">
+          <EmptyState
+            as="h1"
+            icon="candle"
+            title="Pomelnice indisponibile"
+            message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+          >
+            <Button slot="cta" href={withBase('/contact')} variant="secondary" shape="rounded">
+              Contactați parohia
+            </Button>
+          </EmptyState>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  /* Parchment texture behind the form — token-driven radial dots (no raw hex).
+     Colors come from the M3 CSS variables emitted by BaseLayout, so it re-skins
+     per church by token swap alone. */
+  .cx-pomelnice-bg {
+    position: relative;
+  }
+  .cx-pomelnice-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: var(--surface);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--outline-variant) 55%, transparent) 0.5px,
+      transparent 0.5px
+    );
+    background-size: 16px 16px;
+    opacity: 0.4;
+  }
+</style>

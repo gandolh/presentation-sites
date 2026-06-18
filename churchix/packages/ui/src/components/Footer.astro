@@ -1,0 +1,112 @@
+---
+/**
+ * `<Footer>` — white-label site footer (Ecclesia Digitalis).
+ *
+ * Tonal `bg-surface-container-high` panel with a hairline gold top border, laid
+ * out as a 4-column grid: brand + copyright · quick links · contact + IBANs ·
+ * social. Retains the church's address, IBANs, social links and the
+ * `© year name` line. All color/spacing/type via M3 tokens — no church value
+ * or hex is hardcoded, so it re-skins by token swap alone.
+ */
+import Icon from './Icon.astro';
+import { withBase } from '../lib/base.ts';
+import type { SiteConfig } from '@churchix/schemas';
+
+interface Props {
+  site: SiteConfig;
+}
+
+const { site } = Astro.props;
+const c = site.contact;
+const ibans = site.giving?.ibans ?? [];
+const year = new Date().getFullYear();
+const wordmark = site.shortName ?? site.name;
+
+const hasSocial = Boolean(c.facebook || c.youtube);
+
+// Quick links — gated so we never surface a route a church didn't enable.
+const links = [
+  site.features.giving && { href: '/donatii', label: 'IBAN Donații' },
+  { href: '/contact', label: 'Contact Preot' },
+  { href: '/termeni', label: 'Termeni și Condiții' },
+  { href: '/confidentialitate', label: 'Politică de Confidențialitate' },
+].filter(Boolean) as { href: string; label: string }[];
+
+const headingClass = 'font-label-md text-label-md uppercase text-primary mb-sm';
+const mutedLink =
+  'font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline transition-colors no-underline rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-high';
+---
+
+<footer class="w-full mt-xl bg-surface-container-high border-t border-secondary/20">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl"
+  >
+    <!-- Brand + copyright -->
+    <div>
+      <a class="font-display-lg text-headline-md text-primary no-underline block mb-sm" href={withBase('/')}>
+        {wordmark}
+      </a>
+      {site.tagline && (
+        <p class="font-caption text-caption text-on-surface-variant">{site.tagline}</p>
+      )}
+      <p class="font-caption text-caption text-on-surface-variant mt-md">
+        © {year} {site.name}.<br />Toate drepturile rezervate.
+      </p>
+    </div>
+
+    <!-- Quick links -->
+    <nav class="flex flex-col gap-xs" aria-label="Linkuri footer">
+      <h2 class:list={[headingClass]}>Navigare</h2>
+      {links.map((l) => (
+        <a class:list={[mutedLink]} href={withBase(l.href)}>{l.label}</a>
+      ))}
+    </nav>
+
+    <!-- Contact + IBANs -->
+    <div class="flex flex-col gap-xs">
+      <h2 class:list={[headingClass]}>Contact</h2>
+      <address class="not-italic font-label-md text-label-md text-on-surface-variant leading-relaxed">
+        {c.address}<br />{c.city}, {c.country}
+      </address>
+      {c.phone && (
+        <a class:list={[mutedLink]} href={`tel:${c.phone.replace(/\s+/g, '')}`}>{c.phone}</a>
+      )}
+      {c.email && (
+        <a class:list={[mutedLink]} href={`mailto:${c.email}`}>{c.email}</a>
+      )}
+
+      {ibans.length > 0 && (
+        <div class="mt-sm flex flex-col gap-xs">
+          <h3 class:list={[headingClass, 'mb-0 flex items-center gap-xs']}>
+            <Icon name="account_balance" size={16} />Donații prin transfer
+          </h3>
+          <ul class="list-none p-0 m-0 flex flex-col gap-xs">
+            {ibans.map((i) => (
+              <li class="font-label-md text-label-md text-on-surface-variant">
+                <span class="font-bold text-primary">{i.label}</span> ({i.currency})<br />
+                <span class="font-label-md text-label-md break-all tabular-nums tracking-wider">{i.iban}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+
+    <!-- Social -->
+    {hasSocial && (
+      <nav class="flex flex-col gap-xs" aria-label="Rețele sociale">
+        <h2 class:list={[headingClass]}>Urmărește-ne</h2>
+        {c.facebook && (
+          <a class:list={[mutedLink, 'inline-flex items-center gap-xs']} href={c.facebook} rel="noopener noreferrer" target="_blank">
+            <Icon name="diversity_1" size={16} />Facebook
+          </a>
+        )}
+        {c.youtube && (
+          <a class:list={[mutedLink, 'inline-flex items-center gap-xs']} href={c.youtube} rel="noopener noreferrer" target="_blank">
+            <Icon name="live_tv" size={16} />YouTube
+          </a>
+        )}
+      </nav>
+    )}
+  </div>
+</footer>

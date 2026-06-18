@@ -1,0 +1,245 @@
+/*
+ * Churchix — Material-3 token contract (the white-label color/typography/shape system).
+ * "Ecclesia Digitalis" Orthodox burgundy/gold/cream defaults from docs/design/DESIGN.md.
+ *
+ * HOW THEMING WORKS
+ *   - theme.css (item 01) maps every Tailwind utility to `var(--<token>)`
+ *     (e.g. `bg-primary` -> `var(--primary)`, `text-on-surface-variant` ->
+ *     `var(--on-surface-variant)`). This file declares the CANONICAL default
+ *     value of every one of those variables under `:root`.
+ *   - tokens.css is imported by BaseLayout, so these defaults are present on
+ *     every church page. theme.css contributes ONLY the @theme mapping + the
+ *     anti-purge @source glob; it no longer carries a duplicate palette.
+ *   - A church re-skins by setting a small handful of SEED colors in its
+ *     `site.brand` content entry. BaseLayout emits ONLY those seeds as a tiny
+ *     `:root{…}` block. The DERIVED roles below recompute from the seeds via
+ *     `color-mix()`, so the whole palette shifts from ~4 inputs — no church
+ *     ever hand-sets the full M3 role set.
+ *
+ * ───────────────────────────── SEED vs DERIVED ─────────────────────────────
+ *  Church-settable SEEDS (in site.brand, emitted by BaseLayout):
+ *    --primary      brand-primary       (burgundy)         brand.primary    [required]
+ *    --secondary    brand-secondary     (gold accent)      brand.secondary  [required]
+ *    --surface      page background      (warm cream)      brand.surface    [optional]
+ *    --error        error/danger color                     brand.error      [optional]
+ *    --on-primary   text/icon on primary                   brand.onPrimary  [optional]
+ *    --font-heading / --font-body / --radius                also overridable [optional]
+ *
+ *  DERIVED roles (computed here from the seeds via color-mix — NOT settable):
+ *    primary family:   --primary-container, --on-primary-container,
+ *                      --inverse-primary, --primary-fixed(+dim),
+ *                      --on-primary-fixed(+variant), --surface-tint
+ *    secondary family: --on-secondary, --secondary-container,
+ *                      --on-secondary-container, --secondary-fixed(+dim),
+ *                      --on-secondary-fixed(+variant)
+ *    surface family:   --surface-dim, --surface-bright, --background,
+ *                      --surface-container-lowest..highest, --surface-variant,
+ *                      --on-surface, --on-surface-variant, --on-background,
+ *                      --inverse-surface, --inverse-on-surface,
+ *                      --outline, --outline-variant
+ *    error family:     --on-error, --error-container, --on-error-container
+ *    tertiary family:  fixed neutral set (DESIGN.md), not seed-driven
+ *
+ *  color-mix() is supported by all evergreen browsers (Chrome/Edge 111+,
+ *  Safari 16.2+, Firefox 113+ — shipped 2023). Each derived role also resolves
+ *  to a literal hex via the last `color-mix` argument's base; older engines that
+ *  ignore the property simply fall back to the inherited/initial value. If a
+ *  church needs guaranteed pixel-exact fallbacks they can set the seed to the
+ *  desired tone — derivation never blocks a build.
+ * ────────────────────────────────────────────────────────────────────────────
+ */
+
+/* Self-hosted Cardo (headings, 400+700; headline tokens use 700) + Inter (body).
+ * Source Serif 4 is kept as a fallback and valid per-church fontHeading override.
+ * tokens.css is the single app-wide entry (via BaseLayout), so we wire fonts here. */
+@import './fonts.css';
+
+:root {
+  /* ───────────── SEEDS (church-settable; BaseLayout overrides these) ───────────── */
+  --primary: #4e0816; /* burgundy */
+  --secondary: #c8a24b; /* gold (decorative accent only — never body text on light).
+                         * Matches the DESIGN.md prose gold (#c8a24b). The previous
+                         * seed (#785a02, a dark olive) desaturated every derived gold
+                         * tint to a muddy tan once mixed toward white. The dark "on-*"
+                         * derivations below still clear AA on the gold tints (~9.6–11.3:1). */
+  --surface: #fcf9f4; /* warm cream */
+  --error: #ba1a1a;
+  --on-primary: #ffffff;
+
+  /* ───────────── DERIVED — Primary family (from --primary) ───────────── */
+  --primary-container: color-mix(in srgb, var(--primary) 80%, #ffffff);
+  /* DARK "on" tone for the primary-container tonal tint (M3 semantics: on-*-container
+   * is the dark readable color over a light container). The previous value was a
+   * LIGHT primary tint (35% primary) which gave ~1.2:1 on the /30 Alert tint and
+   * ~3.2:1 on the Badge chip — both fail AA. A near-primary-black (30% seed into
+   * black) reaches ~9.6–11.3:1 on the /30–/40 tints actually used. */
+  --on-primary-container: color-mix(in srgb, var(--primary) 30%, #000000);
+  --inverse-primary: color-mix(in srgb, var(--primary) 40%, #ffffff);
+  --primary-fixed: color-mix(in srgb, var(--primary) 14%, #ffffff);
+  --primary-fixed-dim: color-mix(in srgb, var(--primary) 40%, #ffffff);
+  --on-primary-fixed: color-mix(in srgb, var(--primary) 80%, #000000);
+  --on-primary-fixed-variant: color-mix(in srgb, var(--primary) 65%, #ffffff);
+  --surface-tint: color-mix(in srgb, var(--primary) 70%, #ffffff);
+
+  /* ───────────── DERIVED — Secondary family (from --secondary) ───────────── */
+  --on-secondary: #ffffff;
+  --secondary-container: color-mix(in srgb, var(--secondary) 35%, #ffffff);
+  /* Dark warm-neutral "on" tone for the pale gold container. Must be a DARK
+   * tone (not the gold seed itself): gold-on-gold is ~2:1 and fails AA. Mixing
+   * the seed 30% into black keeps a faint warm hue while reaching ~9.5:1 on
+   * `secondary-container` (and on the /30–/40 tonal tints used by Badge/Alert/
+   * PomelnicForm). Fixed at the derived-token level so every gold chip passes. */
+  --on-secondary-container: color-mix(in srgb, var(--secondary) 30%, #000000);
+  --secondary-fixed: color-mix(in srgb, var(--secondary) 25%, #ffffff);
+  --secondary-fixed-dim: color-mix(in srgb, var(--secondary) 55%, #ffffff);
+  --on-secondary-fixed: color-mix(in srgb, var(--secondary) 85%, #000000);
+  --on-secondary-fixed-variant: color-mix(in srgb, var(--secondary) 80%, #000000);
+
+  /* ───────────── DERIVED — Surface / neutral family (from --surface) ───────────── */
+  --background: var(--surface);
+  --on-background: #1c1c19;
+  --on-surface: #1c1c19;
+  --on-surface-variant: #544243;
+  --surface-dim: color-mix(in srgb, var(--surface) 86%, #000000);
+  --surface-bright: var(--surface);
+  --surface-variant: color-mix(in srgb, var(--surface) 90%, #000000);
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: color-mix(in srgb, var(--surface) 96%, #000000);
+  --surface-container: color-mix(in srgb, var(--surface) 93%, #000000);
+  --surface-container-high: color-mix(in srgb, var(--surface) 90%, #000000);
+  --surface-container-highest: color-mix(in srgb, var(--surface) 87%, #000000);
+  --inverse-surface: #31302d;
+  --inverse-on-surface: #f3f0eb;
+  --outline: color-mix(in srgb, var(--on-surface) 50%, var(--surface));
+  --outline-variant: color-mix(in srgb, var(--primary) 18%, var(--surface));
+
+  /* ───────────── DERIVED — Error family (from --error) ───────────── */
+  --on-error: #ffffff;
+  --error-container: color-mix(in srgb, var(--error) 16%, #ffffff);
+  --on-error-container: color-mix(in srgb, var(--error) 78%, #000000);
+
+  /* ───────────── Tertiary — fixed neutral set (DESIGN.md; not seed-driven) ─────── */
+  --tertiary: #29241c;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #403930;
+  --on-tertiary-container: #aca397;
+  --tertiary-fixed: #ece1d4;
+  --tertiary-fixed-dim: #d0c5b9;
+  --on-tertiary-fixed: #201b13;
+  --on-tertiary-fixed-variant: #4d463d;
+
+  /* ───────────── Typography (families; type scale lives in theme.css) ───────────── */
+  --font-heading: "Cardo", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+  /* ───────────── Shape (church may override --radius) ───────────── */
+  --radius: 0.5rem;
+
+  /* ───────────── Legacy compatibility aliases ─────────────
+   * Pre-M3 components/app pages (tier B+, NOT owned by item 02) still read these.
+   * They are thin aliases onto the M3 contract so the old class set keeps rendering
+   * with the new tokens; remove when those components migrate to M3 utilities.
+   * BaseLayout also continues to emit --brand-* from seeds for the same reason. */
+  --brand-primary: var(--primary);
+  --brand-accent: var(--secondary);
+  --brand-surface: var(--surface);
+  --brand-on-primary: var(--on-primary);
+  --ink: var(--on-surface);
+  --ink-soft: var(--on-surface-variant);
+  --line: var(--outline-variant);
+  --bg: var(--surface-container-lowest);
+  --maxw: 64rem;
+  --space: 1rem;
+}
+
+/* ───────────────────── Minimal element baseline ─────────────────────
+ * Component styling lives in components (tier B). These are page-level
+ * resets only, all routed through M3 tokens (no raw hex).
+ *
+ * IMPORTANT: these element rules live in `@layer base`. Tailwind v4 emits its
+ * utilities in the `utilities` layer, and an UNLAYERED rule beats ANY layered
+ * rule regardless of specificity. Without this layer, the bare `h1`/`a` color
+ * defaults would override `text-on-primary` etc., making headings and
+ * link-buttons render burgundy-on-burgundy (invisible) on dark surfaces. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-body);
+    color: var(--on-surface);
+    background: var(--surface);
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    font-kerning: normal;
+    font-optical-sizing: auto; /* Uses Cardo's opsz axis: small headings get text master, large ones display master */
+  }
+
+  body {
+    margin: 0;
+    text-wrap: pretty; /* Reduce orphans in prose across the whole app */
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+    color: var(--primary);
+    margin: 0 0 0.5em;
+    text-wrap: balance; /* Even line lengths on all headings */
+  }
+
+  a {
+    color: var(--primary);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* ───────────────────── Legacy class set (tier B+ components/pages) ─────────────────────
+ * Kept verbatim (now backed by M3-aliased vars) so the existing component library and app
+ * pages render unchanged until they migrate to Tailwind M3 utilities. Item 02 owns the
+ * token contract, not component restyling. */
+.cx-container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.cx-section {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.cx-section--surface {
+  background: var(--brand-surface);
+}
+
+.cx-btn {
+  display: inline-block;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
+  font-weight: 600;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.cx-btn--outline {
+  background: transparent;
+  color: var(--brand-primary);
+  border: 1.5px solid var(--brand-primary);
+}
+
+.cx-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}

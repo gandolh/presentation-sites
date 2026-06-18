@@ -1,0 +1,175 @@
+---
+/**
+ * `<Hero>` — the full-bleed home banner (Ecclesia Digitalis).
+ *
+ * Full-bleed background image with a `bg-black/40` scrim, centered reverent
+ * content: an uppercase eyebrow (tradition/region label), the church name in
+ * `font-display-lg` with a drop shadow, an optional glass "Următoarea Slujbă: …"
+ * chip, and up to two CTAs (Donează solid + Urmărește Livestream outline with a
+ * `live_tv` icon). When no `image` is given it falls back to a tonal
+ * `primary`/cream surface so the hero is never broken on a content-light site.
+ *
+ * White-label discipline: every color flows through M3 tokens; the only
+ * per-church inputs arrive as props (name, eyebrow, image, next-service text,
+ * livestream URL, CTA hrefs). Honors the church's feature flags so a parish
+ * without giving or sermons simply renders fewer CTAs.
+ *
+ * @prop {string}  title              Church name → `<h1>` (`font-display-lg`).
+ * @prop {string}  [eyebrow]          Uppercase label above the name (e.g. "Biserica Ortodoxă Română").
+ * @prop {string}  [subtitle]         Optional lead paragraph under the name.
+ * @prop {string}  [image]            Full-bleed background image URL (under `public/`). Optional.
+ * @prop {string}  [imageAlt]         Alt text for the background image (decorative if omitted).
+ * @prop {string}  [nextService]      "Următoarea Slujbă" text (e.g. "Vecernie, Sâmbătă 17:00"). Chip hidden when absent.
+ * @prop {string}  [nextServiceLabel='Următoarea Slujbă:']  Chip label (i18n-overridable).
+ * @prop {boolean} [giving=true]      Honors `features.giving`. When false the Donează CTA is suppressed.
+ * @prop {string}  [ctaLabel='Donează']  Primary CTA label.
+ * @prop {string}  [ctaHref]          Primary CTA href (usually `/donatii`). CTA hidden if absent.
+ * @prop {boolean} [sermons=false]    Honors `features.sermons`. Gates the livestream CTA together with `livestreamHref`.
+ * @prop {string}  [livestreamHref]   Livestream URL. The outline CTA renders only when this is set (and `sermons`).
+ * @prop {string}  [livestreamLabel='Urmărește Livestream']  Livestream CTA label.
+ * @prop {string}  [secondaryLabel]   Optional extra outline CTA label (fallback when no livestream).
+ * @prop {string}  [secondaryHref]    Optional extra outline CTA href (e.g. `/program`).
+ * @prop {string}  [class]            Extra classes on the `<section>`.
+ *
+ * @example
+ *   <Hero
+ *     title={site.name}
+ *     eyebrow="Biserica Ortodoxă Română"
+ *     image="/hero.jpg"
+ *     nextService="Vecernie, Sâmbătă 17:00"
+ *     giving={site.features.giving}
+ *     ctaHref="/donatii"
+ *     sermons={site.features.sermons}
+ *     livestreamHref={site.contact.youtube}
+ *   />
+ */
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { withBase } from '../lib/base.ts';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  subtitle?: string;
+  image?: string;
+  imageAlt?: string;
+  nextService?: string;
+  nextServiceLabel?: string;
+  giving?: boolean;
+  ctaLabel?: string;
+  ctaHref?: string;
+  sermons?: boolean;
+  livestreamHref?: string;
+  livestreamLabel?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  class?: string;
+}
+
+const {
+  title,
+  eyebrow,
+  subtitle,
+  image,
+  imageAlt,
+  nextService,
+  nextServiceLabel = 'Următoarea Slujbă:',
+  giving = true,
+  ctaLabel = 'Donează',
+  ctaHref,
+  sermons = false,
+  livestreamHref,
+  livestreamLabel = 'Urmărește Livestream',
+  secondaryLabel,
+  secondaryHref,
+  class: className,
+} = Astro.props;
+
+const hasImage = Boolean(image);
+const showGiving = giving && Boolean(ctaHref);
+const showLivestream = sermons && Boolean(livestreamHref);
+const showSecondary = Boolean(secondaryHref && secondaryLabel);
+const hasActions = showGiving || showLivestream || showSecondary;
+---
+
+<section
+  class:list={[
+    'relative min-h-[60vh] lg:min-h-[680px] flex items-center justify-center overflow-hidden',
+    !hasImage && 'bg-primary',
+    className,
+  ]}
+>
+  {hasImage && (
+    <>
+      <img
+        src={image}
+        alt={imageAlt ?? ''}
+        aria-hidden={imageAlt ? undefined : 'true'}
+        class="absolute inset-0 w-full h-full object-cover"
+        width="1920"
+        height="1080"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-black/40 z-10"></div>
+    </>
+  )}
+
+  <div class="relative z-20 text-center text-on-primary px-sm md:px-gutter w-full max-w-container-max mx-auto flex flex-col items-center py-xl">
+    {eyebrow && (
+      <span class="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed mb-sm">
+        {eyebrow}
+      </span>
+    )}
+
+    <h1 class="font-display-lg text-headline-lg-mobile sm:text-display-lg font-bold mb-md drop-shadow-lg text-surface-container-lowest max-w-3xl">
+      {title}
+    </h1>
+
+    {subtitle && (
+      <p class="font-body-lg text-body-lg text-on-primary/90 mb-md max-w-2xl drop-shadow">
+        {subtitle}
+      </p>
+    )}
+
+    {nextService && (
+      <div class="bg-surface/10 backdrop-blur-md border border-white/20 p-md rounded-xl mb-xl inline-flex flex-col md:flex-row items-center gap-xs md:gap-md">
+        <span class="flex items-center text-secondary-fixed">
+          <Icon name="schedule" class="mr-xs" size={18} />
+          <span class="font-label-md text-label-md">{nextServiceLabel}</span>
+        </span>
+        <span class="font-body-lg text-body-lg text-on-primary font-medium">{nextService}</span>
+      </div>
+    )}
+
+    {hasActions && (
+      <div class="flex flex-col sm:flex-row gap-sm md:gap-md">
+        {showGiving && (
+          <a
+            href={withBase(ctaHref)}
+            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded bg-surface-container-lowest text-primary shadow-md hover:shadow-lg hover:bg-surface transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+          >
+            {ctaLabel}
+          </a>
+        )}
+        {showLivestream && (
+          <a
+            href={withBase(livestreamHref)}
+            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded border border-secondary-fixed text-on-primary bg-transparent hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+          >
+            <Icon name="live_tv" size={18} />
+            {livestreamLabel}
+          </a>
+        )}
+        {showSecondary && (
+          <a
+            href={withBase(secondaryHref)}
+            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded border border-secondary-fixed text-on-primary bg-transparent hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+          >
+            {secondaryLabel}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,28 @@
+{
+  "name": "churchix",
+  "version": "0.0.0",
+  "private": true,
+  "description": "White-label, multi-church presentation-website + giving platform (Astro + React frontend, Fastify API).",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "echo \"Run a specific workspace, e.g. npm run dev -w apps/<church>\" && exit 1",
+    "dev:bac": "npm run dev -w apps/parohia-harlesti-bacau",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "format": "prettier --write .",
+    "deploy:pre": "node --env-file=.env scripts/deploy.ts pre-deploy",
+    "deploy:push": "node --env-file=.env scripts/deploy.ts deploy"
+  }
+}

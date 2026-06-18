@@ -1,0 +1,112 @@
+---
+import { getEntry, getCollection, render } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import Badge from '@churchix/ui/components/Badge.astro';
+import Icon from '@churchix/ui/components/Icon.astro';
+import { withBase } from '@churchix/ui/lib/base.ts';
+
+export async function getStaticPaths() {
+  const items = await getCollection('announcements');
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const site = (await getEntry('site', 'config'))!.data;
+const locale = `${site.defaultLocale ?? 'ro'}-RO`;
+const { Content } = await render(entry);
+const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout site={site} title={entry.data.title} path={`/anunturi/${entry.id}`}>
+  <section class="cx-section">
+    <div class="cx-container" style="max-width:46rem">
+      <a
+        href={withBase('/anunturi')}
+        class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
+      >
+        <Icon name="arrow_forward" size={18} class="rotate-180" />
+        Înapoi la anunțuri
+      </a>
+
+      <header class="mt-md mb-lg flex flex-col gap-sm">
+        <div class="flex flex-wrap items-center gap-sm">
+          <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
+            <Icon name="event" size={14} />
+            <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
+          </span>
+          {entry.data.pinned && (
+            <Badge tone="primary" icon="push_pin">Fixat</Badge>
+          )}
+        </div>
+        <h1 class="font-headline-lg text-headline-lg text-on-surface text-balance">{entry.data.title}</h1>
+      </header>
+
+      <article class="cx-prose font-body-lg text-body-lg text-on-surface">
+        <Content />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Readable, diacritic-safe prose using body tokens. Generous line-height keeps
+     stacked diacritics (ă â î ș ț) legible; spacing comes from the rhythm tokens. */
+  .cx-prose {
+    line-height: 1.75;
+  }
+  .cx-prose :global(p) {
+    margin: 0 0 1rem;
+  }
+  .cx-prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .cx-prose :global(h2),
+  .cx-prose :global(h3) {
+    font-family: var(--font-headline-md);
+    color: var(--primary);
+    line-height: 1.3;
+    margin: 1.75rem 0 0.75rem;
+  }
+  .cx-prose :global(h2) {
+    font-size: var(--text-headline-md);
+  }
+  .cx-prose :global(h3) {
+    font-size: 1.25rem;
+  }
+  .cx-prose :global(ul),
+  .cx-prose :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+  }
+  .cx-prose :global(li) {
+    margin: 0.35rem 0;
+  }
+  .cx-prose :global(a) {
+    color: var(--primary);
+    text-underline-offset: 2px;
+  }
+  .cx-prose :global(blockquote) {
+    position: relative;
+    margin: 1.25rem 0;
+    padding-left: 1.75rem;
+    border-left: 1px solid var(--outline-variant);
+    color: var(--on-surface-variant);
+    font-style: italic;
+  }
+  /* Decorative gold opening-quote glyph — the brand glint, not a colored side-stripe. */
+  .cx-prose :global(blockquote)::before {
+    content: '\201C';
+    position: absolute;
+    left: 0.25rem;
+    top: -0.15em;
+    font-family: var(--font-heading);
+    font-size: 1.6em;
+    line-height: 1;
+    color: var(--secondary);
+  }
+  .cx-prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+  }
+</style>

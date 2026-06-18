@@ -1,0 +1,143 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import Card from '@churchix/ui/components/Card.astro';
+import Field from '@churchix/ui/components/Field.astro';
+import Button from '@churchix/ui/components/Button.astro';
+import Icon from '@churchix/ui/components/Icon.astro';
+
+const site = (await getEntry('site', 'config'))!.data;
+const c = site.contact;
+
+// Static, server-light prayer-request form. With no backend, we fall back to a
+// `mailto:` submit so the page works on a pure SSG host (PCI/independence-safe).
+// The church email seeds the recipient; if absent the form is omitted gracefully.
+const prayerMailto = c.email
+  ? `mailto:${c.email}?subject=${encodeURIComponent('Cerere de rugăciune')}`
+  : undefined;
+---
+
+<BaseLayout site={site} title="Contact" path="/contact">
+  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
+    <SectionHeading
+      as="h1"
+      title="Contact"
+      subtitle="Vă așteptăm la biserică și vă stăm la dispoziție pentru orice întrebare."
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+      <!-- Coordonate parohie -->
+      <div class="lg:col-span-5 flex flex-col gap-lg">
+        <Card padding="lg" radius="lg">
+          <h2 class="font-headline-md text-headline-md text-primary mb-md flex items-center gap-sm">
+            <Icon name="church" class="text-secondary" size={24} />
+            Datele parohiei
+          </h2>
+          <dl class="flex flex-col gap-md font-body-md text-body-md text-on-surface">
+            <div>
+              <dt class="font-label-md text-label-md text-on-surface-variant">Adresă</dt>
+              <dd class="mt-1">{c.address}<br />{c.city}, {c.country}</dd>
+            </div>
+            {c.phone && (
+              <div>
+                <dt class="font-label-md text-label-md text-on-surface-variant">Telefon</dt>
+                <dd class="mt-1">
+                  <a class="text-primary hover:underline underline-offset-2" href={`tel:${c.phone.replace(/\s+/g, '')}`}>{c.phone}</a>
+                </dd>
+              </div>
+            )}
+            {c.email && (
+              <div>
+                <dt class="font-label-md text-label-md text-on-surface-variant">Email</dt>
+                <dd class="mt-1">
+                  <a class="text-primary hover:underline underline-offset-2 break-all" href={`mailto:${c.email}`}>{c.email}</a>
+                </dd>
+              </div>
+            )}
+          </dl>
+        </Card>
+      </div>
+
+      <!-- Hartă -->
+      {c.mapEmbedUrl && (
+        <div class="lg:col-span-7">
+          <Card padding="none" radius="lg" class="h-full">
+            <iframe
+              class="w-full h-[320px] lg:h-full min-h-[320px] block border-0"
+              src={c.mapEmbedUrl}
+              title={`Hartă — ${site.name}`}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </Card>
+        </div>
+      )}
+    </div>
+
+    <!-- Cerere de rugăciune -->
+    <div class="mt-xl max-w-prose">
+      <h2 class="font-headline-md text-headline-md text-primary mb-md flex items-center gap-sm">
+        <Icon name="candle" class="text-secondary" size={24} />
+        Cerere de rugăciune
+      </h2>
+      <p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+        Ne puteți trimite o cerere de rugăciune sau un mesaj. Vom reveni cu un răspuns cât mai curând.
+      </p>
+
+      <Card padding="lg" radius="lg">
+        {prayerMailto && (
+          <p class="mb-md font-body-md text-body-md text-on-surface-variant">
+            Apăsând „Trimite mesajul" se va deschide aplicația dvs. de email cu mesajul completat, gata de trimis.
+          </p>
+        )}
+        <form
+          id="cx-contact-form"
+          class="flex flex-col gap-md"
+          action={prayerMailto}
+          method={prayerMailto ? undefined : 'post'}
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+            <Field label="Nume" name="nume" autocomplete="name" required />
+            <Field label="Email" name="email" type="email" autocomplete="email" />
+          </div>
+          <Field
+            as="textarea"
+            label="Mesajul dvs."
+            name="mesaj"
+            rows={5}
+            required
+            hint="Vă rugăm să nu includeți date sensibile (CNP, date bancare)."
+          />
+          <div>
+            <Button type="submit" variant="primary" shape="rounded" trailingIcon="send">
+              Trimite mesajul
+            </Button>
+          </div>
+        </form>
+        <div id="cx-contact-sent" tabindex="-1" class="hidden mt-md rounded-lg border border-secondary/30 bg-secondary-container/30 p-md font-body-md text-body-md text-on-secondary-container" role="status" aria-live="polite">
+          Aplicația dvs. de email s-a deschis cu mesajul completat. Verificați și apăsați „Trimite" în email pentru a finaliza trimiterea. Mulțumim!
+        </div>
+      </Card>
+
+      {prayerMailto && (
+        <script is:inline>
+          (function () {
+            var form = document.getElementById('cx-contact-form');
+            var confirmation = document.getElementById('cx-contact-sent');
+            if (!form || !confirmation) return;
+            form.addEventListener('submit', function () {
+              // mailto: opens the mail client; after a brief delay show the confirmation
+              // so the user knows what happened (especially important for older users).
+              setTimeout(function () {
+                confirmation.classList.remove('hidden');
+                form.setAttribute('aria-hidden', 'true');
+                confirmation.focus();
+              }, 500);
+            });
+          })();
+        </script>
+      )}
+    </div>
+  </section>
+</BaseLayout>

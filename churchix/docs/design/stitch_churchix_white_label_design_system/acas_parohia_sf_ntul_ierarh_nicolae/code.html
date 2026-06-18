@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="ro"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parohia Sfântul Ierarh Nicolae</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e5e2dd",
+                        "on-primary-container": "#ee868f",
+                        "surface-container-highest": "#e5e2dd",
+                        "on-surface": "#1c1c19",
+                        "on-primary-fixed": "#40000e",
+                        "inverse-on-surface": "#f3f0eb",
+                        "background": "#fcf9f4",
+                        "secondary": "#785a02",
+                        "on-surface-variant": "#544243",
+                        "primary-container": "#6b1f2a",
+                        "surface-container": "#f0ede9",
+                        "on-secondary-fixed": "#251a00",
+                        "on-secondary-container": "#795a03",
+                        "secondary-fixed-dim": "#eac167",
+                        "surface-tint": "#99424c",
+                        "secondary-fixed": "#ffdf9d",
+                        "secondary-container": "#ffd578",
+                        "on-background": "#1c1c19",
+                        "tertiary-fixed-dim": "#d0c5b9",
+                        "on-tertiary-fixed-variant": "#4d463d",
+                        "primary-fixed-dim": "#ffb2b7",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac0c1",
+                        "tertiary-container": "#403930",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb2b7",
+                        "surface": "#fcf9f4",
+                        "on-tertiary-container": "#aca397",
+                        "tertiary-fixed": "#ece1d4",
+                        "surface-container-high": "#ebe8e3",
+                        "tertiary": "#29241c",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdadb",
+                        "inverse-surface": "#31302d",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#201b13",
+                        "on-primary": "#ffffff",
+                        "primary": "#4e0816",
+                        "surface-container-low": "#f6f3ee",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcdad5",
+                        "outline": "#877273",
+                        "on-primary-fixed-variant": "#7b2b36",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fcf9f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "0.25rem",
+                        "container-max": "1200px",
+                        "gutter": "1.5rem",
+                        "xs": "0.5rem",
+                        "md": "1.5rem",
+                        "sm": "1rem",
+                        "lg": "2rem",
+                        "xl": "4rem"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Source Serif 4"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Source Serif 4"],
+                        "headline-lg-mobile": ["Source Serif 4"],
+                        "headline-md": ["Source Serif 4"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary/20">
+<!-- TopNavBar -->
+<header class="bg-surface/95 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 w-full">
+<div class="flex justify-between items-center w-full max-w-container-max mx-auto px-gutter py-md">
+<a class="font-display-lg text-headline-md md:text-display-lg font-bold text-primary" href="#">Parohia Ortodoxă</a>
+<nav class="hidden md:flex space-x-lg">
+<a class="font-label-md text-label-md uppercase tracking-wide text-primary border-b-2 border-secondary font-bold pb-1" href="#">Acasă</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Program</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Anunțuri</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Galerie</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Contact</a>
+</nav>
+<div class="flex items-center space-x-md">
+<button class="hidden md:flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<a class="bg-primary-container text-on-primary font-label-md text-label-md px-lg py-xs rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap hidden sm:block" href="#">Donează</a>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-black/40 z-10"></div>
+<img alt="Interior view of a majestic Romanian Orthodox church, featuring intricately painted Byzantine frescoes on the curved ceilings and golden light illuminating the ornate wooden iconostasis. The atmosphere is serene and sacred, with a warm, formal color palette emphasizing gold and deep shadows, perfect for a reverent web design background." class="absolute inset-0 w-full h-full object-cover" data-alt="Interior view of a majestic Romanian Orthodox church, featuring intricately painted Byzantine frescoes on the curved ceilings and golden light illuminating the ornate wooden iconostasis. The atmosphere is serene and sacred, with a warm, formal color palette emphasizing gold and deep shadows, perfect for a reverent web design background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjQtHq0K5QKtVcifa5cwHTei50679mToH9YHpqSw-a2o-bO1v007GFtZRM8HPNMfuQZ0C9F7a615LTlMCBD--r0OEVnzJhOrvwgZR5-a_kkTta95Oy2vaKJxdOgqY6_lvQ6NQN2hFoeljsaazyEyOEnPYOXaGqpoomB_tpTJVP8_9zceIrpwuooZpp1SjSlTBb_vyT9yKa3LVkMN_1J5Z945j5BIqnYHMSfH4sxWyducBNggMScsHfEC49mQvEKCMSzcsHAucco_A_"/>
+<div class="relative z-20 text-center text-white px-gutter w-full max-w-container-max mx-auto flex flex-col items-center">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary-fixed mb-sm">Biserica Ortodoxă Română</span>
+<h1 class="font-display-lg text-[40px] leading-[48px] md:text-display-lg font-bold mb-lg drop-shadow-lg text-surface-container-lowest max-w-3xl">Parohia Sfântul Ierarh Nicolae</h1>
+<div class="bg-surface/10 backdrop-blur-md border border-white/20 p-md rounded-xl mb-xl inline-flex flex-col md:flex-row items-center gap-md">
+<div class="flex items-center text-secondary-fixed">
+<span class="material-symbols-outlined mr-xs">schedule</span>
+<span class="font-label-md text-label-md">Următoarea Slujbă:</span>
+</div>
+<span class="font-body-lg text-body-lg text-white font-medium">Vecernie, Sâmbătă 18:00</span>
+</div>
+<div class="flex flex-col sm:flex-row gap-sm md:gap-md">
+<a class="bg-primary-container text-white border border-primary-container font-label-md text-label-md px-xl py-sm rounded-lg hover:bg-primary transition-colors flex items-center justify-center shadow-lg hover:shadow-xl" href="#">
+                        Donează
+                    </a>
+<a class="bg-transparent text-white border border-secondary-fixed font-label-md text-label-md px-xl py-sm rounded-lg hover:bg-white/10 transition-colors flex items-center justify-center" href="#">
+<span class="material-symbols-outlined mr-xs">live_tv</span>
+                        Urmărește Livestream
+                    </a>
+</div>
+</div>
+</section>
+<!-- Pinned Announcements -->
+<section class="w-full max-w-container-max mx-auto px-gutter py-xl">
+<div class="flex items-center justify-between mb-lg border-b border-secondary/20 pb-xs">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary flex items-center">
+<span class="material-symbols-outlined mr-sm text-secondary">campaign</span>
+                    Anunțuri Recente
+                </h2>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center" href="#">
+                    Vezi toate <span class="material-symbols-outlined ml-xs text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Pinned Item -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="inline-flex items-center bg-secondary/10 text-on-secondary-container font-caption text-caption px-2 py-1 rounded mb-sm font-medium">
+<span class="material-symbols-outlined text-[14px] mr-1">push_pin</span> Fixat
+                            </span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors">Hramul Bisericii: Sfântul Ierarh Nicolae</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Vă așteptăm cu bucurie să prăznuim împreună Hramul Bisericii noastre. Slujbele vor începe de vineri seara cu Privegherea și vor continua sâmbătă cu Sfânta Liturghie Arhierească.</p>
+</div>
+</div>
+</div>
+<!-- Regular Item -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg shadow-sm hover:shadow-md transition-shadow">
+<span class="inline-flex items-center text-on-surface-variant font-caption text-caption mb-sm">
+<span class="material-symbols-outlined text-[14px] mr-1">event</span> 12 Nov 2024
+                    </span>
+<h3 class="font-headline-md text-[20px] leading-[28px] text-on-surface mb-xs">Colectă pentru familii defavorizate</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">În perioada postului, organizăm o colectă de alimente neperisabile și haine groase.</p>
+</div>
+</div>
+</section>
+<!-- Program & Map Section -->
+<section class="bg-surface-container-low py-xl">
+<div class="w-full max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Service Times Bento -->
+<div class="lg:col-span-7">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-lg flex items-center">
+<span class="material-symbols-outlined mr-sm text-secondary">church</span>
+                        Program Liturgic
+                    </h2>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="p-md bg-surface border-b border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-md text-label-md font-bold text-on-surface">Săptămâna curentă</span>
+<span class="font-caption text-caption text-on-surface-variant">13 - 19 Noiembrie</span>
+</div>
+<div class="divide-y divide-outline-variant/20">
+<!-- Wed -->
+<div class="p-md flex flex-col sm:flex-row sm:items-center justify-between hover:bg-surface-variant/30 transition-colors">
+<div class="mb-sm sm:mb-0 w-1/3">
+<span class="font-label-md text-label-md font-bold text-on-surface">Miercuri</span>
+</div>
+<div class="w-2/3 space-y-1">
+<div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+<span class="w-16 font-medium">18:00</span>
+<span>Acatistul Sf. Nicolae</span>
+</div>
+</div>
+</div>
+<!-- Fri -->
+<div class="p-md flex flex-col sm:flex-row sm:items-center justify-between hover:bg-surface-variant/30 transition-colors bg-surface/50">
+<div class="mb-sm sm:mb-0 w-1/3">
+<span class="font-label-md text-label-md font-bold text-on-surface">Vineri</span>
+</div>
+<div class="w-2/3 space-y-1">
+<div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+<span class="w-16 font-medium">18:00</span>
+<span>Taina Sfântului Maslu</span>
+</div>
+</div>
+</div>
+<!-- Sat -->
+<div class="p-md flex flex-col sm:flex-row sm:items-center justify-between hover:bg-surface-variant/30 transition-colors">
+<div class="mb-sm sm:mb-0 w-1/3">
+<span class="font-label-md text-label-md font-bold text-on-surface">Sâmbătă</span>
+</div>
+<div class="w-2/3 space-y-1">
+<div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+<span class="w-16 font-medium">08:00</span>
+<span>Sfânta Liturghie și Parastas</span>
+</div>
+<div class="flex items-center text-on-surface-variant font-body-md text-body-md">
+<span class="w-16 font-medium">18:00</span>
+<span>Vecernie Mare</span>
+</div>
+</div>
+</div>
+<!-- Sun -->
+<div class="p-md flex flex-col sm:flex-row sm:items-center justify-between bg-secondary/5 hover:bg-secondary/10 transition-colors">
+<div class="mb-sm sm:mb-0 w-1/3">
+<span class="font-label-md text-label-md font-bold text-primary">Duminică</span>
+</div>
+<div class="w-2/3 space-y-1">
+<div class="flex items-center text-on-surface font-body-md text-body-md">
+<span class="w-16 font-medium text-primary">08:30</span>
+<span>Utrenia</span>
+</div>
+<div class="flex items-center text-on-surface font-body-md text-body-md font-medium">
+<span class="w-16 text-primary">10:00</span>
+<span>Sfânta Liturghie</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Info Card -->
+<div class="lg:col-span-5 flex flex-col justify-center space-y-lg">
+<div class="bg-primary text-white p-lg rounded-xl shadow-lg relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 opacity-10">
+<span class="material-symbols-outlined text-[160px]">diversity_1</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-md relative z-10">Despre Parohia Noastră</h3>
+<p class="font-body-md text-body-md text-white/90 mb-lg relative z-10">Biserica noastră este un spațiu al păcii și al regăsirii spirituale. Vă invităm să luați parte la sfintele slujbe și la viața comunității noastre parohiale.</p>
+<a class="inline-flex items-center font-label-md text-label-md text-secondary-fixed hover:text-white transition-colors relative z-10 border-b border-secondary-fixed pb-1" href="#">
+                            Citește istoricul parohiei <span class="material-symbols-outlined ml-xs text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high w-full mt-xl border-t border-secondary/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg w-full max-w-container-max mx-auto px-gutter py-xl">
+<!-- Brand Column -->
+<div class="md:col-span-1">
+<a class="font-display-lg text-headline-md text-primary block mb-sm" href="#">Parohia Ortodoxă</a>
+<p class="font-caption text-caption text-on-surface-variant mt-md">© 2024 Arhiepiscopia Ortodoxă.<br/>Toate drepturile rezervate.</p>
+</div>
+<!-- Links Columns -->
+<div class="md:col-span-3 flex flex-col md:flex-row md:justify-end gap-lg md:gap-xl">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Termeni și Condiții</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Politică de Confidențialitate</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">IBAN Donații</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Contact Preot</a>
+</div>
+</div>
+</footer>
+</body></html>

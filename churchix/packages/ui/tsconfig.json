@@ -1,0 +1,4 @@
+{
+  "extends": "@churchix/config/tsconfig.json",
+  "include": ["src"]
+}

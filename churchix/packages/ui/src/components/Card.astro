@@ -1,0 +1,110 @@
+---
+/**
+ * `<Card>` — the white-label content surface (Ecclesia Digitalis).
+ *
+ * White `surface-container-lowest` panel, rounded, hairline `outline-variant/30`
+ * border, soft shadow. Slot-based: drop any content inside. Re-skins via tokens.
+ *
+ * @prop {boolean} [featured=false]  Gold accent: a `border-b-2 border-secondary` gold
+ *        BOTTOM border (DESIGN.md §Components). The system has no left/right side-stripe
+ *        variant — colored side-stripes are a banned pattern (DESIGN.md Don'ts).
+ * @prop {'sm'|'md'|'lg'} [radius='sm']  `rounded` (0.5rem, the DESIGN.md standard) /
+ *        `rounded-md` (0.75rem) / `rounded-lg` (1rem).
+ * @prop {'none'|'sm'|'md'|'lg'} [padding='md']  Inner padding (`none` for media/edge-to-edge).
+ * @prop {boolean} [interactive=false]  Hover lift + cursor + focus ring (for clickable cards).
+ * @prop {string} [href]   When set, the whole card becomes an `<a>` (implies interactive).
+ * @prop {'div'|'article'|'section'|'li'} [as='div']  Wrapper element when not a link.
+ * @prop {string} [class]  Extra classes appended last.
+ *
+ * @slot default — card body.
+ *
+ * @example
+ *   ---
+ *   import Card from '@churchix/ui/components/Card.astro';
+ *   ---
+ *   <Card featured>
+ *     <h3 class="text-headline-md text-primary">Restaurarea picturii</h3>
+ *     <p class="text-body-md text-on-surface-variant">Campanie specială…</p>
+ *   </Card>
+ */
+interface Props {
+  featured?: boolean;
+  radius?: 'sm' | 'md' | 'lg';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  interactive?: boolean;
+  href?: string;
+  as?: 'div' | 'article' | 'section' | 'li';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  featured = false,
+  radius = 'sm',
+  padding = 'md',
+  interactive = false,
+  href,
+  as = 'div',
+  class: className,
+  ...rest
+} = Astro.props;
+
+// Standard element radius is 0.5rem (`rounded`) per DESIGN.md §Shapes.
+const radii = {
+  sm: 'rounded',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+} as const;
+
+const paddings = {
+  none: '',
+  sm: 'p-sm',
+  md: 'p-md',
+  lg: 'p-lg',
+} as const;
+
+const isLink = Boolean(href);
+const isInteractive = interactive || isLink;
+
+const base =
+  'block bg-surface-container-lowest border border-outline-variant/30 shadow-sm overflow-hidden';
+
+const accentClass = featured ? 'border-b-2 border-b-secondary' : '';
+
+const interactiveClass = isInteractive
+  ? 'transition-[box-shadow,transform,opacity] duration-200 hover:shadow-md hover:-translate-y-0.5 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
+  : '';
+
+const classes = [
+  base,
+  radii[radius],
+  paddings[padding],
+  accentClass,
+  interactiveClass,
+  className,
+];
+
+// A linked card normally renders as `<a>`. But when the caller also asks for a
+// list item (`as="li"`, e.g. inside a `<ul>` grid), emitting `<a>` directly under
+// `<ul>` is invalid list markup (axe: "list"). In that case wrap the `<a>` in an
+// `<li>` so the list keeps valid `ul > li > a` structure; the visual card styling
+// stays on the `<a>` (the clickable surface).
+const wrapInListItem = isLink && as === 'li';
+const Tag = isLink ? 'a' : as;
+const tagProps = isLink ? { href } : {};
+---
+
+{
+  wrapInListItem ? (
+    <li class="contents">
+      <Tag class:list={classes} {...tagProps} {...rest}>
+        <slot />
+      </Tag>
+    </li>
+  ) : (
+    <Tag class:list={classes} {...tagProps} {...rest}>
+      <slot />
+    </Tag>
+  )
+}

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ro"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Program Slujbe - Parohia Ortodoxă</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#e5e2dd",
+                        "on-primary-container": "#ee868f",
+                        "surface-container-highest": "#e5e2dd",
+                        "on-surface": "#1c1c19",
+                        "on-primary-fixed": "#40000e",
+                        "inverse-on-surface": "#f3f0eb",
+                        "background": "#fcf9f4",
+                        "secondary": "#785a02",
+                        "on-surface-variant": "#544243",
+                        "primary-container": "#6b1f2a",
+                        "surface-container": "#f0ede9",
+                        "on-secondary-fixed": "#251a00",
+                        "on-secondary-container": "#795a03",
+                        "secondary-fixed-dim": "#eac167",
+                        "surface-tint": "#99424c",
+                        "secondary-fixed": "#ffdf9d",
+                        "secondary-container": "#ffd578",
+                        "on-background": "#1c1c19",
+                        "tertiary-fixed-dim": "#d0c5b9",
+                        "on-tertiary-fixed-variant": "#4d463d",
+                        "primary-fixed-dim": "#ffb2b7",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac0c1",
+                        "tertiary-container": "#403930",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb2b7",
+                        "surface": "#fcf9f4",
+                        "on-tertiary-container": "#aca397",
+                        "tertiary-fixed": "#ece1d4",
+                        "surface-container-high": "#ebe8e3",
+                        "tertiary": "#29241c",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdadb",
+                        "inverse-surface": "#31302d",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#201b13",
+                        "on-primary": "#ffffff",
+                        "primary": "#4e0816",
+                        "surface-container-low": "#f6f3ee",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcdad5",
+                        "outline": "#877273",
+                        "on-primary-fixed-variant": "#7b2b36",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fcf9f4"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        base: "0.25rem",
+                        "container-max": "1200px",
+                        gutter: "1.5rem",
+                        xs: "0.5rem",
+                        md: "1.5rem",
+                        sm: "1rem",
+                        lg: "2rem",
+                        xl: "4rem"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Source Serif 4"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Source Serif 4"],
+                        "headline-lg-mobile": ["Source Serif 4"],
+                        "headline-md": ["Source Serif 4"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        caption: ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        caption: ["12px", { lineHeight: "16px", fontWeight: "400" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Divider SVG pattern */
+        .bg-divider-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='20' viewBox='0 0 40 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0v20M0 10h40' stroke='%23dac0c1' stroke-width='0.5' fill='none'/%3E%3Ccircle cx='20' cy='10' r='2' fill='%23785a02'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface/95 dark:bg-surface-dim/95 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full max-w-container-max mx-auto px-gutter py-md">
+<!-- Logo -->
+<a class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed-dim" href="/">
+            Parohia Ortodoxă
+        </a>
+<!-- Desktop Nav -->
+<div class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all duration-200 px-sm py-base rounded-DEFAULT" href="/">Acasă</a>
+<!-- Active State -->
+<a class="font-label-md text-label-md uppercase tracking-wide text-primary dark:text-primary-fixed-dim border-b-2 border-secondary font-bold pb-1 opacity-80 scale-95 transition-all hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all duration-200 px-sm py-base rounded-DEFAULT" href="/program">Program</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all duration-200 px-sm py-base rounded-DEFAULT" href="/anunturi">Anunțuri</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all duration-200 px-sm py-base rounded-DEFAULT" href="/galerie">Galerie</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all duration-200 px-sm py-base rounded-DEFAULT" href="/contact">Contact</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-primary hover:bg-surface-container-low p-base rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<a class="hidden md:inline-flex bg-primary-container text-on-primary-container font-label-md text-label-md px-md py-sm rounded-DEFAULT hover:opacity-90 transition-opacity" href="/doneaza">
+                Donează
+            </a>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-on-surface p-base rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-gutter py-xl flex flex-col gap-xl">
+<!-- Header Section -->
+<header class="text-center max-w-3xl mx-auto flex flex-col gap-sm items-center">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-widest bg-surface-container-high px-sm py-base rounded-full border border-secondary/20">Liturgic</span>
+<h1 class="font-display-lg text-display-lg md:text-display-lg text-primary">Programul Slujbelor</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">Vă așteptăm cu drag să participați la sfintele slujbe săvârșite în biserica noastră. Mai jos regăsiți programul săptămânal obișnuit și rânduielile speciale.</p>
+<a class="mt-md inline-flex items-center gap-xs font-label-md text-label-md text-primary hover:text-primary-container border border-primary px-md py-sm rounded-DEFAULT transition-colors" href="/docs/program-slujbe.pdf">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                Descarcă Programul (PDF)
+            </a>
+</header>
+<div class="bg-divider-pattern w-full"></div>
+<!-- Schedule Grid (Bento Style) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Primary Weekly Schedule -->
+<div class="lg:col-span-8 flex flex-col gap-md">
+<!-- Sunday Block -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-2 h-full bg-secondary"></div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-sm mb-md">
+<h2 class="font-headline-lg text-headline-lg md:text-headline-lg text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">church</span>
+                            Duminică
+                        </h2>
+<span class="font-label-md text-label-md bg-secondary/10 text-secondary-container px-sm py-base rounded-full">Ziua Domnului</span>
+</div>
+<ul class="flex flex-col gap-sm">
+<li class="flex items-baseline gap-md py-sm border-b border-surface-variant last:border-0">
+<span class="font-label-md text-label-md text-secondary w-16 shrink-0">08:30</span>
+<div class="flex-grow">
+<h3 class="font-headline-md text-body-lg text-on-surface">Utrenia</h3>
+</div>
+</li>
+<li class="flex items-baseline gap-md py-sm border-b border-surface-variant last:border-0">
+<span class="font-label-md text-label-md text-secondary w-16 shrink-0">10:00</span>
+<div class="flex-grow">
+<h3 class="font-headline-md text-body-lg text-on-surface font-semibold">Sfânta Liturghie</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">Urmată de predică și agapa frățească.</p>
+</div>
+</li>
+<li class="flex items-baseline gap-md py-sm border-b border-surface-variant last:border-0">
+<span class="font-label-md text-label-md text-secondary w-16 shrink-0">12:30</span>
+<div class="flex-grow">
+<h3 class="font-headline-md text-body-lg text-on-surface">Taina Sfântului Maslu</h3>
+<p class="font-body-md text-caption text-outline mt-base flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">calendar_month</span>
+                                    A 2-a și ultima duminică din lună
+                                </p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Saturday Block -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-sm mb-md border-b border-secondary/20 pb-sm">
+<h2 class="font-headline-lg text-headline-md md:text-headline-md text-primary flex items-center gap-sm">
+                            Sâmbătă
+                        </h2>
+</div>
+<ul class="flex flex-col gap-sm">
+<li class="flex items-baseline gap-md py-sm border-b border-surface-variant last:border-0">
+<span class="font-label-md text-label-md text-secondary w-16 shrink-0">09:00</span>
+<div class="flex-grow">
+<h3 class="font-headline-md text-body-lg text-on-surface">Parastas (Slujba pentru cei adormiți)</h3>
+</div>
+</li>
+<li class="flex items-baseline gap-md py-sm border-b border-surface-variant last:border-0">
+<span class="font-label-md text-label-md text-secondary w-16 shrink-0">18:00</span>
+<div class="flex-grow">
+<h3 class="font-headline-md text-body-lg text-on-surface">Vecernie și Spovedanie</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-base">Pregătirea pentru Sfânta Liturghie de duminică.</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Weekdays Block -->
+<div class="bg-surface-container-low border border-surface-variant rounded-lg p-md">
+<h2 class="font-headline-md text-body-lg text-on-surface mb-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">event_note</span>
+                        Zilele Săptămânii
+                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">În zilele de sărbătoare cu cruce roșie marcate în calendar, programul este similar cu cel de Duminică, începând cu ora 09:00 (Utrenia) și 10:00 (Sfânta Liturghie).</p>
+<div class="flex flex-col gap-xs">
+<div class="flex items-baseline gap-sm">
+<span class="font-label-md text-label-md text-outline w-20">Miercuri</span>
+<span class="font-body-md text-body-md text-on-surface">18:00 - Acatistul Mântuitorului Iisus Hristos</span>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-label-md text-label-md text-outline w-20">Vineri</span>
+<span class="font-body-md text-body-md text-on-surface">18:00 - Taina Sfântului Maslu (în posturi)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Info & Context -->
+<aside class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Spovedanie Card -->
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-md">
+<div class="w-10 h-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined" data-weight="fill">history_edu</span>
+</div>
+<h3 class="font-headline-md text-body-lg text-primary font-semibold mb-xs">Taina Spovedaniei</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Spovedania se face de regulă Sâmbăta după slujba Vecerniei sau în timpul săptămânii, cu programare prealabilă la părintele paroh.</p>
+<a class="inline-flex items-center gap-xs font-label-md text-label-md text-primary mt-sm hover:underline" href="/contact">
+                        Contactează preotul <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Fasting Periods Warning -->
+<div class="bg-surface-container border border-surface-variant rounded-lg p-md">
+<h3 class="font-headline-md text-body-md text-on-surface font-semibold mb-xs flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">info</span>
+                        Notă privind perioadele de post
+                    </h3>
+<p class="font-body-md text-body-md text-on-surface-variant">În perioadele marilor posturi (Postul Paștelui, Postul Crăciunului), programul slujbelor de seară (Pavecernița, Deniile) va fi anunțat separat în secțiunea de Anunțuri și la avizierul bisericii.</p>
+</div>
+<!-- Liturgical Image Accent -->
+<div class="rounded-lg overflow-hidden h-48 bg-surface-variant relative">
+<img alt="Interiorul luminos al unei biserici ortodoxe, cu detalii de frescă și lumânări aprinse. Atmosferă caldă, reverentă, culori aurii și roșu închis, reflectând estetica liturgică." class="object-cover w-full h-full opacity-80 mix-blend-multiply" data-alt="A warm, luminous interior view of an Orthodox church showcasing intricate fresco details and warmly glowing lit candles. The atmosphere is reverent and peaceful, utilizing a rich palette of gold, warm whites, and deep burgundy to reflect a traditional liturgical aesthetic. The lighting is soft and directional, emphasizing the architectural beauty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgXjebWnR_vK7BVaoTz7C-UewV--beJlngW2yqW3rgxcgJW6Q5wLwoqQkyGvvCW71XAGyWEF5NmgJs-7Rh01FBD3D01QClWng4LbcO1M5fFk38bRJpetqAJO2DoSl616i9cGTc4o0C_8o1YEU0TOd8uzIZpydlBtTSh5FwNljDHU-rt5C6lLyBegikNnBgkN7XYY-CbvvVjrqn55f8qazy0yaRn2gu3TnLh90ZR_8UYiL4bFFNjW82IJkG4tCApf7YU7kGEzDzJ3PV"/>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high dark:bg-inverse-surface full-width mt-xl border-t border-secondary/20 flat no shadows grid grid-cols-1 md:grid-cols-4 gap-lg w-full max-w-container-max mx-auto px-gutter py-xl">
+<!-- Brand/Copyright -->
+<div class="md:col-span-1 flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim">
+                Parohia Ortodoxă
+            </span>
+<p class="font-body-md text-body-md text-on-surface dark:text-inverse-on-surface text-caption text-on-surface-variant">
+                © 2024 Arhiepiscopia Ortodoxă. Toate drepturile rezervate.
+            </p>
+</div>
+<!-- Links -->
+<div class="md:col-span-3 flex flex-wrap gap-md md:justify-end items-start">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline Standard link hover with subtle color shift" href="/termeni">
+                Termeni și Condiții
+            </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline Standard link hover with subtle color shift" href="/confidentialitate">
+                Politică de Confidențialitate
+            </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline Standard link hover with subtle color shift" href="/donatii">
+                IBAN Donații
+            </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline Standard link hover with subtle color shift" href="/contact">
+                Contact Preot
+            </a>
+</div>
+</footer>
+</body></html>

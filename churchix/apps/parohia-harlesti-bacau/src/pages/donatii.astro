@@ -1,0 +1,28 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import GivingChannels from '@churchix/ui/components/GivingChannels.astro';
+
+const site = (await getEntry('site', 'config'))!.data;
+
+// Pick the featured project for the right column: first active campaign by `order`.
+const campaigns = (await getCollection('campaigns'))
+  .map((e) => e.data)
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const featured = campaigns.find((c) => c.status === 'active') ?? campaigns[0];
+const showCampaign = site.features.campaigns && Boolean(featured);
+---
+
+<BaseLayout site={site} title="Donează" path="/donatii">
+  <section class="cx-section">
+    <div class="cx-container">
+      <SectionHeading
+        as="h1"
+        title="Sprijină parohia"
+        subtitle="Orice dar, mic sau mare, ne ajută în lucrarea liturgică și social-filantropică."
+      />
+      <GivingChannels giving={site.giving} campaign={featured} showCampaign={showCampaign} />
+    </div>
+  </section>
+</BaseLayout>

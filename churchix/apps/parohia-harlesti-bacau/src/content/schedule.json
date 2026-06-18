@@ -1,0 +1,5 @@
+[
+  { "id": "liturghie-duminica", "label": "Sfânta Liturghie", "weekday": "sun", "time": "09:30", "cadence": "weekly", "order": 1 },
+  { "id": "vecernie-sambata", "label": "Vecernia", "weekday": "sat", "time": "17:00", "cadence": "weekly", "order": 2 },
+  { "id": "liturghie-sarbatori", "label": "Sfânta Liturghie (sărbători)", "time": "09:00", "cadence": "special", "order": 3, "note": "La praznicele împărătești și la hramul bisericii (30 ianuarie)" }
+]

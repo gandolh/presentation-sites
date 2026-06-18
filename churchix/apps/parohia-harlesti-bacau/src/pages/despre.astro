@@ -1,0 +1,89 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import Card from '@churchix/ui/components/Card.astro';
+import Icon from '@churchix/ui/components/Icon.astro';
+
+const site = (await getEntry('site', 'config'))!.data;
+
+// Leadership, ordered by `staff.order`. Optional collection — empty/absent is fine.
+const staff = (await getCollection('staff'))
+  .map((e) => e.data)
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+---
+
+<BaseLayout site={site} title="Despre parohie" path="/despre">
+  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
+    <div class="max-w-prose">
+      <SectionHeading as="h1" title="Despre parohia noastră" />
+
+      <article class="cx-prose font-body-lg text-body-lg text-on-surface">
+        <p>
+          Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău,
+          a fost ridicată în anul 1846. Parohia a primit statut de sine stătător în anul 2002,
+          fiind anterior filie a unei parohii învecinate.
+        </p>
+        <p>
+          În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia
+          aparține de Arhiepiscopia Romanului și Bacăului, Protopopiatul Bacău.
+        </p>
+        <h2>Hramul</h2>
+        <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
+      </article>
+    </div>
+
+    {staff.length > 0 && (
+      <div class="mt-xl">
+        <h2 class="font-headline-md text-headline-md text-primary mb-lg flex items-center gap-sm">
+          <Icon name="diversity_1" class="text-secondary" size={24} />
+          Conducerea parohiei
+        </h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-lg list-none p-0 m-0">
+          {staff.map((p) => (
+            <Card as="li" padding="lg" radius="lg">
+              <div class="flex items-start gap-md">
+                <span
+                  class="shrink-0 grid place-items-center w-12 h-12 rounded-full bg-primary-container/40 text-primary"
+                  aria-hidden="true"
+                >
+                  <Icon name="person" size={24} />
+                </span>
+                <div class="min-w-0">
+                  <p class="font-headline-md text-headline-md text-on-surface">{p.name}</p>
+                  <p class="font-label-md text-label-md text-primary">{p.role}</p>
+                  {p.bio && (
+                    <p class="mt-sm font-body-md text-body-md text-on-surface-variant">{p.bio}</p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </ul>
+      </div>
+    )}
+
+  </section>
+</BaseLayout>
+
+<style>
+  /* Readable, diacritic-safe prose — mirrors the announcement detail prose so the
+     two long-form pages feel identical. Generous line-height keeps stacked
+     diacritics (ă â î ș ț) legible; color comes from M3 tokens (re-skins per church). */
+  .cx-prose {
+    line-height: 1.75;
+  }
+  .cx-prose :global(p) {
+    margin: 0 0 1rem;
+  }
+  .cx-prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .cx-prose :global(h2) {
+    font-family: var(--font-headline-md);
+    font-size: var(--text-headline-md);
+    color: var(--primary);
+    line-height: 1.3;
+    margin: 1.75rem 0 0.75rem;
+  }
+</style>

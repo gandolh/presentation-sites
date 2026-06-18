@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import ErrorLayout from '@churchix/ui/layouts/ErrorLayout.astro';
+
+// Astro emits this as a static 404.html; the CDN/host serves it on unknown paths.
+const site = (await getEntry('site', 'config'))!.data;
+---
+
+<ErrorLayout site={site} path="/404" />

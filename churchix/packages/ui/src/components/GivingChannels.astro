@@ -1,0 +1,229 @@
+---
+/**
+ * `<GivingChannels>` — the Donează / Susține parohia body (Ecclesia Digitalis).
+ *
+ * Two-column, token-driven layout matching the reference screen:
+ *   - LEFT  (primary giving): online card CTA + IBAN transfer with copy-to-clipboard.
+ *   - RIGHT (secondary):      featured project (CampaignCard), Form 230, SMS.
+ *
+ * Every block renders only when the church configured it — no Churchix value is
+ * hardcoded, all per-church data arrives via the `giving`/`campaign` props, and all
+ * color/space/type goes through M3 tokens so it re-skins per church by token swap.
+ *
+ * PCI SAQ A: card giving is an OUTBOUND link to the hosted `cardUrl`. Amount presets
+ * are UI affordances that pass `?amount=` to that hosted page — card data never
+ * touches this code.
+ *
+ * @prop {SiteConfig['giving']} giving   The church's giving config (currency, ibans[],
+ *        cardUrl?, form230 + form230Url?, smsKeyword/smsNumber/smsAmount).
+ * @prop {Campaign} [campaign]           Optional featured campaign (a campaigns entry's
+ *        `.data`); rendered as `<CampaignCard variant="project">` in the right column.
+ * @prop {boolean} [showCampaign=true]   Gate for rendering the featured campaign block
+ *        (page passes `features.campaigns && a campaign exists`).
+ */
+import type { SiteConfig, campaignSchema } from '@churchix/schemas';
+import type { z } from 'zod';
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import Field from './Field.astro';
+import Badge from './Badge.astro';
+import CampaignCard from './CampaignCard.astro';
+import CopyIban from '../islands/CopyIban.tsx';
+import { withBase } from '../lib/base.ts';
+
+type Campaign = z.infer<typeof campaignSchema>;
+
+interface Props {
+  giving: SiteConfig['giving'];
+  campaign?: Campaign;
+  showCampaign?: boolean;
+}
+
+const { giving, campaign, showCampaign = true } = Astro.props;
+
+const currency = giving?.currency || 'RON';
+const ibans = giving?.ibans ?? [];
+
+// Amount presets (UI only) — passed to the hosted card page; never collected here.
+const presets = [50, 100, 200];
+
+// Build an outbound card URL, deep-linking an amount when one is chosen. The hosted
+// page (Stripe Payment Link / Netopia) ignores the param if it doesn't support it.
+const cardHref = (amount?: number) => {
+  if (!giving?.cardUrl) return undefined;
+  if (!amount) return giving.cardUrl;
+  try {
+    const u = new URL(giving.cardUrl);
+    u.searchParams.set('amount', String(amount));
+    return u.toString();
+  } catch {
+    return giving.cardUrl;
+  }
+};
+
+const hasCard = Boolean(giving?.cardUrl);
+const hasIbans = ibans.length > 0;
+// Show the "verify the beneficiary" band only when at least one account carries a
+// holder name to verify against — otherwise the reassurance has nothing to anchor to.
+const hasVerifiableHolder = ibans.some((acc) => Boolean(acc.holder));
+const hasForm230 = Boolean(giving?.form230);
+const hasSms = Boolean(giving?.smsKeyword && giving?.smsNumber);
+const hasCampaign = Boolean(showCampaign && campaign);
+const hasRightColumn = hasCampaign || hasForm230 || hasSms;
+---
+
+<div class:list={['grid grid-cols-1 gap-lg items-start', hasRightColumn && 'lg:grid-cols-3']}>
+  {/* ---------- LEFT: primary giving ---------- */}
+  <div class:list={['flex flex-col gap-lg', hasRightColumn && 'lg:col-span-2']}>
+    {hasCard && (
+      <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md shadow-sm">
+        <div class="flex items-center gap-sm">
+          <Icon name="payments" size={28} class="text-primary" />
+          <h2 class="font-headline-md text-headline-md text-primary">Donație online cu cardul</h2>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">
+          Donare rapidă și securizată, găzduită de procesatorul de plăți. Datele cardului nu trec prin acest site.
+        </p>
+
+        <div class="flex flex-wrap gap-sm mt-xs">
+          {presets.map((amount) => (
+            <Button
+              variant="secondary"
+              shape="rounded"
+              href={cardHref(amount)}
+              target="_blank"
+              rel="noopener"
+              class="flex-1 min-w-[120px] normal-case"
+            >
+              {amount} {currency}
+            </Button>
+          ))}
+          <div class="flex-1 min-w-[160px]">
+            <Field
+              label={`Altă sumă (${currency})`}
+              labelHidden
+              name="suma-personalizata"
+              type="number"
+              min="1"
+              inputmode="numeric"
+              placeholder={`Altă sumă (${currency})`}
+            />
+          </div>
+        </div>
+
+        <Button variant="primary" block shape="rounded" href={cardHref()} target="_blank" rel="noopener" trailingIcon="arrow_forward" class="mt-sm">
+          Donează Online
+        </Button>
+      </div>
+    )}
+
+    {hasIbans && (
+      <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md shadow-sm">
+        <div class="flex items-center gap-sm">
+          <Icon name="account_balance" size={28} class="text-secondary" />
+          <h2 class="font-headline-md text-headline-md text-primary">Transfer bancar (IBAN)</h2>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant">
+          Puteți transfera fonduri direct în conturile parohiei.
+        </p>
+
+        {hasVerifiableHolder && (
+          <p class="flex items-start gap-xs font-label-md text-label-md text-on-surface bg-secondary-container/40 border border-secondary/40 rounded-lg p-sm">
+            <Icon name="verified_user" size={18} class="text-primary shrink-0 mt-0.5" />
+            <span>
+              Înainte de a trimite, verificați că <strong class="font-bold">beneficiarul</strong> este
+              parohia noastră, exact cum apare mai jos.
+            </span>
+          </p>
+        )}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+          {ibans.map((acc) => (
+            <div class="bg-surface-container p-sm rounded-lg flex justify-between items-start gap-sm">
+              <div class="min-w-0 flex flex-col gap-1">
+                {acc.holder && (
+                  <div class="min-w-0">
+                    <div class="font-caption text-caption text-on-surface-variant uppercase tracking-wide">
+                      Beneficiar
+                    </div>
+                    <div class="font-body-md text-body-md text-on-surface font-bold break-words">
+                      {acc.holder}
+                    </div>
+                  </div>
+                )}
+                <div class="font-label-md text-label-md text-on-surface-variant uppercase">
+                  {acc.label} · {acc.currency}
+                </div>
+                <div class="font-body-lg text-body-lg text-on-surface font-medium select-all break-words tabular-nums tracking-wider">
+                  {acc.iban}
+                </div>
+                {acc.bic && (
+                  <div class="font-caption text-caption text-on-surface-variant">
+                    BIC/SWIFT: <span class="text-on-surface font-medium select-all">{acc.bic}</span>
+                  </div>
+                )}
+              </div>
+              <CopyIban
+                client:visible
+                iban={acc.iban}
+                label={acc.holder
+                  ? `Copiază IBAN ${acc.holder} (${acc.label})`
+                  : `Copiază IBAN ${acc.label}`}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  {/* ---------- RIGHT: secondary methods + featured project ---------- */}
+  {hasRightColumn && (
+    <div class="flex flex-col gap-lg">
+      {/* Screen-reader section anchor so H3s below have a valid parent H2 in the outline. */}
+      <h2 class="sr-only">Alte modalități de a sprijini parohia</h2>
+      {hasCampaign && campaign && (
+        <CampaignCard campaign={campaign} variant="project" />
+      )}
+
+      {hasForm230 && (
+        <div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10 pointer-events-none" aria-hidden="true">
+            <Icon name="description" size={120} />
+          </div>
+          <h3 class="font-headline-md text-headline-md text-primary relative z-10">Redirecționează 3,5%</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant relative z-10">
+            Puteți redirecționa până la 3,5% din impozitul pe venit către parohia noastră,
+            completând Formularul 230 — fără niciun cost suplimentar. Termen: ~25 mai.
+          </p>
+          {giving?.form230Url && (
+            <a
+              class="mt-2 inline-flex items-center gap-2 text-primary font-label-md text-label-md hover:underline relative z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded"
+              href={withBase(giving.form230Url)}
+            >
+              <Icon name="download" size={18} />
+              Descarcă Formularul
+            </a>
+          )}
+        </div>
+      )}
+
+      {hasSms && (
+        <div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm text-center">
+          <Icon name="sms" size={36} class="text-secondary mx-auto" />
+          <h3 class="font-headline-md text-headline-md text-primary">Donație prin SMS</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Trimite <span class="font-bold text-on-surface uppercase">{giving?.smsKeyword}</span>
+            la numărul <span class="font-bold text-on-surface">{giving?.smsNumber}</span>
+            {giving?.smsAmount && (
+              <> pentru a dona <span class="font-bold text-on-surface">{giving.smsAmount}</span></>
+            )}.
+          </p>
+          <p class="font-caption text-caption text-on-surface-variant mt-2">
+            *Suma este facturată lunar de operatorul dumneavoastră de telefonie.
+          </p>
+        </div>
+      )}
+    </div>
+  )}
+</div>

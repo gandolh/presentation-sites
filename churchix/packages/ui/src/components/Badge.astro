@@ -1,0 +1,70 @@
+---
+/**
+ * `<Badge>` — small category chip (Ecclesia Digitalis).
+ *
+ * Used for category tags such as "Liturgic", "Proiect Special", "Fixat". Muted tonal
+ * tints; all text is AA-safe (no gold text on light — gold appears only as a fill/border
+ * behind dark text). Re-skins via tokens.
+ *
+ * @prop {'neutral'|'secondary'|'primary'} [tone='neutral']
+ *        neutral   = `surface-container-high` fill + `on-surface-variant` text.
+ *        secondary = soft gold `secondary-container` fill + dark `on-secondary-container`
+ *                    text (AA-safe) + hairline `secondary/30` border.
+ *        primary   = `primary-container` fill + `on-primary-container` text.
+ * @prop {IconName} [icon]      Optional leading icon (Material Symbol, e.g. `push_pin`).
+ * @prop {boolean} [iconFill=false]  Filled glyph variant.
+ * @prop {'span'|'li'} [as='span']  Wrapper element.
+ * @prop {string} [class]  Extra classes appended last.
+ *
+ * @slot default — the badge label.
+ *
+ * @example
+ *   ---
+ *   import Badge from '@churchix/ui/components/Badge.astro';
+ *   ---
+ *   <Badge tone="secondary">Liturgic</Badge>
+ *   <Badge tone="primary" icon="push_pin">Fixat</Badge>
+ */
+import Icon from './Icon.astro';
+import type { IconName } from './icons.ts';
+
+interface Props {
+  tone?: 'neutral' | 'secondary' | 'primary';
+  icon?: IconName;
+  iconFill?: boolean;
+  as?: 'span' | 'li';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  tone = 'neutral',
+  icon,
+  iconFill = false,
+  as = 'span',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex items-center gap-1 font-label-md text-caption uppercase tracking-widest ' +
+  'px-sm py-base rounded-full whitespace-nowrap';
+
+const tones = {
+  neutral: 'bg-surface-container-high text-on-surface-variant border border-outline-variant/40',
+  // Gold as fill/border behind DARK on-secondary-container text — AA-safe.
+  secondary: 'bg-secondary-container/40 text-on-secondary-container border border-secondary/30',
+  // Tonal-tint chip (like `secondary`): pale `primary-container/40` fill behind the
+  // DARK `on-primary-container` text — AA-safe (~10:1). A FULL `primary-container`
+  // fill is mid-dark and fails with any readable text, so we tint it.
+  primary: 'bg-primary-container/40 text-on-primary-container border border-primary/20',
+} as const;
+
+const classes = [base, tones[tone], className];
+const Tag = as;
+---
+
+<Tag class:list={classes} {...rest}>
+  {icon && <Icon name={icon} fill={iconFill} size={14} />}
+  <slot />
+</Tag>

@@ -1,0 +1,46 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import ServiceSchedule from '@churchix/ui/components/ServiceSchedule.astro';
+import Badge from '@churchix/ui/components/Badge.astro';
+import Button from '@churchix/ui/components/Button.astro';
+import Divider from '@churchix/ui/components/Divider.astro';
+
+const site = (await getEntry('site', 'config'))!.data;
+const schedule = (await getCollection('schedule')).map((e) => e.data);
+
+// Optional programme PDF. The shared schema carries no field for it, so we read
+// an optional, conventional public path and hide the download button if the
+// church hasn't published one. (No schema change — see docs/corpus/log.md.)
+const programPdfUrl: string | undefined = undefined;
+---
+
+<BaseLayout site={site} title="Program slujbe" path="/program">
+  <div class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl flex flex-col gap-xl">
+    <header class="text-center max-w-3xl mx-auto flex flex-col items-center gap-sm">
+      <Badge tone="secondary">Liturgic</Badge>
+      <h1 class="font-display-lg text-display-lg text-primary">Programul Slujbelor</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">
+        Programul săptămânal obișnuit și rânduielile speciale.
+      </p>
+      {
+        programPdfUrl && (
+          <Button
+            variant="secondary"
+            shape="rounded"
+            size="sm"
+            href={programPdfUrl}
+            icon="download"
+            class="mt-md"
+          >
+            Descarcă Programul (PDF)
+          </Button>
+        )
+      }
+    </header>
+
+    <Divider />
+
+    <ServiceSchedule items={schedule} />
+  </div>
+</BaseLayout>

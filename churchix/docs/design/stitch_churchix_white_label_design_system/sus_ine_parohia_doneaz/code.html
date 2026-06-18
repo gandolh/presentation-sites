@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ro"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Donează - Parohia Ortodoxă</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e5e2dd",
+                        "on-primary-container": "#ee868f",
+                        "surface-container-highest": "#e5e2dd",
+                        "on-surface": "#1c1c19",
+                        "on-primary-fixed": "#40000e",
+                        "inverse-on-surface": "#f3f0eb",
+                        "background": "#fcf9f4",
+                        "secondary": "#785a02",
+                        "on-surface-variant": "#544243",
+                        "primary-container": "#6b1f2a",
+                        "surface-container": "#f0ede9",
+                        "on-secondary-fixed": "#251a00",
+                        "on-secondary-container": "#795a03",
+                        "secondary-fixed-dim": "#eac167",
+                        "surface-tint": "#99424c",
+                        "secondary-fixed": "#ffdf9d",
+                        "secondary-container": "#ffd578",
+                        "on-background": "#1c1c19",
+                        "tertiary-fixed-dim": "#d0c5b9",
+                        "on-tertiary-fixed-variant": "#4d463d",
+                        "primary-fixed-dim": "#ffb2b7",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#dac0c1",
+                        "tertiary-container": "#403930",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb2b7",
+                        "surface": "#fcf9f4",
+                        "on-tertiary-container": "#aca397",
+                        "tertiary-fixed": "#ece1d4",
+                        "surface-container-high": "#ebe8e3",
+                        "tertiary": "#29241c",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdadb",
+                        "inverse-surface": "#31302d",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#201b13",
+                        "on-primary": "#ffffff",
+                        "primary": "#4e0816",
+                        "surface-container-low": "#f6f3ee",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcdad5",
+                        "outline": "#877273",
+                        "on-primary-fixed-variant": "#7b2b36",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fcf9f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "0.25rem",
+                        "container-max": "1200px",
+                        "gutter": "1.5rem",
+                        "xs": "0.5rem",
+                        "md": "1.5rem",
+                        "sm": "1rem",
+                        "lg": "2rem",
+                        "xl": "4rem"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Source Serif 4"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Source Serif 4"],
+                        "headline-lg-mobile": ["Source Serif 4"],
+                        "headline-md": ["Source Serif 4"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface/95 backdrop-blur-md full-width top-0 sticky z-50 border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full max-w-container-max mx-auto px-gutter py-md">
+<div class="font-display-lg text-display-lg font-bold text-primary">
+                Parohia Ortodoxă
+            </div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low duration-200 px-3 py-2 rounded" href="#">Acasă</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low duration-200 px-3 py-2 rounded" href="#">Program</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low duration-200 px-3 py-2 rounded" href="#">Anunțuri</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low duration-200 px-3 py-2 rounded" href="#">Galerie</a>
+<a class="font-label-md text-label-md uppercase tracking-wide text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low duration-200 px-3 py-2 rounded" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-200">
+<span class="material-symbols-outlined">language</span>
+</button>
+<!-- Active action as we are on the donate page, styled differently -->
+<button class="font-label-md text-label-md uppercase tracking-wide bg-primary-container text-on-primary-container px-6 py-3 rounded-lg hover:opacity-90 transition-all opacity-80 scale-95">
+                    Donează
+                </button>
+</div>
+</div>
+</header>
+<main class="w-full max-w-container-max mx-auto px-gutter py-xl flex flex-col gap-xl">
+<!-- Hero Section -->
+<section class="text-center max-w-3xl mx-auto space-y-md">
+<h1 class="font-display-lg text-display-lg text-primary">Sprijiniți Lucrarea Bisericii</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                Contribuția dumneavoastră ajută la susținerea activităților pastorale, sociale și de construcție ale parohiei noastre. Fiecare dar este o binecuvântare.
+            </p>
+</section>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Primary Donation Methods -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Online Card Donation -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl">credit_card</span>
+<h2 class="font-headline-md text-headline-md text-primary">Donație Online prin Card</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Donare rapidă și sigură folosind un card bancar. Procesarea este securizată.
+                    </p>
+<div class="flex flex-wrap gap-sm mt-xs">
+<button class="flex-1 min-w-[120px] py-3 rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-secondary-container/10 transition-colors">50 RON</button>
+<button class="flex-1 min-w-[120px] py-3 rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-secondary-container/10 transition-colors">100 RON</button>
+<button class="flex-1 min-w-[120px] py-3 rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-secondary-container/10 transition-colors">200 RON</button>
+<div class="flex-1 min-w-[120px] relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">RON</span>
+<input class="w-full py-3 pl-12 pr-3 rounded-lg border border-outline-variant/50 bg-surface focus:border-secondary focus:ring-1 focus:ring-secondary transition-all font-body-md text-body-md text-on-surface placeholder-on-surface-variant/50" placeholder="Alte sume" type="number"/>
+</div>
+</div>
+<button class="w-full mt-sm py-4 rounded-lg bg-primary-container text-white font-label-md text-label-md uppercase tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-xs">
+<span>Donează Online</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<!-- IBAN Transfer Block -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-3xl">account_balance</span>
+<h2 class="font-headline-md text-headline-md text-primary">Transfer Bancar (IBAN)</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Puteți transfera fonduri direct în conturile parohiei. Beneficiar: Parohia Ortodoxă.
+                    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- RON -->
+<div class="bg-surface-container p-sm rounded-lg flex justify-between items-center group">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase">Cont RON</div>
+<div class="font-body-lg text-body-lg text-on-surface font-medium select-all">RO98 BACX 0000 0001 2345 6789</div>
+</div>
+<button class="p-2 text-primary hover:bg-surface-variant rounded-full transition-colors" onclick="navigator.clipboard.writeText('RO98 BACX 0000 0001 2345 6789')" title="Copiază IBAN">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+<!-- EUR -->
+<div class="bg-surface-container p-sm rounded-lg flex justify-between items-center group">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase">Cont EUR</div>
+<div class="font-body-lg text-body-lg text-on-surface font-medium select-all">RO45 BACX 0000 0001 2345 6790</div>
+</div>
+<button class="p-2 text-primary hover:bg-surface-variant rounded-full transition-colors" onclick="navigator.clipboard.writeText('RO45 BACX 0000 0001 2345 6790')" title="Copiază IBAN">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+<!-- USD -->
+<div class="bg-surface-container p-sm rounded-lg flex justify-between items-center group md:col-span-2">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase">Cont USD</div>
+<div class="font-body-lg text-body-lg text-on-surface font-medium select-all">RO12 BACX 0000 0001 2345 6791</div>
+</div>
+<button class="p-2 text-primary hover:bg-surface-variant rounded-full transition-colors" onclick="navigator.clipboard.writeText('RO12 BACX 0000 0001 2345 6791')" title="Copiază IBAN">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Secondary Methods & Projects -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Specific Project Goal Card -->
+<div class="bg-surface-container-lowest border-b-2 border-secondary rounded-xl overflow-hidden shadow-sm">
+<div class="h-48 bg-surface-variant w-full bg-cover bg-center" data-alt="Interior view of a traditional Orthodox church featuring intricate frescoes, golden iconography, and warm ambient light. The scene captures the high vaulted ceilings and scaffolding indicating ongoing restoration work. The atmosphere is serene, reverent, and deeply historical, reflecting a modern architectural approach to ancient traditions. The color palette emphasizes warm golds, deep burgundies, and muted earthy tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBW-GkRV7w8tPo8PRW_i7VAl8IiKPMTLnXxmBe47GSPrRho0BNkZFPuKnTIAGaYq08nNi2WM6eAx3WI4wRz5uYDVpy_QR7BG7bCxAC-4JKVk8mgsYMNg3Kx-S9fYvSlkbCVHEG8RST4uoYI4SRtOm-7LNh6B4jrrBx9JkZ1lZRL0SewhyoCIXx69ybT1pJIPDoa_dRvmI-i7rnKFtkOhqkz0ntcWEeIhF71oIC3d1hJdyHvwQVZR-3ol5JhLU9W8Ph-jzlvsZwrOwQM')"></div>
+<div class="p-md flex flex-col gap-sm">
+<div class="inline-block px-2 py-1 bg-surface-variant text-on-surface-variant font-caption text-caption rounded w-max">Proiect Special</div>
+<h3 class="font-headline-md text-headline-md text-primary">Pictură Biserică</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Susțineți finalizarea picturii interioare a bisericii noastre, o moștenire pentru generațiile viitoare.</p>
+<div class="mt-xs">
+<div class="flex justify-between font-label-md text-label-md mb-2">
+<span class="text-on-surface-variant">Stadiu</span>
+<span class="text-secondary font-bold">65%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[65%] rounded-full"></div>
+</div>
+<div class="mt-2 font-caption text-caption text-on-surface-variant text-right">
+                                Obiectiv: 50.000 EUR
+                            </div>
+</div>
+<button class="mt-xs w-full py-2 border-2 border-secondary text-secondary font-label-md text-label-md uppercase tracking-wide rounded hover:bg-secondary hover:text-white transition-colors">
+                            Susține Proiectul
+                        </button>
+</div>
+</div>
+<!-- Form 230 Block -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">description</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary relative z-10">Redirecționează 3.5%</h3>
+<p class="font-body-sm text-body-md text-on-surface-variant relative z-10">
+                        Puteți redirecționa 3.5% din impozitul pe venit către parohia noastră completând Formularul 230, fără niciun cost suplimentar.
+                    </p>
+<a class="mt-2 inline-flex items-center gap-2 text-primary font-label-md text-label-md hover:underline relative z-10" href="#">
+<span class="material-symbols-outlined">download</span>
+                        Descarcă Formularul
+                    </a>
+</div>
+<!-- SMS Donation -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm text-center">
+<span class="material-symbols-outlined text-secondary text-4xl mx-auto">sms</span>
+<h3 class="font-headline-md text-headline-md text-primary">Donație prin SMS</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Trimite mesaj la <span class="font-bold text-on-surface">88xx</span> cu textul <span class="font-bold text-on-surface uppercase">BISERICA</span> pentru a dona <span class="font-bold text-secondary">2 EUR</span> lunar.
+                    </p>
+<p class="font-caption text-caption text-on-surface-variant mt-2">
+                        *Suma este facturată lunar de operatorul dumneavoastră de telefonie.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high w-full mt-xl border-t border-secondary/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg w-full max-w-container-max mx-auto px-gutter py-xl">
+<div class="md:col-span-1 flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md text-primary">
+                    Parohia Ortodoxă
+                </span>
+<p class="font-body-md text-body-md text-on-surface">
+                    © 2024 Arhiepiscopia Ortodoxă.<br/>Toate drepturile rezervate.
+                </p>
+</div>
+<div class="md:col-span-3 flex flex-wrap gap-lg justify-end items-end">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors underline" href="#">Termeni și Condiții</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors underline" href="#">Politică de Confidențialitate</a>
+<a class="font-label-md text-label-md text-secondary font-semibold hover:text-primary transition-colors underline" href="#">IBAN Donații</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors underline" href="#">Contact Preot</a>
+</div>
+</div>
+</footer>
+</body></html>

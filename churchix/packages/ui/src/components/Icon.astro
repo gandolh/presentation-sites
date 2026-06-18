@@ -1,0 +1,106 @@
+---
+/**
+ * `<Icon>` — Material Symbols Outlined, rendered as inline SVG.
+ *
+ * Self-hosted, zero-runtime: the glyph path data is bundled at build time from
+ * `./icons.ts` (extracted from `@material-symbols/svg-400`, Apache-2.0). There is
+ * **no** request to `fonts.googleapis.com` and **no** icon webfont — so no FOUT,
+ * no extra network round-trip, and unused icons tree-shake out of each app build.
+ *
+ * Use this everywhere the design screens show `<span class="material-symbols-outlined">`.
+ *
+ * @example Basic
+ *   ---
+ *   import Icon from '@churchix/ui/components/Icon.astro';
+ *   ---
+ *   <Icon name="church" />
+ *
+ * @example Filled accent glyph at a custom size, marked decorative
+ *   <Icon name="campaign" fill size={20} class="text-secondary" />
+ *
+ * @example Meaningful icon (gets an accessible label + img role)
+ *   <Icon name="schedule" label="Program slujbe" />
+ *
+ * @prop {IconName} name      Required. One of the inventory glyphs (see `ICON_NAMES`):
+ *                            church · schedule · campaign · push_pin · event · live_tv ·
+ *                            language · menu · account_balance · content_copy · description ·
+ *                            download · sms · payments · person · candle · send ·
+ *                            arrow_forward · diversity_1 · calendar_month.
+ * @prop {boolean} [fill=false]  Use the filled variant (mirrors the `.icon-fill` /
+ *                               `font-variation-settings: 'FILL' 1` behavior in the screens).
+ * @prop {number|string} [size="1em"]  Width/height. A bare number is treated as px;
+ *                               the default `1em` makes the icon scale with surrounding text.
+ * @prop {100|200|300|400|500|600|700} [weight=400]  Optical stroke weight, applied as the
+ *                               SVG `stroke-width` hint for tooling; the bundled path geometry
+ *                               is the 400 master (matches the design's restrained line weight).
+ * @prop {string} [label]     Accessible name. When set, the icon is exposed as `role="img"`
+ *                            with this `aria-label`; when omitted, it is `aria-hidden` and
+ *                            decorative (the common case — icons usually sit next to text).
+ * @prop {string} [class]     Extra classes; `color` is inherited via `fill="currentColor"`,
+ *                            so the icon takes the surrounding text color by default.
+ *
+ * Color: inherits `currentColor`. To tint (e.g. the sparing gold accent), set `color`
+ * on the icon or a wrapper — do not hardcode hex here.
+ */
+import { ICONS, type IconName } from './icons.ts';
+
+interface Props {
+  name: IconName;
+  fill?: boolean;
+  size?: number | string;
+  weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+  label?: string;
+  class?: string;
+  [key: `data-${string}`]: string | undefined;
+}
+
+const {
+  name,
+  fill = false,
+  size = '1em',
+  weight = 400,
+  label,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const glyph = ICONS[name];
+if (!glyph) {
+  throw new Error(
+    `<Icon>: unknown icon "${name}". Known icons: ${Object.keys(ICONS).join(', ')}`,
+  );
+}
+
+const d = fill ? glyph.f : glyph.o;
+const dim = typeof size === 'number' ? `${size}px` : size;
+
+// Accessibility: labeled icons are images; unlabeled icons are decorative.
+const a11y = label
+  ? { role: 'img', 'aria-label': label }
+  : { 'aria-hidden': 'true', focusable: 'false' };
+---
+
+<svg
+  class:list={['cx-icon', className]}
+  width={dim}
+  height={dim}
+  viewBox="0 -960 960 960"
+  fill="currentColor"
+  data-icon={name}
+  data-fill={fill ? '' : undefined}
+  data-weight={weight}
+  xmlns="http://www.w3.org/2000/svg"
+  {...a11y}
+  {...rest}
+>
+  <path d={d}></path>
+</svg>
+
+<style>
+  .cx-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: -0.125em; /* optical baseline alignment next to text */
+    line-height: 1;
+  }
+</style>

@@ -1,0 +1,140 @@
+---
+/**
+ * `<Field>` — labeled form control wrapper for input / textarea / select.
+ *
+ * Light `outline-variant/50` border, transparent bg; on focus the border + ring
+ * transition to `secondary` (HARD spec requirement). Label is associated to the
+ * control via `for`/`id`. Re-skins via tokens.
+ *
+ * @prop {'input'|'textarea'|'select'} [as='input']  Which control to render.
+ * @prop {string} label          Visible label (`text-label-md`). Required for a11y.
+ * @prop {string} name           Form field name; also seeds the generated `id`.
+ * @prop {string} [id]           Explicit id (defaults to a slug of `name`).
+ * @prop {string} [type='text']  Input type (text/email/tel/number/...). Ignored for textarea/select.
+ * @prop {boolean} [required=false]  Marks required (adds `*` + `aria-required`).
+ * @prop {string} [placeholder]  Placeholder text (input/textarea).
+ * @prop {string|number} [value] Initial value.
+ * @prop {number} [rows=4]       Textarea rows.
+ * @prop {string} [hint]         Helper text below the control (`text-caption`).
+ * @prop {string} [error]        Error message; turns border/ring/error text red and sets `aria-invalid`.
+ * @prop {boolean} [labelHidden=false]  Visually hide the label (still read by AT).
+ * @prop {string} [class]        Extra classes on the control.
+ * @prop {...} ...rest           Passthrough to the control (autocomplete, min, max, pattern, step...).
+ *
+ * @slot default — `<select>` `<option>`s when `as="select"`.
+ *
+ * @example
+ *   ---
+ *   import Field from '@churchix/ui/components/Field.astro';
+ *   ---
+ *   <Field label="Nume complet" name="nume" required />
+ *   <Field as="textarea" label="Pomelnic (cei vii)" name="pomelnic_vii" rows={5} />
+ *   <Field as="select" label="Tip" name="tip">
+ *     <option value="vii">Cei vii</option>
+ *     <option value="adormiti">Cei adormiți</option>
+ *   </Field>
+ */
+interface Props {
+  as?: 'input' | 'textarea' | 'select';
+  label: string;
+  name: string;
+  id?: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  value?: string | number;
+  rows?: number;
+  hint?: string;
+  error?: string;
+  labelHidden?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  as = 'input',
+  label,
+  name,
+  id,
+  type = 'text',
+  required = false,
+  placeholder,
+  value,
+  rows = 4,
+  hint,
+  error,
+  labelHidden = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const fieldId = id ?? `f-${name}`.replace(/[^a-zA-Z0-9_-]/g, '-');
+const hintId = hint ? `${fieldId}-hint` : undefined;
+const errorId = error ? `${fieldId}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+
+const controlBase =
+  'w-full px-3 py-3 rounded bg-transparent font-body-md text-body-md text-on-surface ' +
+  'placeholder:text-on-surface-variant/75 transition-colors duration-200 ' +
+  'focus:outline-none focus:ring-2 focus:ring-primary focus:border-secondary';
+
+const borderClass = error
+  ? 'border border-error focus:ring-error focus:border-error'
+  : 'border border-outline-variant/50';
+
+const controlClasses = [controlBase, borderClass, className];
+
+const commonProps = {
+  id: fieldId,
+  name,
+  required: required || undefined,
+  'aria-required': required ? 'true' : undefined,
+  'aria-invalid': error ? 'true' : undefined,
+  'aria-describedby': describedBy,
+};
+---
+
+<div class="flex flex-col gap-1">
+  <label
+    for={fieldId}
+    class:list={[
+      'font-label-md text-label-md text-on-surface',
+      labelHidden && 'sr-only',
+    ]}
+  >
+    {label}
+    {required && <span class="text-error" aria-hidden="true"> *</span>}
+  </label>
+
+  {
+    as === 'textarea' ? (
+      <textarea
+        class:list={controlClasses}
+        placeholder={placeholder}
+        rows={rows}
+        {...commonProps}
+        {...rest}
+      >{value}</textarea>
+    ) : as === 'select' ? (
+      <select class:list={controlClasses} {...commonProps} {...rest}>
+        <slot />
+      </select>
+    ) : (
+      <input
+        class:list={controlClasses}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        {...commonProps}
+        {...rest}
+      />
+    )
+  }
+
+  {hint && !error && (
+    <p id={hintId} class="font-caption text-caption text-on-surface-variant">{hint}</p>
+  )}
+  {error && (
+    <p id={errorId} class="font-caption text-caption text-error">{error}</p>
+  )}
+</div>

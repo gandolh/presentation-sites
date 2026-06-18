@@ -1,0 +1,8 @@
+/*
+ * Global Tailwind entry for this church app (Tailwind v4, build-time — NOT the CDN).
+ * Pulls in Tailwind itself plus the shared @churchix/ui M3 theme (the single source of
+ * the Ecclesia Digitalis tokens). The `@source` inside theme.css ensures classes used
+ * only in the @churchix/ui library are scanned and not purged.
+ */
+@import "tailwindcss";
+@import "@churchix/ui/styles/theme.css";

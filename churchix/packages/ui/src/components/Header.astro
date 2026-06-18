@@ -1,0 +1,177 @@
+---
+/**
+ * `<Header>` — sticky white-label site chrome (Ecclesia Digitalis).
+ *
+ * Glass header: `bg-surface/95 backdrop-blur-md`, hairline bottom outline.
+ * Wordmark in display serif (`font-display-lg text-primary`), uppercase
+ * desktop nav with a gold underline on the active item, a language switcher
+ * (rendered only when the church ships more than one locale), and a primary
+ * **Donează** CTA (gated on `site.features.giving`). The interactive mobile
+ * sheet lives in the `MobileNav` island (hydrated `client:load`).
+ *
+ * Everything is token-driven — no church name, color, or hex is hardcoded, so
+ * the header re-skins per church by token swap alone.
+ */
+import MobileNav from '../islands/MobileNav.tsx';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { withBase, stripBase } from '../lib/base.ts';
+import type { SiteConfig } from '@churchix/schemas';
+
+interface Props {
+  site: SiteConfig;
+  path?: string;
+}
+
+const { site, path = '/' } = Astro.props;
+const nav = site.nav ?? [];
+const wordmark = site.shortName ?? site.name;
+
+// `path` arrives with the Astro base prefix (e.g. /parish/despre); nav hrefs are
+// authored root-relative (/despre). Compare them on the same, base-stripped axis.
+const relPath = stripBase(path);
+const isActive = (href: string) =>
+  href === '/' ? relPath === '/' : relPath === href || relPath.startsWith(href + '/');
+
+// Language switcher only when the church actually ships more than one locale.
+const locales = site.locales ?? [];
+const defaultLocale = site.defaultLocale ?? locales[0] ?? 'ro';
+const showLangSwitcher = locales.length > 1;
+const localeNames: Record<string, string> = {
+  ro: 'Română',
+  en: 'English',
+  it: 'Italiano',
+  es: 'Español',
+  de: 'Deutsch',
+};
+
+const showGiving = site.features.giving;
+
+const navLinkBase =
+  'font-label-md text-label-md uppercase transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
+const navLinkActive = 'text-primary border-b-2 border-secondary font-bold';
+const navLinkIdle =
+  'text-on-surface-variant hover:text-primary hover:bg-surface-container-low';
+---
+
+<header
+  class="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant/30"
+>
+  <div
+    class="flex justify-between items-center w-full max-w-container-max mx-auto px-sm md:px-gutter py-sm gap-sm md:gap-md"
+  >
+    <a
+      class="flex items-center gap-xs font-display-lg text-headline-md font-bold text-primary no-underline min-w-0 md:shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      href={withBase('/')}
+    >
+      {site.brand.logo && <img src={withBase(site.brand.logo)} alt="" width="32" height="32" decoding="async" class="h-8 w-8 object-contain shrink-0" />}
+      <span class="truncate md:overflow-visible">{wordmark}</span>
+    </a>
+
+    <nav class="hidden md:flex min-w-0 items-center flex-nowrap gap-x-sm gap-y-xs justify-end" aria-label="Principal">
+      {nav.map((item) => (
+        <a
+          href={withBase(item.href)}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+          class:list={[navLinkBase, isActive(item.href) ? navLinkActive : navLinkIdle]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-md shrink-0">
+      {showLangSwitcher && (
+        <div class="hidden md:block relative cx-lang">
+          <button
+            type="button"
+            class="flex items-center justify-center p-2.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-label="Schimbă limba"
+            data-cx-lang-toggle
+          >
+            <Icon name="language" size={22} />
+          </button>
+          <ul
+            class="absolute right-0 top-[calc(100%+0.5rem)] hidden min-w-[10rem] flex-col rounded-lg border border-outline-variant/30 bg-surface-container-low p-1 shadow-md z-50"
+            role="menu"
+            data-cx-lang-menu
+          >
+            {locales.map((loc) => (
+              <li role="none">
+                <a
+                  role="menuitem"
+                  hreflang={loc}
+                  href={loc === defaultLocale ? withBase('/') : withBase(`/${loc}/`)}
+                  aria-current={loc === defaultLocale ? 'true' : undefined}
+                  class:list={[
+                    'block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors hover:bg-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset',
+                    loc === defaultLocale ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-primary',
+                  ]}
+                >
+                  {localeNames[loc] ?? loc.toUpperCase()}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {showGiving && (
+        <Button variant="primary" shape="pill" size="sm" href={withBase('/donatii')} class="hidden sm:inline-flex">
+          Donează
+        </Button>
+      )}
+
+      <div class="md:hidden">
+        <MobileNav
+          client:load
+          nav={nav.map((item) => ({ ...item, href: withBase(item.href) }))}
+          activePath={path}
+          givingHref={showGiving ? withBase('/donatii') : undefined}
+          givingLabel={showGiving ? 'Donează' : undefined}
+          locales={showLangSwitcher ? locales : undefined}
+          defaultLocale={defaultLocale}
+          localeLabel="Schimbă limba"
+        />
+      </div>
+    </div>
+  </div>
+</header>
+
+{showLangSwitcher && (
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('.cx-lang');
+      if (!root) return;
+      const toggle = root.querySelector('[data-cx-lang-toggle]');
+      const menu = root.querySelector('[data-cx-lang-menu]');
+      if (!toggle || !menu) return;
+      const open = () => {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+        toggle.setAttribute('aria-expanded', 'true');
+      };
+      const close = () => {
+        menu.classList.add('hidden');
+        menu.classList.remove('flex');
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+      const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isOpen() ? close() : open();
+      });
+      document.addEventListener('click', (e) => {
+        if (isOpen() && !root.contains(e.target)) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen()) {
+          close();
+          toggle.focus();
+        }
+      });
+    })();
+  </script>
+)}

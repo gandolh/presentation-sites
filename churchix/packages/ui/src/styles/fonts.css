@@ -1,0 +1,129 @@
+/*
+ * Churchix self-hosted typography — Source Serif 4 (headings) + Inter (body).
+ *
+ * WHY THIS FILE EXISTS
+ *  - The design screens load these from fonts.googleapis.com. We MUST NOT ship that
+ *    runtime dependency (privacy, FOUT, GDPR, offline). Instead we vendor the woff2
+ *    from `@fontsource-variable/*` and serve them from each church's own origin.
+ *  - We declare the families as the *plain* names "Source Serif 4" / "Inter" (NOT the
+ *    fontsource "... Variable" alias) so they line up 1:1 with the `--font-heading` /
+ *    `--font-body` tokens in tokens.css and the per-church `brand.fontHeading` /
+ *    `brand.fontBody` override path keeps working untouched.
+ *
+ * SUBSETS: latin + latin-ext. latin-ext (U+0100–02BA …) covers the Romanian glyphs
+ * that live outside Latin-1 — ă (U+0103), ș (U+0219), ț (U+021B) — while â/î and the
+ * German umlauts ä ö ü ß sit in the base latin subset. Together: full RO + DE coverage.
+ *
+ * AXES: Source Serif 4 is a variable font on the optical-size axis (opsz 8..60); weights
+ * 400/600/700 are all reachable from the single variable face. Inter is the weight-axis
+ * variable face (400/500 used by the design). `font-display: swap` everywhere → text is
+ * visible immediately with the fallback, no invisible-text flash.
+ *
+ * WIRING (downstream items 02 / 14): import this once, app-wide, alongside tokens.css —
+ * e.g. add `@import './fonts.css';` to the top of tokens.css, or import
+ * `@churchix/ui/styles/fonts.css` from BaseLayout. It is intentionally NOT auto-imported
+ * here to avoid colliding with item 02's ownership of tokens.css / BaseLayout.
+ */
+
+/* ---------------------------------------------------------------- Source Serif 4 */
+/* latin */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('@fontsource-variable/source-serif-4/files/source-serif-4-latin-opsz-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext (Romanian ă ș ț live here) */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('@fontsource-variable/source-serif-4/files/source-serif-4-latin-ext-opsz-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------------------------------------------------------- Cardo (headings)
+ * The default Ecclesia Digitalis heading face: an old-style serif drawn for
+ * classical/biblical scholarship (Latin/Greek/Hebrew), so it reads as ecclesiastical
+ * and dignified while staying legible at heading sizes. Static 400 + 700 only (no
+ * variable axis, no 600 file — the 600-weight headline tokens resolve to the 700 face).
+ * latin + latin-ext subsets give full RO (ă ș ț) + DE coverage; self-hosted, swap. */
+/* latin — 400 */
+@font-face {
+  font-family: 'Cardo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/cardo/files/cardo-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+/* latin-ext — 400 (Romanian ă ș ț live here) */
+@font-face {
+  font-family: 'Cardo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/cardo/files/cardo-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin — 700 (covers the 600-weight headline tokens too) */
+@font-face {
+  font-family: 'Cardo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600 700;
+  src: url('@fontsource/cardo/files/cardo-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+/* latin-ext — 700 */
+@font-face {
+  font-family: 'Cardo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600 700;
+  src: url('@fontsource/cardo/files/cardo-latin-ext-700-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------------------------------------------------------------------- Inter */
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext (Romanian ă ș ț live here) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}

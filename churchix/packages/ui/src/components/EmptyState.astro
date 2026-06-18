@@ -1,0 +1,73 @@
+---
+/**
+ * `<EmptyState>` — placeholder for empty lists/sections (Ecclesia Digitalis).
+ *
+ * Centered icon + title + message, with an optional CTA slot. Re-skins via tokens.
+ *
+ * @prop {IconName} [icon='calendar_month']  Leading glyph (Material Symbol).
+ * @prop {string} title         Heading line (`text-headline-md`, burgundy).
+ * @prop {string} [message]     Supporting copy (`text-body-md`, muted).
+ * @prop {boolean} [iconFill=false]  Filled glyph variant.
+ * @prop {'h1'|'h2'|'h3'} [as='h3']  Heading level. Defaults to `h3` (the common
+ *        case: an empty list nested under a section h2). Set `as="h1"` when the
+ *        empty state IS the page's primary heading (e.g. a 404/disabled page) so
+ *        the document keeps exactly one h1 and a valid heading order.
+ * @prop {string} [class]       Extra classes appended last.
+ *
+ * @slot default — optional message markup (overrides `message` prop if both given).
+ * @slot cta     — optional call-to-action (e.g. a `<Button>`).
+ *
+ * @example
+ *   ---
+ *   import EmptyState from '@churchix/ui/components/EmptyState.astro';
+ *   import Button from '@churchix/ui/components/Button.astro';
+ *   ---
+ *   <EmptyState icon="campaign" title="Nicio campanie activă"
+ *               message="Reveniți curând pentru noi proiecte.">
+ *     <Button slot="cta" href="/doneaza">Susține parohia</Button>
+ *   </EmptyState>
+ */
+import Icon from './Icon.astro';
+import type { IconName } from './icons.ts';
+
+interface Props {
+  icon?: IconName;
+  title: string;
+  message?: string;
+  iconFill?: boolean;
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  icon = 'calendar_month',
+  title,
+  message,
+  iconFill = false,
+  as: HeadingTag = 'h3',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'flex flex-col items-center text-center gap-sm p-lg rounded-xl ' +
+    'border border-dashed border-outline-variant/50 bg-surface-container-low/40',
+  className,
+];
+---
+
+<div class:list={classes} {...rest}>
+  <span class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant">
+    <Icon name={icon} fill={iconFill} size={24} />
+  </span>
+  <HeadingTag class="font-headline-md text-headline-md text-primary">{title}</HeadingTag>
+  {
+    Astro.slots.has('default') ? (
+      <div class="font-body-md text-body-md text-on-surface-variant max-w-[28rem]"><slot /></div>
+    ) : (
+      message && <p class="font-body-md text-body-md text-on-surface-variant max-w-[28rem]">{message}</p>
+    )
+  }
+  {Astro.slots.has('cta') && <div class="mt-xs"><slot name="cta" /></div>}
+</div>

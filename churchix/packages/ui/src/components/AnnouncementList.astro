@@ -1,0 +1,128 @@
+---
+/**
+ * `<AnnouncementList>` — the parish announcements grid (Ecclesia Digitalis).
+ *
+ * Renders announcements as the design's "Anunțuri Recente" cards:
+ *  - **Pinned** items get the gold bottom-border (`Card featured`) + a "Fixat"
+ *    `Badge` (`tone="primary"` `icon="push_pin"`) and span 2 columns on desktop
+ *    so they read as the lead item.
+ *  - **Regular** items show a dated `event` chip, the title, and a `line-clamp-2`
+ *    summary. The whole card links to the detail page.
+ *
+ * Ordering is **pinned-first, then date-descending** (preserved from the data-only
+ * version). Dates render with `Intl.DateTimeFormat` in the supplied `locale`
+ * (defaults `ro-RO`) — diacritic-safe month names.
+ *
+ * No per-church values: gold is the `secondary` token, surfaces/outlines are M3
+ * tokens, so the list re-skins by token swap alone (white-label discipline).
+ *
+ * @prop {AnnouncementItem[]} items   `{ slug, title, date, summary?, pinned? }`.
+ * @prop {string} [basePath='/anunturi']  Link base for each detail page.
+ * @prop {string} [locale='ro-RO']   BCP-47 locale for date formatting.
+ * @prop {string} [readMoreLabel='Citește mai mult']  Accessible link affordance.
+ * @prop {string} [class]            Extra classes appended to the grid.
+ *
+ * The caller renders the empty state (so it can supply a localized CTA). When
+ * `items` is empty this component renders nothing.
+ *
+ * @example
+ *   ---
+ *   import AnnouncementList from '@churchix/ui/components/AnnouncementList.astro';
+ *   ---
+ *   <AnnouncementList items={anunturi} />
+ */
+import Card from './Card.astro';
+import Badge from './Badge.astro';
+import Icon from './Icon.astro';
+import { withBase } from '../lib/base.ts';
+
+interface AnnouncementItem {
+  slug: string;
+  title: string;
+  date: Date;
+  summary?: string;
+  pinned?: boolean;
+}
+
+interface Props {
+  items: AnnouncementItem[];
+  basePath?: string;
+  locale?: string;
+  readMoreLabel?: string;
+  class?: string;
+}
+
+const {
+  items,
+  basePath = '/anunturi',
+  locale = 'ro-RO',
+  readMoreLabel = 'Citește mai mult',
+  class: className,
+} = Astro.props;
+
+const fmt = new Intl.DateTimeFormat(locale, {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+// Pinned-first, then date-descending (preserved ordering).
+const sorted = [...items].sort((a, b) => {
+  if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+  return b.date.getTime() - a.date.getTime();
+});
+---
+
+{
+  sorted.length > 0 && (
+    <ul
+      class:list={[
+        'grid grid-cols-1 lg:grid-cols-2 gap-md list-none p-0 m-0',
+        className,
+      ]}
+    >
+      {sorted.map((a) => (
+        <Card
+          as="li"
+          href={withBase(`${basePath}/${a.slug}`)}
+          radius="lg"
+          padding="lg"
+          featured={a.pinned}
+          interactive
+          class:list={[
+            'group flex flex-col gap-xs',
+            a.pinned && 'lg:col-span-2',
+          ]}
+        >
+          {a.pinned ? (
+            <Badge tone="primary" icon="push_pin" class="self-start mb-xs">
+              Fixat
+            </Badge>
+          ) : (
+            <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
+              <Icon name="event" size={14} />
+              <time datetime={a.date.toISOString()}>{fmt.format(a.date)}</time>
+            </span>
+          )}
+
+          <h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-balance">
+            {a.title}
+          </h2>
+
+          {a.summary && (
+            <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
+              {a.summary}
+            </p>
+          )}
+
+          {a.pinned && (
+            <span class="mt-xs inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+              {readMoreLabel}
+              <Icon name="arrow_forward" size={18} />
+            </span>
+          )}
+        </Card>
+      ))}
+    </ul>
+  )
+}

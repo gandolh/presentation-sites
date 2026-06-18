@@ -1,0 +1,56 @@
+[
+  {
+    "id": "config",
+    "name": "Parohia Ortodoxă „Sfinții Trei Ierarhi” – Hârlești",
+    "shortName": "Parohia Hârlești",
+    "tradition": "orthodox",
+    "tagline": "Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău",
+    "locales": ["ro"],
+    "defaultLocale": "ro",
+    "url": "https://parohia-harlesti.ro",
+    "brand": {
+      "primary": "#6b1f2a",
+      "secondary": "#c8a24b",
+      "surface": "#faf6ef",
+      "onPrimary": "#ffffff",
+      "fontHeading": "\"Source Serif 4\", Georgia, serif",
+      "fontBody": "\"Inter\", system-ui, sans-serif",
+      "radius": "0.5rem",
+      "logo": "/logo.svg",
+      "favicon": "/favicon.svg"
+    },
+    "nav": [
+      { "label": "Acasă", "href": "/" },
+      { "label": "Despre", "href": "/despre" },
+      { "label": "Program", "href": "/program" },
+      { "label": "Anunțuri", "href": "/anunturi" },
+      { "label": "Pomelnice", "href": "/pomelnice" },
+      { "label": "Contact", "href": "/contact" }
+    ],
+    "features": {
+      "pomelnice": true,
+      "orthodoxCalendar": false,
+      "giving": true,
+      "campaigns": true
+    },
+    "contact": {
+      "address": "Sat Hârlești, comuna Filipești",
+      "city": "jud. Bacău",
+      "country": "România",
+      "phone": "",
+      "email": "",
+      "mapEmbedUrl": "https://www.google.com/maps?q=H%C3%A2rle%C8%99ti%20Filipe%C8%99ti%20Bac%C4%83u&output=embed"
+    },
+    "giving": {
+      "currency": "RON",
+      "ibans": [
+        { "label": "Cont curent", "holder": "Parohia Ortodoxă „Sfinții Trei Ierarhi” Hârlești", "iban": "RO00 XXXX 0000 0000 0000 0000", "bic": "", "currency": "RON" }
+      ],
+      "form230": true,
+      "form230Url": "/formular-230.pdf",
+      "smsKeyword": "",
+      "smsNumber": "",
+      "pomelniceEndpoint": ""
+    }
+  }
+]

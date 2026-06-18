@@ -1,0 +1,36 @@
+---
+/**
+ * `<SectionHeading>` — the section title + optional subtitle block (Ecclesia Digitalis).
+ *
+ * Serif `headline-lg` title in `primary`, with a thin gold (`secondary`) underline rule
+ * echoing the home page section dividers. Optional muted subtitle in `on-surface-variant`.
+ * Pure M3 utilities — re-skins per church by token swap alone (no raw hex).
+ *
+ * @prop {string} title          Heading text (rendered in the `as` tag).
+ * @prop {string} [subtitle]     Optional muted lede below the title.
+ * @prop {'h1'|'h2'|'h3'} [as='h2']  Heading level for document outline.
+ * @prop {string} [class]        Extra classes appended to the wrapper.
+ *
+ * @example
+ *   <SectionHeading title="Sprijină parohia" subtitle="Orice dar ne ajută." />
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+}
+const { title, subtitle, as = 'h2', class: className } = Astro.props;
+const Tag = as;
+---
+
+<div class:list={['mb-lg', className]}>
+  <Tag
+    class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance border-b border-secondary/20 pb-xs"
+  >
+    {title}
+  </Tag>
+  {subtitle && (
+    <p class="mt-sm max-w-prose font-body-lg text-body-lg text-on-surface-variant">{subtitle}</p>
+  )}
+</div>

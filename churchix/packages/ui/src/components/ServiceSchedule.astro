@@ -1,0 +1,239 @@
+---
+/**
+ * `<ServiceSchedule>` — the parish service programme (Ecclesia Digitalis).
+ *
+ * Two layouts, selected by `variant`:
+ *
+ *  - `grouped` (default) — the Program Slujbe bento: services grouped into one
+ *    `<Card>` per weekday, sorted by `order` then Mon→Sun, on a 12-col grid
+ *    (primary `col-span-8`). The Sunday card is emphasized (gold left bar +
+ *    "Ziua Domnului" badge + `church` icon). Each row shows the time
+ *    (AA-safe `text-primary`, fixed `w-16`), the label in `body-lg`, an optional
+ *    muted `note`, and — for non-weekly cadences — a `calendar_month` cadence line.
+ *    Services with no `weekday` (e.g. movable feasts) collect into a trailing
+ *    "Sărbători și rânduieli speciale" card.
+ *
+ *  - `table` — the legacy flat three-column table, kept for compact inline use
+ *    (e.g. the home page). Same data, no grid.
+ *
+ * White-label: every color/spacing/type value is an M3 token, so the component
+ * re-skins per church by token swap alone. Gold (`secondary`) appears only as a
+ * decorative fill/bar — never as body text on the cream surface.
+ *
+ * @prop {Service[]} items                 The schedule entries (from `serviceScheduleSchema`).
+ * @prop {'grouped'|'table'} [variant='grouped']  Layout. `table` = legacy compact table.
+ * @prop {astroHTML.JSX.Element} [aside]   (grouped only) reserved; pass extra callouts via the
+ *                                         `aside` slot to fill the optional `col-span-4` column.
+ *
+ * @slot aside — (grouped only) optional secondary-column callouts. When present the primary
+ *               column is `lg:col-span-8` and the aside is `lg:col-span-4`; when empty the
+ *               primary column widens to the full width.
+ *
+ * @example
+ *   ---
+ *   import ServiceSchedule from '@churchix/ui/components/ServiceSchedule.astro';
+ *   ---
+ *   <ServiceSchedule items={schedule} />
+ *   <ServiceSchedule items={schedule} variant="table" />
+ */
+import type { serviceScheduleSchema } from '@churchix/schemas';
+import type { z } from 'zod';
+import Card from './Card.astro';
+import Badge from './Badge.astro';
+import Icon from './Icon.astro';
+
+type Service = z.infer<typeof serviceScheduleSchema>;
+type Weekday = NonNullable<Service['weekday']>;
+
+interface Props {
+  items: Service[];
+  variant?: 'grouped' | 'table';
+}
+
+const { items, variant = 'grouped' } = Astro.props;
+
+const WEEKDAY_RO: Record<Weekday, string> = {
+  mon: 'Luni',
+  tue: 'Marți',
+  wed: 'Miercuri',
+  thu: 'Joi',
+  fri: 'Vineri',
+  sat: 'Sâmbătă',
+  sun: 'Duminică',
+};
+
+const CADENCE_RO: Record<Service['cadence'], string> = {
+  weekly: 'Săptămânal',
+  biweekly: 'La două săptămâni',
+  monthly: 'Lunar',
+  special: 'Ocazional',
+};
+
+// Liturgical week ordering (Mon→Sun) for deterministic grouping.
+const WEEK_ORDER: Weekday[] = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+const byOrder = (a: Service, b: Service) => (a.order ?? 0) - (b.order ?? 0);
+
+// --- Grouped layout: bucket by weekday, plus a trailing "special" bucket ---
+const dayBuckets: { weekday: Weekday; services: Service[] }[] = WEEK_ORDER.map(
+  (weekday) => ({
+    weekday,
+    services: items.filter((s) => s.weekday === weekday).sort(byOrder),
+  }),
+).filter((b) => b.services.length > 0);
+
+const specialServices = items.filter((s) => !s.weekday).sort(byOrder);
+
+const hasAside = Boolean(Astro.slots.has && Astro.slots.has('aside'));
+const primarySpan = hasAside ? 'lg:col-span-8' : 'lg:col-span-12';
+
+// Sort the legacy table flat by order for stable output.
+const tableSorted = [...items].sort(byOrder);
+---
+
+{
+  variant === 'table' ? (
+    <table class="cx-schedule">
+      <thead>
+        <tr>
+          <th scope="col">Slujbă</th>
+          <th scope="col">Zi</th>
+          <th scope="col">Ora</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tableSorted.map((s) => (
+          <tr>
+            <td>
+              <strong>{s.label}</strong>
+              {s.note && <span class="cx-schedule__note">{s.note}</span>}
+            </td>
+            <td>{s.weekday ? WEEKDAY_RO[s.weekday] : CADENCE_RO[s.cadence]}</td>
+            <td>{s.time}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+      <div class:list={['flex flex-col gap-md', primarySpan]}>
+        {dayBuckets.map(({ weekday, services }) => {
+          const isSunday = weekday === 'sun';
+          return (
+            <Card
+              as="section"
+              padding="lg"
+              featured={isSunday}
+              class="relative"
+            >
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-sm mb-md border-b border-outline-variant/30 pb-sm">
+                <h2 class="font-headline-lg text-headline-lg text-primary flex items-center gap-xs">
+                  {isSunday && (
+                    <Icon name="church" fill size={24} class="text-secondary" />
+                  )}
+                  {WEEKDAY_RO[weekday]}
+                </h2>
+                {isSunday && <Badge tone="secondary">Ziua Domnului</Badge>}
+              </div>
+              <ul class="flex flex-col -mx-sm">
+                {services.map((s) => (
+                  <li class="flex items-baseline gap-md py-sm px-sm rounded-md odd:bg-surface-container-low/50">
+                    <span class="font-label-md text-label-md font-semibold text-primary w-16 shrink-0 tabular-nums">
+                      {s.time}
+                    </span>
+                    <div class="flex-grow min-w-0">
+                      <h3 class="font-headline-md text-body-lg text-on-surface break-words">
+                        {s.label}
+                      </h3>
+                      {s.note && (
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-base break-words">
+                          {s.note}
+                        </p>
+                      )}
+                      {s.cadence !== 'weekly' && (
+                        <p class="font-label-md text-caption text-on-surface-variant mt-base flex items-center gap-1">
+                          <Icon name="calendar_month" size={14} />
+                          {CADENCE_RO[s.cadence]}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          );
+        })}
+
+        {specialServices.length > 0 && (
+          <Card as="section" padding="lg">
+            <div class="flex items-center gap-xs mb-md border-b border-outline-variant/30 pb-sm">
+              <Icon name="calendar_month" size={22} class="text-secondary" />
+              <h2 class="font-headline-md text-headline-md text-primary">
+                Sărbători și rânduieli speciale
+              </h2>
+            </div>
+            <ul class="flex flex-col -mx-sm">
+              {specialServices.map((s) => (
+                <li class="flex items-baseline gap-md py-sm px-sm rounded-md odd:bg-surface-container-low/50">
+                  <span class="font-label-md text-label-md font-semibold text-primary w-16 shrink-0 tabular-nums">
+                    {s.time}
+                  </span>
+                  <div class="flex-grow min-w-0">
+                    <h3 class="font-headline-md text-body-lg text-on-surface break-words">
+                      {s.label}
+                    </h3>
+                    {s.note && (
+                      <p class="font-body-md text-body-md text-on-surface-variant mt-base break-words">
+                        {s.note}
+                      </p>
+                    )}
+                    <p class="font-label-md text-caption text-on-surface-variant mt-base flex items-center gap-1">
+                      <Icon name="calendar_month" size={14} />
+                      {CADENCE_RO[s.cadence]}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
+      </div>
+
+      {hasAside && (
+        <aside class="lg:col-span-4 flex flex-col gap-lg">
+          <slot name="aside" />
+        </aside>
+      )}
+    </div>
+  )
+}
+
+<style>
+  .cx-schedule {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .cx-schedule th,
+  .cx-schedule td {
+    text-align: left;
+    padding: 0.8rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  /* Alternating row tints for scanning ease (DESIGN.md §Lists). */
+  .cx-schedule tbody tr:nth-child(odd) {
+    background: var(--surface-container-low);
+  }
+  .cx-schedule th {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .cx-schedule__note {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+</style>

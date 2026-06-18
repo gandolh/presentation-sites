@@ -1,0 +1,74 @@
+---
+/**
+ * `<ErrorLayout>` — shared, white-label error composition (Ecclesia Digitalis).
+ *
+ * Wraps `BaseLayout` chrome (per-church Header/Footer + brand tokens) around an
+ * `EmptyState` so every church degrades gracefully in *its own* brand, never
+ * Churchix's. Used for 404 (and any other terminal error screen). All copy is
+ * overridable per church via props; reverent Romanian defaults live here.
+ *
+ * No per-church value is hardcoded — branding arrives through `site` (tokens emitted
+ * by BaseLayout) and the component re-skins by token swap alone.
+ *
+ * @prop {SiteConfig} site        Required. Church `site` content entry (drives chrome + tokens).
+ * @prop {string} [code='404']    Status code shown as a quiet, gold-accented eyebrow.
+ * @prop {string} [title]         Heading (defaults to "Pagina nu a fost găsită").
+ * @prop {string} [message]       Supporting copy (reverent default below).
+ * @prop {IconName} [icon='church']  Illustration glyph (`church` or `diversity_1`).
+ * @prop {string} [homeLabel]     Home CTA label (defaults to "Înapoi la pagina principală").
+ * @prop {string} [homeHref='/']  Home CTA target.
+ * @prop {string} [path]          Canonical path passed to BaseLayout.
+ *
+ * @slot default — optional extra markup rendered under the CTA (e.g. helpful links).
+ *
+ * @example
+ *   ---
+ *   import ErrorLayout from '@churchix/ui/layouts/ErrorLayout.astro';
+ *   import { getEntry } from 'astro:content';
+ *   const site = (await getEntry('site', 'config'))!.data;
+ *   ---
+ *   <ErrorLayout site={site} />
+ */
+import BaseLayout from './BaseLayout.astro';
+import EmptyState from '../components/EmptyState.astro';
+import Button from '../components/Button.astro';
+import { withBase } from '../lib/base.ts';
+import type { IconName } from '../components/icons.ts';
+import type { SiteConfig } from '@churchix/schemas';
+
+interface Props {
+  site: SiteConfig;
+  code?: string;
+  title?: string;
+  message?: string;
+  icon?: IconName;
+  homeLabel?: string;
+  homeHref?: string;
+  path?: string;
+}
+
+const {
+  site,
+  code = '404',
+  title = 'Pagina nu a fost găsită',
+  message = 'Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să reveniți la pagina principală a parohiei.',
+  icon = 'church',
+  homeLabel = 'Înapoi la pagina principală',
+  homeHref = '/',
+  path,
+} = Astro.props;
+---
+
+<BaseLayout site={site} title={title} description={message} path={path}>
+  <section class="flex items-center justify-center px-sm md:px-gutter py-xl">
+    <div class="w-full max-w-[36rem] flex flex-col items-center gap-md">
+      {code && <p class="font-label-md text-label-md uppercase text-primary">{code}</p>}
+      <EmptyState icon={icon} title={title} message={message} as="h1" class="w-full">
+        <Button slot="cta" variant="primary" href={withBase(homeHref)} icon="arrow_forward">
+          {homeLabel}
+        </Button>
+      </EmptyState>
+      <slot />
+    </div>
+  </section>
+</BaseLayout>

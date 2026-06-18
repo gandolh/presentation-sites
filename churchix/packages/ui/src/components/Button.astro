@@ -1,0 +1,121 @@
+---
+/**
+ * `<Button>` — the white-label action primitive (Ecclesia Digitalis).
+ *
+ * Renders an `<a>` when `href` is given, else a `<button>`. All color goes through
+ * M3 tokens so it re-skins per church by token swap alone. Generous horizontal
+ * padding accommodates long Romanian verbs (e.g. "Trimite pomelnicul").
+ *
+ * @prop {'primary'|'secondary'|'ghost'} [variant='primary']
+ *        primary   = solid burgundy `bg-primary` + `text-on-primary`.
+ *        secondary = gold OUTLINE — `border-secondary` with burgundy `text-primary`
+ *                    label (AA-safe; gold text on light is intentionally avoided).
+ *        ghost     = transparent, `text-primary`, subtle hover surface.
+ * @prop {'pill'|'rounded'} [shape='rounded']  `rounded` = `rounded` (0.5rem, the
+ *        DESIGN.md standard); `pill` = `rounded-full` (chip-like CTAs, e.g. header).
+ * @prop {'sm'|'md'|'lg'} [size='md']  Vertical/horizontal padding + type scale.
+ * @prop {string} [href]   When set, renders `<a href>` (with rel/target passthrough).
+ * @prop {string} [type='button']  Button type when rendered as `<button>`.
+ * @prop {IconName} [icon]            Optional leading icon (Material Symbol).
+ * @prop {IconName} [trailingIcon]    Optional trailing icon (e.g. `arrow_forward`, `send`).
+ * @prop {boolean} [iconFill=false]   Use the filled glyph variant for `icon`/`trailingIcon`.
+ * @prop {boolean} [block=false]      Full-width (`w-full`).
+ * @prop {boolean} [disabled=false]   Disabled (button only; links get aria-disabled).
+ * @prop {string} [class]             Extra classes appended last (override-friendly).
+ * @prop {string} [target] [rel] [name] [value] [aria-label] ...  Passthrough.
+ *
+ * @slot default — the button label (text/markup).
+ *
+ * Focus: visible `focus-visible` ring in `secondary` (per spec). Active: `scale-[0.98]`.
+ *
+ * @example
+ *   ---
+ *   import Button from '@churchix/ui/components/Button.astro';
+ *   ---
+ *   <Button variant="primary" href="/doneaza" trailingIcon="arrow_forward">Donează</Button>
+ *   <Button variant="secondary" shape="rounded">Vezi programul</Button>
+ *   <Button variant="ghost" size="sm" icon="content_copy">Copiază</Button>
+ */
+import Icon from './Icon.astro';
+import type { IconName } from './icons.ts';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  shape?: 'pill' | 'rounded';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  icon?: IconName;
+  trailingIcon?: IconName;
+  iconFill?: boolean;
+  block?: boolean;
+  disabled?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  shape = 'rounded',
+  size = 'md',
+  href,
+  type = 'button',
+  icon,
+  trailingIcon,
+  iconFill = false,
+  block = false,
+  disabled = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase ' +
+  'transition-[color,background-color,box-shadow,transform,opacity] duration-200 select-none ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface ' +
+  'active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:pointer-events-none';
+
+// `rounded` = the DESIGN.md standard 0.5rem; `pill` for chip-like CTAs.
+const shapes = {
+  pill: 'rounded-full',
+  rounded: 'rounded',
+} as const;
+
+// Generous horizontal padding for long Romanian verbs.
+const sizes = {
+  sm: 'px-4 py-2.5 text-label-md',
+  md: 'px-6 py-3',
+  lg: 'px-8 py-4 text-body-md',
+} as const;
+
+const variants = {
+  // Solid burgundy. on-primary passes AA over burgundy.
+  primary: 'bg-primary text-on-primary hover:shadow-md hover:bg-primary-container',
+  // Gold OUTLINE; burgundy label (AA-safe). Gold fills the surface gently on hover.
+  secondary:
+    'border border-secondary text-primary bg-transparent hover:bg-secondary-container/20 hover:shadow-sm',
+  // Transparent; burgundy label.
+  ghost: 'bg-transparent text-primary hover:bg-surface-container-high',
+} as const;
+
+const classes = [
+  base,
+  shapes[shape],
+  sizes[size],
+  variants[variant],
+  block ? 'w-full' : '',
+  className,
+];
+
+const iconSize = size === 'lg' ? 20 : 18;
+const Tag = href ? 'a' : 'button';
+const tagProps = href
+  ? { href, ...(disabled ? { 'aria-disabled': 'true', tabindex: -1 } : {}) }
+  : { type, disabled };
+---
+
+<Tag class:list={classes} {...tagProps} {...rest}>
+  {icon && <Icon name={icon} fill={iconFill} size={iconSize} />}
+  <slot />
+  {trailingIcon && <Icon name={trailingIcon} fill={iconFill} size={iconSize} />}
+</Tag>
