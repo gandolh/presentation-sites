@@ -1,0 +1,81 @@
+---
+/**
+ * `<PageShell>` — the inner-page frame that carries the redesign signature.
+ *
+ * Every non-home page composes this. It provides:
+ *   1. A consistent PAGE HEADER band — a liturgical overline kicker, the page
+ *      title in the display serif, and an optional lede — left-aligned (never the
+ *      old centered stack), so the eye always enters top-left.
+ *   2. The LITURGICAL RAIL down the left margin of the content column (the
+ *      cross-page through-line). It collapses to a hairline edge on mobile.
+ *   3. A slotted `actions` area (e.g. a PDF download, a back link) that sits with
+ *      the title block.
+ *
+ * The rail is decorative; the real content sits in the default slot to its right.
+ * All spacing/type/color via M3 tokens — re-skins per church by token swap alone.
+ *
+ * @prop {string}  title              Page title → the `as` heading.
+ * @prop {string}  [kicker]           Overline label above the title (e.g. "Liturgic").
+ * @prop {string}  [lede]             Optional lead paragraph under the title.
+ * @prop {'h1'|'h2'} [as='h1']        Heading level for the title.
+ * @prop {number}  [markers=6]        Rail marker count.
+ * @prop {boolean} [wide=false]       Use the full container width (default is a roomy reading column).
+ * @prop {string}  [class]
+ *
+ * @slot default — page body (sits right of the rail).
+ * @slot actions — optional controls rendered in the header block (right-aligned on desktop).
+ */
+import Rail from './Rail.astro';
+
+interface Props {
+  title: string;
+  kicker?: string;
+  lede?: string;
+  as?: 'h1' | 'h2';
+  markers?: number;
+  wide?: boolean;
+  class?: string;
+}
+
+const { title, kicker, lede, as = 'h1', markers = 6, wide = false, class: className } = Astro.props;
+const Tag = as;
+const hasActions = Astro.slots.has && Astro.slots.has('actions');
+---
+
+<div class:list={['w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl', className]}>
+  <div class="flex gap-sm md:gap-lg">
+    <Rail markers={markers} class="hidden sm:block" />
+
+    <div class:list={['min-w-0 flex-1', wide ? '' : 'max-w-4xl']}>
+      <!-- Page header band: overline kicker → display title → lede, left-aligned. -->
+      <header class="mb-xl">
+        <div class="flex flex-col gap-sm sm:flex-row sm:items-end sm:justify-between">
+          <div class="min-w-0">
+            {kicker && (
+              <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">
+                {kicker}
+              </p>
+            )}
+            <Tag class="font-display-lg text-headline-lg-mobile sm:text-display-lg text-primary text-balance m-0">
+              {title}
+            </Tag>
+          </div>
+          {hasActions && (
+            <div class="shrink-0 flex items-center gap-sm">
+              <slot name="actions" />
+            </div>
+          )}
+        </div>
+        {lede && (
+          <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant text-pretty">
+            {lede}
+          </p>
+        )}
+        <!-- Hairline gold rule closing the header band — echoes the rail. -->
+        <div class="mt-lg h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
+      </header>
+
+      <slot />
+    </div>
+  </div>
+</div>

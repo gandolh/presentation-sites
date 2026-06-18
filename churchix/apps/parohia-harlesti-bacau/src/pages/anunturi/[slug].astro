@@ -1,6 +1,7 @@
 ---
 import { getEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
+import Rail from '@churchix/ui/components/Rail.astro';
 import Badge from '@churchix/ui/components/Badge.astro';
 import Icon from '@churchix/ui/components/Icon.astro';
 import { withBase } from '@churchix/ui/lib/base.ts';
@@ -18,32 +19,37 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
 ---
 
 <BaseLayout site={site} title={entry.data.title} path={`/anunturi/${entry.id}`}>
-  <section class="cx-section">
-    <div class="cx-container" style="max-width:46rem">
-      <a
-        href={withBase('/anunturi')}
-        class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
-      >
-        <Icon name="arrow_forward" size={18} class="rotate-180" />
-        Înapoi la anunțuri
-      </a>
+  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
+    <div class="flex gap-sm md:gap-lg">
+      <Rail markers={5} class="hidden sm:block" />
 
-      <header class="mt-md mb-lg flex flex-col gap-sm">
-        <div class="flex flex-wrap items-center gap-sm">
-          <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
-            <Icon name="event" size={14} />
-            <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
-          </span>
-          {entry.data.pinned && (
-            <Badge tone="primary" icon="push_pin">Fixat</Badge>
-          )}
-        </div>
-        <h1 class="font-headline-lg text-headline-lg text-on-surface text-balance">{entry.data.title}</h1>
-      </header>
+      <div class="min-w-0 flex-1 max-w-[46rem]">
+        <a
+          href={withBase('/anunturi')}
+          class="inline-flex items-center gap-1 font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors"
+        >
+          <Icon name="arrow_forward" size={18} class="rotate-180" />
+          Înapoi la anunțuri
+        </a>
 
-      <article class="cx-prose font-body-lg text-body-lg text-on-surface">
-        <Content />
-      </article>
+        <header class="mt-md mb-lg flex flex-col gap-sm">
+          <div class="flex flex-wrap items-center gap-sm">
+            <span class="inline-flex items-center gap-1 font-overline text-overline uppercase text-on-surface-variant">
+              <Icon name="event" size={14} />
+              <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
+            </span>
+            {entry.data.pinned && (
+              <Badge tone="primary" icon="push_pin">Fixat</Badge>
+            )}
+          </div>
+          <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance">{entry.data.title}</h1>
+          <div class="h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
+        </header>
+
+        <article class="cx-prose font-body-lg text-body-lg text-on-surface">
+          <Content />
+        </article>
+      </div>
     </div>
   </section>
 </BaseLayout>

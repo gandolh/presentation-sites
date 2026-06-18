@@ -1,7 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import PageShell from '@churchix/ui/components/PageShell.astro';
 import EmptyState from '@churchix/ui/components/EmptyState.astro';
 import Button from '@churchix/ui/components/Button.astro';
 import PomelnicForm from '@churchix/ui/islands/PomelnicForm.tsx';
@@ -16,32 +16,33 @@ const enabled = site.features.pomelnice;
 <BaseLayout site={site} title="Pomelnice" path="/pomelnice">
   {
     enabled ? (
-      <section class="cx-section cx-pomelnice-bg relative">
+      <div class="relative">
         <div class="cx-pomelnice-pattern" aria-hidden="true"></div>
-        <div class="cx-container relative">
-          <SectionHeading
-            as="h1"
+        <div class="relative">
+          <PageShell
             title="Trimite un pomelnic"
-            subtitle="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
-          />
-          <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
-        </div>
-      </section>
-    ) : (
-      <section class="cx-section">
-        <div class="cx-container">
-          <EmptyState
-            as="h1"
-            icon="candle"
-            title="Pomelnice indisponibile"
-            message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+            kicker="Pomenire la Sfânta Liturghie"
+            lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
+            markers={7}
+            wide
           >
-            <Button slot="cta" href={withBase('/contact')} variant="secondary" shape="rounded">
-              Contactați parohia
-            </Button>
-          </EmptyState>
+            <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
+          </PageShell>
         </div>
-      </section>
+      </div>
+    ) : (
+      <PageShell title="Pomelnice" kicker="Pomenire" markers={6}>
+        <EmptyState
+          as="h2"
+          icon="candle"
+          title="Pomelnice indisponibile"
+          message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+        >
+          <Button slot="cta" href={withBase('/contact')} variant="secondary" shape="rounded">
+            Contactați parohia
+          </Button>
+        </EmptyState>
+      </PageShell>
     )
   }
 </BaseLayout>
@@ -50,9 +51,6 @@ const enabled = site.features.pomelnice;
   /* Parchment texture behind the form — token-driven radial dots (no raw hex).
      Colors come from the M3 CSS variables emitted by BaseLayout, so it re-skins
      per church by token swap alone. */
-  .cx-pomelnice-bg {
-    position: relative;
-  }
   .cx-pomelnice-pattern {
     position: absolute;
     inset: 0;

@@ -1,36 +1,41 @@
 ---
 /**
- * `<SectionHeading>` — the section title + optional subtitle block (Ecclesia Digitalis).
+ * `<SectionHeading>` — section title + optional kicker/subtitle (redesign).
  *
- * Serif `headline-lg` title in `primary`, with a thin gold (`secondary`) underline rule
- * echoing the home page section dividers. Optional muted subtitle in `on-surface-variant`.
- * Pure M3 utilities — re-skins per church by token swap alone (no raw hex).
+ * Left-aligned: an optional overline KICKER (the formal liturgical voice), a serif
+ * `headline-lg` title in `primary`, then an optional muted subtitle. A thin gold
+ * rule sits under the block, echoing the liturgical rail rather than boxing the
+ * title in a full underline. Pure M3 utilities — re-skins per church by token swap.
  *
  * @prop {string} title          Heading text (rendered in the `as` tag).
+ * @prop {string} [kicker]       Optional overline label above the title.
  * @prop {string} [subtitle]     Optional muted lede below the title.
  * @prop {'h1'|'h2'|'h3'} [as='h2']  Heading level for document outline.
  * @prop {string} [class]        Extra classes appended to the wrapper.
  *
  * @example
- *   <SectionHeading title="Sprijină parohia" subtitle="Orice dar ne ajută." />
+ *   <SectionHeading kicker="Dania ta" title="Sprijină parohia" subtitle="Orice dar ne ajută." />
  */
 interface Props {
   title: string;
+  kicker?: string;
   subtitle?: string;
   as?: 'h1' | 'h2' | 'h3';
   class?: string;
 }
-const { title, subtitle, as = 'h2', class: className } = Astro.props;
+const { title, kicker, subtitle, as = 'h2', class: className } = Astro.props;
 const Tag = as;
 ---
 
 <div class:list={['mb-lg', className]}>
-  <Tag
-    class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance border-b border-secondary/20 pb-xs"
-  >
+  {kicker && (
+    <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">{kicker}</p>
+  )}
+  <Tag class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance m-0">
     {title}
   </Tag>
+  <div class="mt-sm h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
   {subtitle && (
-    <p class="mt-sm max-w-prose font-body-lg text-body-lg text-on-surface-variant">{subtitle}</p>
+    <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant text-pretty">{subtitle}</p>
   )}
 </div>

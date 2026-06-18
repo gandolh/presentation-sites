@@ -130,10 +130,30 @@
   --font-caption: var(--font-body);
 
   /* Type scale (DESIGN.md `typography`): size + line-height + tracking + weight. */
+
+  /* display-xl — the redesign's asymmetric-hero church name. Larger and tighter
+   * than display-lg so the left column of the split hero reads as the page's
+   * single dominant mass. `clamp()` keeps it from overflowing narrow viewports;
+   * mobile collapses toward display-lg. Serif (var(--font-heading)). */
+  --font-display-xl: var(--font-heading);
+  --text-display-xl: clamp(2.75rem, 6vw, 4.5rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.025em;
+  --text-display-xl--font-weight: 700;
+
   --text-display-lg: 48px;
   --text-display-lg--line-height: 56px;
   --text-display-lg--letter-spacing: -0.02em;
   --text-display-lg--font-weight: 700;
+
+  /* overline — micro all-caps eyebrow with the widest tracking in the system.
+   * The redesign uses it for liturgical labels (eyebrows, rail day-markers,
+   * section kickers) so the brand voice is consistent and unmistakably formal. */
+  --text-overline: 11px;
+  --text-overline--line-height: 16px;
+  --text-overline--letter-spacing: 0.22em;
+  --text-overline--font-weight: 600;
+  --font-overline: var(--font-body);
 
   --text-headline-lg: 32px;
   --text-headline-lg--line-height: 40px;

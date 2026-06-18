@@ -1,51 +1,54 @@
 ---
 /**
- * `<Hero>` — the full-bleed home banner (Ecclesia Digitalis).
+ * `<Hero>` — the asymmetric home banner (redesign: "the liturgical spine").
  *
- * Full-bleed background image with a `bg-black/40` scrim, centered reverent
- * content: an uppercase eyebrow (tradition/region label), the church name in
- * `font-display-lg` with a drop shadow, an optional glass "Următoarea Slujbă: …"
- * chip, and up to two CTAs (Donează solid + Urmărește Livestream outline with a
- * `live_tv` icon). When no `image` is given it falls back to a tonal
- * `primary`/cream surface so the hero is never broken on a content-light site.
+ * NOT a centered stack on a dark scrim. The hero is an asymmetric split anchored
+ * by the liturgical rail:
  *
- * White-label discipline: every color flows through M3 tokens; the only
- * per-church inputs arrive as props (name, eyebrow, image, next-service text,
- * livestream URL, CTA hrefs). Honors the church's feature flags so a parish
- * without giving or sermons simply renders fewer CTAs.
+ *   LEFT column  — the church identity + the single most-wanted fact:
+ *                  overline → church name (display-xl) → the live "Următoarea
+ *                  Slujbă" as a large, prominent line → CTAs. The eye enters here.
+ *   RIGHT column — a FRAMED image (icon-in-its-frame, not full-bleed) above a quiet
+ *                  "this week" timeline rendered from the schedule. The timeline is
+ *                  the structural subject; it makes the schedule the hero.
  *
- * @prop {string}  title              Church name → `<h1>` (`font-display-lg`).
- * @prop {string}  [eyebrow]          Uppercase label above the name (e.g. "Biserica Ortodoxă Română").
+ * Graceful degradation:
+ *   - no image  → the frame holds a tonal burgundy panel with a church glyph.
+ *   - no schedule → the right column collapses to just the framed image, full height.
+ *   - no next-service → the left column drops that line (CTAs move up).
+ *
+ * White-label: every color flows through M3 tokens; per-church inputs arrive as
+ * props only. Feature flags gate the giving / livestream CTAs.
+ *
+ * @prop {string}  title              Church name → `<h1>` (`font-display-xl`).
+ * @prop {string}  [eyebrow]          Overline label above the name.
  * @prop {string}  [subtitle]         Optional lead paragraph under the name.
- * @prop {string}  [image]            Full-bleed background image URL (under `public/`). Optional.
- * @prop {string}  [imageAlt]         Alt text for the background image (decorative if omitted).
- * @prop {string}  [nextService]      "Următoarea Slujbă" text (e.g. "Vecernie, Sâmbătă 17:00"). Chip hidden when absent.
- * @prop {string}  [nextServiceLabel='Următoarea Slujbă:']  Chip label (i18n-overridable).
- * @prop {boolean} [giving=true]      Honors `features.giving`. When false the Donează CTA is suppressed.
- * @prop {string}  [ctaLabel='Donează']  Primary CTA label.
- * @prop {string}  [ctaHref]          Primary CTA href (usually `/donatii`). CTA hidden if absent.
- * @prop {boolean} [sermons=false]    Honors `features.sermons`. Gates the livestream CTA together with `livestreamHref`.
- * @prop {string}  [livestreamHref]   Livestream URL. The outline CTA renders only when this is set (and `sermons`).
- * @prop {string}  [livestreamLabel='Urmărește Livestream']  Livestream CTA label.
- * @prop {string}  [secondaryLabel]   Optional extra outline CTA label (fallback when no livestream).
- * @prop {string}  [secondaryHref]    Optional extra outline CTA href (e.g. `/program`).
- * @prop {string}  [class]            Extra classes on the `<section>`.
- *
- * @example
- *   <Hero
- *     title={site.name}
- *     eyebrow="Biserica Ortodoxă Română"
- *     image="/hero.jpg"
- *     nextService="Vecernie, Sâmbătă 17:00"
- *     giving={site.features.giving}
- *     ctaHref="/donatii"
- *     sermons={site.features.sermons}
- *     livestreamHref={site.contact.youtube}
- *   />
+ * @prop {string}  [image]            Framed image URL (under `public/`). Optional.
+ * @prop {string}  [imageAlt]         Alt text (decorative if omitted).
+ * @prop {string}  [nextService]      "Următoarea Slujbă" text. Block hidden when absent.
+ * @prop {string}  [nextServiceLabel='Următoarea slujbă']
+ * @prop {Array<{day: string; time: string; label: string; highlight?: boolean}>} [week=[]]
+ *        Compact week rows for the timeline (already formatted/sorted by the caller).
+ * @prop {string}  [weekLabel='Săptămâna aceasta']
+ * @prop {string}  [weekHref]         "Vezi tot programul" link target (e.g. /program).
+ * @prop {string}  [weekHrefLabel='Programul complet']
+ * @prop {boolean} [giving=true]      Honors `features.giving`. Gates the primary CTA.
+ * @prop {string}  [ctaLabel='Donează']  @prop {string} [ctaHref]
+ * @prop {boolean} [sermons=false]    Honors `features.sermons`. Gates the livestream CTA.
+ * @prop {string}  [livestreamHref]   @prop {string} [livestreamLabel='Urmărește live']
+ * @prop {string}  [secondaryLabel]   @prop {string} [secondaryHref]  Extra outline CTA.
+ * @prop {string}  [class]
  */
 import Icon from './Icon.astro';
-import Button from './Button.astro';
+import Rail from './Rail.astro';
 import { withBase } from '../lib/base.ts';
+
+interface WeekRow {
+  day: string;
+  time: string;
+  label: string;
+  highlight?: boolean;
+}
 
 interface Props {
   title: string;
@@ -55,6 +58,10 @@ interface Props {
   imageAlt?: string;
   nextService?: string;
   nextServiceLabel?: string;
+  week?: WeekRow[];
+  weekLabel?: string;
+  weekHref?: string;
+  weekHrefLabel?: string;
   giving?: boolean;
   ctaLabel?: string;
   ctaHref?: string;
@@ -73,19 +80,24 @@ const {
   image,
   imageAlt,
   nextService,
-  nextServiceLabel = 'Următoarea Slujbă:',
+  nextServiceLabel = 'Următoarea slujbă',
+  week = [],
+  weekLabel = 'Săptămâna aceasta',
+  weekHref,
+  weekHrefLabel = 'Programul complet',
   giving = true,
   ctaLabel = 'Donează',
   ctaHref,
   sermons = false,
   livestreamHref,
-  livestreamLabel = 'Urmărește Livestream',
+  livestreamLabel = 'Urmărește live',
   secondaryLabel,
   secondaryHref,
   class: className,
 } = Astro.props;
 
 const hasImage = Boolean(image);
+const hasWeek = week.length > 0;
 const showGiving = giving && Boolean(ctaHref);
 const showLivestream = sermons && Boolean(livestreamHref);
 const showSecondary = Boolean(secondaryHref && secondaryLabel);
@@ -94,82 +106,167 @@ const hasActions = showGiving || showLivestream || showSecondary;
 
 <section
   class:list={[
-    'relative min-h-[60vh] lg:min-h-[680px] flex items-center justify-center overflow-hidden',
-    !hasImage && 'bg-primary',
+    'relative overflow-hidden bg-surface',
     className,
   ]}
 >
-  {hasImage && (
-    <>
-      <img
-        src={image}
-        alt={imageAlt ?? ''}
-        aria-hidden={imageAlt ? undefined : 'true'}
-        class="absolute inset-0 w-full h-full object-cover"
-        width="1920"
-        height="1080"
-        loading="eager"
-        decoding="async"
-      />
-      <div class="absolute inset-0 bg-black/40 z-10"></div>
-    </>
-  )}
+  {/* Quiet tonal wash + a faint corner glyph so the cream hero never feels empty
+      on an image-less parish, without resorting to a dark scrim. */}
+  <div
+    class="pointer-events-none absolute inset-0 -z-0"
+    aria-hidden="true"
+    style="background: radial-gradient(120% 80% at 88% 0%, color-mix(in srgb, var(--secondary) 9%, transparent), transparent 55%), radial-gradient(90% 70% at 0% 100%, color-mix(in srgb, var(--primary) 6%, transparent), transparent 60%);"
+  >
+  </div>
 
-  <div class="relative z-20 text-center text-on-primary px-sm md:px-gutter w-full max-w-container-max mx-auto flex flex-col items-center py-xl">
-    {eyebrow && (
-      <span class="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed mb-sm">
-        {eyebrow}
-      </span>
-    )}
+  <div class="relative z-10 w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
+    <div class="flex gap-sm md:gap-lg">
+      <Rail markers={7} class="hidden sm:block" />
 
-    <h1 class="font-display-lg text-headline-lg-mobile sm:text-display-lg font-bold mb-md drop-shadow-lg text-surface-container-lowest max-w-3xl">
-      {title}
-    </h1>
+      <div class="min-w-0 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl items-stretch">
+        <!-- LEFT: identity + next service + CTAs -->
+        <div class="lg:col-span-6 flex flex-col justify-center">
+          {eyebrow && (
+            <p class="font-overline text-overline uppercase text-on-secondary-container mb-sm">
+              {eyebrow}
+            </p>
+          )}
 
-    {subtitle && (
-      <p class="font-body-lg text-body-lg text-on-primary/90 mb-md max-w-2xl drop-shadow">
-        {subtitle}
-      </p>
-    )}
+          <h1 class="font-display-xl text-display-xl text-primary text-balance m-0">
+            {title}
+          </h1>
 
-    {nextService && (
-      <div class="bg-surface/10 backdrop-blur-md border border-white/20 p-md rounded-xl mb-xl inline-flex flex-col md:flex-row items-center gap-xs md:gap-md">
-        <span class="flex items-center text-secondary-fixed">
-          <Icon name="schedule" class="mr-xs" size={18} />
-          <span class="font-label-md text-label-md">{nextServiceLabel}</span>
-        </span>
-        <span class="font-body-lg text-body-lg text-on-primary font-medium">{nextService}</span>
+          {subtitle && (
+            <p class="mt-md max-w-xl font-body-lg text-body-lg text-on-surface-variant text-pretty">
+              {subtitle}
+            </p>
+          )}
+
+          {nextService && (
+            <div class="mt-lg flex items-start gap-sm border-l-2 border-secondary pl-md">
+              <Icon name="schedule" size={22} class="mt-1 text-secondary shrink-0" />
+              <div class="min-w-0">
+                <p class="font-overline text-overline uppercase text-on-surface-variant">
+                  {nextServiceLabel}
+                </p>
+                <p class="font-headline-md text-headline-md text-primary text-balance">
+                  {nextService}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {hasActions && (
+            <div class="mt-xl flex flex-col sm:flex-row gap-sm">
+              {showGiving && (
+                <a
+                  href={withBase(ctaHref)}
+                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded bg-primary text-on-primary shadow-sm hover:shadow-md hover:bg-primary-container transition-[box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                >
+                  {ctaLabel}
+                  <Icon name="arrow_forward" size={18} />
+                </a>
+              )}
+              {showLivestream && (
+                <a
+                  href={withBase(livestreamHref)}
+                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded border border-primary/40 text-primary bg-transparent hover:bg-surface-container-high transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                >
+                  <Icon name="live_tv" size={18} />
+                  {livestreamLabel}
+                </a>
+              )}
+              {showSecondary && (
+                <a
+                  href={withBase(secondaryHref)}
+                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded border border-primary/40 text-primary bg-transparent hover:bg-surface-container-high transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                >
+                  {secondaryLabel}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        <!-- RIGHT: framed image + this-week timeline -->
+        <div class="lg:col-span-6 flex flex-col gap-md">
+          {/* Framed image — icon-in-its-frame: a gold hairline + offset shadow,
+              not a full-bleed scrim. Falls back to a tonal burgundy panel. The
+              frame grows to fill the column so it stays balanced against the left. */}
+          <figure class="relative m-0 flex-1 min-h-[16rem]">
+            <div class="absolute -inset-1.5 rounded-xl border border-secondary/40" aria-hidden="true"></div>
+            <div class="relative h-full overflow-hidden rounded-lg ring-1 ring-outline-variant/40 shadow-md">
+              {hasImage ? (
+                <img
+                  src={image}
+                  alt={imageAlt ?? ''}
+                  aria-hidden={imageAlt ? undefined : 'true'}
+                  class="block h-full min-h-[16rem] w-full object-cover"
+                  width="1280"
+                  height="720"
+                  loading="eager"
+                  decoding="async"
+                />
+              ) : (
+                <div
+                  class="flex h-full min-h-[16rem] w-full items-center justify-center bg-primary"
+                  aria-hidden="true"
+                  style="background-image: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--secondary) 14%, transparent), transparent 60%);"
+                >
+                  <Icon name="church" fill size={104} class="text-on-primary/25" />
+                </div>
+              )}
+            </div>
+          </figure>
+
+          {hasWeek && (
+            <div class="rounded-lg border border-outline-variant/40 bg-surface-container-lowest/80 backdrop-blur-sm shadow-sm">
+              <div class="flex items-center justify-between gap-sm border-b border-outline-variant/30 px-md py-sm">
+                <span class="font-overline text-overline uppercase text-on-surface-variant">
+                  {weekLabel}
+                </span>
+                {weekHref && (
+                  <a
+                    href={withBase(weekHref)}
+                    class="inline-flex items-center gap-1 font-label-md text-caption uppercase text-primary hover:underline underline-offset-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    {weekHrefLabel}
+                    <Icon name="arrow_forward" size={14} />
+                  </a>
+                )}
+              </div>
+              <ul class="m-0 flex flex-col p-0 list-none">
+                {week.map((row) => (
+                  <li
+                    class:list={[
+                      'flex items-baseline gap-sm px-md py-sm border-b border-outline-variant/15 last:border-b-0',
+                      row.highlight && 'bg-secondary/5',
+                    ]}
+                  >
+                    <span
+                      class:list={[
+                        'font-overline text-overline uppercase w-12 shrink-0',
+                        row.highlight ? 'text-primary' : 'text-on-surface-variant',
+                      ]}
+                    >
+                      {row.day}
+                    </span>
+                    <span class="font-label-md text-label-md tabular-nums w-14 shrink-0 text-primary">
+                      {row.time}
+                    </span>
+                    <span class="font-body-md text-body-md text-on-surface min-w-0 break-words">
+                      {row.label}
+                    </span>
+                    {row.highlight && (
+                      <Icon name="church" fill size={15} class="ml-auto shrink-0 text-secondary" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
-    )}
-
-    {hasActions && (
-      <div class="flex flex-col sm:flex-row gap-sm md:gap-md">
-        {showGiving && (
-          <a
-            href={withBase(ctaHref)}
-            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded bg-surface-container-lowest text-primary shadow-md hover:shadow-lg hover:bg-surface transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-          >
-            {ctaLabel}
-          </a>
-        )}
-        {showLivestream && (
-          <a
-            href={withBase(livestreamHref)}
-            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded border border-secondary-fixed text-on-primary bg-transparent hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-          >
-            <Icon name="live_tv" size={18} />
-            {livestreamLabel}
-          </a>
-        )}
-        {showSecondary && (
-          <a
-            href={withBase(secondaryHref)}
-            class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-6 py-3 rounded border border-secondary-fixed text-on-primary bg-transparent hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-          >
-            {secondaryLabel}
-          </a>
-        )}
-      </div>
-    )}
+    </div>
   </div>
 </section>

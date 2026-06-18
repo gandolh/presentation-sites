@@ -2,6 +2,7 @@
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
 import Hero from '@churchix/ui/components/Hero.astro';
+import Rail from '@churchix/ui/components/Rail.astro';
 import Card from '@churchix/ui/components/Card.astro';
 import Badge from '@churchix/ui/components/Badge.astro';
 import Icon from '@churchix/ui/components/Icon.astro';
@@ -9,37 +10,48 @@ import { withBase } from '@churchix/ui/lib/base.ts';
 
 const site = (await getEntry('site', 'config'))!.data;
 
-// ── Schedule → compact current-week bento (Sunday highlighted) ────────────────
+// ── Schedule → compact "this week" timeline rows for the hero ─────────────────
 const schedule = (await getCollection('schedule')).map((e) => e.data);
 
+const WEEKDAY_ABBR_RO: Record<string, string> = {
+  mon: 'Lun', tue: 'Mar', wed: 'Mie', thu: 'Joi',
+  fri: 'Vin', sat: 'Sâm', sun: 'Dum',
+};
+const WEEK_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+
+// Weekly services, ordered Mon→Sun then by time, for the hero timeline.
+const weekly = schedule
+  .filter((s) => s.weekday)
+  .sort((a, b) => {
+    const d = WEEK_ORDER.indexOf(a.weekday as (typeof WEEK_ORDER)[number]) -
+      WEEK_ORDER.indexOf(b.weekday as (typeof WEEK_ORDER)[number]);
+    return d !== 0 ? d : a.time.localeCompare(b.time);
+  });
+
+const weekRows = weekly.map((s) => ({
+  day: WEEKDAY_ABBR_RO[s.weekday as string] ?? '',
+  time: s.time,
+  label: s.label,
+  highlight: s.weekday === 'sun',
+}));
+
+// ── Hero "next service": soonest weekly service from today onward ─────────────
+const NOW_WEEKDAY = WEEK_ORDER[(new Date().getDay() + 6) % 7]!;
 const WEEKDAY_RO: Record<string, string> = {
   mon: 'Luni', tue: 'Marți', wed: 'Miercuri', thu: 'Joi',
   fri: 'Vineri', sat: 'Sâmbătă', sun: 'Duminică',
 };
-// Liturgical week order (Mon→Sun) so the bento reads top-to-bottom.
-const WEEK_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
-
-// Group recurring services by weekday; "special" cadence (no weekday) is shown
-// in its own row at the end so it never silently disappears.
-const byDay = WEEK_ORDER.map((wd) => ({
-  weekday: wd,
-  label: WEEKDAY_RO[wd]!,
-  services: schedule
-    .filter((s) => s.weekday === wd)
-    .sort((a, b) => a.time.localeCompare(b.time)),
-})).filter((d) => d.services.length > 0);
-
-const specials = schedule.filter((s) => !s.weekday);
-
-// ── Hero "next service": prefer the soonest weekly service this week ──────────
-const NOW_WEEKDAY = WEEK_ORDER[(new Date().getDay() + 6) % 7]; // JS Sun=0 → our index
-const upcoming =
-  byDay.find((d) => WEEK_ORDER.indexOf(d.weekday) >= WEEK_ORDER.indexOf(NOW_WEEKDAY!)) ?? byDay[0];
-const nextService = upcoming
-  ? `${upcoming.services[0]!.label}, ${upcoming.label} ${upcoming.services[0]!.time}`
+const nextSvc =
+  weekly.find(
+    (s) =>
+      WEEK_ORDER.indexOf(s.weekday as (typeof WEEK_ORDER)[number]) >=
+      WEEK_ORDER.indexOf(NOW_WEEKDAY),
+  ) ?? weekly[0];
+const nextService = nextSvc
+  ? `${nextSvc.label} · ${WEEKDAY_RO[nextSvc.weekday as string]} ${nextSvc.time}`
   : undefined;
 
-// ── Announcements → pinned strip ──────────────────────────────────────────────
+// ── Announcements → asymmetric lead + stacked ─────────────────────────────────
 const fmtDate = new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
 const anunturi = (await getCollection('announcements'))
   .map((e) => ({ slug: e.id, ...e.data }))
@@ -47,9 +59,9 @@ const anunturi = (await getCollection('announcements'))
     if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
     return b.date.getTime() - a.date.getTime();
   })
-  .slice(0, 3);
-const pinned = anunturi.find((a) => a.pinned);
-const regular = anunturi.filter((a) => a !== pinned);
+  .slice(0, 4);
+const lead = anunturi[0];
+const rest = anunturi.slice(1, 4);
 ---
 
 <BaseLayout site={site} description={site.tagline} path="/">
@@ -58,142 +70,143 @@ const regular = anunturi.filter((a) => a !== pinned);
     eyebrow="Biserica Ortodoxă Română"
     image={site.brand.ogImage}
     nextService={nextService}
+    week={weekRows}
+    weekHref="/program"
     giving={site.features.giving}
     ctaLabel="Sprijinește parohia"
     ctaHref="/donatii"
-    sermons={site.features.sermons}
-    livestreamHref={site.contact.youtube}
     secondaryLabel="Vezi programul"
     secondaryHref="/program"
   />
 
-  <!-- ── Anunțuri Recente (pinned strip) ─────────────────────────────────────── -->
+  <!-- ── Anunțuri: asymmetric lead + stacked, on the rail ────────────────────── -->
   {anunturi.length > 0 && (
     <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
-      <div class="flex items-center justify-between mb-lg border-b border-secondary/20 pb-xs">
-        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary flex items-center">
-          <Icon name="campaign" class="mr-sm text-secondary" size={28} />
-          Anunțuri Recente
-        </h2>
-        <a
-          href={withBase('/anunturi')}
-          class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center"
-        >
-          Vezi toate
-          <Icon name="arrow_forward" class="ml-xs" size={18} />
-        </a>
-      </div>
+      <div class="flex gap-sm md:gap-lg">
+        <Rail markers={5} class="hidden sm:block" />
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
-        {pinned && (
-          <Card featured radius="lg" padding="lg" href={withBase(`/anunturi/${pinned.slug}`)} class="lg:col-span-2 group">
-            <Badge tone="secondary" icon="push_pin" class="mb-sm">Fixat</Badge>
-            <h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors">
-              {pinned.title}
-            </h3>
-            {pinned.summary && (
-              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{pinned.summary}</p>
-            )}
-          </Card>
-        )}
+        <div class="min-w-0 flex-1">
+          <div class="mb-lg flex items-end justify-between gap-sm">
+            <div>
+              <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Din viața parohiei</p>
+              <h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-primary m-0">Anunțuri</h2>
+            </div>
+            <a
+              href={withBase('/anunturi')}
+              class="inline-flex shrink-0 items-center gap-1 font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors"
+            >
+              Vezi toate
+              <Icon name="arrow_forward" size={16} />
+            </a>
+          </div>
 
-        {regular.map((a) => (
-          <Card radius="lg" padding="lg" href={withBase(`/anunturi/${a.slug}`)} class="group">
-            <span class="inline-flex items-center text-on-surface-variant font-caption text-caption mb-sm">
-              <Icon name="event" class="mr-1" size={14} />
-              {fmtDate.format(a.date)}
-            </span>
-            <h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors">
-              {a.title}
-            </h3>
-            {a.summary && (
-              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{a.summary}</p>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+            <!-- Lead story (wide) -->
+            {lead && (
+              <Card
+                as="article"
+                href={withBase(`/anunturi/${lead.slug}`)}
+                radius="lg"
+                padding="lg"
+                featured={!!lead.pinned}
+                class="group lg:col-span-7 flex flex-col justify-between min-h-[14rem]"
+              >
+                <div>
+                  {lead.pinned ? (
+                    <Badge tone="secondary" icon="push_pin" class="mb-sm">Fixat</Badge>
+                  ) : (
+                    <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant mb-sm">
+                      <Icon name="event" size={14} />
+                      {fmtDate.format(lead.date)}
+                    </span>
+                  )}
+                  <h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors text-balance">
+                    {lead.title}
+                  </h3>
+                  {lead.summary && (
+                    <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">{lead.summary}</p>
+                  )}
+                </div>
+                <span class="mt-md inline-flex items-center gap-1 font-label-md text-label-md uppercase text-primary">
+                  Citește
+                  <Icon name="arrow_forward" size={16} class="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Card>
             )}
-          </Card>
-        ))}
+
+            <!-- Stacked smaller stories -->
+            <div class="lg:col-span-5 flex flex-col gap-md">
+              {rest.map((a) => (
+                <Card
+                  as="article"
+                  href={withBase(`/anunturi/${a.slug}`)}
+                  radius="lg"
+                  padding="md"
+                  class="group flex-1"
+                >
+                  <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant mb-xs">
+                    <Icon name="event" size={14} />
+                    {fmtDate.format(a.date)}
+                  </span>
+                  <h3 class="font-headline-md text-body-lg text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                    {a.title}
+                  </h3>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )}
 
-  <!-- ── Program + About bento ───────────────────────────────────────────────── -->
-  <section class="bg-surface-container-low py-xl">
-    <div class="w-full max-w-container-max mx-auto px-sm md:px-gutter grid grid-cols-1 lg:grid-cols-12 gap-xl">
-      <!-- Program (compact current week) -->
-      <div class="lg:col-span-7">
-        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-lg flex items-center">
-          <Icon name="church" class="mr-sm text-secondary" size={28} />
-          Program Liturgic
-        </h2>
-        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
-          <div class="p-md bg-surface border-b border-outline-variant/30 flex justify-between items-center">
-            <span class="font-label-md text-label-md font-bold text-on-surface">Săptămâna curentă</span>
-          </div>
-          <div class="divide-y divide-outline-variant/20">
-            {byDay.map((d, i) => {
-              const isSunday = d.weekday === 'sun';
-              return (
-                <div
-                  class:list={[
-                    'p-md flex flex-col sm:flex-row sm:items-center justify-between transition-colors',
-                    isSunday
-                      ? 'bg-secondary/5 hover:bg-secondary/10'
-                      : i % 2 === 1
-                        ? 'bg-surface/50 hover:bg-surface-variant/30'
-                        : 'hover:bg-surface-variant/30',
-                  ]}
-                >
-                  <div class="mb-sm sm:mb-0 w-1/3">
-                    <span class:list={['font-label-md text-label-md font-bold', isSunday ? 'text-primary' : 'text-on-surface']}>
-                      {d.label}
-                    </span>
-                  </div>
-                  <div class="w-2/3 space-y-1">
-                    {d.services.map((s) => (
-                      <div class:list={['flex items-center font-body-md text-body-md', isSunday ? 'text-on-surface' : 'text-on-surface-variant']}>
-                        <span class:list={['w-16 font-medium', isSunday && 'text-primary']}>{s.time}</span>
-                        <span>{s.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            {specials.map((s) => (
-              <div class="p-md flex flex-col sm:flex-row sm:items-center justify-between hover:bg-surface-variant/30 transition-colors">
-                <div class="mb-sm sm:mb-0 w-1/3">
-                  <span class="font-label-md text-label-md font-bold text-on-surface">Sărbători</span>
-                </div>
-                <div class="w-2/3 space-y-1">
-                  <div class="flex items-center text-on-surface-variant font-body-md text-body-md">
-                    <span class="w-16 font-medium">{s.time}</span>
-                    <span>{s.label}</span>
-                  </div>
-                  {s.note && <p class="font-caption text-caption text-on-surface-variant">{s.note}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <!-- About (burgundy info card) -->
-      <div class="lg:col-span-5 flex flex-col justify-center">
-        <div class="bg-primary text-on-primary p-lg rounded-xl shadow-lg relative overflow-hidden">
-          <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none" aria-hidden="true">
-            <Icon name="diversity_1" size={160} />
-          </div>
-          <h2 class="font-headline-md text-headline-md text-on-primary mb-md relative z-10">Despre Parohia Noastră</h2>
-          <p class="font-body-md text-body-md text-on-primary/90 mb-lg relative z-10">
+  <!-- ── Despre: quiet burgundy band ─────────────────────────────────────────── -->
+  <section class="bg-primary text-on-primary">
+    <div class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl items-center">
+        <div class="lg:col-span-7">
+          <p class="font-overline text-overline uppercase text-secondary-fixed mb-sm">Despre parohia noastră</p>
+          <h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-primary m-0 text-balance">
+            Un spațiu al păcii și al regăsirii
+          </h2>
+          <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-primary/85 text-pretty">
             {site.tagline ??
-              'Biserica noastră este un spațiu al păcii și al regăsirii spirituale. Vă invităm să luați parte la sfintele slujbe și la viața comunității noastre parohiale.'}
+              'Vă invităm să luați parte la sfintele slujbe și la viața comunității noastre parohiale.'}
           </p>
           <a
             href={withBase('/despre')}
-            class="inline-flex items-center font-label-md text-label-md text-secondary-fixed hover:text-on-primary transition-colors relative z-10 border-b border-secondary-fixed pb-1"
+            class="mt-lg inline-flex items-center gap-xs font-label-md text-label-md uppercase text-secondary-fixed border-b border-secondary-fixed/60 pb-1 hover:text-on-primary hover:border-on-primary transition-colors"
           >
             Citește istoricul
-            <Icon name="arrow_forward" class="ml-xs" size={18} />
+            <Icon name="arrow_forward" size={18} />
           </a>
+        </div>
+
+        <!-- Quick facts rail -->
+        <div class="lg:col-span-5">
+          <ul class="m-0 flex flex-col gap-px list-none rounded-lg overflow-hidden border border-on-primary/15">
+            <li class="flex items-center gap-md bg-on-primary/5 px-md py-md">
+              <Icon name="church" fill size={22} class="text-secondary-fixed shrink-0" />
+              <div>
+                <p class="font-overline text-overline uppercase text-on-primary/60">Hram</p>
+                <p class="font-body-md text-body-md text-on-primary">Sfinții Trei Ierarhi · 30 ianuarie</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-md bg-on-primary/5 px-md py-md">
+              <Icon name="account_balance" size={22} class="text-secondary-fixed shrink-0" />
+              <div>
+                <p class="font-overline text-overline uppercase text-on-primary/60">Eparhie</p>
+                <p class="font-body-md text-body-md text-on-primary">Arhiepiscopia Romanului și Bacăului</p>
+              </div>
+            </li>
+            <li class="flex items-center gap-md bg-on-primary/5 px-md py-md">
+              <Icon name="schedule" size={22} class="text-secondary-fixed shrink-0" />
+              <div>
+                <p class="font-overline text-overline uppercase text-on-primary/60">Sfânta Liturghie</p>
+                <p class="font-body-md text-body-md text-on-primary">Duminica, ora 09:30</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

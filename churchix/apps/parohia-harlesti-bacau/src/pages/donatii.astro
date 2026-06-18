@@ -1,7 +1,7 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import PageShell from '@churchix/ui/components/PageShell.astro';
 import GivingChannels from '@churchix/ui/components/GivingChannels.astro';
 
 const site = (await getEntry('site', 'config'))!.data;
@@ -15,14 +15,13 @@ const showCampaign = site.features.campaigns && Boolean(featured);
 ---
 
 <BaseLayout site={site} title="Donează" path="/donatii">
-  <section class="cx-section">
-    <div class="cx-container">
-      <SectionHeading
-        as="h1"
-        title="Sprijină parohia"
-        subtitle="Orice dar, mic sau mare, ne ajută în lucrarea liturgică și social-filantropică."
-      />
-      <GivingChannels giving={site.giving} campaign={featured} showCampaign={showCampaign} />
-    </div>
-  </section>
+  <PageShell
+    title="Sprijină parohia"
+    kicker="Dania ta"
+    lede="Orice dar, mic sau mare, ne ajută în lucrarea liturgică și social-filantropică."
+    markers={6}
+    wide
+  >
+    <GivingChannels giving={site.giving} campaign={featured} showCampaign={showCampaign} />
+  </PageShell>
 </BaseLayout>
