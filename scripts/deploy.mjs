@@ -9,6 +9,7 @@
  *   npm run deploy                    # interactive: pick project, then action
  *   npm run deploy -- tractari        # project given, pick the action
  *   npm run deploy -- tractari deploy # fully non-interactive
+ *   npm run deploy -- all deploy      # deploy every project (one after another)
  *   npm run deploy -- --list          # list discovered projects + exit
  *
  * Actions:
@@ -19,12 +20,14 @@
  * Flags:
  *   --dry-run   print the npm command instead of running it
  *   --list      list discovered deployable projects and exit
+ *   --sudo-ask  prompt once for the server sudo password and pass it to every
+ *               project (via env, not argv) so sudo steps run via `sudo -S`
  *
  * Projects are auto-discovered: any sibling directory whose package.json has a
  * `deploy:push` script is offered. Add a new site and it shows up here for free.
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, readSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
@@ -107,6 +110,11 @@ const argv = process.argv.slice(2);
 const flags = new Set(argv.filter((a) => a.startsWith("--")));
 const positionals = argv.filter((a) => !a.startsWith("--"));
 const dryRun = flags.has("--dry-run");
+// --sudo-ask: prompt once for the server sudo password and pass it to every
+// project (via env, not argv) so each delegates to `sudo -S` instead of printing
+// the command for manual run. Type it once, even for `all`. When not passed and
+// we're interactive, the CLI offers it as a choice below.
+let sudoAsk = flags.has("--sudo-ask");
 
 const projects = discoverProjects();
 if (projects.length === 0) die("No deployable projects found (need a sibling dir with a `deploy:push` script).");
@@ -140,42 +148,147 @@ async function pick(promptLabel, items, render) {
   }
 }
 
-let project = positionals[0] ? projects.find((p) => p.dir === positionals[0]) : null;
-if (positionals[0] && !project) {
-  die(`Unknown project "${positionals[0]}". Known: ${projects.map((p) => p.dir).join(", ")}.`);
-}
-let action = resolveAction(positionals[1]);
-if (positionals[1] && !action) {
-  die(`Unknown action "${positionals[1]}". Use: ${ACTIONS.map((a) => a.key).join(", ")}.`);
+// Read a secret line from stdin with terminal echo disabled. `stty` is POSIX; if
+// it's unavailable the read still works (just visible). Restores echo afterwards.
+function promptPassword(question) {
+  stdout.write(question);
+  const tty = Boolean(stdin.isTTY);
+  if (tty) spawnSync("stty", ["-echo"], { stdio: "inherit" });
+  const buf = Buffer.alloc(256);
+  let bytes = 0;
+  try {
+    bytes = readSync(0, buf, 0, buf.length, null);
+  } catch {
+    bytes = 0;
+  } finally {
+    if (tty) spawnSync("stty", ["echo"], { stdio: "inherit" });
+    stdout.write("\n");
+  }
+  return buf.toString("utf8", 0, bytes).replace(/\r?\n$/, "");
 }
 
-if (!project) {
-  if (!isTTY) die("No project given and not a TTY. Pass it: npm run deploy -- <project> <action>.");
-  project = await pick("Which project?", projects, (p) => p.dir + (p.hasRootScripts ? "" : paint(" (no root scripts)", c.yellow)));
+// Build the env passed to each project's deploy subprocess. With --sudo-ask we
+// prompt once and hand the password to every child via DEPLOY_SUDO_PASSWORD
+// (never on argv) plus SUDO_ASKPASS=true so each script uses `sudo -S`.
+let _childEnv = null;
+function childEnv() {
+  if (_childEnv) return _childEnv;
+  if (!sudoAsk) return (_childEnv = process.env);
+  if (!isTTY) die("--sudo-ask needs a TTY to read the password.");
+  const pass = promptPassword("  [sudo] password for the server: ");
+  if (!pass) die("Empty password — aborting.");
+  _childEnv = { ...process.env, SUDO_ASKPASS: "true", DEPLOY_SUDO_PASSWORD: pass };
+  return _childEnv;
+}
+
+// "all" (or --all) targets every discovered project rather than a single one.
+// With the --all flag the project positional is omitted, so the action (if any)
+// is the FIRST positional; with the bare `all` token it's the second.
+const ALL = "all";
+const allViaFlag = flags.has("--all");
+const allViaToken = positionals[0]?.toLowerCase() === ALL;
+const allProjects = allViaFlag || allViaToken;
+const actionToken = allViaFlag ? positionals[0] : positionals[1];
+
+let project = null;
+if (!allProjects) {
+  project = positionals[0] ? projects.find((p) => p.dir === positionals[0]) : null;
+  if (positionals[0] && !project) {
+    die(`Unknown project "${positionals[0]}". Known: ${ALL}, ${projects.map((p) => p.dir).join(", ")}.`);
+  }
+}
+let action = resolveAction(actionToken);
+if (actionToken && !action) {
+  die(`Unknown action "${actionToken}". Use: ${ACTIONS.map((a) => a.key).join(", ")}.`);
+}
+
+let pickedAll = allProjects;
+if (!allProjects && !project) {
+  if (!isTTY) die("No project given and not a TTY. Pass it: npm run deploy -- <project|all> <action>.");
+  const choices = [{ dir: ALL, hasRootScripts: true, isAll: true }, ...projects];
+  const chosen = await pick("Which project?", choices, (p) =>
+    p.isAll
+      ? paint("all", c.cyan) + paint(" — every project, one after another", c.dim)
+      : p.dir + (p.hasRootScripts ? "" : paint(" (no root scripts)", c.yellow)),
+  );
+  if (chosen.isAll) pickedAll = true;
+  else project = chosen;
 }
 if (!action) {
-  if (!isTTY) die("No action given and not a TTY. Pass it: npm run deploy -- " + project.dir + " <action>.");
-  action = await pick(`Action for ${paint(project.dir, c.cyan)}?`, ACTIONS, (a) => `${a.label} ${paint("— " + a.desc, c.dim)}`);
+  const label = pickedAll ? ALL : project.dir;
+  if (!isTTY) die("No action given and not a TTY. Pass it: npm run deploy -- " + label + " <action>.");
+  action = await pick(`Action for ${paint(label, c.cyan)}?`, ACTIONS, (a) => `${a.label} ${paint("— " + a.desc, c.dim)}`);
 }
 
-if (!project.hasRootScripts) {
-  die(`Root package.json is missing the ${project.dir}:deploy* passthrough scripts. Add them (see another site for the pattern).`);
+// Offer the sudo-password mode interactively, unless it was already requested via
+// --sudo-ask. Only the server-provisioning actions need sudo, so skip the prompt
+// for a plain `deploy` (build + upload), which never runs sudo.
+if (!sudoAsk && isTTY && action.rootSuffix !== "deploy") {
+  const SUDO_CHOICES = [
+    { ask: false, label: "manual / .env", desc: "use each project's SUDO_* setting (print command if no passwordless sudo)" },
+    { ask: true, label: "ask for password", desc: "prompt once now, pipe it to `sudo -S` on the server for every project" },
+  ];
+  const chosen = await pick("How should sudo run on the server?", SUDO_CHOICES, (s) => `${s.label} ${paint("— " + s.desc, c.dim)}`);
+  sudoAsk = chosen.ask;
+}
+
+// Prime the sudo password (if --sudo-ask) once, before any project runs, so the
+// prompt appears up front rather than interleaved with the first project's logs.
+if (sudoAsk && !dryRun) childEnv();
+
+if (pickedAll) {
+  await runAll();
+} else {
+  process.exit(runOne(project, action));
 }
 
 // --- run --------------------------------------------------------------------
-const rootScript = `${project.dir}:${action.rootSuffix}`;
-const npmArgs = ["run", rootScript];
+function runOne(proj, act) {
+  if (!proj.hasRootScripts) {
+    die(`Root package.json is missing the ${proj.dir}:deploy* passthrough scripts. Add them (see another site for the pattern).`);
+  }
+  const rootScript = `${proj.dir}:${act.rootSuffix}`;
+  const npmArgs = ["run", rootScript];
 
-step(`${paint(project.dir, c.cyan)} → ${paint(action.label, c.green)}  ${paint(`(npm run ${rootScript})`, c.dim)}`);
+  step(`${paint(proj.dir, c.cyan)} → ${paint(act.label, c.green)}  ${paint(`(npm run ${rootScript})`, c.dim)}`);
 
-if (dryRun) {
-  ok(`dry run — would execute: npm ${npmArgs.join(" ")}`);
-  process.exit(0);
+  if (dryRun) {
+    ok(`dry run — would execute: npm ${npmArgs.join(" ")}`);
+    return 0;
+  }
+
+  const res = spawnSync("npm", npmArgs, { cwd: ROOT, stdio: "inherit", env: childEnv() });
+  if (res.error) die(`Failed to launch npm: ${res.error.message}`);
+  return res.status ?? 0;
 }
 
-const res = spawnSync("npm", npmArgs, { cwd: ROOT, stdio: "inherit" });
-if (res.error) die(`Failed to launch npm: ${res.error.message}`);
-process.exit(res.status ?? 0);
+async function runAll() {
+  const deployable = projects.filter((p) => p.hasRootScripts);
+  const skipped = projects.filter((p) => !p.hasRootScripts);
+  for (const p of skipped) {
+    console.log(paint(`• skipping ${p.dir} (missing root <dir>:deploy* scripts)`, c.yellow));
+  }
+  if (deployable.length === 0) die("No projects with root deploy scripts to run.");
+
+  step(`${paint(ALL, c.cyan)} → ${paint(action.label, c.green)}  ${paint(`(${deployable.length} projects)`, c.dim)}`);
+
+  const failures = [];
+  for (const p of deployable) {
+    const status = runOne(p, action);
+    if (status !== 0) {
+      failures.push({ dir: p.dir, status });
+      console.error(paint(`✗ ${p.dir} exited with status ${status} — continuing`, c.red));
+    } else {
+      ok(`${p.dir} done`);
+    }
+  }
+
+  if (failures.length) {
+    die(`${failures.length} project(s) failed: ${failures.map((f) => f.dir).join(", ")}.`);
+  }
+  ok(`all ${deployable.length} project(s) completed`);
+  process.exit(0);
+}
 
 // --- help -------------------------------------------------------------------
 function printHelp() {
@@ -186,6 +299,9 @@ ${paint("Usage", c.bold)}
   npm run deploy                      interactive (pick project, then action)
   npm run deploy -- <project>         pick the action for <project>
   npm run deploy -- <project> <action>
+  npm run deploy -- all <action>      run <action> for every project
+  npm run deploy -- --all <action>    (same as 'all')
+  npm run deploy -- all pre --sudo-ask  prompt once for the sudo password, reuse it for all
   npm run deploy -- --list            list deployable projects
   npm run deploy -- --help
 
@@ -195,8 +311,13 @@ ${paint("Actions", c.bold)}
   all                 pre-deploy, then deploy
 
 ${paint("Flags", c.bold)}
-  --dry-run   print the npm command instead of running it
-  --list      list discovered deployable projects and exit
+  --dry-run    print the npm command instead of running it
+  --list       list discovered deployable projects and exit
+  --sudo-ask   prompt once for the server sudo password and pass it to every
+               project (sets SUDO_ASKPASS=true), so sudo steps run via 'sudo -S'
+               instead of printing the command for you to run by hand. When
+               omitted, the interactive CLI offers this as a choice for the
+               pre-deploy / all actions.
 
 ${paint("Projects", c.bold)} (auto-discovered)
   ${projects.map((p) => p.dir).join(", ")}

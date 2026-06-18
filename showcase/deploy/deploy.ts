@@ -33,7 +33,10 @@ import { dirname, join, resolve } from "node:path";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(HERE, "..");
 const ENV_FILE = join(HERE, ".env");
-const CADDYFILE = join(HERE, "Caddyfile");
+// Shared master Caddyfile (all routes) lives at <repo>/infrastructure/Caddyfile,
+// one copy for every site, so there's no per-site drift. PROJECT_ROOT is the
+// site dir; its parent is the monorepo root.
+const CADDYFILE = resolve(PROJECT_ROOT, "..", "infrastructure", "Caddyfile");
 const DIST_DIR = join(PROJECT_ROOT, "dist");
 
 // --- Tiny terminal helpers --------------------------------------------------
@@ -100,6 +103,7 @@ interface Config {
   publicUrl: string;
   remoteCaddyfile: string;
   sudoNoPasswd: boolean;
+  sudoAskpass: boolean;
 }
 
 function buildConfig(env: Env): Config {
@@ -126,7 +130,11 @@ function buildConfig(env: Env): Config {
     remoteDir: required(env, "REMOTE_DIR"),
     publicUrl: env.PUBLIC_URL || "",
     remoteCaddyfile: env.REMOTE_CADDYFILE || "/etc/caddy/Caddyfile",
-    sudoNoPasswd: (env.SUDO_NOPASSWD || "false").toLowerCase() === "true",
+    // process.env wins over deploy/.env for the sudo switches, so the monorepo
+    // runner's `--sudo-ask` (which exports SUDO_ASKPASS) and ad-hoc shell
+    // overrides take effect without editing the file.
+    sudoNoPasswd: ((process.env.SUDO_NOPASSWD ?? env.SUDO_NOPASSWD) || "false").toLowerCase() === "true",
+    sudoAskpass: ((process.env.SUDO_ASKPASS ?? env.SUDO_ASKPASS) || "false").toLowerCase() === "true",
   };
 }
 
@@ -186,6 +194,21 @@ function sshTest(cfg: Config, remoteCmd: string): boolean {
   return (res.status ?? 1) === 0;
 }
 
+// The login user on the server (a non-sudo `whoami`), so we can chown the served
+// dir to whoever rsync connects as. Falls back to "$(whoami)" in dry-run.
+function remoteLoginUser(cfg: Config): string {
+  if (DRY_RUN) return "$(whoami)";
+  const res = spawnSync("ssh", [...cfg.sshArgs, cfg.sshTarget, "whoami"], {
+    stdio: ["inherit", "pipe", "pipe"],
+    encoding: "utf8",
+  });
+  const user = (res.stdout as string | undefined)?.trim();
+  if ((res.status ?? 1) !== 0 || !user) {
+    die(`Could not determine the remote login user (whoami failed on ${cfg.sshTarget}).`);
+  }
+  return user;
+}
+
 // =============================================================================
 // PRE-DEPLOY PHASE — provision the server
 // =============================================================================
@@ -218,10 +241,14 @@ function preDeploy(cfg: Config) {
   if (sshTest(cfg, `test -w "$(dirname ${shq(cfg.remoteDir)})"`)) {
     ssh(cfg, mkdir);
   } else {
+    // Resolve the login user with a NON-sudo `whoami` and bake it in literally:
+    // inside `sudo sh -c '...'` a bare $(whoami) would expand to root, leaving the
+    // dir root-owned and unwritable by rsync (which connects as the login user).
+    const user = remoteLoginUser(cfg);
     sudoRemote(
       cfg,
-      `mkdir -p ${shq(cfg.remoteDir)} && chown -R "$(whoami)" ${shq(cfg.remoteDir)}`,
-      `create ${cfg.remoteDir} and hand it to your user`,
+      `mkdir -p ${shq(cfg.remoteDir)} && chown -R ${shq(user)} ${shq(cfg.remoteDir)}`,
+      `create ${cfg.remoteDir} and hand it to ${user}`,
     );
   }
   ok(`Remote dir ready: ${cfg.remoteDir}`);
@@ -271,22 +298,50 @@ function syncCaddyfile(cfg: Config) {
   ok("Caddy configured and reloaded.");
 }
 
-// Run a command on the server with sudo. If passwordless sudo isn't available,
-// print the exact command for the user to run by hand rather than hanging on a
-// password prompt over a non-interactive channel.
+// Run a command on the server with sudo. Three modes, in priority order:
+//   SUDO_NOPASSWD=true  → run via `sudo` (assumes passwordless sudo).
+//   SUDO_ASKPASS=true   → prompt once for the sudo password and pipe it to
+//                         `sudo -S` over ssh (the password never appears in argv
+//                         or in any printed command).
+//   otherwise           → print the exact command for the user to run by hand.
 function sudoRemote(cfg: Config, remoteCmd: string, label: string) {
   if (cfg.sudoNoPasswd) {
     ssh(cfg, `sudo sh -c ${shq(remoteCmd)}`);
     return;
   }
+  if (cfg.sudoAskpass) {
+    runSudoWithPassword(cfg, remoteCmd, label);
+    return;
+  }
   warn(`Needs sudo on the server to: ${label}`);
   info("SUDO_NOPASSWD is false, so run this on the server yourself:");
   console.log(
-    `\n  ${c.bold}ssh ${cfg.sshTarget}${c.reset} '${c.dim}sudo sh -c "${remoteCmd.replace(/"/g, '\\"')}"${c.reset}'\n`,
+    `\n  ${c.bold}sudo sh -c "${remoteCmd.replace(/"/g, '\\"')}"${c.reset}\n`,
   );
   if (!DRY_RUN) {
     const ans = promptYesNo("Have you run it (or is it already done)? [y/N] ");
     if (!ans) die("Aborted — re-run pre-deploy after provisioning.");
+  }
+}
+
+// Pipe the cached sudo password to `sudo -S` on the server. `-p ""` silences the
+// remote prompt; the password is the first line on stdin, the command runs after.
+function runSudoWithPassword(cfg: Config, remoteCmd: string, label: string) {
+  if (DRY_RUN) {
+    info(`[dry-run] ssh ${cfg.sshTarget} sudo -S sh -c ${shq(remoteCmd)}  (${label})`);
+    return;
+  }
+  const pass = getSudoPassword();
+  info(`sudo (with password) on ${cfg.sshTarget}: ${label}`);
+  const remote = `sudo -S -p "" sh -c ${shq(remoteCmd)}`;
+  const res = spawnSync("ssh", [...cfg.sshArgs, cfg.sshTarget, remote], {
+    input: pass + "\n",
+    stdio: ["pipe", "inherit", "inherit"],
+    encoding: "utf8",
+  });
+  if (res.error) die(`Failed to run sudo over ssh: ${res.error.message}`);
+  if ((res.status ?? 1) !== 0) {
+    die(`Remote sudo command failed (exit ${res.status}) — wrong password or sudo denied?`);
   }
 }
 
@@ -380,6 +435,40 @@ function rsyncSshOpt(cfg: Config): string[] {
 // Single-quote a string for safe interpolation into a remote sh command.
 function shq(s: string): string {
   return `'${s.replace(/'/g, "'\\''")}'`;
+}
+
+// Read a secret line from stdin with terminal echo disabled, so the password is
+// not shown as it's typed. `stty` is POSIX; if it's unavailable the read still
+// works (just visible). Restores echo afterwards.
+function promptPassword(question: string): string {
+  process.stdout.write(question);
+  const tty = Boolean(process.stdin.isTTY);
+  if (tty) spawnSync("stty", ["-echo"], { stdio: "inherit" });
+  const buf = Buffer.alloc(256);
+  let bytes = 0;
+  try {
+    bytes = readSync(0, buf, 0, buf.length, null);
+  } catch {
+    bytes = 0;
+  } finally {
+    if (tty) spawnSync("stty", ["echo"], { stdio: "inherit" });
+    process.stdout.write("\n");
+  }
+  return buf.toString("utf8", 0, bytes).replace(/\r?\n$/, "");
+}
+
+// Sudo password for this run, fetched once. The monorepo runner may pass it via
+// DEPLOY_SUDO_PASSWORD so you only type it once across all projects; otherwise
+// it's prompted on first use and cached for the rest of the run.
+let _sudoPassword: string | null = null;
+function getSudoPassword(): string {
+  if (_sudoPassword !== null) return _sudoPassword;
+  const fromEnv = process.env.DEPLOY_SUDO_PASSWORD;
+  _sudoPassword =
+    fromEnv != null && fromEnv !== ""
+      ? fromEnv
+      : promptPassword("  [sudo] password for the server: ");
+  return _sudoPassword;
 }
 
 function promptYesNo(question: string): boolean {

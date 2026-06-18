@@ -1,0 +1,45 @@
+# Master Caddyfile template for the shared side-projects VPS.
+#
+# Copy this to `infrastructure/Caddyfile` (which is git-ignored) and fill in your
+# real server address and one handle_path block per site. Each site's deploy
+# script reads infrastructure/Caddyfile (see CADDYFILE in */deploy/deploy.ts),
+# uploads it to the server's Caddyfile, validates, and reloads Caddy. Or install
+# manually:
+#   sudo caddy validate --config /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+#
+# Why one file with every route: the non-churchix sites overwrite the server's
+# Caddyfile wholesale, so the LAST site deployed wins. Pointing them all at this
+# one file means whoever runs last still installs the complete config, with no
+# per-site copies to drift. (churchix surgically inserts only its own block.)
+#
+# Address: use `:80` to serve over plain HTTP on any host (no domain needed), or
+# replace it with your domain (e.g. `example.com`) and Caddy will provision and
+# renew a Let's Encrypt certificate automatically.
+#
+# handle_path STRIPS the matched prefix before serving, so files live at the root
+# of each project's dir (e.g. <webroot>/<site>/index.html), matching each site's
+# PUBLIC_BASE build.
+
+:80 {
+	# One block per site. Copy, then change the sub-path and the served dir.
+	# `redir` sends the bare path (no trailing slash) to the canonical URL.
+	redir /site-one /site-one/ 308
+	handle_path /site-one/* {
+		root * /var/www/site-one
+		try_files {path} {path}/ {path}.html
+		file_server
+	}
+
+	redir /site-two /site-two/ 308
+	handle_path /site-two/* {
+		root * /var/www/site-two
+		try_files {path} {path}/ {path}.html
+		file_server
+	}
+
+	# Anything not matched above (e.g. bare "/") → simple landing/404.
+	handle {
+		respond "Not found" 404
+	}
+}
