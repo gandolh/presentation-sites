@@ -3,47 +3,58 @@
 /*
   Subcort — design tokens.
 
-  Creative North Star: "The lit tent at blue hour." A large canvas structure
-  pitched on a grassy field as the light goes, warm from within. The identity is
-  a COMMITTED deep canopy green carrying real surface (hero, footer, anchors),
-  set on a soft warm off-white — never a heavy cream. One warm clay accent does
-  the work of the lamp glowing through the canvas. Calm, square, dependable.
+  Creative North Star: "Warm cream + lamp, dark anchors." The page is warm
+  paper lit from within by day — a committed deep canopy green still owns the
+  structural anchors (hero, footer), and the warm clay LAMP GLOW is the
+  connective warmth threading the light body between those dark ends. The base
+  steps warmer than a near-white off-white (toward warm cream) while staying
+  genuinely light and daylight-readable; every ink/bg pair clears WCAG AA.
 
   This deliberately rejects the festive party-rental skin, the cheap classifieds
   listing, the generic SaaS landing, and the forest-green-on-cream "natural
-  brand" cliché (a timid sage accent floating on cream). Here green commits.
+  brand" cliché (a timid sage accent floating on cream). Here green commits and
+  the clay glow does real work.
 
   Colours authored in OKLCH. Token names mirror the sibling projects
   (Material-ish roles) so components read the same way across the monorepo.
 */
 
 @theme {
-  /* ---- Surfaces (soft warm off-white — NOT cream) ------------------------
-     A near-white with the faintest warm tint, low enough chroma that it reads
-     as "quiet paper", not "sand". The greige panels lift the structure. */
-  --color-background: oklch(98.5% 0.006 95); /* page bg, barely-warm off-white */
-  --color-surface: oklch(98.5% 0.006 95);
-  --color-surface-container-lowest: oklch(100% 0 0); /* pure white cards */
-  --color-surface-container-low: oklch(97% 0.007 95);
-  --color-surface-container: oklch(95% 0.009 95); /* greige panel */
-  --color-surface-container-high: oklch(92.5% 0.011 90);
-  --color-surface-container-highest: oklch(89.5% 0.013 88);
+  /* ---- Surfaces (warm paper / cream — lamp-lit by day) -------------------
+     The base steps warmer than the old near-white off-white — toward warm
+     paper lit from within — while staying genuinely LIGHT and daylight-
+     readable (chroma held low enough that it reads as warm paper, not sand,
+     and every ink/bg pair clears WCAG AA). Cards lift to a near-pure warm
+     white; the greige ramp warms with them so the page feels like canvas
+     catching lamplight. */
+  --color-background: oklch(97.4% 0.013 84); /* warm paper page bg */
+  --color-surface: oklch(97.4% 0.013 84);
+  --color-surface-container-lowest: oklch(99.4% 0.006 88); /* warm white cards */
+  --color-surface-container-low: oklch(96.2% 0.015 82);
+  --color-surface-container: oklch(94.4% 0.019 80); /* warm greige panel */
+  --color-surface-container-high: oklch(92.2% 0.022 78);
+  --color-surface-container-highest: oklch(89.4% 0.025 74);
 
   /* ---- Ink ----------------------------------------------------------------
      Green-leaning near-black: carries the canopy hue without going cold-black.
-     Body clears AA comfortably (≈12:1 on bg). */
-  --color-on-surface: oklch(26% 0.02 152); /* body + headings */
-  --color-on-surface-variant: oklch(44% 0.018 150); /* secondary text, ≥4.5:1 */
-  --color-outline: oklch(64% 0.014 140);
-  --color-outline-variant: oklch(89% 0.01 110); /* hairlines */
+     Body clears AA comfortably (≈11:1 on the warm paper bg). Outlines warm a
+     touch to sit on the cream rather than reading cool-grey on it. */
+  --color-on-surface: oklch(26% 0.022 150); /* body + headings */
+  --color-on-surface-variant: oklch(43% 0.02 148); /* secondary text, ≥4.5:1 */
+  --color-outline: oklch(62% 0.018 95);
+  --color-outline-variant: oklch(87% 0.016 88); /* warm hairlines on cream */
 
-  /* ---- Inverse (dark sections: hero, footer) ------------------------------
-     "Deep canopy" — the inside of the green tent at dusk. Near-white ink
-     reverses onto it; the brighter green + clay read as warm light within. */
-  --color-inverse-surface: oklch(27% 0.045 155); /* deep canopy green */
-  --color-inverse-surface-2: oklch(31% 0.05 155); /* lifted canopy panel */
-  --color-inverse-on-surface: oklch(96% 0.008 95); /* warm near-white on dark */
-  --color-inverse-on-surface-variant: oklch(80% 0.018 120);
+  /* ---- Inverse (the dark anchors: hero, footer, page headers) -------------
+     "Deep canopy" — the inside of the green tent at dusk, the lit-tent anchors
+     that bracket the warm paper body. Warmed a hair toward the lamp (hue 152)
+     and deepened so the clay glow inside them reads as genuine warm light, and
+     so the anchors feel like dusk against the cream day rather than a flat
+     swatch. Warm near-white ink reverses onto them; brighter green + clay are
+     the light within. */
+  --color-inverse-surface: oklch(25.5% 0.046 152); /* deep canopy green */
+  --color-inverse-surface-2: oklch(30% 0.052 152); /* lifted canopy panel */
+  --color-inverse-on-surface: oklch(96% 0.01 92); /* warm near-white on dark */
+  --color-inverse-on-surface-variant: oklch(81% 0.022 105);
 
   /* ---- Primary: canopy green (the committed identity) --------------------
      The seed (hue 150). Deep and muted, so WHITE text on it clears AA (white
@@ -67,6 +78,17 @@
   --color-on-accent-soft: oklch(40% 0.1 50);
   /* Brighter clay for accents on DARK surfaces. */
   --color-accent-bright: oklch(76% 0.11 62);
+
+  /* ---- Lamp glow (the connective warmth on the LIGHT body) ----------------
+     The signature of this direction: the clay lamp does real work on the warm
+     paper body, not only inside the dark anchors. These tokens drive the soft
+     glow halos behind feature content, the warm wash on lit cards, and the
+     warmed section bands — a gentle pool of lamplight on the cream, never a
+     loud gradient blob. Authored as translucent clay so they layer over any
+     warm surface and stay subtle in daylight. */
+  --glow-lamp-strong: oklch(72% 0.13 58 / 0.22); /* core of a glow halo */
+  --glow-lamp-soft: oklch(66% 0.12 56 / 0.1); /* halo falloff */
+  --glow-lamp-wash: oklch(80% 0.05 70 / 0.55); /* warm card/section wash */
 
   /* ---- Status ------------------------------------------------------------- */
   --color-success: oklch(56% 0.11 150);
@@ -220,8 +242,8 @@
     pointer-events: none;
     background: radial-gradient(
       closest-side,
-      oklch(72% 0.13 58 / 0.26) 0%,
-      oklch(58% 0.12 55 / 0.08) 48%,
+      oklch(72% 0.13 58 / 0.34) 0%,
+      oklch(58% 0.12 55 / 0.1) 48%,
       transparent 74%
     );
     mix-blend-mode: screen;
@@ -232,6 +254,45 @@
   @keyframes corner-glow-breathe {
     0%, 100% { opacity: 0.8; transform: scale(1); }
     50%      { opacity: 1;   transform: scale(1.08); }
+  }
+
+  /* ---- Lamp glow on the LIGHT body (the connective warmth) ----------------
+     A soft pool of lamplight on the warm-paper sections — the clay lamp doing
+     real work between the dark anchors, the signature of this direction. Put
+     it on a `position: relative; overflow: clip` section wrapper; the glow
+     sits behind the content (z-index:0) and the content rides above it. Two
+     placements: default = a single warm pool top-right; `--center` pools it
+     behind a centred block. Subtle by daylight, never a loud gradient blob.
+     Breathes on the hero's cadence; frozen under reduced-motion. */
+  .lamp-glow { position: relative; }
+  .lamp-glow::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    width: min(34rem, 90%);
+    aspect-ratio: 1;
+    right: -8rem;
+    top: -10rem;
+    border-radius: var(--radius-full);
+    background: radial-gradient(
+      closest-side,
+      var(--glow-lamp-strong) 0%,
+      var(--glow-lamp-soft) 52%,
+      transparent 76%
+    );
+  }
+  .lamp-glow--center::before {
+    right: auto;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: min(48rem, 120%);
+  }
+  /* content inside a lamp-glow section lifts above the pool */
+  .lamp-glow > * { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .lamp-glow::before { animation: corner-glow-breathe 11s ease-in-out infinite; }
   }
 
   /* ====================================================================
@@ -527,12 +588,29 @@
 
   /* ---- Card --------------------------------------------------------------
      Used deliberately (tent sizes, services), never nested. Flat at rest:
-     greige-lifting-off-white with a hairline, no resting shadow. */
+     warm-white-lifting-off-the-cream with a hairline, no resting shadow.
+     Mobile-first: a slightly tighter floor on small screens, opening up at
+     the sm breakpoint so reading width stays comfortable on phones. */
   .card {
     background-color: var(--color-surface-container-lowest);
     border: 1px solid var(--color-outline-variant);
     border-radius: var(--radius-lg);
-    padding: 1.75rem;
+    padding: 1.35rem;
+  }
+  @media (min-width: 640px) {
+    .card { padding: 1.75rem; }
+  }
+  /* Lamp-lit card: the warm pool of lamplight applied to a feature card. A
+     gentle clay wash from the top edge plus a clay-tinted hairline, so the
+     card reads as canvas catching the lamp — used for the one feature card in
+     a set, not every card (that would flatten the warmth into noise). */
+  .card--lit {
+    background-image: linear-gradient(
+      180deg,
+      var(--glow-lamp-wash) 0%,
+      transparent 42%
+    );
+    border-color: oklch(72% 0.09 60 / 0.4);
   }
 
   /* A quiet greige panel for grouping content (alternative to a card grid). */

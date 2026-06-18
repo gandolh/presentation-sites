@@ -27,12 +27,12 @@ const optional = amenities.filter((a) => a.kind === "optional");
     />
 
     <!-- ===================== TENT SIZES ===================== -->
-    <section class="section">
+    <section class="section lamp-glow overflow-clip">
       <div class="container-page">
         <div class="grid gap-6 md:grid-cols-2">
           {
-            tents.map((t) => (
-              <article class="reveal card flex flex-col">
+            tents.map((t, i) => (
+              <article class:list={["reveal card flex flex-col", i === 0 && "card--lit"]}>
                 <div class="flex items-baseline justify-between gap-4">
                   <h2 class="heading-md">{t.size}</h2>
                   <span class="font-display text-sm font-bold text-[var(--color-on-surface-variant)]">{t.area}</span>
