@@ -23,6 +23,7 @@
     "test": "npm run test --workspaces --if-present",
     "format": "prettier --write .",
     "deploy:pre": "node --env-file=.env scripts/deploy.ts pre-deploy",
-    "deploy:push": "node --env-file=.env scripts/deploy.ts deploy"
+    "deploy:push": "node --env-file=.env scripts/deploy.ts deploy",
+    "deploy:all": "npm run deploy:pre && npm run deploy:push"
   }
 }

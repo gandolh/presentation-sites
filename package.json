@@ -4,6 +4,12 @@
   "description": "Monorepo of presentation/marketing sites. Each site is a self-contained project in its own top-level directory.",
   "scripts": {
     "deploy": "node scripts/deploy.mjs",
+    "churchix": "npm --prefix churchix run",
+    "churchix:install": "npm --prefix churchix install",
+    "churchix:build": "npm --prefix churchix run build",
+    "churchix:deploy:pre": "npm --prefix churchix run deploy:pre",
+    "churchix:deploy": "npm --prefix churchix run deploy:push",
+    "churchix:deploy:all": "npm --prefix churchix run deploy:all",
     "saloon": "npm --prefix saloon run",
     "saloon:install": "npm --prefix saloon install",
     "saloon:dev": "npm --prefix saloon run dev",
