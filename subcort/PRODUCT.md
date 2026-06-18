@@ -66,8 +66,10 @@ proper space and set it up right, and I don't have to worry about the logistics.
   auto-template AI look is the enemy.
 - **Forest-green-on-cream "natural brand" cliché.** The saturated AI attractor:
   a timid sage accent floating on a heavy cream page. Subcort instead *commits*
-  to a deep canopy green that carries real structural weight, over a quiet warm
-  off-white, with a warm lamp-glow clay as the one companion accent.
+  to a deep canopy green that carries real structural weight on the dark anchors
+  (hero, footer, page headers), over warm cream paper *lit from within* by a warm
+  clay lamp glow that does real work on the light body — the clay is the lamp, not
+  a polite trim. One companion accent, no third hue.
 
 ## Design Principles
 
@@ -80,9 +82,11 @@ proper space and set it up right, and I don't have to worry about the logistics.
 3. **Quiet, not loud.** No CTAs, no urgency, no shouting. The site informs and
    steps back; trust is built by clarity and restraint, and the visitor is
    trusted to make contact on their own.
-4. **Committed green, warm off-white.** A deep canopy green is the identity and
-   carries real surface (hero, footer, anchors), set on a soft warm off-white,
-   never a heavy cream. One warm clay accent for lift; no third hue.
+4. **Committed green, warm cream, lamp-lit.** A deep canopy green is the identity
+   and carries the page anchors (hero, footer, subpage headers), set on warm cream
+   paper that is lit from within — a daylight-readable light theme, never a dark
+   theme and never a passive heavy cream. One warm clay accent is the lamp glow,
+   doing real work on the light body (glow pools, lit cards); no third hue.
 5. **Sheltering craft.** Sturdy, grounded forms (a slab-serif headline, solid
    panels, generous floors of whitespace) that feel like a well-pitched structure:
    calm, square, dependable, never flimsy or ornamental.
