@@ -22,31 +22,56 @@ const reasons = [
 ];
 ---
 
-<section id="de-ce-noi" class="section bg-[var(--color-surface-container-lowest)] border-y border-[var(--color-outline-variant)]">
+{/* Lifts off the floor onto the default steel panel so it separates from the
+    background-level TrustBand directly above it. */}
+<section id="de-ce-noi" class="why section relative bg-[var(--color-surface-container-lowest)] border-b border-[var(--color-outline-variant)]">
   <div class="container-page grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16">
-    <div class="reveal">
-      <span class="m-stripe" aria-hidden="true"></span>
-      <h2 class="heading-lg mt-4">De ce să ne lași tocmai nouă mașina</h2>
-      <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
-        Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate,
-        în schimb, să te trateze ca pe un vecin, nu ca pe un număr de bon.
-      </p>
+    {/* Lead statement — vertical M edge as the lead mark, matching the hero's
+        pit-wall rule. No uppercase eyebrow: the heading stands on its own. */}
+    <div class="reveal flex gap-5">
+      <span class="m-stripe--v shrink-0" aria-hidden="true"></span>
+      <div>
+        <h2 class="heading-lg text-[var(--color-on-surface)]">
+          De ce să ne lași tocmai nouă mașina
+        </h2>
+        <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
+          Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate,
+          în schimb, să te trateze ca pe un <span class="text-[var(--color-on-surface)] font-medium">vecin</span>, nu ca pe un
+          număr de bon.
+        </p>
+      </div>
     </div>
 
-    <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+    <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-9">
       {
         reasons.map((r) => (
-          <li class="reveal">
+          <li class="why-reason reveal">
             {/* M-stripe tick as the lead mark — these are differentiators, not an
                 ordered sequence, so numerals would imply a false order (the
                 numbered markers live only on the real Process flow). The stripe
                 carries the brand's motorsport energy instead. */}
             <span class="m-stripe !w-8 !h-[3px]" aria-hidden="true" />
-            <h3 class="heading-md mt-3 !text-[1.15rem]">{r.title}</h3>
+            <h3 class="heading-md mt-3.5 !text-[1.15rem] text-[var(--color-on-surface)]">{r.title}</h3>
             <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">{r.body}</p>
           </li>
         ))
       }
     </ul>
   </div>
+
+  <style>
+    /* A single faint worklamp wash in the upper-right, echoing the hero glow so
+       the lifted panel feels lit by the same bay lamp — used sparingly. */
+    .why::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        70% 55% at 96% 0%,
+        oklch(58% 0.17 250 / 0.12) 0%,
+        oklch(58% 0.17 250 / 0) 60%
+      );
+    }
+  </style>
 </section>

@@ -23,9 +23,9 @@ const Heading = heading;
     {
       !bare && (
         <div class="reveal max-w-2xl">
-          <span class="m-stripe" aria-hidden="true" />
-          <Heading class="heading-lg mt-4 text-[var(--color-inverse-on-surface)]">Hai cu mașina la noi</Heading>
-          <p class="mt-4 text-lg text-[var(--color-inverse-on-surface-variant)]">
+          <Heading class="heading-lg text-[var(--color-inverse-on-surface)]">Hai cu mașina la noi</Heading>
+          <span class="m-stripe mt-5" aria-hidden="true" />
+          <p class="mt-6 text-lg text-[var(--color-inverse-on-surface-variant)]">
             Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj
             pe WhatsApp, poți atașa și o poză cu martorul aprins sau cu piesa.
           </p>
@@ -56,23 +56,23 @@ const Heading = heading;
           </a>
         </div>
 
-        <dl class="grid sm:grid-cols-2 gap-6 border-t border-white/10 pt-6">
+        <dl class="bay-divide grid sm:grid-cols-2 gap-6 border-t pt-6">
           <div>
-            <dt class="eyebrow text-[var(--color-inverse-on-surface-variant)]">Adresă</dt>
+            <dt class="bay-label">Adresă</dt>
             <dd class="mt-1.5 text-[var(--color-inverse-on-surface)]">
               {site.address}<br />{site.city}, jud. {site.county}
             </dd>
           </div>
           <div>
-            <dt class="eyebrow text-[var(--color-inverse-on-surface-variant)]">Email</dt>
+            <dt class="bay-label">Email</dt>
             <dd class="mt-1.5">
-              <a href={`mailto:${site.email}`} class="text-[var(--color-primary-bright)] hover:underline">{site.email}</a>
+              <a href={`mailto:${site.email}`} class="font-semibold text-[var(--color-primary)] hover:underline">{site.email}</a>
             </dd>
           </div>
           <div class="sm:col-span-2">
-            <dt class="eyebrow text-[var(--color-inverse-on-surface-variant)]">Program</dt>
+            <dt class="bay-label">Program</dt>
             <dd>
-              <ul class="mt-2 divide-y divide-white/10">
+              <ul class="bay-rows mt-2 divide-y">
                 {
                   site.hours.map((h) =>
                     h ? (
@@ -91,10 +91,31 @@ const Heading = heading;
 
       <!-- Right: the map -->
       <div class="reveal">
-        <div class="overflow-hidden rounded-xl border border-white/10 aspect-[4/3] lg:h-full">
+        <div class="bay-map overflow-hidden rounded-xl aspect-[4/3] lg:h-full">
           <MapConsent client:visible lat={site.geo.lat} lng={site.geo.lng} label={site.name} />
         </div>
       </div>
     </div>
   </div>
+
+  <style>
+    /* CONTACT = the lit "service bay": the one bright inversion on the dark
+       floor. All rules/labels reverse to graphite-on-light so they read AA-safe
+       against the slab. A faint top rule marks the seam where the bay opens. */
+    #contact { border-top: 1px solid var(--color-outline-variant); }
+
+    .bay-label {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-inverse-on-surface-variant);
+    }
+    /* Dark hairlines on the light slab (the white/10 rules from the dark era
+       would be invisible here). */
+    .bay-divide { border-top-color: oklch(0% 0 0 / 0.12); }
+    .bay-rows > li + li { border-top-color: oklch(0% 0 0 / 0.1); }
+    .bay-map { border: 1px solid oklch(0% 0 0 / 0.14); }
+  </style>
 </section>

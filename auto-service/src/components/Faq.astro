@@ -16,9 +16,9 @@ const faqJsonLd = {
 <section id="intrebari" class="section bg-[var(--color-surface-container-lowest)] border-y border-[var(--color-outline-variant)]">
   <div class="container-page grid lg:grid-cols-[0.7fr_1.3fr] gap-8 lg:gap-16">
     <div class="reveal">
-      <span class="m-stripe" aria-hidden="true"></span>
-      <h2 class="heading-lg mt-4">Întrebări frecvente</h2>
-      <p class="mt-4 text-[var(--color-on-surface-variant)]">
+      <h2 class="heading-lg">Întrebări frecvente</h2>
+      <span class="m-stripe mt-5" aria-hidden="true"></span>
+      <p class="mt-6 text-[var(--color-on-surface-variant)]">
         Dacă nu găsești răspunsul aici, sună-ne, îți răspundem cu drag.
       </p>
     </div>
@@ -28,8 +28,8 @@ const faqJsonLd = {
         faq.map((f) => (
           <details class="faq-item group">
             <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5">
-              <span class="heading-md !text-[1.08rem] text-[var(--color-on-surface)]">{f.q}</span>
-              <span class="shrink-0 text-[var(--color-primary)] transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
+              <span class="faq-q heading-md !text-[1.08rem] text-[var(--color-on-surface)]">{f.q}</span>
+              <span class="shrink-0 text-[var(--color-primary-bright)] transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </span>
             </summary>
@@ -39,6 +39,29 @@ const faqJsonLd = {
       }
     </div>
   </div>
+
+  <style>
+    /* Open row reads as "lit": the question warms to the bright link-blue and a
+       thin blue rule marks the active band on the dark floor. */
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary { transition: color 200ms var(--ease-out); }
+    .faq-item:hover .faq-q { color: var(--color-primary-bright); }
+    .faq-item[open] .faq-q { color: var(--color-primary-bright); }
+    .faq-item[open] {
+      box-shadow: inset 2px 0 0 0 var(--color-primary);
+      padding-left: 1rem;
+      margin-left: -1rem;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-item[open] p {
+        animation: faq-open 320ms var(--ease-out) both;
+      }
+    }
+    @keyframes faq-open {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 
   <script
     is:inline

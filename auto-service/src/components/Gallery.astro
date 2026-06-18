@@ -5,27 +5,27 @@ import { gallery } from "../content/gallery";
 <section id="galerie" class="section bg-[var(--color-surface)]">
   <div class="container-page">
     <div class="reveal max-w-2xl">
-      <span class="m-stripe" aria-hidden="true"></span>
-      <h2 class="heading-lg mt-4">Din atelier</h2>
-      <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
+      <h2 class="heading-lg">Din atelier</h2>
+      <span class="m-stripe mt-5" aria-hidden="true"></span>
+      <p class="mt-6 text-lg text-[var(--color-on-surface-variant)]">
         Câteva cadre din service: motoare BMW, lucrări mecanice și locul în care
         îți lași mașina pe mâini bune.
       </p>
     </div>
 
-    <div class="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+    <div class="gallery-grid mt-10 grid grid-cols-2 lg:grid-cols-3 gap-px">
       {
         gallery.map((g, i) => (
           <figure
             class:list={[
-              "reveal overflow-hidden rounded-lg border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)]",
+              "gallery-cell reveal relative overflow-hidden bg-[var(--color-surface-container)]",
               i === 0 && "col-span-2 lg:row-span-2",
             ]}
           >
             <img
               src={g.src}
               alt={g.alt}
-              class="h-full w-full object-cover aspect-[4/3] transition-transform duration-500 hover:scale-[1.03]"
+              class="h-full w-full object-cover aspect-[4/3]"
               loading="lazy"
               decoding="async"
             />
@@ -34,4 +34,28 @@ import { gallery } from "../content/gallery";
       }
     </div>
   </div>
+
+  <style>
+    /* A tight photo grid welded into a single steel plate: hairline gaps (the
+       graphite floor shows through the 1px gutters) framed by one outer rule. */
+    .gallery-grid {
+      background-color: var(--color-outline-variant);
+      border: 1px solid var(--color-outline-variant);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .gallery-cell img {
+      transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out);
+      filter: grayscale(0.12);
+    }
+    .gallery-cell:hover {
+      z-index: 1;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .gallery-cell:hover img {
+        transform: scale(1.04);
+        filter: grayscale(0);
+      }
+    }
+  </style>
 </section>

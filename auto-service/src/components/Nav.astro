@@ -6,16 +6,15 @@ import { withBase } from "../content/url";
 interface Props {
   // The current page's route, e.g. "/", "/servicii/". Drives the active link.
   current?: string;
-  // On pages without a dark hero behind the nav (every page except home), the
-  // bar must render in its solid light state from the top, not transparent.
+  // Kept in the API for call-site compatibility. In the dark rebrand every
+  // surface behind the nav is dark (hero AND subpage PageHeader), so the nav no
+  // longer needs a separate "solid light" mode — it is dark glass throughout,
+  // simply transparent at the top and frosted once scrolled.
   solid?: boolean;
 }
 
 const { current = "/", solid = false } = Astro.props;
 
-// Top-level routes (≤5 keeps the bar inside working-memory limits). Each is a
-// real page now; "Despre" earns a slot since it's a destination, not a scroll
-// target. "Acasă" is listed explicitly in addition to the wordmark.
 const links = [
   { href: "/", label: "Acasă" },
   { href: "/servicii/", label: "Servicii" },
@@ -30,18 +29,25 @@ function isActive(href: string) {
 
 <header
   id="site-nav"
-  class="sticky top-0 inset-x-0 z-[var(--z-nav)] transition-colors duration-300"
+  class="sticky top-0 inset-x-0 z-[var(--z-nav)] transition-[background-color,border-color,backdrop-filter] duration-300"
   data-scrolled={solid ? "true" : "false"}
   data-solid={solid ? "true" : "false"}
   data-overlay={solid ? undefined : "true"}
 >
   <div class="container-page flex items-center justify-between py-3.5">
-    <a href={withBase("/")} class="flex items-center gap-2.5 group" aria-label={`${site.name} — acasă`}>
+    <a
+      href={withBase("/")}
+      class="flex items-center gap-2.5 group"
+      aria-label={`${site.name} — acasă`}
+    >
       <span class="nav-wordmark wordmark text-xl md:text-2xl">{site.name}</span>
       <span class="m-stripe !w-9 !h-[3px]" aria-hidden="true"></span>
     </a>
 
-    <nav class="hidden lg:flex items-center gap-7" aria-label="Navigare principală">
+    <nav
+      class="hidden lg:flex items-center gap-8"
+      aria-label="Navigare principală"
+    >
       {
         links.map((link) => (
           <a
@@ -87,7 +93,7 @@ function isActive(href: string) {
       window.addEventListener("resize", setH, { passive: true });
     }
 
-    // A nav forced solid (subpages, no dark hero) never flips to transparent.
+    // A nav forced solid (subpages) renders frosted from the top.
     if (nav.dataset.solid === "true") return;
     function update() {
       nav.dataset.scrolled = window.scrollY > 8 ? "true" : "false";
@@ -98,36 +104,33 @@ function isActive(href: string) {
 </script>
 
 <style>
-  /* OVERLAY mode (home page): the sticky nav must float OVER the dark hero, not
-     sit in flow above it on the light page bg (which would render its light
-     wordmark white-on-white). We pull the page's first section up under the nav
-     by the nav's own height; the hero's large top padding already clears it. */
+  /* OVERLAY mode (home): the sticky nav floats over the dark hero. Pull the
+     page's first section up under the nav by the nav's own height; the hero's
+     large top padding already clears it. */
   #site-nav[data-overlay] {
     margin-bottom: calc(-1 * var(--nav-h, 4.5rem));
   }
 
-  /* Two states. At the top of the HOME page the nav floats over the DARK hero,
-     so its text is light. Once scrolled (or on any solid subpage) it gets a
-     light glass backdrop and the text flips to dark ink. */
+  /* The whole page is dark, so the nav text is light at every state. At the top
+     it floats transparent over the hero; once scrolled (or on any solid
+     subpage) it gains a frosted DARK glass backdrop and a hairline. */
   .nav-wordmark {
-    color: var(--color-inverse-on-surface);
-    transition: color 300ms ease;
+    color: var(--color-on-surface);
   }
   .nav-link {
-    color: oklch(96% 0.006 250 / 0.82);
+    color: oklch(96% 0.006 250 / 0.78);
   }
   .nav-link:hover {
-    color: var(--color-inverse-on-surface);
+    color: var(--color-on-surface);
   }
-  /* Active link over the dark hero: full-strength near-white + M-stripe underline. */
   .nav-link[data-active] {
-    color: var(--color-inverse-on-surface);
+    color: var(--color-on-surface);
   }
   .nav-link[data-active]::after {
     content: "";
     display: block;
     height: 2px;
-    margin-top: 3px;
+    margin-top: 4px;
     border-radius: var(--radius-full);
     background: linear-gradient(
       90deg,
@@ -136,28 +139,14 @@ function isActive(href: string) {
       var(--color-m-red) 66.66% 100%
     );
   }
-  /* Mobile hamburger follows the same two-state colouring. */
   :global(.nav-burger) {
-    color: var(--color-inverse-on-surface);
-  }
-  #site-nav[data-scrolled="true"] :global(.nav-burger) {
     color: var(--color-on-surface);
   }
 
   #site-nav[data-scrolled="true"] {
-    background-color: oklch(98.4% 0.004 250 / 0.82);
-    backdrop-filter: saturate(140%) blur(10px);
-    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    background-color: oklch(18% 0.022 256 / 0.72);
+    backdrop-filter: saturate(150%) blur(12px);
+    -webkit-backdrop-filter: saturate(150%) blur(12px);
     border-bottom: 1px solid var(--color-outline-variant);
-  }
-  #site-nav[data-scrolled="true"] .nav-wordmark {
-    color: var(--color-on-surface);
-  }
-  #site-nav[data-scrolled="true"] .nav-link {
-    color: var(--color-on-surface-variant);
-  }
-  #site-nav[data-scrolled="true"] .nav-link:hover,
-  #site-nav[data-scrolled="true"] .nav-link[data-active] {
-    color: var(--color-on-surface);
   }
 </style>

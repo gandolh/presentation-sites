@@ -16,24 +16,24 @@ const legalLinks = [
 ];
 ---
 
-<footer class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
+<footer class="text-[var(--color-on-surface)]" style="background-color: oklch(17% 0.022 256);">
   <div class="m-stripe m-stripe--full" aria-hidden="true"></div>
 
   <div class="container-page py-14 grid gap-10 md:grid-cols-4">
     <div class="md:col-span-1">
       <span class="wordmark text-2xl">{site.name}</span>
-      <p class="mt-4 text-sm text-[var(--color-inverse-on-surface-variant)] max-w-xs leading-relaxed">
+      <p class="mt-4 text-sm text-[var(--color-on-surface-variant)] max-w-xs leading-relaxed">
         {site.tagline}
       </p>
     </div>
 
     <nav class="flex flex-col" aria-label="Navigare subsol">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Navigare</span>
+      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Navigare</span>
       {
         links.map((link) => (
           <a
             href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)] hover:underline underline-offset-4"
+            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] hover:underline underline-offset-4"
           >
             {link.label}
           </a>
@@ -42,12 +42,12 @@ const legalLinks = [
     </nav>
 
     <nav class="flex flex-col" aria-label="Pagini legale">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Legal</span>
+      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Legal</span>
       {
         legalLinks.map((link) => (
           <a
             href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)] hover:underline underline-offset-4"
+            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] hover:underline underline-offset-4"
           >
             {link.label}
           </a>
@@ -56,19 +56,19 @@ const legalLinks = [
     </nav>
 
     <div class="flex flex-col">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Contact</span>
-      <a href={telLink()} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">{site.phone}</a>
-      <a href={`mailto:${site.email}`} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">{site.email}</a>
-      <p class="text-sm text-[var(--color-inverse-on-surface-variant)] mt-1">{site.address}, {site.city}</p>
+      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Contact</span>
+      <a href={telLink()} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">{site.phone}</a>
+      <a href={`mailto:${site.email}`} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">{site.email}</a>
+      <p class="text-sm text-[var(--color-on-surface-variant)] mt-1">{site.address}, {site.city}</p>
 
       <div class="flex items-center gap-3 mt-4">
-        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 -ml-2 text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">
+        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 -ml-2 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
-        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">
+        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
         </a>
-        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">
+        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8A8.5 8.5 0 1 1 7.8 19.35L3 21z"/><path d="M8.5 8.5c0 4 3 7 7 7l1.5-2-2.5-1-1 1c-1 0-3-2-3-3l1-1-1-2.5z"/></svg>
         </a>
       </div>
@@ -76,7 +76,7 @@ const legalLinks = [
   </div>
 
   <!-- Business identification (Legea 365/2002 art. 5) + ANPC SAL + RAR + BMW disclaimer -->
-  <div class="footer-legal border-t border-white/10 py-6 text-xs text-[var(--color-inverse-on-surface-variant)]">
+  <div class="footer-legal border-t border-white/10 py-6 text-xs text-[var(--color-on-surface-variant)]">
     <div class="container-page space-y-3">
       <p class="leading-relaxed">
         {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}{
@@ -95,7 +95,7 @@ const legalLinks = [
           target="_blank"
           rel="noopener"
           aria-label="ANPC: Soluționarea Alternativă a Litigiilor"
-          class="inline-flex items-center gap-2 text-[var(--color-inverse-on-surface)] hover:opacity-90"
+          class="inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:opacity-90"
         >
           <span class="inline-flex items-center justify-center rounded bg-white/10 px-2 py-1 font-semibold tracking-wide">ANPC</span>
           <span>Soluționarea Alternativă a Litigiilor (SAL)</span>
