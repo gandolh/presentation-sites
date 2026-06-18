@@ -4,6 +4,8 @@ import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
 import CallDock from "../components/CallDock.tsx";
 import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Process from "../components/Process.astro";
 import Coverage from "../components/Coverage.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
@@ -13,8 +15,16 @@ import Footer from "../components/Footer.astro";
   <Nav />
   <main id="main">
     <Hero />
-    <Coverage />
-    <Contact />
+    <!-- The road spine: every stop below is pinned to one continuous, lit lane
+         line. The hero carries its own road (the 3D scene), so the spine begins
+         where the drive's "stops" begin. -->
+    <div class="road relative">
+      <span class="road__line" aria-hidden="true"></span>
+      <Services />
+      <Process />
+      <Coverage />
+      <Contact />
+    </div>
   </main>
   <Footer />
   <CallDock client:load />
