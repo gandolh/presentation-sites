@@ -2,10 +2,14 @@
 import Base from "../layouts/Base.astro";
 import Prompt from "../components/Prompt.astro";
 import ProjectPlate from "../components/ProjectPlate.astro";
-import { projects } from "../content/projects";
+import { categories, projectsIn } from "../content/projects";
 
-const [featured, ...rest] = projects;
-const count = projects.length;
+// Each category becomes one `ls ./<slug>` section with a uniform grid.
+const groups = categories.map((category) => ({
+  category,
+  items: projectsIn(category.slug),
+}));
+const count = groups.reduce((n, g) => n + g.items.length, 0);
 ---
 
 <Base>
@@ -54,27 +58,34 @@ const count = projects.length;
       </p>
     </section>
 
-    <!-- ============== OUTPUT: the asymmetric plate run ============== -->
+    <!-- ============== OUTPUT: one uniform grid per category ============== -->
     <!--
-      Desktop: featured #01 spans the full width as a large landscape plate;
-      the remaining four sit in a denser 2-up run below it (with #02 and #05
-      pulled a row tighter so it never reads as four equal clones).
-      Mobile: everything collapses to one vertical column in [NN] order —
-      which is exactly how `ls` output wraps in a narrow terminal.
+      Each category is listed like its own `ls ./<slug>` call: a heading line,
+      an optional one-line comment, then every project at the SAME size in a
+      2-up grid. Mobile collapses to one vertical column in [NN] order.
+      More categories can be added in content/projects.ts over time.
     -->
-    <section aria-label="Projects" class="mt-6">
-      <div class="boot">
-        <ProjectPlate project={featured} featured />
-      </div>
+    {groups.map(({ category, items }) => (
+      <section aria-label={category.name} class="mt-10 first:mt-6">
+        <p class="boot">
+          <Prompt cmd={`ls ./${category.slug}`} />
+        </p>
+        {category.blurb && (
+          <p class="boot mt-1 text-[var(--color-ink-dim)]">
+            <span class="text-[var(--color-ink-faint)]" aria-hidden="true"># </span
+            >{category.blurb}
+          </p>
+        )}
 
-      <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {rest.map((p) => (
-          <div class="boot">
-            <ProjectPlate project={p} />
-          </div>
-        ))}
-      </div>
-    </section>
+        <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {items.map((p) => (
+            <div class="boot">
+              <ProjectPlate project={p} />
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
 
     <!-- ============== FOOTER: a final stdout line ============== -->
     <footer class="mt-16 text-sm text-[var(--color-ink-faint)]">
