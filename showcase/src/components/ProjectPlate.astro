@@ -29,12 +29,12 @@ const ratio = `${project.shotWidth} / ${project.shotHeight}`;
 >
   <!-- Output header row: [NN] name → /slug -->
   <div
-    class="flex items-baseline gap-3 border-b border-[var(--color-line-soft)] px-3 py-2 text-sm"
+    class="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-[var(--color-line-soft)] px-3 py-2 text-sm"
   >
     <span class="text-[var(--color-amber)] tabular-nums">[{index}]</span>
-    <span class="font-bold text-[var(--color-ink)]">{name}</span>
+    <span class="font-bold text-[var(--color-ink)] break-words">{name}</span>
     <span
-      class="ml-auto text-[var(--color-live-dim)] transition-colors group-hover:text-[var(--color-live)]"
+      class="ml-auto whitespace-nowrap text-[var(--color-live-dim)] transition-colors group-hover:text-[var(--color-live)]"
     >
       ./{slug} <span aria-hidden="true">↗</span>
     </span>
@@ -76,7 +76,7 @@ const ratio = `${project.shotWidth} / ${project.shotHeight}`;
     >
       <span class="text-[var(--color-ink-faint)]" aria-hidden="true"># </span>{blurb}
     </p>
-    <p class="mt-2 text-xs text-[var(--color-amber-dim)]">
+    <p class="mt-2 text-xs break-words text-[var(--color-amber-dim)]">
       [{stack.join(" ")}]
     </p>
   </div>
