@@ -1,7 +1,7 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import PageShell from '@churchix/ui/components/PageShell.astro';
 import Card from '@churchix/ui/components/Card.astro';
 import Icon from '@churchix/ui/components/Icon.astro';
 
@@ -14,34 +14,35 @@ const staff = (await getCollection('staff'))
 ---
 
 <BaseLayout site={site} title="Despre parohie" path="/despre">
-  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
-    <div class="max-w-prose">
-      <SectionHeading as="h1" title="Despre parohia noastră" />
-
-      <article class="cx-prose font-body-lg text-body-lg text-on-surface">
-        <p>
-          Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău,
-          a fost ridicată în anul 1846. Parohia a primit statut de sine stătător în anul 2002,
-          fiind anterior filie a unei parohii învecinate.
-        </p>
-        <p>
-          În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia
-          aparține de Arhiepiscopia Romanului și Bacăului, Protopopiatul Bacău.
-        </p>
-        <h2>Hramul</h2>
-        <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
-      </article>
-    </div>
+  <PageShell
+    title="Despre parohia noastră"
+    kicker="Istoric și hram"
+    lede="Biserica „Sfinții Trei Ierarhi” din Hârlești — o scurtă istorie a comunității."
+    markers={6}
+  >
+    <article class="cx-prose font-body-lg text-body-lg text-on-surface">
+      <p>
+        Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău,
+        a fost ridicată în anul 1846. Parohia a primit statut de sine stătător în anul 2002,
+        fiind anterior filie a unei parohii învecinate.
+      </p>
+      <p>
+        În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia
+        aparține de Arhiepiscopia Romanului și Bacăului, Protopopiatul Bacău.
+      </p>
+      <h2>Hramul</h2>
+      <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
+    </article>
 
     {staff.length > 0 && (
       <div class="mt-xl">
-        <h2 class="font-headline-md text-headline-md text-primary mb-lg flex items-center gap-sm">
-          <Icon name="diversity_1" class="text-secondary" size={24} />
+        <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Slujitorii parohiei</p>
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-lg">
           Conducerea parohiei
         </h2>
         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-lg list-none p-0 m-0">
           {staff.map((p) => (
-            <Card as="li" padding="lg" radius="lg">
+            <Card as="li" padding="lg" radius="lg" class="flex flex-col gap-md">
               <div class="flex items-start gap-md">
                 <span
                   class="shrink-0 grid place-items-center w-12 h-12 rounded-full bg-primary-container/40 text-primary"
@@ -51,19 +52,18 @@ const staff = (await getCollection('staff'))
                 </span>
                 <div class="min-w-0">
                   <p class="font-headline-md text-headline-md text-on-surface">{p.name}</p>
-                  <p class="font-label-md text-label-md text-primary">{p.role}</p>
-                  {p.bio && (
-                    <p class="mt-sm font-body-md text-body-md text-on-surface-variant">{p.bio}</p>
-                  )}
+                  <p class="font-overline text-overline uppercase text-on-secondary-container mt-xs">{p.role}</p>
                 </div>
               </div>
+              {p.bio && (
+                <p class="font-body-md text-body-md text-on-surface-variant">{p.bio}</p>
+              )}
             </Card>
           ))}
         </ul>
       </div>
     )}
-
-  </section>
+  </PageShell>
 </BaseLayout>
 
 <style>

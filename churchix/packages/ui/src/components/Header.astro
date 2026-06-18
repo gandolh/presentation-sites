@@ -48,10 +48,13 @@ const localeNames: Record<string, string> = {
 const showGiving = site.features.giving;
 
 const navLinkBase =
-  'font-label-md text-label-md uppercase transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
-const navLinkActive = 'text-primary border-b-2 border-secondary font-bold';
+  'relative font-label-md text-label-md uppercase tracking-wide transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center ' +
+  'after:absolute after:left-2 after:right-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-secondary after:transition-transform after:duration-200 after:origin-left ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
+// Active = gold underline drawn (rail motif); idle = underline collapsed, grows on hover.
+const navLinkActive = 'text-primary font-bold after:scale-x-100';
 const navLinkIdle =
-  'text-on-surface-variant hover:text-primary hover:bg-surface-container-low';
+  'text-on-surface-variant hover:text-primary after:scale-x-0 hover:after:scale-x-100';
 ---
 
 <header

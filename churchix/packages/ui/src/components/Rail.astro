@@ -1,0 +1,62 @@
+---
+/**
+ * `<Rail>` — the "liturgical rail", the redesign's cross-page signature.
+ *
+ * A thin vertical gold rule that runs down the LEFT margin of a content column,
+ * carrying small day/feast markers. It is the visual through-line that ties every
+ * page together: the Orthodox week made structural. Purely decorative (the rail
+ * itself is `aria-hidden`), it never carries meaning a screen reader needs — the
+ * actual schedule content lives in `<ServiceSchedule>` / the hero timeline.
+ *
+ * Layout contract: render this as the FIRST child of a `position: relative`,
+ * `display: flex` row, with the page content as the SECOND child. The rail owns a
+ * fixed narrow gutter; on mobile it collapses to a hairline edge accent so the
+ * signature survives without stealing width. `<PageShell>` wires this up for inner
+ * pages; the home `<Hero>` composes it inline.
+ *
+ * White-label: the rule and markers use ONLY existing tokens (`--secondary` gold,
+ * `--outline-variant`). No new color enters the system — the rail is structure, not
+ * palette.
+ *
+ * @prop {number} [markers=5]  How many day-dots to distribute down the rail.
+ * @prop {'full'|'edge'} [variant='full']  `full` = visible rule + markers (desktop
+ *        inner column); `edge` = hairline only (used where width is tight).
+ * @prop {string} [class]  Extra classes on the rail wrapper.
+ */
+interface Props {
+  markers?: number;
+  variant?: 'full' | 'edge';
+  class?: string;
+}
+
+const { markers = 5, variant = 'full', class: className } = Astro.props;
+const dots = Array.from({ length: markers });
+---
+
+<div
+  aria-hidden="true"
+  class:list={[
+    'cx-rail relative shrink-0 self-stretch',
+    variant === 'full' ? 'w-[2.25rem] md:w-[3rem]' : 'w-[0.75rem]',
+    className,
+  ]}
+>
+  {/* The vertical rule. A gradient so it fades in at the top and out at the
+      bottom, reading as a drawn line rather than a hard border. */}
+  <span
+    class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px"
+    style="background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--secondary) 70%, transparent) 12%, color-mix(in srgb, var(--secondary) 70%, transparent) 88%, transparent);"
+  >
+  </span>
+
+  {/* Day/feast markers: small diamonds sitting on the rule, the recurring
+      Byzantine glint. Hidden on the `edge` variant. */}
+  {variant === 'full' &&
+    dots.map((_, i) => (
+      <span
+        class="absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 border border-secondary/60 bg-surface"
+        style={`top: ${((i + 0.5) / dots.length) * 100}%;`}
+      >
+      </span>
+    ))}
+</div>

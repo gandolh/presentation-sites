@@ -1,7 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import SectionHeading from '@churchix/ui/components/SectionHeading.astro';
+import PageShell from '@churchix/ui/components/PageShell.astro';
 import Card from '@churchix/ui/components/Card.astro';
 import Field from '@churchix/ui/components/Field.astro';
 import Button from '@churchix/ui/components/Button.astro';
@@ -19,40 +19,47 @@ const prayerMailto = c.email
 ---
 
 <BaseLayout site={site} title="Contact" path="/contact">
-  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
-    <SectionHeading
-      as="h1"
-      title="Contact"
-      subtitle="Vă așteptăm la biserică și vă stăm la dispoziție pentru orice întrebare."
-    />
-
+  <PageShell
+    title="Contact"
+    kicker="Vino la biserică"
+    lede="Vă așteptăm la biserică și vă stăm la dispoziție pentru orice întrebare."
+    markers={6}
+    wide
+  >
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
       <!-- Coordonate parohie -->
       <div class="lg:col-span-5 flex flex-col gap-lg">
         <Card padding="lg" radius="lg">
-          <h2 class="font-headline-md text-headline-md text-primary mb-md flex items-center gap-sm">
-            <Icon name="church" class="text-secondary" size={24} />
-            Datele parohiei
-          </h2>
+          <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Coordonate</p>
+          <h2 class="font-headline-md text-headline-md text-primary mb-md">Datele parohiei</h2>
           <dl class="flex flex-col gap-md font-body-md text-body-md text-on-surface">
-            <div>
-              <dt class="font-label-md text-label-md text-on-surface-variant">Adresă</dt>
-              <dd class="mt-1">{c.address}<br />{c.city}, {c.country}</dd>
+            <div class="flex items-start gap-sm">
+              <Icon name="church" size={20} class="mt-0.5 text-secondary shrink-0" />
+              <div>
+                <dt class="font-overline text-overline uppercase text-on-surface-variant">Adresă</dt>
+                <dd class="mt-1">{c.address}<br />{c.city}, {c.country}</dd>
+              </div>
             </div>
             {c.phone && (
-              <div>
-                <dt class="font-label-md text-label-md text-on-surface-variant">Telefon</dt>
-                <dd class="mt-1">
-                  <a class="text-primary hover:underline underline-offset-2" href={`tel:${c.phone.replace(/\s+/g, '')}`}>{c.phone}</a>
-                </dd>
+              <div class="flex items-start gap-sm">
+                <Icon name="sms" size={20} class="mt-0.5 text-secondary shrink-0" />
+                <div>
+                  <dt class="font-overline text-overline uppercase text-on-surface-variant">Telefon</dt>
+                  <dd class="mt-1">
+                    <a class="text-primary hover:underline underline-offset-2" href={`tel:${c.phone.replace(/\s+/g, '')}`}>{c.phone}</a>
+                  </dd>
+                </div>
               </div>
             )}
             {c.email && (
-              <div>
-                <dt class="font-label-md text-label-md text-on-surface-variant">Email</dt>
-                <dd class="mt-1">
-                  <a class="text-primary hover:underline underline-offset-2 break-all" href={`mailto:${c.email}`}>{c.email}</a>
-                </dd>
+              <div class="flex items-start gap-sm">
+                <Icon name="send" size={20} class="mt-0.5 text-secondary shrink-0" />
+                <div>
+                  <dt class="font-overline text-overline uppercase text-on-surface-variant">Email</dt>
+                  <dd class="mt-1">
+                    <a class="text-primary hover:underline underline-offset-2 break-all" href={`mailto:${c.email}`}>{c.email}</a>
+                  </dd>
+                </div>
               </div>
             )}
           </dl>
@@ -76,9 +83,10 @@ const prayerMailto = c.email
     </div>
 
     <!-- Cerere de rugăciune -->
-    <div class="mt-xl max-w-prose">
-      <h2 class="font-headline-md text-headline-md text-primary mb-md flex items-center gap-sm">
-        <Icon name="candle" class="text-secondary" size={24} />
+    <div class="mt-xl max-w-2xl">
+      <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Scrie-ne</p>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-md flex items-center gap-sm">
+        <Icon name="candle" class="text-secondary" size={26} />
         Cerere de rugăciune
       </h2>
       <p class="font-body-md text-body-md text-on-surface-variant mb-lg">
@@ -139,5 +147,5 @@ const prayerMailto = c.email
         </script>
       )}
     </div>
-  </section>
+  </PageShell>
 </BaseLayout>
