@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import Prompt from "../components/Prompt.astro";
+import ProjectPlate from "../components/ProjectPlate.astro";
+import { projects } from "../content/projects";
+
+const [featured, ...rest] = projects;
+const count = projects.length;
+---
+
+<Base>
+  <!-- Fixed status line — the prompt always sits top-left, like a real shell. -->
+  <header
+    class="sticky top-0 z-10 border-b border-[var(--color-line-soft)] bg-[var(--color-bg)]/85 px-4 py-2.5 text-sm backdrop-blur-sm sm:px-6"
+  >
+    <div class="mx-auto flex max-w-5xl items-center justify-between">
+      <Prompt />
+      <span class="text-[var(--color-ink-faint)] tabular-nums"
+        >tty/showcase</span
+      >
+    </div>
+  </header>
+
+  <main
+    id="main"
+    class="mx-auto max-w-5xl px-4 pt-10 pb-24 sm:px-6 sm:pt-14"
+  >
+    <!-- ============== BOOT LOG ============== -->
+    <section aria-label="Session" class="text-[15px] leading-relaxed sm:text-base">
+      <!-- whoami -->
+      <p class="boot">
+        <Prompt cmd="whoami" />
+      </p>
+      <h1
+        class="boot mt-2 font-[family-name:var(--font-crt)] text-5xl leading-[0.95] text-[var(--color-amber)] sm:text-6xl"
+        style="text-shadow: 0 0 18px oklch(83% 0.15 80 / 0.35);"
+      >
+        gandolh
+      </h1>
+      <p class="boot mt-1 max-w-prose text-[var(--color-ink)]">
+        i build distinctive marketing sites.
+      </p>
+      <p class="boot mt-1 max-w-prose text-[var(--color-ink-dim)]">
+        <span class="text-[var(--color-ink-faint)]" aria-hidden="true"># </span
+        >not fast. for fun. i take my time.
+      </p>
+
+      <!-- ls ./projects -->
+      <p class="boot mt-8">
+        <Prompt cmd="ls ./projects" />
+      </p>
+      <p class="boot mt-1 text-[var(--color-ink-faint)]">
+        total {count} — look, don't touch. each opens its live site.
+      </p>
+    </section>
+
+    <!-- ============== OUTPUT: the asymmetric plate run ============== -->
+    <!--
+      Desktop: featured #01 spans the full width as a large landscape plate;
+      the remaining four sit in a denser 2-up run below it (with #02 and #05
+      pulled a row tighter so it never reads as four equal clones).
+      Mobile: everything collapses to one vertical column in [NN] order —
+      which is exactly how `ls` output wraps in a narrow terminal.
+    -->
+    <section aria-label="Projects" class="mt-6">
+      <div class="boot">
+        <ProjectPlate project={featured} featured />
+      </div>
+
+      <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {rest.map((p) => (
+          <div class="boot">
+            <ProjectPlate project={p} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============== FOOTER: a final stdout line ============== -->
+    <footer class="mt-16 text-sm text-[var(--color-ink-faint)]">
+      <Prompt />
+      <span class="cursor" aria-hidden="true"></span>
+      <p class="mt-3">© 2026 gandolh</p>
+    </footer>
+  </main>
+</Base>

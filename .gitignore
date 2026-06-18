@@ -169,3 +169,4 @@ saloon/deploy/Caddyfile
 auto-service/deploy/Caddyfile
 subcort/deploy/Caddyfile
 tractari/deploy/Caddyfile
+showcase/deploy/Caddyfile

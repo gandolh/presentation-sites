@@ -42,6 +42,14 @@
     "tractari:preview": "npm --prefix tractari run preview",
     "tractari:deploy:pre": "npm --prefix tractari run deploy:pre",
     "tractari:deploy": "npm --prefix tractari run deploy:push",
-    "tractari:deploy:all": "npm --prefix tractari run deploy:all"
+    "tractari:deploy:all": "npm --prefix tractari run deploy:all",
+    "showcase": "npm --prefix showcase run",
+    "showcase:install": "npm --prefix showcase install",
+    "showcase:dev": "npm --prefix showcase run dev",
+    "showcase:build": "npm --prefix showcase run build",
+    "showcase:preview": "npm --prefix showcase run preview",
+    "showcase:deploy:pre": "npm --prefix showcase run deploy:pre",
+    "showcase:deploy": "npm --prefix showcase run deploy:push",
+    "showcase:deploy:all": "npm --prefix showcase run deploy:all"
   }
 }

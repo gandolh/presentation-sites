@@ -1,0 +1,83 @@
+---
+import type { Project } from "../content/projects";
+import { withBase, siteUrl } from "../content/url";
+
+interface Props {
+  project: Project;
+  /** Featured tile (#01) gets the large landscape treatment. */
+  featured?: boolean;
+}
+
+const { project, featured = false } = Astro.props;
+const { index, slug, name, blurb, stack } = project;
+
+const href = siteUrl(`/${slug}`);
+const shot = withBase(`/shots/${slug}.png`);
+const ratio = `${project.shotWidth} / ${project.shotHeight}`;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    "boot group block border border-[var(--color-line)] bg-[var(--color-glass)]",
+    "transition-colors duration-200",
+    "hover:border-[var(--color-live-dim)] focus-visible:border-[var(--color-live)]",
+  ]}
+  aria-label={`${name} — ${blurb} — opens the live site in a new tab`}
+>
+  <!-- Output header row: [NN] name → /slug -->
+  <div
+    class="flex items-baseline gap-3 border-b border-[var(--color-line-soft)] px-3 py-2 text-sm"
+  >
+    <span class="text-[var(--color-amber)] tabular-nums">[{index}]</span>
+    <span class="font-bold text-[var(--color-ink)]">{name}</span>
+    <span
+      class="ml-auto text-[var(--color-live-dim)] transition-colors group-hover:text-[var(--color-live)]"
+    >
+      ./{slug} <span aria-hidden="true">↗</span>
+    </span>
+  </div>
+
+  <!-- The screenshot plate — the brightest thing on the page. -->
+  <div
+    class="relative overflow-hidden bg-[var(--color-bg-2)]"
+    style={`aspect-ratio: ${ratio};`}
+  >
+    <img
+      src={shot}
+      alt={`Screenshot of ${name}: ${blurb}`}
+      width={project.shotWidth}
+      height={project.shotHeight}
+      loading={featured ? "eager" : "lazy"}
+      decoding="async"
+      class:list={[
+        "h-full w-full object-cover object-top",
+        "transition duration-300 group-hover:scale-[1.02]",
+      ]}
+    />
+    <!-- Faint scan overlay so the shot still reads as 'on screen'. -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 opacity-40 mix-blend-overlay"
+      style="background-image: repeating-linear-gradient(to bottom, transparent 0 2px, oklch(0% 0 0 / 0.5) 3px);"
+    >
+    </div>
+  </div>
+
+  <!-- Output meta row: one-liner + stack tags styled as a flag array. -->
+  <div class="px-3 py-3">
+    <p
+      class:list={[
+        "text-[var(--color-ink-dim)]",
+        featured ? "text-base" : "text-sm",
+      ]}
+    >
+      <span class="text-[var(--color-ink-faint)]" aria-hidden="true"># </span>{blurb}
+    </p>
+    <p class="mt-2 text-xs text-[var(--color-amber-dim)]">
+      [{stack.join(" ")}]
+    </p>
+  </div>
+</a>

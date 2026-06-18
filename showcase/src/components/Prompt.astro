@@ -1,0 +1,16 @@
+---
+// A shell prompt fragment: `gandolh ~ %`. Reused for the status bar and the
+// command lines so the whole page reads as one consistent session.
+interface Props {
+  /** The command typed after the prompt, if any. */
+  cmd?: string;
+}
+const { cmd } = Astro.props;
+---
+
+<span class="whitespace-nowrap">
+  <span class="text-[var(--color-amber)]">gandolh</span><span
+    class="text-[var(--color-ink-faint)]"> ~ </span><span
+    class="text-[var(--color-amber-dim)]">%</span
+  >{cmd ? <span class="text-[var(--color-ink)]"> {cmd}</span> : null}
+</span>

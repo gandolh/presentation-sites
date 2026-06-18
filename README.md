@@ -20,6 +20,11 @@ project in its own top-level directory.
   of a tow truck driving a night road. Deploy sub-path `/tractari`. See
   [tractari/PRODUCT.md](tractari/PRODUCT.md) and
   [tractari/DESIGN.md](tractari/DESIGN.md).
+- **[showcase/](showcase/)** — gandolh, a look-don't-touch gallery of the sites
+  above (Astro + Tailwind v4, static). The page is one running terminal session:
+  `ls ./projects` "outputs" each site as a screenshot plate linking to its live
+  deployment. Deploy sub-path `/showcase`; tile links use the build-time
+  `PUBLIC_SITES_HOST`. See [showcase/README.md](showcase/README.md).
 
 > Each site is self-contained in its own sibling directory; new sites get their
 > own. The repo root only carries the passthrough scripts and shared config.
