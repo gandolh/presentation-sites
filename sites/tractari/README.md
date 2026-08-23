@@ -7,7 +7,7 @@ One job, per [`PRODUCT.md`](PRODUCT.md): make a stranded driver **call
 instantly**, from any scroll position, at any hour. The cinematic hero is
 enrichment that must never gate that.
 
-Astro 6 · React 19 islands · Tailwind v4 · **Three.js + GSAP** for the night-road
+Astro 7 · React 19 islands · Tailwind v4 · **Three.js + GSAP** for the night-road
 hero scene · deployed under the sub-path `/tractari`.
 
 ## Run it
@@ -41,6 +41,21 @@ This site has **no image pipeline** — no `public/images/`, no placeholder
 generator. The hero is rendered, not photographed:
 [`src/components/hero/scene.ts`](src/components/hero/scene.ts) and
 [`HeroCanvas.tsx`](src/components/hero/HeroCanvas.tsx).
+
+## A pinned dependency
+
+`@fontsource-variable/big-shoulders-display` is held at **5.2.5** while
+everything else tracks latest. Version 5.3.0 dropped the `"./*.css"` entry from
+its package `exports`, so `import ".../wght.css"` no longer resolves and the
+build fails. The extensionless form resolves but then TypeScript cannot see it
+as CSS, so that is not a fix either.
+
+Upstream renamed the font: the maintained package is
+`@fontsource-variable/big-shoulders`, which still ships the export. Switching to
+it means changing the family name in
+[`src/styles/global.css`](src/styles/global.css) from
+`"Big Shoulders Display Variable"` to the new one — a visual change, so it was
+left alone. Do that swap deliberately, not as part of a dependency bump.
 
 ## Project structure
 

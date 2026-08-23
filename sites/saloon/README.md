@@ -6,7 +6,7 @@ Built with **Astro + React + Tailwind v4**. Pure static output, hostable on any 
 
 ## Stack
 
-- **Astro 6** — static site generator
+- **Astro 7** — static site generator
 - **React 19** — interactive islands (mobile menu, mobile booking bar)
 - **Tailwind CSS v4** — design tokens defined in `src/styles/global.css` via `@theme`
 - **Fraunces** (variable display) + **Manrope** — self-hosted via `@fontsource` (no Google Fonts CDN, for GDPR)

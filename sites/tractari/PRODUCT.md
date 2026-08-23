@@ -45,4 +45,4 @@ Romanian (`lang="ro"`), full diacritics. Dark-first: verify warm-off-white body 
 
 ## Stack
 
-Astro 6 (static) + React 19 islands + Tailwind v4 (`@tailwindcss/vite`). Self-hosted fonts (`@fontsource`). Three.js + GSAP for the hero scene + scroll, loaded only inside a `client:only` island. Served under sub-path `/tractari` on a shared VPS behind Caddy (`PUBLIC_BASE`, `withBase()` helper). Pinned exact dependency versions (no caret ranges).
+Astro 7 (static) + React 19 islands + Tailwind v4 (`@tailwindcss/vite`). Self-hosted fonts (`@fontsource`). Three.js + GSAP for the hero scene + scroll, loaded only inside a `client:only` island. Served under sub-path `/tractari` on a shared VPS behind Caddy (`PUBLIC_BASE`, `withBase()` helper). Pinned exact dependency versions (no caret ranges).

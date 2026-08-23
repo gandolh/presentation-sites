@@ -89,3 +89,47 @@ the second now carries the bar for what may enter the shared package
 Verified from a clean `node_modules`: `npm install`, `npm run build` (4 sites),
 `astro check` on all four, 66 bots tests, churchix install + typecheck + build,
 0 dead links across 99 markdown files, corpus lint.
+
+## [2026-08-23] deps | everything to latest stable, 0 vulnerabilities
+
+Root workspace was reporting 4 vulnerabilities (3 high), churchix 13 (8 high).
+Both are now **0**, on latest stable, with pin styles preserved per entry
+(`saloon` keeps carets, the other three keep exact pins, churchix keeps carets).
+
+**Sites: Astro 6.4.2 -> 7.2.4** (plus @astrojs/react 5->6, Vite 7->8, Tailwind
+4.3.3, React 19.2.8, three 0.185.1). The vulnerabilities were all Astro and its
+esbuild / sharp / vite subtree.
+
+**churchix: Astro 5.7 -> 7.2.4**, zod 3 -> 4.4.3. Two breakages, both real:
+
+- `ViewTransitions` was renamed `ClientRouter` in Astro 5 and removed in 6.
+  churchix was still on the old name. Same component, one-line rename in
+  `packages/ui/src/layouts/BaseLayout.astro`.
+- `packages/config/tsconfig.json` extended `../../tsconfig.base.json`. npm
+  symlinks that package into `node_modules/@churchix/config`, where `../../`
+  escapes to `node_modules/` instead of the churchix root. Vite 8's oxc
+  transform resolves tsconfig extends chains where esbuild did not, so the
+  indirection started failing `astro sync`. The package is now self-contained
+  and the root `tsconfig.base.json` is a thin alias pointing back at it.
+
+**Two versions deliberately not latest:**
+
+- `typescript` stays on 6.0.3. `@astrojs/check@0.9.10` peers on `^5 || ^6`; TS 7
+  is not supported by the Astro checker yet.
+- `@types/node` tracks the declared engines floor (22.x), not 26.x. Typing
+  against a newer runtime than the package claims to support would allow APIs
+  missing on the minimum supported Node.
+
+**One package held back:** `@fontsource-variable/big-shoulders-display` stays at
+5.2.5. Its 5.3.0 dropped the `"./*.css"` export entry, breaking
+`import ".../wght.css"`; the extensionless form resolves but TypeScript then
+cannot see it as CSS. Upstream renamed the font — the maintained package is
+`@fontsource-variable/big-shoulders`, and switching means changing the
+font-family in tractari's `global.css`. That is a visual decision, not a
+dependency bump, so it is documented in `sites/tractari/README.md` and left for
+a deliberate call.
+
+Verified from clean installs on both workspaces: `npm audit` 0/0, 4 site builds
++ churchix build (10 pages, unchanged), `astro check` clean on all five, font
+output byte-for-byte unchanged per site (14/6/10/6 woff2), real-vs-mock image
+switching, sub-path builds, 66 bots tests.

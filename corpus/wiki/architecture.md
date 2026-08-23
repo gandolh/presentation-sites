@@ -52,7 +52,7 @@ The bar is **identical logic, not similar logic** — see
 
 All four share one shape:
 
-- **Astro 6, static output**, with **React 19 islands** (`@astrojs/react`) only
+- **Astro 7, static output**, with **React 19 islands** (`@astrojs/react`) only
   where interactivity is needed. Tailwind **v4** via `@tailwindcss/vite` — no
   `tailwind.config.js`; tokens live in the CSS.
 - **`base` is env-driven**: `base: process.env.PUBLIC_BASE ?? '/'` in

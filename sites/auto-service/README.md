@@ -3,7 +3,7 @@
 Presentation site for an **independent BMW-specialist workshop** (family
 business, Târgu-Jiu / Gorj). Romanian, multi-page, static.
 
-Astro 6 · React 19 islands · Tailwind v4 · deployed under the sub-path
+Astro 7 · React 19 islands · Tailwind v4 · deployed under the sub-path
 `/auto-service`.
 
 ## Run it

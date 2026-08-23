@@ -7,7 +7,7 @@ floored, lit, heated or cooled by season. Romanian, multi-page, static.
 Informational by design — [`PRODUCT.md`](PRODUCT.md) records the deliberate
 decision that the site carries **no calls-to-action**.
 
-Astro 6 · React 19 islands · Tailwind v4 · deployed under the sub-path
+Astro 7 · React 19 islands · Tailwind v4 · deployed under the sub-path
 `/subcort`.
 
 ## Run it
