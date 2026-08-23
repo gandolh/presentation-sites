@@ -13,8 +13,10 @@ export default defineConfig({
   integrations: [
     react(),
     // Phosphor, inlined at build time by astro-icon: no runtime, no sprite
-    // request, and one icon family across the site (see DESIGN.md).
-    icon({ include: { ph: ['*'] } }),
+    // request, and one icon family across the site (see DESIGN.md). Only the
+    // glyphs actually referenced end up in the HTML, so there is no `include`
+    // allow-list to maintain.
+    icon(),
   ],
 
   vite: {
