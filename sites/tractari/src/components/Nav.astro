@@ -1,0 +1,89 @@
+---
+import MobileMenu from "./MobileMenu.tsx";
+import PhoneIcon from "./PhoneIcon.astro";
+import { site, primaryPhone, telLink } from "../content/site";
+import { withBase } from "@sites/kit";
+
+// Anchor nav — sections are stops on the one road. The phone is the load-bearing
+// element: pinned right on desktop, always tappable. Mobile gets a separate
+// bottom CallDock, so here the burger is enough.
+const links = [
+  { href: "#servicii", label: "Servicii" },
+  { href: "#cum-functioneaza", label: "Cum funcționează" },
+  { href: "#acoperire", label: "Acoperire" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header
+  id="site-nav"
+  class="fixed inset-x-0 z-[var(--z-nav)] transition-colors duration-300"
+  style="top: var(--banner-h, 0px);"
+  data-scrolled="false"
+>
+  <div class="container-page flex items-center justify-between gap-3 py-3.5">
+    <a href={withBase("/")} class="flex items-center gap-2.5 shrink-0 group" aria-label={`${site.name}, acasă`}>
+      <span class="nav-mark" aria-hidden="true"></span>
+      <span class="wordmark text-xl md:text-[1.55rem] text-[var(--color-on-surface)]">{site.name}</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navigare principală">
+      {
+        links.map((link) => (
+          <a href={link.href} class="nav-link text-[0.92rem] font-semibold transition-colors">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={telLink(primaryPhone.e164)} class="btn btn-call hidden sm:inline-flex !py-2.5 !px-4 !text-[0.95rem]" data-call="nav">
+        <PhoneIcon />
+        <span class="tnum">{primaryPhone.display}</span>
+      </a>
+      <div class="flex items-center lg:hidden">
+        <MobileMenu client:load links={links} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    const nav = document.getElementById("site-nav");
+    if (!nav) return;
+    function update() {
+      nav.dataset.scrolled = window.scrollY > 12 ? "true" : "false";
+    }
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+  })();
+</script>
+
+<style>
+  /* Small amber dot before the wordmark — a beacon, the brand mark in miniature. */
+  .nav-mark {
+    width: 0.6rem; height: 0.6rem; border-radius: var(--radius-full);
+    background: var(--color-primary);
+    box-shadow: 0 0 12px 1px oklch(80% 0.16 80 / 0.7);
+    transition: box-shadow 300ms ease;
+  }
+  .group:hover .nav-mark { box-shadow: 0 0 18px 3px oklch(80% 0.16 80 / 0.9); }
+
+  .nav-link { color: var(--color-on-surface-variant); }
+  .nav-link:hover { color: var(--color-primary); }
+
+  /* The bar always has a solid asphalt background + hairline so it never
+     overlaps the hero panel transparently. On scroll it deepens slightly and
+     adds a blur so links stay legible over content beneath. */
+  #site-nav {
+    background-color: oklch(13% 0.011 250);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+  #site-nav[data-scrolled="true"] {
+    background-color: oklch(13% 0.011 250 / 0.9);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+</style>

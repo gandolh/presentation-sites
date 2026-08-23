@@ -46,7 +46,7 @@ corpus/
 2. A brief in `done/` wins over `wiki/` if the wiki hasn't caught up.
 3. `decisions.md` wins over `status.md` for choices not formally revisited.
 4. **A per-site doc wins over this corpus for that site's own detail** —
-   `churchix/CLAUDE.md` governs `churchix/`, `saloon/corpus/` governs `saloon/`.
+   `churchix/CLAUDE.md` governs `churchix/`, `sites/saloon/docs/` governs `saloon/`.
    This corpus owns the *monorepo* layer and links down; it must not duplicate
    per-site content.
 

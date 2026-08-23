@@ -1,0 +1,134 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { site } from "../content/site";
+import { withBase } from "@sites/kit";
+---
+
+<LegalLayout title="Termeni și condiții">
+  <p>
+    Acest site este un site de prezentare al serviciilor <strong>{site.name}</strong
+    >, prin care poți afla informații despre servicii și poți trimite o cerere de
+    programare. Folosind site-ul, ești de acord cu termenii de mai jos.
+  </p>
+
+  <div class="note">
+    <strong>Notă:</strong> Datele de identificare ale firmei sunt provizorii
+    (exemplu) și vor fi completate cu cele reale înainte de publicare.
+  </div>
+
+  <h2>1. Identificarea furnizorului</h2>
+  <ul>
+    <li><strong>Denumire:</strong> {site.legal.legalName}</li>
+    <li><strong>CUI / CIF:</strong> {site.legal.cui}</li>
+    <li>
+      <strong>Nr. Registrul Comerțului:</strong> {site.legal.regNumber}
+    </li>
+    {
+      site.legal.form === "SRL" && (
+        <li>
+          <strong>Capital social:</strong> {site.legal.shareCapital}
+        </li>
+      )
+    }
+    <li>
+      <strong>Sediu:</strong> {site.address}, {site.city}, jud. {site.county}
+    </li>
+    <li>
+      <strong>Contact:</strong>
+      <a href={`tel:+${site.phoneE164}`}>{site.phone}</a> ·
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </li>
+  </ul>
+
+  <h2>2. Serviciile oferite</h2>
+  <p>
+    {site.name} oferă servicii de manichiură și îngrijire a unghiilor, descrise în
+    secțiunea <a href={withBase("/#servicii")}>Servicii</a>. Prețurile afișate sunt
+    orientative și pot varia în funcție de complexitatea lucrării; prețul final
+    îți este comunicat înainte de începerea serviciului.
+  </p>
+
+  <h2>3. Cum funcționează programarea</h2>
+  <p>
+    Mesajele trimise prin butoanele de WhatsApp / telefon reprezintă o
+    <strong>cerere de programare</strong>, nu o programare confirmată automat. O
+    programare se consideră <strong>confirmată</strong> doar după ce primești un
+    răspuns de confirmare din partea noastră (de regulă prin WhatsApp sau
+    telefon). Ne rezervăm dreptul de a propune o altă dată/oră în funcție de
+    disponibilitate.
+  </p>
+
+  <h2>4. Politica de anulare și neprezentare</h2>
+  <p>
+    Timpul nostru este rezervat special pentru tine. Te rugăm să respecți
+    următoarele reguli:
+  </p>
+  <ul>
+    <li>
+      <strong>Anulare sau reprogramare:</strong> te rugăm să ne anunți cu cel
+      puțin <strong>24 de ore înainte</strong>, prin WhatsApp sau telefon, dacă
+      nu mai poți ajunge sau dorești să muți programarea.
+    </li>
+    <li>
+      <strong>Întârziere:</strong> o întârziere mai mare de 15 minute poate duce
+      la scurtarea sau reprogramarea serviciului, pentru a nu afecta clientele
+      următoare.
+    </li>
+    <li>
+      <strong>Neprezentare (no-show):</strong> neprezentarea repetată fără
+      anunț prealabil ne poate determina să solicităm confirmarea sau un avans
+      pentru programările viitoare.
+    </li>
+  </ul>
+
+  <h2>5. Obligațiile clientei</h2>
+  <ul>
+    <li>
+      Să furnizezi informații corecte de contact pentru confirmarea programării.
+    </li>
+    <li>
+      Să ne informezi despre eventuale alergii sau sensibilități relevante
+      (de ex. la anumite produse) înainte de începerea serviciului.
+    </li>
+    <li>Să te prezinți la ora stabilită sau să anunți din timp orice schimbare.</li>
+  </ul>
+
+  <h2>6. Răspundere</h2>
+  <p>
+    Depunem toate eforturile ca informațiile de pe site să fie corecte și
+    actuale, însă nu garantăm că sunt complet lipsite de erori. Fotografiile din
+    galerie au caracter ilustrativ. Rezultatul unui serviciu poate varia în
+    funcție de starea naturală a unghiilor și de recomandările de îngrijire
+    respectate ulterior.
+  </p>
+
+  <h2>7. Proprietate intelectuală</h2>
+  <p>
+    Conținutul acestui site (texte, fotografii, identitate vizuală) aparține
+    {site.name} și nu poate fi reprodus fără acordul nostru.
+  </p>
+
+  <h2>8. Protecția datelor</h2>
+  <p>
+    Prelucrarea datelor cu caracter personal este descrisă în
+    <a href={withBase("/confidentialitate/")}>Politica de confidențialitate</a>, iar
+    utilizarea cookie-urilor în <a href={withBase("/cookie-uri/")}>Politica de cookie-uri</a>.
+  </p>
+
+  <h2>9. Soluționarea litigiilor</h2>
+  <p>
+    Pentru orice nemulțumire, te rugăm să ne contactezi mai întâi direct; căutăm
+    întotdeauna o soluție amiabilă. De asemenea, te poți adresa
+    <strong>Autorității Naționale pentru Protecția Consumatorilor (ANPC)</strong>
+    și poți folosi procedura de
+    <a href="https://reclamatiisal.anpc.ro/" target="_blank" rel="noopener"
+      >Soluționare Alternativă a Litigiilor (SAL)</a
+    >.
+  </p>
+
+  <h2>10. Legea aplicabilă</h2>
+  <p>
+    Acești termeni sunt guvernați de legea română. Eventualele litigii se supun
+    instanțelor competente de la sediul furnizorului.
+  </p>
+</LegalLayout>

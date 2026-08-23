@@ -1,0 +1,135 @@
+---
+import Base from "./Base.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../content/site";
+import { withBase } from "@sites/kit";
+
+interface Props {
+  title: string;
+  description?: string;
+  updated?: string;
+}
+
+const {
+  title,
+  description = `${title} · ${site.name}`,
+  updated = site.legal.documentsUpdated,
+} = Astro.props;
+---
+
+<Base title={`${title} · ${site.name}`} description={description}>
+  <header class="border-b border-[var(--color-outline-variant)]">
+    <div class="container-page flex items-center justify-between py-5">
+      <a href={withBase("/")} class="wordmark text-2xl md:text-3xl">Unghii by Ana</a>
+      <a
+        href={withBase("/")}
+        class="label-md uppercase text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
+      >
+        ← Înapoi la site
+      </a>
+    </div>
+  </header>
+
+  <main class="container-page max-w-3xl py-12 md:py-20">
+    <a
+      href={withBase("/")}
+      class="label-md uppercase text-[var(--color-blush-deep)] hover:underline"
+    >
+      ← Acasă
+    </a>
+
+    <h1 class="heading-xl mt-4">{title}</h1>
+    <span class="gold-divider"></span>
+    <p class="mt-2 text-sm text-[var(--color-on-surface-variant)]">
+      Ultima actualizare: {updated}
+    </p>
+
+    <article class="legal-prose mt-10">
+      <slot />
+    </article>
+  </main>
+
+  <Footer />
+</Base>
+
+<style is:global>
+  .legal-prose {
+    color: var(--color-on-surface-variant);
+    line-height: 1.7;
+  }
+  .legal-prose h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.35rem, 3vw, 1.75rem);
+    color: var(--color-on-surface);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+  .legal-prose h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-on-surface);
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .legal-prose p {
+    margin-bottom: 1rem;
+  }
+  .legal-prose ul,
+  .legal-prose ol {
+    margin: 0.5rem 0 1.25rem;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+  .legal-prose ol {
+    list-style: decimal;
+  }
+  .legal-prose li {
+    margin-bottom: 0.5rem;
+  }
+  .legal-prose a {
+    color: var(--color-blush-deep);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal-prose a:hover {
+    color: var(--color-on-surface);
+  }
+  .legal-prose strong {
+    color: var(--color-on-surface);
+    font-weight: 600;
+  }
+  .legal-prose hr {
+    border: none;
+    border-top: 1px solid var(--color-outline-variant);
+    margin: 2rem 0;
+  }
+  .legal-prose .note {
+    background-color: var(--color-surface-container-low);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .legal-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.95rem;
+  }
+  .legal-prose th,
+  .legal-prose td {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--color-outline-variant);
+    vertical-align: top;
+  }
+  .legal-prose th {
+    color: var(--color-on-surface);
+    font-weight: 600;
+    font-family: var(--font-body);
+  }
+</style>

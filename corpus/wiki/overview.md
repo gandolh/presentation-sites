@@ -17,10 +17,10 @@ Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Olteni
 
 | Site | What it is | Sub-path |
 |---|---|---|
-| [`saloon/`](../../saloon/) | **Ana Saloon** — boutique nail salon, Târgu-Jiu. The most complete site; also carries `marketing/bots/`, an automation service. | `/saloon` |
-| [`auto-service/`](../../auto-service/) | **BavAuto Gorj** — independent BMW-specialist auto service, Târgu-Jiu. | `/auto-service` |
-| [`subcort/`](../../subcort/) | **Subcort** — demo event-tent rental site for Gorj/Oltenia. | `/subcort` |
-| [`tractari/`](../../tractari/) | **AXA Tractări** — demo car-towing site. Minimalist, with a Three.js night-road hero. | `/tractari` |
+| [`saloon/`](../../sites/saloon/) | **Ana Saloon** — boutique nail salon, Târgu-Jiu. The most complete site; also carries `marketing/bots/`, an automation service. | `/saloon` |
+| [`auto-service/`](../../sites/auto-service/) | **BavAuto Gorj** — independent BMW-specialist auto service, Târgu-Jiu. | `/auto-service` |
+| [`subcort/`](../../sites/subcort/) | **Subcort** — demo event-tent rental site for Gorj/Oltenia. | `/subcort` |
+| [`tractari/`](../../sites/tractari/) | **AXA Tractări** — demo car-towing site. Minimalist, with a Three.js night-road hero. | `/tractari` |
 | [`churchix/`](../../churchix/) | **Churchix** — a white-label *platform* for Orthodox church sites + giving. Its own npm-workspaces monorepo; the odd one out. | per-church |
 
 `churchix/` is structurally different from the rest: it is a product with shared

@@ -1,5 +1,5 @@
 ---
-summary: How a site in this repo is put together — the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
+summary: How this workspace is put together — the sites/ + packages/ layout, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
 updated: 2026-08-23
 ---
 
@@ -9,16 +9,44 @@ updated: 2026-08-23
 
 ```
 presentation-sites/
-  package.json        passthrough scripts only: npm run <site>:<script>
-  .vscode/            launch configs (one "<site>: dev server" per site)
-  corpus/             this workspace
-  <site>/             a fully self-contained project — own package.json,
-                      node_modules, build, docs. No hoisting, no cross-imports.
+  package.json        npm-workspaces root: ["sites/*", "packages/*"]
+  package-lock.json   one lockfile for every site and package
+  node_modules/       hoisted; per-site node_modules do not exist
+  sites/<name>/       one deployable site per workspace
+  packages/site-kit/  @sites/kit — the only code shared between sites
+  churchix/           NOT a workspace here — its own root, lockfile and packages/*
+  corpus/             this knowledge workspace
+  .vscode/            launch configs (one per project)
 ```
 
-Root scripts are pure passthrough: `"saloon:dev": "npm --prefix saloon run dev"`.
-Adding a site means adding its directory, its `<site>:*` scripts, a
-`.vscode/launch.json` entry, and a row in the README — nothing central changes.
+`npm install` runs **once at the root**. Root scripts are thin passthroughs onto
+the workspace (`"saloon:dev": "npm run dev -w sites/saloon"`), and
+`npm run build` builds every site.
+
+**churchix is deliberately outside the workspace.** It is itself an
+npm-workspaces monorepo (`packages/*`, `apps/*`); nesting one workspace root
+inside another does not work, and its release cadence is its own. Install and
+build it separately.
+
+## Shared code — `@sites/kit`
+
+[`packages/site-kit`](../../packages/site-kit/) holds the code that was
+byte-identical across sites: `withBase()`, `createImages()`, and the
+`SiteOverridesOf` type. Sites depend on it as `"@sites/kit": "*"`.
+
+Two mechanics matter:
+
+- **No build step.** The package exports TypeScript source
+  (`"exports": { ".": "./src/index.ts" }`). Each site lists it under
+  `vite.ssr.noExternal` in `astro.config.mjs` so the static build compiles it
+  instead of trying to `require()` raw TS from `node_modules`. Omit that and the
+  site builds fine in dev and fails at build time.
+- **`import.meta.env` belongs to the consumer.** Because Vite compiles the
+  package as part of each site, `BASE_URL` and `PUBLIC_IMAGE_SOURCE` resolve to
+  *that site's* values. One implementation, correct per site.
+
+The bar is **identical logic, not similar logic** — see
+[decisions.md](decisions.md) for what is excluded and why.
 
 ## The standard site (saloon, auto-service, subcort, tractari)
 
@@ -28,10 +56,12 @@ All four share one shape:
   where interactivity is needed. Tailwind **v4** via `@tailwindcss/vite` — no
   `tailwind.config.js`; tokens live in the CSS.
 - **`base` is env-driven**: `base: process.env.PUBLIC_BASE ?? '/'` in
-  `astro.config.mjs`. Every internal URL goes through a `withBase()` helper in
-  `src/content/url.ts` so the site works at `/` in dev and at `/<site>` on the VPS.
+  `astro.config.mjs`. Every internal URL goes through `withBase()` from
+  `@sites/kit` so the site works at `/` in dev and at `/<site>` on the VPS.
 - **Content is typed TypeScript, not markdown collections** — `src/content/*.ts`
   exports (`site.ts`, `gallery.ts`, `faq.ts`, `images.ts`). Components import them.
+  `images.ts` is now a few lines supplying this site's `hasReal` list to
+  `@sites/kit`; `url.ts` is gone, replaced by importing `withBase` from the kit.
 - `tractari` adds **Three.js + GSAP** for its hero scene; the others have no
   animation runtime.
 
@@ -48,10 +78,10 @@ public/images/real/<name>.jpeg    real photos — GITIGNORED
 `img(name)` picks the source from `IMAGE_SOURCE` / `PUBLIC_IMAGE_SOURCE`, and
 falls back to the mock when a logical name has no real photo (the `HAS_REAL` list
 in `images.ts` says which names do). This is why swapping a real photo in is a
-file drop, never a code edit — see [`saloon/docs/ADR.md`](../../saloon/docs/ADR.md).
+file drop, never a code edit — see [`sites/saloon/docs/ADR.md`](../../sites/saloon/docs/ADR.md).
 
 Mock placeholders are **generated**, not hand-drawn:
-`node <site>/scripts/gen-placeholders.mjs`. Keep the generator and the gallery
+`node sites/<site>/scripts/gen-placeholders.mjs`. Keep the generator and the gallery
 list in `src/content/gallery.ts` in sync — a generator that emits more images
 than the gallery renders just leaves dead files in `public/`.
 

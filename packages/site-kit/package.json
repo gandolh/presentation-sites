@@ -1,0 +1,17 @@
+{
+  "name": "@sites/kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Helpers shared by the presentation sites: sub-path URLs and the mock/real image pipeline.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

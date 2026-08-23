@@ -22,10 +22,10 @@ per-site docs and is *not* duplicated here.
 
 | Site | State | Its own docs |
 |---|---|---|
-| `saloon` | Site code-complete; blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`saloon/docs/STATUS.md`](../../saloon/docs/STATUS.md), [`docs/todo/ROADMAP.md`](../../saloon/docs/todo/ROADMAP.md), [`docs/ADR.md`](../../saloon/docs/ADR.md) |
-| `auto-service` | Code-complete: full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. Real photos are in place. | [`auto-service/docs/STATUS.md`](../../auto-service/docs/STATUS.md) |
-| `subcort` | Demo, complete. Committed placeholder photos under `public/images/photos/`; no real photos. | [`subcort/PRODUCT.md`](../../subcort/PRODUCT.md), [`DESIGN.md`](../../subcort/DESIGN.md) |
-| `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../tractari/PRODUCT.md), [`DESIGN.md`](../../tractari/DESIGN.md) |
+| `saloon` | Site code-complete; blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/todo/ROADMAP.md`](../../sites/saloon/docs/todo/ROADMAP.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
+| `auto-service` | Code-complete: full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. Real photos are in place. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
+| `subcort` | Demo, complete. Committed placeholder photos under `public/images/photos/`; no real photos. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
+| `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |
 | `churchix` | Active product. One church app scaffolded (`apps/parohia-harlesti-bacau`); shared packages + docs corpus in progress. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/docs/wiki/index.md`](../../churchix/docs/wiki/index.md) |
 
 ## Briefs

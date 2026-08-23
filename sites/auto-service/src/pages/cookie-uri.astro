@@ -1,0 +1,70 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { site } from "../content/site";
+import { withBase } from "@sites/kit";
+---
+
+<LegalLayout title="Politica de cookie-uri">
+  <p>
+    Această pagină explică modul în care folosim cookie-urile și tehnologii
+    similare pe site-ul <strong>{site.name}</strong>, conform
+    <strong>Legii nr. 506/2004</strong> și <strong>GDPR</strong>.
+  </p>
+
+  <h2>1. Ce sunt cookie-urile</h2>
+  <p>
+    Cookie-urile sunt fișiere text mici stocate de browser pe dispozitivul tău
+    atunci când vizitezi un site, folosite de regulă pentru a face site-ul să
+    funcționeze sau pentru a-l îmbunătăți.
+  </p>
+
+  <h2>2. Ce cookie-uri folosim</h2>
+  <p>
+    Acest site este unul de prezentare și a fost construit pentru a respecta
+    confidențialitatea ta. <strong
+      >Nu folosim cookie-uri de analiză, de publicitate sau de urmărire</strong
+    > și nu îți monitorizăm comportamentul în alte scopuri.
+  </p>
+  <ul>
+    <li>
+      <strong>Cookie-uri strict necesare:</strong> pot fi folosite, dacă este
+      cazul, doar pentru funcționarea de bază a site-ului. Acestea nu necesită
+      consimțământ.
+    </li>
+    <li>
+      <strong>Fonturile</strong> sunt găzduite local, pe propriul nostru server,
+      deci nu se transmit date către servere externe pentru afișarea textului.
+    </li>
+  </ul>
+
+  <h2>3. Harta și conținutul de la terți</h2>
+  <p>
+    Pentru a-ți proteja confidențialitatea, <strong
+      >harta Google nu se încarcă automat</strong
+    >. În secțiunea de contact vei vedea o imagine statică a locației; harta
+    interactivă Google (care poate seta cookie-uri și transmite adresa ta IP
+    către Google) se încarcă <strong>doar dacă apeși tu</strong> pe butonul
+    „Încarcă harta”. Până atunci, nu se transmite niciun fel de date către
+    Google.
+  </p>
+  <p>
+    În rest, site-ul <strong>nu încarcă alte conținuturi încorporate de la
+    terți</strong> (videoclipuri, widget-uri) care ar putea seta cookie-uri fără
+    acțiunea ta.
+  </p>
+
+  <h2>4. Cum poți gestiona cookie-urile</h2>
+  <p>
+    Poți bloca sau șterge cookie-urile oricând din setările browserului tău
+    (Chrome, Firefox, Safari, Edge etc.). Reține că dezactivarea unor cookie-uri
+    poate afecta funcționarea anumitor părți ale site-ului.
+  </p>
+
+  <h2>5. Mai multe informații</h2>
+  <p>
+    Pentru modul în care prelucrăm datele cu caracter personal, consultă
+    <a href={withBase("/confidentialitate/")}>Politica de confidențialitate</a>. Pentru
+    întrebări, scrie-ne la
+    <a href={`mailto:${site.legal.dpoEmail}`}>{site.legal.dpoEmail}</a>.
+  </p>
+</LegalLayout>

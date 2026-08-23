@@ -8,16 +8,25 @@ updated: 2026-08-23
 Settled calls. Each is hard to reverse, non-obvious, and had a real alternative.
 Changing one needs an explicit revisit plus a [`log.md`](../log.md) entry.
 
-## Sites are self-contained; the root is a passthrough
+## Sites live under `sites/`, as npm workspaces
 
-**2026-06** — Every site owns its `package.json`, `node_modules`, build and docs.
-The root only proxies scripts.
+**2026-08-23** (revisits the 2026-06 "self-contained, no hoisting" call) — The
+four presentation sites moved into `sites/` and the root became an
+**npm-workspaces** root (`sites/*`, `packages/*`). One lockfile, one
+`node_modules`, one `npm install`. `churchix/` stays outside the workspace with
+its own lockfile and its own `packages/*`.
 
-*Rejected:* npm/pnpm workspaces with hoisting at the repo root.
-*Why:* the sites share no code and no release cadence — they are separate client
-deliverables that happen to live in one place. Hoisting would couple their
-dependency versions and make "move one site out" a surgery instead of a `git mv`.
-That bet already paid: `showcase/` left the repo cleanly in `93eba5d`.
+*Superseded:* "every site owns its `package.json`, `node_modules` and build; the
+root only proxies scripts", which rejected hoisting to keep sites independently
+movable.
+*Why the change:* the original reasoning held that the sites share no code. They
+did — `url.ts` was byte-identical in all four and `images.ts` differed only in a
+list — so the independence was buying isolation that nothing was using while a
+bug fix had to be applied four times. Workspaces make the sharing explicit and
+bounded (see below) and cost one lockfile.
+*What is preserved:* a site is still a directory you can lift out. Its only
+in-repo dependency is `@sites/kit`; moving it out means inlining one small
+package. Deploy is still per-site and unchanged.
 
 ## Deploy lives outside this repo
 
@@ -74,23 +83,39 @@ root workspace instead.
 the root, the Romanian business docs in two sites, and churchix's wiki. The
 tooling reads `corpus/` as one specific shape, so the collision actively misled
 it. Freeing the word cost only renames. Files whose names collided were renamed
-for the job they actually do (`saloon/corpus/DESIGN.md` → `docs/tokens.md`, a
-token export, not the impeccable design doc; `auto-service/corpus/PRODUCT.md` →
+for the job they actually do (`sites/saloon/docs/DESIGN.md` → `docs/tokens.md`, a
+token export, not the impeccable design doc; `sites/auto-service/docs/PRODUCT.md` →
 `docs/brief.md`). `PRODUCT.md` and `DESIGN.md` keep their exact names at each
 project root because impeccable reads them there.
 
-## Duplication between sites is accepted, not fixed
+## Shared code lives in `@sites/kit`, and the bar is "identical, not similar"
 
-**2026-08-23** — `src/content/url.ts` is identical across all four sites modulo
-comments, and `images.ts` differs only in its `HAS_REAL` list. This stays
-duplicated.
+**2026-08-23** (same session, replaces the "duplication is accepted" call made
+earlier that day) — `packages/site-kit` holds `withBase()`, the `createImages()`
+mock/real pipeline, and the `SiteOverridesOf` type. Sites depend on it as
+`"@sites/kit": "*"`.
 
-*Rejected:* extracting a shared `@sites/helpers` package.
-*Why:* it is roughly 70 lines per site, and a shared package would reintroduce
-exactly the coupling the self-contained decision above buys out — a version to
-bump, a build order, and a reason for one site's change to break another. The
-duplication is the price of independence, and at this size it is the right price.
-Revisit only if the shared surface grows well past a few small helpers.
+*Rejected:* leaving `url.ts` and `images.ts` duplicated four times; and, at the
+other extreme, a general "shared components" package.
+*Why:* the duplication was real and already costing — the `SiteOverridesOf` array
+bug existed identically in all four sites and produced type errors in two. Fixing
+it once is the whole argument. The package ships **TypeScript source, no build
+step**, so there is no build order to get wrong; Vite compiles it as part of the
+consuming site, which is also why `import.meta.env.BASE_URL` correctly resolves
+to that site's base.
+
+*The bar, which matters more than the package:* only **identical logic** goes in.
+Anything a site configures stays in the site. Two things are excluded on purpose
+and documented in the package README —
+
+- **`site.local.ts` loading.** `import.meta.glob` resolves relative to the
+  calling file, so moving it into the package would glob the package directory.
+  It *cannot* be shared, not merely shouldn't be.
+- **Placeholder generators.** Each site draws different artwork; sharing them
+  would produce a switch statement, not a library.
+
+A site's `images.ts` therefore stays per-site — it supplies data (`hasReal`) to
+shared logic.
 
 ## churchix governs itself
 

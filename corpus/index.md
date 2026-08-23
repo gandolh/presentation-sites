@@ -38,10 +38,10 @@ its root, everything else under `docs/`.
 
 | Site | Entry point |
 |---|---|
-| saloon | [saloon/README.md](../saloon/README.md) · [docs/STATUS.md](../saloon/docs/STATUS.md) |
-| auto-service | [auto-service/README.md](../auto-service/README.md) · [docs/STATUS.md](../auto-service/docs/STATUS.md) |
-| subcort | [subcort/README.md](../subcort/README.md) |
-| tractari | [tractari/README.md](../tractari/README.md) |
+| saloon | [saloon/README.md](../sites/saloon/README.md) · [docs/STATUS.md](../sites/saloon/docs/STATUS.md) |
+| auto-service | [auto-service/README.md](../sites/auto-service/README.md) · [docs/STATUS.md](../sites/auto-service/docs/STATUS.md) |
+| subcort | [subcort/README.md](../sites/subcort/README.md) |
+| tractari | [tractari/README.md](../sites/tractari/README.md) |
 | churchix | [churchix/CLAUDE.md](../churchix/CLAUDE.md) · [docs/wiki/](../churchix/docs/wiki/index.md) |
 
 ## Health

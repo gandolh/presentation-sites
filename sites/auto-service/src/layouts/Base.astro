@@ -1,0 +1,189 @@
+---
+// Self-hosted fonts (no Google Fonts CDN — GDPR: avoids transmitting visitor
+// IPs to Google; see docs/LEGAL.md). Variable faces: the `wght` axis carries
+// every weight we use. Each `wght.css` already bundles the latin + latin-ext
+// subsets (latin-ext carries Romanian diacritics ă â î ș ț) as separate
+// @font-face blocks gated by unicode-range, so a single import is enough.
+import "@fontsource-variable/archivo/wght.css";
+import "@fontsource-variable/hanken-grotesk/wght.css";
+import "../styles/global.css";
+import { site } from "../content/site";
+import { img } from "../content/images";
+import { withBase } from "@sites/kit";
+
+interface Props {
+  title?: string;
+  description?: string;
+  // Root-relative path of this page (e.g. "/servicii/"). Used to build the
+  // per-page canonical + og:url. Defaults to the home page.
+  path?: string;
+}
+
+const {
+  title = `${site.name} · Service BMW în ${site.city}`,
+  description = site.description,
+  path = "/",
+} = Astro.props;
+
+// Public site origin — overwritten by the owner if the real domain differs.
+const siteOrigin = "https://bavauto.ro";
+const canonical = `${siteOrigin}${path}`;
+
+const ogImage = img("og-image");
+const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
+
+// Map RO opening hours to schema.org day codes. Keeps the JSON-LD in sync with
+// the single source of truth in site.ts without duplicating the strings.
+const openingHours = [
+  {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "18:00",
+  },
+  {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: "Saturday",
+    opens: "09:00",
+    closes: "14:00",
+  },
+];
+---
+
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#141d2b" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ro_RO" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts are self-hosted via @fontsource (imported in the frontmatter) -->
+
+    <!-- JSON-LD: LocalBusiness / AutoRepair -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "AutoRepair",
+        name: site.name,
+        description: site.description,
+        image: ogImageAbsolute,
+        url: `${siteOrigin}/`,
+        telephone: `+${site.phoneE164}`,
+        priceRange: "$$",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: site.address,
+          addressLocality: site.city,
+          addressRegion: site.county,
+          postalCode: site.postalCode,
+          addressCountry: "RO",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: site.geo.lat,
+          longitude: site.geo.lng,
+        },
+        openingHoursSpecification: openingHours,
+        sameAs: [site.social.facebook, site.social.instagram],
+      })}
+    />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-primary)] focus:text-[var(--color-on-primary)] focus:px-4 focus:py-2 focus:rounded-md"
+    >
+      Sari la conținut
+    </a>
+    <slot />
+
+    <script is:inline>
+      // Scroll-triggered fade-in. Only hide-then-reveal when JS + observer are
+      // available; otherwise the CSS default leaves all .reveal content visible
+      // (no-JS, crawlers, link-preview bots). Honour reduced-motion too.
+      //
+      // CRITICAL failsafe: a JS-capable client that never scrolls — a headless
+      // renderer, a link-preview / social-card bot, or a backgrounded tab where
+      // IntersectionObserver is throttled — would otherwise leave every
+      // not-yet-seen .reveal stuck at opacity:0 and capture a blank page. So we
+      // (a) reveal anything already in the first viewport synchronously, and
+      // (b) force-reveal everything after a short timeout regardless of scroll.
+      (function () {
+        const prefersReduced =
+          typeof matchMedia === "function" &&
+          matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (typeof IntersectionObserver === "undefined" || prefersReduced) {
+          return; // leave content visible, skip animation entirely
+        }
+
+        document.documentElement.classList.add("js-reveal");
+        const reveals = Array.prototype.slice.call(
+          document.querySelectorAll(".reveal"),
+        );
+
+        function show(el) {
+          el.classList.add("is-visible");
+        }
+
+        const io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                show(entry.target);
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "-40px 0px" },
+        );
+        reveals.forEach(function (el) {
+          io.observe(el);
+        });
+
+        // (a) Reveal whatever is already on screen at load.
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        reveals.forEach(function (el) {
+          if (el.getBoundingClientRect().top < vh) {
+            show(el);
+            io.unobserve(el);
+          }
+        });
+
+        // (b) Hard failsafe: after a short grace period, reveal everything still
+        // hidden, whether or not the client ever scrolled.
+        function revealAll() {
+          reveals.forEach(function (el) {
+            if (!el.classList.contains("is-visible")) {
+              el.classList.add("reveal-now");
+              show(el);
+            }
+          });
+          io.disconnect();
+        }
+        window.setTimeout(revealAll, 2500);
+      })();
+    </script>
+  </body>
+</html>

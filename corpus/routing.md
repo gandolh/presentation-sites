@@ -51,4 +51,4 @@ subtree.
 | Cross-site / monorepo change | `corpus/wiki/architecture.md`, `corpus/wiki/decisions.md`, root `package.json`, root `README.md` | site internals | — |
 | Image / placeholder work | that site's `src/content/images.ts`, `gallery.ts`, `<site>/scripts/gen-placeholders.mjs` | components | — |
 | churchix work | `churchix/CLAUDE.md`, the relevant `churchix/docs/corpus/*.md` | every other site | — |
-| saloon bots work | `saloon/marketing/bots/README.md`, `COMPLIANCE.md`, `src/core/types.ts` | the Astro site | — |
+| saloon bots work | `sites/saloon/marketing/bots/README.md`, `COMPLIANCE.md`, `src/core/types.ts` | the Astro site | — |

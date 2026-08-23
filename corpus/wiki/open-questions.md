@@ -8,7 +8,7 @@ updated: 2026-08-23
 ## Should the per-site docs adopt the briefs lifecycle?
 
 Resolved on 2026-08-23: they converged on one *shape* (`docs/`), not on this
-corpus's *machinery*. `saloon/docs/todo/` and `auto-service/docs/todo/` are still
+corpus's *machinery*. `sites/saloon/docs/todo/` and `sites/auto-service/docs/todo/` are still
 plain checklists rather than numbered immutable briefs, and churchix has its own
 numbered backlog under `docs/todo/` with a `SWARM_PLAN.md`.
 

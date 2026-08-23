@@ -1,0 +1,152 @@
+---
+import MobileMenu from "./MobileMenu.tsx";
+import { site, telLink } from "../content/site";
+import { withBase } from "@sites/kit";
+
+interface Props {
+  // The current page's route, e.g. "/", "/servicii/". Drives the active link.
+  current?: string;
+  // Kept in the API for call-site compatibility. In the dark rebrand every
+  // surface behind the nav is dark (hero AND subpage PageHeader), so the nav no
+  // longer needs a separate "solid light" mode — it is dark glass throughout,
+  // simply transparent at the top and frosted once scrolled.
+  solid?: boolean;
+}
+
+const { current = "/", solid = false } = Astro.props;
+
+const links = [
+  { href: "/", label: "Acasă" },
+  { href: "/servicii/", label: "Servicii" },
+  { href: "/despre/", label: "Despre" },
+  { href: "/contact/", label: "Contact" },
+];
+
+function isActive(href: string) {
+  return current === href;
+}
+---
+
+<header
+  id="site-nav"
+  class="sticky top-0 inset-x-0 z-[var(--z-nav)] transition-[background-color,border-color,backdrop-filter] duration-300"
+  data-scrolled={solid ? "true" : "false"}
+  data-solid={solid ? "true" : "false"}
+  data-overlay={solid ? undefined : "true"}
+>
+  <div class="container-page flex items-center justify-between py-3.5">
+    <a
+      href={withBase("/")}
+      class="flex items-center gap-2.5 group"
+      aria-label={`${site.name} — acasă`}
+    >
+      <span class="nav-wordmark wordmark text-xl md:text-2xl">{site.name}</span>
+      <span class="m-stripe !w-9 !h-[3px]" aria-hidden="true"></span>
+    </a>
+
+    <nav
+      class="hidden lg:flex items-center gap-8"
+      aria-label="Navigare principală"
+    >
+      {
+        links.map((link) => (
+          <a
+            href={withBase(link.href)}
+            class="nav-link text-sm font-semibold transition-colors"
+            aria-current={isActive(link.href) ? "page" : undefined}
+            data-active={isActive(link.href) ? "true" : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={telLink()}
+        class="hidden sm:inline-flex btn btn-primary"
+        data-cta="nav-call"
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Sună acum</span>
+      </a>
+      <MobileMenu client:load current={current} />
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    const nav = document.getElementById("site-nav");
+    if (!nav) return;
+
+    // In overlay mode (home), keep --nav-h in sync with the real bar height so
+    // the negative margin that pulls the hero under the nav is always exact.
+    if (nav.dataset.overlay === "true") {
+      var setH = function () {
+        nav.style.setProperty("--nav-h", nav.offsetHeight + "px");
+      };
+      setH();
+      window.addEventListener("resize", setH, { passive: true });
+    }
+
+    // A nav forced solid (subpages) renders frosted from the top.
+    if (nav.dataset.solid === "true") return;
+    function update() {
+      nav.dataset.scrolled = window.scrollY > 8 ? "true" : "false";
+    }
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+  })();
+</script>
+
+<style>
+  /* OVERLAY mode (home): the sticky nav floats over the dark hero. Pull the
+     page's first section up under the nav by the nav's own height; the hero's
+     large top padding already clears it. */
+  #site-nav[data-overlay] {
+    margin-bottom: calc(-1 * var(--nav-h, 4.5rem));
+  }
+
+  /* The whole page is dark, so the nav text is light at every state. At the top
+     it floats transparent over the hero; once scrolled (or on any solid
+     subpage) it gains a frosted DARK glass backdrop and a hairline. */
+  .nav-wordmark {
+    color: var(--color-on-surface);
+  }
+  .nav-link {
+    color: oklch(96% 0.006 250 / 0.78);
+  }
+  .nav-link:hover {
+    color: var(--color-on-surface);
+  }
+  .nav-link[data-active] {
+    color: var(--color-on-surface);
+  }
+  .nav-link[data-active]::after {
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: 4px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(
+      90deg,
+      var(--color-m-blue) 0 33.33%,
+      var(--color-m-indigo) 33.33% 66.66%,
+      var(--color-m-red) 66.66% 100%
+    );
+  }
+  :global(.nav-burger) {
+    color: var(--color-on-surface);
+  }
+
+  #site-nav[data-scrolled="true"] {
+    background-color: oklch(18% 0.022 256 / 0.72);
+    backdrop-filter: saturate(150%) blur(12px);
+    -webkit-backdrop-filter: saturate(150%) blur(12px);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+</style>

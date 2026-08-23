@@ -1,33 +1,34 @@
 {
   "version": "0.2.0",
+  "comment": "npm workspaces hoist binaries to the root node_modules/.bin, so these run from the workspace root via the root passthrough scripts rather than a per-site ./node_modules/.bin/astro.",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
+      "command": "npm run saloon:dev",
       "name": "saloon: dev server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/saloon"
+      "cwd": "${workspaceFolder}"
     },
     {
-      "command": "./node_modules/.bin/astro dev",
+      "command": "npm run auto-service:dev",
       "name": "auto-service: dev server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/auto-service"
+      "cwd": "${workspaceFolder}"
     },
     {
-      "command": "./node_modules/.bin/astro dev",
+      "command": "npm run subcort:dev",
       "name": "subcort: dev server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/subcort"
+      "cwd": "${workspaceFolder}"
     },
     {
-      "command": "./node_modules/.bin/astro dev",
+      "command": "npm run tractari:dev",
       "name": "tractari: dev server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/tractari"
+      "cwd": "${workspaceFolder}"
     },
     {
       "command": "npm run dev:bac",
