@@ -1,5 +1,6 @@
 ---
 import { faq } from "../content/faq";
+import { waLink } from "../content/site";
 
 // FAQPage structured data — helps the FAQ surface as rich results in search.
 const faqJsonLd = {
@@ -15,19 +16,23 @@ const faqJsonLd = {
 
 <section id="intrebari" class="section">
   <div class="container-page">
-    <div class="reveal max-w-2xl">
-      <h2 class="heading-lg">Întrebări frecvente</h2>
-      <span class="gold-divider"></span>
-      <p class="mt-4 text-[var(--color-on-surface-variant)]">
-        Ai o nelămurire? Mai jos găsești cele mai frecvente întrebări. Pentru
-        orice altceva, scrie-mi pe WhatsApp.
-      </p>
-    </div>
+    <h2 class="reveal heading-lg">Întrebări frecvente</h2>
 
-    <div class="mt-10 max-w-3xl space-y-3">
+    {/*
+      The accordion is capped at a readable measure, which used to leave the
+      right third of the container as an orphaned void. The "still stuck?"
+      prompt lives there instead, so the whitespace is doing a job.
+    */}
+    <div
+      class="mt-8 md:mt-12 grid gap-x-16 gap-y-8 md:grid-cols-[minmax(0,1fr)_minmax(0,17rem)] md:items-start"
+    >
+      <div class="space-y-3">
       {
-        faq.map((item) => (
-          <details class="reveal group card !p-0 overflow-hidden">
+        faq.map((item, i) => (
+          <details
+            class="reveal group card !p-0 overflow-hidden"
+            style={`--i: ${i}`}
+          >
             <summary
               class="cursor-pointer list-none flex items-center justify-between gap-4 px-6 py-5 font-medium text-[var(--color-on-surface)]"
             >
@@ -53,6 +58,29 @@ const faqJsonLd = {
           </details>
         ))
       }
+      </div>
+
+      <aside
+        class="reveal md:sticky md:top-28 rounded-[1rem] bg-[var(--color-surface-container)] px-6 py-6"
+        style="--i: 2"
+      >
+        <p class="font-display text-xl leading-snug text-[var(--color-on-surface)]">
+          Nu ai găsit răspunsul?
+        </p>
+        <p class="mt-2 text-sm leading-relaxed text-[var(--color-on-surface-variant)]">
+          Scrie-mi pe WhatsApp și îți răspund cât pot de repede.
+        </p>
+        <a
+          href={waLink(
+            "Bună, Ana! Am o întrebare despre serviciile tale.",
+          )}
+          target="_blank"
+          rel="noopener"
+          class="mt-4 inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] underline underline-offset-4 decoration-[var(--color-outline-variant)] hover:decoration-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors"
+        >
+          Întreabă-mă →
+        </a>
+      </aside>
     </div>
   </div>
 

@@ -160,6 +160,29 @@
     }
   }
 
+  /* Rhythm modifiers. Nine sections at an identical 3/6rem beat reads as a
+     template stamped repeatedly; a real page breathes unevenly. Airy for the
+     ones that want room around them (the gallery, the loyalty panel), tight
+     where a section is a continuation of the one above it (contact after
+     booking) rather than a fresh start. */
+  .section--airy {
+    padding-block: 4rem;
+  }
+
+  .section--tight {
+    padding-block: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .section--airy {
+      padding-block: 8rem;
+    }
+
+    .section--tight {
+      padding-block: 4rem;
+    }
+  }
+
   /* Buttons */
   .btn {
     display: inline-flex;
@@ -232,7 +255,7 @@
     font-optical-sizing: auto;
     font-variation-settings: "SOFT" 30, "opsz" 144;
     font-weight: 440;
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-size: clamp(2.5rem, 5.6vw, 4rem);
     line-height: 1.08;
     letter-spacing: -0.015em;
     text-wrap: balance;
@@ -338,6 +361,13 @@
   .js-reveal .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Opt-in stagger: set `style="--i: 1"` (2, 3, …) on siblings so a group
+     cascades instead of mounting as one block. Same index-delay language the
+     mobile menu links already use. Capped so a long list never feels slow. */
+  .js-reveal .reveal {
+    transition-delay: calc(min(var(--i, 0), 6) * 70ms);
   }
 
   /* Failsafe reveal (see Base.astro): when the timeout force-shows still-hidden

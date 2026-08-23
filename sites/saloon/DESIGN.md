@@ -63,20 +63,49 @@ via Fontsource (no external font requests).
 
 Use `text-wrap: balance` on h1–h3 and `pretty` on long prose. No all-caps body.
 
-> **Section cadence:** section headings stand on their own (display heading +
-> gold divider), with no uppercase eyebrow above them — the inconsistent
-> per-section eyebrow scaffold was removed. `.label-md uppercase` is reserved
-> for *in-card* sub-labels (e.g. a service subtitle, the "Bun de știut" panel
-> label, contact field labels), not as a kicker above section titles.
+> **Section cadence:** **no uppercase eyebrow above section titles** — the
+> inconsistent per-section eyebrow scaffold was removed and stays removed.
+> `.label-md uppercase` is reserved for *in-card* sub-labels (e.g. a service
+> subtitle, the "Bun de știut" panel label, contact field labels), never as a
+> kicker above a section title.
+>
+> What *does* vary is the heading's **composition**, deliberately: a section
+> either stacks (heading alone, or heading above a lead paragraph) or splits
+> (heading left, one supporting line right, baselines aligned). Every section
+> opening with the identical heading-plus-divider stamp made the page read as
+> one template applied nine times; varying the composition breaks that without
+> reintroducing the eyebrow scaffold.
+>
+> The **gold divider is reserved**, not default — it marks the two warm,
+> personal moments (Ana's intro, the loyalty panel). An accent on every
+> section is not an accent.
 
 ## Spacing & Layout
 
 - **Container:** `.container-page` — `max-width: 1200px`, centered,
   `padding-inline: 1.25rem` (→ `2rem` at ≥768px).
-- **Section rhythm:** `.section` — `padding-block: 3rem` (→ `6rem` at ≥768px).
-  Vary this for rhythm rather than applying uniformly.
+- **Section rhythm:** `.section` — `padding-block: 3rem` (→ `6rem` at ≥768px),
+  with `.section--airy` (4/8rem) and `.section--tight` (2.5/4rem) modifiers.
+  **Vary these deliberately** — a uniform beat down nine sections reads as a
+  template. Airy where a section wants room (the gallery); tight where one
+  continues the section above it (contact after booking).
 - **Breakpoint:** mobile-first; primary desktop switch at `768px` (`md`).
 - Grid for 2D section layouts (hero 2-col), flex for 1D rows.
+
+> **The hero must show the offer and the action on the first screen.** Two rules
+> keep it there, both learned by measuring rather than guessing:
+>
+> 1. **Text first in source order.** The image used to be `order-1` on mobile,
+>    so a phone opened on a wordless photo — no headline, no booking button.
+>    Natural order puts the proposition and the WhatsApp CTA first; the desktop
+>    two-column grid still reads text-left / image-right.
+> 2. **Cap the hero image on desktop** (`md:h-[27rem] lg:h-[30rem]`). Left
+>    uncapped, a `4/5` portrait grew to 670px, pushed the headline 321px down
+>    and put the primary CTA below the fold on a 1280×577 laptop.
+>
+> The columns are `1.05fr / 0.95fr`, not `1fr / 1fr` — a slight asymmetry, since
+> the text needs the wider measure and a dead-even split is the most templated
+> shape available.
 
 ## Shape & Elevation
 

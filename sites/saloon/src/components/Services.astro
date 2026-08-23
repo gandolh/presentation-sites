@@ -1,81 +1,77 @@
 ---
 import { services } from "../content/services";
 import { waLink } from "../content/site";
-
-const icons: Record<string, string> = {
-  manichiura: `<path d="M12 3c-2 0-3 1.5-3 4v9a3 3 0 0 0 6 0V7c0-2.5-1-4-3-4z"/><line x1="9" y1="10" x2="15" y2="10"/>`,
-  "unghii-gel": `<path d="M12 2c-2 0-3.5 1.5-3.5 4v12a3.5 3.5 0 0 0 7 0V6c0-2.5-1.5-4-3.5-4z"/><path d="M12 2v20"/>`,
-  "nail-art": `<path d="M3 21l9-9 3 3-9 9H3z"/><path d="M14 6l1.5-1.5a2.121 2.121 0 0 1 3 3L17 9"/><circle cx="18" cy="4" r="0.6" fill="currentColor"/><circle cx="20" cy="7" r="0.6" fill="currentColor"/>`,
-};
 ---
 
+{/*
+  A salon menu, not a feature grid. Three equal cards with a circular icon
+  badge each is the most generic layout there is, and it fits software
+  features rather than a price list — the thing a client actually scans here
+  is "what does it cost", which wants a column of rows with the price on the
+  right, the way a printed salon menu reads.
+*/}
 <section id="servicii" class="section">
   <div class="container-page">
-    <div class="reveal max-w-2xl">
+    <div
+      class="reveal grid gap-x-12 gap-y-4 md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] md:items-end"
+    >
       <h2 class="heading-lg">Servicii & prețuri</h2>
-      <span class="gold-divider"></span>
-      <p class="mt-4 text-[var(--color-on-surface-variant)]">
-        Prețuri orientative. Pentru o ofertă personalizată, contactează-mă pe
+      <p class="text-[var(--color-on-surface-variant)] md:text-right md:pb-1">
+        Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe
         WhatsApp.
       </p>
     </div>
 
-    <div class="mt-12 grid gap-6 md:grid-cols-3">
+    <ul class="mt-10 md:mt-14">
       {
-        services.map((s) => (
-          <article
-            class="card reveal flex flex-col"
+        services.map((s, i) => (
+          <li
+            class="reveal border-t border-[var(--color-outline-variant)] last:border-b"
+            style={`--i: ${i}`}
           >
-            <div
-              class="w-12 h-12 rounded-full bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] flex items-center justify-center"
-              aria-hidden="true"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={icons[s.id] ?? ""}
-              />
-            </div>
+            <div class="py-7 md:py-9 grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline">
+              <div>
+                <h3 class="heading-md">{s.title}</h3>
+                <p class="label-md uppercase mt-1.5 text-[var(--color-secondary)]">
+                  {s.subtitle}
+                </p>
+                <p class="mt-3 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">
+                  {s.description}
+                </p>
+              </div>
 
-            <h3 class="heading-md mt-6">{s.title}</h3>
-            <p class="label-md uppercase mt-2 text-[var(--color-secondary)]">
-              {s.subtitle}
-            </p>
-            <p class="mt-4 text-[var(--color-on-surface-variant)] leading-relaxed flex-1">
-              {s.description}
-            </p>
-            <div
-              class="mt-6 pt-6 border-t border-[var(--color-outline-variant)] flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1"
-            >
-              <span
-                class="font-display text-xl text-[var(--color-gold-ink)]"
-              >
-                {s.price}
-              </span>
-              <a
-                href={waLink(
-                  `Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`,
-                )}
-                target="_blank"
-                rel="noopener"
-                class="shrink-0 inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] hover:text-[var(--color-blush-deep)]"
-              >
-                Programează →
-              </a>
+              <div class="flex items-baseline gap-6 md:flex-col md:items-end md:gap-3 md:text-right">
+                <span class="font-display text-2xl whitespace-nowrap text-[var(--color-gold-ink)]">
+                  {s.price}
+                </span>
+                <a
+                  href={waLink(
+                    `Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`,
+                  )}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] underline underline-offset-4 decoration-[var(--color-outline-variant)] hover:decoration-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors"
+                >
+                  Programează →
+                </a>
+              </div>
             </div>
-          </article>
+          </li>
         ))
       }
-    </div>
+    </ul>
 
-    <div class="mt-12 text-center">
-      <a href="#programari" class="btn btn-primary">Programează-te</a>
-    </div>
+    <p class="mt-10 text-sm text-[var(--color-on-surface-variant)]">
+      Nu găsești ce cauți?{" "}
+      <a
+        href={waLink(
+          "Bună, Ana! Aș vrea să întreb despre un serviciu care nu e în listă.",
+        )}
+        target="_blank"
+        rel="noopener"
+        class="font-semibold text-[var(--color-on-surface)] underline underline-offset-4 hover:text-[var(--color-blush-deep)]"
+        >Întreabă-mă pe WhatsApp</a
+      >.
+    </p>
   </div>
 </section>

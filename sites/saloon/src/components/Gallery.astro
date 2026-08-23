@@ -5,26 +5,24 @@ import { site } from "../content/site";
 
 <section
   id="galerie"
-  class="section bg-[var(--color-surface-container-low)]"
+  class="section section--airy bg-[var(--color-surface-container-low)]"
 >
   <div class="container-page">
-    <div class="reveal max-w-2xl">
-      <h2 class="heading-lg">Galerie</h2>
-      <span class="gold-divider"></span>
-      <p class="mt-4 text-[var(--color-on-surface-variant)]">
-        Câteva dintre lucrările mele recente. Fiecare unghie este o mică operă
-        de artă, croită pe stilul tău.
+    <div class="reveal flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+      <h2 class="heading-lg">Lucrări recente</h2>
+      <p class="text-[var(--color-on-surface-variant)]">
+        Croite pe stilul fiecărei cliente.
       </p>
     </div>
 
-    <h3 class="heading-md reveal mt-12">Lucrări recente</h3>
     <div
-      class="mt-6 columns-2 md:columns-3 gap-4 [column-fill:_balance]"
+      class="mt-8 md:mt-12 columns-2 md:columns-3 gap-4 [column-fill:_balance]"
     >
       {
         gallery.map((img, i) => (
           <figure
             class="reveal mb-4 break-inside-avoid rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
+            style={`--i: ${i}`}
           >
             <img
               src={img.src}

@@ -1,65 +1,61 @@
 ---
-// Hygiene & sterilisation — a strong trust signal in the RO market. Icon-based,
-// no imagery needed. Mirrors the on-brand blush/cream/gold tokens.
+// Hygiene & sterilisation — a strong trust signal in the RO market.
+//
+// Presented as a numbered sequence rather than three icon cards: this is a
+// protocol Ana follows in order, and the previous layout repeated Services'
+// exact circular-icon-badge grid, so the two sections read as the same
+// template twice. Numerals carry the "there is a procedure here" meaning that
+// a shield or a bin icon only gestures at.
 const points = [
   {
     title: "Sterilizare în autoclav",
     body: "Instrumentarul metalic este sterilizat în autoclav după fiecare clientă, standardul medical pentru eliminarea completă a microorganismelor.",
-    icon: `<path d="M4 7h16M6 7v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/><line x1="12" y1="11" x2="12" y2="16"/>`,
   },
   {
     title: "Consumabile de unică folosință",
     body: "Pilele, buffer-ele și alte consumabile care nu se pot steriliza sunt de unică folosință, proaspete pentru fiecare programare.",
-    icon: `<path d="M3 6h18l-1.5 14a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2L3 6z"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>`,
   },
   {
     title: "Dezinfecție & suprafețe curate",
     body: "Masa de lucru, lampa și suprafețele sunt dezinfectate între cliente, iar mâinile igienizate riguros înainte de fiecare serviciu.",
-    icon: `<path d="M12 2s6 5 6 11a6 6 0 0 1-12 0c0-6 6-11 6-11z"/><path d="M9.5 13a2.5 2.5 0 0 0 5 0"/>`,
   },
 ];
 ---
 
-<section id="igiena" class="section bg-[var(--color-surface-container-low)]">
+<section
+  id="igiena"
+  class="section bg-[var(--color-surface-container-low)]"
+>
   <div class="container-page">
-    <div class="reveal max-w-2xl">
-      <h2 class="heading-lg">Curățenie fără compromisuri</h2>
-      <span class="gold-divider"></span>
-      <p class="mt-4 text-[var(--color-on-surface-variant)]">
-        Sănătatea ta contează la fel de mult ca aspectul unghiilor. Iată cum am
-        grijă de igienă la fiecare programare.
-      </p>
-    </div>
+    <div class="grid gap-x-16 gap-y-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+      <div class="reveal md:sticky md:top-28 md:self-start">
+        <h2 class="heading-lg">Curățenie fără compromisuri</h2>
+        <p class="mt-5 text-[var(--color-on-surface-variant)] leading-relaxed">
+          Sănătatea ta contează la fel de mult ca aspectul unghiilor. Iată cum
+          am grijă de igienă la fiecare programare.
+        </p>
+      </div>
 
-    <div class="mt-12 grid gap-x-10 gap-y-8 md:grid-cols-3">
-      {
-        points.map((p) => (
-          <div class="reveal flex flex-col">
-            <div class="flex items-center gap-4">
+      <ol class="space-y-10 md:space-y-12">
+        {
+          points.map((p, i) => (
+            <li class="reveal flex gap-5 md:gap-7" style={`--i: ${i}`}>
               <span
-                class="flex-shrink-0 w-11 h-11 rounded-full bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] flex items-center justify-center"
+                class="font-display shrink-0 text-2xl leading-none pt-1 text-[var(--color-gold-ink)] tabular-nums"
                 aria-hidden="true"
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  set:html={p.icon}
-                />
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 class="heading-md">{p.title}</h3>
-            </div>
-            <p class="mt-4 text-[var(--color-on-surface-variant)] leading-relaxed">
-              {p.body}
-            </p>
-          </div>
-        ))
-      }
+              <div>
+                <h3 class="heading-md">{p.title}</h3>
+                <p class="mt-3 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">
+                  {p.body}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>

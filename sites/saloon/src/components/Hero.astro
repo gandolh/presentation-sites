@@ -5,12 +5,12 @@ import { img } from "../content/images";
 
 <section
   id="acasa"
-  class="relative pt-28 md:pt-32 pb-16 md:pb-24 overflow-hidden"
+  class="relative pt-16 md:pt-28 pb-16 md:pb-20 overflow-hidden"
 >
   <div
-    class="container-page grid md:grid-cols-2 gap-12 md:gap-16 items-center"
+    class="container-page grid md:grid-cols-[1.05fr_0.95fr] gap-10 md:gap-16 items-center"
   >
-    <div class="reveal order-2 md:order-1">
+    <div class="reveal">
       <h1 class="heading-xl text-[var(--color-on-surface)]">
         {site.tagline}
       </h1>
@@ -50,9 +50,9 @@ import { img } from "../content/images";
       </div>
     </div>
 
-    <div class="reveal order-1 md:order-2 relative">
+    <div class="reveal relative">
       <div
-        class="aspect-[4/5] w-full rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
+        class="aspect-[4/5] md:aspect-auto md:h-[27rem] lg:h-[30rem] w-full rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
       >
         <img
           src={img("hero")}
