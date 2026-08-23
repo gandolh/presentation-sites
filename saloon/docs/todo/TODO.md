@@ -2,7 +2,7 @@
 
 ## Legal & Compliance — DONE (29 mai 2026)
 
-Audit complet + implementare: vezi [corpus/LEGAL.md](../LEGAL.md).
+Audit complet + implementare: vezi [LEGAL.md](../LEGAL.md).
 
 - [x] **Business info in footer** — denumire, CUI, Reg. Com., capital social, sediu
   (Legea 365/2002 art. 5). Date mock în `src/content/site.ts › legal`.
@@ -29,7 +29,7 @@ Audit complet + implementare: vezi [corpus/LEGAL.md](../LEGAL.md).
 ## Marketing & automatizare — DONE (29 mai 2026)
 
 Strategie de promovare + serviciu de „bots" (campanii / răspunsuri / programare
-postări). Referința deciziilor: [corpus/MARKETING.md](../MARKETING.md).
+postări). Referința deciziilor: [MARKETING.md](../MARKETING.md).
 
 - [x] **Strategie de reclame** (Meta + TikTok, buget local, pâlnie spre WhatsApp,
   calendar sezonier RO) — plan în `marketing/ads/todo.md`.
@@ -48,8 +48,8 @@ postări). Referința deciziilor: [corpus/MARKETING.md](../MARKETING.md).
 
 > Serviciul rulează **end-to-end în mock mode**; **NU e activat live**. Ce mai
 > rămâne (trecerea finală de cablare live + acțiunile de om) și punctul de
-> reluare sunt în [corpus/STATUS.md](../STATUS.md) și
-> [corpus/todo/ROADMAP.md](./ROADMAP.md).
+> reluare sunt în [STATUS.md](../STATUS.md) și
+> [todo/ROADMAP.md](./ROADMAP.md).
 
 ## Site — conținut & conversie — DONE (29 mai 2026, Part A1)
 

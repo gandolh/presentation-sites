@@ -9,10 +9,12 @@
   "scripts": {
     "dev": "PUBLIC_IMAGE_SOURCE=real astro dev",
     "dev:mock": "astro dev",
-    "build": "astro build",
+    "build": "PUBLIC_IMAGE_SOURCE=real astro build",
+    "build:mock": "astro build",
     "preview": "PUBLIC_IMAGE_SOURCE=real astro preview",
     "preview:mock": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "placeholders": "node scripts/gen-placeholders.mjs"
   },
   "dependencies": {
     "@astrojs/react": "5.0.6",

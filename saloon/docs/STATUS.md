@@ -1,7 +1,7 @@
 # STATUS — unde suntem (citește asta întâi)
 
 > Punct de reluare a lucrului după o pauză. Ultima actualizare: **3 iunie 2026**.
-> Dacă revii la proiect, citește acest fișier, apoi `corpus/todo/ROADMAP.md`
+> Dacă revii la proiect, citește acest fișier, apoi `todo/ROADMAP.md`
 > pentru lista exactă de acțiuni.
 >
 > Notă: repo-ul a fost redenumit pe GitHub în **`presentation-sites`**
@@ -72,13 +72,13 @@ Se face **după** ce conturile există, ca să poată fi testat pe ceva real:
 
 ## Hărți rapide (unde e ce)
 
-- **Decizii marketing + arhitectura boților**: `corpus/MARKETING.md`
-- **Decizii legale/GDPR**: `corpus/LEGAL.md`
-- **Design system**: `corpus/DESIGN.md`
+- **Decizii marketing + arhitectura boților**: `MARKETING.md`
+- **Decizii legale/GDPR**: `LEGAL.md`
+- **Design system**: `tokens.md`
 - **Deploy (Caddy, sub-path `/saloon`, VPS Hetzner)**: `deploy/README.md`
 - **Sursa imaginilor (mock vs foto reale)**: `src/content/images.ts` + `public/images/real/README.md`
-- **Listă de acțiuni (agent vs om)**: `corpus/todo/ROADMAP.md`
-- **Istoricul a ce s-a rezolvat**: `corpus/todo/TODO.md`
+- **Listă de acțiuni (agent vs om)**: `todo/ROADMAP.md`
+- **Istoricul a ce s-a rezolvat**: `todo/TODO.md`
 - **Regulile dure ale boților (ToS/GDPR/bani)**: `marketing/bots/COMPLIANCE.md`
 - **Planurile pe bot** (ce face fiecare): `marketing/bots/<bot>/todo.md`
 - **Cum a fost construit serviciul** (multi-agent): `marketing/bots/SCAFFOLD_PLAN.md`

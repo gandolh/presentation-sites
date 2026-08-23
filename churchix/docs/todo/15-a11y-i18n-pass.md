@@ -23,4 +23,4 @@ A dedicated hardening sweep across the now-restyled system: accessibility, inter
 - [ ] Axe/Lighthouse (or equivalent) run on key pages with no critical a11y violations.
 - [ ] Diacritics + umlauts verified across the listed surfaces.
 - [ ] Long-string stress test passes with no clipping/overflow.
-- [ ] Findings + fixes logged in `corpus/log.md`.
+- [ ] Findings + fixes logged in `docs/wiki/log.md`.

@@ -10,17 +10,31 @@
     },
     {
       "command": "./node_modules/.bin/astro dev",
+      "name": "auto-service: dev server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/auto-service"
+    },
+    {
+      "command": "./node_modules/.bin/astro dev",
+      "name": "subcort: dev server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/subcort"
+    },
+    {
+      "command": "./node_modules/.bin/astro dev",
       "name": "tractari: dev server",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceFolder}/tractari"
     },
     {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "showcase: dev server",
+      "command": "npm run dev:bac",
+      "name": "churchix: dev server (parohia-harlesti-bacau)",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceFolder}/showcase"
+      "cwd": "${workspaceFolder}/churchix"
     }
   ]
 }

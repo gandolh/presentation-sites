@@ -6,7 +6,7 @@ Plan-only. No code yet. This folder holds **(1)** the advertising strategy and
 > Context: single-employee nail salon in Târgu-Jiu, Gorj. RO-only audience.
 > Booking is a WhatsApp deep-link + Formspree backup (no booking SaaS).
 > Free / cheap stack only. Owner (Ana) is non-technical; Cristian builds it.
-> See `../ADR.md`, `../corpus/LEGAL.md` and the project memory.
+> See `../docs/ADR.md`, `../docs/LEGAL.md` and the project memory.
 
 ## What the bots do — and don't
 

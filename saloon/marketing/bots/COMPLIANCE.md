@@ -40,7 +40,7 @@ comes from Meta's & TikTok's 2026 platform terms and from Romanian/EU law.
    Marketing replies/broadcasts = require prior **opt-in consent** (art. 6(1)(a))
    via the unchecked-by-default marketing checkbox already in the booking form.
 10. **Retention.** 12 months after last appointment; 30 days for enquiries that
-    don't convert. Bot stores purge on this schedule. (See `../../corpus/LEGAL.md`.)
+    don't convert. Bot stores purge on this schedule. (See `../../docs/LEGAL.md`.)
 11. **Disclose processors.** `/confidentialitate` must name WhatsApp/Meta/TikTok
     as processors and state replies may be automated. Update when a bot ships.
 12. **Data minimisation & security.** Store only name / phone / appointment /

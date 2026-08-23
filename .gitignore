@@ -70,23 +70,15 @@ web_modules/
 .env.*
 !.env.example
 
-# Real personal/business data — kept out of the repo (see site.local.example.ts)
-saloon/src/content/site.local.ts
-auto-service/src/content/site.local.ts
-subcort/src/content/site.local.ts
-tractari/src/content/site.local.ts
+# Real personal/business data — kept out of the repo (see site.local.example.ts).
+# Site-agnostic on purpose: adding a site must not require editing this file.
+**/src/content/site.local.ts
 
 # Real photos — kept out of the repo (see public/images/real/README.md).
 # The directory itself stays tracked via .gitkeep + README; everything else is ignored.
-saloon/public/images/real/*
-!saloon/public/images/real/.gitkeep
-!saloon/public/images/real/README.md
-auto-service/public/images/real/*
-!auto-service/public/images/real/.gitkeep
-!auto-service/public/images/real/README.md
-subcort/public/images/real/*
-!subcort/public/images/real/.gitkeep
-!subcort/public/images/real/README.md
+**/public/images/real/*
+!**/public/images/real/.gitkeep
+!**/public/images/real/README.md
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

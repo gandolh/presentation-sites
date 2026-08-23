@@ -110,7 +110,7 @@ Every worker prompt includes:
 3. **The integration head** it branches from (so it has the foundation from earlier waves).
 4. **Its exclusive file-ownership list** (from the Wave-2 table) — "you may only edit these files; treat others as read-only."
 5. **Any interface contract** it shares with a sibling (e.g. 10↔11 CampaignCard props).
-6. **Definition of done:** typecheck + build green in its worktree, no raw hex/hardcoded church values, re-skins under a second brand, and a one-line [corpus/log.md](../corpus/log.md) entry.
+6. **Definition of done:** typecheck + build green in its worktree, no raw hex/hardcoded church values, re-skins under a second brand, and a one-line [wiki/log.md](../wiki/log.md) entry.
 
 Workers return a structured report: branch name, files changed, gate status in-worktree, and anything they had to stub.
 

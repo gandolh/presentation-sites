@@ -14,7 +14,7 @@ Introduce Tailwind CSS as a **build-time** dependency across `@churchix/ui` and 
 
 ## Tasks
 
-1. Decide Tailwind v3 (`@astrojs/tailwind` + `tailwind.config.cjs`) vs v4 (`@tailwindcss/vite` + CSS-first config). Default recommendation: **v4 with `@tailwindcss/vite`** for less config and native CSS-variable theming — but verify it composes with Astro + React islands. Record the choice in [corpus/log.md](../corpus/log.md).
+1. Decide Tailwind v3 (`@astrojs/tailwind` + `tailwind.config.cjs`) vs v4 (`@tailwindcss/vite` + CSS-first config). Default recommendation: **v4 with `@tailwindcss/vite`** for less config and native CSS-variable theming — but verify it composes with Astro + React islands. Record the choice in [wiki/log.md](../wiki/log.md).
 2. Add the shared theme config. Put it in `packages/ui` (e.g. `packages/ui/tailwind.preset.cjs` for v3, or an exported CSS `@theme` block for v4) so apps extend it rather than redefine it. The theme must reproduce the `colors`, `borderRadius`, `spacing`, `fontFamily`, `fontSize` from [DESIGN.md](../design/DESIGN.md) and the reference screens' `tailwind.config` block.
 3. Wire each app (`apps/parohia-berinta-maramures`, `apps/parohia-harlesti-bacau`) to use the shared preset and to scan `@churchix/ui` source for classes (content globs must include the package's `src/**`).
 4. Ensure Tailwind's `content`/purge includes `node_modules/@churchix/ui/src/**/*.{astro,tsx}` (symlinked workspace) so classes used only in the library aren't purged.
@@ -26,7 +26,7 @@ Introduce Tailwind CSS as a **build-time** dependency across `@churchix/ui` and 
 - [ ] A throwaway test component using `bg-primary text-on-primary rounded-lg px-gutter` renders correctly in a built app (not via CDN).
 - [ ] Library classes are not purged in app builds.
 - [ ] `npm run build --workspaces --if-present` passes for both apps.
-- [ ] Choice (v3 vs v4) + content-glob setup documented in `corpus/log.md`.
+- [ ] Choice (v3 vs v4) + content-glob setup documented in `docs/wiki/log.md`.
 
 ## Out of scope
 

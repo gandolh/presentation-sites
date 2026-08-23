@@ -25,5 +25,5 @@ Close out the items flagged-but-not-fixed during the 2026-05-30 UI/UX audit (see
 - [ ] Announcements list + detail use the standard 1200px container and responsive gutters; visually consistent with the other pages (RO + EN, 3 viewports).
 - [ ] Legacy `--maxw` / `.cx-*` removed (or a follow-up explicitly scoped if other consumers remain).
 - [ ] Dead `--container-container-max` token removed.
-- [ ] Decision recorded for the `<Container>` primitive and the arch-mask treatment (do, defer, or drop) in `corpus/log.md`.
+- [ ] Decision recorded for the `<Container>` primitive and the arch-mask treatment (do, defer, or drop) in `docs/wiki/log.md`.
 - [ ] `max-w-*` collision guard added or consciously declined, with rationale logged.

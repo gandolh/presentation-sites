@@ -3,7 +3,7 @@
 - **Status:** Superseded by [ADR-0002](0002-tailwind-material3-design-system.md) (2026-05-29)
 - **Date:** 2026-05-29
 - **Deciders:** Product owner; engineering
-- **Context docs:** [corpus/architecture.md](../corpus/architecture.md), [corpus/content-model.md](../corpus/content-model.md), [corpus/donations.md](../corpus/donations.md)
+- **Context docs:** [wiki/architecture.md](../wiki/architecture.md), [wiki/content-model.md](../wiki/content-model.md), [wiki/donations.md](../wiki/donations.md)
 
 > **Superseded:** This ADR was the *brief* given to Stitch (Google's AI UI tool). Stitch returned the **"Ecclesia Digitalis"** design system (`docs/design/`), which uses Tailwind + a full Material-3 token palette + Material Symbols — richer than the bounded plain-CSS "safe set" proposed here. [ADR-0002](0002-tailwind-material3-design-system.md) accepts that output and records the change. The intent below (token-driven, tradition-as-variant, the component/page inventory, a11y/i18n) still holds; only the *token surface* and *styling mechanism* changed.
 
@@ -83,7 +83,7 @@ Design these as a coherent set (states + responsive + RO/EN strings with diacrit
 - Evenimente / Calendar (list-first)
 - Contact (address, map embed, phone/email, prayer-request form)
 
-**Giving (the product differentiator — see [donations](../corpus/donations.md))**
+**Giving (the product differentiator — see [donations](../wiki/donations.md))**
 - Donează landing: IBAN block (multi-currency, copy-to-clipboard), Form 230 info/CTA, SMS info, optional card button (hosted Stripe/Netopia link)
 - Fund / campaign card with **goal thermometer** (live totals only when the optional API exists)
 - Money always renders with explicit currency

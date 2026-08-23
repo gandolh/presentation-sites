@@ -27,7 +27,7 @@ addressable market is one small city + ~20 km around it.
 - [ ] **TikTok Business account.**
 - [ ] **Meta Pixel / Conversions API** on the static site — fire a `Contact`
   /`Lead` event when the WhatsApp button or Formspree form is used. (Needs a
-  cookie-consent gate; see `../../corpus/LEGAL.md` — keep it consent-aware.)
+  cookie-consent gate; see `../../docs/LEGAL.md` — keep it consent-aware.)
 - [ ] **Google Business Profile** created & verified (free; huge for "salon
   unghii Târgu-Jiu" local search + Maps). Not Meta, but highest local ROI.
 - [ ] Real **contact data live** on the site (replace placeholders) so ads have

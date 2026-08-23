@@ -1,8 +1,8 @@
 # Conventions every TODO item must honor
 
-Cross-cutting rules. If a work item contradicts these, the rule wins — note the conflict in `docs/corpus/log.md` rather than silently diverging.
+Cross-cutting rules. If a work item contradicts these, the rule wins — note the conflict in `docs/wiki/log.md` rather than silently diverging.
 
-## Architecture (from [CLAUDE.md](../../CLAUDE.md) + [corpus](../corpus/index.md))
+## Architecture (from [CLAUDE.md](../../CLAUDE.md) + [wiki](../wiki/index.md))
 
 - **White-label, not multi-tenant.** Shared code only (`@churchix/*`). Components must look like *each church's* brand, never Churchix's. No church name, color, or copy hardcoded in `packages/*`.
 - **Branding enters only as tokens.** Per-church values arrive as CSS custom properties emitted by `BaseLayout` from the church's `site` content entry. Never read church data inside a shared component except via props/tokens.
@@ -40,4 +40,4 @@ Cross-cutting rules. If a work item contradicts these, the rule wins — note th
 2. `npm run build --workspaces --if-present` passes (both reference apps build).
 3. No raw hex / hardcoded church values in `packages/*`.
 4. Component works under a *second* brand by token swap (sanity-check against both reference apps).
-5. Append a one-line entry to [docs/corpus/log.md](../corpus/log.md) describing what changed.
+5. Append a one-line entry to [docs/wiki/log.md](../wiki/log.md) describing what changed.

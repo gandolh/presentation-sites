@@ -1,4 +1,4 @@
-# Corpus log
+# Wiki log
 
 Append-only, newest first. Entry format: `## [YYYY-MM-DD] operation | title`. Operations: `ingest | edit | split | merge | rename | archive | lint | decision`. See [SCHEMA.md](SCHEMA.md).
 
@@ -8,9 +8,9 @@ Added the 7 white-label primitive components to `@churchix/ui` (`Button/Card/Bad
 
 
 
-Restructured `docs/` around the [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) model under `docs/corpus/`. Added [SCHEMA.md](SCHEMA.md) (conventions/workflows), [index.md](index.md) (catalog), and this log.
+Restructured `docs/` around the [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) model under `docs/wiki/`. Added [SCHEMA.md](SCHEMA.md) (conventions/workflows), [index.md](index.md) (catalog), and this log.
 
-`git mv`'d the five monolithic docs into kebab-case corpus pages and added frontmatter + fixed cross-links:
+`git mv`'d the five monolithic docs into kebab-case wiki pages and added frontmatter + fixed cross-links:
 - `ARCHITECTURE.md` → [architecture](architecture.md)
 - `CONTENT_MODEL.md` → [content-model](content-model.md)
 - `DONATIONS.md` → [donations](donations.md)

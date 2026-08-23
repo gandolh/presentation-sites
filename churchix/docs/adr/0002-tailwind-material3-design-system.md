@@ -4,7 +4,7 @@
 - **Date:** 2026-05-29
 - **Deciders:** Product owner; engineering
 - **Supersedes:** [ADR-0001](0001-design-system-foundation.md)
-- **Context docs:** [corpus/architecture.md](../corpus/architecture.md), [corpus/content-model.md](../corpus/content-model.md), [corpus/donations.md](../corpus/donations.md), [design system](../design/DESIGN.md)
+- **Context docs:** [wiki/architecture.md](../wiki/architecture.md), [wiki/content-model.md](../wiki/content-model.md), [wiki/donations.md](../wiki/donations.md), [design system](../design/DESIGN.md)
 
 ## Context
 
@@ -42,7 +42,7 @@ The white-label discipline is *preserved*, just relocated:
 - New build dependency (Tailwind) and a larger token vocabulary to learn than the ADR-0001 safe set.
 - Risk of class sprawl in markup; mitigated by primitive components (TODO item 05) that encapsulate the common patterns.
 - Self-hosting Material Symbols + fonts adds asset weight; mitigated by an `<Icon>` abstraction and subsetting (TODO item 04).
-- The "churches set only seeds, roles are derived" rule must be enforced or the per-church surface re-sprawls — call it out in code review and `corpus/SCHEMA.md`.
+- The "churches set only seeds, roles are derived" rule must be enforced or the per-church surface re-sprawls — call it out in code review and `docs/wiki/SCHEMA.md`.
 
 **Follow-ups**
 - Choose Tailwind v3 (`@astrojs/tailwind`) vs v4 (`@tailwindcss/vite`, CSS-first) — TODO item 01.

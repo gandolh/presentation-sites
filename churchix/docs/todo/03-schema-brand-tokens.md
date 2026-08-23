@@ -30,7 +30,7 @@ Update the shared Zod `brand` object in `@churchix/schemas` so a church can expr
 - [ ] `brand` validates a church providing only `primary`, `secondary`, `logo` (others optional/derived).
 - [ ] Both reference apps' `site.json` validate against the new schema (update them if renaming).
 - [ ] `npm run typecheck --workspaces --if-present` passes.
-- [ ] Migration decision (alias vs rename) noted in `corpus/log.md`.
+- [ ] Migration decision (alias vs rename) noted in `docs/wiki/log.md`.
 
 ## Out of scope
 

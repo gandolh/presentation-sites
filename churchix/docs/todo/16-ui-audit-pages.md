@@ -35,4 +35,4 @@ Audit in both reference apps and across RO + EN locales:
 - [ ] Screenshots captured for each page/viewport as a visual record.
 - [ ] Findings catalogued by severity (blocking / polish / nice-to-have) with the offending `file:line` and a proposed fix.
 - [ ] Cross-page inconsistencies called out explicitly (not just per-page nits).
-- [ ] Fixes applied or filed as follow-up items; results logged in `corpus/log.md`.
+- [ ] Fixes applied or filed as follow-up items; results logged in `docs/wiki/log.md`.

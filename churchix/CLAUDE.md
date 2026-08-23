@@ -6,7 +6,7 @@ Operating notes for AI assistants and new contributors. Keep this file current a
 
 A **white-label** platform that delivers **presentation websites for churches** plus a **giving** surface (donations + fundraising campaigns). A shared codebase and component/theme library back many sites, but **each church is an independent, self-hosted deployment** that brings its own branding, content, languages, and funds. There is **no central multi-tenant backend** managing churches — the only thing shared is code (the `@churchix/*` packages).
 
-Target market: **Romanian churches** in Romania **and** the diaspora (US, Canada, UK, Italy, Spain, Germany). **v1 focuses on the Orthodox tradition** — formal/liturgical tone, IBAN-first giving, Form 230, and Orthodox-specific features (pomelnice, sacrament info). The architecture stays open to Greek-Catholic and Protestant/evangelical churches later, but Orthodox is the design target now. See [docs/corpus/content-model.md](docs/corpus/content-model.md) and [docs/corpus/traditions.md](docs/corpus/traditions.md).
+Target market: **Romanian churches** in Romania **and** the diaspora (US, Canada, UK, Italy, Spain, Germany). **v1 focuses on the Orthodox tradition** — formal/liturgical tone, IBAN-first giving, Form 230, and Orthodox-specific features (pomelnice, sacrament info). The architecture stays open to Greek-Catholic and Protestant/evangelical churches later, but Orthodox is the design target now. See [docs/wiki/content-model.md](docs/wiki/content-model.md) and [docs/wiki/traditions.md](docs/wiki/traditions.md).
 
 ## Tech decisions (locked)
 
@@ -19,7 +19,7 @@ Target market: **Romanian churches** in Romania **and** the diaspora (US, Canada
 - **Giving: server-light, per-church.** v1 uses **IBAN**, **Form 230**, **SMS** info (static) + a **pomelnice** form posting to a church-configured endpoint + optional card via a hosted **Stripe Payment Link / Netopia** URL. Card data never touches our code (PCI **SAQ A**). A full Fastify donations API (recurring, webhooks, live campaign totals) is an **optional per-church** add-on, never a shared service.
 - **Money: integer minor units + explicit currency**, always. No floats.
 
-See [docs/corpus/architecture.md](docs/corpus/architecture.md) for the full rationale.
+See [docs/wiki/architecture.md](docs/wiki/architecture.md) for the full rationale.
 
 ## Repository layout
 
@@ -41,32 +41,29 @@ Internal packages are referenced as `"@churchix/ui": "*"` and symlinked by npm w
 
 - **TypeScript everywhere**, `strict` on (see `tsconfig.base.json`). `noUncheckedIndexedAccess` is on.
 - **Romanian diacritics (ă, â, î, ș, ț) must work end-to-end** — UTF-8, fonts, slugs, search, PDFs/receipts.
-- **i18n is mandatory.** RO + EN minimum; IT / ES / DE for diaspora regions. Liturgical/theological terms often stay in Romanian even inside English pages (e.g. an EN nav item may still read "Slujbele religioase"). Maintain the domain glossary in [docs/corpus/i18n-and-glossary.md](docs/corpus/i18n-and-glossary.md).
+- **i18n is mandatory.** RO + EN minimum; IT / ES / DE for diaspora regions. Liturgical/theological terms often stay in Romanian even inside English pages (e.g. an EN nav item may still read "Slujbele religioase"). Maintain the domain glossary in [docs/wiki/i18n-and-glossary.md](docs/wiki/i18n-and-glossary.md).
 - **The shared `@churchix/*` packages contain no per-church values** — branding enters only as design tokens (CSS custom properties) read from each church's `site` content entry at build time.
 - **Each church app is self-contained**: its own `astro.config`, content, branding, env/secrets, and (optional) backend. Adding a church = a new directory under `apps/`, not a config change anywhere central.
 - **White-label every artifact**: pages, forms, receipts, error pages carry the *church's* brand, not Churchix's.
 
-## Common commands (once code lands)
+## Common commands
 
 ```bash
-nvm use                              # Node 22 (required: deploy uses native TS + --env-file)
-npm install                          # install all workspaces
+npm install                          # install all workspaces (Node >= 22, npm >= 10)
 npm run dev -w apps/<church>         # run one church site
-npm run dev -w services/api          # run the Fastify API
+npm run dev:bac                      # shortcut for apps/parohia-harlesti-bacau
 npm run build --workspaces --if-present
 npm run typecheck --workspaces --if-present
+npm run test --workspaces --if-present
+npm run format                       # prettier --write .
 npm install <pkg> -w packages/ui     # add a dependency to a specific workspace
-
-cp .env.example .env                 # then fill in your server details
-npm run pre-deploy                   # one-time server prep (webroot + Caddy route)
-npm run deploy                       # build the app locally + upload dist/ to the server
 PUBLIC_SITE_WIP=1 npm run build -w apps/<church>   # build with the "Site în lucru" banner on
 ```
 
-> Deploy is a zero-dependency TypeScript tool at [scripts/deploy.ts](scripts/deploy.ts), run via Node's
-> native type-stripping + `--env-file` (Node ≥ 22). Config lives in `.env` (see `.env.example`) and is
-> never committed. Server side is unchanged: static SSG build → rsync into `WEBROOT/<slug>` → Caddy
-> `handle_path` route.
+> **Deploy is not in this repo.** It was moved out in `6d2f237` (2026-06-18) along
+> with every other site's deploy tooling. Each church app builds a static `dist/`
+> that is served by Caddy on the VPS; the build+upload tooling and the server
+> config live outside this repo.
 
 > npm workspaces has no built-in "build only changed packages" filter. If CI build time becomes a problem as churches multiply, introduce Turborepo (deferred for now).
 
@@ -82,11 +79,11 @@ PUBLIC_SITE_WIP=1 npm run build -w apps/<church>   # build with the "Site în lu
 
 ## Where to look
 
-Docs are an LLM-maintained wiki under [docs/corpus/](docs/corpus/index.md) (conventions in [docs/corpus/SCHEMA.md](docs/corpus/SCHEMA.md)). When you make a decision or land work, ingest the outcome into the relevant corpus page and append a [log](docs/corpus/log.md) entry.
+Docs are an LLM-maintained wiki under [docs/wiki/](docs/wiki/index.md) (conventions in [docs/wiki/SCHEMA.md](docs/wiki/SCHEMA.md)). When you make a decision or land work, ingest the outcome into the relevant wiki page and append a [log](docs/wiki/log.md) entry.
 
-- Start here → [docs/corpus/index.md](docs/corpus/index.md) · [overview](docs/corpus/overview.md)
-- How it's built → [architecture](docs/corpus/architecture.md) · [independence-model](docs/corpus/independence-model.md)
-- What a church site contains → [content-model](docs/corpus/content-model.md) · [traditions](docs/corpus/traditions.md) · [i18n-and-glossary](docs/corpus/i18n-and-glossary.md)
-- Giving design → [donations](docs/corpus/donations.md) · [optional-backend](docs/corpus/optional-backend.md)
-- Design system → [design-system](docs/corpus/design-system.md) (ADRs in [docs/adr/](docs/adr/); active work in [docs/todo/](docs/todo/README.md))
-- Decisions & rationale → [decisions](docs/corpus/decisions.md) · [research-brief](docs/corpus/research-brief.md)
+- Start here → [docs/wiki/index.md](docs/wiki/index.md) · [overview](docs/wiki/overview.md)
+- How it's built → [architecture](docs/wiki/architecture.md) · [independence-model](docs/wiki/independence-model.md)
+- What a church site contains → [content-model](docs/wiki/content-model.md) · [traditions](docs/wiki/traditions.md) · [i18n-and-glossary](docs/wiki/i18n-and-glossary.md)
+- Giving design → [donations](docs/wiki/donations.md) · [optional-backend](docs/wiki/optional-backend.md)
+- Design system → [design-system](docs/wiki/design-system.md) (ADRs in [docs/adr/](docs/adr/); active work in [docs/todo/](docs/todo/README.md))
+- Decisions & rationale → [decisions](docs/wiki/decisions.md) · [research-brief](docs/wiki/research-brief.md)

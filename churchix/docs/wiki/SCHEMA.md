@@ -1,11 +1,11 @@
-# Corpus schema — how this wiki works
+# Wiki schema — how this wiki works
 
-This `docs/corpus/` directory is an **LLM-maintained wiki** for Churchix, modeled on Karpathy's [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). It is the durable, interlinked knowledge layer between raw sources (code, research, design files) and anyone — human or agent — asking a question. This file is the **schema**: the conventions every page follows and the workflows for keeping the corpus healthy. Read it before editing the corpus.
+This `docs/wiki/` directory is an **LLM-maintained wiki** for Churchix, modeled on Karpathy's [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). It is the durable, interlinked knowledge layer between raw sources (code, research, design files) and anyone — human or agent — asking a question. This file is the **schema**: the conventions every page follows and the workflows for keeping the wiki healthy. Read it before editing it.
 
 ## Three layers
 
 1. **Raw sources** — immutable inputs we read but don't rewrite in place: the codebase (`packages/`, `apps/`), the design system (`docs/design/`), the ADRs (`docs/adr/`), and the original research ([research-brief.md](research-brief.md), kept verbatim as an archive).
-2. **The corpus** — the markdown pages in this directory. We own these entirely; they are synthesized and kept current.
+2. **The wiki** — the markdown pages in this directory. We own these entirely; they are synthesized and kept current.
 3. **The schema** — this file. Conventions + workflows.
 
 ## Page conventions
@@ -45,9 +45,9 @@ This `docs/corpus/` directory is an **LLM-maintained wiki** for Churchix, modele
 3. Add new atomic pages for genuinely new concepts; cross-link them.
 4. Update [index.md](index.md) and append a `log.md` entry.
 
-**Query** (answering a question from the corpus)
+**Query** (answering a question from the wiki)
 1. Start at [index.md](index.md); follow links.
-2. Answer with citations to corpus pages (and through them, raw sources).
+2. Answer with citations to wiki pages (and through them, raw sources).
 3. If the question surfaced a durable, reusable answer not yet captured, file it as a new page and log it.
 
 **Lint** (periodic health check)
@@ -56,6 +56,6 @@ This `docs/corpus/` directory is an **LLM-maintained wiki** for Churchix, modele
 
 ## Relationship to the rest of `docs/`
 
-- **`docs/adr/`** — Architecture Decision Records. The *decision record* is the ADR; the corpus *summarizes and links* it (see [design-system.md](design-system.md), [decisions.md](decisions.md)). Don't duplicate an ADR's content into the corpus — link it.
-- **`docs/todo/`** — active implementation work items (currently: integrating the design system). The corpus describes the *state and intent*; `docs/todo/` tracks the *work*. When a TODO lands, ingest its outcome into the relevant corpus page and log it.
-- **`docs/design/`** — raw design system source (Stitch output + `DESIGN.md`). [design-system.md](design-system.md) is the corpus page that interprets it.
+- **`docs/adr/`** — Architecture Decision Records. The *decision record* is the ADR; the wiki *summarizes and links* it (see [design-system.md](design-system.md), [decisions.md](decisions.md)). Don't duplicate an ADR's content into the wiki — link it.
+- **`docs/todo/`** — active implementation work items (currently: integrating the design system). The wiki describes the *state and intent*; `docs/todo/` tracks the *work*. When a TODO lands, ingest its outcome into the relevant wiki page and log it.
+- **`docs/design/`** — raw design system source (Stitch output + `DESIGN.md`). [design-system.md](design-system.md) is the wiki page that interprets it.

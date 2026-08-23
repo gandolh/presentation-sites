@@ -1,0 +1,41 @@
+---
+summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
+updated: 2026-08-23
+---
+
+# Status — 2026-08-23
+
+## Where things stand
+
+All five projects build. The repo is in a **maintenance + demo** phase rather than
+active feature work: the two real client sites (`saloon`, `auto-service`) are
+code-complete and waiting on human/real-data steps, the two demos (`subcort`,
+`tractari`) are finished showpieces, and `churchix` is the only one with an open
+product roadmap.
+
+This root corpus was bootstrapped on **2026-08-23** when the repo was adapted to
+`my-personal-skills` v0.29.0. It is deliberately **thin**: it covers the monorepo
+itself — layout, cross-site conventions, decisions. Per-site detail stays in the
+per-site docs and is *not* duplicated here.
+
+## Per-site
+
+| Site | State | Its own docs |
+|---|---|---|
+| `saloon` | Site code-complete; blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`saloon/docs/STATUS.md`](../../saloon/docs/STATUS.md), [`docs/todo/ROADMAP.md`](../../saloon/docs/todo/ROADMAP.md), [`docs/ADR.md`](../../saloon/docs/ADR.md) |
+| `auto-service` | Code-complete: full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. Real photos are in place. | [`auto-service/docs/STATUS.md`](../../auto-service/docs/STATUS.md) |
+| `subcort` | Demo, complete. Committed placeholder photos under `public/images/photos/`; no real photos. | [`subcort/PRODUCT.md`](../../subcort/PRODUCT.md), [`DESIGN.md`](../../subcort/DESIGN.md) |
+| `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../tractari/PRODUCT.md), [`DESIGN.md`](../../tractari/DESIGN.md) |
+| `churchix` | Active product. One church app scaffolded (`apps/parohia-harlesti-bacau`); shared packages + docs corpus in progress. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/docs/wiki/index.md`](../../churchix/docs/wiki/index.md) |
+
+## Briefs
+
+No open briefs. New work: capture in [`todos/`](../todos/), promote to
+[`briefs/todo/`](../briefs/todo/).
+
+## Note on the two doc layers
+
+Every project now uses one shape: `README.md` + `PRODUCT.md` + `DESIGN.md` at its
+root, everything else under `docs/`. This corpus owns the *monorepo* layer and
+links down; it does not duplicate per-site content. See
+[decisions.md](decisions.md) for why `corpus` names only this workspace.

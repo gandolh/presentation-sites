@@ -296,7 +296,6 @@ async function main() {
   // for narrow viewports so the subject tent stays in frame on mobile. Both
   // carry no baked caption (the page lays its headline over the scene).
   await writeFile(join(outDir, "hero.svg"), sceneHero(1600, 1000, ""));
-  await writeFile(join(outDir, "hero-tall.svg"), sceneHero(1080, 1500, ""));
   await writeFile(join(outDir, "og-image.svg"), sceneHero(1200, 630, "Subcort · corturi pentru evenimente"));
 
   // No baked-in captions: the page renders its own <figcaption> from g.alt over
@@ -308,13 +307,7 @@ async function main() {
   await writeFile(join(outDir, "gallery-05.svg"), sceneField(1000, 750, ""));
   await writeFile(join(outDir, "gallery-06.svg"), sceneSetup(1000, 750, ""));
 
-  // Favicon: a tiny tent peak mark.
-  const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="${C.sky1}"/>
-  <path d="M6,23 L13,9 L16,13 L19,9 L26,23 Z" fill="${C.canvasL}"/>
-  <path d="M13,23 L13,16 Q16,14 19,16 L19,23 Z" fill="${C.clayL}"/>
-</svg>`;
-  await writeFile(join(outDir, "favicon.svg"), favicon);
+  // The favicon is hand-maintained at public/favicon.svg — not generated here.
 
   console.log("Illustrated placeholder SVGs generated in public/images/");
 }

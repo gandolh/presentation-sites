@@ -14,4 +14,4 @@ Consumed from apps via `"@churchix/ui": "*"` (npm workspaces symlink).
 
 **Key constraint:** keep `react` / `react-dom` as **peerDependencies** in `@churchix/ui` — duplicate React copies break island hydration and hooks. Each consuming app registers `@astrojs/react` itself (Astro integrations are per-app, not inherited).
 
-See [../docs/corpus/architecture.md](../docs/corpus/architecture.md).
+See [../docs/wiki/architecture.md](../docs/wiki/architecture.md).

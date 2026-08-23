@@ -18,7 +18,7 @@ export type BotName =
   | "campaigns";
 
 /**
- * GDPR posture (see corpus/LEGAL.md). Booking flows rely on art. 6(1)(b)
+ * GDPR posture (see docs/LEGAL.md). Booking flows rely on art. 6(1)(b)
  * (contract); marketing flows require explicit opt-in (art. 6(1)(a)).
  */
 export type OptInStatus = "opted_in" | "opted_out" | "unknown";

@@ -16,8 +16,12 @@ Built with **Astro + React + Tailwind v4**. Pure static output, hostable on any 
 
 ```
 .
-├── ADR.md                    # Architecture decisions & spec
-├── corpus/DESIGN.md          # Design system (color, typography, tokens)
+├── docs/                     # Project docs (RO business docs + specs)
+│   ├── ADR.md                # Architecture decisions & spec
+│   ├── tokens.md             # Design system (color, typography, tokens)
+│   ├── STATUS.md             # Where the project stands
+│   ├── LEGAL.md  MARKETING.md
+│   └── todo/                 # ROADMAP.md + TODO.md
 ├── public/
 │   ├── favicon.svg
 │   └── images/               # SVG placeholders (to be replaced by photos)
@@ -76,4 +80,4 @@ real photos are in place. See [`public/images/real/README.md`](public/images/rea
 
 ## Design system
 
-See [corpus/DESIGN.md](corpus/DESIGN.md) for tokens and [ADR.md](ADR.md) for decisions.
+See [docs/tokens.md](docs/tokens.md) for tokens and [docs/ADR.md](docs/ADR.md) for decisions.

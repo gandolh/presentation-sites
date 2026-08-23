@@ -27,14 +27,14 @@ docs/       # architecture & product documentation (start here)
 
 ## Documentation
 
-Docs live as an LLM-maintained wiki under [docs/corpus/](docs/corpus/index.md) — start at the [index](docs/corpus/index.md). A good reading order:
+Docs live as an LLM-maintained wiki under [docs/wiki/](docs/wiki/index.md) — start at the [index](docs/wiki/index.md). A good reading order:
 
-1. [overview](docs/corpus/overview.md) — what Churchix is.
-2. [architecture](docs/corpus/architecture.md) — monorepo, frontend, static-per-build; and [independence-model](docs/corpus/independence-model.md).
-3. [content-model](docs/corpus/content-model.md) — page inventory + content schemas; with [traditions](docs/corpus/traditions.md) and [i18n-and-glossary](docs/corpus/i18n-and-glossary.md).
-4. [donations](docs/corpus/donations.md) — the v1 giving stack; [optional-backend](docs/corpus/optional-backend.md) for the future API.
-5. [design-system](docs/corpus/design-system.md) — the Tailwind + Material-3 design system.
-6. [decisions](docs/corpus/decisions.md) — settled + open questions; [research-brief](docs/corpus/research-brief.md) for the full rationale.
+1. [overview](docs/wiki/overview.md) — what Churchix is.
+2. [architecture](docs/wiki/architecture.md) — monorepo, frontend, static-per-build; and [independence-model](docs/wiki/independence-model.md).
+3. [content-model](docs/wiki/content-model.md) — page inventory + content schemas; with [traditions](docs/wiki/traditions.md) and [i18n-and-glossary](docs/wiki/i18n-and-glossary.md).
+4. [donations](docs/wiki/donations.md) — the v1 giving stack; [optional-backend](docs/wiki/optional-backend.md) for the future API.
+5. [design-system](docs/wiki/design-system.md) — the Tailwind + Material-3 design system.
+6. [decisions](docs/wiki/decisions.md) — settled + open questions; [research-brief](docs/wiki/research-brief.md) for the full rationale.
 
 Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Active design-integration work is tracked in [docs/todo/](docs/todo/README.md). [CLAUDE.md](CLAUDE.md) is the working brief for AI assistants and new contributors.
 

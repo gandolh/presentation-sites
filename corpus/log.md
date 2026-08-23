@@ -1,0 +1,52 @@
+# Log
+
+## [2026-08-23] bootstrap | corpus/ created
+
+Bootstrapped the root `corpus/` workspace while adapting the repo to
+`my-personal-skills` v0.29.0: `CLAUDE.md`, `index.md`, `routing.md`, `lint.sh`,
+and the wiki spine (`overview`, `architecture`, `decisions`, `status`,
+`open-questions`). Scope is the monorepo layer only — the per-site docs under
+`saloon/corpus/`, `auto-service/corpus/` and `churchix/docs/corpus/` were left in
+their existing shape (see `wiki/open-questions.md`).
+
+Same pass pruned dead references and unused assets: the `showcase/*` scripts,
+README section and launch config left behind when that site moved out
+(`93eba5d`); the unreferenced root `hero-desktop.png`; `saloon` gallery
+placeholders 07-09 and `subcort`'s `hero-tall.svg` + duplicate
+`images/favicon.svg` (with their generators trimmed so they stay gone); the empty
+`.playwright-mcp/` directory; and `churchix/skills-lock.json`, a stale pin to a
+standalone impeccable install that the plugin now ships.
+
+## [2026-08-23] cleanup | one doc shape, "corpus" freed, config de-coupled
+
+Deeper pass over the repo layout. Root stays flat (five project directories) —
+the grouping under `sites/` was considered and declined.
+
+**Docs.** `saloon/corpus/` → `saloon/docs/`, `auto-service/corpus/` →
+`auto-service/docs/`, `churchix/docs/corpus/` → `churchix/docs/wiki/`. "Corpus"
+now names only this workspace. Files whose names collided were renamed for their
+real job: `saloon/corpus/DESIGN.md` → `docs/tokens.md` (a token export, not the
+impeccable design doc) and `auto-service/corpus/PRODUCT.md` → `docs/brief.md`.
+`saloon/ADR.md` moved to `saloon/docs/ADR.md`. ~30 files of references rewritten;
+0 dead links across 98 markdown files. Wrote READMEs for `auto-service`,
+`subcort` and `tractari`, which had none.
+
+**Image-source bug.** `build` was mock everywhere while `dev` and `preview`
+defaulted to real, so `npm run saloon:build` silently shipped placeholders.
+`saloon` and `auto-service` now build real by default with `build:mock` as the
+escape hatch. Verified both ways in the emitted HTML.
+
+**Config de-coupling.** The root `.gitignore` hardcoded all four site names; its
+rules are now site-agnostic `**/` patterns, so adding a site needs no edit there.
+`.vscode/launch.json` went from 2 sites to all 5. Added the missing
+`placeholders` script to `saloon` and `auto-service`.
+
+**Stale docs pruned.** `churchix/CLAUDE.md` still documented `npm run deploy`,
+`npm run pre-deploy`, `cp .env.example .env` and `scripts/deploy.ts` — all
+removed with the deploy tooling in `6d2f237`. Replaced with the current commands.
+
+Verified: 4 Astro builds, a sub-path build, churchix typecheck + build, 66 bots
+tests, corpus lint.
+
+Recorded two decisions (one doc shape; duplication between sites accepted) in
+`wiki/decisions.md`.

@@ -7,7 +7,7 @@ _Actualizat: 5 iunie 2026_
 - [x] Data pattern: `site.ts` defaults + `site.local.ts` (git-ignored) deep-merge + `site.local.example.ts`.
 - [x] Helpers: `url.ts` (`withBase`), `images.ts` (`img()` mock/real).
 - [x] Conținut: `services.ts` (BMW, mechanics-focused), `faq.ts`, `testimonials.ts` (gol intenționat), `gallery.ts`.
-- [x] Corpus: PRODUCT, LEGAL, MARKETING, STATUS, todo/.
+- [x] Docs: brief, LEGAL, MARKETING, STATUS, todo/.
 - [x] Audit legal (LEGAL.md) — SAL link actualizat la `reclamatiisal.anpc.ro` (Ordin 270/2026), disclaimer independență BMW, garanție.
 
 ## Făcut (continuare)
@@ -22,6 +22,6 @@ _Actualizat: 5 iunie 2026_
 ## Versiuni
 Dependențe fixate exact (fără `^`). `vite` fixat la `7.3.3` (+ `overrides`): astro 6.4.4 trăgea vite 8/rolldown, incompatibil cu `@tailwindcss/vite` 4.3.0 → fixat astro `6.4.2` + vite `7.3.3`.
 
-## De completat de proprietar (vezi PRODUCT.md / LEGAL.md)
+## De completat de proprietar (vezi brief.md / LEGAL.md)
 Date reale firmă + RAR în `site.local.ts`, foto reale în `public/images/real/`,
 endpoint Formspree + DPA.

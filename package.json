@@ -10,12 +10,14 @@
     "saloon:install": "npm --prefix saloon install",
     "saloon:dev": "npm --prefix saloon run dev",
     "saloon:build": "npm --prefix saloon run build",
+    "saloon:build:mock": "npm --prefix saloon run build:mock",
     "saloon:preview": "npm --prefix saloon run preview",
     "saloon:bots": "npm --prefix saloon/marketing/bots run check",
     "auto-service": "npm --prefix auto-service run",
     "auto-service:install": "npm --prefix auto-service install",
     "auto-service:dev": "npm --prefix auto-service run dev",
     "auto-service:build": "npm --prefix auto-service run build",
+    "auto-service:build:mock": "npm --prefix auto-service run build:mock",
     "auto-service:preview": "npm --prefix auto-service run preview",
     "subcort": "npm --prefix subcort run",
     "subcort:install": "npm --prefix subcort install",
@@ -26,11 +28,6 @@
     "tractari:install": "npm --prefix tractari install",
     "tractari:dev": "npm --prefix tractari run dev",
     "tractari:build": "npm --prefix tractari run build",
-    "tractari:preview": "npm --prefix tractari run preview",
-    "showcase": "npm --prefix showcase run",
-    "showcase:install": "npm --prefix showcase install",
-    "showcase:dev": "npm --prefix showcase run dev",
-    "showcase:build": "npm --prefix showcase run build",
-    "showcase:preview": "npm --prefix showcase run preview"
+    "tractari:preview": "npm --prefix tractari run preview"
   }
 }

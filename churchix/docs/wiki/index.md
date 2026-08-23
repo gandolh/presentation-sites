@@ -1,4 +1,4 @@
-# Corpus index
+# Wiki index
 
 The catalog for the Churchix wiki. One entry per page (link · summary · status). New to the repo? Start with [overview](overview.md), then [architecture](architecture.md). How this wiki works: [SCHEMA.md](SCHEMA.md). Chronological change log: [log.md](log.md).
 
@@ -39,7 +39,7 @@ The catalog for the Churchix wiki. One entry per page (link · summary · status
 | [decisions](decisions.md) | Settled decisions (Decided) + open questions for the product owner. | living |
 | [research-brief](research-brief.md) | The original six-stream research brief — retained verbatim as rationale. | archive |
 
-## Related, outside the corpus
+## Related, outside the wiki
 
 - **[docs/adr/](../adr/)** — Architecture Decision Records. [ADR-0001](../adr/0001-design-system-foundation.md) (the design brief, superseded) → [ADR-0002](../adr/0002-tailwind-material3-design-system.md) (Tailwind + M3, accepted).
 - **[docs/todo/](../todo/README.md)** — active work items integrating the design system into `@churchix/ui` (15 atomic tasks).

@@ -3,7 +3,7 @@
 > Referință a deciziilor luate pentru promovarea salonului și pentru serviciul
 > de automatizare „bots". Acest fișier consemnează **ce s-a decis și ce s-a
 > construit** (ca `LEGAL.md`); planurile vii (cu casete de bifat) rămân în
-> `marketing/` și `corpus/todo/`. Stadiu la **29 mai 2026**.
+> `marketing/` și `todo/`. Stadiu la **29 mai 2026**.
 >
 > Context: salon cu un singur scaun, Târgu-Jiu. Public RO. Programare prin
 > WhatsApp (deep-link) + backup Formspree. Stack gratuit / self-host pe VPS.
@@ -101,8 +101,8 @@ creează conturile (se testează pe ceva real). Marcată în cod cu `// TODO(imp
 - `scheduler/index.ts`: alertă la eșec de publicare + retry.
 
 Plus acțiunile pur de om (conturi, token-uri, aprobare template-uri/buget, DPA).
-Lista completă, împărțită pe **agent vs om**: `corpus/todo/ROADMAP.md`. Punct de
-reluare rapid: `corpus/STATUS.md`.
+Lista completă, împărțită pe **agent vs om**: `todo/ROADMAP.md`. Punct de
+reluare rapid: `STATUS.md`.
 
 ## 5. Costuri (cadru)
 

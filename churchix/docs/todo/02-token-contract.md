@@ -27,7 +27,7 @@ Define the **Material-3 token contract** as CSS custom properties, map it into t
 - [ ] All M3 color roles from DESIGN.md are available as Tailwind utilities backed by CSS vars.
 - [ ] Setting only `primary` + `secondary` + `surface` in a church's `site` entry visibly re-skins a sample page; derived roles update sensibly.
 - [ ] Typography, spacing (`base/xs/sm/md/lg/xl/gutter/container-max`), and radius (`sm/DEFAULT/md/lg/xl/full`) tokens resolve.
-- [ ] A short table in the file (or in `corpus`) lists **church-settable** vs **derived** tokens.
+- [ ] A short table in the file (or in `docs/wiki/`) lists **church-settable** vs **derived** tokens.
 - [ ] AA contrast verified for the default Orthodox palette across primary/surface/secondary text combos.
 
 ## Out of scope

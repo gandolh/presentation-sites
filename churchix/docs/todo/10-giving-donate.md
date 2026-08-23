@@ -12,7 +12,7 @@ Rebuild the **Susține parohia / Donează** landing to the reference design — 
 
 ## Context
 
-- Data: `site.giving` ([packages/schemas/src/index.ts](../../packages/schemas/src/index.ts)) — `currency`, `ibans[]` (label/iban/currency), `cardUrl?`, `form230` + `form230Url?`, `smsKeyword`/`smsNumber`/`smsAmount`. See [corpus](../corpus/index.md) giving notes.
+- Data: `site.giving` ([packages/schemas/src/index.ts](../../packages/schemas/src/index.ts)) — `currency`, `ibans[]` (label/iban/currency), `cardUrl?`, `form230` + `form230Url?`, `smsKeyword`/`smsNumber`/`smsAmount`. See [wiki](../wiki/index.md) giving notes.
 - **PCI SAQ A:** card data never touches our code. The "Donează Online" button + amount presets link **out** to the hosted `cardUrl` (Stripe Payment Link / Netopia). Presets (50/100/200 + "Altă sumă") are UI affordances that pass an amount to the hosted page if its URL supports it, else just deep-link.
 - **Money** always shows explicit currency; integer minor units internally.
 

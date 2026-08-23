@@ -81,7 +81,7 @@ default-ul, căile reale se construiesc doar la `BOTS_MOCK_MODE=false`.
   automate" sau TikTok ar descrie o prelucrare care nu are loc încă — inexact
   pentru o pagină GDPR. Se face la pornirea live, pereche cu B1/B2/B3.)*
 - [ ] La fiecare bot care ajunge live, **bifează** elementele din
-  `marketing/bots/<bot>/todo.md` și mută în corpus ce devine „decizie".
+  `marketing/bots/<bot>/todo.md` și mută în `docs/` ce devine „decizie".
 
 ---
 

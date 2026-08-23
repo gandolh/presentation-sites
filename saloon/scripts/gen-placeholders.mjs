@@ -15,9 +15,6 @@ const palette = [
   { from: "#FFE9E2", to: "#E8A6A0" },
   { from: "#F4DED6", to: "#705955" },
   { from: "#FFDCD4", to: "#C9A961" },
-  { from: "#FBF7F2", to: "#DDC0BA" },
-  { from: "#F4D6D0", to: "#C9A961" },
-  { from: "#FAE4DB", to: "#E8A6A0" },
 ];
 
 function svg({ width, height, from, to, label }) {
@@ -51,7 +48,8 @@ async function main() {
     svg({ width: 800, height: 1000, from: "#FAE4DB", to: "#E8A6A0", label: "Portret Ana" }),
   );
 
-  // Gallery (9 images, mixed aspect ratios for masonry feel)
+  // Gallery (6 images, mixed aspect ratios for masonry feel) — matches
+  // src/content/gallery.ts, which drives how many the page renders.
   const aspects = [
     [800, 1000],
     [800, 800],
@@ -59,11 +57,8 @@ async function main() {
     [800, 900],
     [800, 1000],
     [800, 1200],
-    [800, 900],
-    [800, 1000],
-    [800, 1100],
   ];
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 6; i++) {
     const p = palette[i];
     const [w, h] = aspects[i];
     await writeFile(

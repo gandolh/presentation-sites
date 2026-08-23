@@ -10,7 +10,7 @@ const schedule = (await getCollection('schedule')).map((e) => e.data);
 
 // Optional programme PDF. The shared schema carries no field for it, so we read
 // an optional, conventional public path and hide the download button if the
-// church hasn't published one. (No schema change — see docs/corpus/log.md.)
+// church hasn't published one. (No schema change — see docs/wiki/log.md.)
 const programPdfUrl: string | undefined = undefined;
 ---
 
