@@ -13,7 +13,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Cât rezistă manichiura semipermanentă?",
-    a: "În medie 2–3 săptămâni, în funcție de ritmul de creștere al unghiilor și de activitatea zilnică. Pentru construcția cu gel, rezistența este de obicei mai mare.",
+    a: "În medie 2-3 săptămâni, în funcție de ritmul de creștere al unghiilor și de activitatea zilnică. Pentru construcția cu gel, rezistența este de obicei mai mare.",
   },
   {
     q: "Ce produse folosești?",

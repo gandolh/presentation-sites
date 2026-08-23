@@ -134,6 +134,24 @@
     background-color: var(--color-blush);
     color: var(--color-on-surface);
   }
+
+  /* Keyboard focus. DESIGN.md already names gold as the focus-ring colour; this
+     is that rule actually implemented. `:where()` keeps specificity at 0 so a
+     component can still override it, and `:focus-visible` means a mouse click
+     never paints a ring. Never replace this with `outline: none`. */
+  :where(a, button, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Kill the 300ms double-tap delay on touch, and suppress the grey flash so
+     the :active states below are the only press feedback. Removing the flash
+     without providing that feedback would leave taps feeling dead. */
+  :where(a, button, summary, [role="button"]) {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 @layer components {
@@ -198,7 +216,13 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     text-decoration: none;
-    transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out, transform 200ms ease-out;
+    /* One motion curve site-wide: the same ease-out-quint the scroll reveals
+       use. Plain `ease-out` read as a different, flatter language. */
+    transition:
+      background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
     cursor: pointer;
     border: none;
   }
@@ -211,6 +235,19 @@
 
   .btn-primary:hover {
     background-color: var(--color-blush-deep);
+  }
+
+  /* Physical press feedback on every button variant — required now that the
+     native tap highlight is suppressed. Transform only, so it stays on the
+     compositor, and reduced-motion drops it below. */
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:active {
+      transform: none;
+    }
   }
 
   .btn-secondary {
@@ -308,7 +345,7 @@
     font-family: var(--font-body);
     font-size: 1rem;
     color: var(--color-on-surface);
-    transition: border-color 200ms ease-out;
+    transition: border-color 240ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .input:focus {
@@ -352,7 +389,7 @@
 
   .js-reveal .reveal {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(14px);
     transition:
       opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -440,6 +477,31 @@
     .mobile-menu,
     .mobile-menu__link {
       animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* Film grain, Editorial-Luxury archetype. Fixed and pointer-events-none so
+     it is composited once and never repaints on scroll (never attach grain to
+     a scrolling container). Sits above the page, below the nav (z-40) and the
+     mobile menu, so it tints content without touching interactive layers. */
+  .page-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 160px 160px;
+  }
+
+  /* Grain is texture, not information. Anyone who has asked for less motion or
+     higher contrast is better served without it. */
+  @media (prefers-reduced-motion: reduce), (prefers-contrast: more) {
+    .page-grain {
+      display: none;
     }
   }
 }

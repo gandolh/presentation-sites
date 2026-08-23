@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { site, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 ---
@@ -58,21 +59,13 @@ import { withBase } from "@sites/kit";
           class="flex-shrink-0 w-12 h-12 rounded-full bg-white/15 flex items-center justify-center"
           aria-hidden="true"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <path d="M3 21l1.65-3.8A8.5 8.5 0 1 1 7.8 19.35L3 21z"/>
-            <path d="M8.5 8.5c0 4 3 7 7 7l1.5-2-2.5-1-1 1c-1 0-3-2-3-3l1-1-1-2.5z"/>
-          </svg>
+          <Icon name="ph:whatsapp-logo" size={24} aria-hidden="true" />
         </span>
         <span class="flex-1">
           <span class="block text-base font-bold leading-tight">Scrie-mi pe WhatsApp</span>
           <span class="block mt-0.5 text-sm text-white">Răspund cel mai repede aici · {site.phone}</span>
         </span>
-        <svg
-          class="flex-shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
-          width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-        >
-          <path d="M5 12h14M13 6l6 6-6 6"/>
-        </svg>
+        <Icon name="ph:arrow-right" size={20} class="flex-shrink-0" aria-hidden="true" />
       </a>
 
       <!-- Fallback: phone. Deliberately quieter so it reads as the alternative,
@@ -82,9 +75,7 @@ import { withBase } from "@sites/kit";
         href={`tel:+${site.phoneE164}`}
         class="mt-3 flex items-center justify-center gap-2.5 rounded-[1rem] border border-[var(--color-outline-variant)] px-5 py-3.5 text-[var(--color-on-surface)] no-underline hover:border-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors duration-200 ease-out"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8 9.91a16 16 0 0 0 6 6l1.27-1.36a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
+        <Icon name="ph:phone" size={18} aria-hidden="true" />
         <span class="font-semibold">Sună-mă · {site.phone}</span>
       </a>
     </div>

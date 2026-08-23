@@ -1,11 +1,12 @@
 ---
+import { Icon } from "astro-icon/components";
 import { site, waLink } from "../content/site";
 import { img } from "../content/images";
 ---
 
 <section
   id="acasa"
-  class="relative pt-16 md:pt-28 pb-16 md:pb-20 overflow-hidden"
+  class="relative pt-16 md:pt-24 pb-16 md:pb-20 overflow-hidden"
 >
   <div
     class="container-page grid md:grid-cols-[1.05fr_0.95fr] gap-10 md:gap-16 items-center"
@@ -27,18 +28,7 @@ import { img } from "../content/images";
           rel="noopener"
           class="btn btn-whatsapp"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            aria-hidden="true"
-          >
-            <path d="M3 21l1.65-3.8A8.5 8.5 0 1 1 7.8 19.35L3 21z" />
-            <path d="M8.5 8.5c0 4 3 7 7 7l1.5-2-2.5-1-1 1c-1 0-3-2-3-3l1-1-1-2.5z" />
-          </svg>
+          <Icon name="ph:whatsapp-logo" size={20} aria-hidden="true" />
           Programează-te pe WhatsApp
         </a>
         <a
@@ -60,6 +50,8 @@ import { img } from "../content/images";
           class="w-full h-full object-cover"
           width="800"
           height="1000"
+          fetchpriority="high"
+          decoding="async"
         />
       </div>
       <!-- Decorative gold accent -->

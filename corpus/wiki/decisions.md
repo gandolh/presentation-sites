@@ -117,6 +117,30 @@ and documented in the package README —
 A site's `images.ts` therefore stays per-site — it supplies data (`hasReal`) to
 shared logic.
 
+## Icons come from one family, inlined at build time
+
+**2026-08-23** — `astro-icon` + `@iconify-json/ph` (Phosphor) for `.astro`
+files, `@phosphor-icons/react` for the single React island. Currently saloon
+only; the other three sites still hand-roll SVGs.
+
+*Rejected:* hand-rolled SVG paths (the status quo), Lucide, and a React-only
+icon library for the whole site.
+*Why:* the hand-rolled paths had drifted to three different stroke widths
+(1.5 / 1.6 / 2.0) across eight components, which is exactly the inconsistency an
+icon set exists to prevent. Lucide was offered and is fine, but Phosphor has a
+`light` weight that suits the brand's thin gold linework and ships the brand
+glyphs (WhatsApp, Instagram, Facebook) in the same family, so one package covers
+everything. A React icon library alone was rejected because most components here
+are `.astro`: `astro-icon` inlines the SVG at build with **no runtime and no
+sprite request**, which a React library cannot do for static markup.
+
+*The cost, measured:* the React island went to 6.8 KB, so the named imports
+tree-shook; the whole library would have been hundreds of KB. If that ever
+regresses, check the import style first.
+
+*The rule this creates:* one family, no hand-rolled paths. Written into
+`sites/saloon/DESIGN.md`.
+
 ## churchix governs itself
 
 **2026-06** — `churchix/` keeps its own `CLAUDE.md`, its own `docs/corpus/`, and

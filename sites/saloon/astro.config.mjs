@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
+import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -9,7 +10,12 @@ export default defineConfig({
   // Served under a sub-path on a shared VPS (e.g. http://HOST/saloon).
   // Override at build time with PUBLIC_BASE=/saloon; defaults to "/" for local dev.
   base: process.env.PUBLIC_BASE ?? '/',
-  integrations: [react()],
+  integrations: [
+    react(),
+    // Phosphor, inlined at build time by astro-icon: no runtime, no sprite
+    // request, and one icon family across the site (see DESIGN.md).
+    icon({ include: { ph: ['*'] } }),
+  ],
 
   vite: {
     plugins: [tailwindcss()],

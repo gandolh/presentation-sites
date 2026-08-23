@@ -55,6 +55,9 @@ All four share one shape:
 - **Astro 7, static output**, with **React 19 islands** (`@astrojs/react`) only
   where interactivity is needed. Tailwind **v4** via `@tailwindcss/vite` — no
   `tailwind.config.js`; tokens live in the CSS.
+- **Icons (saloon only, so far):** `astro-icon` + `@iconify-json/ph` inlines
+  Phosphor SVGs at build time; the one React island uses
+  `@phosphor-icons/react`. The other three sites still hand-roll their SVGs.
 - **`base` is env-driven**: `base: process.env.PUBLIC_BASE ?? '/'` in
   `astro.config.mjs`. Every internal URL goes through `withBase()` from
   `@sites/kit` so the site works at `/` in dev and at `/<site>` on the VPS.

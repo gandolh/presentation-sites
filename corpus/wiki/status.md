@@ -22,7 +22,7 @@ per-site docs and is *not* duplicated here.
 
 | Site | State | Its own docs |
 |---|---|---|
-| `saloon` | Site code-complete; blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/todo/ROADMAP.md`](../../sites/saloon/docs/todo/ROADMAP.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
+| `saloon` | Code-complete and through a design + accessibility pass (2026-08-23). Blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/todo/ROADMAP.md`](../../sites/saloon/docs/todo/ROADMAP.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
 | `auto-service` | Code-complete: full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. Real photos are in place. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
 | `subcort` | Demo, complete. Committed placeholder photos under `public/images/photos/`; no real photos. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |

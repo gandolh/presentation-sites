@@ -69,12 +69,17 @@ Use `text-wrap: balance` on h1–h3 and `pretty` on long prose. No all-caps body
 > subtitle, the "Bun de știut" panel label, contact field labels), never as a
 > kicker above a section title.
 >
-> What *does* vary is the heading's **composition**, deliberately: a section
-> either stacks (heading alone, or heading above a lead paragraph) or splits
-> (heading left, one supporting line right, baselines aligned). Every section
-> opening with the identical heading-plus-divider stamp made the page read as
-> one template applied nine times; varying the composition breaks that without
-> reintroducing the eyebrow scaffold.
+> Headings **stack**: heading alone, or heading above a lead paragraph capped
+> at ~55ch. A section carries one message.
+>
+> **No split headers** (big heading left, small explainer floating right). That
+> pattern was tried here and reverted: it is a decorative device that splits a
+> section's single message in two. The one permitted exception is a right-hand
+> column carrying a real element rather than filler text, which is why the FAQ
+> pairs its accordion with an actual "ask me" card.
+>
+> Variation between sections comes from what each section *is* (a price list, a
+> numbered protocol, a masonry grid), not from dressing up its header.
 >
 > The **gold divider is reserved**, not default — it marks the two warm,
 > personal moments (Ana's intro, the loyalty panel). An accent on every
@@ -106,6 +111,38 @@ Use `text-wrap: balance` on h1–h3 and `pretty` on long prose. No all-caps body
 > The columns are `1.05fr / 0.95fr`, not `1fr / 1fr` — a slight asymmetry, since
 > the text needs the wider measure and a dead-even split is the most templated
 > shape available.
+
+## Interaction & Motion
+
+- **Focus ring:** `2px solid var(--color-gold)` at `3px` offset, on
+  `:focus-visible` only, declared with `:where(...)` so specificity stays 0.
+  **Never** replace it with `outline: none`. This is the gold accent's real job.
+- **Target size:** every interactive element clears 24x24px. Text nav links
+  carry `min-h-[24px]` plus padding, not bare inline text.
+- **Touch:** `touch-action: manipulation` on interactive elements (kills the
+  300ms double-tap delay) and `-webkit-tap-highlight-color: transparent`. The
+  grey flash is suppressed, so `.btn:active` provides the press feedback
+  instead; do not remove one without the other.
+- **One motion curve:** `cubic-bezier(0.22, 1, 0.36, 1)` for every transition
+  and reveal. No bare `ease-out` / `ease-in-out` / `linear`.
+- **Scroll reveals** use `IntersectionObserver`, never a scroll listener. The
+  nav's scrolled state and the mobile bar's visibility are both observer-driven
+  for the same reason: no per-frame work on the main thread.
+
+## Texture
+
+- **`.page-grain`** — a fixed, `pointer-events-none` film-grain layer at
+  `opacity: 0.035`, z-30 (under the nav). It takes the digital flatness off the
+  cream. It must stay **fixed** so it composites once; attaching grain to a
+  scrolling container repaints every frame. Hidden under
+  `prefers-reduced-motion` and `prefers-contrast: more`.
+
+## Punctuation
+
+- **No en-dashes or em-dashes in rendered copy.** Hyphens only:
+  `Luni - Vineri`, `09:00 - 19:00`, `2-3 saptamani`. Dashes in *code comments*
+  are fine; nothing renders them. The legal pages are the exception and change
+  only with the owner's approval.
 
 ## Shape & Elevation
 
@@ -168,5 +205,11 @@ default keeps all content visible.
   swapped in via `PUBLIC_IMAGE_SOURCE=real`), SVG mocks as the safe-to-commit
   fallback. Hero uses a 4:5 portrait crop in a rounded frame with a faint gold
   radial accent.
-- Keep iconography minimal and line-based if used; no clip-art service icons
+- **Iconography: Phosphor, one family, no exceptions.** `.astro` files use
+  `astro-icon`'s `<Icon name="ph:..." />`, which inlines the SVG at build time
+  (no runtime, no sprite fetch). The one React island imports named glyphs from
+  `@phosphor-icons/react` at `weight="light"` so the island stays tree-shaken
+  and the family still matches. **Do not hand-roll SVG icon paths** — that is
+  what produced the previous mismatched 1.5 / 1.6 / 2.0 stroke widths. No
+  clip-art service icons.
   (an explicit anti-reference).

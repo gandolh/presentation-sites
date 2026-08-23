@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { testimonials } from "../content/testimonials";
 // Only render when there are real reviews to show. Empty = render nothing, so
 // the section never reappears as an empty shell if it's re-enabled too early.
@@ -21,14 +22,7 @@ import { testimonials } from "../content/testimonials";
               aria-label={`${t.rating} din 5 stele`}
             >
               {Array.from({ length: t.rating }).map(() => (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M12 2l2.9 6.9L22 10l-5.5 4.9L18 22l-6-3.5L6 22l1.5-7.1L2 10l7.1-1.1z" />
-                </svg>
+                <Icon name="ph:quotes" size={24} aria-hidden="true" />
               ))}
             </div>
             <blockquote

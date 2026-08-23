@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { site, waLink } from "../content/site";
 ---
 
@@ -25,19 +26,7 @@ import { site, waLink } from "../content/site";
       class="btn-whatsapp mbb__cta"
       aria-label={`Scrie-mi pe WhatsApp la ${site.phone}`}
     >
-      <svg
-        class="mbb__icon"
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.6"
-        aria-hidden="true"
-      >
-        <path d="M3 21l1.65-3.8A8.5 8.5 0 1 1 7.8 19.35L3 21z" />
-        <path d="M8.5 8.5c0 4 3 7 7 7l1.5-2-2.5-1-1 1c-1 0-3-2-3-3l1-1-1-2.5z" />
-      </svg>
+      <Icon name="ph:whatsapp-logo" size={22} class="mbb__icon" aria-hidden="true" />
       <span>Scrie-mi pe WhatsApp</span>
     </a>
   </div>
@@ -145,13 +134,23 @@ import { site, waLink } from "../content/site";
       bar.dataset.state = shouldHide ? "hidden" : "shown";
     }
 
-    // Reveal only after scrolling past roughly the first viewport (the hero).
-    function onScroll() {
-      pastHero = window.scrollY > window.innerHeight * 0.6;
-      apply();
+    // Reveal once the hero has largely left the viewport. Observing the hero
+    // is the direct way to ask that; a scroll listener re-asked it on every
+    // frame. Matches the IntersectionObserver already used for suppressors.
+    const hero = document.getElementById("acasa");
+    if (hero && "IntersectionObserver" in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          pastHero = !entry.isIntersecting;
+          apply();
+        },
+        { threshold: 0, rootMargin: "-40% 0px 0px 0px" },
+      ).observe(hero);
+    } else {
+      // No hero or no observer: show the bar rather than hide the booking CTA.
+      pastHero = true;
     }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    apply();
 
     // Hide whenever the Booking section or footer is on screen.
     if ("IntersectionObserver" in window && suppressors.length) {

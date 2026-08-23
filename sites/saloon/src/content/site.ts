@@ -47,8 +47,8 @@ const defaults = {
 
   // Hours
   hours: [
-    { day: "Luni – Vineri", value: "09:00 – 19:00" },
-    { day: "Sâmbătă", value: "10:00 – 16:00" },
+    { day: "Luni - Vineri", value: "09:00 - 19:00" },
+    { day: "Sâmbătă", value: "10:00 - 16:00" },
     { day: "Duminică", value: "Închis" },
   ],
 

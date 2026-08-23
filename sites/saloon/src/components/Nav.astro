@@ -23,7 +23,7 @@ const links = [
         links.map((link) => (
           <a
             href={link.href}
-            class="label-md text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
+            class="label-md inline-flex items-center min-h-[24px] py-1 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
           >
             {link.label}
           </a>
@@ -41,15 +41,31 @@ const links = [
 </header>
 
 <script is:inline>
+  // Toggle the nav's scrolled state by observing an 8px sentinel at the top of
+  // the document rather than listening to every scroll frame. Same result, no
+  // per-frame work on the main thread.
   (function () {
     const nav = document.getElementById("site-nav");
     if (!nav) return;
-    function update() {
-      const scrolled = window.scrollY > 8;
+
+    const set = (scrolled) => {
       nav.dataset.scrolled = scrolled ? "true" : "false";
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      set(false); // static, readable fallback
+      return;
     }
-    update();
-    window.addEventListener("scroll", update, { passive: true });
+
+    const sentinel = document.createElement("div");
+    sentinel.setAttribute("aria-hidden", "true");
+    sentinel.style.cssText =
+      "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;";
+    document.body.prepend(sentinel);
+
+    new IntersectionObserver(
+      ([entry]) => set(!entry.isIntersecting),
+    ).observe(sentinel);
   })();
 </script>
 

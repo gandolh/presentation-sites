@@ -115,11 +115,12 @@ const ogImageAbsolute = `${canonical}${ogImage.replace(/^\//, "")}`;
   <body>
     <a
       href="#acasa"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded-full"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-[calc(var(--wip-banner-h,0px)+1rem)] focus:left-4 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded-full focus:shadow-lg"
     >
       Sari la conținut
     </a>
     <slot />
+    <div class="page-grain" aria-hidden="true"></div>
 
     <script is:inline>
       // Scroll-triggered fade-in. Only hide-then-reveal when JS + observer are

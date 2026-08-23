@@ -199,3 +199,79 @@ gallery images load at both widths, no horizontal overflow at 390px.
 
 Note for future UI work: browser verification is now expected — reading source
 and built HTML would not have caught either of these.
+
+## [2026-08-23] design | saloon — three frontend skills run over the site
+
+Ran the three skills that had been skipped, in order. Each found things the
+previous pass had not.
+
+**web-design-guidelines** (Vercel WIG, fetched fresh). Real gaps, all fixed:
+no designed `:focus-visible` (the UA outline was doing the work, while
+DESIGN.md already named gold as the focus colour); the skip link sat at
+`top:16px` under the 33px fixed banner, so the first thing a keyboard user hits
+collided with it; no `touch-action: manipulation`; desktop nav links were 52x18
+against a 24x24 minimum; hero image not marked `fetchpriority="high"`; hours and
+price columns not tabular. Verified live: gold ring `2px rgb(201,169,97)`, nav
+target now 52x26. Corrected one false finding of my own along the way -- the
+site *does* have a skip link, my grep just missed "Sari la continut".
+
+**design-taste-frontend.** Mode: redesign-preserve, dials 6/5/3 matched to the
+existing site. Two mechanical failures were **mine, from the previous pass**:
+the split-header pattern (heading left, explainer right) I had added to Services
+and Gallery is banned by that skill as a decorative device that splits a
+section's single message -- reverted to stacked headers; and the hero's
+`md:pt-28` exceeded the `pt-24` cap. Also fixed en-dashes in rendered Romanian
+copy, and replaced both `window.addEventListener("scroll")` handlers (nav state,
+mobile bar) with IntersectionObserver -- a hard ban in that skill and a genuine
+improvement. Verified both still behave: nav `false->true->false`, bar
+`hidden->shown->hidden`.
+
+Fraunces is explicitly banned by that skill as an LLM-default serif. Kept, with
+justification: it is the committed brand in DESIGN.md and this is preserve mode.
+
+**high-end-visual-design.** Written for greenfield agency builds, so most of it
+does not apply here. Selected the one compatible vibe archetype (Editorial
+Luxury) and took three things: a fixed film-grain layer at 0.035, one motion
+curve site-wide replacing bare `ease-out`, and slightly heavier reveal travel.
+**Declined three of its directives on the record:** eyebrow pill badges
+(DESIGN.md bans eyebrows and the taste skill caps them), Ethereal Glass / OLED
+black (light-only brand), and Double-Bezel glass cards (DESIGN.md: "no
+glassmorphism").
+
+Left alone: two en-dashes in `confidentialitate.astro` (the EU-US DPF name and
+the ANPC address range). Legal copy does not change without the owner saying so.
+Also flagged but not changed: 8 components hand-roll SVG icon paths, which the
+taste skill bans. Pulling a React icon library into `.astro` components would be
+worse than the thing it fixes; raising it rather than "fixing" it.
+
+All three skills' rules that now bind this site are written into
+`sites/saloon/DESIGN.md` (Interaction & Motion, Texture, Punctuation), including
+a correction: an earlier entry there described split headers as an approved
+variation, which is no longer true.
+
+Verified: `astro check` clean, all 4 sites build, nav + mobile-bar observers
+behave, gallery loads at both widths, CTA still hit-testable through the grain.
+
+## [2026-08-23] design | saloon — icons moved to one Phosphor family
+
+Replaced every hand-rolled SVG icon path in saloon (8 components, 16 glyphs)
+with Phosphor, after the taste skill flagged hand-rolled icons and the owner
+cleared adding a library.
+
+`astro-icon` + `@iconify-json/ph` for the `.astro` components: the SVG is
+inlined at build, so there is no runtime and no sprite request. The one React
+island (`MobileMenu.tsx`) uses `@phosphor-icons/react` named imports at
+`weight="light"`, keeping the same family; the island bundle is 6.8 KB, so the
+imports tree-shook as intended.
+
+This also fixed the underlying defect the icons were hiding: stroke widths had
+drifted to 1.5, 1.6 and 2.0 across components. One family, one weight.
+
+Verified in the browser: all 16 icons inline into the HTML, 15 paint on desktop
+and the 16th is correctly `md:hidden` (the mobile bar), the mobile menu still
+opens, its X renders, and Escape still closes it with the focus trap intact.
+`astro check` clean, all 4 sites build, 0 vulnerabilities after the install.
+
+Corpus updated alongside: the decision and its measured cost in
+`wiki/decisions.md`, the icon stack in `wiki/architecture.md`, saloon's row in
+`wiki/status.md`, and the iconography rule in `sites/saloon/DESIGN.md`.

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { List, X } from "@phosphor-icons/react";
 
 const links = [
   { href: "#acasa", label: "Acasă" },
@@ -68,19 +69,7 @@ export default function MobileMenu() {
         onClick={() => setOpen(true)}
         className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full hover:bg-[var(--color-surface-container)] transition-colors"
       >
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        >
-          <line x1="4" y1="7" x2="20" y2="7" />
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="17" x2="20" y2="17" />
-        </svg>
+        <List size={22} weight="light" aria-hidden="true" />
       </button>
 
       {open && (
@@ -99,18 +88,7 @@ export default function MobileMenu() {
               onClick={() => setOpen(false)}
               className="inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-on-surface)] hover:bg-[var(--color-surface-container-lowest)] transition-colors"
             >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              >
-                <line x1="6" y1="6" x2="18" y2="18" />
-                <line x1="18" y1="6" x2="6" y2="18" />
-              </svg>
+              <X size={22} weight="light" aria-hidden="true" />
             </button>
           </div>
           <nav className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
