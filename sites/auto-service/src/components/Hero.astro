@@ -1,156 +1,296 @@
 ---
+import Gauge from "./Gauge.astro";
+import Icon from "./Icon.astro";
 import { site, telLink, waLink } from "../content/site";
-import { img } from "../content/images";
 
-const heroImg = img("hero");
+// The three symptoms a worried owner actually arrives with. Each is a real
+// entry point: it opens WhatsApp with the symptom already written, so the
+// visitor never has to compose the awkward first message.
+const symptoms = [
+  {
+    icon: "warning",
+    label: "Mi-a apărut un martor",
+    msg: "Bună ziua! Mi-a apărut un martor pe bord. Model și an: ___. Ce scrie / cum arată martorul: ___.",
+  },
+  {
+    icon: "wrench",
+    label: "Revizie depășită",
+    msg: "Bună ziua! Am revizia depășită și aș vrea o programare. Model și an: ___. Km actuali: ___.",
+  },
+  {
+    icon: "noise",
+    label: "Face un zgomot",
+    msg: "Bună ziua! Mașina face un zgomot. Model și an: ___. Când apare zgomotul: ___.",
+  },
+];
 ---
 
-<section
-  id="acasa"
-  class="hero relative overflow-hidden bg-[var(--color-background)] text-[var(--color-on-surface)]"
->
-  <!-- Workshop photo bleeds in from the right and dissolves into the floor.
-       On the dark rebrand the photo isn't dimmed flat — a steel gradient masks
-       it into the page so it reads as the bay seen from the doorway. -->
-  <div class="absolute inset-0" aria-hidden="true">
-    <img
-      src={heroImg}
-      alt=""
-      class="hero-photo h-full w-full object-cover"
-      width="1600"
-      height="2400"
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-    />
-    <div class="hero-veil absolute inset-0"></div>
-    <!-- A single blue "lift light" wash in the corner, like a worklamp. -->
-    <div class="hero-glow absolute inset-0"></div>
-  </div>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__wrap container-page">
+    <div class="hero__copy">
+      <ul class="hero__symptoms" aria-label="Spune-ne ce are mașina">
+        {symptoms.map((s) => (
+          <li>
+            <a class="symptom" href={waLink(s.msg)} target="_blank" rel="noopener noreferrer">
+              <Icon name={s.icon} size={17} class="symptom__ico" />
+              <span>{s.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
 
-  <div class="container-page relative">
-    <div class="grid lg:grid-cols-[minmax(0,1fr)_auto] items-end gap-y-10">
-      <div class="max-w-2xl pt-32 pb-14 md:pt-40 md:pb-24">
-        <div class="reveal flex items-stretch gap-4">
-          <span class="m-stripe--v" aria-hidden="true"></span>
-          <div class="flex flex-col justify-center">
-            <span class="kicker">Specialiști BMW &middot; Atelier de familie</span>
-            <span class="mt-1 text-sm font-semibold text-[var(--color-on-surface-variant)]"
-              >{site.city}, jud. {site.county}</span
-            >
-          </div>
-        </div>
+      <h1 id="hero-title" class="heading-xl hero__title">
+        BMW-ul tău,<br />pe mâini care<br /><span class="lit">îl citesc.</span>
+      </h1>
 
-        <h1 class="reveal heading-xl mt-7">
-          BMW-ul tău, în mâinile<br class="hidden sm:block" />
-          <span class="hero-accent">unei familii de pasionați.</span>
-        </h1>
+      <p class="hero__lede">
+        Trei oameni, o singură marcă. Citim toate modulele, îți spunem exact ce
+        are și cât costă — și abia apoi punem mâna pe mașină.
+      </p>
 
-        <p
-          class="reveal mt-6 text-lg leading-relaxed text-[var(--color-on-surface-variant)] max-w-xl"
-        >
-          Diagnoză dedicată, lucrări făcute ca la carte și un deviz clar înainte
-          să punem mâna pe mașină. Nu suntem dealer — suntem oamenii care chiar
-          se pricep, în {site.city}.
-        </p>
-
-        <div class="reveal mt-9 flex flex-col sm:flex-row gap-3">
-          <a href={telLink()} class="btn btn-primary btn-lg" data-cta="hero-call">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-            <span>Sună: {site.phone}</span>
-          </a>
-          <a href={waLink()} target="_blank" rel="noopener" class="btn btn-outline btn-lg" data-cta="hero-whatsapp">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.13c-.24.68-1.42 1.32-1.95 1.36-.5.05-1.13.26-3.8-.8-3.2-1.26-5.26-4.5-5.42-4.71-.16-.21-1.3-1.73-1.3-3.3 0-1.57.82-2.34 1.11-2.66.29-.32.64-.4.85-.4.21 0 .43 0 .61.01.2.01.46-.07.72.55.27.64.92 2.2 1 2.36.08.16.13.35.03.56-.1.21-.16.34-.31.53-.16.18-.33.41-.47.55-.16.16-.32.33-.14.64.18.32.8 1.32 1.72 2.14 1.18 1.05 2.18 1.38 2.49 1.54.31.16.49.13.67-.08.18-.21.77-.9.98-1.21.21-.32.42-.26.71-.16.29.11 1.84.87 2.16 1.03.31.16.52.24.6.37.08.13.08.74-.16 1.42z"/>
-            </svg>
-            <span>Scrie pe WhatsApp</span>
-          </a>
-        </div>
+      <div class="hero__actions">
+        <a class="btn btn-primary hero__call" href={telLink()}>
+          <Icon name="phone" size={19} />
+          <span class="hero__call-stack">
+            <span class="hero__call-label">SUNĂ ACUM</span>
+            <span class="hero__call-num reading">{site.phone}</span>
+          </span>
+        </a>
+        <a class="btn btn-outline" href={waLink()} target="_blank" rel="noopener noreferrer">
+          <Icon name="whatsapp" size={18} />
+          Trimite o poză pe WhatsApp
+        </a>
       </div>
 
-      <!-- "Pit board" — the one honest measured number + the family framing,
-           set as a small instrument panel on the right rail (stacks under the
-           copy on mobile). We deliberately do NOT show a cars-repaired count. -->
-      <aside class="reveal hero-board pb-14 md:pb-24" aria-label="Despre atelier">
-        <dl class="grid grid-cols-2 lg:grid-cols-1 gap-px bg-[var(--color-outline-variant)] rounded-[var(--radius-lg)] overflow-hidden border border-[var(--color-outline-variant)]">
-          <div class="hero-board__cell">
-            <dt class="text-4xl font-display font-extrabold tabular-nums leading-none">{site.stats.years}</dt>
-            <dd class="mt-1.5 text-sm text-[var(--color-on-surface-variant)]">ani, numai pe BMW</dd>
-          </div>
-          <div class="hero-board__cell">
-            <dt class="flex items-center gap-2 text-xl font-display font-extrabold leading-none">
-              <span class="hero-board__dot" aria-hidden="true"></span>
-              Familie
-            </dt>
-            <dd class="mt-1.5 text-sm text-[var(--color-on-surface-variant)]">vorbești cu cine repară</dd>
-          </div>
-        </dl>
-      </aside>
+      <div class="hero__status">
+        <span class="hero__live" aria-hidden="true"></span>
+        <span class="hero__status-item">Deschis acum</span>
+        <span class="hero__sep" aria-hidden="true"></span>
+        <span class="hero__status-item hero__status-item--dim">L–V 08:00–18:00 · Sâ 09:00–14:00</span>
+        <span class="hero__sep" aria-hidden="true"></span>
+        <span class="hero__status-item hero__status-item--dim">{site.city}, jud. {site.county}</span>
+      </div>
+    </div>
+
+    <div class="hero__instrument" aria-hidden="true">
+      <span class="hero__bloom"></span>
+      <Gauge
+        id="tach"
+        size={470}
+        max={8}
+        value={0.82}
+        redline={6.5}
+        obc={["ULEI 3.400 km", `${site.city.toUpperCase()} · ${site.county.toUpperCase()}`]}
+        class="hero__dial"
+        label="Turometru"
+      />
+      <Gauge
+        id="shoulder"
+        size={196}
+        max={8}
+        value={6.9}
+        compact
+        label="DEVIZ"
+        class="hero__shoulder"
+      />
     </div>
   </div>
-
-  <span class="m-stripe m-stripe--full absolute bottom-0 inset-x-0" aria-hidden="true"></span>
-
-  <style>
-    /* Floor at native height; the photo fills behind. Min-height keeps the
-       composition tall enough to feel like an entrance, not a banner. */
-    .hero { min-height: clamp(34rem, 88vh, 50rem); display: flex; align-items: stretch; }
-    .hero > .container-page { width: 100%; align-self: center; }
-
-    .hero-photo {
-      opacity: 0.5;
-      object-position: 70% center;
-      filter: grayscale(0.15) contrast(1.02);
-    }
-
-    /* Steel gradient: opaque floor on the left where the headline sits, opening
-       to a window onto the photo on the right. */
-    .hero-veil {
-      background:
-        linear-gradient(
-          100deg,
-          var(--color-background) 0%,
-          oklch(20% 0.022 256 / 0.92) 42%,
-          oklch(20% 0.022 256 / 0.45) 78%,
-          oklch(20% 0.022 256 / 0.2) 100%
-        ),
-        linear-gradient(
-          to top,
-          var(--color-background) 0%,
-          oklch(20% 0.022 256 / 0) 28%
-        );
-    }
-    /* A single corner worklamp glow — the brand blue as a lit lamp on the bay. */
-    .hero-glow {
-      background: radial-gradient(
-        80% 60% at 88% 8%,
-        oklch(58% 0.17 250 / 0.22) 0%,
-        oklch(58% 0.17 250 / 0) 60%
-      );
-    }
-
-    /* M-red on the second clause: the sanctioned enthusiast accent, carrying
-       the "pasionați" energy. Stays a single solid colour (never gradient text). */
-    .hero-accent { color: var(--color-m-red); }
-
-    .hero-board__cell {
-      background-color: var(--color-surface-container-lowest);
-      padding: 1.1rem 1.25rem;
-    }
-    @media (min-width: 1024px) {
-      .hero-board { width: 14.5rem; }
-      .hero-board__cell { padding: 1.25rem 1.4rem; }
-    }
-    .hero-board__dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: var(--radius-full);
-      background-color: var(--color-m-red);
-      box-shadow: 0 0 8px 0 oklch(60% 0.22 27 / 0.7);
-      flex: none;
-    }
-  </style>
 </section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background-image:
+      radial-gradient(1100px 620px at 76% 50%, oklch(72% 0.17 58 / 0.085), transparent 62%),
+      radial-gradient(900px 700px at 8% 6%, oklch(68% 0.15 242 / 0.035), transparent 60%);
+  }
+
+  .hero__wrap {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 7vw, 5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .hero__wrap {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 1rem;
+      min-height: 78vh;
+    }
+  }
+
+  /* ---- symptom entry points ---- */
+  .hero__symptoms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    list-style: none;
+    margin: 0 0 1.85rem;
+    padding: 0;
+  }
+  .symptom {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.58rem 0.85rem 0.58rem 0.72rem;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius);
+    background-image: linear-gradient(180deg, oklch(20% 0.012 256), oklch(16% 0.010 255));
+    font-size: 0.795rem;
+    font-weight: 600;
+    letter-spacing: 0.012em;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition:
+      border-color 180ms var(--ease-out),
+      color 180ms var(--ease-out),
+      box-shadow 180ms var(--ease-out);
+  }
+  .symptom__ico {
+    color: var(--color-primary);
+    filter: drop-shadow(0 0 5px oklch(72% 0.17 58 / 0.7));
+    flex: none;
+  }
+  .symptom:hover {
+    color: var(--color-on-surface);
+    border-color: oklch(46% 0.06 58);
+    box-shadow: 0 0 18px -6px oklch(72% 0.17 58 / 0.45);
+  }
+
+  .hero__title { margin-bottom: 1.5rem; }
+
+  .hero__lede {
+    max-width: 30ch;
+    font-size: 1.03rem;
+    line-height: 1.62;
+    color: var(--color-on-surface-variant);
+    margin-bottom: 2.1rem;
+  }
+  @media (min-width: 640px) { .hero__lede { max-width: 46ch; } }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .hero__call { padding-block: 0.8rem; }
+  .hero__call-stack { display: flex; flex-direction: column; gap: 0.24rem; text-align: left; }
+  .hero__call-label {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 112, "wght" 800;
+    font-size: 0.94rem;
+    letter-spacing: 0.085em;
+    line-height: 1;
+  }
+  .hero__call-num { font-size: 0.68rem; letter-spacing: 0.15em; opacity: 0.74; line-height: 1; }
+
+  /* ---- status rail ---- */
+  .hero__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 2.6rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-outline-variant);
+  }
+  .hero__status-item {
+    font-family: var(--font-mono);
+    font-size: 0.655rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+  }
+  .hero__status-item--dim { color: var(--color-on-surface-variant); }
+  .hero__sep { width: 1px; height: 12px; background: var(--color-outline-variant); }
+  .hero__live {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 9px oklch(72% 0.16 150 / 0.9), 0 0 20px oklch(72% 0.16 150 / 0.35);
+    flex: none;
+  }
+
+  /* ---- the instrument ---- */
+  .hero__instrument {
+    position: relative;
+    display: none;
+    justify-self: end;
+    width: 100%;
+    max-width: 660px;
+    aspect-ratio: 660 / 520;
+  }
+  @media (min-width: 1024px) { .hero__instrument { display: block; } }
+
+  .hero__bloom {
+    position: absolute;
+    inset: -8% 6% 4% -4%;
+    border-radius: 50%;
+    background: radial-gradient(circle, oklch(72% 0.17 58 / 0.13), transparent 62%);
+    pointer-events: none;
+  }
+  .hero__dial { position: absolute; left: 4%; top: 2%; width: 71%; height: auto; }
+  .hero__shoulder { position: absolute; right: 0; top: 46%; width: 30%; height: auto; }
+
+  /* Tablet: keep the instrument, shrink it under the copy. */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    .hero__instrument {
+      display: block;
+      justify-self: center;
+      max-width: 430px;
+      margin-top: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  // THE IGNITION SWEEP — the one authored motion moment on this site.
+  // Key to position II: the needles sweep the full scale and settle back, the
+  // backlight comes up, and the dot-matrix window lights last. Everything is
+  // already drawn and legible before this runs; the sweep only moves what a
+  // real cluster moves, once, on arrival.
+  import { animate, createTimeline, utils } from "animejs";
+
+  const reduced =
+    typeof matchMedia === "function" &&
+    matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const gauges = Array.from(
+    document.querySelectorAll<SVGSVGElement>("[data-gauge]"),
+  );
+
+  if (!reduced && gauges.length) {
+    const tl = createTimeline({ defaults: { ease: "outQuart" } });
+
+    gauges.forEach((svg, i) => {
+      const needle = svg.querySelector<SVGGElement>("[data-needle]");
+      if (!needle) return;
+
+      const rest = Number(svg.dataset.rest ?? 0);
+      const start = Number(svg.dataset.start ?? -125);
+      const end = Number(svg.dataset.end ?? 125);
+
+      utils.set(needle, { rotate: start });
+
+      tl.add(
+        needle,
+        { rotate: end, duration: 780, ease: "inOutQuad" },
+        i * 90,
+      ).add(
+        needle,
+        { rotate: rest, duration: 1150, ease: "outElastic(1, 0.72)" },
+        i * 90 + 820,
+      );
+    });
+
+    // The backlight ring and the matrix window come up with the sweep.
+    animate(".hero__bloom", {
+      opacity: [0, 1],
+      scale: [0.94, 1],
+      duration: 1200,
+      ease: "outQuart",
+    });
+  }
+</script>

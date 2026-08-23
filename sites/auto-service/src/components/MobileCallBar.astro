@@ -1,33 +1,49 @@
 ---
-// Sticky bottom bar on mobile: the phone call is the primary conversion, so it
-// is always one tap away. WhatsApp sits beside it as the strong secondary.
-// Hidden on lg+ where the nav "Sună acum" button is always visible.
+// The phone call is the conversion, so on mobile it is a permanently lit
+// control at the bottom of the screen. WhatsApp sits beside it, unlit.
+import Icon from "./Icon.astro";
 import { site, telLink, waLink } from "../content/site";
 ---
 
-<div
-  class="lg:hidden fixed inset-x-0 bottom-0 z-[var(--z-mobile-bar)] border-t border-white/10 backdrop-blur-md"
-  style="background-color: oklch(18% 0.022 256 / 0.92); padding-bottom: env(safe-area-inset-bottom, 0px);"
->
-  <div class="m-stripe m-stripe--full" aria-hidden="true"></div>
-  <div class="grid grid-cols-[1fr_auto] gap-2.5 px-3 py-2.5">
-    <a href={telLink()} class="btn btn-primary" data-cta="bar-call">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-      </svg>
+<div class="callbar">
+  <div class="callbar__inner">
+    <a href={telLink()} class="btn btn-primary callbar__call" data-cta="bar-call">
+      <Icon name="phone" size={17} />
       <span>Sună: {site.phone}</span>
     </a>
     <a
       href={waLink()}
       target="_blank"
       rel="noopener"
-      class="btn btn-whatsapp !px-5 !min-w-[3.75rem]"
+      class="btn btn-outline callbar__wa"
       aria-label="Scrie pe WhatsApp"
       data-cta="bar-whatsapp"
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.13c-.24.68-1.42 1.32-1.95 1.36-.5.05-1.13.26-3.8-.8-3.2-1.26-5.26-4.5-5.42-4.71-.16-.21-1.3-1.73-1.3-3.3 0-1.57.82-2.34 1.11-2.66.29-.32.64-.4.85-.4.21 0 .43 0 .61.01.2.01.46-.07.72.55.27.64.92 2.2 1 2.36.08.16.13.35.03.56-.1.21-.16.34-.31.53-.16.18-.33.41-.47.55-.16.16-.32.33-.14.64.18.32.8 1.32 1.72 2.14 1.18 1.05 2.18 1.38 2.49 1.54.31.16.49.13.67-.08.18-.21.77-.9.98-1.21.21-.32.42-.26.71-.16.29.11 1.84.87 2.16 1.03.31.16.52.24.6.37.08.13.08.74-.16 1.42z"/>
-      </svg>
+      <Icon name="whatsapp" size={20} />
     </a>
   </div>
 </div>
+
+<style>
+  .callbar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: var(--z-mobile-bar);
+    border-top: 1px solid var(--color-outline-variant);
+    background-color: oklch(11% 0.008 255 / 0.93);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (min-width: 1024px) { .callbar { display: none; } }
+
+  .callbar__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+  }
+  .callbar__wa { padding-inline: 1.15rem; color: var(--color-whatsapp); }
+  .callbar__wa:hover { color: var(--color-whatsapp-hover); }
+</style>

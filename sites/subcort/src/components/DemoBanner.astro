@@ -1,25 +1,30 @@
 ---
-// A thin top banner marking this as a demonstrative / concept site (fictional
-// contact + company data). Sits above the nav. Flip `site.demo.show` to false
-// (in site.local.ts) if the site is ever made real.
+// A revision note across the top of the sheet: this is a concept drawing, and
+// the company and contact details on it are fictional.
 import { site } from "../content/site";
-
-if (!site.demo.show) {
-  // No banner — render nothing.
-}
 ---
+{site.demo.show && (
+  <div class="demo-note">
+    <div class="sheet"><p><span class="dim">NOTĂ</span>{site.demo.text}</p></div>
+  </div>
+)}
 
-{
-  site.demo.show && (
-    <div class="bg-[var(--color-accent-soft)] text-[var(--color-on-accent-soft)]">
-      <div class="container-page py-2 flex items-center justify-center gap-2 text-center text-[0.8rem] font-semibold">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="12" />
-          <line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg>
-        <span>{site.demo.text}</span>
-      </div>
-    </div>
-  )
-}
+<style>
+  .demo-note {
+    background: var(--color-signal-soft);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-signal) 25%, transparent);
+    color: var(--color-on-signal-soft);
+  }
+  .demo-note p {
+    padding-block: 0.45rem;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .demo-note span {
+    font-size: 0.7rem;
+    letter-spacing: 0.13em;
+    margin-right: 0.7rem;
+    opacity: 0.75;
+  }
+</style>

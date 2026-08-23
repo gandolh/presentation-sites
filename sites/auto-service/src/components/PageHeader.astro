@@ -1,31 +1,55 @@
 ---
-// Compact dark page header for subpages (which have no hero). Carries the page
-// <h1> and sits directly under the solid nav, echoing the hero's graphite-navy
-// surface and M-stripe so the brand reads continuous across routes.
+/*
+  Subpage header. No eyebrow above the heading — the heading carries itself.
+  What sits under it is a readout line (route + what this page answers), which
+  is a legend, not a label.
+*/
 interface Props {
-  eyebrow: string;
   title: string;
   lead?: string;
+  /** A short mono readout under the heading, e.g. "9 lucrări · deviz în avans". */
+  readout?: string;
 }
-
-const { eyebrow, title, lead } = Astro.props;
+const { title, lead, readout } = Astro.props;
 ---
 
-<section class="bg-[var(--color-background)] text-[var(--color-on-surface)]">
-  <div class="container-page pt-12 pb-12 md:pt-16 md:pb-16">
-    <div class="reveal flex items-center gap-3">
-      <span class="m-stripe" aria-hidden="true"></span>
-      <span class="kicker">{eyebrow}</span>
-    </div>
-    <h1 class="reveal heading-xl mt-4 !text-[clamp(2rem,5vw,3.25rem)] text-[var(--color-on-surface)]">
-      {title}
-    </h1>
-    {
-      lead && (
-        <p class="reveal mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-on-surface-variant)]">
-          {lead}
-        </p>
-      )
-    }
+<section class="ph">
+  <div class="container-page ph__inner">
+    <h1 class="reveal heading-xl ph__title">{title}</h1>
+    {lead && <p class="reveal ph__lead">{lead}</p>}
+    {readout && (
+      <p class="reveal legend ph__readout">
+        <span class="ph__led" aria-hidden="true"></span>{readout}
+      </p>
+    )}
   </div>
 </section>
+
+<style>
+  .ph {
+    background-image: radial-gradient(760px 340px at 12% 0%, oklch(72% 0.17 58 / 0.055), transparent 66%);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+  .ph__inner { padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+  .ph__title { font-size: clamp(2.1rem, 5vw, 3.4rem); }
+  .ph__lead {
+    margin-top: 1.1rem;
+    max-width: 56ch;
+    font-size: 1.06rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+  }
+  .ph__readout {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.6rem;
+    color: var(--color-on-surface);
+  }
+  .ph__led {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 9px oklch(72% 0.17 58 / 0.9);
+    flex: none;
+  }
+</style>

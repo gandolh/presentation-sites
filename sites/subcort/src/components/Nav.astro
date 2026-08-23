@@ -1,151 +1,41 @@
 ---
-import MobileMenu from "./MobileMenu.tsx";
 import { site } from "../content/site";
 import { withBase } from "@sites/kit";
+import MobileMenu from "./MobileMenu.tsx";
 
-interface Props {
-  // The current page's route, e.g. "/", "/corturi/". Drives the active link.
-  current?: string;
-  // On pages without a dark hero behind the nav (every page except home), the
-  // bar must render in its solid light state from the top, not transparent.
-  solid?: boolean;
-}
+interface Props { current?: string }
+const { current = "/" } = Astro.props;
 
-const { current = "/", solid = false } = Astro.props;
-
-// Five top-level routes. No call/WhatsApp button by design — the site has no
-// calls-to-action; contact details live on /contact and in the footer.
+// The sheet register. Numbering is real here — this is a drawing set, and the
+// plates are numbered the way a drawing set numbers them.
 const links = [
-  { href: "/", label: "Acasă" },
-  { href: "/corturi/", label: "Corturi" },
-  { href: "/servicii/", label: "Servicii" },
-  { href: "/zona/", label: "Zonă" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/", label: "Acasă", no: "00" },
+  { href: "/corturi/", label: "Corturi", no: "01" },
+  { href: "/servicii/", label: "Servicii", no: "02" },
+  { href: "/zona/", label: "Zonă", no: "03" },
+  { href: "/contact/", label: "Contact", no: "04" },
 ];
-
-function isActive(href: string) {
-  return current === href;
-}
 ---
 
-<header
-  id="site-nav"
-  class="sticky top-0 inset-x-0 z-[var(--z-nav)] transition-colors duration-300"
-  data-scrolled={solid ? "true" : "false"}
-  data-solid={solid ? "true" : "false"}
-  data-overlay={solid ? undefined : "true"}
->
-  <div class="container-page flex items-center justify-between py-3.5">
-    <a href={withBase("/")} class="flex items-center gap-2.5 group" aria-label={`${site.name}, acasă`}>
-      <span class="nav-wordmark wordmark text-xl md:text-2xl">{site.name}</span>
-      <span class="guyline nav-guyline !w-8" aria-hidden="true"></span>
-    </a>
-
-    <nav class="hidden lg:flex items-center gap-7" aria-label="Navigare principală">
-      {
-        links.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="nav-link text-sm font-semibold transition-colors"
-            aria-current={isActive(link.href) ? "page" : undefined}
-            data-active={isActive(link.href) ? "true" : undefined}
-          >
-            {link.label}
-          </a>
-        ))
-      }
+<header class="nav" data-nav>
+  <div class="sheet nav__inner">
+    <a href={withBase("/")} class="nav__word" aria-label={`${site.name} — acasă`}>SUBCORT</a>
+    <nav class="nav__links" aria-label="Navigare principală">
+      {links.map((l) => (
+        <a href={withBase(l.href)}
+           class:list={["nav__link", current === l.href && "is-current"]}
+           aria-current={current === l.href ? "page" : undefined}>{l.label}</a>
+      ))}
     </nav>
-
-    <div class="flex items-center lg:hidden">
-      <MobileMenu client:load current={current} />
-    </div>
+    <MobileMenu client:load links={links.map((l) => ({ ...l, href: withBase(l.href) }))} current={current} />
   </div>
 </header>
 
-<script is:inline>
-  (function () {
-    const nav = document.getElementById("site-nav");
-    if (!nav) return;
-
-    // In overlay mode (home), keep --nav-h in sync with the real bar height so
-    // the negative margin that pulls the hero under the nav is always exact.
-    if (nav.dataset.overlay === "true") {
-      var setH = function () {
-        nav.style.setProperty("--nav-h", nav.offsetHeight + "px");
-      };
-      setH();
-      window.addEventListener("resize", setH, { passive: true });
-    }
-
-    // A nav forced solid (subpages, no dark hero) never flips to transparent.
-    if (nav.dataset.solid === "true") return;
-    function update() {
-      nav.dataset.scrolled = window.scrollY > 8 ? "true" : "false";
-    }
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-  })();
+<script>
+  const nav = document.querySelector<HTMLElement>("[data-nav]");
+  if (nav) {
+    const sync = () => nav.toggleAttribute("data-stuck", window.scrollY > 8);
+    sync();
+    addEventListener("scroll", sync, { passive: true });
+  }
 </script>
-
-<style>
-  /* OVERLAY mode (home page): the sticky nav floats OVER the dark canopy hero,
-     not in flow above it on the light page bg (which would render its light
-     wordmark white-on-white). Pull the first section up under the nav by the
-     nav's own height; the hero's top padding clears it. */
-  #site-nav[data-overlay] {
-    margin-bottom: calc(-1 * var(--nav-h, 4.5rem));
-  }
-
-  /* Two states. At the top of the HOME page the nav floats over the dark canopy
-     hero, so its text is light. Once scrolled (or on any solid subpage) it gets
-     a light backdrop and the text flips to graphite-green ink. */
-  .nav-wordmark {
-    color: var(--color-inverse-on-surface);
-    transition: color 300ms ease;
-  }
-  .nav-link {
-    color: oklch(96% 0.008 95 / 0.82);
-  }
-  .nav-link:hover {
-    color: var(--color-inverse-on-surface);
-  }
-  .nav-link[data-active] {
-    color: var(--color-inverse-on-surface);
-  }
-  .nav-link[data-active]::after {
-    content: "";
-    display: block;
-    height: 2px;
-    margin-top: 3px;
-    border-radius: var(--radius-full);
-    background: linear-gradient(
-      90deg,
-      var(--color-primary-bright) 0%,
-      var(--color-accent-bright) 100%
-    );
-  }
-  /* Mobile hamburger follows the same two-state colouring. */
-  :global(.nav-burger) {
-    color: var(--color-inverse-on-surface);
-  }
-  #site-nav[data-scrolled="true"] :global(.nav-burger) {
-    color: var(--color-on-surface);
-  }
-
-  #site-nav[data-scrolled="true"] {
-    background-color: oklch(97.4% 0.013 84 / 0.86); /* warm paper, blurred */
-    backdrop-filter: saturate(140%) blur(10px);
-    -webkit-backdrop-filter: saturate(140%) blur(10px);
-    border-bottom: 1px solid var(--color-outline-variant);
-  }
-  #site-nav[data-scrolled="true"] .nav-wordmark {
-    color: var(--color-on-surface);
-  }
-  #site-nav[data-scrolled="true"] .nav-link {
-    color: var(--color-on-surface-variant);
-  }
-  #site-nav[data-scrolled="true"] .nav-link:hover,
-  #site-nav[data-scrolled="true"] .nav-link[data-active] {
-    color: var(--color-on-surface);
-  }
-</style>

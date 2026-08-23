@@ -1,109 +1,140 @@
 ---
+// The title block — the panel in the corner of every drawing that says who
+// drew it, what it is, and when. Here it carries navigation and the legal
+// identification the site is required to publish.
 import { site } from "../content/site";
 import { withBase } from "@sites/kit";
 
 const year = new Date().getFullYear();
-const links = [
-  { href: "/", label: "Acasă" },
-  { href: "/corturi/", label: "Corturi" },
-  { href: "/servicii/", label: "Servicii" },
-  { href: "/zona/", label: "Zonă" },
-  { href: "/contact/", label: "Contact" },
+const nav = [
+  { href: "/", label: "Acasă", no: "00" },
+  { href: "/corturi/", label: "Corturi", no: "01" },
+  { href: "/servicii/", label: "Servicii", no: "02" },
+  { href: "/zona/", label: "Zonă", no: "03" },
+  { href: "/contact/", label: "Contact", no: "04" },
 ];
-const legalLinks = [
+const legal = [
   { href: "/confidentialitate/", label: "Politică de confidențialitate" },
   { href: "/termeni/", label: "Termeni și condiții" },
   { href: "/cookie-uri/", label: "Politică de cookie-uri" },
 ];
+const L = site.legal;
 ---
 
-<footer class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
-  <div class="guyline guyline--full guyline--bright" aria-hidden="true"></div>
+<footer class="titleblock-foot">
+  <div class="sheet">
+    <div class="tb-grid">
+      <div class="tb-cell tb-cell--brand">
+        <p class="datum-key">Beneficiar / Executant</p>
+        <p class="tb-word">SUBCORT</p>
+        <p class="tb-sub">{site.tagline}</p>
+      </div>
 
-  <div class="container-page py-14 grid gap-10 md:grid-cols-4">
-    <div class="md:col-span-1">
-      <span class="wordmark text-2xl">{site.name}</span>
-      <p class="mt-4 text-sm text-[var(--color-inverse-on-surface-variant)] max-w-xs leading-relaxed">
-        {site.tagline}
-      </p>
-    </div>
+      <nav class="tb-cell" aria-label="Navigare subsol">
+        <p class="datum-key">Planșe</p>
+        <ul class="tb-list">
+          {nav.map((l) => (
+            <li>
+              <a href={withBase(l.href)} class="link-quiet text-[0.92rem]">
+                <span class="dim tb-no">{l.no}</span>{l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-    <nav class="flex flex-col" aria-label="Navigare subsol">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Navigare</span>
-      {
-        links.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)] hover:underline underline-offset-4"
-          >
-            {link.label}
+      <nav class="tb-cell" aria-label="Documente legale">
+        <p class="datum-key">Documente</p>
+        <ul class="tb-list">
+          {legal.map((l) => (
+            <li><a href={withBase(l.href)} class="link-quiet text-[0.92rem]">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="tb-cell">
+        <p class="datum-key">Contact</p>
+        <ul class="tb-list">
+          <li><a href={`tel:+${site.phoneE164}`} class="link-quiet text-[0.92rem] dim">{site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`} class="link-quiet text-[0.92rem]">{site.email}</a></li>
+          <li class="text-[0.92rem] text-[var(--color-ink-2)] pt-1">{site.address}, {site.city}</li>
+        </ul>
+        <div class="mt-4 flex gap-2">
+          <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook"
+             class="tb-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>
-        ))
-      }
-    </nav>
-
-    <nav class="flex flex-col" aria-label="Pagini legale">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Legal</span>
-      {
-        legalLinks.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)] hover:underline underline-offset-4"
-          >
-            {link.label}
+          <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram"
+             class="tb-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
           </a>
-        ))
-      }
-    </nav>
-
-    <div class="flex flex-col">
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)] mb-2">Contact</span>
-      <span class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)]">{site.phone}</span>
-      <a href={`mailto:${site.email}`} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">{site.email}</a>
-      <p class="text-sm text-[var(--color-inverse-on-surface-variant)] mt-1">{site.address}, {site.city}</p>
-
-      <div class="flex items-center gap-3 mt-4">
-        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 -ml-2 text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-inverse-on-surface-variant)] hover:text-[var(--color-inverse-on-surface)]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Business identification (Legea 365/2002 art. 5) + ANPC SAL. All values
-       are FICTIONAL — this is a demo/concept site. -->
-  <div class="footer-legal border-t border-white/10 py-6 text-xs text-[var(--color-inverse-on-surface-variant)]">
-    <div class="container-page space-y-3">
-      <p class="leading-relaxed">
-        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}{
-          site.legal.form === "SRL" && site.legal.shareCapital
-            ? ` · Capital social: ${site.legal.shareCapital}`
-            : ""
-        } · {site.address}, {site.city}, jud. {site.county}
-      </p>
-
-      {
-        site.demo.show && (
-          <p class="leading-relaxed max-w-3xl">{site.demo.text}</p>
-        )
-      }
-
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-1">
-        <p>© {year} {site.name}.</p>
-        <a
-          href="https://reclamatiisal.anpc.ro/"
-          target="_blank"
-          rel="noopener"
-          aria-label="ANPC: Soluționarea Alternativă a Litigiilor"
-          class="inline-flex items-center gap-2 text-[var(--color-inverse-on-surface)] hover:opacity-90"
-        >
-          <span class="inline-flex items-center justify-center rounded bg-white/10 px-2 py-1 font-semibold tracking-wide">ANPC</span>
-          <span>Soluționarea Alternativă a Litigiilor (SAL)</span>
-        </a>
+    <div class="tb-rev">
+      <p>{L.legalName} · CUI: {L.cui} · Reg. Com.: {L.regNumber} · Capital social: {L.shareCapital} · {site.address}, {site.city}, jud. {site.county}</p>
+      {site.demo.show && <p class="mt-1">{site.demo.text}</p>}
+      <div class="tb-rev__row">
+        <span>© {year} {site.name}</span>
+        <span>
+          <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener" class="link-quiet">
+            ANPC · Soluționarea Alternativă a Litigiilor
+          </a>
+        </span>
       </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .titleblock-foot {
+    border-top: 1.5px solid var(--color-ink);
+    background: var(--color-fill-2);
+  }
+  .tb-grid {
+    display: grid;
+    gap: 0;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { .tb-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .tb-grid { grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr; } }
+
+  .tb-cell {
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    border-bottom: 1px solid var(--color-hair);
+  }
+  @media (min-width: 1080px) {
+    .tb-cell { border-bottom: 0; border-right: 1px solid var(--color-hair); padding-left: 1.5rem; }
+    .tb-cell:first-child { padding-left: 0; }
+    .tb-cell:last-child { border-right: 0; }
+  }
+
+  .tb-word { margin-top: 0.65rem; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.005em; }
+  .tb-sub { margin-top: 0.5rem; max-width: 30ch; font-size: 0.88rem; line-height: 1.55; color: var(--color-ink-2); }
+  .tb-list { margin-top: 0.7rem; display: grid; gap: 0.1rem; }
+  .tb-no { color: var(--color-line); font-size: 0.72rem; margin-right: 0.6rem; }
+  .tb-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.35rem; height: 2.35rem;
+    border: 1px solid var(--color-hair);
+    color: var(--color-ink-2);
+    transition: border-color 160ms ease-out, color 160ms ease-out;
+  }
+  .tb-icon:hover { border-color: var(--color-signal); color: var(--color-signal); }
+
+  .tb-rev {
+    border-top: 1px solid var(--color-hair);
+    padding: 1.1rem 0 1.75rem;
+    font-size: 0.76rem;
+    line-height: 1.65;
+    color: var(--color-ink-2);
+  }
+  .tb-rev__row {
+    margin-top: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    justify-content: space-between;
+  }
+</style>

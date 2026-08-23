@@ -49,6 +49,6 @@ subtree.
 | Site content/copy change | the one site's `src/content/*.ts`, the target component | every other site, `corpus/wiki/` | — |
 | Site design change | that site's `DESIGN.md` + `PRODUCT.md`, `src/styles/global.css` | other sites, `marketing/` | impeccable |
 | Cross-site / monorepo change | `corpus/wiki/architecture.md`, `corpus/wiki/decisions.md`, root `package.json`, root `README.md` | site internals | — |
-| Image / placeholder work | that site's `src/content/images.ts`, `gallery.ts`, `<site>/scripts/gen-placeholders.mjs` | components | — |
+| Image / placeholder work | that site's `src/content/images.ts`, `gallery.ts`, `<site>/scripts/gen-*.mjs` (subcort: `src/lib/draft.ts`, no photos) | components | — |
 | churchix work | `churchix/CLAUDE.md`, the relevant `churchix/docs/corpus/*.md` | every other site | — |
 | saloon bots work | `sites/saloon/marketing/bots/README.md`, `COMPLIANCE.md`, `src/core/types.ts` | the Astro site | — |

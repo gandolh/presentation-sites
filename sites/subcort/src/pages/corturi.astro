@@ -3,12 +3,31 @@ import Base from "../layouts/Base.astro";
 import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
+import Plate from "../components/Plate.astro";
 import Footer from "../components/Footer.astro";
+import TentScale from "../components/TentScale.tsx";
 import { site } from "../content/site";
 import { tents, amenities } from "../content/tents";
 
 const included = amenities.filter((a) => a.kind === "inclus");
 const optional = amenities.filter((a) => a.kind === "optional");
+
+// "8 × 8 m" → { w, d } so the plan can draw a true footprint and the table can
+// scale its dimension bars against the largest format.
+const parsed = tents.map((t) => {
+  const [w, d] = t.size.split("×").map((n) => parseInt(n.trim(), 10));
+  return { ...t, w, d, areaNum: parseInt(t.area, 10) };
+});
+const maxArea = Math.max(...parsed.map((p) => p.areaNum));
+
+const formats = parsed.map((p) => ({
+  w: p.w, d: p.d,
+  label: `${p.w} × ${p.d} m`,
+  area: p.areaNum,
+  seated: p.seated,
+  standing: p.standing,
+  note: p.note,
+}));
 ---
 
 <Base
@@ -17,107 +36,169 @@ const optional = amenities.filter((a) => a.kind === "optional");
   description="Dimensiuni de corturi de la 8×8 la 15×20 m, cu capacități între 40 și 320 de invitați. Pardoseală, iluminat și pereți incluse; încălzire, răcire și mobilier opționale."
 >
   <DemoBanner />
-  <Nav current="/corturi/" solid />
+  <Nav current="/corturi/" />
 
   <main id="main">
     <PageHeader
-      eyebrow="Corturi"
+      plate="01 · Corturi"
+      scale="Scara 1:100"
       title="Dimensiuni și capacități"
       lead="Patru formate care acoperă de la o reuniune restrânsă în curte până la un eveniment cu peste trei sute de invitați. Capacitatea depinde de aranjarea meselor, pe care o stabilim împreună."
     />
 
-    <!-- ===================== TENT SIZES ===================== -->
-    <section class="section lamp-glow overflow-clip">
-      <div class="container-page">
-        <div class="grid gap-6 md:grid-cols-2">
-          {
-            tents.map((t, i) => (
-              <article class:list={["reveal card flex flex-col", i === 0 && "card--lit"]}>
-                <div class="flex items-baseline justify-between gap-4">
-                  <h2 class="heading-md">{t.size}</h2>
-                  <span class="font-display text-sm font-bold text-[var(--color-on-surface-variant)]">{t.area}</span>
-                </div>
-                <span class="guyline mt-3 !w-12"></span>
-
-                <dl class="mt-5 grid grid-cols-2 gap-4">
-                  <div>
-                    <dt class="text-xs font-semibold uppercase tracking-wide text-[var(--color-on-surface-variant)]">Cu mese</dt>
-                    <dd class="mt-1 font-display text-lg font-bold text-[var(--color-on-surface)]">{t.seated}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs font-semibold uppercase tracking-wide text-[var(--color-on-surface-variant)]">În picioare</dt>
-                    <dd class="mt-1 font-display text-lg font-bold text-[var(--color-on-surface)]">{t.standing}</dd>
-                  </div>
-                </dl>
-
-                <p class="mt-5 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">{t.note}</p>
-              </article>
-            ))
-          }
-        </div>
-
-        <p class="reveal mt-8 max-w-prose text-sm text-[var(--color-on-surface-variant)] leading-relaxed">
-          Capacitățile sunt orientative și se schimbă în funcție de plan: mese
-          rotunde, mese lungi, bufet sau scaune în rânduri. Pentru un teren cu
-          formă neregulată, găsim împreună varianta care se potrivește.
-        </p>
+    {/* The plan: the one instrument on the site. A table of square metres does
+        not answer "how big is that on my ground?" — a footprint drawn to scale
+        against a parked car does. */}
+    <Plate no="01.1 · Plan" note="Caroiaj 1 m" title="Cât ocupă, de fapt, pe teren" tight>
+      <div class="mt-8">
+        <TentScale client:visible formats={formats} initial={1} />
       </div>
-    </section>
+    </Plate>
 
-    <!-- ===================== DOTĂRI ===================== -->
-    <section class="section bg-[var(--color-surface-container-low)] border-y border-[var(--color-outline-variant)]">
-      <div class="container-page">
-        <div class="reveal max-w-2xl">
-          <div class="section-index">
-            <span class="section-index__num">02</span>
-            <span class="guyline" aria-hidden="true"></span>
-            <span class="eyebrow">Echipare</span>
-          </div>
-          <h2 class="heading-lg mt-5">Dotări</h2>
-          <p class="mt-4 text-[var(--color-on-surface-variant)] leading-relaxed">
-            Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de
-            cum vrei spațiul.
+    <Plate no="01.2 · Tabel" note="Formate & capacități" title="Toate patru, alături">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th scope="col">Format</th>
+              <th scope="col">Suprafață</th>
+              <th scope="col">Cu mese</th>
+              <th scope="col">În picioare</th>
+              <th scope="col" class="tbl__bar">Scară relativă</th>
+            </tr>
+          </thead>
+          <tbody>
+            {parsed.map((t) => (
+              <tr>
+                <th scope="row" class="tbl__size dim">{t.size}</th>
+                <td class="dim">{t.area}</td>
+                <td>{t.seated}</td>
+                <td>{t.standing}</td>
+                <td class="tbl__bar">
+                  {/* A dimension bar, not a progress bar: a rule with tick
+                      terminators, sized to the footprint. */}
+                  <span class="dimbar" style={`--f:${(t.areaNum / maxArea) * 100}%`} aria-hidden="true">
+                    <i></i>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-7 prose-measure text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
+        Capacitățile sunt orientative și se schimbă în funcție de plan: mese
+        rotunde, mese lungi, bufet sau scaune în rânduri. Pentru un teren cu
+        formă neregulată, găsim împreună varianta care se potrivește.
+      </p>
+
+      <ul class="notes">
+        {parsed.map((t) => (
+          <li><b class="dim">{t.size}</b><span>{t.note}</span></li>
+        ))}
+      </ul>
+    </Plate>
+
+    <Plate no="01.3 · Dotări" note="Incluse & opționale" title="Dotări">
+      <p class="lede mt-5">
+        Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de cum
+        vrei spațiul.
+      </p>
+
+      <div class="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
+        <div>
+          <p class="flex items-center gap-3">
+            <span class="chip chip-included">Incluse</span>
+            <span class="h-px flex-1 bg-[var(--color-hair)]"></span>
           </p>
+          <ul class="mt-6 grid gap-5">
+            {included.map((a, i) => (
+              <li class="reveal flex gap-4">
+                <span class="callout-no" aria-hidden="true">{i + 1}</span>
+                <div>
+                  <h3 class="heading-md">{a.title}</h3>
+                  <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div class="mt-10 grid gap-x-10 gap-y-10 lg:grid-cols-2">
-          <div class="reveal">
-            <div class="flex items-center gap-3">
-              <span class="chip chip-included">Incluse</span>
-              <span class="h-px flex-1 bg-[var(--color-outline-variant)]"></span>
-            </div>
-            <ul class="mt-5 space-y-5">
-              {
-                included.map((a) => (
-                  <li>
-                    <h3 class="font-display text-lg font-bold text-[var(--color-on-surface)]">{a.title}</h3>
-                    <p class="mt-1 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">{a.description}</p>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-
-          <div class="reveal">
-            <div class="flex items-center gap-3">
-              <span class="chip chip-optional">Opționale</span>
-              <span class="h-px flex-1 bg-[var(--color-outline-variant)]"></span>
-            </div>
-            <ul class="mt-5 space-y-5">
-              {
-                optional.map((a) => (
-                  <li>
-                    <h3 class="font-display text-lg font-bold text-[var(--color-on-surface)]">{a.title}</h3>
-                    <p class="mt-1 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">{a.description}</p>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
+        <div>
+          <p class="flex items-center gap-3">
+            <span class="chip chip-optional">Opționale</span>
+            <span class="h-px flex-1 bg-[var(--color-hair)]"></span>
+          </p>
+          <ul class="mt-6 grid gap-5">
+            {optional.map((a, i) => (
+              <li class="reveal flex gap-4">
+                <span class="callout-no" aria-hidden="true">{i + 4}</span>
+                <div>
+                  <h3 class="heading-md">{a.title}</h3>
+                  <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-    </section>
+    </Plate>
   </main>
 
   <Footer />
 </Base>
+
+<style>
+  .tbl-wrap { margin-top: 2rem; overflow-x: auto; }
+  .tbl { width: 100%; border-collapse: collapse; min-width: 42rem; }
+  .tbl th[scope="col"] {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+    padding: 0 1.25rem 0.7rem 0;
+    border-bottom: 1.5px solid var(--color-ink);
+    white-space: nowrap;
+  }
+  .tbl td, .tbl th[scope="row"] {
+    padding: 1.05rem 1.25rem 1.05rem 0;
+    border-bottom: 1px solid var(--color-hair);
+    vertical-align: middle;
+    text-align: left;
+    font-size: 0.95rem;
+    color: var(--color-ink-2);
+  }
+  .tbl__size {
+    font-size: 1.2rem !important;
+    font-weight: 600;
+    color: var(--color-ink) !important;
+    white-space: nowrap;
+  }
+  .tbl__bar { width: 32%; }
+
+  /* A dimension bar: extension ticks at each end, the measured run between. */
+  .dimbar { display: block; position: relative; height: 14px; }
+  .dimbar::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    border-top: 1px dashed var(--color-hair);
+  }
+  .dimbar i {
+    position: absolute; left: 0; top: 50%; width: var(--f);
+    border-top: 1.5px solid var(--color-signal);
+  }
+  .dimbar i::before, .dimbar i::after {
+    content: ""; position: absolute; top: -5px; height: 11px;
+    border-left: 1.5px solid var(--color-signal);
+  }
+  .dimbar i::before { left: 0; }
+  .dimbar i::after { right: 0; }
+
+  .notes { margin-top: 2rem; display: grid; gap: 0.7rem; }
+  @media (min-width: 760px) { .notes { grid-template-columns: repeat(2, 1fr); gap: 0.7rem 2.5rem; } }
+  .notes li { display: flex; gap: 0.9rem; font-size: 0.9rem; line-height: 1.55; color: var(--color-ink-2); }
+  .notes b { flex: 0 0 5.5rem; color: var(--color-ink); font-weight: 600; }
+</style>

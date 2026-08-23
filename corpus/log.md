@@ -1,5 +1,101 @@
 # Log
 
+## [2026-08-23] design | subcort reworked again — *Montaj*, the site as a drawing set
+
+The *scoarța* rework shipped earlier the same day was rejected by the owner as
+"too traditional" — a fair read: the rug reference carries heritage whether or
+not the grammar is used structurally. Re-rolled the direction round (round 2 of
+re-rolls), which eliminated every candidate shown so far, and derived a fresh
+grounded list from contemporary angles.
+
+Four were built as **rendered comps** rather than described, at the owner's
+request, all drawing the *same* 15 × 10 m marquee so the comparison was fair:
+A Tensiune (engineered wireframe, signal-orange load paths), B Semnal (Swiss
+transit signage — the roll's assignment), C Montaj (exploded axonometric
+assembly drawing), D Volum (architecture-studio minimalism). The owner picked
+**C**.
+
+Why it holds: Subcort's product is not a tent, it is an *erection* — somebody
+arrives, puts a structure up to plan, and takes it away. The artifact that
+already exists for that work is a drawing. So the site is the drawing set:
+numbered plates, one shared model, exploded views, dimension lines, numbered
+callouts, a title block.
+
+`src/lib/draft.ts` is the core and replaced `weave.ts`. It owns the marquee
+model in metres plus the projection and annotation primitives; the WebGL hero,
+the exploded plate, the scale plan and the OG card all project from it, so no
+two drawings can disagree about the tent. The colour system is one semantic
+rule — **the object is ink, every annotation is orange** — which also means
+section numbering is finally earned: a drawing set is a numbered register.
+
+Fonts moved Onest → **IBM Plex Sans + Mono**, mono reserved strictly for
+measurement and sheet codes. The hero's authored moment is now an *assembly*:
+the layers start separated exactly as the plate draws them and settle into the
+structure.
+
+Four bugs found and fixed during the pass, all written into `DESIGN.md` so they
+don't recur: Euler-order rotation put the roof slopes outside the tent (panels
+are now explicit corner points); the exploded plate overflowed its hand-set
+viewBox (now computed from geometry); the drawing's callout numbers disagreed
+with the key printed beneath it; and the comp's brighter orange measured 4.12:1,
+under AA, so the signal darkened to #C2481E.
+
+Verified across six pages, desktop and mobile: zero horizontal overflow, zero
+contrast failures, reduced-motion never downloads Three.js, no-JS renders full
+content, keyboard focus visible, mobile menu traps focus. Detector 0 findings,
+`astro check` clean, all four sites build.
+
+## [2026-08-23] design | subcort reworked onto the *scoarța* visual system
+
+The owner asked for a total UI/UX rework of `subcort`, keeping the business
+idea. Ran the impeccable direction round: the roll dealt "Buletin" (a
+meteorological observation sheet), the owner re-rolled, and from the second hand
+picked **Scoarța oltenească** — the Gorj flat-weave rug — over the roll's
+"Târgul" and the erection-drawing pick.
+
+Why it holds: a tent is a woven cloth stretched on a frame, and so is a rug, so
+the reference is structural rather than decorative. The rug's anatomy is also a
+page — a pale field left alone, a woven border, horizontal registers, motifs on
+a grid with no curves.
+
+Two owner constraints were pinned before building and drove everything:
+**light throughout** (the previous system's dark canopy hero, footer and page
+headers are gone entirely) and **structural-only motif** (the weave draws rails,
+dividers, icons and data bars; never wallpaper or flourish — that restraint is
+the defence against the souvenir look). Dyes are ranked, not interchangeable:
+indigo structures, madder emphasises, ochre warms.
+
+The core of the build is `src/lib/weave.ts`, a weave engine: every graphic mark
+is a character-grid chart rendered to crisp SVG rects at build time. It replaced
+the icon set, the dividers, the border rails, the capacity bars, the favicon and
+the OG card. There is no icon library.
+
+Stack added on the owner's call: **Three.js** for a marquee built entirely from
+primitives (no downloaded model — matching the precedent `tractari` set), driven
+by **anime.js** through a raising sequence, plus **Motion** for the two React
+islands. Fonts moved from Bitter/Mulish to **Onest**, which is Romanian-designed
+and draws the comma-below diacritics correctly.
+
+`PRODUCT.md` kept its product truth intact — the no-CTA decision was
+re-confirmed with the owner and still holds — but its two visual design
+principles and the forest-green anti-reference were rewritten, since they
+described the replaced world. `DESIGN.md` was replaced outright.
+
+Dropped as dead: `src/content/gallery.ts`, the six stock gallery JPGs, the five
+illustrated SVG scenes, and `scripts/gen-placeholders.mjs` (replaced by
+`gen-og.mjs`, which draws the OG card in the weave grammar). The site now ships
+no photography at all.
+
+Verified in the browser across six pages, desktop and mobile: zero horizontal
+overflow, zero WCAG AA contrast failures, all tap targets ≥24px, reduced-motion
+lands on the finished structure, no-JS still renders full content, keyboard
+focus visible from the skip link, mobile menu traps focus. The impeccable
+detector reports 0 findings. Two real defects were found and fixed during the
+pass — Motion silently no-ops when animating SVG geometry through props (the
+scale plan never drew), and `padding-block` does not lay out on inline elements
+(nav links were 18px tall). Both are written into `DESIGN.md` so they don't
+recur.
+
 ## [2026-08-23] bootstrap | corpus/ created
 
 Bootstrapped the root `corpus/` workspace while adapting the repo to

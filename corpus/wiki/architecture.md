@@ -88,13 +88,17 @@ Mock placeholders are **generated**, not hand-drawn:
 list in `src/content/gallery.ts` in sync — a generator that emits more images
 than the gallery renders just leaves dead files in `public/`.
 
-`subcort` is the exception: its gallery photos are committed under
-`public/images/photos/` (neutral placeholders), and its `real/` directory is empty.
+`subcort` is the exception: since its 2026-08-23 rework it ships **no
+photography at all** and has no gallery. Every graphic — the WebGL hero, the
+exploded axonometric, the scale plan, the OG card (`npm run subcort:og`) — is
+projected from a single marquee model in `sites/subcort/src/lib/draft.ts`. The
+mock/real pipeline stays wired via `@sites/kit` so photos could be added later,
+but nothing resolves through it today.
 
 **The image source is per-command, and the defaults differ by site.** A site that
 has real photos (`saloon`, `auto-service`) defaults `dev`, `preview` **and
 `build`** to them, with `:mock` variants as the escape hatch. A site that has none
-(`subcort`) defaults to mock with a `dev:real` variant. Before 2026-08-23 `build`
+(`subcort`) has no image commands left at all. Before 2026-08-23 `build`
 was mock everywhere, so `npm run saloon:build` silently shipped grey placeholders
 while `npm run saloon:dev` showed the real photos — check this first if a deployed
 site looks wrong.

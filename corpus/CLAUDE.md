@@ -68,7 +68,9 @@ drift.
 
 - Images resolve by **logical name** through `src/content/images.ts`. Grepping a
   filename will report a used image as unused. Check `gallery.ts` and the
-  `gen-placeholders.mjs` generator too.
+  site's `scripts/gen-*.mjs` generator too. (`subcort` is the exception — it
+  ships no photography; every graphic is projected from the one marquee model in
+  `src/lib/draft.ts`.)
 - Real business data (`src/content/site.local.ts`) and real photos
   (`public/images/real/*`) are **gitignored**. Never paste their contents into a
   corpus page.

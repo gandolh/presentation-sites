@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
+import Plate from "../components/Plate.astro";
 import Footer from "../components/Footer.astro";
 import { site } from "../content/site";
 import { steps, coverage } from "../content/zone";
@@ -14,77 +15,74 @@ import { steps, coverage } from "../content/zone";
   description={`Acoperim ${coverage.primary} și ne deplasăm în toată ${coverage.region}. Livrăm, montăm la fața locului și demontăm după eveniment.`}
 >
   <DemoBanner />
-  <Nav current="/zona/" solid />
+  <Nav current="/zona/" />
 
   <main id="main">
     <PageHeader
-      eyebrow="Zonă"
+      plate="03 · Zonă"
+      scale="Acoperire"
       title={`Acoperim ${coverage.primary} și ${coverage.region}`}
       lead="Aducem cortul la adresa ta, îl montăm complet și revenim să-l demontăm după eveniment. De partea logistică te scutim cu totul."
     />
 
-    <!-- ===================== PROCESS ===================== -->
-    <section class="section lamp-glow overflow-clip">
-      <div class="container-page">
-        <div class="reveal max-w-2xl">
-          <div class="section-index">
-            <span class="section-index__num">01</span>
-            <span class="guyline" aria-hidden="true"></span>
-            <span class="eyebrow">Procesul</span>
-          </div>
-          <h2 class="heading-lg mt-5">De la prima discuție la demontare</h2>
-        </div>
+    {/* The sequence. The numbers earn their place: the order is the content. */}
+    <Plate no="03.1 · Proces" note="Succesiunea lucrărilor" title="De la prima discuție la demontare" tight>
+      <ol class="process">
+        {steps.map((s) => (
+          <li class="reveal process__step">
+            <span class="process__no dim" aria-hidden="true">{s.n}</span>
+            <div>
+              <h3 class="heading-md">{s.title}</h3>
+              <p class="mt-2 prose-measure leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </Plate>
 
-        <ol class="mt-12 space-y-px">
-          {
-            steps.map((s, i) => (
-              <li class="reveal grid gap-4 sm:grid-cols-[auto_1fr] sm:gap-8 py-7 border-t border-[var(--color-outline-variant)] last:border-b">
-                <div class="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-2">
-                  <span class="font-display text-4xl font-extrabold text-[var(--color-primary)] tabular-nums">{s.n}</span>
-                  {i < steps.length - 1 && (
-                    <span class="hidden sm:block h-full w-px bg-[var(--color-outline-variant)]" aria-hidden="true" />
-                  )}
-                </div>
-                <div class="max-w-prose">
-                  <h3 class="heading-md">{s.title}</h3>
-                  <p class="mt-2 text-[var(--color-on-surface-variant)] leading-relaxed">{s.description}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </section>
+    <Plate no="03.2 · Acoperire" note="Localități" title={`Județul ${coverage.primary}, plus toată ${coverage.region}`}>
+      <p class="lede mt-5">{coverage.note}</p>
 
-    <!-- ===================== COVERAGE ===================== -->
-    <section class="section bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
-      <div class="container-page grid gap-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-16">
-        <div class="reveal">
-          <div class="flex items-center gap-3">
-            <span class="guyline guyline--bright" aria-hidden="true"></span>
-            <span class="eyebrow text-[var(--color-inverse-on-surface-variant)]">Zonă acoperită</span>
-          </div>
-          <h2 class="heading-lg mt-4 text-[var(--color-inverse-on-surface)]">
-            Județul {coverage.primary}, plus toată {coverage.region}
-          </h2>
-          <p class="mt-5 max-w-prose leading-relaxed text-[var(--color-inverse-on-surface-variant)]">
-            {coverage.note}
-          </p>
-        </div>
+      <ul class="localities">
+        {coverage.localities.map((loc) => (
+          <li class="locality"><span class="locality__tick" aria-hidden="true"></span>{loc}</li>
+        ))}
+      </ul>
 
-        <ul class="reveal grid grid-cols-2 gap-3">
-          {
-            coverage.localities.map((loc) => (
-              <li class="flex items-center gap-2.5 rounded-[var(--radius-md)] bg-[var(--color-inverse-surface-2)] px-4 py-3 text-sm font-semibold text-[var(--color-inverse-on-surface)]">
-                <span class="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent-bright)]" aria-hidden="true"></span>
-                {loc}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </section>
+      <p class="mt-7 prose-measure text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">
+        Lista de mai sus e orientativă — ne deplasăm și în afara ei, în toată {site.region}.
+      </p>
+    </Plate>
   </main>
 
   <Footer />
 </Base>
+
+<style>
+  .process { margin-top: 2.25rem; }
+  .process__step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0 1.25rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-hair);
+  }
+  .process__step:first-child { border-top: 1.5px solid var(--color-ink); }
+  .process__step:last-child { border-bottom: 1px solid var(--color-hair); }
+  @media (min-width: 700px) { .process__step { grid-template-columns: 5rem 1fr; gap: 0 2.5rem; } }
+  .process__no { font-size: 0.95rem; font-weight: 500; color: var(--color-signal); letter-spacing: 0.06em; }
+
+  .localities {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.8rem 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  }
+  .locality { display: flex; align-items: center; gap: 0.7rem; font-size: 0.97rem; }
+  /* a survey mark, not a bullet */
+  .locality__tick {
+    width: 9px; height: 9px; flex: 0 0 auto;
+    border: 1.5px solid var(--color-signal);
+    transform: rotate(45deg);
+  }
+</style>

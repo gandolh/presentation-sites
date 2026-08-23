@@ -1,7 +1,8 @@
 ---
+import Icon from "./Icon.astro";
 import { faq } from "../content/faq";
 
-// FAQPage JSON-LD for SEO — built from the same source as the on-page accordion.
+// FAQPage JSON-LD for SEO — built from the same source as the on-page list.
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -13,55 +14,27 @@ const faqJsonLd = {
 };
 ---
 
-<section id="intrebari" class="section bg-[var(--color-surface-container-lowest)] border-y border-[var(--color-outline-variant)]">
-  <div class="container-page grid lg:grid-cols-[0.7fr_1.3fr] gap-8 lg:gap-16">
+<section id="intrebari" class="section faq" aria-labelledby="faq-title">
+  <div class="container-page faq__grid">
     <div class="reveal">
-      <h2 class="heading-lg">Întrebări frecvente</h2>
-      <span class="m-stripe mt-5" aria-hidden="true"></span>
-      <p class="mt-6 text-[var(--color-on-surface-variant)]">
-        Dacă nu găsești răspunsul aici, sună-ne, îți răspundem cu drag.
+      <h2 id="faq-title" class="heading-lg">Întrebări frecvente</h2>
+      <p class="faq__lede">
+        Dacă nu găsești răspunsul aici, sună-ne — îți răspundem cu drag.
       </p>
     </div>
 
-    <div class="reveal divide-y divide-[var(--color-outline-variant)] border-t border-[var(--color-outline-variant)]">
-      {
-        faq.map((f) => (
-          <details class="faq-item group">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5">
-              <span class="faq-q heading-md !text-[1.08rem] text-[var(--color-on-surface)]">{f.q}</span>
-              <span class="shrink-0 text-[var(--color-primary-bright)] transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              </span>
-            </summary>
-            <p class="pb-5 pr-8 text-[0.97rem] leading-relaxed text-[var(--color-on-surface-variant)]">{f.a}</p>
-          </details>
-        ))
-      }
+    <div class="reveal faq__list">
+      {faq.map((f) => (
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="heading-md faq__qt">{f.q}</span>
+            <span class="faq__mark" aria-hidden="true"><Icon name="plus" size={20} /></span>
+          </summary>
+          <p class="faq__a">{f.a}</p>
+        </details>
+      ))}
     </div>
   </div>
-
-  <style>
-    /* Open row reads as "lit": the question warms to the bright link-blue and a
-       thin blue rule marks the active band on the dark floor. */
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary { transition: color 200ms var(--ease-out); }
-    .faq-item:hover .faq-q { color: var(--color-primary-bright); }
-    .faq-item[open] .faq-q { color: var(--color-primary-bright); }
-    .faq-item[open] {
-      box-shadow: inset 2px 0 0 0 var(--color-primary);
-      padding-left: 1rem;
-      margin-left: -1rem;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .faq-item[open] p {
-        animation: faq-open 320ms var(--ease-out) both;
-      }
-    }
-    @keyframes faq-open {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
 
   <script
     is:inline
@@ -69,3 +42,64 @@ const faqJsonLd = {
     set:html={JSON.stringify(faqJsonLd)}
   />
 </section>
+
+<style>
+  .faq { border-top: 1px solid var(--color-outline-variant); }
+  .faq__grid { display: grid; gap: 2rem; }
+  @media (min-width: 1024px) { .faq__grid { grid-template-columns: 0.68fr 1.32fr; gap: 4rem; } }
+
+  .faq__lede { margin-top: 1.1rem; color: var(--color-on-surface-variant); max-width: 34ch; }
+
+  .faq__list { border-top: 1px solid var(--color-outline-variant); }
+
+  .faq__item {
+    border-bottom: 1px solid var(--color-outline-variant);
+    transition: box-shadow 220ms var(--ease-out), padding-left 220ms var(--ease-out);
+  }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding-block: 1.15rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq__q::-webkit-details-marker { display: none; }
+  .faq__qt {
+    font-size: 1.03rem;
+    transition: color 200ms var(--ease-out);
+  }
+  .faq__mark {
+    flex: none;
+    color: var(--color-on-surface-variant);
+    transition: transform 300ms var(--ease-out), color 200ms var(--ease-out);
+  }
+  .faq__item:hover .faq__qt,
+  .faq__item[open] .faq__qt { color: var(--color-primary-bright); }
+  .faq__item:hover .faq__mark { color: var(--color-primary-bright); }
+  .faq__item[open] .faq__mark { transform: rotate(45deg); color: var(--color-primary); }
+
+  /* An open row is the live one: a lit edge, per THE LIVE-AMBER RULE. */
+  .faq__item[open] {
+    box-shadow: inset 2px 0 0 0 var(--color-primary);
+    padding-left: 1rem;
+    margin-left: -1rem;
+  }
+
+  .faq__a {
+    padding: 0 3rem 1.35rem 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-on-surface-variant);
+    max-width: 68ch;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .faq__item[open] .faq__a { animation: faq-open 300ms var(--ease-out) both; }
+  }
+  @keyframes faq-open {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

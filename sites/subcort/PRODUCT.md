@@ -64,12 +64,10 @@ proper space and set it up right, and I don't have to worry about the logistics.
   label + gradient accent), identical icon-card grids repeated down the page,
   gradient blobs, buzzword copy ("transform your event", "seamless"). The
   auto-template AI look is the enemy.
-- **Forest-green-on-cream "natural brand" cliché.** The saturated AI attractor:
-  a timid sage accent floating on a heavy cream page. Subcort instead *commits*
-  to a deep canopy green that carries real structural weight on the dark anchors
-  (hero, footer, page headers), over warm cream paper *lit from within* by a warm
-  clay lamp glow that does real work on the light body — the clay is the lamp, not
-  a polite trim. One companion accent, no third hue.
+- **Heritage dressing.** Folk pattern, traditional motif, anything that leans on
+  Oltenian craft imagery to borrow warmth. It reads as costume on a logistics
+  business and it dates fast. Subcort earns trust by showing the *thing itself*,
+  drawn precisely.
 
 ## Design Principles
 
@@ -82,14 +80,15 @@ proper space and set it up right, and I don't have to worry about the logistics.
 3. **Quiet, not loud.** No CTAs, no urgency, no shouting. The site informs and
    steps back; trust is built by clarity and restraint, and the visitor is
    trusted to make contact on their own.
-4. **Committed green, warm cream, lamp-lit.** A deep canopy green is the identity
-   and carries the page anchors (hero, footer, subpage headers), set on warm cream
-   paper that is lit from within — a daylight-readable light theme, never a dark
-   theme and never a passive heavy cream. One warm clay accent is the lamp glow,
-   doing real work on the light body (glow pools, lit cards); no third hue.
-5. **Sheltering craft.** Sturdy, grounded forms (a slab-serif headline, solid
-   panels, generous floors of whitespace) that feel like a well-pitched structure:
-   calm, square, dependable, never flimsy or ornamental.
+4. **The drawing is the argument.** The product is an erection, not an object:
+   somebody arrives, puts a structure up to plan, and takes it away. So the site
+   is the drawing set for that work — numbered sheets, one shared model of the
+   marquee projected many ways, exploded views, dimension lines and numbered
+   callouts. Precision is the trust signal; nothing is decorative.
+5. **Light throughout, ink and one annotation colour.** A near-white sheet from
+   the masthead to the last line. The object is drawn in ink; everything added
+   on top of it — callouts, leaders, dimensions, state — is a single orange.
+   Depth comes from line weight, never from shadow.
 
 ## Accessibility & Inclusion
 

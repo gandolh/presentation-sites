@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="#26412f"/>
-  <path d="M6,23 L13,9 L16,13 L19,9 L26,23 Z" fill="#eef0e8"/>
-  <path d="M13,23 L13,16 Q16,14 19,16 L19,23 Z" fill="#e6a877"/>
+  <rect width="32" height="32" fill="#FBFBFA"/>
+  <!-- the marquee in section, drawn the way the site draws it: ink object,
+       one orange annotation on the ridge -->
+  <g fill="none" stroke="#22303A" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M4 26 L4 17 L16 8 L28 17 L28 26"/>
+    <path d="M4 17 L28 17"/>
+  </g>
+  <line x1="2" y1="27.2" x2="30" y2="27.2" stroke="#22303A" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="16" y1="7" x2="16" y2="17" stroke="#E4572E" stroke-width="2.1" stroke-linecap="round"/>
 </svg>

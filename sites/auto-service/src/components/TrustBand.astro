@@ -1,68 +1,98 @@
 ---
-// A compact strip of trust signals right under the hero. For an auto service
-// this is where neutralising the "will they rip me off?" anxiety begins.
+/*
+  The service-interval band. On a real cluster, pressing the trip stalk with
+  the key at position I lights a row of LED segments showing how much service
+  life is left. Here the same instrument carries the four things a worried
+  owner needs to believe — and the segments are coded in the M order
+  (light blue -> indigo -> red), with amber reserved for what is live.
+*/
 const items = [
   {
-    label: "Specialiști BMW",
-    detail: "Diagnoză dedicată, nu generalistă",
-    icon: "bmw",
+    legend: "AUTORIZARE",
+    title: "Autorizat RAR",
+    note: "Lucrări conforme, cu factură",
+    lit: 5,
+    tone: "blue",
   },
   {
-    label: "Deviz clar, în avans",
-    detail: "Niciun cost neaprobat de tine",
-    icon: "doc",
+    legend: "ÎNAINTE DE LUCRARE",
+    title: "Deviz scris, în avans",
+    note: "Niciun cost neaprobat de tine",
+    lit: 4,
+    tone: "indigo",
   },
   {
-    label: "Garanție la lucrări",
-    detail: "Piese și manoperă, în scris",
-    icon: "shield",
+    legend: "DUPĂ LUCRARE",
+    title: "Garanție 12 luni",
+    note: "Piese și manoperă, în scris",
+    lit: 3,
+    tone: "red",
   },
   {
-    label: "Autorizat RAR",
-    detail: "Lucrări conforme, cu factură",
-    icon: "check",
+    legend: "SPECIALIZARE",
+    title: "Doar BMW, zi de zi",
+    note: "Diagnoză dedicată, nu generalistă",
+    lit: 5,
+    tone: "amber",
   },
-];
+] as const;
+
+const SEGMENTS = 5;
 ---
 
-{/* A reading on the instrument cluster — sits directly on the dark floor as a
-    thin band, framed by top/bottom hairlines so it reads as a strip wired into
-    the hero above it (no panel fill; the next section lifts off this floor). */}
-<section class="border-y border-[var(--color-outline-variant)] bg-[var(--color-background)]">
-  <div class="container-page">
-    <ul class="grid grid-cols-2 lg:grid-cols-4 divide-y divide-[var(--color-outline-variant)] lg:divide-y-0 lg:divide-x lg:divide-[var(--color-outline-variant)]">
-      {
-        items.map((it) => (
-          <li class="trust-cell flex items-start gap-3 py-5 lg:py-7 lg:px-7 first:lg:pl-0 last:lg:pr-0">
-            <span class="trust-icon mt-0.5 shrink-0 text-[var(--color-primary-bright)]" aria-hidden="true">
-              {it.icon === "bmw" && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4M12 12l-6.4 6.4"/></svg>
-              )}
-              {it.icon === "doc" && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
-              )}
-              {it.icon === "shield" && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-              )}
-              {it.icon === "check" && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-              )}
-            </span>
-            <div>
-              <p class="font-semibold text-[var(--color-on-surface)] leading-snug">{it.label}</p>
-              <p class="text-sm text-[var(--color-on-surface-variant)] mt-0.5">{it.detail}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+<section class="band" aria-label="De ce ne poți lăsa mașina">
+  <div class="container-page band__grid">
+    {items.map((it) => (
+      <div class="band__cell">
+        <p class="legend band__legend">{it.legend}</p>
+        <div class="band__leds" aria-hidden="true">
+          {Array.from({ length: SEGMENTS }, (_, i) => (
+            <span class:list={["led", i < it.lit && `led--${it.tone}`]}></span>
+          ))}
+        </div>
+        <h3 class="heading-md band__title">{it.title}</h3>
+        <p class="band__note">{it.note}</p>
+      </div>
+    ))}
   </div>
-
-  <style>
-    /* The blue icon reads as a lit indicator on the dark floor; a faint glow
-       wires it into the same worklamp language as the hero. */
-    .trust-icon {
-      filter: drop-shadow(0 0 6px oklch(78% 0.12 244 / 0.28));
-    }
-  </style>
 </section>
+
+<style>
+  .band {
+    border-block: 1px solid var(--color-outline-variant);
+    background-image: linear-gradient(180deg, oklch(15.5% 0.010 255), oklch(12% 0.008 255));
+  }
+  .band__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) { .band__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .band__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .band__cell {
+    padding: 1.6rem 0;
+    border-top: 1px solid oklch(22% 0.012 256);
+  }
+  .band__cell:first-child { border-top: 0; }
+
+  @media (min-width: 640px) {
+    .band__cell {
+      padding: 1.7rem 1.9rem;
+      border-top: 0;
+      border-left: 1px solid oklch(22% 0.012 256);
+    }
+    .band__cell:nth-child(-n + 2) { border-top: 0; }
+    .band__cell:nth-child(2n + 1) { border-left: 0; padding-left: 0; }
+    .band__cell:nth-child(n + 3) { border-top: 1px solid oklch(22% 0.012 256); }
+  }
+  @media (min-width: 1024px) {
+    .band__cell:nth-child(n + 3) { border-top: 0; }
+    .band__cell:nth-child(2n + 1) { border-left: 1px solid oklch(22% 0.012 256); padding-left: 1.9rem; }
+    .band__cell:first-child { border-left: 0; padding-left: 0; }
+  }
+
+  .band__legend { margin-bottom: 0.85rem; }
+  .band__leds { display: flex; gap: 0.24rem; margin-bottom: 1rem; }
+  .band__title { margin-bottom: 0.32rem; }
+  .band__note { font-size: 0.83rem; color: var(--color-on-surface-variant); }
+</style>

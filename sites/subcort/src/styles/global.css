@@ -1,716 +1,440 @@
 @import "tailwindcss";
 
-/*
-  Subcort — design tokens.
-
-  Creative North Star: "Warm cream + lamp, dark anchors." The page is warm
-  paper lit from within by day — a committed deep canopy green still owns the
-  structural anchors (hero, footer), and the warm clay LAMP GLOW is the
-  connective warmth threading the light body between those dark ends. The base
-  steps warmer than a near-white off-white (toward warm cream) while staying
-  genuinely light and daylight-readable; every ink/bg pair clears WCAG AA.
-
-  This deliberately rejects the festive party-rental skin, the cheap classifieds
-  listing, the generic SaaS landing, and the forest-green-on-cream "natural
-  brand" cliché (a timid sage accent floating on cream). Here green commits and
-  the clay glow does real work.
-
-  Colours authored in OKLCH. Token names mirror the sibling projects
-  (Material-ish roles) so components read the same way across the monorepo.
-*/
+/* ==========================================================================
+   SUBCORT — Montaj
+   The site is a drawing set. Every page is a sheet: a header carrying the
+   plate number and scale, a drawing or a table, and a title block at the foot.
+   The object is drawn in ink; everything the draughtsman added — callouts,
+   leaders, dimensions, the active state — is orange. See DESIGN.md.
+   ========================================================================== */
 
 @theme {
-  /* ---- Surfaces (warm paper / cream — lamp-lit by day) -------------------
-     The base steps warmer than the old near-white off-white — toward warm
-     paper lit from within — while staying genuinely LIGHT and daylight-
-     readable (chroma held low enough that it reads as warm paper, not sand,
-     and every ink/bg pair clears WCAG AA). Cards lift to a near-pure warm
-     white; the greige ramp warms with them so the page feels like canvas
-     catching lamplight. */
-  --color-background: oklch(97.4% 0.013 84); /* warm paper page bg */
-  --color-surface: oklch(97.4% 0.013 84);
-  --color-surface-container-lowest: oklch(99.4% 0.006 88); /* warm white cards */
-  --color-surface-container-low: oklch(96.2% 0.015 82);
-  --color-surface-container: oklch(94.4% 0.019 80); /* warm greige panel */
-  --color-surface-container-high: oklch(92.2% 0.022 78);
-  --color-surface-container-highest: oklch(89.4% 0.025 74);
+  /* ---- ink ------------------------------------------------------------- */
+  --color-ink: oklch(29% 0.028 234);              /* #22303A                 */
+  --color-ink-2: oklch(48% 0.024 233);            /* secondary text          */
+  --color-line: oklch(52% 0.026 234);             /* #5E7180 — object lines  */
+  --color-line-soft: oklch(76% 0.017 233);        /* #A7B4BE — extension     */
+  --color-hair: oklch(90.5% 0.006 230);           /* rules and cell borders  */
 
-  /* ---- Ink ----------------------------------------------------------------
-     Green-leaning near-black: carries the canopy hue without going cold-black.
-     Body clears AA comfortably (≈11:1 on the warm paper bg). Outlines warm a
-     touch to sit on the cream rather than reading cool-grey on it. */
-  --color-on-surface: oklch(26% 0.022 150); /* body + headings */
-  --color-on-surface-variant: oklch(43% 0.02 148); /* secondary text, ≥4.5:1 */
-  --color-outline: oklch(62% 0.018 95);
-  --color-outline-variant: oklch(87% 0.016 88); /* warm hairlines on cream */
+  /* ---- the annotation layer -------------------------------------------- */
+  --color-signal: oklch(52.5% 0.152 40);          /* #C2481E — clears AA as text */
+  --color-signal-hover: oklch(47% 0.145 39);
+  --color-signal-soft: oklch(95% 0.022 45);
+  --color-on-signal-soft: oklch(44% 0.14 39);
 
-  /* ---- Inverse (the dark anchors: hero, footer, page headers) -------------
-     "Deep canopy" — the inside of the green tent at dusk, the lit-tent anchors
-     that bracket the warm paper body. Warmed a hair toward the lamp (hue 152)
-     and deepened so the clay glow inside them reads as genuine warm light, and
-     so the anchors feel like dusk against the cream day rather than a flat
-     swatch. Warm near-white ink reverses onto them; brighter green + clay are
-     the light within. */
-  --color-inverse-surface: oklch(25.5% 0.046 152); /* deep canopy green */
-  --color-inverse-surface-2: oklch(30% 0.052 152); /* lifted canopy panel */
-  --color-inverse-on-surface: oklch(96% 0.01 92); /* warm near-white on dark */
-  --color-inverse-on-surface-variant: oklch(81% 0.022 105);
+  /* ---- sheet ----------------------------------------------------------- */
+  --color-sheet: oklch(98.6% 0.002 90);           /* #FBFBFA — the paper     */
+  --color-paper: oklch(100% 0 0);
+  --color-fill: oklch(94.5% 0.004 233);
+  --color-fill-2: oklch(96.6% 0.003 233);
 
-  /* ---- Primary: canopy green (the committed identity) --------------------
-     The seed (hue 150). Deep and muted, so WHITE text on it clears AA (white
-     on this ≈ 7.4:1). Hover deepens. */
-  --color-primary: oklch(40% 0.085 150); /* deep forest/canopy green */
-  --color-primary-hover: oklch(34% 0.08 150);
-  --color-on-primary: oklch(99% 0.004 95);
-  --color-primary-container: oklch(93% 0.025 150); /* pale wash for chips */
-  --color-on-primary-container: oklch(33% 0.07 150);
-  /* Brighter green for accents/links ON DARK surfaces (AA on canopy). */
-  --color-primary-bright: oklch(74% 0.1 148);
+  --color-success: oklch(52% 0.1 155);
+  --color-error: oklch(52% 0.17 28);
 
-  /* ---- Accent: warm clay (the lamp glow through the canvas) --------------
-     The one companion hue. Distinct from green in BOTH hue (≈55) and
-     lightness. White text on the filled accent clears AA (≈4.6:1). Used for
-     the signature line's warm end, "inclus" markers, hover warmth — sparingly. */
-  --color-accent: oklch(58% 0.12 55); /* warm terracotta/clay */
-  --color-accent-hover: oklch(52% 0.115 52);
-  --color-on-accent: oklch(99% 0.004 95);
-  --color-accent-soft: oklch(92% 0.04 60); /* pale clay wash */
-  --color-on-accent-soft: oklch(40% 0.1 50);
-  /* Brighter clay for accents on DARK surfaces. */
-  --color-accent-bright: oklch(76% 0.11 62);
+  /* ---- type ------------------------------------------------------------ */
+  --font-sans: "IBM Plex Sans Variable", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* ---- Lamp glow (the connective warmth on the LIGHT body) ----------------
-     The signature of this direction: the clay lamp does real work on the warm
-     paper body, not only inside the dark anchors. These tokens drive the soft
-     glow halos behind feature content, the warm wash on lit cards, and the
-     warmed section bands — a gentle pool of lamplight on the cream, never a
-     loud gradient blob. Authored as translucent clay so they layer over any
-     warm surface and stay subtle in daylight. */
-  --glow-lamp-strong: oklch(72% 0.13 58 / 0.22); /* core of a glow halo */
-  --glow-lamp-soft: oklch(66% 0.12 56 / 0.1); /* halo falloff */
-  --glow-lamp-wash: oklch(80% 0.05 70 / 0.55); /* warm card/section wash */
+  /* A drawing has no rounded corners. */
+  --radius-sm: 0px;
+  --radius-md: 2px;
 
-  /* ---- Status ------------------------------------------------------------- */
-  --color-success: oklch(56% 0.11 150);
-  --color-error: oklch(55% 0.19 27);
-  --color-on-error: oklch(99% 0 0);
-
-  /* ---- Typography ---------------------------------------------------------
-     Contrast pairing: a sturdy warm SLAB serif headline (Bitter) against a
-     calm humanist SANS body (Mulish). The slab reads "grounded, structural,
-     sheltering" — the right register for a tent/logistics brand, and avoids
-     the festive-script and the editorial-italic-serif traps alike. */
-  --font-display: "Bitter Variable", Georgia, "Times New Roman", serif;
-  --font-body: "Mulish Variable", system-ui, sans-serif;
-
-  /* ---- Radius (soft-but-square: grounded, not pill, not sharp) ------------ */
-  --radius-sm: 0.25rem;
-  --radius: 0.5rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1.25rem;
-  --radius-full: 9999px;
-
-  /* ---- Container ---------------------------------------------------------- */
-  --container-max-width: 1180px;
-
-  /* ---- Z-index scale ------------------------------------------------------ */
-  --z-sticky: 100;
-  --z-nav: 200;
-  --z-overlay: 300;
+  --sheet-pad: clamp(1.15rem, 4vw, 3.75rem);
 }
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
 @layer base {
   html {
-    -webkit-text-size-adjust: 100%;
-    scroll-padding-top: 5rem; /* anchor jumps clear the fixed nav */
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h, 4.25rem) + 1.5rem);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
     }
   }
 
   body {
-    font-family: var(--font-body);
-    color: var(--color-on-surface);
-    background-color: var(--color-background);
-    font-size: 16px;
-    line-height: 1.6;
+    background: var(--color-sheet);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
-  }
-
-  ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+  /* Browser surfaces belong to the drawing too. */
+  ::selection { background: var(--color-signal); color: #fff; }
+  :root {
+    accent-color: var(--color-signal);
+    caret-color: var(--color-signal);
+    scrollbar-color: var(--color-line-soft) var(--color-sheet);
+    scrollbar-width: thin;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-    border-radius: var(--radius-sm);
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
   }
+
+  a { text-underline-offset: 0.22em; text-decoration-thickness: from-font; }
+  h1, h2, h3 { text-wrap: balance; }
+  p, li { text-wrap: pretty; }
 }
 
+/* ==========================================================================
+   The sheet
+   ========================================================================== */
+
 @layer components {
-  .container-page {
+  .sheet {
     width: 100%;
-    max-width: var(--container-max-width);
+    max-width: 84rem;
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    padding-inline: var(--sheet-pad);
   }
 
-  @media (min-width: 768px) {
-    .container-page {
-      padding-inline: 2rem;
-    }
-  }
+  .plate { padding-block: clamp(3rem, 6vw, 5.5rem); }
+  .plate--tight { padding-block: clamp(2rem, 4vw, 3.25rem); }
 
-  .section {
-    padding-block: clamp(3.25rem, 7vw, 6.5rem);
-  }
+  .rule { border-top: 1px solid var(--color-hair); }
+  .rule--heavy { border-top: 1.5px solid var(--color-ink); }
 
-  /* ---- The guy-line (the signature) --------------------------------------
-     A thin two-tone bar evoking a taut tent line catching the last light:
-     canopy green easing into warm clay. Used as a divider, the mark beside the
-     wordmark, and a section edge. A gradient on a BACKGROUND bar (never on
-     text, never a side-border) — deliberate, not decorative scaffolding. */
-  .guyline {
-    display: block;
-    height: 3px;
-    width: 60px;
-    border-radius: var(--radius-full);
-    background: linear-gradient(
-      90deg,
-      var(--color-primary) 0%,
-      var(--color-accent) 100%
-    );
-  }
-  .guyline--full {
-    width: 100%;
-    height: 4px;
-    border-radius: 0;
-  }
-  /* On dark canopy surfaces the line uses the brighter ends so it reads. */
-  .guyline--bright {
-    background: linear-gradient(
-      90deg,
-      var(--color-primary-bright) 0%,
-      var(--color-accent-bright) 100%
-    );
-  }
-
-  /* ---- Hero atmosphere -----------------------------------------------------
-     A whisper of film grain over the dark hero so the flat canopy fill reads
-     as photographed dusk, not a solid swatch. Pure inline SVG noise — no extra
-     request — at very low opacity, sitting above the art but below the text. */
-  .hero-grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  /* the .container-page content sits above the grain; the art layer stays below */
-  .hero-grain > .container-page { position: relative; z-index: 2; }
-
-  /* Subpage header glow — the corner lamp, breathing on the hero's cadence. */
-  .page-header-glow {
-    position: absolute;
-    right: -6rem;
-    top: -6rem;
-    width: 22rem;
-    height: 22rem;
-    border-radius: var(--radius-full);
-    pointer-events: none;
-    background: radial-gradient(
-      closest-side,
-      oklch(72% 0.13 58 / 0.34) 0%,
-      oklch(58% 0.12 55 / 0.1) 48%,
-      transparent 74%
-    );
-    mix-blend-mode: screen;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .page-header-glow { animation: corner-glow-breathe 11s ease-in-out infinite; }
-  }
-  @keyframes corner-glow-breathe {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
-    50%      { opacity: 1;   transform: scale(1.08); }
-  }
-
-  /* ---- Lamp glow on the LIGHT body (the connective warmth) ----------------
-     A soft pool of lamplight on the warm-paper sections — the clay lamp doing
-     real work between the dark anchors, the signature of this direction. Put
-     it on a `position: relative; overflow: clip` section wrapper; the glow
-     sits behind the content (z-index:0) and the content rides above it. Two
-     placements: default = a single warm pool top-right; `--center` pools it
-     behind a centred block. Subtle by daylight, never a loud gradient blob.
-     Breathes on the hero's cadence; frozen under reduced-motion. */
-  .lamp-glow { position: relative; }
-  .lamp-glow::before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    width: min(34rem, 90%);
-    aspect-ratio: 1;
-    right: -8rem;
-    top: -10rem;
-    border-radius: var(--radius-full);
-    background: radial-gradient(
-      closest-side,
-      var(--glow-lamp-strong) 0%,
-      var(--glow-lamp-soft) 52%,
-      transparent 76%
-    );
-  }
-  .lamp-glow--center::before {
-    right: auto;
-    left: 50%;
-    top: 50%;
-    translate: -50% -50%;
-    width: min(48rem, 120%);
-  }
-  /* content inside a lamp-glow section lifts above the pool */
-  .lamp-glow > * { position: relative; z-index: 1; }
-  @media (prefers-reduced-motion: no-preference) {
-    .lamp-glow::before { animation: corner-glow-breathe 11s ease-in-out infinite; }
-  }
-
-  /* ====================================================================
-     SPLIT HERO — headline left, living day→night scene right.
-     The left column carries the headline over the deep canopy; the right is the
-     HeroScene.astro component (a self-contained looping sun-cycle SVG). On
-     mobile the two stack: scene on top, text below. The scene owns all its own
-     motion + reduced-motion handling; this block is layout only.
-     ==================================================================== */
-  .hero-split {
+  /* ---- the plate header ------------------------------------------------
+     Numbering is earned here: a drawing set is a numbered register, and the
+     reader navigates it by number. */
+  .plate-head {
     display: grid;
-    grid-template-columns: 1fr;
-    background-color: var(--color-inverse-surface);
-    color: var(--color-inverse-on-surface);
+    gap: 0.75rem 2.5rem;
+    align-items: baseline;
+    padding-top: 1.15rem;
+    border-top: 1.5px solid var(--color-ink);
   }
-  .hero-split__inner {
-    max-width: 36rem;
-    margin-left: auto;
+  @media (min-width: 900px) {
+    .plate-head { grid-template-columns: 11rem minmax(0, 1fr); }
   }
-  /* mobile: scene first (a tall band), then the text */
-  .hero-split__scene {
-    order: -1;
-    position: relative;
-    min-height: clamp(240px, 38svh, 320px);
-  }
-  .hero-split__text { display: flex; align-items: center; }
-
-  @media (min-width: 768px) {
-    .hero-split {
-      grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
-      /* Fit within the first screen on load: the full viewport minus the demo
-         banner above the nav (~3rem). Floored so it never collapses, capped so
-         it stays composed on very tall displays. */
-      min-height: min(calc(100svh - 3.25rem), 640px);
-    }
-    .hero-split__scene { order: 0; min-height: 0; height: 100%; }
-    .hero-split__inner { margin-left: 0; }
-  }
-
-  /* Hero load choreography: the headline lines rise in sequence on load. The
-     items are fully visible at rest (opacity:1); the animation only adds the
-     entrance, so no-JS / reduced-motion ship the finished frame. Runs purely on
-     CSS load (no JS class needed) since the hero is always in the first view. */
-  .hero-rise { opacity: 1; }
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-rise {
-      opacity: 0;
-      animation: hero-rise-in 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--rise-delay, 0ms) both;
-    }
-  }
-  @keyframes hero-rise-in {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Eyebrow — used SPARINGLY (hero + at most one key section), paired with the
-     guy-line. Never above every section. */
-  .eyebrow {
-    font-family: var(--font-body);
-    font-weight: 700;
+  .plate-head > * { min-width: 0; }
+  .plate-no {
+    font-family: var(--font-mono);
     font-size: 0.78rem;
-    letter-spacing: 0.13em;
+    font-weight: 500;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
-    color: var(--color-on-surface-variant);
+    color: var(--color-signal);
   }
 
-  /* ---- Editorial section index --------------------------------------------
-     A sequenced overline (01 / 02 / 03 …) that makes sections read as an
-     authored set rather than a stack of equal blocks. The slab numeral sits
-     against the guy-line; the label is the quiet eyebrow. Tabular figures keep
-     the numerals aligned. */
-  .section-index {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-  }
-  .section-index__num {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 0.95rem;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em;
-    color: var(--color-accent);
-    line-height: 1;
-  }
-  .section-index .guyline {
-    width: 2.25rem;
-    flex: none;
-  }
-
-  /* Numerals that must not jiggle (stats, step numbers, the section index). */
-  .tnum { font-variant-numeric: tabular-nums; }
-
-  /* ---- Display highlight --------------------------------------------------
-     A single keyword in a headline gets a hand-drawn clay underline — the
-     lamp-glow warmth applied as emphasis, not a heavy marker highlight. Used
-     ONCE per heading, on the word that carries the meaning. */
-  .ink-mark {
-    position: relative;
-    white-space: nowrap;
-  }
-  .ink-mark::after {
-    content: "";
-    position: absolute;
-    left: -0.04em;
-    right: -0.04em;
-    bottom: 0.04em;
-    height: 0.5em;
-    background: linear-gradient(
-      90deg,
-      var(--color-accent) 0%,
-      var(--color-accent-bright) 100%
-    );
-    opacity: 0.32;
-    border-radius: 2px;
-    z-index: -1;
-  }
-  .ink-mark--bright::after {
-    opacity: 0.42;
-    background: linear-gradient(
-      90deg,
-      var(--color-accent-bright) 0%,
-      var(--color-primary-bright) 120%
-    );
-  }
-
-  /* ---- Process timeline (Cum funcționează) --------------------------------
-     Replaces the grid of four identical boxes with a connected sequence keyed
-     to the guy-line: a continuous taut line threads the four numbered nodes,
-     expressing the cap-coadă flow. Horizontal on desktop, vertical on mobile. */
-  .timeline {
-    position: relative;
-    display: grid;
-    gap: 2rem;
-  }
-  /* the connecting line — draws itself taut as the timeline scrolls in */
-  .timeline::before {
-    content: "";
-    position: absolute;
-    background: linear-gradient(
-      var(--tl-dir, 90deg),
-      var(--color-primary) 0%,
-      var(--color-accent) 100%
-    );
-    opacity: 0.55;
-    transform: scaleY(var(--tl-draw, 1));
-    transform-origin: top;
-  }
-  /* mobile: vertical line down the left gutter */
-  .timeline::before {
-    left: 1rem;
-    top: 0.6rem;
-    bottom: 0.6rem;
-    width: 2px;
-    --tl-dir: 180deg;
-  }
-  .js-reveal .timeline::before { --tl-draw: 0; }
-  .js-reveal .timeline.is-visible::before {
-    --tl-draw: 1;
-    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
-  }
-  .timeline__step { position: relative; padding-left: 3.5rem; }
-  .timeline__node {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.1rem;
-    height: 2.1rem;
-    border-radius: var(--radius-full);
-    background: var(--color-surface);
-    border: 2px solid var(--color-primary);
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: var(--color-primary);
-    font-variant-numeric: tabular-nums;
-  }
-  @media (min-width: 1024px) {
-    .timeline {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2.25rem;
-    }
-    .timeline::before {
-      left: 1.05rem;
-      right: 1.05rem;
-      top: 1.05rem;
-      bottom: auto;
-      width: auto;
-      height: 2px;
-      --tl-dir: 90deg;
-      transform: scaleX(var(--tl-draw, 1));
-      transform-origin: left;
-    }
-    .timeline__step { padding-left: 0; padding-top: 3.25rem; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .js-reveal .timeline::before,
-    .js-reveal .timeline.is-visible::before {
-      transform: none;
-      transition: none;
-    }
-  }
-
-  /* ---- Buttons -----------------------------------------------------------
-     The site has NO calls-to-action by design, so buttons are rare. These
-     exist for the few neutral text-links styled as buttons (e.g. "Înapoi la
-     site" on legal pages) and for any future need; they are NOT promoted. */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.01em;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1.5px solid transparent;
-    transition:
-      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .btn:active { transform: translateY(1px); }
-
-  .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-  }
-  .btn-primary:hover { background-color: var(--color-primary-hover); }
-
-  .btn-outline {
-    background-color: transparent;
-    color: var(--color-on-surface);
-    border-color: var(--color-outline);
-  }
-  .btn-outline:hover {
-    border-color: var(--color-on-surface);
-    background-color: var(--color-surface-container);
-  }
-  .btn-outline-inverse {
-    background-color: transparent;
-    color: var(--color-inverse-on-surface);
-    border-color: oklch(100% 0 0 / 0.32);
-  }
-  .btn-outline-inverse:hover {
-    border-color: var(--color-inverse-on-surface);
-    background-color: oklch(100% 0 0 / 0.08);
-  }
-
-  /* ---- Headings ----------------------------------------------------------- */
+  /* ---- type scale ------------------------------------------------------ */
   .heading-xl {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2.3rem, 5.5vw, 4rem);
-    line-height: 1.04;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
+    font-weight: 600;
+    font-size: clamp(2.35rem, 5.2vw, 3.9rem);
+    line-height: 1;
+    letter-spacing: -0.034em;
   }
   .heading-lg {
-    font-family: var(--font-display);
-    font-weight: 750;
-    font-size: clamp(1.85rem, 3.8vw, 2.8rem);
-    line-height: 1.08;
-    letter-spacing: -0.018em;
-    text-wrap: balance;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.028em;
   }
   .heading-md {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-    line-height: 1.15;
-    letter-spacing: -0.012em;
+    font-weight: 600;
+    font-size: clamp(1.05rem, 1.7vw, 1.2rem);
+    line-height: 1.25;
+    letter-spacing: -0.014em;
+  }
+  .lede {
+    font-size: clamp(1.02rem, 1.4vw, 1.12rem);
+    line-height: 1.62;
+    color: var(--color-ink-2);
+    max-width: 54ch;
+  }
+  .prose-measure { max-width: 68ch; }
+
+  /* ---- annotation ------------------------------------------------------ */
+  .callout-no {
+    display: inline-grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    flex: 0 0 auto;
+    border: 1.5px solid var(--color-signal);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-signal);
   }
 
-  /* ---- Wordmark -----------------------------------------------------------
-     Set in the slab display face, tight and grounded. The lowercase-friendly
-     slab gives Subcort a sturdy, sheltering signature. */
-  .wordmark {
-    font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1;
+  .datum-key {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+  .datum-value {
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Measurements are set in the mono face — this is a drawing, and the
+     numerals have to align down a column. */
+  .dim { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  /* ---- the title-block strip ------------------------------------------ */
+  .titleblock {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    border-top: 1.5px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-hair);
+    background: var(--color-fill-2);
+  }
+  .titleblock > div {
+    padding: 0.85rem 1.15rem;
+    border-right: 1px solid var(--color-hair);
+  }
+  .titleblock > div:last-child { border-right: 0; }
+  .titleblock dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+  .titleblock dd {
+    margin-top: 0.3rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
   }
 
-  /* ---- Card --------------------------------------------------------------
-     Used deliberately (tent sizes, services), never nested. Flat at rest:
-     warm-white-lifting-off-the-cream with a hairline, no resting shadow.
-     Mobile-first: a slightly tighter floor on small screens, opening up at
-     the sm breakpoint so reading width stays comfortable on phones. */
-  .card {
-    background-color: var(--color-surface-container-lowest);
-    border: 1px solid var(--color-outline-variant);
-    border-radius: var(--radius-lg);
-    padding: 1.35rem;
-  }
-  @media (min-width: 640px) {
-    .card { padding: 1.75rem; }
-  }
-  /* Lamp-lit card: the warm pool of lamplight applied to a feature card. A
-     gentle clay wash from the top edge plus a clay-tinted hairline, so the
-     card reads as canvas catching the lamp — used for the one feature card in
-     a set, not every card (that would flatten the warmth into noise). */
-  .card--lit {
-    background-image: linear-gradient(
-      180deg,
-      var(--glow-lamp-wash) 0%,
-      transparent 42%
-    );
-    border-color: oklch(72% 0.09 60 / 0.4);
-  }
+  /* ---- surfaces — flat; a drawing has no shadows, depth is line weight -- */
+  .panel { background: var(--color-paper); border: 1px solid var(--color-hair); }
+  .panel--fill { background: var(--color-fill-2); }
 
-  /* A quiet greige panel for grouping content (alternative to a card grid). */
-  .panel {
-    background-color: var(--color-surface-container);
-    border-radius: var(--radius-xl);
-  }
-
-  /* Small label chip (e.g. "inclus" / "opțional" on amenities). */
   .chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: var(--radius-full);
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    padding: 0.2rem 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    border: 1px solid currentColor;
   }
-  .chip-included {
-    background-color: var(--color-primary-container);
-    color: var(--color-on-primary-container);
-  }
+  .chip-included { color: var(--color-ink-2); }
   .chip-optional {
-    background-color: var(--color-accent-soft);
-    color: var(--color-on-accent-soft);
+    color: var(--color-on-signal-soft);
+    background: var(--color-signal-soft);
+    border-color: transparent;
   }
 
-  /* ---- Scroll reveal (visible by default; JS opts into hidden start; the
-     Base.astro failsafe guarantees it never ships blank). ------------------ */
-  .reveal { opacity: 1; transform: none; }
-  .js-reveal .reveal {
-    opacity: 0;
-    transform: translateY(14px);
+  /* ---- links ----------------------------------------------------------- */
+  .link-quiet {
+    display: inline-block;
+    padding-block: 0.2rem;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-soft);
+    transition: color 160ms ease-out, text-decoration-color 160ms ease-out;
+  }
+  .link-quiet:hover { color: var(--color-signal); text-decoration-color: currentColor; }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1.1rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    transition: border-color 160ms ease-out, color 160ms ease-out, background 160ms ease-out;
+  }
+  .btn-outline:hover {
+    border-color: var(--color-signal);
+    color: var(--color-signal);
+    background: var(--color-signal-soft);
+  }
+  .btn-outline:active { transform: translateY(1px); }
+}
+
+/* ==========================================================================
+   Motion
+   ========================================================================== */
+
+@layer utilities {
+  .js-reveal .reveal { opacity: 0; transform: translateY(9px); }
+  .js-reveal .reveal.is-visible {
+    opacity: 1;
+    transform: none;
     transition:
-      opacity 750ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .js-reveal .reveal.is-visible { opacity: 1; transform: translateY(0); }
   .js-reveal .reveal.reveal-now { transition: none; }
-
   @media (prefers-reduced-motion: reduce) {
-    .js-reveal .reveal,
-    .js-reveal .reveal.is-visible {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
+    .js-reveal .reveal { opacity: 1; transform: none; }
   }
 
-  /* ---- Gallery parallax --------------------------------------------------
-     A figure marked .parallax holds an over-tall image (scaled past its frame)
-     that drifts vertically as it crosses the viewport. The scroll script sets
-     `--py` (−1→1, centred when the tile is mid-viewport). Subtle: ±14px. The
-     image is 112% tall so the drift never exposes an edge. */
-  .parallax { overflow: hidden; }
-  .parallax > img {
-    height: 112%;
-    top: -6%;
-    transform: translate3d(0, calc(var(--py, 0) * 14px), 0);
-    will-change: transform;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .parallax > img { transform: none; height: 100%; top: 0; }
-  }
+  .tnum { font-variant-numeric: tabular-nums; }
 
-  /* ---- Mobile menu overlay (MobileMenu.tsx island) ----------------------- */
-  .mobile-menu {
-    background-color: var(--color-inverse-surface);
-    background-image: radial-gradient(
-      120% 90% at 100% 0%,
-      oklch(58% 0.12 55 / 0.28) 0%,
-      oklch(58% 0.12 55 / 0) 58%
-    );
-    box-shadow: 0 8px 50px -12px oklch(20% 0.04 155 / 0.6);
-    animation: mobile-menu-in 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .mobile-menu__link {
-    animation: mobile-menu-link-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(70ms + var(--i, 0) * 45ms);
-  }
-  @keyframes mobile-menu-in { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes mobile-menu-link-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-menu, .mobile-menu__link { animation: none; }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 }
 
-/* Utility: hide visually but keep for screen readers (skip link). */
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
+@layer components {
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--color-sheet) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease-out;
+  }
+  .nav[data-stuck] { border-bottom-color: var(--color-hair); }
+  .nav__inner {
+    height: var(--nav-h, 4.25rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .nav__word { font-weight: 700; font-size: 1.2rem; letter-spacing: -0.005em; color: var(--color-ink); }
+  .nav__links { display: none; gap: 1.85rem; }
+  @media (min-width: 880px) { .nav__links { display: flex; } }
+  .nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.95rem;
+    font-weight: 450;
+    color: var(--color-ink-2);
+    transition: color 160ms ease-out;
+  }
+  .nav__link:hover { color: var(--color-ink); }
+  .nav__link.is-current { color: var(--color-ink); font-weight: 600; }
+  .nav__link.is-current::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    bottom: calc(50% - 0.95rem);
+    height: 2px;
+    background: var(--color-signal);
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.5rem;
+    color: var(--color-ink);
+  }
+  @media (min-width: 880px) { .menu-btn { display: none; } }
+  .menu-btn__bars { display: grid; gap: 5px; width: 22px; }
+  .menu-btn__bars i {
+    display: block; height: 1.5px; background: currentColor;
+    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out;
+  }
+  .menu-btn__bars[data-open] i:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .menu-btn__bars[data-open] i:nth-child(2) { opacity: 0; }
+  .menu-btn__bars[data-open] i:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .menu-panel {
+    position: fixed;
+    inset: var(--nav-h, 4.25rem) 0 auto 0;
+    z-index: 55;
+    background: var(--color-sheet);
+    border-bottom: 1.5px solid var(--color-ink);
+    box-shadow: 0 18px 40px -26px oklch(29% 0.028 234 / 0.5);
+    padding: 0.25rem var(--sheet-pad) 1.25rem;
+  }
+  .menu-panel nav { display: grid; }
+  .menu-panel__link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.9rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hair);
+  }
+  .menu-panel__link:last-child { border-bottom: 0; }
+  .menu-panel__link span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--color-line);
+  }
+  .menu-panel__link[data-current],
+  .menu-panel__link[data-current] span { color: var(--color-signal); }
+}
+
+/* ==========================================================================
+   The scale plan (React island)
+   ========================================================================== */
+
+@layer components {
+  .scale { display: grid; gap: 1.75rem; align-items: start; }
+  @media (min-width: 900px) { .scale { grid-template-columns: 1.5fr 1fr; gap: 3rem; } }
+
+  .scale__plan { background: var(--color-paper); border: 1px solid var(--color-hair); padding: 0.6rem; }
+  .scale__svg { display: block; width: 100%; height: auto; }
+
+  .scale__pick { display: flex; flex-wrap: wrap; }
+  .scale__btn {
+    padding: 0.55rem 0.85rem;
+    margin: 0 -1px -1px 0;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--color-ink-2);
+    border: 1px solid var(--color-line-soft);
+    background: var(--color-paper);
+    transition: color 160ms ease-out, border-color 160ms ease-out, background 160ms ease-out;
+  }
+  .scale__btn:hover { color: var(--color-ink); border-color: var(--color-line); }
+  .scale__btn[data-on] {
+    color: #fff;
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+  }
+
+  .scale__data { margin-top: 1.5rem; border-top: 1.5px solid var(--color-ink); }
+  .scale__data > div {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--color-hair);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .scale__data .datum-value { font-size: 1.12rem; }
+  .scale__note { margin-top: 1.25rem; font-size: 0.92rem; line-height: 1.6; color: var(--color-ink-2); max-width: 42ch; }
 }

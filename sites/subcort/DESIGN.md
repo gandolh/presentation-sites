@@ -1,355 +1,299 @@
 ---
 name: Subcort
-description: Event-tent rental & setup in Gorj/Oltenia — calm, occasion-neutral; warm cream paper lit from within by a clay lamp glow, with a committed canopy green owning the dark anchors.
+description: Event-tent rental & setup in Gorj/Oltenia — the site as a drawing set. Every page is a numbered sheet, every graphic is a projection of one shared marquee model, and the object is drawn in ink while every annotation is orange.
 colors:
-  primary: "oklch(40% 0.085 150)"
-  primary-hover: "oklch(34% 0.08 150)"
-  primary-bright: "oklch(74% 0.1 148)"
-  primary-container: "oklch(93% 0.025 150)"
-  on-primary-container: "oklch(33% 0.07 150)"
-  accent: "oklch(58% 0.12 55)"
-  accent-hover: "oklch(52% 0.115 52)"
-  accent-bright: "oklch(76% 0.11 62)"
-  accent-soft: "oklch(92% 0.04 60)"
-  on-accent-soft: "oklch(40% 0.1 50)"
-  glow-lamp-strong: "oklch(72% 0.13 58 / 0.22)"
-  glow-lamp-soft: "oklch(66% 0.12 56 / 0.1)"
-  glow-lamp-wash: "oklch(80% 0.05 70 / 0.55)"
-  success: "oklch(56% 0.11 150)"
-  error: "oklch(55% 0.19 27)"
-  background: "oklch(97.4% 0.013 84)"
-  surface-container-lowest: "oklch(99.4% 0.006 88)"
-  surface-container-low: "oklch(96.2% 0.015 82)"
-  surface-container: "oklch(94.4% 0.019 80)"
-  surface-container-high: "oklch(92.2% 0.022 78)"
-  surface-container-highest: "oklch(89.4% 0.025 74)"
-  on-surface: "oklch(26% 0.022 150)"
-  on-surface-variant: "oklch(43% 0.02 148)"
-  outline: "oklch(62% 0.018 95)"
-  outline-variant: "oklch(87% 0.016 88)"
-  inverse-surface: "oklch(25.5% 0.046 152)"
-  inverse-surface-2: "oklch(30% 0.052 152)"
-  inverse-on-surface: "oklch(96% 0.01 92)"
-  inverse-on-surface-variant: "oklch(81% 0.022 105)"
+  ink: "oklch(29% 0.028 234)"
+  ink-2: "oklch(48% 0.024 233)"
+  line: "oklch(52% 0.026 234)"
+  line-soft: "oklch(76% 0.017 233)"
+  hair: "oklch(90.5% 0.006 230)"
+  signal: "oklch(52.5% 0.152 40)"
+  signal-hover: "oklch(47% 0.145 39)"
+  signal-soft: "oklch(95% 0.022 45)"
+  on-signal-soft: "oklch(44% 0.14 39)"
+  sheet: "oklch(98.6% 0.002 90)"
+  paper: "oklch(100% 0 0)"
+  fill: "oklch(94.5% 0.004 233)"
+  fill-2: "oklch(96.6% 0.003 233)"
+  success: "oklch(52% 0.1 155)"
+  error: "oklch(52% 0.17 28)"
 typography:
   display:
-    fontFamily: "Bitter Variable, Georgia, serif"
-    fontSize: "clamp(2.3rem, 5.5vw, 4rem)"
-    fontWeight: 800
-    lineHeight: 1.04
-    letterSpacing: "-0.02em"
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "clamp(2.35rem, 5.2vw, 3.9rem)"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.034em"
   headline:
-    fontFamily: "Bitter Variable, Georgia, serif"
-    fontSize: "clamp(1.85rem, 3.8vw, 2.8rem)"
-    fontWeight: 750
-    lineHeight: 1.08
-    letterSpacing: "-0.018em"
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.028em"
   title:
-    fontFamily: "Bitter Variable, Georgia, serif"
-    fontSize: "clamp(1.3rem, 2.5vw, 1.7rem)"
-    fontWeight: 700
-    lineHeight: 1.15
-    letterSpacing: "-0.012em"
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "clamp(1.05rem, 1.7vw, 1.2rem)"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.014em"
+  contact:
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "clamp(1.12rem, 2vw, 1.45rem)"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.02em"
+  lede:
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "clamp(1.02rem, 1.4vw, 1.12rem)"
+    fontWeight: 400
+    lineHeight: 1.62
+    letterSpacing: "normal"
   body:
-    fontFamily: "Mulish Variable, system-ui, sans-serif"
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "normal"
-  label:
-    fontFamily: "Mulish Variable, system-ui, sans-serif"
+  body-sm:
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "0.93rem"
+    fontWeight: 400
+    lineHeight: 1.55
+    letterSpacing: "normal"
+  small:
+    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
+    fontSize: "0.87rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "normal"
+  plate-no:
+    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
     fontSize: "0.78rem"
-    fontWeight: 700
+    fontWeight: 500
+    lineHeight: 1.4
+    letterSpacing: "0.09em"
+  datum-key:
+    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
+    fontSize: "0.7rem"
+    fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: "0.13em"
+    letterSpacing: "0.1em"
+  dimension:
+    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
+    fontSize: "1.05rem"
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: "normal"
 rounded:
-  sm: "0.25rem"
-  md: "0.625rem"
-  lg: "0.875rem"
-  xl: "1.25rem"
-  full: "9999px"
+  sm: "0px"
+  md: "2px"
+  pill: "999px"
 components:
-  card:
-    backgroundColor: "{colors.surface-container-lowest}"
-    textColor: "{colors.on-surface}"
-    rounded: "{rounded.lg}"
-    padding: "1.35rem (mobile) → 1.75rem (≥640px)"
-  card-lit:
-    backgroundImage: "linear-gradient(180deg, {colors.glow-lamp-wash} 0%, transparent 42%)"
-    borderColor: "oklch(72% 0.09 60 / 0.4)"
-    note: "The one lamp-lit feature card in a set — warm clay wash from the top edge."
-  lamp-glow:
-    background: "radial pool of {colors.glow-lamp-strong} → {colors.glow-lamp-soft} → transparent"
-    note: "A soft pool of lamplight behind a light section's content; breathes, frozen under reduced-motion."
+  plate-head:
+    display: "grid"
+    columns: "11rem minmax(0, 1fr) ≥900px"
+    borderTop: "1.5px solid {colors.ink}"
+    note: "Plate number left, content right. The page spine; nothing is centred."
+  titleblock:
+    borderTop: "1.5px solid {colors.ink}"
+    backgroundColor: "{colors.fill-2}"
+    note: "The band of key dimensions along the foot of a drawing."
+  callout-no:
+    size: "1.65rem"
+    border: "1.5px solid {colors.signal}"
+    rounded: "{rounded.pill}"
+    note: "The numbered circle. The one round thing in the system, because a drawing callout is round."
+  dimbar:
+    note: "A dimension line with tick terminators, sized to the value. Replaces the progress bar."
   panel:
-    backgroundColor: "{colors.surface-container}"
-    rounded: "{rounded.xl}"
+    backgroundColor: "{colors.paper}"
+    border: "1px solid {colors.hair}"
+    note: "Flat. A drawing has no shadows — depth is line weight."
   chip-included:
-    backgroundColor: "{colors.primary-container}"
-    textColor: "{colors.on-primary-container}"
-    rounded: "{rounded.full}"
+    textColor: "{colors.ink-2}"
+    border: "1px solid currentColor"
+    rounded: "{rounded.sm}"
   chip-optional:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.on-accent-soft}"
-    rounded: "{rounded.full}"
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.md}"
-    padding: "0.85rem 1.5rem"
+    backgroundColor: "{colors.signal-soft}"
+    textColor: "{colors.on-signal-soft}"
+    rounded: "{rounded.sm}"
+  btn-outline:
+    border: "1px solid {colors.line}"
+    rounded: "{rounded.sm}"
+    padding: "0.7rem 1.1rem"
+    note: "Neutral utility links only — never a conversion CTA."
 ---
 
 # Design System: Subcort
 
 ## 1. Overview
 
-**Creative North Star: "Warm cream + lamp, dark anchors."**
+**Creative North Star: "Montaj" — the site is a drawing set.**
 
-A large canvas structure pitched on a grassy field as the light goes, warm from
-within — but read by **daylight**. The page body is **warm cream paper lit from
-within**: a deep canopy green still owns the structural *anchors* (the hero, the
-footer, the subpage headers, the coverage band) as lit-tent ends at dusk, and the
-warm clay **lamp glow** is the connective warmth threading the light body between
-those dark ends. The system feels **calm, square, and dependable** — a crew that
-has pitched a hundred of these and will quietly handle yours.
+Subcort's product is not a tent; it is an *erection*. Somebody arrives with a
+structure, puts it up on your ground exactly to plan, and takes it away again.
+The artifact that already exists between a crew and a client for that work is a
+**drawing**: an exploded axonometric showing what the thing is made of, with
+numbered callouts, dimension lines and a title block.
 
-The palette is that scene by day: warm cream paper for the open air (warmer than
-the old near-white off-white, but still genuinely light and daylight-readable —
-warm paper, not a heavy sand and not a dark theme), a deep canopy green that is
-the tent itself and carries the brand on the dark anchors, and one warm clay
-accent doing the work of the lamp glowing through the canvas — now on the light
-body too, not only inside the dark anchors.
-
-The signature is the **guy-line**: a thin two-tone bar, canopy green easing into
-warm clay, like a taut tent line catching the last light. It serves as a section
-divider, the mark beside the wordmark, and a hero edge. It is a gradient on a
-background bar, never on text and never as a side-border. Its companion is the
-**lamp glow** (`.lamp-glow` / `.card--lit`): a soft pool of lamplight behind a
-feature section or the one lit card in a set — the clay doing real work on the
-cream, never a loud SaaS gradient blob.
-
-This system explicitly rejects the **festive party-rental skin** (confetti,
-gold-glitter, a dancing-couple hero), the **cheap classifieds listing** (clutter,
-watermarked phone photos, all-caps price shouting), the **generic SaaS landing**
-(hero-metric template, identical icon-card grids, gradient blobs, buzzword copy),
-and the **forest-green-on-cream "natural brand" cliché** (a timid sage accent
-floating on cream). Here the green *commits*: it owns the hero, the footer, and
-the structural anchors, instead of hovering as a polite accent.
+So the site is that drawing set. Every page is a numbered sheet. Every graphic
+is a projection of one shared model — the marquee Subcort actually rents — and
+that model lives in exactly one place, [`src/lib/draft.ts`](src/lib/draft.ts).
+The hero renders it in WebGL; the exploded plate, the scale plan and the OG card
+render it as deterministic SVG at build time.
 
 **Key characteristics:**
-- Warm cream paper body, daylight-readable, with a committed canopy green owning
-  the dark anchors and one warm clay (the lamp glow) as the single companion
-  accent. No third hue.
-- The lamp glow is a first-class primitive (`--glow-lamp-*`), doing real work on
-  the light body — soft glow pools behind feature content, a warm wash on the one
-  lit card in a set — not just light inside the dark anchors.
-- Green-leaning graphite ink that carries the canopy hue without going cold,
-  clearing WCAG AA on every surface (including the warmer cream).
-- A sturdy warm **slab serif** headline (Bitter) against a calm humanist **sans**
-  body (Mulish): grounded and sheltering, not festive-script, not editorial-italic.
-- Flat at rest: warm greige panels and hairlines build depth, not resting shadows.
-- Soft-but-square radii (0.25–1.25rem): grounded, never pill-soft, never sharp.
-- **Mobile-first**: layouts stack and breathe on phones first, then open up at the
-  breakpoints (cards take a tighter padding floor on small screens).
+- One model, drawn many ways. The 3D hero and the SVG plate are the *same
+  object* rendered twice, and they must always agree.
+- **The object is ink; every annotation is orange.** No exceptions — see the
+  Annotation Rule below.
+- Light throughout: a near-white sheet, no dark surfaces anywhere.
+- **IBM Plex Sans** for language, **IBM Plex Mono** for every measurement.
+- Flat. A drawing has no shadows; depth is line weight.
+- Square corners everywhere except the callout circle.
 - **No calls-to-action anywhere.** The site informs and steps back.
 
 ## 2. Colors
 
-A **warm cream paper** base carrying one committed canopy green on the dark
-anchors, with a warm clay (the lamp glow) as the sole companion accent doing real
-work on the light body. Strategy: **Committed + lamp-lit** — green carries the
-page anchors (hero, footer, subpage headers, coverage band ≈ 30–45% of the
-surface), and the clay glow threads the warm-cream body between them.
+### Ink — the object
+- **Ink** `oklch(29% 0.028 234)` — body copy, headings, and the structural
+  members of the frame, which are drawn heaviest because they *are* the object.
+- **Line** `oklch(52% 0.026 234)` — envelope outlines and panel edges.
+- **Line-soft** `oklch(76% 0.017 233)` — extension lines, deck boards, the
+  bare track of a dimension bar.
+- **Hair** `oklch(90.5% 0.006 230)` — table rules and cell borders.
 
-### Primary
-- **Canopy Green** (`oklch(40% 0.085 150)`): The committed brand colour. Carries
-  the dark hero/footer surface, the wordmark, focus rings, link emphasis, and the
-  green end of the guy-line. Deep and muted, so white text clears AA (~7.4:1).
-  **Hover** `oklch(34% 0.08 150)`.
-- **Bright Green** (`oklch(74% 0.1 148)`): Links and accents **on dark surfaces
-  only** (hero, footer), where Canopy Green would fail contrast.
-- **Green Tint** (`oklch(93% 0.025 150)`): Pale wash for the "inclus" chips and
-  quiet panels; pairs with `oklch(33% 0.07 150)` ink.
+### The annotation layer
+- **Signal** `oklch(52.5% 0.152 40)` — callout circles and leaders, dimension
+  values, plate numbers, step numbers, the ridge line, the current nav item, the
+  active format, the focus ring. Darkened from the comp's brighter orange so it
+  clears AA as text at 0.7rem; a deeper burnt orange is closer to real drafting
+  red anyway.
 
-### Accent
-- **Warm Clay** (`oklch(58% 0.12 55)`): The single companion hue, the lamp glow
-  through the canvas. Distinct from green in both hue (~55°) and lightness. White
-  text on the filled accent clears AA (~4.6:1). Used for the clay end of the
-  guy-line, "opțional" chips (soft variant), and small warm highlights. **Hover**
-  `oklch(52% 0.115 52)`; **Bright** `oklch(76% 0.11 62)` on dark surfaces.
+### The sheet
+- **Sheet** `oklch(98.6% 0.002 90)` — the paper.
+- **Paper** `#fff` — plan panels and cards, lifting off the sheet.
+- **Fill / Fill-2** — panel washes and the title-block band.
 
-### Lamp Glow (the connective warmth on the light body)
-The clay made into a soft pool of lamplight on the warm-cream body — the signature
-of this direction. Authored as translucent clay so it layers over any warm surface
-and stays subtle in daylight; never a loud, hard-edged SaaS gradient blob.
-- **Glow Strong** (`oklch(72% 0.13 58 / 0.22)`): the core of a glow halo.
-- **Glow Soft** (`oklch(66% 0.12 56 / 0.1)`): the halo falloff.
-- **Glow Wash** (`oklch(80% 0.05 70 / 0.55)`): the warm top-edge wash on a lit card.
+### Named rules
 
-### Neutral
-- **Warm Cream** (`oklch(97.4% 0.013 84)`): Page background. Warm paper lit from
-  within — warmer than the old near-white off-white, but chroma still low enough to
-  read as warm paper, not sand, and to clear AA under all ink.
-- **Warm White** (`oklch(99.4% 0.006 88)`): Card and input fill, lifting off the base.
-- **Warm Greige Ramp** (`oklch(96.2% → 89.4%`, low → highest, hue ~74–82): Tonal
-  panels; this ramp does the work shadows would, warming with the base.
-- **Graphite-Green Ink** (`oklch(26% 0.022 150)`): Body and headings. **Secondary
-  ink** `oklch(43% 0.02 148)` (still ≥4.5:1).
-- **Outline** (`oklch(62% 0.018 95)`) and **Warm Hairline** (`oklch(87% 0.016 88)`):
-  warmed a touch so they sit on the cream rather than reading cool-grey on it.
-- **Deep Canopy** (`oklch(25.5% 0.046 152)`): Inverse surface for the dark anchors
-  (hero, footer, page headers, coverage band, mobile menu); deepened and warmed
-  toward the lamp so the clay glow inside it reads as genuine warm light. Warm
-  near-white ink reverses onto it.
+**The Annotation Rule.** Everything that *is the object* is drawn in ink and
+line. Everything the draughtsman *added on top* — callouts, leaders, dimensions,
+the ridge highlight, state — is orange. This is the whole colour system, and it
+is a semantic rule, not a palette preference. Never fill a surface with orange,
+and never draw a structural member in it.
 
-### Named Rules
-**The One Green Rule.** A single committed green carries the identity (dark
-surfaces, links, focus, primary fills). On light surfaces use Canopy Green; on
-dark surfaces switch to Bright Green for contrast. Warm Clay is the *one*
-sanctioned companion; introduce no third accent hue. Green carries the structure,
-clay carries the warmth, neutrals carry everything else.
+**The Light-Sheet Rule.** The sheet is near-white and stays that way, from the
+masthead to the ANPC line. There are no dark surfaces in this system.
 
-**The Committed-Green Rule.** Green must own real surface (the hero, footer, and
-subpage headers are deep canopy green), not float as a polite sage accent on a
-cream page. If the green only appears in small accents while the page reads cream,
-the brand has collapsed into the cliché it rejects.
-
-**The Lamp-Does-Work Rule.** The clay is not a timid trim — it is the lamp, and the
-lamp lights the room. On the warm-cream body it appears as the glow pool behind a
-feature section and the wash on the one lit card per set; inside the dark anchors
-it is the warm light within. Keep it soft and used sparingly (one lit element per
-section): a hard, saturated gradient blob would collapse into the generic-SaaS
-look the system rejects.
+**The One-Model Rule.** Every drawing on the site comes from `marquee()` in
+`draft.ts`. If the hero and the plate ever disagree about the tent, the bug is
+that something drew its own geometry.
 
 ## 3. Typography
 
-**Display Font:** Bitter Variable (slab serif; Georgia, serif fallback)
-**Body Font:** Mulish Variable (humanist sans; system-ui fallback)
+**IBM Plex Sans** (variable) and **IBM Plex Mono**, self-hosted via fontsource —
+no Google Fonts CDN, so no visitor IPs leave for Google. Plex draws the Romanian
+comma-below diacritics (ș ț) correctly, which many grotesques do not.
 
-**Character:** A contrast pairing on the serif/sans axis. Bitter is a sturdy,
-warm slab serif designed for screens, its square slabs read as *structural and
-sheltering* (the right register for a tent), and it sidesteps both the festive
-script and the editorial-italic-serif lane. Mulish is a calm, rounded humanist
-sans, the even, reassuring voice that explains the logistics. Both are
-self-hosted (no Google Fonts CDN) and carry latin-ext for Romanian diacritics
-(ă â î ș ț).
+The mono face is not a costume for "technical": it is used **only for
+measurement and register** — dimensions, capacities, areas, plate numbers,
+sheet codes, datum keys. Prose is never set in it.
 
-### Hierarchy
-- **Display** (`heading-xl`, weight 800, `clamp(2.3rem, 5.5vw, 4rem)`, lh 1.04,
-  tracking -0.02em): The hero headline. One per page. Max ≈64px, never shouting.
-- **Headline** (`heading-lg`, weight 750, `clamp(1.85rem, 3.8vw, 2.8rem)`):
-  Section headings.
-- **Title** (`heading-md`, weight 700, `clamp(1.3rem, 2.5vw, 1.7rem)`): Card and
-  sub-section titles.
-- **Body** (Mulish, weight 400, 1rem, lh 1.6): Running copy. Cap measure 65–75ch.
-- **Eyebrow** (Mulish, weight 700, 0.78rem, tracking 0.13em, UPPERCASE): Short
-  kickers paired with the guy-line. Hero + at most one section, never every one.
+The ramp, and nothing off it: **3.9/2.35 → 2.6/1.8 → 1.45 → 1.2 → 1.12 → 1 →
+0.93 → 0.87 → 0.78 → 0.7 rem.**
 
-### Named Rule
-**The Grounded-Head, Even-Body Rule.** Headings are the sturdy slab set tight and
-heavy for a sheltering, structural feel; body stays even and open at 1.6 for
-calm legibility. The serif/sans contrast is the system; never set headings in the
-body sans or body in the slab.
+### Named rule
+**The Measurement-in-Mono Rule.** If it is a number with a unit, or a code that
+identifies a sheet, it is set in Plex Mono with tabular figures so it aligns
+down a column. If it is language, it is set in Plex Sans.
 
-## 4. Elevation
+## 4. Layout
 
-Flat by default, depth from the warm greige ramp. Surfaces are flat at rest; depth
-is built from the warm-greige tonal ramp and 1px hairlines, not resting drop
-shadows. The lamp glow is *atmosphere*, not elevation — a translucent pool behind
-content, it never substitutes for a card's flat-at-rest hairline. A shadow appears
-only as a soft, tinted lift tied to **state** (focus ring, the open mobile menu),
-never a generic gray ambient shadow on a flat card.
+### The sheet
+`.sheet` is the page container: 84rem max, padded by `--sheet-pad`.
 
-### Named Rule
-**The Flat-By-Default Rule.** A card or panel at rest has a hairline border and a
-tonal background, never a resting shadow. A gray ambient shadow on a flat card is
-forbidden; it reads as a 2014 app.
+### The plate
+Every section is a `.plate` opened by a `.plate-head`: a 1.5px ink rule, the
+plate number and note in an 11rem left column, the content in the right. One
+asymmetric rule, applied everywhere, stacking on phones.
 
-## 5. Components
+### Named rules
+**The Numbered-Register Rule.** Section numbers are legitimate here and nowhere
+else on any sibling site: a drawing set *is* a numbered register, and the reader
+navigates it by number. `01 · Alcătuire`, `02 · Execuție`, `01.1 · Plan`. The
+navigation, the mobile menu and the footer all carry the same numbers.
 
-The component feel is **calm and grounded**: soft-but-square radii, even weight,
-solid panels, generous whitespace. Nothing pill-soft, nothing festive.
+**The Uncentred Rule.** Nothing on this site is centre-aligned. The plate-head
+grid is the spine.
 
-### The Guy-Line + Lamp Glow (signature components)
-- **Guy-line:** a thin two-tone bar, Canopy Green → Warm Clay, `rounded.full`.
-  Default 3px × 60px as a divider or wordmark mark; `--full` becomes a 4px
-  full-width square-edged section break; `--bright` swaps to the brighter ends for
-  placement on dark canopy surfaces. Never on text, never a side-border.
-- **Lamp glow** (`.lamp-glow` on a section, `.card--lit` on a card): the clay made
-  into a soft pool of lamplight on the warm-cream body. Put `.lamp-glow` on a
-  `position: relative; overflow: clip` section (a single warm pool top-right, or
-  `--center` behind a centred block); `.card--lit` gives the one feature card a
-  warm top-edge wash and a clay-tinted hairline. Both breathe on the hero's cadence
-  and are frozen under reduced-motion. One lit element per section — never every card.
+## 5. Elevation
 
-### Cards / Panels
-- **Cards** (`.card`): Warm White, `rounded.lg`, 1px warm hairline. Mobile-first
-  padding: 1.35rem on phones, opening to 1.75rem at ≥640px. No resting shadow. Used
-  for tent sizes and services; never nested.
-- **Lit cards** (`.card--lit`): a `.card` with the lamp-glow wash and clay hairline —
-  the one feature card in a set (the "incluse" teaser, the "prin parteneri" note,
-  the leading tent size, the contact "Program" aside).
-- **Panels** (`.panel`): Warm greige `surface-container`, `rounded.xl` — a quiet
-  grouping container, an alternative to a card grid.
-- **Chips** (`.chip-included` / `.chip-optional`): Tiny uppercase pills. Included
-  = green tint; optional = soft clay.
+Flat. Surfaces at rest have a 1px hairline and a tonal fill, never a resting
+shadow — a drawing has no shadows, and depth is carried by line weight (frame
+1.6px ink, envelope 1.1px line, extension 0.7px line-soft). The single shadow in
+the system belongs to the open mobile menu, bound to a state.
 
-### Buttons (rare by design)
-The site has **no calls-to-action**, so buttons barely appear. `.btn-primary`
-(Canopy Green fill, white label), `.btn-outline`, and `.btn-outline-inverse`
-exist for neutral utility links (e.g. "Înapoi la site" on legal pages). They are
-never promoted as conversion CTAs. 200ms ease-out; `:active` presses 1px.
+## 6. Motion
 
-### Navigation
-- **Style:** Sticky top bar. **Over the dark hero** (home) it is transparent with
-  warm near-white wordmark + links. **Once scrolled** (or on any solid subpage) it
-  gains a warm-cream backdrop (`oklch(97.4% 0.013 84 / 0.86)` + blur) and a bottom
-  hairline; text flips to graphite-green ink. A small guy-line sits by the
-  wordmark.
-- **Mobile:** A burger opens a deep-canopy overlay (React island) with a warm clay
-  radial wash and staggered link entrance (45ms apart), honouring reduced-motion.
-- **No call/WhatsApp button in the bar** — unlike the sibling sites, by design.
+**One authored moment per page.**
 
-### Scroll Reveal (signature behavior)
-Content is visible by default; JS opts into a hidden start (`opacity:0`,
-`translateY(14px)`) and reveals on scroll via IntersectionObserver, with a 2.5s
-hard failsafe that force-reveals everything so the page never ships blank to
-crawlers, link-preview bots, or throttled tabs. Suppressed under
-`prefers-reduced-motion`.
+- **The hero assembly** (home): the layers start separated in the vertical,
+  exactly as the plate draws them, and settle into the finished structure —
+  which is literally the service. anime.js drives a plain state object; the
+  Three.js scene maps it onto geometry. The rAF loop stops when the hero leaves
+  the viewport.
+- **The scale plan** (`/corturi`): one spring carries the format index and a
+  subscriber writes the SVG geometry attributes directly. *Motion reads `x`/`y`
+  as transform shorthands, so animating SVG geometry through props silently does
+  nothing* — hence the imperative write.
+- **Scroll reveal**: visible by default; JS opts into the hidden start, with a
+  2.5s failsafe so nothing ships blank to a crawler.
 
-## 6. Do's and Don'ts
+`prefers-reduced-motion` is honoured throughout, and it also means **Three.js is
+never downloaded** — the visitor keeps the isometric still, which is real markup
+in the HTML. The same is true with no JS or no WebGL.
 
-### Do:
-- **Do** let the green commit: the hero, footer, and subpage headers are deep
-  canopy green, green owns the page anchors (the Committed-Green Rule).
-- **Do** let the lamp do work: a soft glow pool behind a feature section and a wash
-  on the one lit card per set, so the clay reads as lamplight on the cream (the
-  Lamp-Does-Work Rule). Keep it soft and one element per section.
-- **Do** keep the guy-line green→clay, as a divider / wordmark mark / hero edge
-  only; never on text, never a side-border.
-- **Do** stay occasion-neutral and calm in copy and imagery (empty, prepared
-  tents), so the site honestly serves a wedding and a memorial alike.
-- **Do** set the sturdy slab headline tight against the even humanist body, and
-  cap body measure at 65–75ch.
-- **Do** design mobile-first: stack and breathe on phones first, then open up at
-  the breakpoints (cards take a tighter padding floor on small screens).
-- **Do** keep surfaces flat at rest with warm hairlines and the warm greige ramp;
-  hold WCAG 2.2 AA on every text/background pair, including the warmer cream.
+## 7. The drawing engine
 
-### Don't:
+[`src/lib/draft.ts`](src/lib/draft.ts) owns the model and the annotation
+primitives:
+
+- `marquee(spec)` — the structural members and envelope panels of a gable
+  marquee, in metres. One source of truth.
+- `isometric()` — true isometric projection (no perspective), the projection a
+  real assembly drawing uses.
+- `tone(quad)` — flat tonal shading from a fixed high-left sun, used by *both*
+  the SVG plate and the WebGL hero so they match.
+- `dimension(from, to, label)` — a dimension line with 45° tick terminators and
+  the value sitting on the line.
+- `callout(n, anchor, at, label)` — the numbered circle on a dashed leader.
+
+**To add a drawing:** project `marquee()` through `isometric()`. Do not
+hand-author geometry.
+
+## 8. Do's and Don'ts
+
+### Do
+- **Do** keep the object in ink and every annotation in orange.
+- **Do** derive every drawing from `marquee()` in `draft.ts`.
+- **Do** set measurements in Plex Mono and language in Plex Sans.
+- **Do** number the plates, and keep the numbers in a drawing's key identical to
+  the callout numbers on the drawing itself.
+- **Do** compute a drawing's viewBox from its geometry, so it can never grow out
+  of its box (see `ExplodedPlate.astro`).
+- **Do** keep surfaces flat; carry depth in line weight.
+- **Do** hold WCAG 2.2 AA, and give interactive targets a real box
+  (`padding-block` does not lay out on an inline element).
+
+### Don't
 - **Don't** add calls-to-action: no quote form, no booking widget, no sticky
-  call/WhatsApp bar, no "Cere ofertă" buttons. The site informs and steps back.
-- **Don't** collapse into **forest-green-on-cream**: no timid sage accent floating
-  on the page. Green commits on the anchors and the clay lamp does real work; the
-  cream is warm paper *lit from within*, not a passive backdrop.
-- **Don't** turn the lamp glow into a hard, saturated SaaS **gradient blob**, and
-  don't drift the cream so warm it reads as sand or so dark it stops being a
-  daylight-readable light theme.
-- **Don't** look **festive** (confetti, gold glitter, a celebration hero) or like
-  a **cheap classifieds listing** (clutter, watermarked photos, all-caps prices).
-- **Don't** introduce a third accent hue beyond green and clay (the One Green
-  Rule); never use Canopy Green as text on a dark surface (use Bright Green).
-- **Don't** put a gray ambient drop shadow on a flat card, and don't add an
-  uppercase eyebrow above every section.
-- **Don't** use light-gray body text for "elegance"; the graphite-green ink is
-  chosen so nothing falls below contrast.
+  call bar. The site informs and steps back.
+- **Don't** introduce a dark surface anywhere.
+- **Don't** fill a surface with the signal orange, or draw structure in it.
+- **Don't** set prose in the mono face.
+- **Don't** put an uppercase tracked-out eyebrow above a heading — the plate
+  number is a sibling in the left column, not a hat.
+- **Don't** centre a section.
+- **Don't** add a resting shadow to a flat surface.
+- **Don't** animate SVG geometry through Motion props (see §6).

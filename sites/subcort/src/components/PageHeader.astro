@@ -1,35 +1,18 @@
 ---
-// Compact dark page header for subpages (which have no hero). Carries the page
-// <h1> and sits directly under the solid nav, echoing the hero's deep-canopy
-// surface and guy-line so the brand reads continuous across routes.
-interface Props {
-  eyebrow: string;
-  title: string;
-  lead?: string;
-}
-
-const { eyebrow, title, lead } = Astro.props;
+// A sheet header: the plate number and scale on the left, the title on the
+// right. Every subpage opens with one, so the set reads as a set.
+interface Props { title: string; lead?: string; plate: string; scale?: string }
+const { title, lead, plate, scale } = Astro.props;
 ---
 
-<section class="hero-grain relative overflow-hidden bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]">
-  <!-- a soft clay lamp-glow in the corner, echoing the hero's blue-hour warmth.
-       It breathes on the same cadence as the home hero (motion-gated in CSS). -->
-  <span class="page-header-glow" aria-hidden="true"></span>
-  <div class="container-page relative pt-12 pb-12 md:pt-16 md:pb-16">
-    <div class="reveal flex items-center gap-3">
-      <span class="guyline guyline--bright" aria-hidden="true"></span>
-      <span class="eyebrow text-[var(--color-inverse-on-surface-variant)]">{eyebrow}</span>
+<header class="sheet plate--tight">
+  <div class="plate-head">
+    <p class="plate-no">
+      Planșa {plate}{scale && <><br />{scale}</>}
+    </p>
+    <div>
+      <h1 class="heading-xl max-w-[17ch]">{title}</h1>
+      {lead && <p class="lede mt-6">{lead}</p>}
     </div>
-    <h1 class="reveal heading-xl mt-4 !text-[clamp(2rem,5vw,3.25rem)] text-[var(--color-inverse-on-surface)]">
-      {title}
-    </h1>
-    {
-      lead && (
-        <p class="reveal mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-inverse-on-surface-variant)]">
-          {lead}
-        </p>
-      )
-    }
   </div>
-  <span class="guyline guyline--bright guyline--full absolute inset-x-0 bottom-0 opacity-60" aria-hidden="true"></span>
-</section>
+</header>

@@ -1,0 +1,17 @@
+---
+// One numbered plate in the set: a rule, the number and title in the left
+// column, the content in the right. This is the page spine — nothing on the
+// site is centred.
+interface Props { no: string; title?: string; note?: string; tight?: boolean }
+const { no, title, note, tight = false } = Astro.props;
+---
+
+<section class:list={["sheet", tight ? "plate--tight" : "plate"]}>
+  <div class="plate-head">
+    <p class="plate-no">{no}{note && <><br />{note}</>}</p>
+    <div>
+      {title && <h2 class="heading-lg max-w-[20ch]">{title}</h2>}
+      <slot />
+    </div>
+  </div>
+</section>

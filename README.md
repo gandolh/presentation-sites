@@ -25,8 +25,11 @@ presentation-sites/
   service in Târgu-Jiu (Astro, static). Deploy sub-path `/auto-service`. See
   [sites/auto-service/README.md](sites/auto-service/README.md).
 - **[sites/subcort/](sites/subcort/)** — Subcort, a demo event-tent rental site for
-  Gorj/Oltenia (Astro + React + Tailwind v4, static). Deploy sub-path
-  `/subcort`. See [sites/subcort/README.md](sites/subcort/README.md).
+  Gorj/Oltenia (Astro + React + Tailwind v4, static). Built as a drawing set:
+  one marquee model drives a Three.js hero that assembles itself, an exploded
+  axonometric plate and a scale plan. Ships no photography.
+  Deploy sub-path `/subcort`.
+  See [sites/subcort/README.md](sites/subcort/README.md).
 - **[sites/tractari/](sites/tractari/)** — AXA Tractări, a demo car-towing site for Oltenia
   (Astro + React + Tailwind v4, static). Minimalist, with a Three.js hero scene
   of a tow truck driving a night road. Deploy sub-path `/tractari`. See

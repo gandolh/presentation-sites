@@ -1,0 +1,231 @@
+---
+/*
+  The instrument. Rendered as static SVG on the server so the dial is fully
+  drawn before a single byte of JS arrives; anime.js only takes the needle for
+  the ignition sweep (Hero.astro), and under reduced-motion it never moves.
+*/
+interface Props {
+  size?: number;
+  max?: number;
+  value?: number;
+  redline?: number;
+  unit?: string;
+  /** Two short lines for the dot-matrix window inside the dial. */
+  obc?: [string, string];
+  id?: string;
+  class?: string;
+  /** A small shoulder dial has no window and coarser ticks. */
+  compact?: boolean;
+  label?: string;
+}
+const {
+  size = 470,
+  max = 8,
+  value = 0.82,
+  redline = 6.5,
+  unit = "1/min x1000",
+  obc,
+  id = "gauge",
+  class: className = "",
+  compact = false,
+  label,
+} = Astro.props;
+
+const C = size / 2;
+const R = C - 19;
+const A0 = compact ? -120 : -125;
+const A1 = compact ? 120 : 125;
+
+const polar = (r: number, deg: number) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return [C + r * Math.cos(a), C + r * Math.sin(a)] as const;
+};
+const arc = (r: number, a0: number, a1: number) => {
+  const [x0, y0] = polar(r, a0);
+  const [x1, y1] = polar(r, a1);
+  return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+};
+
+const tR = R - (compact ? 16 : 30);
+const step = compact ? 1 : 0.25;
+const ticks: {
+  x1: number; y1: number; x2: number; y2: number;
+  major: boolean; red: boolean;
+}[] = [];
+const numerals: { x: number; y: number; v: number; red: boolean }[] = [];
+
+for (let i = 0; i <= Math.round(max / step); i++) {
+  const v = +(i * step).toFixed(4);
+  if (v > max) break;
+  const ang = A0 + (A1 - A0) * (v / max);
+  const major = Math.abs(v - Math.round(v)) < 0.001;
+  const red = !compact && v >= redline;
+  const len = major ? (compact ? 11 : 19) : compact ? 6 : 9;
+  const [x1, y1] = polar(tR, ang);
+  const [x2, y2] = polar(tR - len, ang);
+  ticks.push({ x1, y1, x2, y2, major, red });
+  if (major && !compact) {
+    const [nx, ny] = polar(tR - 42, ang);
+    numerals.push({ x: nx, y: ny + 11, v, red });
+  }
+}
+
+const needleAngle = A0 + (A1 - A0) * (value / max);
+const needleLen = R - (compact ? 26 : 38);
+const halfW = compact ? 3 : 5.5;
+const tipW = compact ? 1.3 : 2.4;
+const tailLen = compact ? 9 : 16;
+
+const uid = id;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox={`0 0 ${size} ${size}`}
+  role="img"
+  aria-label={label ?? "Ceas de bord"}
+  data-gauge
+  data-rest={needleAngle.toFixed(2)}
+  data-start={A0}
+  data-end={A1}
+>
+  <defs>
+    <radialGradient id={`${uid}-face`} cx="50%" cy="38%" r="72%">
+      <stop offset="0%" stop-color="oklch(24% 0.014 256)" />
+      <stop offset="62%" stop-color="oklch(15% 0.010 255)" />
+      <stop offset="100%" stop-color="oklch(11% 0.008 255)" />
+    </radialGradient>
+    <linearGradient id={`${uid}-bez`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="oklch(38% 0.014 256)" />
+      <stop offset="34%" stop-color="oklch(20% 0.012 256)" />
+      <stop offset="72%" stop-color="oklch(15% 0.010 255)" />
+      <stop offset="100%" stop-color="oklch(31% 0.014 256)" />
+    </linearGradient>
+    <linearGradient id={`${uid}-ndl`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="oklch(72% 0.20 32)" />
+      <stop offset="100%" stop-color="oklch(50% 0.22 27)" />
+    </linearGradient>
+    <filter id={`${uid}-bloom`} x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation={compact ? 2 : 4} result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id={`${uid}-glow`} x="-90%" y="-90%" width="280%" height="280%">
+      <feGaussianBlur stdDeviation={compact ? 1.6 : 2} result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <!-- bezel, well, face -->
+  <circle cx={C} cy={C} r={R} fill={`url(#${uid}-bez)`} />
+  <circle cx={C} cy={C} r={R - (compact ? 6 : 9)} fill="oklch(10% 0.008 255)" />
+  <circle cx={C} cy={C} r={R - (compact ? 8 : 13)} fill={`url(#${uid}-face)`} />
+
+  <!-- the backlight ring: the illumination itself -->
+  <path
+    d={arc(R - (compact ? 13 : 19), A0 - 4, A1 + 4)}
+    fill="none"
+    stroke="var(--color-primary)"
+    stroke-width={compact ? 1.8 : 3.2}
+    stroke-linecap="round"
+    opacity={compact ? 0.28 : 0.42}
+    filter={`url(#${uid}-bloom)`}
+  />
+
+  <!-- printed scale -->
+  {ticks.map((t) => (
+    <line
+      x1={t.x1.toFixed(2)} y1={t.y1.toFixed(2)}
+      x2={t.x2.toFixed(2)} y2={t.y2.toFixed(2)}
+      stroke={t.red ? "var(--color-m-red)" : t.major ? "var(--color-on-surface)" : "var(--color-outline)"}
+      stroke-width={t.major ? (compact ? 2.6 : 3.4) : compact ? 1.3 : 1.5}
+      filter={t.red ? `url(#${uid}-glow)` : undefined}
+    />
+  ))}
+
+  {!compact && (
+    <path
+      d={arc(tR + 7, A0 + (A1 - A0) * (redline / max), A1)}
+      fill="none"
+      stroke="var(--color-m-red)"
+      stroke-width="5"
+      filter={`url(#${uid}-glow)`}
+    />
+  )}
+
+  {numerals.map((n) => (
+    <text
+      x={n.x.toFixed(2)} y={n.y.toFixed(2)}
+      text-anchor="middle"
+      fill={n.red ? "oklch(70% 0.19 30)" : "var(--color-on-surface)"}
+      font-family="var(--font-display)"
+      font-size={Math.round(size * 0.064)}
+      style="font-variation-settings:'wdth' 104,'wght' 700"
+    >{n.v}</text>
+  ))}
+
+  {!compact && (
+    <text
+      x={C} y={C - Math.round(size * 0.125)}
+      text-anchor="middle"
+      fill="var(--color-on-surface-variant)"
+      font-family="var(--font-mono)"
+      font-size={Math.round(size * 0.026)}
+      letter-spacing="4"
+    >{unit}</text>
+  )}
+
+  {compact && label && (
+    <text
+      x={C} y={C + Math.round(size * 0.175)}
+      text-anchor="middle"
+      fill="var(--color-on-surface-variant)"
+      font-family="var(--font-mono)"
+      font-size={Math.round(size * 0.049)}
+      letter-spacing="2.4"
+    >{label}</text>
+  )}
+
+  <!-- dot-matrix on-board-computer window -->
+  {obc && (
+    <g>
+      <rect
+        x={C - size * 0.211} y={C + size * 0.047}
+        width={size * 0.422} height={size * 0.104}
+        rx="3"
+        fill="oklch(9% 0.006 255)"
+        stroke="var(--color-outline-variant)"
+        stroke-width="1"
+      />
+      <text
+        x={C} y={C + size * 0.091}
+        text-anchor="middle"
+        fill="var(--color-primary-bright)"
+        font-family="var(--font-mono)"
+        font-size={Math.round(size * 0.027)}
+        letter-spacing="2.6"
+        filter={`url(#${uid}-glow)`}
+      >{obc[0]}</text>
+      <text
+        x={C} y={C + size * 0.132}
+        text-anchor="middle"
+        fill="var(--color-on-surface-variant)"
+        font-family="var(--font-mono)"
+        font-size={Math.round(size * 0.023)}
+        letter-spacing="2.2"
+      >{obc[1]}</text>
+    </g>
+  )}
+
+  <!-- needle -->
+  <g data-needle transform={`rotate(${needleAngle.toFixed(2)} ${C} ${C})`} style="transform-box:view-box;transform-origin:center">
+    <path
+      d={`M${C - halfW} ${C + tailLen} L${C - tipW} ${C - needleLen} L${C + tipW} ${C - needleLen} L${C + halfW} ${C + tailLen} Z`}
+      fill={`url(#${uid}-ndl)`}
+      filter={`url(#${uid}-bloom)`}
+    />
+  </g>
+  <circle cx={C} cy={C} r={compact ? 9 : 19} fill="oklch(18% 0.011 256)" stroke="oklch(34% 0.014 256)" stroke-width={compact ? 1.2 : 1.5} />
+  {!compact && <circle cx={C} cy={C} r="6" fill="var(--color-m-red)" filter={`url(#${uid}-glow)`} />}
+</svg>

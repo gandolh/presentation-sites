@@ -3,18 +3,42 @@ import Base from "../layouts/Base.astro";
 import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
 import HeroScene from "../components/HeroScene.astro";
+import ExplodedPlate from "../components/ExplodedPlate.astro";
+import Plate from "../components/Plate.astro";
 import Footer from "../components/Footer.astro";
 import { site } from "../content/site";
-import { img } from "../content/images";
 import { withBase } from "@sites/kit";
 import { steps } from "../content/zone";
-import { gallery } from "../content/gallery";
 import { amenities } from "../content/tents";
 
-// The hero scene is a self-contained animated component now (HeroScene.astro);
-// the static hero SVGs are kept for the OG card / fallbacks via img().
-// Show the three "incluse" amenities as the comfort teaser on the home page.
-const included = amenities.filter((a) => a.kind === "inclus");
+// The key to the exploded plate. Each entry is one callout on the drawing, in
+// callout order — the numbers on the page and the numbers on the drawing are
+// the same numbers, which is the whole point of a key.
+const byTitle = (t: string) => amenities.find((a) => a.title === t)?.description ?? "";
+const KEY = [
+  {
+    n: 1,
+    title: "Membrană & acoperiș",
+    description:
+      "Învelitoarea care ține apa și soarele afară, tensionată peste structură și fixată pe toată lungimea.",
+  },
+  {
+    n: 2,
+    title: "Pereți laterali",
+    description: byTitle("Pereți laterali"),
+  },
+  {
+    n: 3,
+    title: "Structură portantă",
+    description:
+      "Cadrele și panele care duc toată sarcina în teren, montate la deschiderea aleasă, în travei de 2,5 m.",
+  },
+  {
+    n: 4,
+    title: "Pardoseală modulară",
+    description: byTitle("Pardoseală modulară"),
+  },
+];
 ---
 
 <Base path="/">
@@ -22,200 +46,112 @@ const included = amenities.filter((a) => a.kind === "inclus");
   <Nav current="/" />
 
   <main id="main">
-    <!-- ============================ HERO ============================
-         THE ONE MOVE: a split stage. The headline carries the left over the
-         deep canopy; the right is a living scene — a muted sun arcs dawn → day
-         → dusk → night on a loop, and the tent's INTERIOR lamp cross-fades with
-         it (dim by day, glowing warm at night, the canvas cooling as the light
-         leaves). Self-contained inline SVG + CSS (no WebGL, no JS); the
-         reduced-motion / no-JS frame rests at the lit blue-hour state. -->
-    <section
-      id="hero"
-      class="hero-split hero-grain relative overflow-hidden bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)]"
-      aria-label="Subcort — corturi pentru evenimente"
-    >
-      <!-- LEFT: the headline column -->
-      <div class="hero-split__text container-page relative z-[2] pt-[calc(var(--nav-h,4.5rem)+3.5rem)] pb-14 md:py-0">
-        <div class="hero-split__inner">
-          <p class="hero-rise flex items-center gap-3 text-[var(--color-inverse-on-surface-variant)]" style="--rise-delay:140ms">
-            <span class="guyline guyline--bright" aria-hidden="true"></span>
-            <span class="eyebrow !text-[var(--color-inverse-on-surface-variant)]">
-              {site.county} · {site.region}
-            </span>
+    {/* ===================== THE HERO SHEET =====================
+        The structure assembles itself out of the same layers the exploded
+        plate draws further down. Type and drawing share one plane. */}
+    <section class="sheet hero" aria-label="Subcort — corturi pentru evenimente">
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <p class="plate-no">Subcort · {site.county} — {site.region}</p>
+          <h1 class="heading-xl mt-5">Un spațiu pregătit, oriunde ai nevoie de el.</h1>
+          <p class="lede mt-7">
+            Aducem structura la tine, o ridicăm pe terenul tău și o pregătim
+            complet — pardoseală, pereți, iluminat și climatizare. Tu te ocupi
+            de eveniment, noi de spațiul în care are loc.
           </p>
-
-          <h1
-            class="hero-rise mt-6 max-w-[15ch] font-display font-extrabold leading-[1.03] tracking-[-0.022em] text-[var(--color-inverse-on-surface)] text-[clamp(2.4rem,4.6vw,4.2rem)]"
-            style="--rise-delay:260ms"
-          >
-            Un spațiu <span class="ink-mark ink-mark--bright">pregătit</span>,<br
-            />oriunde ai nevoie de el.
-          </h1>
-
-          <p
-            class="hero-rise mt-7 max-w-md text-lg leading-relaxed text-[var(--color-inverse-on-surface-variant)]"
-            style="--rise-delay:400ms"
-          >
-            Aducem cortul la tine, îl montăm exact cum vrei și asigurăm încălzire
-            sau răcire, în funcție de sezon. Tu te ocupi de eveniment, noi de
-            spațiul în care are loc.
-          </p>
-
-          <span class="hero-rise guyline guyline--bright guyline--full mt-10 !h-[3px] opacity-70" style="--rise-delay:540ms" aria-hidden="true"></span>
-
-          <dl class="hero-rise mt-7 grid grid-cols-2 gap-x-8 gap-y-6 max-w-md" style="--rise-delay:640ms">
-            <div>
-              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Capacitate</dt>
-              <dd class="mt-1.5 font-display text-2xl font-bold tnum text-[var(--color-inverse-on-surface)]">40 – 320 invitați</dd>
-            </div>
-            <div>
-              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Montaj complet</dt>
-              <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">La tine acasă</dd>
-            </div>
-            <div>
-              <dt class="text-sm text-[var(--color-inverse-on-surface-variant)]">Confort</dt>
-              <dd class="mt-1.5 font-display text-2xl font-bold text-[var(--color-inverse-on-surface)]">Cald sau răcoros</dd>
-            </div>
-          </dl>
         </div>
-      </div>
-
-      <!-- RIGHT: the living day→night scene -->
-      <div class="hero-split__scene">
-        <HeroScene />
+        <div class="hero__art"><HeroScene /></div>
       </div>
     </section>
 
-    <!-- ===================== CE FACEM (intro) ====================== -->
-    <section class="section lamp-glow overflow-clip">
-      <div class="container-page grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center md:gap-16">
-        <div class="reveal">
-          <div class="section-index">
-            <span class="section-index__num">02</span>
-            <span class="guyline" aria-hidden="true"></span>
-            <span class="eyebrow">Ce facem</span>
-          </div>
-          <h2 class="heading-lg mt-5">Cortul potrivit, montat <span class="ink-mark">cap-coadă</span></h2>
-          <p class="mt-5 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">
-            Subcort este un serviciu de logistică pentru evenimente: venim cu
-            structura, o ridicăm pe terenul tău și o pregătim complet: pardoseală,
-            pereți, iluminat și climatizare. Lăsăm un spațiu gata de folosit,
-            potrivit oricărei ocazii, și revenim după eveniment ca să demontăm.
-          </p>
-          <p class="mt-4 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">
-            Nu vindem o atmosferă anume. Pregătim un spațiu solid și confortabil,
-            iar restul rămâne în mâinile tale.
-          </p>
-        </div>
+    {/* The title-block strip: the key dimensions along the foot of the sheet. */}
+    <div class="sheet">
+      <dl class="titleblock">
+        <div><dt>Deschidere</dt><dd class="dim">8 – 20 m</dd></div>
+        <div><dt>Suprafață</dt><dd class="dim">64 – 300 m²</dd></div>
+        <div><dt>Capacitate</dt><dd class="dim">40 – 320</dd></div>
+        <div><dt>Montaj</dt><dd>La tine acasă</dd></div>
+        <div><dt>Zonă</dt><dd>{site.county} · {site.region}</dd></div>
+      </dl>
+    </div>
 
-        <ul class="reveal card card--lit p-6 md:p-9 space-y-5">
-          {
-            included.map((a) => (
-              <li class="flex gap-4">
-                <span class="mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </span>
-                <div>
-                  <h3 class="font-display text-lg font-bold text-[var(--color-on-surface)]">{a.title}</h3>
-                  <p class="mt-1 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">{a.description}</p>
-                </div>
-              </li>
-            ))
-          }
-          <li class="pt-2">
-            <a href={withBase("/corturi/")} class="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:text-[var(--color-primary-hover)]">
-              Vezi corturile și dotările
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
+    {/* ===================== PLATE 01 — the exploded view ===================== */}
+    <Plate no="01 · Alcătuire" note="Axonometrie 1:100" title="Ce vine odată cu cortul">
+      <p class="lede mt-5">
+        Venim cu structura, o ridicăm pe terenul tău și o pregătim complet.
+        Lăsăm un spațiu gata de folosit, potrivit oricărei ocazii, și revenim
+        după eveniment ca să demontăm.
+      </p>
+
+      <div class="mt-10"><ExplodedPlate /></div>
+
+      {/* This list is the drawing's key: the numbers here are the callout
+          numbers on the plate above, in the same order. */}
+      <ul class="parts">
+        {KEY.map((k) => (
+          <li class="reveal part">
+            <span class="callout-no" aria-hidden="true">{k.n}</span>
+            <div>
+              <h3 class="heading-md">{k.title}</h3>
+              <p class="mt-2 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
+                {k.description}
+              </p>
+            </div>
           </li>
-        </ul>
-      </div>
-    </section>
+        ))}
+      </ul>
 
-    <!-- ===================== CUM FUNCȚIONEAZĂ ====================== -->
-    <section class="section bg-[var(--color-surface-container-low)] border-y border-[var(--color-outline-variant)]">
-      <div class="container-page">
-        <div class="reveal max-w-2xl">
-          <div class="section-index">
-            <span class="section-index__num">03</span>
-            <span class="guyline" aria-hidden="true"></span>
-            <span class="eyebrow">Pas cu pas</span>
-          </div>
-          <h2 class="heading-lg mt-5">Cum funcționează</h2>
-          <p class="mt-4 text-[var(--color-on-surface-variant)] leading-relaxed">
-            Patru pași, de la prima discuție până la demontare. De logistică ne
-            ocupăm noi, cap-coadă.
-          </p>
-        </div>
+      <p class="mt-9">
+        <a href={withBase("/corturi/")} class="btn-outline">
+          Vezi dimensiunile și dotările
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </p>
+    </Plate>
 
-        <ol class="timeline reveal mt-14">
-          {
-            steps.map((s) => (
-              <li class="timeline__step">
-                <span class="timeline__node tnum" aria-hidden="true">{s.n}</span>
-                <h3 class="heading-md">{s.title}</h3>
-                <p class="mt-2.5 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">{s.description}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </section>
+    {/* ===================== PLATE 02 — the sequence =====================
+        The numbers carry information here: the order is the content. */}
+    <Plate no="02 · Execuție" note="Succesiunea lucrărilor" title="Cum funcționează">
+      <p class="lede mt-5">
+        Patru etape, de la prima discuție până la demontare. De logistică ne
+        ocupăm noi, cap-coadă.
+      </p>
 
-    <!-- ========================= GALERIE ========================== -->
-    <section class="section">
-      <div class="container-page">
-        <div class="reveal flex flex-wrap items-end justify-between gap-4">
-          <div class="max-w-2xl">
-            <div class="section-index">
-              <span class="section-index__num">04</span>
-              <span class="guyline" aria-hidden="true"></span>
-              <span class="eyebrow">Galerie</span>
-            </div>
-            <h2 class="heading-lg mt-5">Cum arată</h2>
-            <p class="mt-4 text-[var(--color-on-surface-variant)] leading-relaxed">
-              Imagini orientative ale spațiului pregătit și ale montajului.
-              Atmosfera o dai tu; noi pregătim cadrul.
+      <ol class="steps">
+        {steps.map((s) => (
+          <li class="reveal step">
+            <span class="step__no dim" aria-hidden="true">{s.n}</span>
+            <h3 class="heading-md mt-3">{s.title}</h3>
+            <p class="mt-2.5 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
+              {s.description}
             </p>
-          </div>
-        </div>
-
-        <!-- Editorial mosaic: a tall feature tile leads, the rest support it. -->
-        <div class="reveal mt-12 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-          {
-            gallery.map((g, i) => (
-              <figure
-                class:list={[
-                  "group relative overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-outline-variant)] bg-[var(--color-inverse-surface)]",
-                  i === 0
-                    ? "parallax sm:col-span-2 sm:row-span-2 aspect-[16/10] sm:aspect-auto"
-                    : "aspect-[4/3]",
-                ]}
-                data-parallax={i === 0 ? "" : undefined}
-              >
-                <img
-                  src={withBase(`/images/photos/${g.name}.jpg`)}
-                  alt={g.alt}
-                  loading="lazy"
-                  decoding="async"
-                  class="absolute inset-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-                />
-                <span
-                  class="absolute left-0 top-0 h-[3px] w-full origin-left scale-x-0 bg-gradient-to-r from-[var(--color-primary-bright)] to-[var(--color-accent-bright)] transition-transform duration-500 ease-out group-hover:scale-x-100"
-                  aria-hidden="true"
-                ></span>
-                <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[oklch(22%_0.045_155_/_0.92)] via-[oklch(22%_0.045_155_/_0.4)] to-transparent p-4 pt-12 text-sm font-semibold text-[var(--color-inverse-on-surface)]">
-                  {g.alt}
-                </figcaption>
-              </figure>
-            ))
-          }
-        </div>
-      </div>
-    </section>
+          </li>
+        ))}
+      </ol>
+    </Plate>
   </main>
 
   <Footer />
 </Base>
+
+<style>
+  .hero { padding-block: clamp(1.5rem, 3vw, 2.75rem) clamp(2rem, 4vw, 3.25rem); }
+  .hero__grid { display: grid; gap: 1.5rem; align-items: center; }
+  @media (min-width: 900px) {
+    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 3rem; }
+    .hero__copy { max-width: 34rem; }
+  }
+  .hero__copy h1 { max-width: 15ch; }
+
+  /* The callout list mirrors the numbers on the drawing above it. */
+  .parts { margin-top: 3rem; display: grid; gap: 1.75rem 3rem; }
+  @media (min-width: 700px) { .parts { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1150px) { .parts { grid-template-columns: repeat(4, 1fr); } }
+  .part { display: flex; gap: 0.9rem; align-items: flex-start; }
+
+  .steps { margin-top: 2.75rem; display: grid; gap: 2rem 2.5rem; }
+  @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1050px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .step { border-top: 1.5px solid var(--color-ink); padding-top: 1rem; }
+  .step__no { font-size: 0.78rem; font-weight: 500; color: var(--color-signal); letter-spacing: 0.08em; }
+</style>

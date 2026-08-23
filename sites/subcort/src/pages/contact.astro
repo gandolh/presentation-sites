@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import DemoBanner from "../components/DemoBanner.astro";
 import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
+import Plate from "../components/Plate.astro";
 import Footer from "../components/Footer.astro";
 import { site, telLink } from "../content/site";
 ---
@@ -13,91 +14,77 @@ import { site, telLink } from "../content/site";
   description={`Date de contact Subcort: telefon, email și program, în ${site.city}, ${site.county}.`}
 >
   <DemoBanner />
-  <Nav current="/contact/" solid />
+  <Nav current="/contact/" />
 
   <main id="main">
     <PageHeader
-      eyebrow="Contact"
-      title="Hai să vorbim despre evenimentul tău"
-      lead="Spune-ne data, locul și numărul de invitați, iar noi te ajutăm cu spațiul. Mai jos găsești datele noastre de contact."
+      plate="04 · Contact"
+      scale="Date de identificare"
+      title="Unde ne găsești"
+      lead="Spune-ne data, locul și numărul de invitați, iar noi te ajutăm cu spațiul. Mai jos sunt datele noastre — ne poți scrie sau suna când îți convine."
     />
 
-    <section class="section lamp-glow overflow-clip">
-      <div class="container-page grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-16">
-        <!-- Contact details (display only — no form by design) -->
-        <div class="reveal">
-          <h2 class="heading-md">Date de contact</h2>
-          <span class="guyline mt-3 !w-12"></span>
-
-          <dl class="mt-7 space-y-6">
-            <div class="flex gap-4">
-              <span class="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </span>
-              <div>
-                <dt class="text-sm font-semibold text-[var(--color-on-surface-variant)]">Telefon</dt>
-                <dd class="mt-0.5">
-                  <a href={telLink()} class="font-display text-xl font-bold text-[var(--color-on-surface)] hover:text-[var(--color-primary)] transition-colors">{site.phone}</a>
-                </dd>
-              </div>
-            </div>
-
-            <div class="flex gap-4">
-              <span class="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-              </span>
-              <div>
-                <dt class="text-sm font-semibold text-[var(--color-on-surface-variant)]">Email</dt>
-                <dd class="mt-0.5">
-                  <a href={`mailto:${site.email}`} class="font-display text-xl font-bold text-[var(--color-on-surface)] hover:text-[var(--color-primary)] transition-colors break-all">{site.email}</a>
-                </dd>
-              </div>
-            </div>
-
-            <div class="flex gap-4">
-              <span class="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </span>
-              <div>
-                <dt class="text-sm font-semibold text-[var(--color-on-surface-variant)]">Adresă</dt>
-                <dd class="mt-0.5 text-[var(--color-on-surface)]">{site.address}, {site.city}, jud. {site.county}</dd>
-              </div>
-            </div>
-          </dl>
-
-          <!-- Social -->
-          <div class="mt-8 flex items-center gap-3">
-            <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener" class="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-outline-variant)] text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-            <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener" class="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-outline-variant)] text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            </a>
+    {/* Display only. No form, no booking widget, no call button — by design;
+        the site informs and steps back. */}
+    <Plate no="04.1 · Date" note="Contact direct" tight>
+      <div class="contact-grid">
+        <dl class="contact-list">
+          <div class="contact-row">
+            <dt class="datum-key">Telefon</dt>
+            <dd><a href={telLink()} class="contact-big link-quiet dim">{site.phone}</a></dd>
           </div>
-        </div>
+          <div class="contact-row">
+            <dt class="datum-key">Email</dt>
+            <dd><a href={`mailto:${site.email}`} class="contact-big link-quiet">{site.email}</a></dd>
+          </div>
+          <div class="contact-row">
+            <dt class="datum-key">Adresă</dt>
+            <dd class="contact-big">{site.address}, {site.city}, jud. {site.county}</dd>
+          </div>
+        </dl>
 
-        <!-- Hours + service area -->
-        <aside class="reveal card card--lit p-6 md:p-8 h-fit">
+        <aside class="hours">
           <h2 class="heading-md">Program</h2>
-          <span class="guyline mt-3 !w-12"></span>
-          <dl class="mt-6 divide-y divide-[var(--color-outline-variant)]">
-            {
-              site.hours.map((h) => (
-                <div class="flex items-center justify-between gap-4 py-3">
-                  <dt class="text-sm text-[var(--color-on-surface-variant)]">{h.day}</dt>
-                  <dd class="text-sm font-semibold text-[var(--color-on-surface)] text-right">{h.value}</dd>
-                </div>
-              ))
-            }
+          <dl class="mt-4">
+            {site.hours.map((h) => (
+              <div class="hours__row">
+                <dt class="text-[0.9rem] text-[var(--color-ink-2)]">{h.day}</dt>
+                <dd class="text-[0.9rem] font-semibold text-right dim">{h.value}</dd>
+              </div>
+            ))}
           </dl>
-          <p class="mt-6 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">
+          <p class="mt-5 text-[0.87rem] leading-relaxed text-[var(--color-ink-2)]">
             Pentru montaje în zone mai îndepărtate din {site.region}, stabilim
             programul în funcție de distanță.
           </p>
         </aside>
       </div>
-    </section>
+    </Plate>
   </main>
 
   <Footer />
 </Base>
+
+<style>
+  .contact-grid { display: grid; gap: 2.5rem; margin-top: 0.5rem; }
+  @media (min-width: 860px) { .contact-grid { grid-template-columns: 1.35fr 1fr; gap: 4rem; align-items: start; } }
+
+  .contact-row { padding: 1.25rem 0; border-top: 1px solid var(--color-hair); }
+  .contact-row:first-child { border-top: 1.5px solid var(--color-ink); }
+  .contact-row:last-child { border-bottom: 1px solid var(--color-hair); }
+  .contact-big {
+    display: inline-block;
+    margin-top: 0.45rem;
+    font-size: clamp(1.12rem, 2vw, 1.45rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .hours { background: var(--color-fill-2); border: 1px solid var(--color-hair); padding: 1.5rem; }
+  .hours__row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; padding: 0.65rem 0; border-bottom: 1px solid var(--color-hair);
+  }
+  .hours__row:last-child { border-bottom: 0; }
+</style>

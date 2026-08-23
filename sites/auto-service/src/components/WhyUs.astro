@@ -1,77 +1,101 @@
 ---
-// "De ce noi" — the differentiators that matter for a small BMW family shop vs
-// a dealer or a generalist garage. Asymmetric: a lead statement on the left,
-// reasons on the right (avoids the identical-card-grid trope).
+import Icon from "./Icon.astro";
+
+/*
+  Four reasons, each pinned to a symbol from the closed set. Deliberately not a
+  card grid: a lead statement against a hairline column of claims, the way a
+  spec page reads. Each claim is short — the old version was a wall of
+  paragraphs, which is exactly what made the page feel text-heavy.
+*/
 const reasons = [
   {
+    icon: "diagnose",
     title: "Doar BMW, zi de zi",
-    body: "Lucrăm aceleași motoare și aceeași electronică în fiecare zi. Cunoaștem bolile de model (lanț N47, VANOS, răcire) și știm unde să ne uităm întâi.",
+    body: "Aceleași motoare și aceeași electronică în fiecare zi. Cunoaștem bolile de model — lanț N47, VANOS, răcire — și știm unde ne uităm întâi.",
   },
   {
+    icon: "phone",
     title: "Vorbești cu omul care repară",
-    body: "Fără call-center și fără consilier care pasează mai departe. Discuți direct cu mecanicul care îți ia mașina în primire.",
+    body: "Fără call-center, fără consilier care pasează mai departe. Discuți direct cu mecanicul care îți ia mașina în primire.",
   },
   {
+    icon: "estimate",
     title: "Deviz înainte, fără surprize",
-    body: "Întâi diagnoza, apoi devizul. Nu începem nicio lucrare neaprobată de tine și îți explicăm pe înțeles ce și de ce.",
+    body: "Întâi diagnoza, apoi devizul. Nicio lucrare neaprobată de tine, și îți explicăm pe înțeles ce și de ce.",
   },
   {
+    icon: "key",
     title: "Scule și diagnoză potrivite",
-    body: "Diagnoză dedicată BMW pentru erori, codări și adaptări, plus sculele specifice de care au nevoie lucrările pe marca asta.",
+    body: "Tester dedicat pentru erori, codări și adaptări, plus sculele specifice pe care le cer lucrările pe marca asta.",
   },
 ];
 ---
 
-{/* Lifts off the floor onto the default steel panel so it separates from the
-    background-level TrustBand directly above it. */}
-<section id="de-ce-noi" class="why section relative bg-[var(--color-surface-container-lowest)] border-b border-[var(--color-outline-variant)]">
-  <div class="container-page grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-16">
-    {/* Lead statement — vertical M edge as the lead mark, matching the hero's
-        pit-wall rule. No uppercase eyebrow: the heading stands on its own. */}
-    <div class="reveal flex gap-5">
-      <span class="m-stripe--v shrink-0" aria-hidden="true"></span>
+<section id="de-ce-noi" class="section why" aria-labelledby="why-title">
+  <div class="container-page why__grid">
+    <div class="why__lead reveal">
+      <span class="m-stripe--v why__rule" aria-hidden="true"></span>
       <div>
-        <h2 class="heading-lg text-[var(--color-on-surface)]">
-          De ce să ne lași tocmai nouă mașina
-        </h2>
-        <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
-          Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate,
-          în schimb, să te trateze ca pe un <span class="text-[var(--color-on-surface)] font-medium">vecin</span>, nu ca pe un
-          număr de bon.
+        <h2 id="why-title" class="heading-lg">De ce să ne lași tocmai nouă mașina</h2>
+        <p class="why__lede">
+          Un atelier de familie nu poate concura cu un dealer la dimensiune.
+          Poate, în schimb, să te trateze ca pe un
+          <strong class="why__em">vecin</strong>, nu ca pe un număr de bon.
         </p>
       </div>
     </div>
 
-    <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-9">
-      {
-        reasons.map((r) => (
-          <li class="why-reason reveal">
-            {/* M-stripe tick as the lead mark — these are differentiators, not an
-                ordered sequence, so numerals would imply a false order (the
-                numbered markers live only on the real Process flow). The stripe
-                carries the brand's motorsport energy instead. */}
-            <span class="m-stripe !w-8 !h-[3px]" aria-hidden="true" />
-            <h3 class="heading-md mt-3.5 !text-[1.15rem] text-[var(--color-on-surface)]">{r.title}</h3>
-            <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">{r.body}</p>
-          </li>
-        ))
-      }
+    <ul class="why__list reveal">
+      {reasons.map((r) => (
+        <li class="why__item">
+          <span class="why__ico" aria-hidden="true"><Icon name={r.icon} size={20} /></span>
+          <div>
+            <h3 class="heading-md why__title">{r.title}</h3>
+            <p class="why__body">{r.body}</p>
+          </div>
+        </li>
+      ))}
     </ul>
   </div>
-
-  <style>
-    /* A single faint worklamp wash in the upper-right, echoing the hero glow so
-       the lifted panel feels lit by the same bay lamp — used sparingly. */
-    .why::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(
-        70% 55% at 96% 0%,
-        oklch(58% 0.17 250 / 0.12) 0%,
-        oklch(58% 0.17 250 / 0) 60%
-      );
-    }
-  </style>
 </section>
+
+<style>
+  .why__grid { display: grid; gap: 2.75rem; }
+  @media (min-width: 1024px) {
+    .why__grid { grid-template-columns: 0.86fr 1.14fr; gap: 4rem; align-items: start; }
+  }
+
+  .why__lead { display: flex; gap: 1.25rem; }
+  .why__rule { flex: none; }
+  .why__lede {
+    margin-top: 1.1rem;
+    font-size: 1.05rem;
+    line-height: 1.62;
+    color: var(--color-on-surface-variant);
+    max-width: 40ch;
+  }
+  .why__em { color: var(--color-on-surface); font-weight: 600; }
+
+  .why__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-outline-variant);
+  }
+  @media (min-width: 700px) {
+    .why__list { grid-template-columns: repeat(2, 1fr); column-gap: 2.75rem; }
+  }
+
+  .why__item {
+    display: grid;
+    grid-template-columns: 2.1rem 1fr;
+    gap: 0.9rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+  .why__ico { color: var(--color-primary-bright); padding-top: 0.15rem; }
+  .why__title { margin-bottom: 0.4rem; }
+  .why__body { font-size: 0.885rem; line-height: 1.62; color: var(--color-on-surface-variant); }
+</style>

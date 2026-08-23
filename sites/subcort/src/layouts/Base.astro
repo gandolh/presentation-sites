@@ -1,10 +1,13 @@
 ---
-// Self-hosted fonts (no Google Fonts CDN — GDPR: avoids transmitting visitor
-// IPs to Google). Variable faces: the `wght` axis carries every weight we use.
-// Each `wght.css` bundles latin + latin-ext (latin-ext carries Romanian
-// diacritics ă â î ș ț) as separate @font-face blocks gated by unicode-range.
-import "@fontsource-variable/bitter/wght.css";
-import "@fontsource-variable/mulish/wght.css";
+// IBM Plex, self-hosted (no Google Fonts CDN — GDPR: avoids transmitting
+// visitor IPs to Google). Sans for everything, Mono for measurements: this is
+// a drawing set, and the numerals have to align down a column. Plex draws the
+// Romanian comma-below diacritics (ș ț) correctly. `wght.css` bundles latin +
+// latin-ext as @font-face blocks gated by unicode-range.
+import "@fontsource-variable/ibm-plex-sans/wght.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-mono/600.css";
 import "../styles/global.css";
 import { site } from "../content/site";
 import { img } from "../content/images";
@@ -37,7 +40,7 @@ const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1f3a29" />
+    <meta name="theme-color" content="#FBFBFA" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonical} />
 
@@ -94,7 +97,7 @@ const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
   <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-primary)] focus:text-[var(--color-on-primary)] focus:px-4 focus:py-2 focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-8 focus:z-[300] focus:bg-[var(--color-signal)] focus:text-white focus:px-4 focus:py-2"
     >
       Sari la conținut
     </a>
@@ -167,54 +170,5 @@ const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
       })();
     </script>
 
-    <script is:inline>
-      // Gallery parallax: a single rAF tick reads scroll once per frame and
-      // writes --py on tagged tiles; the transform lives in CSS. Gated on
-      // reduced-motion. No-JS / reduced-motion leave the tiles static.
-      (function () {
-        var prefersReduced =
-          typeof matchMedia === "function" &&
-          matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (prefersReduced) return;
-
-        var parallaxTiles = Array.prototype.slice.call(
-          document.querySelectorAll("[data-parallax]"),
-        );
-        if (!parallaxTiles.length) return;
-
-        var vh = window.innerHeight || document.documentElement.clientHeight;
-        var ticking = false;
-
-        function frame() {
-          ticking = false;
-
-          // Tile parallax: --py is the tile's centre offset from viewport centre,
-          // normalised to roughly [-1, 1].
-          for (var i = 0; i < parallaxTiles.length; i++) {
-            var el = parallaxTiles[i];
-            var r = el.getBoundingClientRect();
-            if (r.bottom < 0 || r.top > vh) continue;
-            var centre = r.top + r.height / 2;
-            var p = (centre - vh / 2) / (vh / 2 + r.height / 2);
-            el.style.setProperty("--py", p.toFixed(3));
-          }
-        }
-
-        function onScroll() {
-          if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(frame);
-          }
-        }
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener(
-          "resize",
-          function () { vh = window.innerHeight; onScroll(); },
-          { passive: true },
-        );
-        frame(); // prime once
-      })();
-    </script>
-  </body>
+</body>
 </html>

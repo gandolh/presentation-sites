@@ -5,9 +5,14 @@ import { withBase } from "@sites/kit";
 const links = [
   { href: "/", label: "Acasă" },
   { href: "/servicii/", label: "Servicii" },
-  { href: "/despre/", label: "Despre" },
+  { href: "/despre/", label: "Atelier" },
   { href: "/contact/", label: "Contact" },
 ];
+
+// Pictograms from the closed set (Icon.astro cannot cross into an island, so
+// the two glyphs this island needs are inlined at the same 1.75 stroke).
+const BURGER = "M3.6 7.2h16.8 M3.6 12h16.8 M3.6 16.8h16.8";
+const CLOSE = "M5.6 5.6l12.8 12.8 M18.4 5.6 5.6 18.4";
 
 export default function MobileMenu({ current = "/" }: { current?: string }) {
   const [open, setOpen] = useState(false);
@@ -20,8 +25,6 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
     };
   }, [open]);
 
-  // On open: move focus into the dialog and trap Tab so keyboard users can't
-  // reach the page behind the overlay. Esc closes.
   useEffect(() => {
     if (!open) return;
     const dialog = dialogRef.current;
@@ -66,55 +69,43 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
         aria-label="Deschide meniul"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="nav-burger lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
+        className="nav-burger lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
       >
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <line x1="4" y1="7" x2="20" y2="7" />
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="17" x2="20" y2="17" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d={BURGER} />
         </svg>
       </button>
 
       {open && (
         <div
           ref={dialogRef}
-          className="mobile-menu fixed inset-0 z-[var(--z-overlay)] flex flex-col text-[var(--color-inverse-on-surface)]"
+          className="mobile-menu fixed inset-0 z-[var(--z-overlay)] flex flex-col text-[var(--color-on-surface)]"
           role="dialog"
           aria-modal="true"
           aria-label="Meniu de navigare"
         >
-          <div className="m-stripe m-stripe--full" aria-hidden="true" />
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-            <span className="wordmark text-xl">{site.name}</span>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-outline-variant)]">
+            <span className="flex items-center gap-2.5">
+              <span
+                className="w-[9px] h-[9px] rounded-full bg-[var(--color-primary)]"
+                style={{ boxShadow: "0 0 10px oklch(72% 0.17 58 / 0.9)" }}
+                aria-hidden="true"
+              />
+              <span className="wordmark text-lg uppercase">{site.name}</span>
+            </span>
             <button
               type="button"
               aria-label="Închide meniul"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
             >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              >
-                <line x1="6" y1="6" x2="18" y2="18" />
-                <line x1="18" y1="6" x2="6" y2="18" />
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={CLOSE} />
               </svg>
             </button>
           </div>
-          <nav className="flex-1 flex flex-col items-center justify-center gap-5 px-6">
+
+          <nav className="flex-1 flex flex-col justify-center gap-1 px-6">
             {links.map((link, i) => (
               <a
                 key={link.href}
@@ -122,22 +113,26 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
                 onClick={() => setOpen(false)}
                 aria-current={current === link.href ? "page" : undefined}
                 className={
-                  "mobile-menu__link font-display font-bold text-3xl tracking-tight transition-colors " +
+                  "mobile-menu__link flex items-baseline gap-4 py-3 border-b border-[var(--color-outline-variant)] transition-colors " +
                   (current === link.href
                     ? "text-[var(--color-primary-bright)]"
                     : "hover:text-[var(--color-primary-bright)]")
                 }
                 style={{ "--i": i } as React.CSSProperties}
               >
-                {link.label}
+                <span className="reading text-[0.62rem] text-[var(--color-outline)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="heading-lg !text-[1.85rem]">{link.label}</span>
               </a>
             ))}
+
             <div
-              className="mobile-menu__link flex flex-col w-full max-w-xs gap-3 mt-6"
+              className="mobile-menu__link flex flex-col gap-3 mt-8"
               style={{ "--i": links.length } as React.CSSProperties}
             >
               <a href={telLink()} onClick={() => setOpen(false)} className="btn btn-primary btn-lg w-full" data-cta="menu-call">
-                Sună acum
+                Sună acum · {site.phone}
               </a>
               <a
                 href={waLink()}

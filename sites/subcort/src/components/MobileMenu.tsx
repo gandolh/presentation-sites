@@ -1,142 +1,96 @@
+// The phone menu, as the drawing set's index: each sheet with its number.
+// A React island animated with Motion — the one place a component library's
+// motion primitives earn their hydration cost, because the panel needs
+// enter/exit choreography plus a focus trap.
+
 import { useEffect, useRef, useState } from "react";
-import { site } from "../content/site";
-import { withBase } from "@sites/kit";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-// No call/WhatsApp actions here — the site has no calls-to-action by design.
-const links = [
-  { href: "/", label: "Acasă" },
-  { href: "/corturi/", label: "Corturi" },
-  { href: "/servicii/", label: "Servicii" },
-  { href: "/zona/", label: "Zonă" },
-  { href: "/contact/", label: "Contact" },
-];
+export interface MenuLink { href: string; label: string; no: string }
+interface Props { links: MenuLink[]; current?: string }
 
-export default function MobileMenu({ current = "/" }: { current?: string }) {
+export default function MobileMenu({ links, current = "/" }: Props) {
   const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
-  // On open: move focus into the dialog and trap Tab so keyboard users can't
-  // reach the page behind the overlay. Esc closes.
   useEffect(() => {
     if (!open) return;
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-    const focusable = () =>
-      Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-
-    focusable()[0]?.focus();
-
-    function onKey(e: KeyboardEvent) {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
+        buttonRef.current?.focus();
         return;
       }
       if (e.key !== "Tab") return;
-      const items = focusable();
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
+      const f = panelRef.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])");
+      if (!f?.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
 
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
   }, [open]);
+
+  const ease = [0.16, 1, 0.3, 1] as const;
 
   return (
     <>
       <button
+        ref={buttonRef}
         type="button"
-        aria-label="Deschide meniul"
+        className="menu-btn"
         aria-expanded={open}
-        onClick={() => setOpen(true)}
-        className="nav-burger inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-black/5 transition-colors"
+        aria-controls="mobile-menu"
+        onClick={() => setOpen((v) => !v)}
       >
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <line x1="4" y1="7" x2="20" y2="7" />
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="17" x2="20" y2="17" />
-        </svg>
+        <span className="sr-only">{open ? "Închide meniul" : "Deschide meniul"}</span>
+        <span className="menu-btn__bars" data-open={open || undefined} aria-hidden="true">
+          <i /><i /><i />
+        </span>
       </button>
 
-      {open && (
-        <div
-          ref={dialogRef}
-          className="mobile-menu fixed inset-0 z-[var(--z-overlay)] flex flex-col text-[var(--color-inverse-on-surface)]"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Meniu de navigare"
-        >
-          <div className="guyline guyline--full guyline--bright" aria-hidden="true" />
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-            <span className="wordmark text-xl">{site.name}</span>
-            <button
-              type="button"
-              aria-label="Închide meniul"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              >
-                <line x1="6" y1="6" x2="18" y2="18" />
-                <line x1="18" y1="6" x2="6" y2="18" />
-              </svg>
-            </button>
-          </div>
-          <nav className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
-            {links.map((link, i) => (
-              <a
-                key={link.href}
-                href={withBase(link.href)}
-                onClick={() => setOpen(false)}
-                aria-current={current === link.href ? "page" : undefined}
-                className={
-                  "mobile-menu__link font-display font-bold text-3xl tracking-tight transition-colors " +
-                  (current === link.href
-                    ? "text-[var(--color-primary-bright)]"
-                    : "hover:text-[var(--color-primary-bright)]")
-                }
-                style={{ "--i": i } as React.CSSProperties}
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-menu"
+            ref={panelRef}
+            className="menu-panel"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: reduced ? 0.12 : 0.32, ease }}
+          >
+            <nav aria-label="Navigare principală (mobil)">
+              {links.map((l, i) => (
+                <motion.a
+                  key={l.href}
+                  href={l.href}
+                  className="menu-panel__link"
+                  data-current={current === l.href || undefined}
+                  aria-current={current === l.href ? "page" : undefined}
+                  initial={reduced ? false : { opacity: 0, y: 7 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: reduced ? 0 : 0.38, delay: reduced ? 0 : 0.04 + i * 0.04, ease }}
+                >
+                  <span aria-hidden="true">{l.no}</span>
+                  {l.label}
+                </motion.a>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

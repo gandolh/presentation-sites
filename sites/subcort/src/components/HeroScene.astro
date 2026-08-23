@@ -1,293 +1,128 @@
 ---
-// The right-hand panel of the split hero: a self-contained, looping day→night
-// scene. A muted sun arcs from dawn (low left) up through a soft daylight, down
-// to a golden dusk, and below the horizon into night — then loops. The tent's
-// INTERIOR lamp cross-fades with the sun: dim by day, glowing warm at night,
-// and the canvas cools as the light leaves. All motion is a single synchronised
-// ~36s timeline (every keyframe shares the same duration + matched offsets), so
-// the sky, sun, glow, and canvas always agree on the time of day.
+// The hero: the marquee assembling itself out of its exploded layers — the
+// same layers, in the same order, as the exploded plate further down the page.
 //
-// No WebGL, no JS: pure inline SVG + CSS keyframes. Fully gated on
-// prefers-reduced-motion — that branch freezes the scene at its blue-hour /
-// night frame (the brand's signature lit-tent-at-dusk state).
+// Progressive by construction. The still below is a real isometric drawing in
+// the HTML; WebGL is a dynamic import that only happens for a visitor who has
+// not asked for reduced motion, has WebGL, and has the hero near the viewport.
+import {
+  marquee, isometric, pts, tone, INK, LINE,
+} from "../lib/draft";
+
+const M = marquee();
+const P = isometric({ scale: 15, cx: 340, cy: 250 });
+let still = "";
+for (const p of M.panels.filter((p) => p.part === "deck")) {
+  still += `<polygon points="${pts(p.quad, P)}" fill="#EDEFF1" stroke="${LINE}" stroke-width="1.1"/>`;
+}
+for (const [a, b] of M.members) {
+  const [x1, y1] = P(a); const [x2, y2] = P(b);
+  still += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="1.5" stroke-linecap="round"/>`;
+}
+for (const p of M.panels.filter((p) => p.part !== "deck")) {
+  still += `<polygon points="${pts(p.quad, P)}" fill="${tone(p.quad)}" fill-opacity="0.9" stroke="${LINE}" stroke-width="1" stroke-linejoin="round"/>`;
+}
 ---
 
-<div class="hero-scene" aria-hidden="true">
-  <svg
-    class="hero-scene__svg"
-    viewBox="0 0 600 760"
-    preserveAspectRatio="xMidYMid slice"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <defs>
-      <!-- The sky gradient ID is shared; the <stop>s animate their colour over
-           the cycle via CSS (see .hero-scene__sky-* below). -->
-      <linearGradient id="hsSky" x1="0" y1="0" x2="0.12" y2="1">
-        <stop class="sky-top" offset="0%" stop-color="#16243a" />
-        <stop class="sky-mid" offset="58%" stop-color="#2b3d4d" />
-        <stop class="sky-low" offset="80%" stop-color="#3a4a44" />
-        <stop class="sky-field" offset="100%" stop-color="#1c2a20" />
-      </linearGradient>
-
-      <!-- The sun's own soft halo. -->
-      <radialGradient id="hsSun" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#fff4dd" />
-        <stop offset="42%" stop-color="#fbda9a" />
-        <stop offset="100%" stop-color="#fbda9a" stop-opacity="0" />
-      </radialGradient>
-
-      <!-- The interior lamp glow (warm), and a clip to keep it inside the tent. -->
-      <radialGradient id="hsLamp" cx="50%" cy="58%" r="52%">
-        <stop offset="0%" stop-color="#ffe2b0" stop-opacity="0.95" />
-        <stop offset="46%" stop-color="#e89a55" stop-opacity="0.5" />
-        <stop offset="100%" stop-color="#d2864f" stop-opacity="0" />
-      </radialGradient>
-
-      <linearGradient id="hsGuyline" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#6fa178" />
-        <stop offset="100%" stop-color="#f0b985" />
-      </linearGradient>
-
-      <!-- a soft vignette to seat the panel -->
-      <radialGradient id="hsVig" cx="50%" cy="46%" r="75%">
-        <stop offset="60%" stop-color="#000" stop-opacity="0" />
-        <stop offset="100%" stop-color="#0e1a14" stop-opacity="0.5" />
-      </radialGradient>
-
-      <!-- Sky region only (above the horizon line at y=640). The sun is clipped
-           to this, so as it descends past the horizon it is genuinely occluded
-           by the earth — a real sunset, not a circle sliding off the frame. -->
-      <clipPath id="hsSky-clip">
-        <rect x="0" y="0" width="600" height="640" />
-      </clipPath>
-    </defs>
-
-    <!-- SKY -->
-    <rect width="600" height="760" fill="url(#hsSky)" />
-
-    <!-- SUN: rides an arc, clipped to the sky so it rises FROM and sets BEHIND
-         the horizon (the earth occludes its lower half as it crosses y=640).
-         The group is translated via CSS; a wrapper carries the clip so the clip
-         rect stays fixed in scene space while the sun moves through it. -->
-    <g clip-path="url(#hsSky-clip)">
-      <g class="hero-scene__sun">
-        <circle r="116" fill="url(#hsSun)" opacity="0.5" />
-        <circle r="32" fill="#fff3d6" />
-      </g>
-    </g>
-
-    <!-- HORIZON haze band -->
-    <rect class="hero-scene__haze" x="0" y="560" width="600" height="120" fill="#7a8a6e" opacity="0.18" />
-
-    <!-- distant tents (depth) -->
-    <g opacity="0.4" fill="#9fb0a0">
-      <path d="M70,612 L120,560 L138,576 L156,560 L206,612 Z" />
-      <path d="M430,620 L495,556 L518,576 L541,556 L600,620 L600,620 Z" />
-    </g>
-
-    <!-- ground line -->
-    <line x1="0" y1="640" x2="600" y2="640" stroke="#5d7a64" stroke-width="2" opacity="0.4" />
-
-    <!-- THE TENT (subject). Built around cx=300, base y=640. -->
-    <g class="hero-scene__tent">
-      <!-- ground shadow (swings subtly with the light) -->
-      <ellipse class="hero-scene__shadow" cx="300" cy="646" rx="190" ry="14" fill="#0c1510" opacity="0.4" />
-
-      <!-- the interior lamp glow, behind the canvas opening, clipped to the body -->
-      <ellipse class="hero-scene__lamp" cx="300" cy="600" rx="130" ry="150" fill="url(#hsLamp)" />
-
-      <!-- canvas body (two-bay marquee). Its fill cools at night via CSS. -->
-      <path
-        class="hero-scene__canvas"
-        d="M150,560 L235,470 L300,494 L365,470 L450,560 L450,640 L150,640 Z"
-        fill="#f1f2ea"
-      />
-      <!-- shaded half -->
-      <path
-        class="hero-scene__canvas-shade"
-        d="M300,494 L235,470 L150,560 L150,640 L300,640 Z"
-        fill="#c7cebd"
-        opacity="0.5"
-      />
-      <!-- ridge + seams -->
-      <g stroke="#3a6b46" stroke-width="2" opacity="0.3" fill="none">
-        <path d="M150,560 L235,470 L300,494 L365,470 L450,560" />
-        <line x1="300" y1="494" x2="300" y2="640" />
-        <line x1="235" y1="470" x2="235" y2="640" />
-        <line x1="365" y1="470" x2="365" y2="640" />
-      </g>
-      <!-- the lit opening (warms/cools with the lamp) -->
-      <path
-        class="hero-scene__opening"
-        d="M262,640 L262,566 Q300,548 338,566 L338,640 Z"
-        fill="#ffd9a1"
-      />
-      <!-- guy ropes -->
-      <line x1="150" y1="560" x2="116" y2="640" stroke="#6fa178" stroke-width="2" opacity="0.5" />
-      <line x1="450" y1="560" x2="484" y2="640" stroke="#6fa178" stroke-width="2" opacity="0.5" />
-    </g>
-
-    <!-- a faint string of warm bulbs, lit only at night -->
-    <g class="hero-scene__lights" fill="#ffe2b0">
-      <path d="M120,150 Q300,210 480,150" fill="none" stroke="#5d7a64" stroke-width="1.5" opacity="0.4" />
-      <circle cx="160" cy="166" r="4" /><circle cx="230" cy="184" r="4" />
-      <circle cx="300" cy="190" r="4" /><circle cx="370" cy="184" r="4" />
-      <circle cx="440" cy="166" r="4" />
-    </g>
-
-    <rect width="600" height="760" fill="url(#hsVig)" />
-    <!-- the guy-line signature along the bottom edge -->
-    <rect x="0" y="754" width="600" height="6" fill="url(#hsGuyline)" />
-  </svg>
+<div class="stage" data-stage>
+  <canvas class="stage__canvas" data-canvas aria-hidden="true"></canvas>
+  <div class="stage__still" data-still>
+    <svg viewBox="0 0 700 520" role="img" aria-label="Cort de 15 × 10 m, vedere axonometrică">
+      <g set:html={still} />
+    </svg>
+  </div>
 </div>
 
 <style>
-  .hero-scene {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: var(--color-inverse-surface);
-  }
-  .hero-scene__svg {
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
+  .stage { position: relative; width: 100%; aspect-ratio: 5 / 4; }
+  @media (min-width: 900px) { .stage { aspect-ratio: 7 / 5; } }
 
-  /* ===== The synchronised day→night timeline (one duration for all) =========
-     Phase map across the 0→100% cycle:
-       0%   dawn      — sun low-left,  sky blue-grey/peach, lamp dim
-       26%  day       — sun high,      sky muted daylight,  lamp off, canvas bright
-       50%  dusk      — sun low-right, sky golden,          lamp rising
-       64%  nightfall — sun set,       sky deep canopy,     lamp warm
-       86%  deep night— sun gone,      sky darkest,         lamp full, lights on
-       100% dawn      — loop back
-     Kept calm and muted on purpose (no bright noon) so it reads atmospheric,
-     not festive. ~36s so it never feels busy. */
+  .stage__canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    display: block; opacity: 0; transition: opacity 450ms ease-out;
+  }
+  .stage[data-live] .stage__canvas { opacity: 1; }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-scene__sun {
-      /* the arc: translate across + up-then-down, dipping below the horizon */
-      animation: hs-sun 36s linear infinite;
-    }
-    .hero-scene__sky .sky-top,
-    .sky-top { animation: hs-sky-top 36s ease-in-out infinite; }
-    .sky-mid { animation: hs-sky-mid 36s ease-in-out infinite; }
-    .sky-low { animation: hs-sky-low 36s ease-in-out infinite; }
-
-    .hero-scene__lamp { animation: hs-lamp 36s ease-in-out infinite; }
-    .hero-scene__opening { animation: hs-opening 36s ease-in-out infinite; }
-    .hero-scene__canvas { animation: hs-canvas 36s ease-in-out infinite; }
-    .hero-scene__lights { animation: hs-lights 36s ease-in-out infinite; }
-    .hero-scene__haze { animation: hs-haze 36s ease-in-out infinite; }
-    .hero-scene__shadow { animation: hs-shadow 36s ease-in-out infinite; }
+  .stage__still {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    padding: 3%;
+    transition: opacity 350ms ease-out;
   }
-
-  /* Sun arc. transform-box keeps the circle's own origin sane. The y dips low
-     enough that the sun fully leaves the frame for the night phase. */
-  .hero-scene__sun {
-    transform-box: view-box;
-    transform-origin: center;
-    /* resting (reduced-motion / no-JS): the golden-dusk frame — sun half-set on
-       the horizon (its lower half occluded by the earth via the sky clip). */
-    transform: translate(470px, 628px);
-  }
-  @keyframes hs-sun {
-    /* The arc lives in scene coordinates; the horizon is y=640, so the sun is
-       occluded by the earth whenever its centre drops past it. It rises from
-       the left horizon, peaks at midday, and sets behind the right horizon. */
-    0%   { transform: translate(110px, 632px); }   /* dawn — rising at the horizon, left */
-    12%  { transform: translate(180px, 470px); }   /* climbing */
-    26%  { transform: translate(300px, 150px); }   /* midday — high */
-    40%  { transform: translate(420px, 470px); }   /* descending */
-    50%  { transform: translate(490px, 628px); }   /* dusk — touching the horizon, right */
-    58%  { transform: translate(516px, 712px); }   /* set — fully behind the earth */
-    86%  { transform: translate(300px, 760px); }   /* deep night — gone, below */
-    100% { transform: translate(110px, 632px); }   /* loop back to dawn */
-  }
-
-  /* Sky stops. Dawn cool-peach → day muted blue → dusk gold → night canopy. */
-  @keyframes hs-sky-top {
-    0%   { stop-color: #20304a; }
-    26%  { stop-color: #3a5876; }
-    50%  { stop-color: #3a3450; }
-    64%  { stop-color: #1b2a3e; }
-    86%  { stop-color: #12211a; }
-    100% { stop-color: #20304a; }
-  }
-  @keyframes hs-sky-mid {
-    0%   { stop-color: #4a4a5a; }
-    26%  { stop-color: #5f7d93; }
-    50%  { stop-color: #7a5a58; }
-    64%  { stop-color: #3a4458; }
-    86%  { stop-color: #1f3a2c; }
-    100% { stop-color: #4a4a5a; }
-  }
-  @keyframes hs-sky-low {
-    0%   { stop-color: #b98a64; }   /* dawn warmth on the horizon */
-    26%  { stop-color: #8fa194; }   /* daylight */
-    50%  { stop-color: #d39a5c; }   /* golden dusk */
-    64%  { stop-color: #8a6a44; }
-    86%  { stop-color: #2c4233; }   /* night */
-    100% { stop-color: #b98a64; }
-  }
-
-  /* Interior lamp: off in daylight, full at night. */
-  .hero-scene__lamp { opacity: 0.85; }
-  @keyframes hs-lamp {
-    0%   { opacity: 0.4; }
-    26%  { opacity: 0.06; }   /* day: barely any interior glow */
-    50%  { opacity: 0.45; }   /* dusk: rising */
-    64%  { opacity: 0.85; }
-    86%  { opacity: 1; }      /* deep night: full warm glow */
-    100% { opacity: 0.4; }
-  }
-  /* The lit opening tracks the lamp. */
-  .hero-scene__opening { opacity: 0.9; }
-  @keyframes hs-opening {
-    0%   { opacity: 0.5; fill: #e7c79a; }
-    26%  { opacity: 0.25; fill: #dfe0d4; }   /* day: opening just reads as shade */
-    50%  { opacity: 0.7; fill: #f3c485; }
-    64%  { opacity: 0.92; fill: #ffd9a1; }
-    86%  { opacity: 1; fill: #ffdfab; }
-    100% { opacity: 0.5; fill: #e7c79a; }
-  }
-  /* Canvas cools (slightly blue-grey) and dims as the light leaves. */
-  .hero-scene__canvas { fill: #e9ebe0; }
-  @keyframes hs-canvas {
-    0%   { fill: #e4e2d4; }   /* dawn */
-    26%  { fill: #f4f5ee; }   /* day: brightest canvas */
-    50%  { fill: #ecdcc6; }   /* dusk: warm wash */
-    64%  { fill: #cdd4cb; }
-    86%  { fill: #aeb9b3; }   /* night: cool, dim */
-    100% { fill: #e4e2d4; }
-  }
-  /* String lights only glow at night. */
-  .hero-scene__lights { opacity: 0.85; }
-  @keyframes hs-lights {
-    0%   { opacity: 0.1; }
-    26%  { opacity: 0; }
-    50%  { opacity: 0.25; }
-    64%  { opacity: 0.7; }
-    86%  { opacity: 0.95; }
-    100% { opacity: 0.1; }
-  }
-  /* Horizon haze strongest at dawn/dusk. */
-  @keyframes hs-haze {
-    0%, 50% { opacity: 0.3; }
-    26%     { opacity: 0.12; }
-    86%     { opacity: 0.06; }
-    100%    { opacity: 0.3; }
-  }
-  /* Ground shadow: longest at dawn/dusk (low sun), short at midday. */
-  .hero-scene__shadow { opacity: 0.4; }
-  @keyframes hs-shadow {
-    0%   { transform: scaleX(1.18) translateX(-14px); opacity: 0.32; }
-    26%  { transform: scaleX(0.9) translateX(0); opacity: 0.45; }
-    50%  { transform: scaleX(1.18) translateX(14px); opacity: 0.34; }
-    86%  { transform: scaleX(1.05) translateX(0); opacity: 0.22; }
-    100% { transform: scaleX(1.18) translateX(-14px); opacity: 0.32; }
-  }
-  .hero-scene__shadow { transform-box: fill-box; transform-origin: center; }
+  .stage__still svg { width: 100%; height: auto; max-height: 100%; overflow: visible; }
+  .stage[data-live] .stage__still { opacity: 0; pointer-events: none; }
 </style>
+
+<script>
+  import { animate, createTimeline } from "animejs";
+
+  // Three.js is ~127 KB gzipped. It loads only when it will actually be used.
+  const stage = document.querySelector<HTMLElement>("[data-stage]");
+  const canvas = document.querySelector<HTMLCanvasElement>("[data-canvas]");
+
+  function webglAvailable() {
+    try {
+      const c = document.createElement("canvas");
+      return !!(c.getContext("webgl2") || c.getContext("webgl"));
+    } catch { return false; }
+  }
+
+  if (stage && canvas &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      webglAvailable()) {
+    const near = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      near.disconnect();
+      void boot(stage, canvas);
+    }, { rootMargin: "300px" });
+    near.observe(stage);
+  }
+
+  async function boot(stage: HTMLElement, canvas: HTMLCanvasElement) {
+    const { createTentScene } = await import("./hero/tent-scene");
+    let s: ReturnType<typeof createTentScene>;
+    try { s = createTentScene(canvas, window.devicePixelRatio || 1); }
+    catch { return; } // the drawing stays, which is why it ships in the HTML
+
+    stage.setAttribute("data-live", "");
+
+    const fit = () => {
+      const r = stage.getBoundingClientRect();
+      s.resize(Math.round(r.width), Math.round(r.height));
+    };
+    fit();
+    new ResizeObserver(fit).observe(stage);
+
+    let raf = 0;
+    const loop = () => { s.apply(); s.render(); raf = requestAnimationFrame(loop); };
+    loop();
+
+    // The assembly: the frame draws in, then the layers land — deck, walls,
+    // roof — in the order a crew actually builds them.
+    createTimeline({ defaults: { ease: "outQuart" } })
+      .add(s.state, { frame: 1, duration: 900 }, 260)
+      .add(s.state, { explode: 0, duration: 1700, ease: "outExpo" }, "-=380");
+
+    animate(s.state, {
+      spin: [{ to: 0.2, duration: 30000 }, { to: -0.04, duration: 30000 }],
+      loop: true,
+      ease: "inOutSine",
+    });
+
+    new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting && !raf) loop();
+        else if (!e.isIntersecting && raf) { cancelAnimationFrame(raf); raf = 0; }
+      }
+    }).observe(stage);
+
+    // The scale plan on /corturi drives the same structure.
+    let sizeTween: ReturnType<typeof animate> | null = null;
+    window.addEventListener("subcort:size", (ev) => {
+      const detail = (ev as CustomEvent<{ size: number }>).detail;
+      if (!detail) return;
+      sizeTween?.pause();
+      sizeTween = animate(s.state, { size: detail.size, duration: 620, ease: "outExpo" });
+    });
+  }
+</script>

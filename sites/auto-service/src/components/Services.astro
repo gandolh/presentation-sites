@@ -1,135 +1,139 @@
 ---
+import Icon from "./Icon.astro";
 import { services } from "../content/services";
 import { telLink } from "../content/site";
 
-// `bare` drops the section's own heading block — used when the page already
-// carries the title in its PageHeader, so the h1/h2 don't echo each other.
 interface Props {
-  bare?: boolean;
+  /** Section heading. Omit the section wrapper when the page supplies one. */
+  title?: string;
+  lede?: string;
+  id?: string;
 }
-const { bare = false } = Astro.props;
+const {
+  title = "Ce citim din mașina ta",
+  lede = "De la revizia de rutină la lucrările pe care nu le face oricine. Dacă nu găsești aici ce-ți trebuie, sună-ne — probabil o rezolvăm.",
+  id = "servicii",
+} = Astro.props;
 
-// Distinct line-art icon per service id, drawn inline so there's no icon-font
-// dependency. Stroke inherits currentColor (the brand blue).
-const icons: Record<string, string> = {
-  diagnoza: `<path d="M3 12h3l2-5 4 10 2-5h7"/><circle cx="19" cy="6" r="2"/>`,
-  revizii: `<path d="M14 4.5 18 8m-9.5 9.5a3 3 0 1 0 4.24-4.24"/><path d="M16.5 6.5 8 15"/><path d="M5 21l3-3"/><path d="M19 3l2 2-3 3-2-2z"/>`,
-  distributie: `<circle cx="8" cy="8" r="4"/><circle cx="16" cy="16" r="4"/><path d="M8 4v1M8 11v1M4 8h1M11 8h1"/><path d="M11 11l2 2"/>`,
-  franare: `<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/>`,
-  suspensie: `<path d="M6 3v4M6 17v4M6 7c2 0 2 2 0 2s-2 2 0 2 2 2 0 2 2 2 0 2"/><path d="M18 3v18"/><path d="M14 3h8M14 21h8"/>`,
-  "racire-vanos": `<path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/><circle cx="12" cy="12" r="3"/>`,
-  electrica: `<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>`,
-  climatizare: `<path d="M4 7a4 4 0 0 1 8 0 4 4 0 0 1 8 0"/><path d="M4 13a4 4 0 0 1 8 0 4 4 0 0 1 8 0"/><path d="M4 19a4 4 0 0 1 8 0 4 4 0 0 1 8 0"/>`,
-  "pre-itp": `<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>`,
+// Every service maps to a symbol in the closed set (see Icon.astro).
+const SYMBOL: Record<string, string> = {
+  diagnoza: "diagnose",
+  revizii: "oil",
+  distributie: "chain",
+  franare: "brake",
+  suspensie: "suspension",
+  "racire-vanos": "coolant",
+  electrica: "electrics",
+  climatizare: "climate",
+  "pre-itp": "inspection",
 };
 ---
 
-<!-- Services = a spec sheet bolted to the pit wall. The default page floor; the
-     menu itself is a single bordered panel whose rows are split by hairlines,
-     not nine identical glowing cards. -->
-<section id="servicii" class="section bg-[var(--color-background)]">
+<section class="section" id={id} aria-labelledby={`${id}-title`}>
   <div class="container-page">
-    {
-      !bare && (
-        <div class="reveal grid items-start gap-x-10 gap-y-5 lg:grid-cols-[auto_minmax(0,1fr)]">
-          <span class="m-stripe--v hidden lg:block" aria-hidden="true" />
-          <div class="max-w-2xl">
-            <span class="m-stripe lg:hidden" aria-hidden="true" />
-            <h2 class="heading-lg mt-4 lg:mt-0">Ce facem pe BMW</h2>
-            <p class="mt-4 text-lg text-[var(--color-on-surface-variant)]">
-              De la revizia de rutină la lucrările pe care nu le face oricine. Dacă
-              nu găsești aici ce ai nevoie, sună-ne, probabil o rezolvăm.
-            </p>
+    <div class="svc__head reveal">
+      <h2 id={`${id}-title`} class="heading-lg">{title}</h2>
+      <p class="svc__lede">{lede}</p>
+    </div>
+
+    <!-- A check-control legend sheet, not a card grid: hairlines and lamps. -->
+    <ul class="svc__board reveal">
+      {services.map((s, i) => (
+        <li class="svc__row" style={`--i:${i}`}>
+          <span class="svc__lamp" aria-hidden="true">
+            <Icon name={SYMBOL[s.id] ?? "diagnose"} size={22} />
+          </span>
+          <div class="svc__text">
+            <h3 class="heading-md svc__title">{s.title}</h3>
+            <p class="legend svc__sub">{s.subtitle}</p>
+            <p class="svc__desc">{s.description}</p>
           </div>
-        </div>
-      )
-    }
-
-    <!-- The menu sheet. One framed panel; each service is a row divided by a
-         hairline. Reads top-to-bottom like a printed service list, and on wider
-         viewports doubles into two columns so it never sprawls. -->
-    <ul
-      class:list={[
-        "services-sheet overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-lowest)] md:grid md:grid-cols-2",
-        bare ? "mt-0" : "mt-12",
-      ]}
-    >
-      {
-        services.map((s, i) => (
-          <li
-            class:list={[
-              "services-row reveal group relative flex items-start gap-4 px-5 py-5 transition-colors duration-200 hover:bg-[var(--color-surface-container)] sm:px-6 sm:py-6",
-              "border-b border-[var(--color-outline-variant)] last:border-b-0",
-              // On the 2-up grid, drop the bottom rule for the last row of each column.
-              i % 2 === 0 ? "md:border-r" : "",
-              i >= services.length - (services.length % 2 === 0 ? 2 : 1)
-                ? "md:border-b-0"
-                : "",
-            ]}
-          >
-            {/* Steel tile holding the line-art icon; the M-tab ticks blue on hover. */}
-            <span
-              class="services-tile mt-0.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-high)] text-[var(--color-primary-bright)]"
-              aria-hidden="true"
-            >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={icons[s.id] ?? ""}
-              />
-            </span>
-
-            <div class="min-w-0">
-              <h3 class="heading-md !text-[1.15rem] text-[var(--color-on-surface)]">
-                {s.title}
-              </h3>
-              <p class="services-label mt-1 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--color-primary-bright)]">
-                {s.subtitle}
-              </p>
-              <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-on-surface-variant)]">
-                {s.description}
-              </p>
-            </div>
-          </li>
-        ))
-      }
+        </li>
+      ))}
     </ul>
 
-    <p class="reveal mt-8 flex flex-wrap items-baseline gap-x-2 text-[var(--color-on-surface-variant)]">
-      <span>Nu găsești aici ce ai nevoie?</span>
-      <a
-        href={telLink()}
-        class="font-semibold text-[var(--color-primary-bright)] underline decoration-[var(--color-outline)] underline-offset-4 transition-colors hover:text-[var(--color-on-surface)] hover:decoration-[var(--color-primary-bright)]"
-        >Sună-ne</a
-      >
-      <span>și îți spunem din vorbă, fără obligații.</span>
+    <p class="svc__foot reveal">
+      Nu găsești aici ce ai nevoie?
+      <a class="svc__link" href={telLink()}>Sună-ne</a> și îți spunem din vorbă, fără obligații.
     </p>
   </div>
-
-  <style>
-    /* The icon tile lights up like a lit indicator on hover — steel to blue. */
-    .services-tile {
-      transition:
-        border-color 200ms var(--ease-out),
-        background-color 200ms var(--ease-out),
-        box-shadow 200ms var(--ease-out);
-    }
-    .services-row:hover .services-tile {
-      border-color: var(--color-primary-bright);
-      box-shadow: 0 0 0 1px var(--color-primary-bright),
-        0 0 16px -6px oklch(78% 0.12 244 / 0.6);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .services-tile {
-        transition: none;
-      }
-    }
-  </style>
 </section>
+
+<style>
+  .svc__head {
+    max-width: 58ch;
+    margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+  }
+  .svc__lede {
+    margin-top: 1.1rem;
+    color: var(--color-on-surface-variant);
+    font-size: 1.02rem;
+    max-width: 60ch;
+  }
+
+  .svc__board {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-outline-variant);
+  }
+  @media (min-width: 900px) {
+    .svc__board { grid-template-columns: repeat(2, 1fr); column-gap: 3.25rem; }
+  }
+
+  .svc__row {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.25rem 1rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .svc__lamp {
+    width: 2.6rem;
+    height: 2.6rem;
+    display: grid;
+    place-items: center;
+    color: var(--color-on-surface-variant);
+    background-color: oklch(17% 0.010 255);
+    box-shadow: inset 0 0 0 1px oklch(26% 0.013 256);
+    border-radius: var(--radius);
+    transition:
+      color 200ms var(--ease-out),
+      background-color 200ms var(--ease-out),
+      box-shadow 200ms var(--ease-out);
+  }
+
+  .svc__row:hover .svc__lamp,
+  .svc__row:focus-within .svc__lamp {
+    color: var(--color-on-primary);
+    background-color: var(--color-primary);
+    box-shadow:
+      inset 0 0 0 1px oklch(86% 0.10 68 / 0.7),
+      0 0 20px -4px oklch(72% 0.17 58 / 0.65);
+  }
+
+  .svc__title { margin-bottom: 0.28rem; }
+  .svc__sub { color: var(--color-primary-bright); margin-bottom: 0.6rem; }
+  .svc__desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+    max-width: 46ch;
+  }
+
+  .svc__foot {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--color-on-surface-variant);
+  }
+  .svc__link {
+    color: var(--color-primary-bright);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: oklch(82% 0.125 65 / 0.45);
+  }
+  .svc__link:hover { text-decoration-color: currentColor; }
+</style>

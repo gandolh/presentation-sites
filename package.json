@@ -23,7 +23,7 @@
     "auto-service:build:mock": "npm run build:mock -w sites/auto-service",
     "saloon:placeholders": "npm run placeholders -w sites/saloon",
     "auto-service:placeholders": "npm run placeholders -w sites/auto-service",
-    "subcort:placeholders": "npm run placeholders -w sites/subcort",
+    "subcort:og": "npm run og -w sites/subcort",
     "saloon:bots": "npm --prefix sites/saloon/marketing/bots run check",
     "build": "npm run build --workspaces --if-present",
     "churchix": "npm --prefix churchix run",

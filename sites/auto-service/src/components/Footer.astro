@@ -1,4 +1,5 @@
 ---
+import Icon from "./Icon.astro";
 import { site, telLink, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 
@@ -6,7 +7,7 @@ const year = new Date().getFullYear();
 const links = [
   { href: "/", label: "Acasă" },
   { href: "/servicii/", label: "Servicii" },
-  { href: "/despre/", label: "Despre noi" },
+  { href: "/despre/", label: "Atelier" },
   { href: "/contact/", label: "Contact" },
 ];
 const legalLinks = [
@@ -16,69 +17,53 @@ const legalLinks = [
 ];
 ---
 
-<footer class="text-[var(--color-on-surface)]" style="background-color: oklch(17% 0.022 256);">
+<footer class="ft">
   <div class="m-stripe m-stripe--full" aria-hidden="true"></div>
 
-  <div class="container-page py-14 grid gap-10 md:grid-cols-4">
-    <div class="md:col-span-1">
-      <span class="wordmark text-2xl">{site.name}</span>
-      <p class="mt-4 text-sm text-[var(--color-on-surface-variant)] max-w-xs leading-relaxed">
-        {site.tagline}
-      </p>
+  <div class="container-page ft__grid">
+    <div class="ft__brand">
+      <span class="ft__wm">
+        <span class="ft__pilot" aria-hidden="true"></span>
+        <span class="wordmark ft__name">{site.name}</span>
+      </span>
+      <p class="ft__tagline">{site.tagline}</p>
+      <div class="ft__social">
+        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener"><Icon name="facebook" size={18} /></a>
+        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener"><Icon name="instagram" size={18} /></a>
+        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /></a>
+      </div>
     </div>
 
-    <nav class="flex flex-col" aria-label="Navigare subsol">
-      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Navigare</span>
-      {
-        links.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] hover:underline underline-offset-4"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+    <nav class="ft__col" aria-label="Navigare subsol">
+      <p class="legend">Navigare</p>
+      {links.map((l) => <a href={withBase(l.href)} class="ft__link">{l.label}</a>)}
     </nav>
 
-    <nav class="flex flex-col" aria-label="Pagini legale">
-      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Legal</span>
-      {
-        legalLinks.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] hover:underline underline-offset-4"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+    <nav class="ft__col" aria-label="Pagini legale">
+      <p class="legend">Legal</p>
+      {legalLinks.map((l) => <a href={withBase(l.href)} class="ft__link">{l.label}</a>)}
     </nav>
 
-    <div class="flex flex-col">
-      <span class="kicker text-[var(--color-on-surface-variant)] mb-2">Contact</span>
-      <a href={telLink()} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">{site.phone}</a>
-      <a href={`mailto:${site.email}`} class="inline-flex items-center min-h-[40px] text-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">{site.email}</a>
-      <p class="text-sm text-[var(--color-on-surface-variant)] mt-1">{site.address}, {site.city}</p>
-
-      <div class="flex items-center gap-3 mt-4">
-        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 -ml-2 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)]">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8A8.5 8.5 0 1 1 7.8 19.35L3 21z"/><path d="M8.5 8.5c0 4 3 7 7 7l1.5-2-2.5-1-1 1c-1 0-3-2-3-3l1-1-1-2.5z"/></svg>
-        </a>
-      </div>
+    <div class="ft__col">
+      <p class="legend">Contact</p>
+      <a href={telLink()} class="ft__link ft__link--read">{site.phone}</a>
+      <a href={`mailto:${site.email}`} class="ft__link">{site.email}</a>
+      <p class="ft__addr">{site.address}, {site.city}</p>
+      <dl class="ft__hours">
+        {site.hours.map((h) => (
+          <div class="ft__hour">
+            <dt>{h.day}</dt>
+            <dd class="reading">{h.value}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </div>
 
   <!-- Business identification (Legea 365/2002 art. 5) + ANPC SAL + RAR + BMW disclaimer -->
-  <div class="footer-legal border-t border-white/10 py-6 text-xs text-[var(--color-on-surface-variant)]">
-    <div class="container-page space-y-3">
-      <p class="leading-relaxed">
+  <div class="ft__legal">
+    <div class="container-page">
+      <p class="ft__ident">
         {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}{
           site.legal.form === "SRL" && site.legal.shareCapital
             ? ` · Capital social: ${site.legal.shareCapital}`
@@ -86,31 +71,130 @@ const legalLinks = [
         }{site.legal.rarAuth ? ` · ${site.legal.rarAuth}` : ""} · {site.address}, {site.city}, jud. {site.county}
       </p>
 
-      <p class="leading-relaxed max-w-3xl">{site.independence}</p>
+      <p class="ft__disclaimer">{site.independence}</p>
 
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-1">
+      <div class="ft__bottom">
         <p>© {year} {site.name}. Toate drepturile rezervate.</p>
         <a
           href="https://reclamatiisal.anpc.ro/"
           target="_blank"
           rel="noopener"
           aria-label="ANPC: Soluționarea Alternativă a Litigiilor"
-          class="inline-flex items-center gap-2 text-[var(--color-on-surface)] hover:opacity-90"
+          class="ft__anpc"
         >
-          <span class="inline-flex items-center justify-center rounded bg-white/10 px-2 py-1 font-semibold tracking-wide">ANPC</span>
+          <span class="ft__anpc-mark">ANPC</span>
           <span>Soluționarea Alternativă a Litigiilor (SAL)</span>
         </a>
       </div>
     </div>
   </div>
-
-  <style>
-    /* The mobile call bar is fixed over the bottom; pad the final legal block on
-       small screens so the bar never covers the CUI / SAL line. */
-    @media (max-width: 1023px) {
-      .footer-legal {
-        padding-bottom: calc(5rem + env(safe-area-inset-bottom));
-      }
-    }
-  </style>
 </footer>
+
+<style>
+  .ft {
+    background-color: oklch(11% 0.008 255);
+    border-top: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface);
+  }
+
+  .ft__grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: clamp(2.75rem, 6vw, 4rem);
+  }
+  @media (min-width: 720px) { .ft__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .ft__grid { grid-template-columns: 1.5fr 1fr 1.15fr 1.15fr; gap: 3rem; } }
+
+  .ft__wm { display: inline-flex; align-items: center; gap: 0.65rem; }
+  .ft__pilot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 9px oklch(72% 0.17 58 / 0.85);
+  }
+  .ft__name { font-size: 1.22rem; text-transform: uppercase; }
+  .ft__tagline {
+    margin-top: 1rem;
+    max-width: 32ch;
+    font-size: 0.875rem;
+    line-height: 1.62;
+    color: var(--color-on-surface-variant);
+  }
+  .ft__social { display: flex; gap: 0.35rem; margin-top: 1.4rem; }
+  .ft__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem; height: 2.5rem;
+    margin-left: -0.5rem;
+    color: var(--color-on-surface-variant);
+    transition: color 180ms var(--ease-out);
+  }
+  .ft__social a:first-child { margin-left: -0.5rem; }
+  .ft__social a:hover { color: var(--color-primary-bright); }
+
+  .ft__col { display: flex; flex-direction: column; }
+  .ft__col .legend { margin-bottom: 0.55rem; }
+  .ft__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.45rem;
+    font-size: 0.875rem;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition: color 160ms var(--ease-out);
+  }
+  .ft__link:hover { color: var(--color-primary-bright); text-decoration: underline; }
+  .ft__link--read { font-family: var(--font-mono); letter-spacing: 0.1em; color: var(--color-on-surface); }
+  .ft__addr { font-size: 0.875rem; color: var(--color-on-surface-variant); margin-top: 0.25rem; }
+
+  .ft__hours { margin-top: 1.25rem; display: grid; gap: 0.4rem; }
+  .ft__hour {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--color-on-surface-variant);
+  }
+  .ft__hour dd { color: var(--color-on-surface); font-size: 0.72rem; }
+
+  .ft__legal {
+    border-top: 1px solid var(--color-outline-variant);
+    padding-block: 1.6rem;
+    font-size: 0.735rem;
+    line-height: 1.65;
+    color: var(--color-on-surface-variant);
+  }
+  .ft__ident { margin-bottom: 0.75rem; }
+  .ft__disclaimer { max-width: 82ch; margin-bottom: 1rem; }
+  .ft__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+  @media (min-width: 768px) {
+    .ft__bottom { flex-direction: row; align-items: center; justify-content: space-between; }
+  }
+  .ft__anpc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+  .ft__anpc:hover { color: var(--color-primary-bright); }
+  .ft__anpc-mark {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    background-color: oklch(20% 0.012 256);
+    border: 1px solid var(--color-outline-variant);
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* The mobile call bar is fixed over the bottom; keep the SAL line clear. */
+  @media (max-width: 1023.98px) {
+    .ft__legal { padding-bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
+  }
+</style>
