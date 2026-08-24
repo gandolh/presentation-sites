@@ -15,7 +15,8 @@ concretă și vor un răspuns rapid + un preț corect.
 - JSON-LD `AutoRepair` (în `Base.astro`) cu adresă, geo, program, telefon.
 - Titlu/descriere cu „service BMW Târgu-Jiu / Gorj”.
 - FAQ-ul alimentează `FAQPage` JSON-LD.
-- Recenzii Google reale (Facebook/Google) — de adăugat în `testimonials.ts` când există.
+- Recenzii Google reale (Facebook/Google) — secțiunea de testimoniale a fost
+  eliminată din site; se reintroduce doar când există recenzii reale de citat.
 
 ## Mesaje cheie (copy)
 - „Mașina ta, pe mâini bune.” / „Specialiști BMW. Atelier de familie.”
