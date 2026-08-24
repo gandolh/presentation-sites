@@ -1,0 +1,501 @@
+/*
+  MAXIMALISM — abundance run as a system.
+
+  The failure mode of maximalism is noise: everything loud, nothing legible.
+  What separates the good version is that the excess is *governed*. This theme
+  keeps four rules and then breaks every other convention it can find:
+
+    1. Two typefaces that disagree on purpose — a high-contrast display serif
+       against a heavy grotesque — and they never do the same job.
+    2. A deep ground so the saturated colours have something to sit on. On
+       white, maximalism reads as a broken stylesheet; on aubergine it reads
+       as deliberate.
+    3. Layering over spacing. Things overlap, tilt, and bleed past their
+       containers. Nothing is centred in its box.
+    4. Reading measure stays honest anyway. The body column never exceeds
+       ~64ch and never drops below 1.6 line-height — that is the discipline
+       that keeps this from being a poster instead of a blog.
+*/
+
+[data-theme="maximalism"] {
+  background: #1b0f2e;
+}
+
+.ds-page {
+  --mx-void: #1b0f2e;
+  --mx-plum: #2d1650;
+  --mx-hot: #ff2e88;
+  --mx-acid: #ffe66d;
+  --mx-jade: #00d4a0;
+  --mx-tang: #ff7a29;
+  --mx-cream: #fff4e6;
+
+  font-family: "Archivo Variable", Archivo, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--mx-cream);
+  background:
+    radial-gradient(circle at 12% 8%, rgb(255 46 136 / 0.4), transparent 42%),
+    radial-gradient(circle at 88% 18%, rgb(0 212 160 / 0.32), transparent 40%),
+    radial-gradient(circle at 60% 92%, rgb(255 122 41 / 0.3), transparent 45%),
+    repeating-linear-gradient(
+      45deg,
+      rgb(255 255 255 / 0.03) 0 12px,
+      transparent 12px 24px
+    ),
+    var(--mx-void);
+  padding: clamp(0.75rem, 3vw, 2rem);
+  overflow-x: clip; /* tilted blocks bleed; the page must not scroll sideways */
+}
+
+.mx-wrap {
+  inline-size: min(74rem, 100%);
+  margin-inline: auto;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.mx-head {
+  position: relative;
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2.5rem);
+  margin-block-end: clamp(2rem, 6vw, 4rem);
+  border: 4px solid var(--mx-acid);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgb(255 46 136 / 0.28) 0 16px,
+      rgb(0 212 160 / 0.2) 16px 32px
+    ),
+    var(--mx-plum);
+  box-shadow: 12px 12px 0 rgb(255 46 136 / 0.55);
+}
+
+.mx-head__mark {
+  margin: 0;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  color: var(--mx-acid);
+  text-shadow:
+    4px 4px 0 var(--mx-hot),
+    8px 8px 0 var(--mx-jade);
+}
+
+.mx-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mx-head__strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 1.25rem;
+}
+
+.mx-chip {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mx-void);
+  background: var(--mx-acid);
+  rotate: -3deg;
+}
+
+.mx-chip--alt {
+  background: var(--mx-jade);
+  rotate: 2deg;
+}
+
+.mx-chip--link {
+  background: var(--mx-hot);
+  color: var(--mx-cream);
+  text-decoration: none;
+  rotate: -1deg;
+}
+
+/* --- feed ----------------------------------------------------------------
+   A deliberately uneven masonry: cards differ in span, rotation and ground so
+   the eye never settles into a rhythm. */
+
+.mx-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+.ds-feed__item {
+  position: relative;
+  padding: 0.875rem;
+  border: 3px solid var(--mx-cream);
+  background: var(--mx-plum);
+  box-shadow: 10px 10px 0 rgb(0 0 0 / 0.5);
+}
+
+.ds-feed__item:nth-child(4n + 1) {
+  rotate: -1.2deg;
+  background: linear-gradient(150deg, #3a1a5e, #2d1650);
+}
+
+.ds-feed__item:nth-child(4n + 2) {
+  rotate: 0.8deg;
+  border-color: var(--mx-acid);
+}
+
+.ds-feed__item:nth-child(4n + 3) {
+  rotate: -0.6deg;
+  border-color: var(--mx-jade);
+  background: linear-gradient(200deg, #4a1030, #2d1650);
+}
+
+.ds-feed__item:nth-child(4n) {
+  rotate: 1.4deg;
+  border-color: var(--mx-hot);
+}
+
+.mx-card__figure {
+  position: relative;
+  margin-block-end: 0.875rem;
+}
+
+.mx-card__no {
+  position: absolute;
+  inset-block-start: -1.4rem;
+  inset-inline-start: -1.1rem;
+  z-index: 2;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 4rem;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--mx-acid);
+  text-shadow: 3px 3px 0 var(--mx-hot);
+  pointer-events: none;
+}
+
+.mx-card__title {
+  margin: 0 0 0.5rem;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.mx-card__title a {
+  color: var(--mx-acid);
+  text-decoration: none;
+  background-image: linear-gradient(var(--mx-hot), var(--mx-hot));
+  background-size: 100% 0.28em;
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+}
+
+.mx-card__title a:hover {
+  color: var(--mx-cream);
+  background-size: 100% 100%;
+}
+
+.mx-card__dek {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.mx-card__meta {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mx-jade);
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.mx-article {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.mx-article__figure {
+  position: relative;
+  max-inline-size: 36rem;
+  rotate: -1.5deg;
+  border: 4px solid var(--mx-acid);
+  box-shadow: 14px 14px 0 var(--mx-hot);
+}
+
+.mx-article__head {
+  position: relative;
+  z-index: 2;
+  margin-block-start: -2.5rem;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  border: 4px solid var(--mx-jade);
+  background: var(--mx-void);
+  box-shadow: -10px 10px 0 rgb(0 212 160 / 0.45);
+  rotate: 0.7deg;
+  max-inline-size: 52rem;
+  margin-inline-start: auto;
+}
+
+.mx-article__title {
+  margin: 0.75rem 0 1rem;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: clamp(2.25rem, 8vw, 4.75rem);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--mx-acid);
+  text-wrap: balance;
+}
+
+.mx-article__dek {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 600;
+  max-inline-size: 46ch;
+}
+
+.mx-article__meta {
+  margin: 1rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mx-jade);
+}
+
+/* The one quiet room in the building — see the note at the top of the file. */
+.mx-article__body {
+  max-inline-size: 64ch;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  border: 3px solid var(--mx-cream);
+  background: rgb(27 15 46 / 0.86);
+}
+
+.mx-article__body > * {
+  margin-block: 0 1.375rem;
+}
+
+.mx-article__body > p:first-of-type::first-letter {
+  float: inline-start;
+  margin: 0.05em 0.1em 0 0;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 4.2em;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.78;
+  color: var(--mx-hot);
+}
+
+.mx-article__body h2 {
+  margin-block: 2.5rem 1rem;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 1.75rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--mx-acid);
+}
+
+.mx-article__body blockquote {
+  margin-block: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 0;
+  background: linear-gradient(120deg, var(--mx-hot), var(--mx-tang));
+  color: var(--mx-void);
+  rotate: -1.2deg;
+  box-shadow: 8px 8px 0 var(--mx-jade);
+}
+
+.mx-article__body blockquote p {
+  margin: 0;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.mx-article__body blockquote footer {
+  margin-block-start: 0.75rem;
+  font-family: "Archivo Variable", Archivo, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mx-article__body ul {
+  margin-block: 0 1.375rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.mx-article__body li {
+  padding: 0.5rem 0.875rem;
+  border-inline-start: 6px solid var(--mx-jade);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.mx-article__body li:nth-child(2n) {
+  border-inline-start-color: var(--mx-hot);
+}
+
+.mx-article__body li:nth-child(3n) {
+  border-inline-start-color: var(--mx-tang);
+}
+
+.mx-aside {
+  padding: 0.875rem 1.125rem;
+  border: 3px dashed var(--mx-acid);
+  background: rgb(255 230 109 / 0.1);
+  font-size: 0.9375rem;
+}
+
+/* --- carousel ------------------------------------------------------------
+   A duotone clash: the image is pushed to a hot magenta/acid pair and then a
+   second, differently-hued layer is blended over it. Deliberately too much,
+   which is the brief. */
+
+.ds-page .ds-carousel__slide {
+  position: relative;
+}
+
+.ds-page .ds-carousel__image {
+  filter: saturate(1.8) contrast(1.3) hue-rotate(-12deg);
+}
+
+.ds-page .ds-carousel__slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(35deg, var(--mx-hot), transparent 45%, var(--mx-jade));
+  mix-blend-mode: color-burn;
+  opacity: 0.55;
+}
+
+.ds-page .ds-carousel__controls {
+  padding: 0.625rem 0.75rem;
+  background: var(--mx-void);
+  border-block-start: 3px solid var(--mx-acid);
+  gap: 0.625rem;
+}
+
+.ds-page .ds-carousel__nav {
+  border: 0;
+  border-radius: 0;
+  background: var(--mx-acid);
+  color: var(--mx-void);
+  padding: 0.15rem 0.7rem;
+  font: inherit;
+  font-weight: 800;
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  background: rgb(255 244 230 / 0.25);
+  color: rgb(255 244 230 / 0.6);
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 12px;
+  block-size: 12px;
+  padding: 0;
+  border: 2px solid var(--mx-acid);
+  border-radius: 0;
+  background: transparent;
+  rotate: 45deg;
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: var(--mx-hot);
+  border-color: var(--mx-hot);
+}
+
+.ds-page .ds-carousel__counter {
+  margin: 0 0 0 auto;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 800;
+  color: var(--mx-acid);
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  margin-block-start: clamp(2rem, 5vw, 3.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  border: 3px solid var(--mx-acid);
+  border-radius: 0;
+  background: var(--mx-plum);
+  color: var(--mx-acid);
+  padding: 0.4rem 1rem;
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  background: var(--mx-hot);
+  border-color: var(--mx-hot);
+  color: var(--mx-cream);
+  rotate: -3deg;
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.mx-foot {
+  margin-block-start: clamp(2.5rem, 6vw, 4rem);
+  padding: 1.25rem 1.5rem;
+  border: 4px solid var(--mx-hot);
+  background: var(--mx-plum);
+  box-shadow: -10px 10px 0 var(--mx-acid);
+  rotate: -0.6deg;
+}
+
+.mx-foot p {
+  margin: 0;
+  font-family: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--mx-acid);
+}

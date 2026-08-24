@@ -1,0 +1,34 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ol class="brut-feed" data-ds-feed data-per-page={POSTS_PER_PAGE}>
+  {
+    posts.map((post, i) => (
+      <li class="ds-feed__item">
+        <p class="brut-card__label brut-mono">
+          [{String(i + 1).padStart(3, "0")}] {post.date} &middot; {post.author} &middot;{" "}
+          {post.images.length} IMG &middot; {post.ratio}
+        </p>
+        <h2 class="brut-card__title">
+          <a href={withBase(`/brutalism/${post.slug}/`)}>{post.title}</a>
+        </h2>
+        <p class="brut-card__dek">{post.dek}</p>
+        <div class="brut-card__figure">
+          <PostCarousel post={post} />
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<Pager />

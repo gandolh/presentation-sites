@@ -1,0 +1,20 @@
+---
+// A single post, rendered in bohemian.
+import type { Post } from "../../content/posts";
+import Shell from "../../themes/bohemian/Shell.astro";
+import PostView from "../../themes/bohemian/Post.astro";
+import { postPaths, postPage } from "../../lib/routes";
+
+export const getStaticPaths = postPaths;
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { style, title, description } = postPage("bohemian", post);
+---
+
+<Shell style={style} title={title} description={description} postSlug={post.slug}>
+  <PostView post={post} />
+</Shell>

@@ -1,0 +1,39 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<ol class="gl-feed" data-ds-feed data-per-page={POSTS_PER_PAGE}>
+  {
+    posts.map((post) => (
+      <li class="ds-feed__item gl-pane">
+        <div class="gl-card__figure">
+          <PostCarousel post={post} />
+        </div>
+        <h2 class="gl-card__title">
+          <a href={withBase(`/glassmorphism/${post.slug}/`)}>{post.title}</a>
+        </h2>
+        <p class="gl-card__dek">{post.dek}</p>
+        <p class="gl-card__meta">
+          {post.author} &middot; {dateFormat.format(new Date(post.date))}
+        </p>
+      </li>
+    ))
+  }
+</ol>
+
+<Pager />

@@ -1,0 +1,66 @@
+---
+import type { Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<article class="swiss-grid swiss-article">
+  <!-- Carousel first, then the body — fixed across all fourteen themes. -->
+  <div class="swiss-article__figure">
+    <PostCarousel post={post} />
+  </div>
+
+  <header class="swiss-article__head">
+    <p class="swiss-article__kicker">{post.tags.join(" / ")}</p>
+    <h1 class="swiss-article__title">{post.title}</h1>
+    <p class="swiss-article__dek">{post.dek}</p>
+  </header>
+
+  <p class="swiss-article__byline">
+    <b>{post.author}</b>
+    <time datetime={post.date}>{dateFormat.format(new Date(post.date))}</time>
+  </p>
+
+  <div class="swiss-article__body">
+    {
+      post.body.map((block) => {
+        switch (block.type) {
+          case "h2":
+            return <h2>{block.text}</h2>;
+          case "quote":
+            return (
+              <blockquote>
+                <p>{block.text}</p>
+                {block.cite && <footer>{block.cite}</footer>}
+              </blockquote>
+            );
+          case "list":
+            return (
+              <ul>
+                {block.items.map((item) => (
+                  <li>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          case "aside":
+            return <aside class="swiss-article__aside">{block.text}</aside>;
+          default:
+            return <p>{block.text}</p>;
+        }
+      })
+    }
+  </div>
+</article>

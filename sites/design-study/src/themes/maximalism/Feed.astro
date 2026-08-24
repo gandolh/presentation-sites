@@ -1,0 +1,43 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<ol class="mx-feed" data-ds-feed data-per-page={POSTS_PER_PAGE}>
+  {
+    posts.map((post, i) => (
+      <li class="ds-feed__item">
+        <div class="mx-card__figure">
+          <span class="mx-card__no" aria-hidden="true">
+            {i + 1}
+          </span>
+          <PostCarousel post={post} />
+        </div>
+        <h2 class="mx-card__title">
+          <a href={withBase(`/maximalism/${post.slug}/`)}>{post.title}</a>
+        </h2>
+        <p class="mx-card__dek">{post.dek}</p>
+        <p class="mx-card__meta">
+          {post.author} &middot; {dateFormat.format(new Date(post.date))} &middot;{" "}
+          {post.tags.join(" · ")}
+        </p>
+      </li>
+    ))
+  }
+</ol>
+
+<Pager />

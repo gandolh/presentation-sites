@@ -1,0 +1,55 @@
+---
+import type { Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="brut-article">
+  <div class="brut-article__figure">
+    <PostCarousel post={post} />
+  </div>
+
+  <h1 class="brut-article__title">{post.title}</h1>
+  <p class="brut-article__dek">{post.dek}</p>
+  <p class="brut-article__meta brut-mono">
+    <span>BY {post.author.toUpperCase()}</span>
+    <span>DATE <time datetime={post.date}>{post.date}</time></span>
+    <span>TAGS {post.tags.join(" ")}</span>
+    <span>BLOCKS {post.body.length}</span>
+  </p>
+
+  <div class="brut-article__body">
+    {
+      post.body.map((block) => {
+        switch (block.type) {
+          case "h2":
+            return <h2>{block.text}</h2>;
+          case "quote":
+            return (
+              <blockquote>
+                <p>{block.text}</p>
+                {block.cite && <footer>&mdash; {block.cite}</footer>}
+              </blockquote>
+            );
+          case "list":
+            return (
+              <ul>
+                {block.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            );
+          case "aside":
+            return <p class="brut-aside">{block.text}</p>;
+          default:
+            return <p>{block.text}</p>;
+        }
+      })
+    }
+  </div>
+</article>

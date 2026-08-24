@@ -1,0 +1,56 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+// Two typefaces that disagree — the disagreement is the design.
+import "@fontsource-variable/playfair-display/wght.css";
+import "@fontsource-variable/archivo/wght.css";
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <div class="ds-page">
+    <div class="mx-wrap">
+      <header class="mx-head">
+        <MarkTag class="mx-head__mark"><a href={withBase("/maximalism/")}>{site.name}</a></MarkTag>
+        <div class="mx-head__strip">
+          <span class="mx-chip">{style.name}</span>
+          <span class="mx-chip mx-chip--alt">{style.era}</span>
+          <span class="mx-chip">More is more</span>
+          <a class="mx-chip mx-chip--link" href={withBase("/")}>All 14 &rarr;</a>
+        </div>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="mx-foot">
+        <p>{site.name} &mdash; everything, all of it, at once.</p>
+      </footer>
+    </div>
+  </div>
+</Document>

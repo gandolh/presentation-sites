@@ -1,0 +1,456 @@
+/*
+  SWISS DESIGN — Basel and Zürich, 1950s.
+
+  The grid is not scaffolding here, it is the design. Every rule in this file
+  serves one of four commitments:
+
+    1. A twelve-column grid with a fixed gutter, and nothing off it.
+    2. One neutral grotesque, two weights. Hierarchy comes from size, weight and
+       position — never from colour, ornament or a second typeface.
+    3. Flush left, ragged right. No centring anywhere, no justification.
+    4. Black, white, and one red used only as a mark. Photography is grayscale,
+       hard-cropped, square-cornered: the image is information, not atmosphere.
+
+  Everything is scoped under `.ds-page` so it cannot reach the neutral switcher.
+*/
+
+[data-theme="swiss"] {
+  background: #fff;
+}
+
+.ds-page {
+  --swiss-red: #e1000f;
+  --swiss-ink: #111;
+  --swiss-grey: #767676; /* 4.6:1 on white — the lightest grey allowed here */
+  --swiss-rule: #111;
+  --gutter: 1.25rem;
+  --margin: clamp(1.25rem, 5vw, 4rem);
+
+  font-family: "Inter Variable", Inter, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.006em;
+  color: var(--swiss-ink);
+  background: #fff;
+  font-feature-settings: "tnum" 1;
+}
+
+/* The grid itself. Twelve columns, one gutter, applied by name everywhere. */
+.swiss-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+  padding-inline: var(--margin);
+}
+
+@media (max-width: 48rem) {
+  .swiss-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.swiss-head {
+  padding-block: 1.5rem 0.75rem;
+  align-items: baseline;
+  border-block-end: 2px solid var(--swiss-rule);
+}
+
+.swiss-head__mark {
+  grid-column: 1 / span 4;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.swiss-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.swiss-head__mark span {
+  color: var(--swiss-red);
+}
+
+.swiss-head__meta {
+  grid-column: 6 / span 4;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--swiss-grey);
+}
+
+.swiss-head__style {
+  grid-column: 11 / span 2;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+@media (max-width: 48rem) {
+  .swiss-head__mark {
+    grid-column: 1 / span 3;
+  }
+  .swiss-head__meta {
+    display: none;
+  }
+  .swiss-head__style {
+    grid-column: 5 / span 2;
+  }
+}
+
+/* --- feed ---------------------------------------------------------------- */
+
+.swiss-feed {
+  list-style: none;
+  margin: 0;
+  padding-block: 0 3rem;
+}
+
+.ds-feed__item {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  padding-block: 2.5rem;
+  border-block-end: 1px solid var(--swiss-rule);
+}
+
+.swiss-card__figure {
+  grid-column: 1 / span 5;
+  /* Uncapped, a 4:5 image at this column span runs ~660px tall against three
+     lines of text. The cap keeps the entry readable as a single unit. */
+  max-inline-size: 22rem;
+}
+
+.swiss-card__body {
+  grid-column: 7 / span 6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (max-width: 48rem) {
+  .ds-feed__item {
+    row-gap: 1.25rem;
+  }
+  .swiss-card__figure,
+  .swiss-card__body {
+    grid-column: 1 / -1;
+  }
+}
+
+.swiss-card__index {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--swiss-red);
+}
+
+.swiss-card__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+
+.swiss-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.swiss-card__title a:hover {
+  color: var(--swiss-red);
+}
+
+.swiss-card__dek {
+  margin: 0;
+  max-inline-size: 42ch;
+}
+
+.swiss-card__meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--swiss-grey);
+}
+
+.swiss-card__meta b {
+  font-weight: 400;
+  color: var(--swiss-ink);
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.swiss-article {
+  padding-block: 2.5rem 4rem;
+  row-gap: 2rem;
+}
+
+.swiss-article__figure {
+  grid-column: 1 / span 8;
+}
+
+.swiss-article__head {
+  grid-column: 1 / span 8;
+}
+
+.swiss-article__kicker {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--swiss-red);
+}
+
+.swiss-article__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.swiss-article__dek {
+  margin: 0;
+  max-inline-size: 44ch;
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+
+.swiss-article__byline {
+  grid-column: 10 / span 3;
+  margin: 0;
+  padding-block-start: 0.5rem;
+  border-block-start: 1px solid var(--swiss-rule);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--swiss-grey);
+}
+
+.swiss-article__byline b {
+  display: block;
+  font-weight: 700;
+  color: var(--swiss-ink);
+}
+
+.swiss-article__body {
+  grid-column: 1 / span 7;
+}
+
+@media (max-width: 48rem) {
+  .swiss-article__figure,
+  .swiss-article__head,
+  .swiss-article__byline,
+  .swiss-article__body {
+    grid-column: 1 / -1;
+  }
+}
+
+.swiss-article__body > * {
+  margin-block: 0 1.25rem;
+  max-inline-size: 62ch;
+}
+
+.swiss-article__body h2 {
+  margin-block: 2.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.swiss-article__body blockquote {
+  margin-block: 2rem;
+  padding-block-start: 1rem;
+  border-block-start: 2px solid var(--swiss-rule);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  max-inline-size: 30ch;
+}
+
+.swiss-article__body blockquote p {
+  margin: 0;
+}
+
+.swiss-article__body blockquote footer {
+  margin-block-start: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--swiss-grey);
+}
+
+.swiss-article__body ul {
+  margin-block: 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.swiss-article__body li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--gutter);
+  padding-block: 0.5rem;
+  border-block-start: 1px solid #ddd;
+}
+
+.swiss-article__body li::before {
+  content: counter(swiss-item, decimal-leading-zero);
+  counter-increment: swiss-item;
+  font-weight: 700;
+  color: var(--swiss-red);
+}
+
+.swiss-article__body ul {
+  counter-reset: swiss-item;
+}
+
+.swiss-article__aside {
+  margin-block: 1.75rem;
+  padding-inline-start: 1rem;
+  border-inline-start: 2px solid var(--swiss-red);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--swiss-grey);
+}
+
+/* --- carousel ------------------------------------------------------------
+   Full grayscale, no radius, no shadow. The image is evidence, not mood; the
+   controls are set like captions, on the same rule as everything else. */
+
+.ds-page .ds-carousel__image {
+  filter: grayscale(1) contrast(1.06);
+  border-radius: 0;
+}
+
+.ds-page .ds-carousel__controls {
+  margin-block-start: 0.5rem;
+  padding-block-start: 0.5rem;
+  border-block-start: 1px solid var(--swiss-rule);
+  gap: 0.75rem;
+}
+
+.ds-page .ds-carousel__nav {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--swiss-ink);
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  color: #bbb;
+}
+
+.ds-page .ds-carousel__dots {
+  gap: 0.25rem;
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 1.5rem;
+  block-size: 3px;
+  padding: 0;
+  border: 0;
+  background: #ccc;
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: var(--swiss-red);
+}
+
+.ds-page .ds-carousel__counter {
+  margin: 0 0 0 auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--swiss-grey);
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding-block: 1.5rem 0;
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--swiss-ink);
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  color: #bbb;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  font-weight: 700;
+  color: var(--swiss-red);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.swiss-foot {
+  padding-block: 1.25rem 3rem;
+  border-block-start: 2px solid var(--swiss-rule);
+  font-size: 0.75rem;
+  color: var(--swiss-grey);
+}
+
+.swiss-foot p {
+  grid-column: 1 / span 6;
+  margin: 0;
+}
+
+.swiss-foot nav {
+  grid-column: 9 / span 4;
+  text-align: right;
+}
+
+.swiss-foot a {
+  color: var(--swiss-ink);
+  text-decoration: none;
+  border-block-end: 1px solid var(--swiss-red);
+}
+
+@media (max-width: 48rem) {
+  .swiss-foot p,
+  .swiss-foot nav {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}

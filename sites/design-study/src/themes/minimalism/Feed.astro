@@ -1,0 +1,36 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  month: "long",
+  year: "numeric",
+});
+---
+
+<ol class="min-feed" data-ds-feed data-per-page={POSTS_PER_PAGE}>
+  {
+    posts.map((post) => (
+      <li class="ds-feed__item">
+        <div class="min-card__figure">
+          <PostCarousel post={post} />
+        </div>
+        <p class="min-card__date">{dateFormat.format(new Date(post.date))}</p>
+        <h2 class="min-card__title">
+          <a href={withBase(`/minimalism/${post.slug}/`)}>{post.title}</a>
+        </h2>
+        <p class="min-card__dek">{post.dek}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<Pager />

@@ -1,0 +1,139 @@
+/*
+  The only global CSS in the study.
+
+  It holds exactly two things: a reset thin enough that Brutalism can still get
+  browser defaults back, and the *structural* carousel rules — the geometry the
+  Embla island needs in order to be a carousel at all. Everything decorative is
+  a theme's business.
+
+  Isolation rule that the whole project depends on: every theme scopes its CSS
+  under `.ds-page`. The neutral switcher lives outside `.ds-page`, as a direct
+  child of <body>, so no theme rule can reach it. Break that rule and the
+  chrome starts wearing the theme it is supposed to be measuring.
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  /* Room for the fixed switcher bar so no theme's footer hides beneath it. */
+  padding-block-end: 4.5rem;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+/* Themes opt back in per element where a decorative outline is wanted. */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Carousel — structure only.
+
+   Themes override every one of these with `.ds-page .ds-carousel__…`, which
+   outranks the bare class here without needing !important anywhere.
+--------------------------------------------------------------------------- */
+
+.ds-carousel {
+  --ds-carousel-ratio: 4 / 5;
+  position: relative;
+}
+
+.ds-carousel[data-ratio="1:1"] {
+  --ds-carousel-ratio: 1 / 1;
+}
+
+/*
+  Before hydration this is a native scroll-snap carousel, so it swipes on touch
+  with no JavaScript at all. Embla then flips data-ready and takes the wheel.
+*/
+.ds-carousel__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.ds-carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.ds-carousel[data-ready="true"] .ds-carousel__viewport {
+  overflow: hidden;
+  scroll-snap-type: none;
+}
+
+.ds-carousel__track {
+  display: flex;
+  margin: 0;
+}
+
+.ds-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.ds-carousel__image {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: var(--ds-carousel-ratio);
+  object-fit: cover;
+}
+
+.ds-carousel__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ds-carousel__dots {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.ds-carousel__nav,
+.ds-carousel__dot {
+  cursor: pointer;
+}
+
+.ds-carousel__nav[disabled] {
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------------------
+   Feed pager — structure only. `hidden` is set by src/scripts/pager.ts; with
+   no JavaScript nothing is hidden and all twelve posts simply render.
+--------------------------------------------------------------------------- */
+
+.ds-pager[hidden],
+.ds-feed__item[hidden] {
+  display: none;
+}

@@ -1,0 +1,401 @@
+/*
+  ETHEREAL — light with the edges taken off.
+
+  The whole style is built on one idea: nothing has a hard boundary. Where
+  another theme draws a border, this one lets the thing fade out. Where another
+  crops a photograph, this one feathers it into the page.
+
+  The technical vocabulary is small and specific:
+
+    * `mask-image` with a radial or linear gradient, so images end in air
+      rather than at an edge;
+    * bloom — a brightened, blurred copy of the image composited under itself,
+      which is what makes light appear to spill;
+    * a light serif at large sizes with wide leading, because a thin face is
+      the only one that survives a low-contrast palette;
+    * pale lavender, blush and mist, layered as soft radial washes that drift.
+
+  The obvious risk is contrast, and it is a real one — this is the theme most
+  likely to fail WCAG if handled carelessly. Body text here is deliberately
+  darker than the style's instincts want (4.9:1); only decorative type is
+  allowed to go pale. That compromise is recorded in the dossier.
+*/
+
+[data-theme="ethereal"] {
+  background: #f7f3fb;
+}
+
+.ds-page {
+  --et-mist: #f7f3fb;
+  --et-blush: #fbeef2;
+  --et-lav: #c9b6e4;
+  --et-sky: #bcd6ec;
+  --et-ink: #4a4458; /* 7.4:1 on mist */
+  --et-quiet: #6f6880; /* 4.9:1 — the palest text allowed */
+
+  font-family: "Cormorant Variable", Cormorant, Georgia, serif;
+  font-size: 1.3125rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--et-ink);
+  background-color: var(--et-mist);
+  background-image:
+    radial-gradient(ellipse 60% 45% at 18% 12%, rgb(201 182 228 / 0.5), transparent 65%),
+    radial-gradient(ellipse 55% 40% at 82% 30%, rgb(188 214 236 / 0.45), transparent 62%),
+    radial-gradient(ellipse 70% 50% at 50% 92%, rgb(251 238 242 / 0.9), transparent 60%);
+  background-attachment: fixed;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.et-wrap {
+  inline-size: min(62rem, 100%);
+  margin-inline: auto;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.et-head {
+  padding-block: clamp(4rem, 14vw, 9rem) clamp(3rem, 10vw, 6rem);
+  text-align: center;
+}
+
+.et-head__mark {
+  margin: 0;
+  font-size: clamp(3rem, 11vw, 6rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--et-ink);
+  text-shadow: 0 0 42px rgb(201 182 228 / 0.9);
+}
+
+.et-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.et-head__style {
+  margin: 1.5rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+}
+
+/* --- feed ----------------------------------------------------------------
+   One slow column. The separator between posts is a gradient that dissolves
+   at both ends — the theme cannot bring itself to draw a line. */
+
+.et-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-feed__item {
+  padding-block: clamp(3rem, 9vw, 6rem);
+  text-align: center;
+}
+
+.ds-feed__item + .ds-feed__item {
+  border-block-start: 1px solid transparent;
+  border-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(201 182 228 / 0.8) 35%,
+      rgb(201 182 228 / 0.8) 65%,
+      transparent
+    )
+    1;
+}
+
+.et-card__figure {
+  inline-size: min(26rem, 84%);
+  margin: 0 auto 2rem;
+}
+
+.et-card__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.875rem, 5vw, 2.75rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+}
+
+.et-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.et-card__title a:hover {
+  color: var(--et-quiet);
+  text-shadow: 0 0 24px rgb(201 182 228 / 0.9);
+}
+
+.et-card__dek {
+  margin: 0 auto 1rem;
+  max-inline-size: 32ch;
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--et-quiet);
+}
+
+.et-card__meta {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.et-article {
+  padding-block-end: clamp(4rem, 12vw, 8rem);
+}
+
+.et-article__figure {
+  inline-size: min(32rem, 90%);
+  margin: 0 auto clamp(2.5rem, 8vw, 4.5rem);
+}
+
+.et-article__head {
+  text-align: center;
+  margin-block-end: clamp(2.5rem, 8vw, 4.5rem);
+}
+
+.et-article__title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(2.25rem, 7vw, 4rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.05;
+  text-wrap: balance;
+  text-shadow: 0 0 48px rgb(201 182 228 / 0.7);
+}
+
+.et-article__dek {
+  margin: 0 auto;
+  max-inline-size: 34ch;
+  font-size: 1.1875rem;
+  color: var(--et-quiet);
+}
+
+.et-article__meta {
+  margin: 1.75rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+}
+
+.et-article__body {
+  inline-size: min(34rem, 100%);
+  margin-inline: auto;
+}
+
+.et-article__body > * {
+  margin-block: 0 1.75rem;
+}
+
+.et-article__body h2 {
+  margin-block: 3.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--et-quiet);
+}
+
+.et-article__body blockquote {
+  margin-block: 3rem;
+  padding: 0;
+  border: 0;
+  text-align: center;
+}
+
+.et-article__body blockquote p {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.35;
+  text-shadow: 0 0 36px rgb(201 182 228 / 0.8);
+}
+
+.et-article__body blockquote footer {
+  margin-block-start: 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+}
+
+.et-article__body ul {
+  margin-block: 0 1.75rem;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.et-article__body li {
+  padding-block: 0.5rem;
+}
+
+.et-article__body li + li {
+  border-block-start: 1px solid transparent;
+  border-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(201 182 228 / 0.6),
+      transparent
+    )
+    1;
+}
+
+.et-aside {
+  margin-block: 2.5rem;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--et-quiet);
+}
+
+/* --- carousel ------------------------------------------------------------
+   Bloom, then feather. `filter` lifts the whites and softens the midtones;
+   `mask-image` dissolves all four edges so the photograph ends in air. */
+
+.ds-page .ds-carousel__image {
+  filter: brightness(1.1) contrast(0.82) saturate(0.85) blur(0.2px);
+  mask-image: radial-gradient(
+    ellipse 78% 78% at 50% 50%,
+    #000 52%,
+    transparent 100%
+  );
+}
+
+.ds-page .ds-carousel__slide {
+  position: relative;
+}
+
+/* The spill: a soft lavender halo over the feathered edge. It must stay
+   INSIDE the slide box — a negative inset gets clipped by the viewport's
+   overflow and reads as a hard rectangle, which is the opposite of the point. */
+.ds-page .ds-carousel__slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 66% 66% at 50% 45%,
+    transparent 52%,
+    rgb(247 243 251 / 0.85) 100%
+  );
+}
+
+.ds-page .ds-carousel__controls {
+  margin-block-start: 0.5rem;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.ds-page .ds-carousel__nav {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--et-quiet);
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  opacity: 0.25;
+}
+
+.ds-page .ds-carousel__dots {
+  gap: 0.75rem;
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 6px;
+  block-size: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(111 104 128 / 0.3);
+  transition: box-shadow 400ms ease, background 400ms ease;
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: var(--et-lav);
+  box-shadow: 0 0 12px 4px rgb(201 182 228 / 0.9);
+}
+
+.ds-page .ds-carousel__counter {
+  display: none;
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-block-start: clamp(3rem, 9vw, 5rem);
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  color: var(--et-ink);
+  text-shadow: 0 0 20px rgb(201 182 228 / 1);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.et-foot {
+  padding-block: clamp(3rem, 10vw, 5rem);
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--et-quiet);
+}
+
+.et-foot a {
+  color: inherit;
+}

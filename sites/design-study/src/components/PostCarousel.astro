@@ -1,0 +1,29 @@
+---
+// Resolves a post's logical image names to URLs and hands them to the island,
+// so no theme has to repeat the mapping. Themes that need a different carousel
+// *mechanism* (spatial, liquid-glass) skip this and import their own.
+import Carousel from "./Carousel.tsx";
+import { img } from "../content/images";
+import type { Post } from "../content/posts";
+
+interface Props {
+  post: Post;
+  /** Per-theme hook, surfaced as `data-variant` on the carousel root. */
+  variant?: string;
+}
+
+const { post, variant } = Astro.props;
+
+const images = post.images.map((name, i) => ({
+  src: img(name),
+  alt: `${post.title} — image ${i + 1} of ${post.images.length}`,
+}));
+---
+
+<Carousel
+  client:visible
+  images={images}
+  ratio={post.ratio}
+  label={post.title}
+  variant={variant}
+/>

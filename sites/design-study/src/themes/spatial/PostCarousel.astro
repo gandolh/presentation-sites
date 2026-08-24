@@ -1,0 +1,33 @@
+---
+// `client:only` because react-three-fiber cannot server-render — which means
+// this island contributes NO markup to the static HTML. The <noscript> below
+// is therefore not a nicety, it is the only thing a reader without JavaScript
+// would otherwise get.
+import Carousel from "./Carousel.tsx";
+import { img } from "../../content/images";
+import type { Post } from "../../content/posts";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const images = post.images.map((name, i) => ({
+  src: img(name),
+  alt: `${post.title} — image ${i + 1} of ${post.images.length}`,
+}));
+---
+
+<Carousel
+  client:only="react"
+  images={images}
+  ratio={post.ratio}
+  label={post.title}
+/>
+
+<noscript>
+  <div class="sp-carousel sp-carousel--flat">
+    {images.map((image) => <img src={image.src} alt={image.alt} />)}
+  </div>
+</noscript>

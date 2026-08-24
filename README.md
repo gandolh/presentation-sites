@@ -34,6 +34,15 @@ presentation-sites/
   (Astro + React + Tailwind v4, static). Minimalist, with a Three.js hero scene
   of a tow truck driving a night road. Deploy sub-path `/tractari`. See
   [sites/tractari/README.md](sites/tractari/README.md).
+- **[sites/design-study/](sites/design-study/)** — *Fourteen Renderings*, a UI/UX
+  study rather than a marketing site (Astro + React islands, static, no Tailwind).
+  One fictional blog rendered in 14 design languages — Minimalism, Swiss,
+  Brutalism, NeoBrutalism, Maximalism, Surrealism, Bohemian, Ethereal,
+  Skeuomorphism, Neumorphism, Claymorphism, Glassmorphism, Liquid Glass and
+  Spatial UI — with the content held constant so only the design varies. The
+  written half lives in [sites/design-study/docs/styles/](sites/design-study/docs/styles/),
+  one dossier per style. Deploy sub-path `/design-study`. See
+  [sites/design-study/README.md](sites/design-study/README.md).
 - **[churchix/](churchix/)** — Churchix, a white-label platform for Orthodox
   church sites plus a giving surface. Unlike the others it is a product, not a
   single site: its own npm-workspaces monorepo with shared `@churchix/*`

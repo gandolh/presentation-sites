@@ -1,0 +1,336 @@
+/*
+  BRUTALISM (web, c. 2014) — the refusal.
+
+  Web brutalism is not "ugly on purpose", it is *undesigned on purpose*: the
+  raw document, with the browser's defaults left where they fell, because
+  every softening move is a small dishonesty about what a web page is.
+
+  So this theme deliberately does the things the other thirteen spend their
+  effort avoiding:
+
+    * Times New Roman, because that is what the UA picks;
+    * links in #0000EE, underlined, purple once visited — the actual default;
+    * no max-width. Text runs the full window, the way HTML does before
+      anybody intervenes;
+    * hard 1px borders, zero radius, zero shadow, zero transition;
+    * structure exposed as text — file names, counts, and section markers
+      printed rather than implied.
+
+  Note the deliberate accessibility cost, recorded in the dossier: full-width
+  measure is genuinely hard to read at desktop widths. That is the style's
+  position, not an oversight here.
+*/
+
+[data-theme="brutalism"] {
+  background: #fff;
+}
+
+.ds-page {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #000;
+  background: #fff;
+  padding: 0 8px 8px;
+}
+
+.ds-page a {
+  color: #00e;
+  text-decoration: underline;
+}
+
+.ds-page a:visited {
+  color: #551a8b;
+}
+
+.brut-mono {
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.brut-head {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  margin-block: 8px;
+}
+
+.brut-head__mark {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.brut-head__mark a {
+  color: #000;
+  text-decoration: none;
+}
+
+.brut-head__rule {
+  margin: 4px 0;
+  border: 0;
+  border-block-start: 1px solid #000;
+}
+
+.brut-head__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5em;
+}
+
+/* --- feed ----------------------------------------------------------------
+   A numbered list of documents. Each entry states what it is before it tries
+   to be interesting. */
+
+.brut-feed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-feed__item {
+  border: 1px solid #000;
+  padding: 6px;
+  margin-block-end: 8px;
+}
+
+.brut-card__label {
+  margin: 0 0 4px;
+  border-block-end: 1px solid #000;
+  padding-block-end: 4px;
+}
+
+.brut-card__title {
+  margin: 0 0 2px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.brut-card__dek {
+  margin: 0 0 6px;
+}
+
+.brut-card__figure {
+  margin: 6px 0 0;
+  border: 1px solid #000;
+  padding: 4px;
+  max-inline-size: 420px;
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.brut-article {
+  border: 1px solid #000;
+  padding: 6px;
+}
+
+.brut-article__figure {
+  border: 1px solid #000;
+  padding: 4px;
+  margin-block-end: 8px;
+  max-inline-size: 520px;
+}
+
+.brut-article__title {
+  margin: 0 0 4px;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.02;
+}
+
+.brut-article__dek {
+  margin: 0 0 8px;
+  font-style: italic;
+}
+
+.brut-article__meta {
+  margin: 0 0 12px;
+  border-block: 1px solid #000;
+  padding-block: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5em;
+}
+
+.brut-article__body > * {
+  margin-block: 0 1em;
+}
+
+.brut-article__body h2 {
+  margin-block: 1.5em 0.5em;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.brut-article__body h2::before {
+  content: "## ";
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+}
+
+.brut-article__body blockquote {
+  margin: 1em 0;
+  border: 1px solid #000;
+  padding: 6px;
+  font-size: 1.125rem;
+}
+
+.brut-article__body blockquote p {
+  margin: 0;
+}
+
+.brut-article__body blockquote footer {
+  margin-block-start: 4px;
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+.brut-article__body blockquote p::before {
+  content: '"';
+}
+
+.brut-article__body blockquote p::after {
+  content: '"';
+}
+
+.brut-article__body ul {
+  margin-block: 0 1em;
+  padding-inline-start: 2em;
+  list-style: square;
+}
+
+.brut-aside {
+  border: 1px dashed #000;
+  padding: 6px;
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+.brut-aside::before {
+  content: "NOTE: ";
+  font-weight: 700;
+}
+
+/* --- carousel ------------------------------------------------------------
+   1-bit threshold via an SVG filter, then a dot screen laid over it. The
+   result is a newsprint halftone: an image reduced to the smallest number of
+   decisions that still describes a shape. */
+
+.ds-page .ds-carousel__slide {
+  position: relative;
+}
+
+.ds-page .ds-carousel__image {
+  filter: url("#brut-threshold");
+  image-rendering: pixelated;
+}
+
+.ds-page .ds-carousel__slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at center, #fff 0.9px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: lighten;
+}
+
+.ds-page .ds-carousel__controls {
+  margin-block-start: 4px;
+  border-block-start: 1px solid #000;
+  padding-block-start: 4px;
+  gap: 0.75em;
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+.ds-page .ds-carousel__nav {
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  padding: 0 6px;
+  font: inherit;
+  color: #000;
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  color: #999;
+  border-color: #999;
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 12px;
+  block-size: 12px;
+  padding: 0;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: #000;
+}
+
+.ds-page .ds-carousel__counter {
+  margin: 0 0 0 auto;
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  padding: 0 6px;
+  font: inherit;
+  color: #000;
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  color: #999;
+  border-color: #999;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  background: #000;
+  color: #fff;
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.brut-foot {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  margin-block-start: 8px;
+  font-family: ui-monospace, "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+}
+
+.brut-foot p {
+  margin: 0;
+}

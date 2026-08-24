@@ -1,0 +1,20 @@
+---
+// A single post, rendered in skeuomorphism.
+import type { Post } from "../../content/posts";
+import Shell from "../../themes/skeuomorphism/Shell.astro";
+import PostView from "../../themes/skeuomorphism/Post.astro";
+import { postPaths, postPage } from "../../lib/routes";
+
+export const getStaticPaths = postPaths;
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { style, title, description } = postPage("skeuomorphism", post);
+---
+
+<Shell style={style} title={title} description={description} postSlug={post.slug}>
+  <PostView post={post} />
+</Shell>

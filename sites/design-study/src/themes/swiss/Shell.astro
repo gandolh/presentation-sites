@@ -1,0 +1,55 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+// Self-hosted; the neutral grotesque this whole style rests on. Imported here
+// rather than in Document so only /swiss/* pays for it.
+import "@fontsource-variable/inter/wght.css";
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <div class="ds-page">
+    <header class="swiss-grid swiss-head">
+      <MarkTag class="swiss-head__mark">
+        <a href={withBase("/swiss/")}>{site.name}<span>.</span></a>
+      </MarkTag>
+      <p class="swiss-head__meta">{site.tagline}</p>
+      <p class="swiss-head__style">{style.name}</p>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="swiss-grid swiss-foot">
+      <p>{site.name} — {style.name}, {style.era}. Fictional content, set as a control.</p>
+      <nav>
+        <a href={withBase("/")}>All fourteen styles</a>
+      </nav>
+    </footer>
+  </div>
+</Document>

@@ -1,0 +1,491 @@
+/*
+  LIQUID GLASS — Apple, WWDC 2025.
+
+  Glassmorphism blurred what was behind a panel. Liquid Glass *bends* it. The
+  difference between the two, stated precisely:
+
+    glassmorphism  = blur + translucency + a hairline
+    liquid glass   = refraction + specular highlight + edge lensing,
+                     all of it responding in real time to motion
+
+  Refraction is the load-bearing one. A blur says "there is something behind
+  this"; a displacement says "this is a physical object with a thickness".
+  That is why the carousel here is a replacement rather than a restyle — see
+  Carousel.tsx, which stacks an SVG feDisplacementMap, a scroll-driven
+  specular band, and a chromatic fringe masked to the rim.
+
+  Everything else follows Apple's chrome conventions: capsule shapes, chrome
+  that floats over content rather than framing it, a very dark ground so the
+  highlights have somewhere to be bright, and concentric radii — an inner
+  radius equals the outer radius minus the padding, so nested corners stay
+  parallel instead of drifting.
+*/
+
+[data-theme="liquid-glass"] {
+  background: #0b1020;
+}
+
+.ds-page {
+  --lg-void: #0b1020;
+  --lg-ink: #f2f5ff;
+  --lg-quiet: #a9b4d0; /* 7.9:1 on the glass */
+  --lg-blue: #5ac8fa;
+  --lg-line: rgb(255 255 255 / 0.22);
+
+  --lg-glass: rgb(255 255 255 / 0.07);
+  --lg-frost: blur(28px) saturate(180%);
+
+  font-family:
+    "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  letter-spacing: -0.011em;
+  color: var(--lg-ink);
+  background-color: var(--lg-void);
+  /* Something worth refracting. */
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 8%, #2a4bd8 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 82% 20%, #0f9bb8 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 60% 96%, #7c2fd6 0%, transparent 55%);
+  background-attachment: fixed;
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+
+.lg-wrap {
+  inline-size: min(64rem, 100%);
+  margin-inline: auto;
+}
+
+/* Concentric radii: outer 28, padding 12, therefore inner 16. */
+.lg-glass {
+  position: relative;
+  border: 1px solid var(--lg-line);
+  border-radius: 28px;
+  background: var(--lg-glass);
+  backdrop-filter: var(--lg-frost);
+  -webkit-backdrop-filter: var(--lg-frost);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 -1px 0 rgb(255 255 255 / 0.08),
+    0 22px 50px rgb(0 0 0 / 0.5);
+}
+
+/* --- masthead ------------------------------------------------------------
+   Floating capsule chrome, the way Apple's tab bars now sit over content. */
+
+.lg-head {
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  margin-block-end: 2rem;
+  text-align: center;
+}
+
+.lg-head__mark {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.lg-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lg-head__style {
+  margin: 0.5rem 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--lg-quiet);
+}
+
+.lg-capsule {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--lg-line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.4);
+  color: var(--lg-ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.lg-capsule:hover {
+  background: rgb(255 255 255 / 0.2);
+}
+
+/* --- feed ---------------------------------------------------------------- */
+
+.lg-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 1.75rem;
+}
+
+.ds-feed__item {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-card__figure {
+  margin-block-end: 1rem;
+}
+
+.lg-card__title {
+  margin: 0 0 0.4rem;
+  padding-inline: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.lg-card__title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.lg-card__title a:hover {
+  color: var(--lg-blue);
+}
+
+.lg-card__dek {
+  margin: 0 0 1rem;
+  padding-inline: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--lg-quiet);
+}
+
+.lg-card__meta {
+  margin: auto 0 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.06);
+  font-size: 0.75rem;
+  color: var(--lg-quiet);
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.lg-article {
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+.lg-article__figure {
+  inline-size: min(30rem, 100%);
+  margin: 0 auto 2rem;
+}
+
+.lg-article__head {
+  text-align: center;
+  margin-block-end: 2rem;
+}
+
+.lg-article__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.042em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.lg-article__dek {
+  margin: 0 auto;
+  max-inline-size: 44ch;
+  font-size: 1.0625rem;
+  color: var(--lg-quiet);
+}
+
+.lg-article__meta {
+  display: inline-block;
+  margin: 1.25rem 0 0;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--lg-line);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--lg-quiet);
+}
+
+.lg-article__body {
+  inline-size: min(38rem, 100%);
+  margin-inline: auto;
+}
+
+.lg-article__body > * {
+  margin-block: 0 1.375rem;
+}
+
+.lg-article__body h2 {
+  margin-block: 2.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  color: #fff;
+}
+
+.lg-article__body blockquote {
+  margin-block: 2rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--lg-line);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
+}
+
+.lg-article__body blockquote p {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.lg-article__body blockquote footer {
+  margin-block-start: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--lg-quiet);
+}
+
+.lg-article__body ul {
+  margin-block: 0 1.375rem;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 0.05);
+  display: grid;
+  gap: 2px;
+}
+
+.lg-article__body li {
+  padding: 0.7rem 1rem;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.06);
+}
+
+.lg-aside {
+  padding: 1rem 1.25rem;
+  border: 1px solid rgb(90 200 250 / 0.4);
+  border-radius: 20px;
+  background: rgb(90 200 250 / 0.1);
+  font-size: 0.9375rem;
+}
+
+/* --- carousel ------------------------------------------------------------
+   The layer stack, bottom to top: refracted image, chromatic fringe on the
+   rim, travelling specular band, rim highlight. */
+
+.lg-defs {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+}
+
+.lg-carousel {
+  --lg-sweep: 0.5;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.2),
+    0 22px 50px rgb(0 0 0 / 0.55);
+}
+
+.lg-carousel .ds-carousel__slide {
+  position: relative;
+  isolation: isolate;
+}
+
+.lg-carousel .ds-carousel__image {
+  filter: url("#lg-refract") saturate(1.2) contrast(1.05);
+}
+
+/* Chromatic dispersion: the same photograph, nudged and hue-shifted, shown
+   only in a band around the rim. Without this the effect reads as a blur. */
+.lg-fringe {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  filter: url("#lg-refract") hue-rotate(24deg) saturate(2.2);
+  translate: 3px 0;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  mask-image: radial-gradient(
+    ellipse 74% 74% at 50% 50%,
+    transparent 58%,
+    #000 100%
+  );
+  pointer-events: none;
+}
+
+/* The specular band. Its position is driven by --lg-sweep, which the
+   component recomputes from scroll — the light stays put, the glass moves. */
+.lg-specular {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    104deg,
+    transparent calc(var(--lg-sweep) * 100% - 26%),
+    rgb(255 255 255 / 0.42) calc(var(--lg-sweep) * 100% - 6%),
+    rgb(255 255 255 / 0.06) calc(var(--lg-sweep) * 100% + 4%),
+    transparent calc(var(--lg-sweep) * 100% + 22%)
+  );
+  mix-blend-mode: screen;
+}
+
+.lg-rim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 -14px 30px rgb(0 0 0 / 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-specular {
+    /* Frozen mid-sweep rather than removed: the highlight is part of the
+       material, only its travel is motion. */
+    --lg-sweep: 0.5;
+  }
+}
+
+.ds-page .ds-carousel__controls {
+  position: absolute;
+  inset-block-end: 0.75rem;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--lg-line);
+  border-radius: 999px;
+  background: rgb(11 16 32 / 0.42);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.4);
+  gap: 0.5rem;
+  z-index: 3;
+}
+
+.ds-page .ds-carousel__nav {
+  inline-size: 1.6rem;
+  block-size: 1.6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.16);
+  font: inherit;
+  font-size: 0.75rem;
+  color: var(--lg-ink);
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  opacity: 0.3;
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 6px;
+  block-size: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.35);
+  transition: inline-size 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* The dot stretches into a capsule rather than just recolouring — the "morph"
+   half of the design language. */
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  inline-size: 18px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.ds-page .ds-carousel__counter {
+  display: none;
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  margin-block-start: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--lg-line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: var(--lg-frost);
+  -webkit-backdrop-filter: var(--lg-frost);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  padding: 0.4rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--lg-ink);
+  cursor: pointer;
+  transition: background 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ds-page .ds-pager__nav:hover:not([disabled]),
+.ds-page .ds-pager__page:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  background: rgb(255 255 255 / 0.9);
+  color: var(--lg-void);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.lg-foot {
+  margin-block-start: 2rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--lg-quiet);
+}
+
+.lg-foot p {
+  margin: 0;
+}

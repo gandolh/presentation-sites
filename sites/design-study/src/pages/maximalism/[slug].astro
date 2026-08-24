@@ -1,0 +1,20 @@
+---
+// A single post, rendered in maximalism.
+import type { Post } from "../../content/posts";
+import Shell from "../../themes/maximalism/Shell.astro";
+import PostView from "../../themes/maximalism/Post.astro";
+import { postPaths, postPage } from "../../lib/routes";
+
+export const getStaticPaths = postPaths;
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { style, title, description } = postPage("maximalism", post);
+---
+
+<Shell style={style} title={title} description={description} postSlug={post.slug}>
+  <PostView post={post} />
+</Shell>
