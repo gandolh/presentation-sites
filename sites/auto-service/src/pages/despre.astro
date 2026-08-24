@@ -4,30 +4,29 @@ import WipBanner from "../components/WipBanner.astro";
 import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
 import About from "../components/About.astro";
-import Gallery from "../components/Gallery.astro";
-import Testimonials from "../components/Testimonials.astro";
+import WhyUs from "../components/WhyUs.astro";
+import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import MobileCallBar from "../components/MobileCallBar.astro";
 import { site } from "../content/site";
 ---
 
 <Base
+  title="Atelierul · BavAuto Gorj"
+  description="Atelier independent BMW, afacere de familie în Târgu-Jiu. Cine suntem, cum lucrăm și de ce ne poți lăsa mașina."
   path="/despre/"
-  title={`Despre noi · ${site.name}`}
-  description="Cine suntem: un atelier mic, de familie, din Târgu-Jiu, care reparează BMW de 5 ani. Independenți, nu dealer. Aceleași mâini, fiecare mașină."
 >
   <WipBanner />
   <Nav current="/despre/" solid />
   <main id="main">
     <PageHeader
-      eyebrow="Despre noi"
-      title="O familie, o pasiune: BMW"
-      lead="Suntem câțiva oameni dintr-o familie care repară BMW pentru că asta le place cu adevărat. Atât."
+      title="Atelierul"
+      lead="Suntem câțiva oameni dintr-o familie care repară BMW-uri pentru că asta le place cu adevărat. Atât."
+      readout={`${site.stats.family} oameni · ${site.stats.years} ani · numai BMW`}
     />
-    <About bare />
-    <Gallery />
-    {/* Testimonials renders nothing until real reviews are added (see content/testimonials.ts) */}
-    <Testimonials />
+    <About />
+    <WhyUs />
+    <Contact />
   </main>
   <Footer />
   <MobileCallBar />

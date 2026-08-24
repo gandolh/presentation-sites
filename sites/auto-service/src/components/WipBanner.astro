@@ -8,7 +8,7 @@ import { site, telLink, waLink } from "../content/site";
 
 {
   site.wip.show && (
-    <div id="wip-banner" class="relative z-[var(--z-sticky)] border-b border-white/10 bg-[oklch(16%_0.022_256)] text-[var(--color-on-surface)]">
+    <div id="wip-banner" class="relative z-[var(--z-sticky)] border-b border-[var(--color-outline-variant)] bg-[oklch(10%_0.008_255)] text-[var(--color-on-surface)]">
       <div class="m-stripe m-stripe--full" aria-hidden="true" />
       <div class="container-page flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
         <span class="inline-flex items-center gap-2">
@@ -19,7 +19,7 @@ import { site, telLink, waLink } from "../content/site";
           <a href={telLink()} class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
             {site.phone}
           </a>
-          <span class="text-white/25" aria-hidden="true">·</span>
+          <span class="text-[var(--color-outline)]" aria-hidden="true">·</span>
           <a href={waLink()} target="_blank" rel="noopener" class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
             WhatsApp
           </a>

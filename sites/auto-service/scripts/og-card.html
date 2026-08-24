@@ -1,0 +1,80 @@
+<!doctype html><html lang="ro"><head><meta charset="utf-8">
+<!--
+  SOURCE for public/images/og-image.png.
+
+  Social platforms (Facebook, WhatsApp, X, LinkedIn, Slack, iMessage) refuse an
+  SVG for og:image, so the card ships as a PNG. It is authored here in HTML so
+  it can use the site's REAL self-hosted faces — Archivo on its width axis and
+  Hanken Grotesk — instead of a renderer's fallback grotesque, which would also
+  put the Romanian diacritics at the mercy of whatever font it picked.
+
+  To regenerate: open this file at exactly 1200x630 and screenshot it to
+  public/images/og-image.png. Fonts resolve from the repo-root node_modules.
+-->
+<style>
+@font-face{font-family:"Archivo Card";src:url("../../../node_modules/@fontsource-variable/archivo/files/archivo-latin-ext-wdth-normal.woff2") format("woff2-variations");font-weight:100 900;font-stretch:62% 125%;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Archivo Card";src:url("../../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2") format("woff2-variations");font-weight:100 900;font-stretch:62% 125%;}
+@font-face{font-family:"Hanken Card";src:url("../../../node_modules/@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-ext-wght-normal.woff2") format("woff2-variations");font-weight:100 900;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Hanken Card";src:url("../../../node_modules/@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations");font-weight:100 900;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{background:#07090c;position:relative;font-family:"Hanken Card",system-ui,sans-serif;color:#eef1f4}
+.bloom{position:absolute;inset:0;background:radial-gradient(52% 62% at 78% 52%,rgba(255,138,30,.17),transparent 70%)}
+.grain{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 3px)}
+.seg{position:absolute;top:0;left:0;right:0;height:6px;display:flex;gap:4px}
+.seg i{flex:1;display:block}
+.seg i:nth-child(1){background:#2e9be6}.seg i:nth-child(2){background:#5b4bc4}.seg i:nth-child(3){background:#e8331f}
+.wm{position:absolute;left:72px;top:62px;display:flex;align-items:center;gap:13px}
+.wm span{width:11px;height:11px;border-radius:50%;background:#ff8a1e;box-shadow:0 0 12px rgba(255,138,30,.9)}
+.wm b{font-family:"Archivo Card";font-variation-settings:'wdth' 118,'wght' 800;font-size:33px;letter-spacing:.5px}
+.wm b i{font-style:normal;color:#ff8a1e}
+h1{position:absolute;left:72px;top:150px;font-family:"Archivo Card";font-variation-settings:'wdth' 112,'wght' 800;font-size:74px;line-height:1.06;letter-spacing:-2.2px}
+h1 em{font-style:normal;color:#ffb45c;text-shadow:0 0 30px rgba(255,138,30,.4)}
+p{position:absolute;left:72px;top:414px;width:640px;font-size:24px;line-height:1.5;color:#9aa2ac}
+.cta{position:absolute;left:72px;top:498px;display:flex;align-items:center;gap:14px;padding:0 30px;height:66px;border-radius:5px;
+  background:linear-gradient(180deg,#ffb047,#ff8a1e 58%,#e2740c);box-shadow:inset 0 0 0 1px rgba(255,208,150,.85)}
+.cta b{font-family:"Archivo Card";font-variation-settings:'wdth' 112,'wght' 800;font-size:23px;letter-spacing:2px;color:#180c00}
+#dial{position:absolute;right:-34px;top:80px}
+</style></head><body>
+<div class="bloom"></div><div class="grain"></div>
+<div class="seg"><i></i><i></i><i></i></div>
+<div class="wm"><span></span><b>BAVAUTO<i>·</i>GORJ</b></div>
+<h1>Service BMW<br>în Târgu-Jiu,<br><em>făcut ca la carte.</em></h1>
+<p>Atelier independent de familie. Deviz scris înainte de
+lucrare și garanție 12 luni la piese și manoperă.</p>
+<div class="cta">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#180c00" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 16.9v2.8a2 2 0 0 1-2.2 2 19.5 19.5 0 0 1-8.5-3 19.2 19.2 0 0 1-5.9-5.9 19.5 19.5 0 0 1-3-8.6 2 2 0 0 1 2-2.2h2.8a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L7.6 9.7a15.8 15.8 0 0 0 5.9 5.9l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+  <b>SUNĂ ACUM</b>
+</div>
+<svg id="dial" width="470" height="470" viewBox="0 0 470 470"></svg>
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const polar=(c,r,d)=>{const a=(d-90)*Math.PI/180;return[c+r*Math.cos(a),c+r*Math.sin(a)];};
+const arc=(c,r,a0,a1)=>{const[x0,y0]=polar(c,r,a0),[x1,y1]=polar(c,r,a1);return `M${x0} ${y0} A${r} ${r} 0 ${(a1-a0)>180?1:0} 1 ${x1} ${y1}`;};
+const s=document.getElementById('dial'),C=235,R=216,A0=-125,A1=125,MAX=8,VAL=.82,RED=6.5;
+const d=el('defs');d.innerHTML=`
+<radialGradient id="f" cx="50%" cy="38%" r="72%"><stop offset="0%" stop-color="#1b2029"/><stop offset="62%" stop-color="#0d1116"/><stop offset="100%" stop-color="#090c10"/></radialGradient>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a414b"/><stop offset="34%" stop-color="#171b21"/><stop offset="72%" stop-color="#0c0f14"/><stop offset="100%" stop-color="#2a303a"/></linearGradient>
+<linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6a4d"/><stop offset="100%" stop-color="#c9200d"/></linearGradient>
+<filter id="g" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+s.appendChild(d);
+s.appendChild(el('circle',{cx:C,cy:C,r:R,fill:'url(#b)'}));
+s.appendChild(el('circle',{cx:C,cy:C,r:R-9,fill:'#090b0f'}));
+s.appendChild(el('circle',{cx:C,cy:C,r:R-13,fill:'url(#f)'}));
+s.appendChild(el('path',{d:arc(C,R-19,A0-4,A1+4),fill:'none',stroke:'#ff8a1e','stroke-width':3.2,'stroke-linecap':'round',opacity:.45,filter:'url(#g)'}));
+const tR=R-30;
+for(let v=0;v<=MAX;v+=.25){const ang=A0+(A1-A0)*(v/MAX),maj=Math.abs(v-Math.round(v))<.01,red=v>=RED;
+ const[x0,y0]=polar(C,tR,ang),[x1,y1]=polar(C,tR-(maj?19:9),ang);
+ s.appendChild(el('line',{x1:x0,y1:y0,x2:x1,y2:y1,stroke:red?'#e8331f':(maj?'#eef1f4':'#5c646f'),'stroke-width':maj?3.4:1.5}));
+ if(maj){const[nx,ny]=polar(C,tR-42,ang);const t=el('text',{x:nx,y:ny+11,'text-anchor':'middle',fill:red?'#ff6a5b':'#eef1f4','font-family':'Archivo Card','font-size':30,style:"font-variation-settings:'wdth' 104,'wght' 700"});t.textContent=v;s.appendChild(t);} }
+s.appendChild(el('path',{d:arc(C,tR+7,A0+(A1-A0)*(RED/MAX),A1),fill:'none',stroke:'#e8331f','stroke-width':5}));
+const l=el('text',{x:C,y:C-59,'text-anchor':'middle',fill:'#9aa2ac','font-family':'monospace','font-size':12,'letter-spacing':4});l.textContent='1/min x1000';s.appendChild(l);
+const ang=A0+(A1-A0)*(VAL/MAX);
+const g=el('g',{transform:`rotate(${ang} ${C} ${C})`});
+g.appendChild(el('path',{d:`M${C-5.5} ${C+16} L${C-2.4} ${C-(R-38)} L${C+2.4} ${C-(R-38)} L${C+5.5} ${C+16} Z`,fill:'url(#n)',filter:'url(#g)'}));
+s.appendChild(g);
+s.appendChild(el('circle',{cx:C,cy:C,r:19,fill:'#14181e',stroke:'#333a44','stroke-width':1.5}));
+s.appendChild(el('circle',{cx:C,cy:C,r:6,fill:'#e8331f'}));
+</script>
+</body></html>

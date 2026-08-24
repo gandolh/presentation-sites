@@ -1,87 +1,110 @@
 ---
+import BayScene from "./BayScene.astro";
 import { site } from "../content/site";
-import { img } from "../content/images";
 
-// Until a real BavAuto team photo exists, we do NOT show a stock photo of
-// strangers under an "our family" claim — that would break the trust the section
-// is built on. We lead instead with the verified BMW engine shot (real marque,
-// real work) and keep the alt honest. Swap to a true BavAuto team photo when one
-// is shot, then restore a team-framed alt.
-const portrait = img("gallery-03");
-
-// `bare` drops the in-section <h2> + intro paragraphs' duplicate framing when
-// the page's PageHeader already carries the title. The body copy stays; only
-// the heading is suppressed so h1/h2 don't echo.
-interface Props {
-  bare?: boolean;
-}
-const { bare = false } = Astro.props;
+interface Props { heading?: "h1" | "h2" }
+const { heading = "h2" } = Astro.props;
+const Heading = heading;
 ---
 
-<section id="despre" class="section bg-[var(--color-surface-container-lowest)] border-y border-[var(--color-outline-variant)]">
-  <div class="container-page grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-    <div class="reveal order-2 lg:order-1">
-      {
-        !bare && (
-          <>
-            <h2 class="heading-lg">O familie, o pasiune: BMW</h2>
-            <span class="m-stripe mt-5" aria-hidden="true" />
-          </>
-        )
-      }
-      <div class:list={["space-y-4 text-[1.02rem] leading-relaxed text-[var(--color-on-surface-variant)]", bare ? "mt-0" : "mt-7"]}>
-        <p>
-          {site.name} e un atelier mic, de familie, din {site.city}. Suntem
-          câțiva oameni care reparăm BMW-uri de ani buni, pentru că asta ne place
-          cu adevărat să facem, nu pentru că „a ieșit așa”.
-        </p>
-        <p>
-          Tocmai pentru că suntem puțini, fiecare mașină trece prin mâini pe care
-          le cunoști. Îți explicăm pe înțeles ce are, îți dăm un deviz corect și
-          îți spunem sincer când o lucrare nu merită banii.
-        </p>
-        <p>
-          Suntem un atelier <strong class="text-[var(--color-on-surface)] font-semibold">independent</strong>:
-          nu suntem dealer și nu avem nicio legătură cu BMW AG. Suntem doar niște
-          pasionați care îți tratează mașina ca pe a noastră.
-        </p>
-      </div>
+<section id="despre" class="section ab" aria-labelledby="about-title">
+  <div class="container-page ab__grid">
+    <div class="reveal ab__copy">
+      <Heading id="about-title" class="heading-lg">O familie, o singură marcă</Heading>
 
-      <dl class="mt-8 flex flex-wrap gap-x-10 gap-y-5">
-        <div>
-          <dt class="font-display text-3xl font-extrabold text-[var(--color-primary)]">{site.stats.years} ani</dt>
-          <dd class="text-sm text-[var(--color-on-surface-variant)] mt-1">de experiență, numai pe BMW</dd>
-        </div>
-        <div>
-          <dt class="font-display text-3xl font-extrabold text-[var(--color-primary)]">{site.stats.family} oameni</dt>
-          <dd class="text-sm text-[var(--color-on-surface-variant)] mt-1">aceeași familie, aceleași mâini</dd>
-        </div>
-      </dl>
+      <p class="ab__lead">
+        {site.name} e un atelier mic, de familie, din {site.city}. Suntem câțiva
+        oameni care reparăm BMW-uri de ani buni — pentru că asta ne place cu
+        adevărat să facem, nu pentru că „a ieșit așa”.
+      </p>
+      <p class="ab__body">
+        Tocmai pentru că suntem puțini, fiecare mașină trece prin mâini pe care
+        le cunoști. Îți explicăm pe înțeles ce are, îți dăm un deviz corect și
+        îți spunem sincer când o lucrare nu merită banii.
+      </p>
+      <p class="ab__body">
+        Suntem un atelier <strong class="ab__em">independent</strong>: nu suntem
+        dealer și nu avem nicio legătură cu BMW AG. Suntem doar niște pasionați
+        care îți tratează mașina ca pe a noastră.
+      </p>
+
     </div>
 
-    <div class="reveal order-1 lg:order-2">
-      <figure class="about-photo relative">
-        <img
-          src={portrait}
-          alt="Motor BMW M deschis în atelierul BavAuto Gorj"
-          class="w-full rounded-xl object-cover aspect-[4/3]"
-          loading="lazy"
-          decoding="async"
-        />
-        <span class="m-stripe m-stripe--full absolute bottom-0 left-0 rounded-b-xl" aria-hidden="true"></span>
-      </figure>
-    </div>
+    <figure class="reveal ab__figure">
+      <div class="ab__scene"><BayScene /></div>
+      <figcaption class="legend ab__caption">
+        Elevație desenată a atelierului — nu o fotografie de stoc.
+      </figcaption>
+    </figure>
+
+    <!-- A stamped record line, the way a service book prints one: no metric
+         template, no label-above-number, just the facts in one readout. -->
+    <p class="ab__record reading">
+      <span class="ab__stamp" aria-hidden="true"></span>
+      {site.stats.years} ani numai pe BMW
+      <b aria-hidden="true">·</b>
+      {site.stats.family} oameni, aceeași familie
+      <b aria-hidden="true">·</b>
+      autorizat RAR, lucrări cu factură
+    </p>
   </div>
-
-  <style>
-    /* The image reads as a lit panel on the dark floor: a hairline frame plus a
-       soft drop so it sits above the graphite, not flush with it. */
-    .about-photo {
-      border-radius: var(--radius-xl);
-      box-shadow:
-        0 0 0 1px var(--color-outline-variant),
-        0 24px 60px -28px oklch(8% 0.02 257 / 0.9);
-    }
-    .about-photo img { display: block; }
-  </style>
 </section>
+
+<style>
+  .ab { border-top: 1px solid var(--color-outline-variant); }
+  .ab__grid { display: grid; gap: 2.75rem; align-items: center; }
+  @media (min-width: 1024px) {
+    .ab__grid { grid-template-columns: 1fr 1.08fr; column-gap: 4rem; row-gap: 2.75rem; }
+    .ab__record { grid-column: 1 / -1; }
+  }
+
+  .ab__lead {
+    margin-top: 1.3rem;
+    font-size: 1.08rem;
+    line-height: 1.62;
+    color: var(--color-on-surface);
+    max-width: 46ch;
+  }
+  .ab__body {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.68;
+    color: var(--color-on-surface-variant);
+    max-width: 52ch;
+  }
+  .ab__em { color: var(--color-primary-bright); font-weight: 600; }
+
+  .ab__record {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius);
+    background-color: oklch(17% 0.010 255);
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-on-surface);
+    line-height: 1.5;
+  }
+  .ab__record b { color: var(--color-outline); font-weight: 400; }
+  .ab__stamp {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-m-red);
+    flex: none;
+  }
+
+  .ab__figure { margin: 0; }
+  .ab__scene {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-color: oklch(11% 0.008 255);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-lg);
+  }
+  .ab__caption { margin-top: 0.9rem; }
+</style>

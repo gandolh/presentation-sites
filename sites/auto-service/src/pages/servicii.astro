@@ -5,26 +5,34 @@ import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Services from "../components/Services.astro";
 import Process from "../components/Process.astro";
+import Faq from "../components/Faq.astro";
+import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import MobileCallBar from "../components/MobileCallBar.astro";
-import { site } from "../content/site";
+import { services } from "../content/services";
 ---
 
 <Base
+  title="Servicii BMW · BavAuto Gorj"
+  description="Diagnoză și codări, revizii, distribuție și lanț N47/N57, frânare, suspensie, răcire și VANOS, electrică, climatizare și pre-ITP — atelier independent BMW în Târgu-Jiu."
   path="/servicii/"
-  title={`Servicii BMW · ${site.name}`}
-  description="Ce facem pe BMW: diagnoză dedicată, revizii, distribuție și lanț, frânare, suspensie, răcire și VANOS, electrică, climatizare și pre-ITP. Deviz clar înainte de lucrare."
 >
   <WipBanner />
   <Nav current="/servicii/" solid />
   <main id="main">
     <PageHeader
-      eyebrow="Servicii"
       title="Ce facem pe BMW"
-      lead="De la revizia de rutină la lucrările pe care nu le face oricine. Dacă nu găsești aici ce-ți trebuie, sună-ne, probabil o rezolvăm."
+      lead="De la revizia de rutină la lucrările pe care nu le face oricine. Fiecare intrare de aici pleacă de la o diagnoză, nu de la o presupunere."
+      readout={`${services.length} lucrări · deviz în avans · garanție 12 luni`}
     />
-    <Services bare />
+    <Services
+      title="Nouă lucrări, toate pe BMW"
+      lede="Fiecare intrare de aici are un simbol în bord și o cauză de găsit. Dacă lucrarea ta nu e în listă, sună-ne — probabil o rezolvăm."
+      id="lista"
+    />
     <Process />
+    <Faq />
+    <Contact />
   </main>
   <Footer />
   <MobileCallBar />

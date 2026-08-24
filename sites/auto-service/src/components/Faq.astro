@@ -54,7 +54,8 @@ const faqJsonLd = {
 
   .faq__item {
     border-bottom: 1px solid var(--color-outline-variant);
-    transition: box-shadow 220ms var(--ease-out), padding-left 220ms var(--ease-out);
+    /* box-shadow only: animating padding would relayout the whole list. */
+    transition: box-shadow 220ms var(--ease-out);
   }
   .faq__q {
     display: flex;

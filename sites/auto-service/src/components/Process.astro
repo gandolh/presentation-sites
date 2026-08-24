@@ -69,16 +69,20 @@ const steps = [
     height: 3px;
     background-color: oklch(23% 0.012 256);
   }
+  /* The rail is coded in the M order — segment colour, not illumination.
+     Amber is reserved for the step the visitor is actually touching. */
   .proc__seg {
     position: absolute;
     inset: 0;
-    background-color: var(--color-primary);
-    box-shadow: 0 0 12px -1px oklch(72% 0.17 58 / 0.6);
-    transform-origin: left center;
-    /* Steps light progressively: step 1 fully, the last barely — the readout
-       of a job in progress, not a decorative gradient. */
-    opacity: calc(1 - var(--i) * 0.16);
+    background-color: var(--seg, var(--color-m-blue));
+    transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
   }
+  .proc__step:nth-child(1) .proc__seg,
+  .proc__step:nth-child(2) .proc__seg { --seg: var(--color-m-blue); }
+  .proc__step:nth-child(3) .proc__seg { --seg: var(--color-m-indigo); }
+  .proc__step:nth-child(4) .proc__seg,
+  .proc__step:nth-child(5) .proc__seg { --seg: var(--color-m-red); }
+
   .proc__dot {
     position: absolute;
     left: 0;
@@ -87,13 +91,23 @@ const steps = [
     height: 9px;
     margin-top: -4.5px;
     border-radius: 50%;
+    background-color: var(--color-on-surface);
+    transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .proc__step:hover .proc__seg,
+  .proc__step:focus-within .proc__seg {
+    background-color: var(--color-primary);
+    box-shadow: 0 0 12px -1px oklch(72% 0.17 58 / 0.7);
+  }
+  .proc__step:hover .proc__dot,
+  .proc__step:focus-within .proc__dot {
     background-color: var(--color-primary);
     box-shadow: 0 0 10px oklch(72% 0.17 58 / 0.85);
   }
 
   .proc__n {
-    color: var(--color-primary-bright);
-    font-size: 0.7rem;
+    color: var(--color-on-surface-variant);
+    font-size: 0.66rem;
     letter-spacing: 0.2em;
     margin-bottom: 0.7rem;
   }

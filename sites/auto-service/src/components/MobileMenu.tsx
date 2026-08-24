@@ -120,10 +120,10 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
                 }
                 style={{ "--i": i } as React.CSSProperties}
               >
-                <span className="reading text-[0.62rem] text-[var(--color-outline)]">
+                <span className="reading text-[0.66rem] text-[var(--color-outline)]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="heading-lg !text-[1.85rem]">{link.label}</span>
+                <span className="heading-lg !text-[1.6rem]">{link.label}</span>
               </a>
             ))}
 

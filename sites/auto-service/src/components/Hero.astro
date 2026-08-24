@@ -27,7 +27,7 @@ const symptoms = [
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__wrap container-page">
-    <div class="hero__copy">
+    <div class="hero__intro">
       <ul class="hero__symptoms" aria-label="Spune-ne ce are mașina">
         {symptoms.map((s) => (
           <li>
@@ -47,7 +47,9 @@ const symptoms = [
         Trei oameni, o singură marcă. Citim toate modulele, îți spunem exact ce
         are și cât costă — și abia apoi punem mâna pe mașină.
       </p>
+    </div>
 
+    <div class="hero__act">
       <div class="hero__actions">
         <a class="btn btn-primary hero__call" href={telLink()}>
           <Icon name="phone" size={19} />
@@ -68,31 +70,26 @@ const symptoms = [
         <span class="hero__sep" aria-hidden="true"></span>
         <span class="hero__status-item hero__status-item--dim">L–V 08:00–18:00 · Sâ 09:00–14:00</span>
         <span class="hero__sep" aria-hidden="true"></span>
-        <span class="hero__status-item hero__status-item--dim">{site.city}, jud. {site.county}</span>
+        <span class="hero__status-item hero__status-item--dim">{site.city} · {site.county}</span>
       </div>
     </div>
 
     <div class="hero__instrument" aria-hidden="true">
       <span class="hero__bloom"></span>
-      <Gauge
-        id="tach"
-        size={470}
-        max={8}
-        value={0.82}
-        redline={6.5}
-        obc={["ULEI 3.400 km", `${site.city.toUpperCase()} · ${site.county.toUpperCase()}`]}
-        class="hero__dial"
-        label="Turometru"
-      />
-      <Gauge
-        id="shoulder"
-        size={196}
-        max={8}
-        value={6.9}
-        compact
-        label="DEVIZ"
-        class="hero__shoulder"
-      />
+      <span class="hero__dial">
+        <Gauge
+          id="tach"
+          size={470}
+          max={8}
+          value={0.82}
+          redline={6.5}
+          obc={["ULEI 3.400 km", `${site.city.toUpperCase()} · ${site.county.toUpperCase()}`]}
+          label="Turometru"
+        />
+      </span>
+      <span class="hero__shoulder">
+        <Gauge id="shoulder" size={196} max={8} value={6.9} compact label="DEVIZ" />
+      </span>
     </div>
   </div>
 </section>
@@ -107,31 +104,57 @@ const symptoms = [
   }
 
   .hero__wrap {
+    position: relative;
     display: grid;
-    gap: 2.5rem;
-    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 7vw, 5rem);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    padding-block: calc(var(--nav-h, 4.15rem) + clamp(1.25rem, 3vw, 2.35rem))
+      clamp(2.25rem, 4.5vw, 2.6rem);
   }
+
+  .hero__intro { grid-row: 1; }
+  .hero__instrument { grid-row: 2; }
+  .hero__act { grid-row: 3; }
 
   @media (min-width: 1024px) {
     .hero__wrap {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto auto;
       align-items: center;
-      gap: 1rem;
-      min-height: 78vh;
+      column-gap: 2rem;
+      row-gap: 0;
     }
+    .hero__intro { grid-column: 1; grid-row: 1; align-self: end; }
+    .hero__act { grid-column: 1; grid-row: 2; align-self: start; padding-top: 1.9rem; }
+    .hero__instrument { grid-column: 2; grid-row: 1 / 3; }
   }
 
   /* ---- symptom entry points ---- */
   .hero__symptoms {
     display: flex;
-    flex-wrap: wrap;
     gap: 0.55rem;
     list-style: none;
-    margin: 0 0 1.85rem;
+    margin: 0 0 1.3rem;
     padding: 0;
   }
+  /* Three chips, one row. On a narrow phone the row scrolls inside itself
+     rather than stacking and eating the fold; the page never scrolls sideways. */
+  @media (max-width: 599.98px) {
+    .hero__symptoms {
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-inline: -1.25rem;
+      padding-inline: 1.25rem;
+      scroll-snap-type: x proximity;
+    }
+    .hero__symptoms::-webkit-scrollbar { display: none; }
+    .hero__symptoms > li { scroll-snap-align: start; }
+  }
+  @media (min-width: 600px) { .hero__symptoms { flex-wrap: wrap; } }
   .symptom {
     display: inline-flex;
+    flex: none;
+    white-space: nowrap;
     align-items: center;
     gap: 0.55rem;
     padding: 0.58rem 0.85rem 0.58rem 0.72rem;
@@ -155,18 +178,18 @@ const symptoms = [
   }
   .symptom:hover {
     color: var(--color-on-surface);
-    border-color: oklch(46% 0.06 58);
+    border-color: var(--color-primary-edge);
     box-shadow: 0 0 18px -6px oklch(72% 0.17 58 / 0.45);
   }
 
-  .hero__title { margin-bottom: 1.5rem; }
+  .hero__title { margin-bottom: 1.1rem; }
 
   .hero__lede {
     max-width: 30ch;
     font-size: 1.03rem;
     line-height: 1.62;
     color: var(--color-on-surface-variant);
-    margin-bottom: 2.1rem;
+    margin-bottom: 1.6rem;
   }
   @media (min-width: 640px) { .hero__lede { max-width: 46ch; } }
 
@@ -184,16 +207,17 @@ const symptoms = [
     letter-spacing: 0.085em;
     line-height: 1;
   }
-  .hero__call-num { font-size: 0.68rem; letter-spacing: 0.15em; opacity: 0.74; line-height: 1; }
+  .hero__call-num { font-size: 0.68rem; letter-spacing: 0.15em; opacity: 0.82; line-height: 1; }
 
   /* ---- status rail ---- */
   .hero__status {
     display: flex;
     flex-wrap: wrap;
+    row-gap: 0.5rem;
     align-items: center;
-    gap: 0.9rem;
-    margin-top: 2.6rem;
-    padding-top: 1.5rem;
+    gap: 0.6rem;
+    margin-top: 1.7rem;
+    padding-top: 1.1rem;
     border-top: 1px solid var(--color-outline-variant);
   }
   .hero__status-item {
@@ -206,43 +230,70 @@ const symptoms = [
   }
   .hero__status-item--dim { color: var(--color-on-surface-variant); }
   .hero__sep { width: 1px; height: 12px; background: var(--color-outline-variant); }
+  @media (max-width: 559.98px) {
+    .hero__status { display: grid; grid-template-columns: auto 1fr; column-gap: 0.6rem; row-gap: 0.45rem; }
+    .hero__sep { display: none; }
+    .hero__status-item:not(:first-of-type) { grid-column: 2; }
+  }
+  /* "Deschis acum" is a live state, so it is the one thing besides the call
+     that carries illumination. */
   .hero__live {
     width: 8px; height: 8px; border-radius: 50%;
-    background: var(--color-success);
-    box-shadow: 0 0 9px oklch(72% 0.16 150 / 0.9), 0 0 20px oklch(72% 0.16 150 / 0.35);
+    background: var(--color-primary);
+    box-shadow: 0 0 9px oklch(72% 0.17 58 / 0.9), 0 0 20px oklch(72% 0.17 58 / 0.32);
     flex: none;
   }
 
-  /* ---- the instrument ---- */
+  /* ---- the instrument ----
+     Mobile is the primary surface for this business, so the instrument ships
+     there too — cropped to its upper arc, the way the cluster sits over the
+     wheel rim from the driver's seat. It gets its own band rather than hiding
+     behind the copy, so nothing competes with the headline. */
   .hero__instrument {
     position: relative;
-    display: none;
-    justify-self: end;
     width: 100%;
-    max-width: 660px;
-    aspect-ratio: 660 / 520;
+    height: clamp(140px, 38vw, 176px);
+    overflow: hidden;
+    margin-block: 0.25rem 0.5rem;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14% 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 14% 80%, transparent 100%);
   }
-  @media (min-width: 1024px) { .hero__instrument { display: block; } }
 
   .hero__bloom {
     position: absolute;
-    inset: -8% 6% 4% -4%;
+    inset: -22% 8% -40% -8%;
     border-radius: 50%;
     background: radial-gradient(circle, oklch(72% 0.17 58 / 0.13), transparent 62%);
     pointer-events: none;
   }
-  .hero__dial { position: absolute; left: 4%; top: 2%; width: 71%; height: auto; }
-  .hero__shoulder { position: absolute; right: 0; top: 46%; width: 30%; height: auto; }
+  .hero__scrim { display: none; }
 
-  /* Tablet: keep the instrument, shrink it under the copy. */
-  @media (min-width: 640px) and (max-width: 1023.98px) {
-    .hero__instrument {
-      display: block;
-      justify-self: center;
-      max-width: 430px;
-      margin-top: 0.5rem;
-    }
+  .hero__dial { position: absolute; display: block; left: 50%; top: 0; width: 118%; transform: translate(-50%, -34%); }
+  .hero__shoulder { display: none; }
+
+  @media (min-width: 640px) {
+    .hero__instrument { height: clamp(200px, 30vw, 260px); }
+    .hero__dial { width: 66%; transform: translate(-50%, -30%); }
   }
+
+  @media (min-width: 1024px) {
+    .hero__instrument {
+      justify-self: end;
+      align-self: center;
+      max-width: 660px;
+      height: auto;
+      aspect-ratio: 600 / 512;
+      overflow: visible;
+      margin-block: 0;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .hero__bloom { inset: -8% 6% 4% -4%; }
+    .hero__dial { left: -9.5%; top: 0; width: 83%; transform: none; }
+    /* Cropped by the viewport edge, the way the second dial sits in a binnacle. */
+    .hero__shoulder { display: block; position: absolute; right: -12%; top: 33%; width: 39%; }
+  }
+
 </style>
 
 <script>

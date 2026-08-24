@@ -1,126 +1,664 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-06-05T00:00:00Z",
+  "generatedAt": "2026-08-23T00:00:00Z",
   "title": "Design System: BavAuto Gorj",
   "extensions": {
     "colorMeta": {
-      "primary": { "role": "primary", "displayName": "BavAuto Blue", "canonical": "oklch(52% 0.16 252)", "tonalRamp": ["oklch(20% 0.09 252)", "oklch(28% 0.12 252)", "oklch(38% 0.15 252)", "oklch(46% 0.155 252)", "oklch(52% 0.16 252)", "oklch(62% 0.15 250)", "oklch(78% 0.09 250)", "oklch(93% 0.04 250)"] },
-      "primary-bright": { "role": "primary", "displayName": "Sky Blue", "canonical": "oklch(72% 0.13 245)", "tonalRamp": ["oklch(30% 0.1 245)", "oklch(40% 0.13 245)", "oklch(50% 0.14 245)", "oklch(60% 0.14 245)", "oklch(72% 0.13 245)", "oklch(82% 0.09 245)", "oklch(90% 0.05 245)", "oklch(96% 0.02 245)"] },
-      "m-blue": { "role": "secondary", "displayName": "M Light Blue", "canonical": "oklch(62% 0.16 245)", "tonalRamp": ["oklch(28% 0.1 245)", "oklch(38% 0.13 245)", "oklch(48% 0.15 245)", "oklch(55% 0.16 245)", "oklch(62% 0.16 245)", "oklch(74% 0.12 245)", "oklch(86% 0.07 245)", "oklch(95% 0.03 245)"] },
-      "m-indigo": { "role": "secondary", "displayName": "M Indigo", "canonical": "oklch(36% 0.13 285)", "tonalRamp": ["oklch(18% 0.09 285)", "oklch(26% 0.11 285)", "oklch(36% 0.13 285)", "oklch(46% 0.13 285)", "oklch(56% 0.12 285)", "oklch(70% 0.09 285)", "oklch(84% 0.05 285)", "oklch(94% 0.02 285)"] },
-      "m-red": { "role": "secondary", "displayName": "M Racing Red", "canonical": "oklch(55% 0.21 27)", "tonalRamp": ["oklch(25% 0.12 27)", "oklch(35% 0.16 27)", "oklch(45% 0.2 27)", "oklch(55% 0.21 27)", "oklch(64% 0.19 27)", "oklch(76% 0.14 27)", "oklch(87% 0.08 27)", "oklch(95% 0.03 27)"] },
-      "whatsapp": { "role": "tertiary", "displayName": "WhatsApp Green", "canonical": "oklch(57% 0.14 153)", "tonalRamp": ["oklch(28% 0.08 153)", "oklch(38% 0.11 153)", "oklch(47% 0.13 153)", "oklch(51% 0.13 153)", "oklch(57% 0.14 153)", "oklch(70% 0.12 153)", "oklch(84% 0.08 153)", "oklch(95% 0.03 153)"] },
-      "background": { "role": "neutral", "displayName": "Daylit Base", "canonical": "oklch(98.4% 0.004 250)", "tonalRamp": ["oklch(24% 0.035 257)", "oklch(40% 0.02 255)", "oklch(62% 0.02 255)", "oklch(89% 0.012 255)", "oklch(93% 0.01 250)", "oklch(95.3% 0.008 250)", "oklch(98.4% 0.004 250)", "oklch(100% 0 0)"] },
-      "on-surface": { "role": "neutral", "displayName": "Graphite Ink", "canonical": "oklch(24% 0.03 255)", "tonalRamp": ["oklch(16% 0.03 255)", "oklch(24% 0.03 255)", "oklch(33% 0.028 255)", "oklch(43% 0.025 255)", "oklch(55% 0.022 255)", "oklch(62% 0.02 255)", "oklch(78% 0.015 255)", "oklch(89% 0.012 255)"] },
-      "inverse-surface": { "role": "neutral", "displayName": "Graphite Navy", "canonical": "oklch(24% 0.035 257)", "tonalRamp": ["oklch(16% 0.03 257)", "oklch(20% 0.035 257)", "oklch(24% 0.035 257)", "oklch(28% 0.04 257)", "oklch(36% 0.04 257)", "oklch(50% 0.03 257)", "oklch(70% 0.02 257)", "oklch(90% 0.01 257)"] }
+      "background": {
+        "role": "neutral",
+        "displayName": "Binnacle Graphite",
+        "canonical": "oklch(13.5% 0.008 255)",
+        "tonalRamp": [
+          "oklch(10% 0.008 255)",
+          "oklch(13.5% 0.008 255)",
+          "oklch(17% 0.010 255)",
+          "oklch(20% 0.012 256)",
+          "oklch(23.5% 0.014 256)",
+          "oklch(27.5% 0.016 257)",
+          "oklch(31.5% 0.018 257)",
+          "oklch(40% 0.018 257)"
+        ]
+      },
+      "surface-container-lowest": {
+        "role": "neutral",
+        "displayName": "Steel Well",
+        "canonical": "oklch(17% 0.010 255)",
+        "tonalRamp": [
+          "oklch(13.5% 0.008 255)",
+          "oklch(17% 0.010 255)",
+          "oklch(20% 0.012 256)",
+          "oklch(23.5% 0.014 256)",
+          "oklch(27.5% 0.016 257)",
+          "oklch(31.5% 0.018 257)",
+          "oklch(48% 0.014 256)",
+          "oklch(76% 0.010 255)"
+        ]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "Silver-White Legend",
+        "canonical": "oklch(96% 0.004 250)",
+        "contrastOnBackground": "17.9:1",
+        "tonalRamp": [
+          "oklch(29% 0.014 256)",
+          "oklch(48% 0.014 256)",
+          "oklch(60% 0.010 253)",
+          "oklch(68% 0.010 252)",
+          "oklch(76% 0.010 255)",
+          "oklch(85% 0.006 251)",
+          "oklch(96% 0.004 250)",
+          "oklch(99% 0.002 250)"
+        ]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Secondary Print",
+        "canonical": "oklch(76% 0.010 255)",
+        "contrastOnBackground": "9.1:1",
+        "tonalRamp": [
+          "oklch(22% 0.012 256)",
+          "oklch(29% 0.014 256)",
+          "oklch(40% 0.014 256)",
+          "oklch(48% 0.014 256)",
+          "oklch(60% 0.012 255)",
+          "oklch(76% 0.010 255)",
+          "oklch(86% 0.008 253)",
+          "oklch(96% 0.004 250)"
+        ]
+      },
+      "outline-variant": {
+        "role": "neutral",
+        "displayName": "Bezel Hairline",
+        "canonical": "oklch(29% 0.014 256)",
+        "tonalRamp": [
+          "oklch(15% 0.009 255)",
+          "oklch(20% 0.012 256)",
+          "oklch(24% 0.012 256)",
+          "oklch(29% 0.014 256)",
+          "oklch(34% 0.014 256)",
+          "oklch(48% 0.014 256)",
+          "oklch(66% 0.012 255)",
+          "oklch(88% 0.006 252)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Cluster Amber",
+        "canonical": "oklch(72% 0.170 58)",
+        "hexApprox": "#ff8a1e",
+        "tonalRamp": [
+          "oklch(26% 0.055 58)",
+          "oklch(38% 0.090 57)",
+          "oklch(50% 0.130 56)",
+          "oklch(60% 0.155 56)",
+          "oklch(66% 0.170 55)",
+          "oklch(72% 0.170 58)",
+          "oklch(82% 0.125 65)",
+          "oklch(93% 0.060 72)"
+        ]
+      },
+      "primary-bright": {
+        "role": "primary",
+        "displayName": "Filament Bright",
+        "canonical": "oklch(82% 0.125 65)",
+        "contrastOnBackground": "~11:1",
+        "note": "Amber used AS TEXT on the dark ground: the lit word, inline links, the open FAQ question.",
+        "tonalRamp": [
+          "oklch(26% 0.055 58)",
+          "oklch(40% 0.085 60)",
+          "oklch(52% 0.110 62)",
+          "oklch(62% 0.125 63)",
+          "oklch(72% 0.130 64)",
+          "oklch(82% 0.125 65)",
+          "oklch(90% 0.090 68)",
+          "oklch(96% 0.045 72)"
+        ]
+      },
+      "on-primary": {
+        "role": "primary",
+        "displayName": "Bulb-Glass Ink",
+        "canonical": "oklch(17% 0.040 55)",
+        "contrastOnPrimary": "5.8:1 to 9.3:1 across the button gradient",
+        "tonalRamp": [
+          "oklch(12% 0.030 55)",
+          "oklch(17% 0.040 55)",
+          "oklch(24% 0.050 56)",
+          "oklch(34% 0.070 56)",
+          "oklch(46% 0.100 57)",
+          "oklch(60% 0.140 57)",
+          "oklch(76% 0.150 60)",
+          "oklch(92% 0.070 66)"
+        ]
+      },
+      "m-blue": {
+        "role": "secondary",
+        "displayName": "M Light Blue",
+        "canonical": "oklch(68% 0.15 242)",
+        "note": "LED segment coding only, first in the canonical order.",
+        "tonalRamp": [
+          "oklch(20% 0.05 242)",
+          "oklch(30% 0.08 242)",
+          "oklch(40% 0.11 242)",
+          "oklch(50% 0.13 242)",
+          "oklch(60% 0.15 242)",
+          "oklch(68% 0.15 242)",
+          "oklch(80% 0.11 242)",
+          "oklch(93% 0.05 242)"
+        ]
+      },
+      "m-indigo": {
+        "role": "secondary",
+        "displayName": "M Indigo",
+        "canonical": "oklch(52% 0.17 285)",
+        "note": "LED segment coding only, second in the canonical order.",
+        "tonalRamp": [
+          "oklch(18% 0.07 285)",
+          "oklch(26% 0.10 285)",
+          "oklch(34% 0.13 285)",
+          "oklch(42% 0.16 285)",
+          "oklch(52% 0.17 285)",
+          "oklch(64% 0.16 285)",
+          "oklch(78% 0.11 285)",
+          "oklch(93% 0.05 285)"
+        ]
+      },
+      "m-red": {
+        "role": "secondary",
+        "displayName": "M Red",
+        "canonical": "oklch(60% 0.22 27)",
+        "note": "LED segment coding, third in the canonical order, and the gauge redline and needle.",
+        "tonalRamp": [
+          "oklch(20% 0.08 27)",
+          "oklch(28% 0.12 27)",
+          "oklch(37% 0.16 27)",
+          "oklch(46% 0.19 27)",
+          "oklch(60% 0.22 27)",
+          "oklch(70% 0.18 27)",
+          "oklch(82% 0.12 27)",
+          "oklch(94% 0.05 27)"
+        ]
+      },
+      "inverse-surface": {
+        "role": "tertiary",
+        "displayName": "Console Aluminium",
+        "canonical": "oklch(87% 0.005 250)",
+        "note": "THE TRIM RULE: the one light material, always brushed, one per page.",
+        "tonalRamp": [
+          "oklch(20% 0.012 256)",
+          "oklch(32% 0.012 254)",
+          "oklch(45% 0.010 252)",
+          "oklch(58% 0.008 251)",
+          "oklch(70% 0.006 250)",
+          "oklch(80% 0.005 250)",
+          "oklch(87% 0.005 250)",
+          "oklch(93% 0.004 250)"
+        ]
+      },
+      "inverse-on-surface": {
+        "role": "tertiary",
+        "displayName": "Anodised Ink",
+        "canonical": "oklch(20% 0.012 256)",
+        "contrastOnTrim": "12.2:1",
+        "tonalRamp": [
+          "oklch(13.5% 0.008 255)",
+          "oklch(20% 0.012 256)",
+          "oklch(29% 0.014 256)",
+          "oklch(40% 0.014 256)",
+          "oklch(52% 0.012 254)",
+          "oklch(66% 0.010 252)",
+          "oklch(80% 0.006 250)",
+          "oklch(93% 0.004 250)"
+        ]
+      },
+      "whatsapp": {
+        "role": "tertiary",
+        "displayName": "Signal Green",
+        "canonical": "oklch(62% 0.15 153)",
+        "note": "Vendor identity, exempt from the one-accent rule. The MARK only; never a surface. The darkened trim variant oklch(48% 0.13 153) measures 4.1:1 as a non-text mark (needs 3).",
+        "tonalRamp": [
+          "oklch(20% 0.06 153)",
+          "oklch(30% 0.09 153)",
+          "oklch(40% 0.12 153)",
+          "oklch(48% 0.13 153)",
+          "oklch(62% 0.15 153)",
+          "oklch(68% 0.14 153)",
+          "oklch(82% 0.10 153)",
+          "oklch(94% 0.04 153)"
+        ]
+      },
+      "control-steel": {
+        "role": "neutral",
+        "displayName": "Steel Switch",
+        "canonical": "oklch(19% 0.011 256)",
+        "tonalRamp": [
+          "oklch(13.5% 0.008 255)",
+          "oklch(19% 0.011 256)",
+          "oklch(23% 0.013 256)",
+          "oklch(28% 0.014 256)",
+          "oklch(34% 0.014 256)",
+          "oklch(50% 0.016 256)",
+          "oklch(72% 0.012 255)",
+          "oklch(92% 0.006 252)"
+        ]
+      },
+      "led-off": {
+        "role": "neutral",
+        "displayName": "LED Off",
+        "canonical": "oklch(24% 0.012 256)",
+        "note": "An unlit segment stays visibly present so a lit one reads as a change of state, not an appearance.",
+        "tonalRamp": [
+          "oklch(13.5% 0.008 255)",
+          "oklch(18% 0.010 256)",
+          "oklch(24% 0.012 256)",
+          "oklch(31% 0.014 256)",
+          "oklch(40% 0.015 256)",
+          "oklch(55% 0.015 256)",
+          "oklch(74% 0.012 255)",
+          "oklch(92% 0.006 252)"
+        ]
+      },
+      "success": {
+        "role": "neutral",
+        "displayName": "Reserved Lamp Green",
+        "canonical": "oklch(72% 0.16 150)",
+        "note": "Declared instrument-lamp code, held in reserve. The live 'Deschis acum' dot is deliberately amber, not green: live is amber.",
+        "tonalRamp": [
+          "oklch(22% 0.06 150)",
+          "oklch(32% 0.09 150)",
+          "oklch(42% 0.12 150)",
+          "oklch(52% 0.14 150)",
+          "oklch(62% 0.16 150)",
+          "oklch(72% 0.16 150)",
+          "oklch(85% 0.11 150)",
+          "oklch(95% 0.04 150)"
+        ]
+      },
+      "primary-edge": {
+        "role": "primary",
+        "displayName": "Filament Edge",
+        "canonical": "oklch(46% 0.060 58)",
+        "note": "The amber-tinted border a steel control takes on hover (nav phone readout, symptom chip). Border only — never a fill, never text; see The Live-Amber Rule."
+      },
+      "link-on-trim": {
+        "role": "inverse",
+        "displayName": "Trim Link",
+        "canonical": "oklch(42% 0.140 45)",
+        "contrastOnInverseSurface": "~6.0:1",
+        "note": "The one link colour ON the brushed-aluminium trim, where Filament Bright would fail contrast. Carries the email address in Contact."
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headline only. Archivo, weight 800, tracked tight (-0.03em). One per page." },
-      "headline": { "displayName": "Headline", "purpose": "Section headings. Archivo weight 750." },
-      "title": { "displayName": "Title", "purpose": "Card and sub-section titles. Archivo weight 700." },
-      "body": { "displayName": "Body", "purpose": "All running copy. Hanken Grotesk, 16px / 1.55, measure 65-75ch." },
-      "label": { "displayName": "Label / Eyebrow", "purpose": "Sparing uppercase kicker, tracked 0.14em, paired with the M stripe." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero headline only, wdth 112, hard-broken across three lines with one word lit."
+      },
+      "page-title": {
+        "displayName": "Page Title",
+        "purpose": "The h1 in the interior-page header."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2, wdth 110."
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "A sub-section break inside a long section."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "A service row, a band cell, a process step, an FAQ question. wdth 106."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "The nav mark, wdth 118, uppercase, with an amber mid-dot separator."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running prose, tabular figures site-wide. Measures cap at 46-60ch."
+      },
+      "body-lead": {
+        "displayName": "Body Lead",
+        "purpose": "Section ledes and the hero lede."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Supporting notes, nav links, footer."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Fine print and legal notes."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Control labels; btn-lg steps to 1rem."
+      },
+      "label": {
+        "displayName": "Printed Legend",
+        "purpose": "A field name, a unit, a column header on the dial. Never a section eyebrow."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "Measurements only: phone, hours, kilometres, codes, part numbers, dial numerals."
+      }
     },
     "shadows": [
-      { "name": "cta-lift", "value": "0 10px 28px -14px oklch(52% 0.16 252 / 0.7)", "purpose": "Soft blue glow under the primary CTA button; lifts the phone call toward the visitor." },
-      { "name": "focus-ring", "value": "0 0 0 3px oklch(52% 0.16 252 / 0.15)", "purpose": "Blue halo on focused inputs, paired with a blue border. Replaces the browser outline." },
-      { "name": "menu-lift", "value": "0 8px 50px -12px oklch(20% 0.03 257 / 0.6)", "purpose": "Deep graphite drop under the dark mobile-menu overlay." }
+      {
+        "name": "machined-lip",
+        "value": "inset 0 1px 0 oklch(100% 0 0 / 0.055), 0 1px 0 oklch(0% 0 0 / 0.6)",
+        "purpose": "The nav bezel edge and any panel reading as the top rim of the binnacle."
+      },
+      {
+        "name": "lit-control-bloom",
+        "value": "inset 0 0 0 1px oklch(86% 0.10 68 / 0.85), 0 9px 26px -10px oklch(72% 0.17 58 / 0.62), 0 0 34px -8px oklch(72% 0.17 58 / 0.42)",
+        "purpose": "The primary call button on the dark ground."
+      },
+      {
+        "name": "lit-control-bloom-hover",
+        "value": "inset 0 0 0 1px oklch(90% 0.09 70 / 0.9), 0 10px 30px -10px oklch(74% 0.17 58 / 0.7), 0 0 46px -6px oklch(76% 0.16 60 / 0.5)",
+        "purpose": "The same control with the filament brightened."
+      },
+      {
+        "name": "trim-suppressed-control",
+        "value": "inset 0 0 0 1px oklch(58% 0.15 50 / 0.55), 0 2px 6px -2px oklch(35% 0.07 55 / 0.4)",
+        "purpose": "The primary control on the aluminium trim: a filament glows against night, not against metal."
+      },
+      {
+        "name": "led-glow-amber",
+        "value": "0 0 8px oklch(72% 0.17 58 / 0.75)",
+        "purpose": "A lit amber segment in the service-interval band."
+      },
+      {
+        "name": "led-off-edge",
+        "value": "inset 0 0 0 1px oklch(31% 0.014 256)",
+        "purpose": "An unlit segment, still visibly present."
+      },
+      {
+        "name": "lamp-well",
+        "value": "inset 0 0 0 1px oklch(26% 0.013 256)",
+        "purpose": "The service pictogram well at rest."
+      },
+      {
+        "name": "lamp-well-live",
+        "value": "inset 0 0 0 1px oklch(86% 0.10 68 / 0.7), 0 0 20px -4px oklch(72% 0.17 58 / 0.65)",
+        "purpose": "The service pictogram well on hover or focus-within."
+      },
+      {
+        "name": "field-focus-ring",
+        "value": "0 0 0 3px oklch(72% 0.17 58 / 0.17)",
+        "purpose": "A focused input: the field is now the live thing on the page."
+      },
+      {
+        "name": "aluminium-relief",
+        "value": "inset 0 1px 0 oklch(100% 0 0 / 0.7), inset 0 -1px 0 oklch(0% 0 0 / 0.16)",
+        "purpose": "The trim strip's machined edge."
+      },
+      {
+        "name": "overlay-drop",
+        "value": "0 10px 54px -14px oklch(0% 0 0 / 0.85)",
+        "purpose": "The mobile menu, the only true modal surface."
+      },
+      {
+        "name": "lit-word-halo",
+        "value": "0 0 24px oklch(78% 0.14 62 / 0.42), 0 0 62px oklch(74% 0.15 60 / 0.18)",
+        "purpose": "Text-shadow on the one lit word in the hero headline."
+      }
     ],
     "motion": [
-      { "name": "ease-out-quart", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Button state transitions and press (180ms)." },
-      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Scroll-reveal and mobile-menu entrance (300-700ms)." },
-      { "name": "reveal-duration", "value": "700ms", "purpose": "Scroll-reveal opacity + translateY fade-in." }
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Field focus, scroll reveal, overlay entrances."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Control state transitions (200ms) and the press (110ms)."
+      },
+      {
+        "name": "ignition-sweep",
+        "value": "anime.js timeline: rotate start->end 780ms inOutQuad, then ->rest 1150ms outElastic(1, 0.72), staggered 90ms per gauge",
+        "purpose": "THE one authored motion moment: needles sweep the full scale and settle on load. Suppressed entirely under prefers-reduced-motion."
+      },
+      {
+        "name": "backlight-bloom",
+        "value": "opacity 0->1, scale 0.94->1, 1200ms outQuart",
+        "purpose": "The instrument backlight coming up with the sweep."
+      },
+      {
+        "name": "scroll-reveal",
+        "value": "opacity 700ms + translateY(12px) 700ms ease-out, opt-in via .js-reveal, with a 2.5s force-reveal failsafe",
+        "purpose": "Content is visible by default; JS opts into the hidden start so the page never ships blank."
+      },
+      {
+        "name": "mobile-menu-in",
+        "value": "280ms ease-out fade; links stagger at 60ms + i*42ms over 400ms",
+        "purpose": "The overlay menu entrance. Disabled under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "container-max", "value": "1180px" }
+      {
+        "name": "chip",
+        "value": "520px"
+      },
+      {
+        "name": "xs",
+        "value": "560px"
+      },
+      {
+        "name": "sm",
+        "value": "640px",
+        "note": "LED band goes two-up; the nav phone reading appears."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "note": "Gutters widen to 2.25rem; the wordmark steps to 1.22rem."
+      },
+      {
+        "name": "board",
+        "value": "900px",
+        "note": "The services legend board goes two-column."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "note": "The hero becomes the two-column binnacle; desktop nav links appear; the LED band goes four-up."
+      },
+      {
+        "name": "container",
+        "value": "1240px",
+        "note": "Page measure."
+      },
+      {
+        "name": "band",
+        "value": "1560px",
+        "note": "The LED band deliberately breaks the measure."
+      }
+    ],
+    "constraints": [
+      "No photography anywhere, by decision, not by omission. The gallery was deleted rather than filled with stock and the workshop is drawn (BayScene.astro). Visual load sits on type, material, drawn assets and the instrument.",
+      "All three faces self-hosted via @fontsource-variable (archivo/wdth, hanken-grotesk/wght, azeret-mono/wght). No Google Fonts CDN, for the GDPR reasons in docs/LEGAL.md. All carry latin-ext for Romanian diacritics.",
+      "Colour is authored in OKLCH throughout; no hex source of truth.",
+      "Independent specialist: instrument language, no BMW roundel or manufacturer mark.",
+      "WCAG 2.2 AA measured on the build: body ink 17.9:1 and secondary 9.1:1 on the dark ground; dark label on the amber control 5.8-9.3:1 across the gradient; the phone number at 0.82 opacity ~5.3:1; on the trim panel body ink 12.2:1, secondary 6.2:1, the email link 6.0:1, the WhatsApp mark 4.1:1 as non-text.",
+      "Everything is server-rendered and legible before JS runs."
     ]
   },
   "components": [
     {
-      "name": "Primary Button (Call)",
+      "name": "Primary Call Control",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The phone call: the single most important action on the site. Blue fill, soft blue lift glow.",
-      "html": "<a href=\"tel:+40700000000\" class=\"ds-btn-primary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z\"/></svg><span>Sună: 07XX XXX XXX</span></a>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 1.6rem; border-radius: var(--radius-md, 0.5rem); font-family: var(--font-body, 'Hanken Grotesk Variable', system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; line-height: 1; letter-spacing: 0.01em; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; background-color: var(--color-primary, oklch(52% 0.16 252)); color: var(--color-on-primary, oklch(99% 0 0)); box-shadow: 0 10px 28px -14px oklch(52% 0.16 252 / 0.7); transition: background-color 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { background-color: var(--color-primary-hover, oklch(46% 0.155 252)); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-primary, oklch(52% 0.16 252)); outline-offset: 2px; }"
+      "description": "The one lit control on the whole bord: a three-stop amber filament gradient with bulb-glass ink and a bloom. Used for the phone call and nothing else.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"tel:+40700000000\"><svg width=\"19\" height=\"19\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.1 3.4H4.6a1.7 1.7 0 0 0-1.7 1.9c.5 4 2.3 7.7 5.1 10.5 2.8 2.8 6.5 4.6 10.5 5.1a1.7 1.7 0 0 0 1.9-1.7v-3.5l-3.9-1.3-1.9 2a14.6 14.6 0 0 1-6.6-6.6l2-1.9L8.1 3.4Z\"/></svg><span class=\"ds-btn-stack\"><span class=\"ds-btn-label\">SUNĂ ACUM</span><span class=\"ds-btn-num\">0700 000 000</span></span></a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.95rem 1.55rem; border-radius: 0.25rem; font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.95rem; font-weight: 700; line-height: 1; letter-spacing: 0.015em; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: background-color 200ms cubic-bezier(0.22,1,0.36,1), border-color 200ms cubic-bezier(0.22,1,0.36,1), color 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms cubic-bezier(0.22,1,0.36,1), transform 110ms cubic-bezier(0.22,1,0.36,1); } .ds-btn:active { transform: translateY(1px); } .ds-btn-primary { background-image: linear-gradient(180deg, oklch(78% 0.155 62) 0%, oklch(72% 0.170 58) 58%, oklch(66% 0.170 55) 100%); color: oklch(17% 0.040 55); box-shadow: inset 0 0 0 1px oklch(86% 0.10 68 / 0.85), 0 9px 26px -10px oklch(72% 0.17 58 / 0.62), 0 0 34px -8px oklch(72% 0.17 58 / 0.42); } .ds-btn-primary:hover { background-image: linear-gradient(180deg, oklch(84% 0.140 66) 0%, oklch(78% 0.155 62) 58%, oklch(70% 0.165 58) 100%); box-shadow: inset 0 0 0 1px oklch(90% 0.09 70 / 0.9), 0 10px 30px -10px oklch(74% 0.17 58 / 0.7), 0 0 46px -6px oklch(76% 0.16 60 / 0.5); } .ds-btn-primary:focus-visible { outline: 2px solid oklch(82% 0.125 65); outline-offset: 2px; } .ds-btn-stack { display: grid; gap: 0.18rem; text-align: left; } .ds-btn-label { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.015em; } .ds-btn-num { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.09em; font-variant-numeric: tabular-nums; opacity: 0.82; }"
     },
     {
-      "name": "WhatsApp Button",
-      "kind": "button",
-      "refersTo": "button-whatsapp",
-      "description": "Secondary contact CTA. Deepened WhatsApp green so the white label clears AA.",
-      "html": "<a href=\"#\" class=\"ds-btn-whatsapp\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z\"/></svg><span>Scrie pe WhatsApp</span></a>",
-      "css": ".ds-btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 1.6rem; border-radius: var(--radius-md, 0.5rem); font-family: var(--font-body, 'Hanken Grotesk Variable', system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; line-height: 1; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; background-color: var(--color-whatsapp, oklch(57% 0.14 153)); color: #fff; transition: background-color 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-whatsapp:hover { background-color: var(--color-whatsapp-hover, oklch(51% 0.13 153)); } .ds-btn-whatsapp:active { transform: translateY(1px); }"
-    },
-    {
-      "name": "Outline Button",
+      "name": "Unlit Switch",
       "kind": "button",
       "refersTo": "button-outline",
-      "description": "Secondary action. Transparent with graphite text; hover firms the border to ink.",
-      "html": "<a href=\"#\" class=\"ds-btn-outline\"><span>Vezi serviciile</span></a>",
-      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 1.6rem; border-radius: var(--radius-md, 0.5rem); font-family: var(--font-body, 'Hanken Grotesk Variable', system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; line-height: 1; text-decoration: none; cursor: pointer; background-color: transparent; color: var(--color-on-surface, oklch(24% 0.03 255)); border: 1.5px solid var(--color-outline, oklch(62% 0.02 255)); transition: border-color 180ms cubic-bezier(0.22,1,0.36,1), background-color 180ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-outline:hover { border-color: var(--color-on-surface, oklch(24% 0.03 255)); background-color: var(--color-surface-container, oklch(95.3% 0.008 250)); }"
+      "description": "The default control on the bezel: steel fill, firm edge, silver-white label. Everything that is not the phone call.",
+      "html": "<a class=\"ds-btn ds-btn-outline\" href=\"#\">Trimite o poză pe WhatsApp</a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.95rem 1.55rem; border-radius: 0.25rem; font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.95rem; font-weight: 700; line-height: 1; letter-spacing: 0.015em; text-decoration: none; cursor: pointer; background-color: oklch(19% 0.011 256); color: oklch(96% 0.004 250); border: 1.5px solid oklch(34% 0.014 256); transition: background-color 200ms cubic-bezier(0.22,1,0.36,1), border-color 200ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-outline:hover { border-color: oklch(50% 0.016 256); background-color: oklch(23% 0.013 256); } .ds-btn-outline:active { transform: translateY(1px); } .ds-btn-outline:focus-visible { outline: 2px solid oklch(82% 0.125 65); outline-offset: 2px; }"
     },
     {
-      "name": "Card",
-      "kind": "card",
-      "refersTo": "card",
-      "description": "Flat-at-rest container: pure white lifting off the tinted base, hairline border, no resting shadow.",
-      "html": "<div class=\"ds-card\"><h3 class=\"ds-card__title\">Diagnoză dedicată</h3><p class=\"ds-card__body\">Citim codurile de eroare și vă explicăm exact ce are mașina, înainte de orice deviz.</p></div>",
-      "css": ".ds-card { background-color: var(--color-surface-container-lowest, oklch(100% 0 0)); border: 1px solid var(--color-outline-variant, oklch(89% 0.012 255)); border-radius: var(--radius-lg, 0.75rem); padding: 1.75rem; } .ds-card__title { font-family: var(--font-display, 'Archivo Variable', sans-serif); font-weight: 700; font-size: 1.35rem; line-height: 1.12; letter-spacing: -0.015em; color: var(--color-on-surface, oklch(24% 0.03 255)); margin: 0 0 0.5rem; } .ds-card__body { font-family: var(--font-body, 'Hanken Grotesk Variable', sans-serif); font-size: 1rem; line-height: 1.55; color: var(--color-on-surface-variant, oklch(43% 0.025 255)); margin: 0; }"
+      "name": "Symptom Chip",
+      "kind": "chip",
+      "refersTo": "button-outline",
+      "description": "A hero entry point: a pictogram plus the symptom the owner arrived with. Tapping it opens WhatsApp with the message pre-written. An action, not a filter, so there is no selected state.",
+      "html": "<a class=\"ds-chip\" href=\"#\"><svg class=\"ds-chip-ico\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3.4 1.6 20.6h20.8L12 3.4Z\"/><path d=\"M12 9.8v4.6\"/><path d=\"M12 17.6h.01\"/></svg><span>Mi-a apărut un martor</span></a>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.5rem 0.85rem; border-radius: 0.25rem; background-color: oklch(19% 0.011 256); border: 1px solid oklch(29% 0.014 256); color: oklch(76% 0.010 255); font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: color 200ms cubic-bezier(0.22,1,0.36,1), border-color 200ms cubic-bezier(0.22,1,0.36,1), background-color 200ms cubic-bezier(0.22,1,0.36,1); } .ds-chip-ico { color: oklch(76% 0.010 255); flex: none; transition: color 200ms; } .ds-chip:hover { color: oklch(96% 0.004 250); border-color: oklch(50% 0.016 256); background-color: oklch(23% 0.013 256); } .ds-chip:hover .ds-chip-ico { color: oklch(82% 0.125 65); } .ds-chip:focus-visible { outline: 2px solid oklch(82% 0.125 65); outline-offset: 2px; }"
     },
     {
-      "name": "Text Input",
+      "name": "Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "White fill, hairline border; focus shifts the border to blue with a soft blue halo.",
-      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Model și an (ex. 320d, 2016)\" />",
-      "css": ".ds-input { width: 100%; padding: 0.8rem 1rem; border-radius: var(--radius-md, 0.5rem); background-color: var(--color-surface-container-lowest, oklch(100% 0 0)); border: 1.5px solid var(--color-outline-variant, oklch(89% 0.012 255)); font-family: var(--font-body, 'Hanken Grotesk Variable', sans-serif); font-size: 1rem; color: var(--color-on-surface, oklch(24% 0.03 255)); transition: border-color 160ms ease-out, box-shadow 160ms ease-out; } .ds-input::placeholder { color: var(--color-on-surface-variant, oklch(43% 0.025 255)); opacity: 0.85; } .ds-input:focus { outline: none; border-color: var(--color-primary, oklch(52% 0.16 252)); box-shadow: 0 0 0 3px oklch(52% 0.16 252 / 0.15); }"
+      "description": "A machined field. On focus the border goes amber with a soft halo, because a focused field is the live thing on the page.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Model și an\" />",
+      "css": ".ds-input { width: 100%; padding: 0.85rem 1rem; border-radius: 0.25rem; background-color: oklch(17% 0.010 255); border: 1.5px solid oklch(29% 0.014 256); font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 1rem; color: oklch(96% 0.004 250); caret-color: oklch(82% 0.125 65); transition: border-color 160ms cubic-bezier(0.16,1,0.3,1), box-shadow 160ms cubic-bezier(0.16,1,0.3,1); } .ds-input::placeholder { color: oklch(76% 0.010 255); opacity: 0.75; } .ds-input:focus { outline: none; border-color: oklch(72% 0.170 58); box-shadow: 0 0 0 3px oklch(72% 0.17 58 / 0.17); }"
     },
     {
-      "name": "M Stripe (signature)",
+      "name": "Overlay Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "The bezel lip across the top of the hero: wordmark at wdth 118 with an amber pilot dot, secondary-print links, and the phone as a mono reading.",
+      "html": "<div class=\"ds-nav\"><a class=\"ds-nav-wm\" href=\"#\"><span class=\"ds-nav-pilot\"></span><span class=\"ds-nav-name\">BAV<span class=\"ds-nav-dot\">·</span>AUTO</span></a><nav class=\"ds-nav-links\"><a class=\"ds-nav-link\" href=\"#\">Servicii</a><a class=\"ds-nav-link\" data-active href=\"#\">Despre</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav><a class=\"ds-nav-tel\" href=\"#\">0700 000 000</a></div>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 2.1rem; justify-content: space-between; padding: 0.9rem 2.25rem; background-image: linear-gradient(180deg, oklch(20% 0.012 256) 0%, oklch(15% 0.009 255) 100%); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.055), 0 1px 0 oklch(0% 0 0 / 0.6); } .ds-nav-wm { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; } .ds-nav-pilot { width: 8px; height: 8px; border-radius: 50%; background: oklch(72% 0.170 58); box-shadow: 0 0 9px oklch(72% 0.17 58 / 0.9); flex: none; } .ds-nav-name { font-family: 'Archivo Variable', 'Arial Narrow', sans-serif; font-variation-settings: 'wdth' 118, 'wght' 800; font-weight: 800; font-size: 1.22rem; line-height: 1; letter-spacing: 0.005em; text-transform: uppercase; color: oklch(96% 0.004 250); } .ds-nav-dot { color: oklch(72% 0.170 58); padding-inline: 0.12em; } .ds-nav-links { display: flex; align-items: center; gap: 2.1rem; } .ds-nav-link { position: relative; font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.9rem; color: oklch(76% 0.010 255); text-decoration: none; transition: color 200ms cubic-bezier(0.22,1,0.36,1); } .ds-nav-link:hover, .ds-nav-link[data-active] { color: oklch(96% 0.004 250); } .ds-nav-link[data-active]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -0.5rem; height: 1px; background: oklch(48% 0.014 256); } .ds-nav-tel { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.09em; font-variant-numeric: tabular-nums; color: oklch(96% 0.004 250); text-decoration: none; transition: color 200ms; } .ds-nav-tel:hover { color: oklch(82% 0.125 65); }"
+    },
+    {
+      "name": "Service-Interval LED Cell",
       "kind": "custom",
-      "refersTo": null,
-      "description": "The thin three-band motorsport mark, light blue to indigo to red. The brand's only heritage flourish.",
-      "html": "<span class=\"ds-m-stripe\" aria-hidden=\"true\"></span>",
-      "css": ".ds-m-stripe { display: block; height: 4px; width: 64px; border-radius: 9999px; background: linear-gradient(90deg, var(--color-m-blue, oklch(62% 0.16 245)) 0 33.33%, var(--color-m-indigo, oklch(36% 0.13 285)) 33.33% 66.66%, var(--color-m-red, oklch(55% 0.21 27)) 66.66% 100%); }"
+      "refersTo": "led",
+      "description": "One cell of the band: a printed legend, five segments coded in the M order with a lit count, a title and a note. Hairlines only, no card.",
+      "html": "<div class=\"ds-band-cell\"><p class=\"ds-legend\">SPECIALIZARE</p><div class=\"ds-leds\"><span class=\"ds-led ds-led-amber\"></span><span class=\"ds-led ds-led-amber\"></span><span class=\"ds-led ds-led-amber\"></span><span class=\"ds-led ds-led-amber\"></span><span class=\"ds-led ds-led-amber\"></span></div><h3 class=\"ds-band-title\">Doar BMW, zi de zi</h3><p class=\"ds-band-note\">Diagnoză dedicată, nu generalistă</p></div>",
+      "css": ".ds-band-cell { padding: 1.7rem 1.55rem; border-left: 1px solid oklch(22% 0.012 256); background-image: linear-gradient(180deg, oklch(15.5% 0.010 255), oklch(12% 0.008 255)); } .ds-legend { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(76% 0.010 255); margin: 0 0 0.75rem; } .ds-leds { display: flex; gap: 0.24rem; margin-bottom: 0.9rem; } .ds-led { display: block; width: 1.55rem; height: 0.4rem; background-color: oklch(24% 0.012 256); box-shadow: inset 0 0 0 1px oklch(31% 0.014 256); } .ds-led-amber { background-color: oklch(72% 0.170 58); box-shadow: 0 0 8px oklch(72% 0.17 58 / 0.75); } .ds-band-title { font-family: 'Archivo Variable', 'Arial Narrow', sans-serif; font-variation-settings: 'wdth' 106, 'wght' 700; font-weight: 700; font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.018em; color: oklch(96% 0.004 250); margin: 0 0 0.35rem; } .ds-band-note { font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.9rem; line-height: 1.6; color: oklch(76% 0.010 255); margin: 0; }"
+    },
+    {
+      "name": "Check-Control Legend Row",
+      "kind": "card",
+      "refersTo": "service-lamp",
+      "description": "One row of the services board, deliberately not a card: hairline-separated, with a pictogram in a small lamp well that lights amber on hover or focus-within.",
+      "html": "<li class=\"ds-svc-row\"><span class=\"ds-svc-lamp\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.6 12h3.9l2.4-6.4 3.6 12.8 2.4-6.4h4.9\"/></svg></span><div><h3 class=\"ds-svc-title\">Diagnoză completă</h3><p class=\"ds-svc-sub\">TOATE MODULELE</p><p class=\"ds-svc-desc\">Citim fiecare modul și îți explicăm ce am găsit, înainte de orice lucrare.</p></div></li>",
+      "css": ".ds-svc-row { list-style: none; display: grid; grid-template-columns: 3.4rem 1fr; gap: 0.25rem 1rem; padding: 1.5rem 0; border-bottom: 1px solid oklch(29% 0.014 256); } .ds-svc-lamp { width: 2.6rem; height: 2.6rem; display: grid; place-items: center; color: oklch(76% 0.010 255); background-color: oklch(17% 0.010 255); box-shadow: inset 0 0 0 1px oklch(26% 0.013 256); border-radius: 0.1875rem; transition: color 200ms cubic-bezier(0.16,1,0.3,1), background-color 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms cubic-bezier(0.16,1,0.3,1); } .ds-svc-row:hover .ds-svc-lamp, .ds-svc-row:focus-within .ds-svc-lamp { color: oklch(17% 0.040 55); background-color: oklch(72% 0.170 58); box-shadow: inset 0 0 0 1px oklch(86% 0.10 68 / 0.7), 0 0 20px -4px oklch(72% 0.17 58 / 0.65); } .ds-svc-title { font-family: 'Archivo Variable', 'Arial Narrow', sans-serif; font-variation-settings: 'wdth' 106, 'wght' 700; font-weight: 700; font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.018em; color: oklch(96% 0.004 250); margin: 0 0 0.28rem; } .ds-svc-sub { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(76% 0.010 255); margin: 0 0 0.6rem; } .ds-svc-desc { font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 0.9rem; line-height: 1.6; color: oklch(76% 0.010 255); max-width: 46ch; margin: 0; }"
+    },
+    {
+      "name": "Brushed Trim Panel",
+      "kind": "custom",
+      "refersTo": "trim-panel",
+      "description": "The one light material in this world: anodised console trim with a fine horizontal grain and one raking sheen. It carries the conversion moment and the legal pages. One per page.",
+      "html": "<section class=\"ds-trim\"><h2 class=\"ds-trim-h\">Hai cu mașina la noi</h2><p class=\"ds-trim-p\">Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp.</p><p class=\"ds-trim-legend\">PROGRAM</p></section>",
+      "css": ".ds-trim { position: relative; padding: 3rem 2.25rem; background-color: oklch(87% 0.005 250); color: oklch(20% 0.012 256); background-image: linear-gradient(99deg, oklch(100% 0 0 / 0.5) 0%, oklch(100% 0 0 / 0.06) 22%, oklch(0% 0 0 / 0.05) 54%, oklch(100% 0 0 / 0.03) 74%, oklch(100% 0 0 / 0.34) 100%), repeating-linear-gradient(0deg, oklch(0% 0 0 / 0.055) 0 1px, oklch(100% 0 0 / 0.07) 1px 2px, transparent 2px 4px), repeating-linear-gradient(0deg, transparent 0 6px, oklch(0% 0 0 / 0.035) 6px 7px, transparent 7px 13px); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.7), inset 0 -1px 0 oklch(0% 0 0 / 0.16); border-block: 1px solid oklch(0% 0 0 / 0.22); } .ds-trim-h { font-family: 'Archivo Variable', 'Arial Narrow', sans-serif; font-variation-settings: 'wdth' 110, 'wght' 800; font-weight: 800; font-size: 3rem; line-height: 1.08; letter-spacing: -0.026em; color: oklch(20% 0.012 256); margin: 0 0 1.1rem; } .ds-trim-p { font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; font-size: 1.06rem; line-height: 1.62; color: oklch(40% 0.014 256); max-width: 60ch; margin: 0 0 1.55rem; } .ds-trim-legend { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(40% 0.014 256); margin: 0; }"
+    },
+    {
+      "name": "M Segment Hairline",
+      "kind": "custom",
+      "refersTo": "led",
+      "description": "The tri-color as coded segments in the canonical order, split by transparent hairline gaps so the three can never read as a blend.",
+      "html": "<span class=\"ds-m-stripe\"></span>",
+      "css": ".ds-m-stripe { display: block; height: 3px; width: 60px; background: linear-gradient(90deg, oklch(68% 0.15 242) 0 33%, transparent 33% 33.6%, oklch(52% 0.17 285) 33.6% 66.4%, transparent 66.4% 67%, oklch(60% 0.22 27) 67% 100%); }"
+    },
+    {
+      "name": "Steel Well",
+      "kind": "card",
+      "refersTo": "well",
+      "description": "The only true container in the system: a recess machined into the bezel. Reach for it only when the recess is the point; otherwise divide with hairlines.",
+      "html": "<div class=\"ds-well\"><p class=\"ds-well-legend\">ULEI</p><p class=\"ds-well-reading\">3.400 km</p></div>",
+      "css": ".ds-well { background-color: oklch(17% 0.010 255); border: 1px solid oklch(29% 0.014 256); border-radius: 0.375rem; padding: 1.5rem; color: oklch(96% 0.004 250); } .ds-well-legend { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(48% 0.014 256); margin: 0 0 0.5rem; } .ds-well-reading { font-family: 'Azeret Mono Variable', ui-monospace, monospace; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.09em; font-variant-numeric: tabular-nums; color: oklch(96% 0.004 250); margin: 0; }"
     }
   ],
   "narrative": {
-    "northStar": "The Daylit Workshop",
-    "overview": "This is the clean, well-lit bay run by people who genuinely love these cars, with the doors up and an M-stripe across the wall. The palette is the light of that bay: true off-whites with the faintest cool tint, graphite-blue ink the colour of cured metal, and one confident BavAuto blue that does the work of the welding spark. The M motorsport tri-color is no longer kept under glass: it carries real energy across the page, the enthusiast heart worn openly. Depth comes from how surfaces stack in that light, sharpened by confident accent. The system is built to make a BMW owner think 'these are my people, and they won't take me for a ride': the passion is visible, the estimate is on the table, and the work happens where you can see it. BavAuto is an independent specialist, so the visual language is enthusiast, never dealer: the blue and the stripe carry the heritage nominatively, the BMW roundel never appears.",
+    "northStar": "The Bordcomputer",
+    "overview": "The page is not a description of a workshop; it IS the instrument binnacle of a BMW at night, key at position II. The ground is a near-black graphite bezel with the faintest cool cast. Panels do not float on it — they are steel wells machined up out of it, each step of the surface ramp one lightness notch brighter than the last. Legends are printed silver-white, the way they are silkscreened onto a real dial. One amber illumination runs through the whole system and lights only what is live in this moment. The BMW-M tri-color survives only as LED segment coding in its canonical order, never as decoration. The single light material is a strip of brushed anodised console trim, and it carries the conversion moment.\n\nThe world is dense where a cluster is dense and empty where a bezel is empty. Text is set tight and wide: Archivo is driven on its WIDTH axis (wdth 106–118), not just its weight axis, so headings read as stamped dial legends rather than as a UI sans. Numbers, hours, codes and part numbers are set in Azeret Mono because they are measurements; running prose never is. Body copy is Hanken Grotesk, the calm voice that explains the estimate.\n\nTwo constraints shape everything else. First, there is no photography anywhere, by decision — the owner confirmed none is coming, so the gallery was deleted rather than filled with stock and the workshop is drawn instead. The whole visual load therefore sits on type, material, drawn assets and the instrument itself. Second, this is an independent BMW specialist: instrument language throughout, and no BMW roundel anywhere. The confirmed anti-reference is the category default this build refuses — a dark hero with a grid of icon cards under it, which is why the services surface is a check-control legend board of hairlines and lamps rather than a card grid.",
     "keyCharacteristics": [
-      "One committed brand blue on a clean daylit-neutral base; the M tri-color as a confident, motorsport-energy accent (not a single hairline).",
-      "Graphite-blue near-black ink carrying the brand hue, clearing WCAG AA on every surface.",
-      "Display type set tight and confident (Archivo); body set open and legible (Hanken Grotesk).",
-      "Flat at rest, sharpened by colored accent and glow on interactive elements; depth via the surface tonal ramp.",
-      "Mechanical radii (0.25-1rem), never pill-soft. Mobile-first, phone-call-first."
+      "Near-black graphite ground with steel wells stepping up out of it in a six-step lightness ramp",
+      "Exactly one accent hue (amber), spent only on what is live right now",
+      "M tri-color as LED segment coding in a fixed order, never as decoration",
+      "Archivo driven on the width axis; Azeret Mono strictly for measurements",
+      "One brushed-aluminium trim panel per page as the only light material",
+      "One closed 1.75-stroke pictogram set; no icon library, no emoji",
+      "No photography; the workshop is drawn",
+      "Everything server-rendered and legible before JS; one authored motion moment"
     ],
     "rules": [
-      { "name": "The M-Color Rule", "body": "The M tri-color is the brand's motorsport signature and carries real energy. The full stripe (light blue, indigo, red, in that fixed order) remains the headline mark: dividers, the wordmark tick, hero and section edges. Beyond the stripe, M Racing Red may be used as a deliberate single-element accent where the page wants enthusiast lift: rating stars, a highlighted stat, an active/hot indicator, a hover edge. The discipline is intent, not scarcity: red is for genuine motorsport energy, never a fake-carbon texture, a tuner decal, or a body-copy colour. Never reorder the stripe's bands, and never let red drop below AA where it carries text.", "section": "colors" },
-      { "name": "The One Blue Rule", "body": "A single committed blue carries the structural identity (CTAs, links, focus, primary surfaces). On light surfaces use BavAuto Blue; on dark surfaces switch to Sky Blue for contrast. The M tri-color is the one sanctioned companion to the blue; introduce no other accent hue to balance them. Blue carries the structure, the M-color carries the passion, neutrals carry everything else.", "section": "colors" },
-      { "name": "The Tight-Head, Open-Body Rule", "body": "Headings are tracked negative (down to -0.03em) and set heavy for machined confidence; body stays at normal tracking and 1.55 line-height for calm legibility. Never tighten body tracking to match the headline, and never loosen heading tracking past -0.015em.", "section": "typography" },
-      { "name": "The Sparing Eyebrow Rule", "body": "The uppercase tracked eyebrow is reserved for the hero and at most one or two key sections, always paired with the M stripe. An eyebrow above every section is forbidden; it is AI scaffolding, not voice.", "section": "typography" },
-      { "name": "The Flat-By-Default, Lit-By-State Rule", "body": "A card or panel at rest has a border and a tonal background, never a resting shadow. If a surface has a drop shadow, it must be earning it through state (hover, focus) or through being the primary CTA, and the shadow must be tinted to that element's own hue. A gray ambient shadow on a flat card is forbidden; it reads as a 2014 app.", "section": "elevation" }
+      {
+        "name": "The Live-Amber Rule",
+        "body": "Amber marks only what is live in this moment: the call control, the DESCHIS ACUM dot, the nav pilot, the focused field, the open FAQ row, the hovered or focused service lamp and process step, the map-load control. Never a background wash, never decoration, never a decorative gradient. Break it and the page becomes a tuning shop. Audit test: point at any amber pixel and name the thing that is live. If you can't, delete it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Segment-Coding Rule",
+        "body": "The M tri-color exists only as coded segments in the canonical order blue → indigo → red, always separated by a hairline gap so the three can never blend. It is never reordered, never a gradient wash, never a border on a card.",
+        "section": "colors"
+      },
+      {
+        "name": "The Trim Rule",
+        "body": "The one light material in this world is brushed anodised console trim — not paper, not white. It carries the conversion moment and the long-read legal pages, and it is always brushed (fine horizontal grain plus one raking sheen), never a flat sheet. Two of these on a page is one too many.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed-Legend Rule",
+        "body": "The mono face is for measurements only — numbers, codes, hours, part numbers, readings. Running prose is never mono. Audit test: if you could not put a unit after it, it is not a reading.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Eyebrow Rule",
+        "body": "The .legend style is a printed field name on an instrument, not a section kicker. It labels a value beside or beneath it; it never sits above a heading as a decorative eyebrow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Width-Axis Rule",
+        "body": "Heading weight is set through font-variation-settings on both axes. A heading that ships without an explicit \"wdth\" value is wrong, however correct its weight looks.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bezel Rule",
+        "body": "Empty space is proportioned as bezel around an instrument, not left over as padding. Quiet regions are composed: if a gap can't be described as a margin the instrument needs, it is slack and should be closed.",
+        "section": "layout"
+      },
+      {
+        "name": "The Light-Not-Weight Rule",
+        "body": "A shadow in this system is illumination, never mass. If a shadow's purpose is to lift a card off the page, it does not belong; if its purpose is to show that something is glowing, it does.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Regions divide by a 1px outline-variant rule, not by a gap, a card border-radius, or a change of background. Cells in the LED band and rows in the legend board are separated by hairlines and nothing else.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One-Set Rule",
+        "body": "One closed pictogram set, drawn at a single 1.75 stroke on a 24px box with round caps and joins and no fills, is the only iconography on this site. A service without a symbol gets one drawn into the set — never borrowed from a library, never an emoji. WhatsApp, Facebook and Instagram brand marks are the sole sanctioned filled exceptions, because a brand mark is a signature, not a pictogram.",
+        "section": "components"
+      },
+      {
+        "name": "The Square-Segment Rule",
+        "body": "Anything that reads as an indicator segment is a rectangle. Pill shapes belong to consumer UI, not to a cluster.",
+        "section": "shapes"
+      }
     ],
     "dos": [
-      "Do make the phone call the visual priority. The primary blue button with its CTA Lift glow is the single loudest element; every section should funnel toward it.",
-      "Do keep the M tri-color stripe in its fixed band order (light blue, indigo, red), and do let M Racing Red carry enthusiast energy as a single-element accent (rating stars, hot/active indicators, a highlighted stat) per the M-Color Rule.",
-      "Do carry brand energy through the blue, the M-color, the graphite ink, and real BMW imagery, never through a warm/cream background. The base is a cool-tinted off-white.",
-      "Do keep surfaces flat at rest with hairline borders and the tonal ramp for depth; reserve shadows for state and the CTA (the Flat-By-Default Rule).",
-      "Do set headings tight and heavy (Archivo, tracking to -0.03em) against open calm body (Hanken, 1.55), and cap body measure at 65-75ch.",
-      "Do keep all contact actions (call, WhatsApp) one tap away on mobile, and hold WCAG 2.2 AA: body 4.5:1, large text 3:1, visible focus rings."
+      "Do spend amber only on what is live right now, per The Live-Amber Rule — the call control, the open row, the focused field, the hovered lamp.",
+      "Do separate regions with a 1px outline-variant hairline rather than with a gap or a card edge.",
+      "Do set every heading with an explicit \"wdth\" value (106 title / 110 headline / 112 display / 118 wordmark) alongside its weight.",
+      "Do put numbers, hours, codes, kilometres and part numbers in Azeret Mono as .reading, and keep prose in Hanken Grotesk.",
+      "Do step surfaces up the graphite ramp to create depth, and use inset 0 1px 0 highlights for the machined lip.",
+      "Do draw any new symbol into Icon.astro on the same 24px box at the same 1.75 stroke, round caps and joins, no fill.",
+      "Do ship every surface fully rendered and legible before JS runs, and gate any motion behind prefers-reduced-motion.",
+      "Do keep the M tri-color in its canonical blue → indigo → red order, split by a hairline gap.",
+      "Do hold body ink at or above the measured floor: 9.1:1 for secondary print on the dark ground, 6.2:1 on the trim panel, WCAG 2.2 AA as the target throughout."
     ],
     "donts": [
-      "Don't look like a cold corporate dealership: no glossy showroom gloss, no distant stock photography, no BMW roundel. BavAuto is an independent family workshop.",
-      "Don't look like a cheap roadside garage: no clutter, clip-art, neon, or all-caps OFERTE. Restraint is the trust signal.",
-      "Don't look like a generic SaaS landing: no hero-metric template (giant number + label + gradient accent), no identical icon-card grids repeated endlessly, no gradient blobs, no buzzword copy (seamless, world-class, transform).",
-      "Don't reorder the M stripe's bands, turn it into a fake-carbon texture or tuner decal, or use M Racing Red for body copy or large fills; energy comes from intent, not volume.",
-      "Don't introduce a third accent hue beyond the blue and the M-color (the One Blue Rule), and never use the base blue as text on a dark surface (use Sky Blue).",
-      "Don't put a gray ambient drop shadow on a flat card, and don't add an uppercase tracked eyebrow above every section.",
-      "Don't use light-gray body text for elegance; the graphite ink and AA-deepened CTAs are chosen so nothing falls below contrast."
+      "Don't use amber as a background wash, a decorative accent, or a gradient on anything that is not a lit control.",
+      "Don't put a second brushed-aluminium trim panel on a page; one light material per page, per The Trim Rule.",
+      "Don't import an icon library or use an emoji. The pictogram set is closed; WhatsApp, Facebook and Instagram marks are the only sanctioned filled exceptions because a brand mark is a signature, not a pictogram.",
+      "Don't put a .legend above a heading as a section kicker or eyebrow — it labels a value, not a section.",
+      "Don't rebuild the services surface as a grid of icon cards. Hairlines and lamps; that card grid is the category cliché this world exists to refuse.",
+      "Don't add a drop shadow to lift a surface off the page. Shadows here are light, not mass.",
+      "Don't use a radius above 10px, and never a pill on an indicator segment.",
+      "Don't introduce a second accent hue. WhatsApp green is a vendor mark on a steel control, never a green surface.",
+      "Don't add photography or stock imagery. There is none by decision; new visual weight comes from type, material, drawn assets or the instrument.",
+      "Don't load fonts from a CDN. All three faces are self-hosted via @fontsource with latin-ext for Romanian diacritics.",
+      "Don't ship a BMW roundel or any manufacturer mark. This is an independent specialist."
     ]
   }
 }
