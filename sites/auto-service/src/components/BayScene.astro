@@ -1,0 +1,119 @@
+---
+/*
+  AUTHORED ASSET — the bay, drawn.
+
+  There is no photography for this workshop and none is coming, so the "look
+  inside" moment is drawn rather than faked with stock. This is a side
+  elevation of a two-post lift with a car raised on it, in the same uniform
+  line the pictogram set uses, lit from below by the same amber. Nothing here
+  claims anything: it is a picture of the work, not a photo of a place.
+*/
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 920 520"
+  role="img"
+  aria-label="Elevație desenată: un BMW ridicat pe elevator cu două coloane, în atelier"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <defs>
+    <linearGradient id="bay-pool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.30" />
+      <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0" />
+    </linearGradient>
+    <radialGradient id="bay-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.20" />
+      <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0" />
+    </radialGradient>
+    <filter id="bay-bloom" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" />
+    </filter>
+  </defs>
+
+  <!-- the amber pool the lift lights throw on the floor -->
+  <ellipse cx="460" cy="452" rx="330" ry="40" fill="url(#bay-glow)" />
+  <rect x="150" y="300" width="620" height="152" fill="url(#bay-pool)" opacity="0.42" filter="url(#bay-bloom)" />
+
+  <g fill="none" stroke="var(--color-outline)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- back wall grid: the workshop wall panels -->
+    <path d="M40 60V452 M880 60V452" opacity="0.5" />
+    <path d="M40 130h840 M40 218h840 M40 306h840" opacity="0.22" />
+    <path d="M234 60V452 M460 60V452 M686 60V452" opacity="0.16" />
+  </g>
+
+  <!-- floor -->
+  <path d="M20 452h880" fill="none" stroke="var(--color-on-surface-variant)" stroke-width="2" stroke-linecap="round" />
+  <path d="M20 468h880" fill="none" stroke="var(--color-outline-variant)" stroke-width="1.2" stroke-dasharray="10 9" />
+
+  <!-- two-post lift -->
+  <g fill="none" stroke="var(--color-on-surface-variant)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150 452V96h34v356Z" />
+    <path d="M736 452V96h34v356Z" />
+    <path d="M150 96h620" />
+    <path d="M184 300h96 M640 300h96" />
+    <path d="M280 300v-16 M640 300v-16" />
+  </g>
+  <g fill="none" stroke="var(--color-outline)" stroke-width="1.4">
+    <path d="M167 130v290" stroke-dasharray="7 8" />
+    <path d="M753 130v290" stroke-dasharray="7 8" />
+  </g>
+
+  <!-- the car, raised: a sedan in side elevation -->
+  <g fill="none" stroke="var(--color-on-surface)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M258 282c-6-26-2-46 14-56l72-20c12-14 24-26 40-34l104-10c40-4 68 2 92 18l58 40 70 12c22 4 34 14 36 30l2 20" />
+    <path d="M258 282h404" />
+    <path d="M700 284h-38" />
+  </g>
+  <!-- glass house -->
+  <g fill="none" stroke="var(--color-on-surface-variant)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M356 202l30-30 92-8-4 38Z" />
+    <path d="M492 202l4-38 60 4 42 34Z" />
+  </g>
+  <!-- shut lines, handles, lamps -->
+  <g fill="none" stroke="var(--color-outline)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M484 206v76 M356 210v72" />
+    <path d="M410 244h26 M520 244h26" />
+    <path d="M666 236h34 M272 240h26" />
+  </g>
+  <!-- wheels, hanging free: the car is off the ground -->
+  <g fill="none" stroke="var(--color-on-surface)" stroke-width="2.4">
+    <circle cx="348" cy="298" r="46" />
+    <circle cx="626" cy="298" r="46" />
+  </g>
+  <g fill="none" stroke="var(--color-outline)" stroke-width="1.5">
+    <circle cx="348" cy="298" r="27" />
+    <circle cx="626" cy="298" r="27" />
+    <path d="M348 271v54 M321 298h54 M329 279l38 38 M367 279l-38 38" opacity="0.7" />
+    <path d="M626 271v54 M599 298h54 M607 279l38 38 M645 279l-38 38" opacity="0.7" />
+  </g>
+
+  <!-- lift arms taking the sill, drawn over the car so they read as in front -->
+  <g fill="none" stroke="var(--color-primary)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M184 300h84l22-16" />
+    <path d="M736 300h-84l-22-16" />
+  </g>
+
+  <!-- tool cart, floor left -->
+  <g fill="none" stroke="var(--color-outline)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56 452v-96h72v96" />
+    <path d="M56 382h72 M56 410h72" />
+    <circle cx="70" cy="452" r="7" />
+    <circle cx="114" cy="452" r="7" />
+  </g>
+
+  <!-- the inspection lamp: the single live element in the scene -->
+  <g>
+    <path d="M812 96v168" fill="none" stroke="var(--color-outline)" stroke-width="1.4" />
+    <path d="M796 264h32l10 22h-52Z" fill="none" stroke="var(--color-primary)" stroke-width="2.2" stroke-linejoin="round" />
+    <circle cx="812" cy="292" r="7" fill="var(--color-primary)" />
+    <path d="M786 300l-22 66h96l-22-66Z" fill="var(--color-primary)" opacity="0.14" />
+  </g>
+</svg>
+
+<style>
+  /* See Gauge.astro: the SVG owns its own box. */
+  svg { display: block; width: 100%; height: auto; }
+</style>

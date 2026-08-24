@@ -64,7 +64,9 @@ const [wordA, wordB] = site.name.split(" ");
     if (!nav) return;
     if (nav.dataset.overlay === "true") {
       var setH = function () {
-        nav.style.setProperty("--nav-h", nav.offsetHeight + "px");
+        var h = nav.offsetHeight + "px";
+        nav.style.setProperty("--nav-h", h);
+        document.documentElement.style.setProperty("--nav-h", h);
       };
       setH();
       window.addEventListener("resize", setH, { passive: true });
@@ -113,7 +115,7 @@ const [wordA, wordB] = site.name.split(" ");
     box-shadow: 0 0 10px oklch(72% 0.17 58 / 0.9), 0 0 22px oklch(72% 0.17 58 / 0.45);
     flex: none;
   }
-  .nav__name { font-size: 1.12rem; text-transform: uppercase; }
+  .nav__name { font-size: 1.06rem; text-transform: uppercase; }
   @media (min-width: 768px) { .nav__name { font-size: 1.22rem; } }
   .nav__dot { color: var(--color-primary); padding-inline: 0.12em; }
 
@@ -160,7 +162,7 @@ const [wordA, wordB] = site.name.split(" ");
     border-radius: var(--radius);
     color: var(--color-on-surface);
     text-decoration: none;
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     letter-spacing: 0.11em;
     background-color: oklch(17% 0.010 255);
     transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
@@ -168,7 +170,7 @@ const [wordA, wordB] = site.name.split(" ");
   @media (min-width: 640px) { .nav__tel { display: inline-flex; } }
   .nav__tel:hover {
     color: var(--color-primary-bright);
-    border-color: oklch(46% 0.06 58);
+    border-color: var(--color-primary-edge);
     box-shadow: 0 0 18px -8px oklch(72% 0.17 58 / 0.7);
   }
 

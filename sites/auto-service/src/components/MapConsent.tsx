@@ -30,17 +30,18 @@ export default function MapConsent({ lat, lng, label }: Props) {
   }
 
   return (
-    // This placeholder sits inside the bright "service bay" (Contact). Surfaces
-    // and ink are the LIGHT-panel inversion set so everything reads AA-safe on
-    // the slab; the consent flow itself is unchanged.
-    <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 bg-[var(--color-inverse-surface-2)] p-6 text-center">
+    // This placeholder sits in the aluminium trim panel (Contact) as a well
+    // recessed INTO it, so it reads a step darker than the trim rather than
+    // lighter. Ink is the light-panel inversion set; consent flow unchanged.
+    <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 p-6 text-center"
+      style={{ backgroundColor: "oklch(81% 0.005 250)" }}>
       {/* faux map grid, pure CSS — zero external requests */}
       <div
         aria-hidden="true"
         className="absolute inset-0 opacity-70"
         style={{
           backgroundImage:
-            "linear-gradient(oklch(0% 0 0 / 0.08) 1px, transparent 1px), linear-gradient(90deg, oklch(0% 0 0 / 0.08) 1px, transparent 1px)",
+            "linear-gradient(oklch(0% 0 0 / 0.11) 1px, transparent 1px), linear-gradient(90deg, oklch(0% 0 0 / 0.11) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />

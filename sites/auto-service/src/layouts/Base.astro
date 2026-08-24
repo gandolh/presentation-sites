@@ -1,14 +1,15 @@
 ---
 // Self-hosted fonts (no Google Fonts CDN — GDPR: avoids transmitting visitor
-// IPs to Google; see docs/LEGAL.md). Variable faces: the `wght` axis carries
-// every weight we use. Each `wght.css` already bundles the latin + latin-ext
-// subsets (latin-ext carries Romanian diacritics ă â î ș ț) as separate
-// @font-face blocks gated by unicode-range, so a single import is enough.
-import "@fontsource-variable/archivo/wght.css";
+// IPs to Google; see docs/LEGAL.md). Archivo is imported on its `wdth` axis:
+// this world sets the display face WIDE, like a stamped dial legend, so the
+// width axis is load-bearing and not a nicety. Each axis file bundles the
+// latin + latin-ext subsets (latin-ext carries ă â î ș ț) as separate
+// @font-face blocks gated by unicode-range, so one import per family is enough.
+import "@fontsource-variable/archivo/wdth.css";
 import "@fontsource-variable/hanken-grotesk/wght.css";
+import "@fontsource-variable/azeret-mono/wght.css";
 import "../styles/global.css";
 import { site } from "../content/site";
-import { img } from "../content/images";
 import { withBase } from "@sites/kit";
 
 interface Props {
@@ -29,8 +30,11 @@ const {
 const siteOrigin = "https://bavauto.ro";
 const canonical = `${siteOrigin}${path}`;
 
-const ogImage = img("og-image");
-const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
+// Social platforms refuse SVG for og:image, so the card ships as a PNG built
+// from scripts/og-card.html with the site's real self-hosted faces. The SVG
+// beside it is the vector source, not the shared asset.
+const ogImage = withBase("/images/og-image.png");
+const ogImageAbsolute = `${siteOrigin}/images/og-image.png`;
 
 // Map RO opening hours to schema.org day codes. Keeps the JSON-LD in sync with
 // the single source of truth in site.ts without duplicating the strings.
@@ -55,7 +59,7 @@ const openingHours = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#141d2b" />
+    <meta name="theme-color" content="#07090c" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonical} />
 
@@ -111,9 +115,31 @@ const openingHours = [
     />
   </head>
   <body>
+    <!--
+      DIRECTION CONTRACT — Bordcomputer
+
+      THESIS: The page IS the car's instrument binnacle at night, not a
+      description of a workshop; it refuses the dark-hero-plus-icon-card auto
+      template this category always ships.
+      OWN-WORLD: Near-black graphite bezel, steel wells stepping up out of it,
+      silver-white printed legends, ONE amber illumination that lights only what
+      is live, the M tri-color as LED segment coding, and brushed-aluminium trim
+      as the single light material. Archivo on its width axis, Hanken body,
+      Azeret Mono for readings. One closed 1.75-stroke pictogram set.
+      STORY: A worried BMW owner recognises people who read the car, taps his own
+      symptom, and calls.
+      FIRST VIEWPORT: Full-bleed binnacle. Left: three symptom chips, display
+      headline with one lit word, the amber call control, a status rail. Right: a
+      tachometer with its dot-matrix window plus a cropped shoulder dial. Under
+      both: the service-interval LED band carrying the four proofs.
+      FORM: Bordcomputer, candidate 3 of the grounded list; seed key 32bf8b80.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the
+      finish review, the verdict, DESIGN.md, and every shipping raster carrying
+      its provenance.
+    -->
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-primary)] focus:text-[var(--color-on-primary)] focus:px-4 focus:py-2 focus:rounded-md"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-primary)] focus:text-[var(--color-on-primary)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-md)] focus:font-semibold"
     >
       Sari la conținut
     </a>

@@ -108,9 +108,9 @@ const Heading = heading;
 
   .ct__mail {
     font-weight: 600;
-    color: oklch(42% 0.14 45);
+    color: var(--color-link-on-trim);
     text-decoration: underline;
-    text-decoration-color: oklch(42% 0.14 45 / 0.4);
+    text-decoration-color: color-mix(in oklab, var(--color-link-on-trim) 40%, transparent);
   }
   .ct__mail:hover { text-decoration-color: currentColor; }
 
@@ -125,13 +125,17 @@ const Heading = heading;
   .ct__hours li:first-child { border-top: 0; }
   .ct__hours li span:last-child { font-weight: 600; }
 
-  .ct__mapwrap { min-height: 18rem; }
   .ct__map {
-    height: 100%;
+    width: 100%;
     aspect-ratio: 4 / 3;
+    min-height: 17rem;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    border: 1px solid oklch(0% 0 0 / 0.18);
+    border: 1px solid oklch(0% 0 0 / 0.2);
+    box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.5);
   }
-  @media (min-width: 1024px) { .ct__map { aspect-ratio: auto; } }
+  @media (min-width: 1024px) {
+    .ct__mapwrap { display: flex; }
+    .ct__map { aspect-ratio: auto; height: 100%; }
+  }
 </style>

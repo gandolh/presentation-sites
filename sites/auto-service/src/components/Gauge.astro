@@ -229,3 +229,10 @@ const uid = id;
   <circle cx={C} cy={C} r={compact ? 9 : 19} fill="oklch(18% 0.011 256)" stroke="oklch(34% 0.014 256)" stroke-width={compact ? 1.2 : 1.5} />
   {!compact && <circle cx={C} cy={C} r="6" fill="var(--color-m-red)" filter={`url(#${uid}-glow)`} />}
 </svg>
+
+<style>
+  /* The SVG owns its own box. A parent component's scoped CSS cannot target
+     this element (Astro does not stamp its scope onto a child component's
+     root), so sizing lives here and parents position a wrapper instead. */
+  svg { display: block; width: 100%; height: auto; }
+</style>

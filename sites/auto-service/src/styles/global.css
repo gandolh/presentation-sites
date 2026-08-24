@@ -59,6 +59,7 @@
   --color-inverse-surface-2: oklch(93% 0.004 250);
   --color-inverse-on-surface: oklch(20% 0.012 256);
   --color-inverse-on-surface-variant: oklch(40% 0.014 256);
+  --color-link-on-trim: oklch(42% 0.140 45);         /* the one link colour ON the trim */
 
   /* ---- PRIMARY: the illumination -----------------------------------------
      BMW's night-cluster amber. This is the only accent hue the system owns,
@@ -71,6 +72,7 @@
   --color-primary-container: oklch(26% 0.055 58);    /* dim amber well */
   --color-on-primary-container: oklch(88% 0.080 62);
   --color-primary-bright: oklch(82% 0.125 65);       /* amber AS TEXT on dark */
+  --color-primary-edge: oklch(46% 0.060 58);         /* amber-tinted hover border */
 
   /* ---- M motorsport tri-color: the LED segment coding --------------------
      Canonical order, never reordered: light blue -> indigo -> red. */
@@ -148,7 +150,7 @@
     font-family: var(--font-display);
     font-variation-settings: "wdth" 112, "wght" 800;
     font-weight: 800;
-    line-height: 1.02;
+    line-height: 1.08;
     letter-spacing: -0.026em;
     text-wrap: balance;
   }
@@ -198,7 +200,7 @@
     .container-page { padding-inline: 2.25rem; }
   }
 
-  .section { padding-block: clamp(3.75rem, 8vw, 7.5rem); }
+  .section { padding-block: clamp(3.25rem, 6.5vw, 5.75rem); }
 
   /* ---- Printed legend ------------------------------------------------------
      The small tracked mono label that appears on a real dial: a field name, a
@@ -224,15 +226,19 @@
   }
 
   /* ---- The M segment bar (LED coding, canonical order) -------------------- */
+  /* Three coded segments in the canonical order, separated by a hairline so
+     they can never read as a blend. */
   .m-stripe {
     display: block;
     height: 3px;
     width: 60px;
     background: linear-gradient(
       90deg,
-      var(--color-m-blue) 0 33.33%,
-      var(--color-m-indigo) 33.33% 66.66%,
-      var(--color-m-red) 66.66% 100%
+      var(--color-m-blue) 0 33%,
+      transparent 33% 33.6%,
+      var(--color-m-indigo) 33.6% 66.4%,
+      transparent 66.4% 67%,
+      var(--color-m-red) 67% 100%
     );
   }
   .m-stripe--full { width: 100%; }
@@ -243,9 +249,11 @@
     min-height: 2.5rem;
     background: linear-gradient(
       180deg,
-      var(--color-m-blue) 0 33.33%,
-      var(--color-m-indigo) 33.33% 66.66%,
-      var(--color-m-red) 66.66% 100%
+      var(--color-m-blue) 0 33%,
+      transparent 33% 33.6%,
+      var(--color-m-indigo) 33.6% 66.4%,
+      transparent 66.4% 67%,
+      var(--color-m-red) 67% 100%
     );
   }
 
@@ -316,14 +324,28 @@
       0 0 46px -6px oklch(76% 0.16 60 / 0.5);
   }
 
+  /* WhatsApp is a vendor identity, so its MARK keeps brand green; the control
+     itself stays steel. A green surface would be a second accent hue. */
   .btn-whatsapp {
-    background-color: var(--color-whatsapp);
-    color: oklch(15% 0.03 153);
+    background-color: oklch(19% 0.011 256);
+    color: var(--color-on-surface);
+    border-color: oklch(34% 0.014 256);
   }
   .btn-whatsapp:hover {
-    background-color: var(--color-whatsapp-hover);
-    box-shadow: 0 8px 22px -12px oklch(62% 0.15 153 / 0.7);
+    border-color: oklch(50% 0.016 256);
+    background-color: oklch(23% 0.013 256);
   }
+  .btn-whatsapp :where(svg) { color: var(--color-whatsapp); }
+  .trim .btn-whatsapp {
+    background-color: transparent;
+    color: var(--color-inverse-on-surface);
+    border-color: oklch(0% 0 0 / 0.24);
+  }
+  .trim .btn-whatsapp:hover {
+    border-color: var(--color-inverse-on-surface);
+    background-color: oklch(0% 0 0 / 0.05);
+  }
+  .trim .btn-whatsapp :where(svg) { color: oklch(48% 0.13 153); }
 
   /* Unlit switch — the default control on the bezel. */
   .btn-outline {
@@ -347,13 +369,26 @@
 
   .btn-lg { padding: 1.1rem 1.9rem; font-size: 1rem; }
 
+  /* On the aluminium trim the amber control still reads as the primary action,
+     but the bloom goes: a filament glows against night, not against metal. */
+  .trim .btn-primary {
+    box-shadow:
+      inset 0 0 0 1px oklch(58% 0.15 50 / 0.55),
+      0 2px 6px -2px oklch(35% 0.07 55 / 0.4);
+  }
+  .trim .btn-primary:hover {
+    box-shadow:
+      inset 0 0 0 1px oklch(58% 0.15 50 / 0.7),
+      0 4px 12px -3px oklch(35% 0.07 55 / 0.5);
+  }
+
   /* ---- Headings: stamped dial legends, set wide ---------------------------- */
   .heading-xl {
     font-family: var(--font-display);
     font-variation-settings: "wdth" 112, "wght" 800;
     font-weight: 800;
     font-size: clamp(2.7rem, 6.4vw, 4.75rem);
-    line-height: 0.96;
+    line-height: 1.02;
     letter-spacing: -0.028em;
     text-wrap: balance;
   }
@@ -362,7 +397,7 @@
     font-variation-settings: "wdth" 110, "wght" 800;
     font-weight: 800;
     font-size: clamp(2rem, 4.2vw, 3rem);
-    line-height: 1.0;
+    line-height: 1.08;
     letter-spacing: -0.026em;
     text-wrap: balance;
   }
@@ -371,7 +406,7 @@
     font-variation-settings: "wdth" 106, "wght" 700;
     font-weight: 700;
     font-size: clamp(1.2rem, 2.2vw, 1.5rem);
-    line-height: 1.12;
+    line-height: 1.2;
     letter-spacing: -0.018em;
   }
 
@@ -409,6 +444,46 @@
       inset 0 1px 0 oklch(100% 0 0 / 0.055),
       0 1px 0 oklch(0% 0 0 / 0.6);
   }
+
+  /* ---- The brushed-aluminium trim panel (see THE TRIM RULE) ---------------
+     The single light material in this world: an anodised dashboard trim strip,
+     always brushed, never a flat white sheet. It carries the conversion moment
+     and the long-read legal pages. Two of these on one page is one too many. */
+  .trim {
+    position: relative;
+    background-color: var(--color-inverse-surface);
+    color: var(--color-inverse-on-surface);
+    /* Brushed anodised aluminium: fine horizontal grain running along the strip,
+       a coarser irregular pass over it, and one broad raking sheen. Layered in
+       CSS so it stays crisp at any density and costs no request. */
+    background-image:
+      linear-gradient(
+        99deg,
+        oklch(100% 0 0 / 0.5) 0%,
+        oklch(100% 0 0 / 0.06) 22%,
+        oklch(0% 0 0 / 0.05) 54%,
+        oklch(100% 0 0 / 0.03) 74%,
+        oklch(100% 0 0 / 0.34) 100%
+      ),
+      repeating-linear-gradient(
+        0deg,
+        oklch(0% 0 0 / 0.055) 0 1px,
+        oklch(100% 0 0 / 0.07) 1px 2px,
+        transparent 2px 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0 6px,
+        oklch(0% 0 0 / 0.035) 6px 7px,
+        transparent 7px 13px
+      );
+    box-shadow:
+      inset 0 1px 0 oklch(100% 0 0 / 0.7),
+      inset 0 -1px 0 oklch(0% 0 0 / 0.16);
+    border-block: 1px solid oklch(0% 0 0 / 0.22);
+  }
+  .trim :where(h1, h2, h3, h4, strong) { color: var(--color-inverse-on-surface); }
+  .trim :where(.legend) { color: var(--color-inverse-on-surface-variant); }
 
   /* ---- Fields --------------------------------------------------------------- */
   .input {

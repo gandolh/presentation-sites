@@ -26,7 +26,8 @@ alternative. Succesul = un client care sună sau scrie.
   rece. Devize clare, fără surprize, garanție scrisă.
 - **Independent, nu dealer.** Fără logo BMW (roundel); disclaimer clar de
   neafiliere cu BMW AG. „BMW”/„M” folosite doar nominativ (vezi LEGAL.md).
-- **Onestitate.** Fără recenzii inventate (vezi `testimonials.ts`), fără prețuri
+- **Onestitate.** Fără recenzii inventate (secțiunea de testimoniale a fost
+  eliminată cât timp nu există recenzii reale), fără prețuri
   care induc în eroare — prețul final după diagnoză.
 
 ## Scope servicii (mechanics-focused)
@@ -35,10 +36,13 @@ direcție · ambreiaj/cutie · răcire & VANOS · electrică · climatizare (AC)
 pre-ITP. **Fără** vulcanizare/anvelope și **fără** tinichigerie/vopsitorie.
 
 ## Secțiuni (one-page)
-Hero → bandă de încredere (RAR, garanție, devize, specialiști BMW) → Servicii →
-De ce noi → Procesul în 5 pași → Despre (familia) → Galerie → (Testimoniale —
-ascuns până există reale) → Întrebări frecvente → Contact (hartă + program +
-formular) → Footer (identificare firmă + SAL + disclaimer BMW).
+Hero (bordul: martori-simptom + ceas + apel) → banda de interval de service
+(RAR, deviz, garanție, specializare) → Servicii (tabloul de martori) → De ce noi
+→ Procesul în 5 pași (șina codată M) → Atelierul (elevație desenată) → Contact
+(banda de aluminiu: apel + WhatsApp + program + hartă cu consimțământ) → Footer
+(identificare firmă + SAL + disclaimer BMW).
+
+Fără galerie foto și fără testimoniale cât timp nu există material real.
 
 ## De completat de proprietar înainte de publicare
 `src/content/site.local.ts`: denumire, CUI, Reg. Com., capital, **autorizație
