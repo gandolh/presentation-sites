@@ -1,5 +1,50 @@
 # Log
 
+## [2026-08-23] design | auto-service reworked — *Bordcomputer*, the site as the car's cluster
+
+The owner was happy with the business idea and unhappy with the UI/UX. Three
+complaints, all correct and all one root cause: "flat and lifeless", "doesn't
+feel like a BMW place", "too much text, too little to look at". The old site was
+thin — hero, four trust items, one 2x2 wall of paragraphs, footer — so the
+design had nothing to look at and fell back on prose. He also confirmed there is
+**no photography and none coming**, which meant the gap could only be closed by
+making the interface itself worth looking at.
+
+Ran the direction round with four **coded** comps rather than descriptions
+(no image generation on this machine, and a coded comp is the build anyway):
+Bordcomputer (the instrument cluster), Katalog (ETK exploded parts plate),
+Terminal de diagnoză (green-phosphor diagnostic transcript), and the category
+standard played straight. The roll assigned Bordcomputer; the owner kept it.
+
+Why it holds: the page *is* the binnacle at night. Near-black graphite bezel,
+steel wells stepping up out of it, silver-white printed legends, and **one amber
+illumination that lights only what is live** — the call, the focused field, the
+active step. The M tri-color survives as LED segment coding in canonical order,
+never as decoration, so the brand commitment is kept without the old blue. One
+brushed-aluminium trim panel is the single light material and carries the
+conversion moment. Three check-control chips let a panicked owner tap his own
+symptom straight into a pre-filled WhatsApp message, which is a real UX gain
+over a paragraph.
+
+The no-photography constraint became the system: `Gauge.astro` draws the
+instrument as server-rendered SVG, `BayScene.astro` is an authored line
+elevation of the workshop labelled in-page as a drawing, and `Icon.astro` is one
+closed 1.75-stroke pictogram set that is the site's only iconography. The photo
+gallery was **deleted** rather than filled with stock, and the empty
+testimonials component went with it. `images.ts` stays as a dormant seam.
+
+Motion is one authored moment: the **ignition sweep** (anime.js v4) — needles
+sweep the full scale and settle on load, the way a cluster does at position II.
+Everything is legible before JS; the sweep is suppressed under reduced-motion.
+
+Two finish-review rounds. The first found eight material fixes (amber used as
+decoration, a flat fill standing in for the trim material, green surfaces, a
+hero-metric stat trio, the dial missing on mobile); the second caught that my
+own fix for dial scale had broken the headline onto four lines and pushed the
+proof band out of the first viewport — fixed by taking the dial's scale from
+column overhang instead of from the copy. Final disposition: ship. DESIGN.md was
+rewritten from the built world and the design detector went 89 findings -> 0.
+
 ## [2026-08-23] design | subcort reworked again — *Montaj*, the site as a drawing set
 
 The *scoarța* rework shipped earlier the same day was rejected by the owner as
