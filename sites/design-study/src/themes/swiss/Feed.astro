@@ -1,0 +1,50 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<ol
+  class="swiss-grid swiss-feed"
+  data-ds-feed
+  data-per-page={POSTS_PER_PAGE}
+>
+  {
+    posts.map((post, i) => (
+      <li class="ds-feed__item">
+        <div class="swiss-card__figure">
+          <PostCarousel post={post} />
+        </div>
+
+        <div class="swiss-card__body">
+          <p class="swiss-card__index">{String(i + 1).padStart(2, "0")}</p>
+          <h2 class="swiss-card__title">
+            <a href={withBase(`/swiss/${post.slug}/`)}>{post.title}</a>
+          </h2>
+          <p class="swiss-card__dek">{post.dek}</p>
+          <p class="swiss-card__meta">
+            <b>{post.author}</b> — {dateFormat.format(new Date(post.date))} —{" "}
+            {post.tags.join(", ")}
+          </p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<div class="swiss-grid">
+  <Pager />
+</div>

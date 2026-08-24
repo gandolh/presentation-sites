@@ -1,0 +1,52 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+import "@fontsource-variable/archivo/wght.css";
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <div class="ds-page">
+    <div class="nb-wrap">
+      <header class="nb-head nb-block">
+        <MarkTag class="nb-head__mark"><a href={withBase("/neo-brutalism/")}>{site.name}</a></MarkTag>
+        <p class="nb-badge">{style.name}</p>
+        <nav class="nb-head__links">
+          <a href={withBase("/")}>Index</a>
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="nb-foot nb-block">
+        <p>{site.name} &mdash; {style.name} &mdash; fictional content, real shadows</p>
+      </footer>
+    </div>
+  </div>
+</Document>

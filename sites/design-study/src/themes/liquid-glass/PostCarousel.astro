@@ -1,0 +1,20 @@
+---
+// Same job as the shared components/PostCarousel.astro, pointed at this
+// theme's own carousel implementation.
+import Carousel from "./Carousel.tsx";
+import { img } from "../../content/images";
+import type { Post } from "../../content/posts";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const images = post.images.map((name, i) => ({
+  src: img(name),
+  alt: `${post.title} — image ${i + 1} of ${post.images.length}`,
+}));
+---
+
+<Carousel client:visible images={images} ratio={post.ratio} label={post.title} />

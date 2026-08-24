@@ -1,0 +1,48 @@
+{
+  "name": "design-study",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dev:real": "PUBLIC_IMAGE_SOURCE=real astro dev",
+    "prebuild": "node scripts/check-routes.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "placeholders": "node scripts/gen-placeholders.mjs",
+    "check:routes": "node scripts/check-routes.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "6.0.4",
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource-variable/cormorant": "5.3.0",
+    "@fontsource-variable/eb-garamond": "5.3.0",
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/nunito": "5.3.0",
+    "@fontsource-variable/open-sans": "5.3.0",
+    "@fontsource-variable/playfair-display": "5.3.0",
+    "@react-three/fiber": "9.7.0",
+    "@sites/kit": "*",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@types/three": "0.185.4",
+    "astro": "7.2.4",
+    "embla-carousel-react": "8.6.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@types/node": "22.20.1",
+    "typescript": "6.0.3",
+    "vite": "8.2.2"
+  },
+  "overrides": {
+    "vite": "7.3.3"
+  }
+}

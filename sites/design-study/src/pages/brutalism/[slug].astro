@@ -1,0 +1,20 @@
+---
+// A single post, rendered in brutalism.
+import type { Post } from "../../content/posts";
+import Shell from "../../themes/brutalism/Shell.astro";
+import PostView from "../../themes/brutalism/Post.astro";
+import { postPaths, postPage } from "../../lib/routes";
+
+export const getStaticPaths = postPaths;
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { style, title, description } = postPage("brutalism", post);
+---
+
+<Shell style={style} title={title} description={description} postSlug={post.slug}>
+  <PostView post={post} />
+</Shell>

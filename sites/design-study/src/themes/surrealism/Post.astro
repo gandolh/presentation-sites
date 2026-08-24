@@ -1,0 +1,62 @@
+---
+import type { Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<article class="sr-article">
+  <div class="sr-article__figure">
+    <PostCarousel post={post} />
+  </div>
+
+  <header class="sr-article__head">
+    <h1 class="sr-article__title">{post.title}</h1>
+    <p class="sr-article__dek">{post.dek}</p>
+    <p class="sr-article__meta">
+      {post.author} &middot;{" "}
+      <time datetime={post.date}>{dateFormat.format(new Date(post.date))}</time> &middot;{" "}
+      {post.tags.join(" · ")}
+    </p>
+  </header>
+
+  <div class="sr-article__body">
+    {
+      post.body.map((block) => {
+        switch (block.type) {
+          case "h2":
+            return <h2>{block.text}</h2>;
+          case "quote":
+            return (
+              <blockquote>
+                <p>{block.text}</p>
+                {block.cite && <footer>{block.cite}</footer>}
+              </blockquote>
+            );
+          case "list":
+            return (
+              <ul>
+                {block.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            );
+          case "aside":
+            return <p class="sr-aside">{block.text}</p>;
+          default:
+            return <p>{block.text}</p>;
+        }
+      })
+    }
+  </div>
+</article>

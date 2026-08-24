@@ -1,0 +1,71 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import { posts } from "../../content/posts";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+// No webfont import. Brutalism uses whatever the browser already has, which
+// is the entire point — and, incidentally, the fastest theme in the study.
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <!--
+    The 1-bit threshold the carousel filters through. Declared once per
+    document; `feComponentTransfer` with two discrete steps is a true
+    threshold, not a contrast boost pretending to be one.
+  -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <filter id="brut-threshold" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncR type="discrete" tableValues="0 1" />
+        <feFuncG type="discrete" tableValues="0 1" />
+        <feFuncB type="discrete" tableValues="0 1" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <div class="ds-page">
+    <header class="brut-head">
+      <MarkTag class="brut-head__mark"><a href={withBase("/brutalism/")}>{site.name}</a></MarkTag>
+      <hr class="brut-head__rule" />
+      <p class="brut-head__meta brut-mono">
+        <span>STYLE: {style.name.toUpperCase()}</span>
+        <span>ERA: {style.era}</span>
+        <span>DOCS: {posts.length}</span>
+        <span><a href={withBase("/")}>../index</a></span>
+      </p>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="brut-foot">
+      <p>{site.name} / {style.name.toUpperCase()} / CONTENT IS FICTIONAL / NO STYLESHEET WAS HARMED</p>
+    </footer>
+  </div>
+</Document>

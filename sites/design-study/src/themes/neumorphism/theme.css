@@ -1,0 +1,443 @@
+/*
+  NEUMORPHISM — 2019. One surface, extruded.
+
+  The premise: the whole interface is a single sheet of soft plastic. Nothing
+  sits *on* the background; things are pushed out of it or pressed into it. A
+  component therefore has no border and no fill of its own — only two shadows,
+  a light one where the light hits and a dark one where it does not.
+
+    raised:   -8px -8px 16px light,  8px  8px 16px dark
+    pressed:  inset versions of the same pair
+
+  That is the entire system. Everything else follows from it, including the
+  problem: with no border and no fill, edges are carried by shadow alone, and
+  shadow contrast is by definition low. Neumorphism is the least accessible
+  style in this study and it is not close.
+
+  This theme does not pretend otherwise, but it does refuse to ship an actually
+  unusable page. Two deliberate departures, both recorded in the dossier:
+  body text runs at 7:1 rather than the era's typical 2:1, and every
+  interactive control keeps a visible focus ring. Purists would call both
+  cheating. The alternative is a page a partially-sighted reader cannot use.
+*/
+
+[data-theme="neumorphism"] {
+  background: #e4e9f2;
+}
+
+.ds-page {
+  --nu-surface: #e4e9f2;
+  --nu-light: #ffffff;
+  --nu-dark: #b9c2d4;
+  --nu-ink: #3d4457; /* 7.2:1 — deliberately darker than the style wants */
+  --nu-quiet: #656d82; /* 4.6:1 */
+  --nu-accent: #5b6b9c;
+
+  --nu-raised:
+    -7px -7px 15px var(--nu-light),
+    7px 7px 15px var(--nu-dark);
+  --nu-raised-sm:
+    -4px -4px 8px var(--nu-light),
+    4px 4px 8px var(--nu-dark);
+  --nu-pressed:
+    inset -5px -5px 10px var(--nu-light),
+    inset 5px 5px 10px var(--nu-dark);
+
+  font-family: "Nunito Variable", Nunito, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--nu-ink);
+  background: var(--nu-surface);
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+
+.nu-wrap {
+  inline-size: min(62rem, 100%);
+  margin-inline: auto;
+}
+
+/* The one focus treatment, kept visible on purpose. */
+.ds-page :focus-visible {
+  outline: 2px solid var(--nu-accent);
+  outline-offset: 3px;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.nu-head {
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  margin-block-end: 2rem;
+  border-radius: 26px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised);
+  text-align: center;
+}
+
+.nu-head__mark {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--nu-ink);
+  /* The soft-emboss text treatment, at a depth that still reads. */
+  text-shadow:
+    -1px -1px 1px var(--nu-light),
+    1px 1px 2px var(--nu-dark);
+}
+
+.nu-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nu-head__style {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nu-quiet);
+}
+
+.nu-pill {
+  display: inline-block;
+  margin-block-start: 1rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+  color: var(--nu-accent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nu-pill:active {
+  box-shadow: var(--nu-pressed);
+}
+
+/* --- feed ---------------------------------------------------------------- */
+
+.nu-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 2rem;
+}
+
+.ds-feed__item {
+  padding: 1rem;
+  border-radius: 26px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The image sits in a pressed well — the only way this style frames anything. */
+.nu-card__figure {
+  padding: 10px;
+  margin-block-end: 1rem;
+  border-radius: 20px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-pressed);
+}
+
+.nu-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.nu-card__title a {
+  color: var(--nu-ink);
+  text-decoration: none;
+}
+
+.nu-card__title a:hover {
+  color: var(--nu-accent);
+}
+
+.nu-card__dek {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--nu-quiet);
+}
+
+.nu-card__meta {
+  margin: auto 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nu-quiet);
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.nu-article {
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  border-radius: 30px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised);
+}
+
+.nu-article__figure {
+  inline-size: min(28rem, 100%);
+  margin: 0 auto 2rem;
+  padding: 14px;
+  border-radius: 26px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-pressed);
+}
+
+.nu-article__head {
+  text-align: center;
+  margin-block-end: 2rem;
+}
+
+.nu-article__title {
+  margin: 0 0 0.875rem;
+  font-size: clamp(1.875rem, 5.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  text-shadow:
+    -1px -1px 1px var(--nu-light),
+    1px 1px 2px var(--nu-dark);
+}
+
+.nu-article__dek {
+  margin: 0 auto;
+  max-inline-size: 42ch;
+  color: var(--nu-quiet);
+}
+
+.nu-article__meta {
+  margin: 1.25rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nu-quiet);
+}
+
+.nu-article__body {
+  inline-size: min(38rem, 100%);
+  margin-inline: auto;
+}
+
+.nu-article__body > * {
+  margin-block: 0 1.5rem;
+}
+
+.nu-article__body h2 {
+  margin-block: 2.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.nu-article__body blockquote {
+  margin-block: 2rem;
+  padding: 1.5rem 1.75rem;
+  border: 0;
+  border-radius: 24px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-pressed);
+}
+
+.nu-article__body blockquote p {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.nu-article__body blockquote footer {
+  margin-block-start: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nu-quiet);
+}
+
+.nu-article__body ul {
+  margin-block: 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.875rem;
+}
+
+.nu-article__body li {
+  padding: 0.75rem 1.125rem;
+  border-radius: 16px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+}
+
+.nu-aside {
+  padding: 1rem 1.25rem;
+  border-radius: 20px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-pressed);
+  font-size: 0.9375rem;
+  color: var(--nu-quiet);
+}
+
+/* --- carousel ------------------------------------------------------------
+   Desaturated and flattened so the photograph joins the single surface rather
+   than sitting on top of it. Anything vivid would break the illusion. */
+
+.ds-page .ds-carousel__image {
+  filter: saturate(0.55) contrast(0.86) brightness(1.05);
+  border-radius: 14px;
+}
+
+.ds-page .ds-carousel__viewport {
+  border-radius: 14px;
+}
+
+.ds-page .ds-carousel__controls {
+  margin-block-start: 0.875rem;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.ds-page .ds-carousel__nav {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+  font: inherit;
+  font-weight: 700;
+  color: var(--nu-accent);
+}
+
+.ds-page .ds-carousel__nav:active:not([disabled]) {
+  box-shadow: var(--nu-pressed);
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  color: var(--nu-dark);
+  box-shadow: var(--nu-pressed);
+}
+
+.ds-page .ds-carousel__dots {
+  gap: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 999px;
+  box-shadow: var(--nu-pressed);
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 10px;
+  block-size: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--nu-surface);
+  box-shadow:
+    -2px -2px 3px var(--nu-light),
+    2px 2px 3px var(--nu-dark);
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: var(--nu-accent);
+  box-shadow: inset 1px 1px 2px rgb(0 0 0 / 0.3);
+}
+
+.ds-page .ds-carousel__counter {
+  margin: 0 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--nu-quiet);
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  margin-block-start: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 0.625rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 999px;
+  box-shadow: var(--nu-pressed);
+}
+
+.ds-page .ds-pager__nav {
+  padding: 0.5rem 1.125rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--nu-accent);
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__nav:active:not([disabled]) {
+  box-shadow: var(--nu-pressed);
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  color: var(--nu-dark);
+  box-shadow: var(--nu-pressed);
+  cursor: default;
+}
+
+.ds-page .ds-pager__page {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--nu-quiet);
+  cursor: pointer;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  box-shadow: var(--nu-pressed);
+  color: var(--nu-accent);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.nu-foot {
+  margin-block-start: 2rem;
+  padding: 1.25rem;
+  border-radius: 26px;
+  background: var(--nu-surface);
+  box-shadow: var(--nu-raised-sm);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--nu-quiet);
+}
+
+.nu-foot p {
+  margin: 0;
+}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350" role="img">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#EDE9EF"/>
+      <stop offset="100%" stop-color="#7A6F9C" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="sphere" cx="0.36" cy="0.3" r="0.85">
+      <stop offset="0%" stop-color="#7A6F9C"/>
+      <stop offset="55%" stop-color="#302B3E" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#302B3E"/>
+    </radialGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7A6F9C" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#302B3E" stop-opacity="0.95"/>
+    </linearGradient>
+    <!-- Film grain. Kept subtle; sepia and high-contrast treatments amplify it. -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="98" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1350" fill="url(#ground)"/>
+  
+    <path d="M -60 620 A 640 640 0 0 1 1140 620 Z" fill="#302B3E" opacity="0.9"/>
+    <rect x="0" y="900" width="1080" height="160" fill="#7A6F9C" opacity="0.7"/>
+    <circle cx="820" cy="1160" r="120" fill="#302B3E" opacity="0.45"/>
+  <rect width="1080" height="1350" filter="url(#grain)" opacity="0.14" style="mix-blend-mode:overlay"/>
+</svg>

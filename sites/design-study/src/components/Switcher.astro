@@ -1,0 +1,339 @@
+---
+// The neutral chrome. Identical on all 183 pages.
+//
+// This is the one piece of the site that must NOT wear a theme — it is the
+// instrument, not the specimen. It therefore lives outside `.ds-page` (so no
+// theme rule can select into it), states every property explicitly rather than
+// inheriting, and keeps one fixed dark palette across all fourteen themes so it
+// reads as browser furniture.
+//
+// Switching preserves your position: from /swiss/borrowed-light/ the next
+// theme is /brutalism/borrowed-light/, not /brutalism/.
+import { withBase } from "@sites/kit";
+import { styles, neighbours, styleBySlug } from "../content/styles";
+
+interface Props {
+  /** The theme currently being shown. */
+  slug: string;
+  /** The post being read, if any. Kept when switching theme. */
+  postSlug?: string;
+}
+
+const { slug, postSlug } = Astro.props;
+
+const current = styleBySlug.get(slug)!;
+const { prev, next } = neighbours(slug);
+
+const href = (themeSlug: string) =>
+  withBase(postSlug ? `/${themeSlug}/${postSlug}/` : `/${themeSlug}/`);
+
+const index = styles.findIndex((s) => s.slug === slug) + 1;
+---
+
+<div class="sw">
+  <nav class="sw__bar" aria-label="Design style">
+    <a class="sw__step" href={href(prev.slug)} rel="prev" data-sw-prev>
+      <span class="sw__arrow" aria-hidden="true">&#8592;</span>
+      <span class="sw__step-label">{prev.name}</span>
+    </a>
+
+    <button class="sw__current" type="button" data-sw-open aria-haspopup="dialog">
+      <span class="sw__count">{index}/{styles.length}</span>
+      <span class="sw__name">{current.name}</span>
+      <span class="sw__grid" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+    </button>
+
+    <a class="sw__step sw__step--next" href={href(next.slug)} rel="next" data-sw-next>
+      <span class="sw__step-label">{next.name}</span>
+      <span class="sw__arrow" aria-hidden="true">&#8594;</span>
+    </a>
+  </nav>
+
+  <dialog class="sw__sheet" data-sw-sheet aria-label="Choose a design style">
+    <div class="sw__sheet-head">
+      <p class="sw__sheet-title">Fourteen renderings of one blog</p>
+      <button class="sw__close" type="button" data-sw-close aria-label="Close">&#215;</button>
+    </div>
+    <ul class="sw__list">
+      {
+        styles.map((style) => (
+          <li>
+            <a
+              class="sw__item"
+              href={href(style.slug)}
+              aria-current={style.slug === slug ? "page" : undefined}
+            >
+              <span class="sw__item-name">{style.name}</span>
+              <span class="sw__item-era">{style.era}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="sw__hint">
+      <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> to step between styles &middot;
+      <kbd>G</kbd> for this list &middot; <kbd>Esc</kbd> to close
+    </p>
+  </dialog>
+</div>
+
+<style>
+  /*
+    Everything here is stated outright — no inherited font, colour or size —
+    because this component renders inside fourteen wildly different documents
+    and must look identical in all of them.
+  */
+  .sw {
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    font-size: 13px;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+
+  .sw__bar {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: 2147483000;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 1px;
+    background: #1c1c1e;
+    border-block-start: 1px solid #3a3a3c;
+    color: #f2f2f7;
+    box-shadow: 0 -8px 24px rgb(0 0 0 / 0.18);
+  }
+
+  .sw__step,
+  .sw__current {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    min-block-size: 3rem;
+    padding: 0 1rem;
+    margin: 0;
+    border: 0;
+    background: #1c1c1e;
+    color: #f2f2f7;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sw__step {
+    overflow: hidden;
+  }
+
+  .sw__step--next {
+    justify-content: flex-end;
+  }
+
+  .sw__step-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #aeaeb2;
+  }
+
+  .sw__arrow {
+    color: #f2f2f7;
+    font-size: 1.1em;
+  }
+
+  .sw__step:hover,
+  .sw__current:hover,
+  .sw__step:focus-visible,
+  .sw__current:focus-visible {
+    background: #2c2c2e;
+  }
+
+  .sw__step:hover .sw__step-label {
+    color: #f2f2f7;
+  }
+
+  .sw__current {
+    border-inline: 1px solid #3a3a3c;
+  }
+
+  .sw__count {
+    color: #8e8e93;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sw__name {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .sw__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 5px);
+    gap: 2px;
+    margin-inline-start: 0.25em;
+  }
+
+  .sw__grid i {
+    display: block;
+    inline-size: 5px;
+    block-size: 5px;
+    background: #8e8e93;
+  }
+
+  /* --- the picker ------------------------------------------------------- */
+
+  .sw__sheet {
+    inline-size: min(34rem, calc(100vw - 2rem));
+    max-block-size: min(32rem, calc(100vh - 4rem));
+    padding: 0;
+    border: 1px solid #3a3a3c;
+    border-radius: 14px;
+    background: #1c1c1e;
+    color: #f2f2f7;
+    overflow: auto;
+  }
+
+  .sw__sheet::backdrop {
+    background: rgb(0 0 0 / 0.55);
+  }
+
+  .sw__sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border-block-end: 1px solid #3a3a3c;
+    position: sticky;
+    inset-block-start: 0;
+    background: #1c1c1e;
+  }
+
+  .sw__sheet-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #f2f2f7;
+  }
+
+  .sw__close {
+    border: 0;
+    background: none;
+    color: #aeaeb2;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+  }
+
+  .sw__close:hover {
+    color: #f2f2f7;
+  }
+
+  .sw__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 2px;
+  }
+
+  .sw__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+    padding: 0.625rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #f2f2f7;
+  }
+
+  .sw__item:hover,
+  .sw__item:focus-visible {
+    background: #2c2c2e;
+  }
+
+  .sw__item[aria-current="page"] {
+    background: #f2f2f7;
+    color: #1c1c1e;
+  }
+
+  .sw__item-name {
+    font-weight: 600;
+  }
+
+  .sw__item-era {
+    color: #8e8e93;
+    font-size: 11px;
+  }
+
+  .sw__item[aria-current="page"] .sw__item-era {
+    color: #48484a;
+  }
+
+  .sw__hint {
+    margin: 0;
+    padding: 0.75rem 1rem 1rem;
+    color: #8e8e93;
+    font-size: 11px;
+  }
+
+  .sw__hint kbd {
+    font: inherit;
+    border: 1px solid #48484a;
+    border-radius: 4px;
+    padding: 0 0.35em;
+  }
+
+  @media (max-width: 34rem) {
+    .sw__step-label {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const sheet = document.querySelector<HTMLDialogElement>("[data-sw-sheet]");
+  const open = document.querySelector<HTMLButtonElement>("[data-sw-open]");
+  const close = document.querySelector<HTMLButtonElement>("[data-sw-close]");
+  const prev = document.querySelector<HTMLAnchorElement>("[data-sw-prev]");
+  const next = document.querySelector<HTMLAnchorElement>("[data-sw-next]");
+
+  open?.addEventListener("click", () => sheet?.showModal());
+  close?.addEventListener("click", () => sheet?.close());
+
+  // Click the backdrop to dismiss — <dialog> reports those as clicks on itself.
+  sheet?.addEventListener("click", (event) => {
+    if (event.target === sheet) sheet.close();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    // Never steal keys from a field, and never from a modifier chord.
+    const target = event.target as HTMLElement | null;
+    if (target?.closest("input, textarea, select, [contenteditable]")) return;
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+    if (event.key === "g" || event.key === "G") {
+      event.preventDefault();
+      sheet?.open ? sheet.close() : sheet?.showModal();
+      return;
+    }
+
+    // Arrow stepping only makes sense while the picker is shut.
+    if (sheet?.open) return;
+
+    if (event.key === "ArrowLeft" || event.key === "[") {
+      if (prev) window.location.href = prev.href;
+    } else if (event.key === "ArrowRight" || event.key === "]") {
+      if (next) window.location.href = next.href;
+    }
+  });
+</script>

@@ -1,0 +1,13 @@
+---
+// The minimalism feed. One theme imported statically — see src/lib/routes.ts for
+// why these 28 route files are deliberately repetitive.
+import Shell from "../../themes/minimalism/Shell.astro";
+import Feed from "../../themes/minimalism/Feed.astro";
+import { feedPage } from "../../lib/routes";
+
+const { style, posts, title, description } = feedPage("minimalism");
+---
+
+<Shell style={style} title={title} description={description}>
+  <Feed posts={posts} />
+</Shell>

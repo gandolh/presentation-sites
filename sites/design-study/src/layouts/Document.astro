@@ -1,0 +1,64 @@
+---
+// The <html> wrapper every theme's Shell renders into.
+//
+// It owns only what must be identical across all fourteen: the document head,
+// the base reset, and the neutral switcher. It deliberately does NOT import a
+// theme's CSS — each Shell does that itself, which is what keeps a visitor to
+// /swiss/ from downloading Maximalism's fonts.
+import { withBase } from "@sites/kit";
+import { site } from "../content/site";
+import Switcher from "../components/Switcher.astro";
+import "../styles/base.css";
+
+interface Props {
+  /** Theme slug — becomes `data-theme` and drives the switcher. */
+  slug: string;
+  title: string;
+  description?: string;
+  /** Set on a post page so switching theme keeps you on the same post. */
+  postSlug?: string;
+  themeColor: string;
+  /** Some themes render dark; tells the UA to match form controls. */
+  scheme?: "light" | "dark";
+}
+
+const {
+  slug,
+  title,
+  description = site.description,
+  postSlug,
+  themeColor,
+  scheme = "light",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme={slug}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={themeColor} />
+    <meta name="color-scheme" content={scheme} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.studyName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <!--
+      A study of design languages is not something anyone should be indexing as
+      a real publication — the content is fictional and duplicated fourteen
+      times over, which is exactly what a search engine treats as spam.
+    -->
+    <meta name="robots" content="noindex, follow" />
+  </head>
+
+  <body data-theme={slug}>
+    <slot />
+    <Switcher slug={slug} postSlug={postSlug} />
+  </body>
+</html>

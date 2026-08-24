@@ -1,0 +1,417 @@
+/*
+  NEOBRUTALISM — brutalism after it hired a colourist.
+
+  Where brutalism refuses to design, neobrutalism designs very loudly using a
+  deliberately tiny vocabulary. Four rules and almost nothing else:
+
+    1. Every surface is a flat block of saturated colour. No gradient, ever.
+    2. Every block has a 3px pure-black border and a hard offset shadow with
+       zero blur — the shadow is a shape, not a light effect.
+    3. Type is one heavy grotesque, set big, often uppercase, never delicate.
+    4. Interaction is physical: pressing a thing moves it into its own shadow.
+
+  It reads as brutalism because of the black outlines and the flatness, but it
+  is the opposite instinct — this is maximally *styled*.
+*/
+
+[data-theme="neo-brutalism"] {
+  background: #ffe600;
+}
+
+.ds-page {
+  --nb-ink: #000;
+  --nb-yellow: #ffe600;
+  --nb-pink: #ff5bb0;
+  --nb-cyan: #3ddbd9;
+  --nb-lime: #b8ff3d;
+  --nb-paper: #fffdf5;
+  --nb-shadow: 6px 6px 0 var(--nb-ink);
+  --nb-shadow-sm: 3px 3px 0 var(--nb-ink);
+
+  font-family: "Archivo Variable", Archivo, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--nb-ink);
+  background: var(--nb-yellow);
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+}
+
+/* A repeating grid, so the flat blocks sit on something rather than float. */
+[data-theme="neo-brutalism"] body,
+.ds-page {
+  background-image:
+    linear-gradient(rgb(0 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.nb-wrap {
+  inline-size: min(72rem, 100%);
+  margin-inline: auto;
+}
+
+.nb-block {
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow);
+  background: var(--nb-paper);
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.nb-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-block-end: 2rem;
+  background: var(--nb-cyan);
+}
+
+.nb-head__mark {
+  margin: 0;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.nb-head__mark a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nb-badge {
+  display: inline-block;
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  background: var(--nb-pink);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  rotate: -2deg;
+}
+
+.nb-head__links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.nb-head__links a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  border-block-end: 3px solid var(--nb-ink);
+}
+
+/* --- feed ---------------------------------------------------------------- */
+
+.nb-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.75rem;
+}
+
+.ds-feed__item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: var(--nb-paper);
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow);
+}
+
+.ds-feed__item:nth-child(3n + 2) {
+  background: var(--nb-lime);
+}
+
+.ds-feed__item:nth-child(3n) {
+  background: var(--nb-pink);
+}
+
+.nb-card__figure {
+  border: 3px solid var(--nb-ink);
+  margin-block-end: 0.75rem;
+  background: var(--nb-ink);
+}
+
+.nb-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.nb-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nb-card__title a:hover {
+  background: var(--nb-ink);
+  color: var(--nb-yellow);
+}
+
+.nb-card__dek {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.nb-card__meta {
+  margin: auto 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* --- article ------------------------------------------------------------- */
+
+.nb-article {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.nb-article__figure {
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow);
+  background: var(--nb-ink);
+  max-inline-size: 34rem;
+}
+
+.nb-article__head {
+  padding: 1.25rem;
+  background: var(--nb-pink);
+}
+
+.nb-article__title {
+  margin: 0.75rem 0 0.75rem;
+  font-size: clamp(2.25rem, 7vw, 4rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.nb-article__dek {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  max-inline-size: 42ch;
+}
+
+.nb-article__meta {
+  margin: 1rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nb-article__body {
+  padding: 1.5rem;
+  background: var(--nb-paper);
+  max-inline-size: 48rem;
+}
+
+.nb-article__body > * {
+  margin-block: 0 1.25rem;
+  max-inline-size: 62ch;
+}
+
+.nb-article__body h2 {
+  display: inline-block;
+  margin-block: 2rem 1rem;
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  background: var(--nb-cyan);
+  padding: 0.25rem 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.nb-article__body blockquote {
+  margin-block: 2rem;
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow);
+  background: var(--nb-yellow);
+  padding: 1.25rem;
+  rotate: -1deg;
+}
+
+.nb-article__body blockquote p {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.nb-article__body blockquote footer {
+  margin-block-start: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nb-article__body ul {
+  margin-block: 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.625rem;
+}
+
+.nb-article__body li {
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  background: var(--nb-lime);
+  padding: 0.625rem 0.875rem;
+  font-weight: 600;
+}
+
+.nb-aside {
+  border: 3px dashed var(--nb-ink);
+  background: var(--nb-cyan);
+  padding: 0.875rem 1rem;
+  font-weight: 600;
+}
+
+/* --- carousel ------------------------------------------------------------
+   Saturation and contrast pushed hard, then flattened onto the black frame.
+   The image is treated like another colour block. */
+
+.ds-page .ds-carousel__image {
+  filter: saturate(1.7) contrast(1.25);
+  display: block;
+}
+
+.ds-page .ds-carousel__controls {
+  padding: 0.5rem;
+  background: var(--nb-ink);
+  gap: 0.5rem;
+}
+
+.ds-page .ds-carousel__nav {
+  border: 3px solid var(--nb-ink);
+  box-shadow: 3px 3px 0 var(--nb-yellow);
+  background: var(--nb-paper);
+  padding: 0.1rem 0.6rem;
+  font: inherit;
+  font-weight: 800;
+  color: var(--nb-ink);
+  transition: translate 80ms steps(2), box-shadow 80ms steps(2);
+}
+
+/* Pressing a control moves it into its own shadow — the one motion the style
+   allows itself, and it is mechanical, not eased. */
+.ds-page .ds-carousel__nav:active:not([disabled]) {
+  translate: 3px 3px;
+  box-shadow: 0 0 0 var(--nb-yellow);
+}
+
+.ds-page .ds-carousel__nav[disabled] {
+  background: #888;
+  box-shadow: none;
+}
+
+.ds-page .ds-carousel__dot {
+  inline-size: 14px;
+  block-size: 14px;
+  padding: 0;
+  border: 3px solid var(--nb-paper);
+  border-radius: 0;
+  background: var(--nb-ink);
+}
+
+.ds-page .ds-carousel__dot[aria-selected="true"] {
+  background: var(--nb-yellow);
+}
+
+.ds-page .ds-carousel__counter {
+  margin: 0 0 0 auto;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--nb-paper);
+}
+
+/* --- pager --------------------------------------------------------------- */
+
+.ds-page .ds-pager {
+  margin-block-start: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ds-page .ds-pager__pages {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-page .ds-pager__nav,
+.ds-page .ds-pager__page {
+  border: 3px solid var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  background: var(--nb-paper);
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nb-ink);
+  cursor: pointer;
+  transition: translate 80ms steps(2), box-shadow 80ms steps(2);
+}
+
+.ds-page .ds-pager__nav:active:not([disabled]),
+.ds-page .ds-pager__page:active {
+  translate: 3px 3px;
+  box-shadow: none;
+}
+
+.ds-page .ds-pager__nav[disabled] {
+  background: #ccc;
+  box-shadow: none;
+  cursor: default;
+}
+
+.ds-page .ds-pager__page[aria-current="true"] {
+  background: var(--nb-pink);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.nb-foot {
+  margin-block-start: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--nb-lime);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+}
+
+.nb-foot p {
+  margin: 0;
+}

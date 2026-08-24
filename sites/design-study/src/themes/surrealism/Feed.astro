@@ -1,0 +1,40 @@
+---
+import { withBase } from "@sites/kit";
+import { POSTS_PER_PAGE, type Post } from "../../content/posts";
+import PostCarousel from "../../components/PostCarousel.astro";
+import Pager from "../../components/Pager.astro";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  month: "long",
+  year: "numeric",
+});
+---
+
+<ol class="sr-feed" data-ds-feed data-per-page={POSTS_PER_PAGE}>
+  {
+    posts.map((post) => (
+      <li class="ds-feed__item">
+        <div class="sr-card__figure">
+          <PostCarousel post={post} />
+        </div>
+        <div class="sr-card__body">
+          <h2 class="sr-card__title">
+            <a href={withBase(`/surrealism/${post.slug}/`)}>{post.title}</a>
+          </h2>
+          <p class="sr-card__dek">{post.dek}</p>
+          <p class="sr-card__meta">
+            {post.author} &middot; {dateFormat.format(new Date(post.date))}
+          </p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<Pager />

@@ -1,0 +1,13 @@
+---
+// The neo-brutalism feed. One theme imported statically — see src/lib/routes.ts for
+// why these 28 route files are deliberately repetitive.
+import Shell from "../../themes/neo-brutalism/Shell.astro";
+import Feed from "../../themes/neo-brutalism/Feed.astro";
+import { feedPage } from "../../lib/routes";
+
+const { style, posts, title, description } = feedPage("neo-brutalism");
+---
+
+<Shell style={style} title={title} description={description}>
+  <Feed posts={posts} />
+</Shell>

@@ -1,0 +1,50 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+import "@fontsource-variable/nunito/wght.css";
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <div class="ds-page">
+    <div class="cl-wrap">
+      <header class="cl-head">
+        <MarkTag class="cl-head__mark"><a href={withBase("/claymorphism/")}>{site.name}</a></MarkTag>
+        <p class="cl-head__style">{style.name}</p>
+        <a class="cl-blob" href={withBase("/")}>All 14 styles</a>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="cl-foot">
+        <p>{site.name} &mdash; squeezed out of a tube, {style.era}.</p>
+      </footer>
+    </div>
+  </div>
+</Document>

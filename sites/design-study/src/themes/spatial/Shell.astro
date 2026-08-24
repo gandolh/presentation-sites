@@ -1,0 +1,50 @@
+---
+import Document from "../../layouts/Document.astro";
+import { site } from "../../content/site";
+import { withBase } from "@sites/kit";
+import type { Style } from "../../content/styles";
+import { meta } from "./meta";
+
+import "@fontsource-variable/inter/wght.css";
+import "./theme.css";
+
+interface Props {
+  style: Style;
+  title: string;
+  description?: string;
+  postSlug?: string;
+}
+
+const { style, title, description, postSlug } = Astro.props;
+
+// The wordmark is this page's <h1> on a feed; on a post the article
+// title takes that role and the wordmark steps down to a <p>.
+const MarkTag = postSlug ? "p" : "h1";
+---
+
+<Document
+  slug={style.slug}
+  title={title}
+  description={description}
+  postSlug={postSlug}
+  themeColor={meta.themeColor}
+  scheme={meta.scheme}
+>
+  <div class="ds-page">
+    <div class="sp-wrap">
+      <header class="sp-head sp-panel">
+        <MarkTag class="sp-head__mark"><a href={withBase("/spatial/")}>{site.name}</a></MarkTag>
+        <p class="sp-head__style">{style.name} &middot; {style.era}</p>
+        <a class="sp-button" href={withBase("/")}>All 14 styles</a>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="sp-foot sp-panel">
+        <p>{site.name} &mdash; three depths, and nothing invents a fourth.</p>
+      </footer>
+    </div>
+  </div>
+</Document>

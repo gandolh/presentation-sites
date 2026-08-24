@@ -1,0 +1,97 @@
+---
+// The feed pager, shared by all fourteen themes and styled by none of them.
+//
+// It renders `hidden` and stays hidden unless the script runs. That is the
+// whole no-JS story: without JavaScript the feed simply shows all twelve posts
+// and there is no pager to be broken by.
+//
+// Pagination is a UI affordance here, not a route — the URL never changes. Each
+// theme styles `.ds-pager__*` into its own language; the markup contract is
+// what is shared.
+---
+
+<nav class="ds-pager" data-ds-pager hidden aria-label="Feed pages">
+  <button class="ds-pager__nav ds-pager__nav--prev" type="button" data-ds-pager-prev>
+    Newer
+  </button>
+  <ol class="ds-pager__pages" data-ds-pager-pages></ol>
+  <button class="ds-pager__nav ds-pager__nav--next" type="button" data-ds-pager-next>
+    Older
+  </button>
+</nav>
+
+<script>
+  // Paginates `.ds-feed__item` elements in place. Reads the page size from
+  // `data-per-page` on the feed so the count lives with the content, not here.
+  const feed = document.querySelector<HTMLElement>("[data-ds-feed]");
+  const pager = document.querySelector<HTMLElement>("[data-ds-pager]");
+
+  if (feed && pager) {
+    const items = Array.from(
+      feed.querySelectorAll<HTMLElement>(".ds-feed__item"),
+    );
+    const perPage = Number(feed.dataset.perPage ?? 4);
+    const pageCount = Math.ceil(items.length / perPage);
+
+    // One page of results needs no pager; leave it hidden.
+    if (pageCount > 1) {
+      const pagesList = pager.querySelector<HTMLElement>("[data-ds-pager-pages]")!;
+      const prev = pager.querySelector<HTMLButtonElement>("[data-ds-pager-prev]")!;
+      const next = pager.querySelector<HTMLButtonElement>("[data-ds-pager-next]")!;
+
+      const buttons: HTMLButtonElement[] = [];
+      for (let p = 0; p < pageCount; p++) {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "ds-pager__page";
+        button.textContent = String(p + 1);
+        button.setAttribute("aria-label", `Page ${p + 1} of ${pageCount}`);
+        button.addEventListener("click", () => show(p));
+        li.append(button);
+        pagesList.append(li);
+        buttons.push(button);
+      }
+
+      let current = 0;
+
+      function show(page: number) {
+        current = Math.max(0, Math.min(page, pageCount - 1));
+
+        items.forEach((item, i) => {
+          const onPage = Math.floor(i / perPage) === current;
+          item.hidden = !onPage;
+        });
+
+        buttons.forEach((button, i) => {
+          button.setAttribute("aria-current", i === current ? "true" : "false");
+        });
+
+        prev.disabled = current === 0;
+        next.disabled = current === pageCount - 1;
+
+        // Moving pages is a navigation, so send focus somewhere sensible
+        // rather than leaving it on a button that may now be disabled.
+        const first = items[current * perPage];
+        if (first) {
+          first.setAttribute("tabindex", "-1");
+          first.focus({ preventScroll: true });
+          feed!.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      }
+
+      prev.addEventListener("click", () => show(current - 1));
+      next.addEventListener("click", () => show(current + 1));
+
+      // First paint: hide everything past page one, then reveal the pager.
+      items.forEach((item, i) => {
+        item.hidden = i >= perPage;
+      });
+      buttons.forEach((button, i) => {
+        button.setAttribute("aria-current", i === 0 ? "true" : "false");
+      });
+      prev.disabled = true;
+      pager.hidden = false;
+    }
+  }
+</script>
