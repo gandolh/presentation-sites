@@ -1,0 +1,234 @@
+/*
+ * Churchix's docs wear Ecclesia Digitalis.
+ *
+ * `DESIGN.md` names the system and its register in one line: **"reverent,
+ * formal, architectural"** — and states the property the whole platform depends
+ * on, that it **"re-skins per church by token swap alone."**
+ *
+ * That last part is why this theme is written the way it is. Churchix is a
+ * white-label platform: the whole value proposition is that a parish's identity
+ * arrives by swapping tokens and nothing else. So these docs consume the *token
+ * names* and take the reference parish's values, exactly as an app in `apps/`
+ * does. Hard-coding a hex anywhere here would quietly contradict the thing being
+ * documented.
+ *
+ * The register carries into the type: Cardo is a humanist serif with a
+ * liturgical lineage, and it is the display face for the same reason the sites
+ * use it — a parish site set in a grotesque reads as a startup.
+ *
+ * Light only. The sites are light, and a dark parish site is not a thing that
+ * exists; offering one here would be inventing a second design system for a
+ * platform whose entire premise is that there is only one.
+ */
+
+@import '@fontsource/cardo/400.css';
+@import '@fontsource/cardo/700.css';
+@import '@fontsource-variable/source-serif-4';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  /* The reference parish's token values. A church swaps these; the names stay. */
+  --primary: #4e0816;
+  --on-primary: #ffffff;
+  --primary-container: #611220;
+  --on-primary-container: #160207;
+  --secondary: #c8a24b;
+  --on-secondary: #ffffff;
+  --secondary-container: #e6cd9b;
+  --on-secondary-container: #3c3017;
+  --surface: #fcf9f4;
+  --background: #fcf9f4;
+  --on-surface: #1c1c19;
+  --on-surface-variant: #544243;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f0eb;
+  --surface-container: #ebe8e3;
+  --surface-container-high: #e3e0db;
+  --surface-container-highest: #dbd8d3;
+  --inverse-surface: #31302d;
+  --inverse-on-surface: #f3f0eb;
+  --outline: #8e8786;
+  --outline-variant: #dcc2c3;
+  --tertiary: #29241c;
+  --error: #ba1a1a;
+  --error-container: #fde7e5;
+
+  --font-display: 'Cardo', 'Source Serif 4 Variable', Georgia, serif;
+  --font-body: 'Source Serif 4 Variable', Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sl-color-accent-low: var(--secondary-container);
+  --sl-color-accent: var(--primary);
+  --sl-color-accent-high: var(--on-primary-container);
+
+  --sl-color-white: var(--surface-container-lowest);
+  --sl-color-black: var(--on-surface);
+  --sl-color-gray-1: #2e2c28;
+  --sl-color-gray-2: var(--on-surface-variant);
+  --sl-color-gray-3: var(--outline);
+  --sl-color-gray-4: var(--outline-variant);
+  --sl-color-gray-5: var(--surface-container-highest);
+  --sl-color-gray-6: var(--surface-container);
+  --sl-color-gray-7: var(--surface-container-low);
+
+  --sl-color-text: var(--on-surface);
+  --sl-color-text-accent: var(--primary);
+  --sl-color-bg: var(--background);
+  --sl-color-bg-nav: var(--surface-container-lowest);
+  --sl-color-bg-sidebar: var(--background);
+  --sl-color-bg-inline-code: var(--surface-container);
+  --sl-color-hairline: var(--outline-variant);
+  --sl-color-hairline-light: var(--surface-container-high);
+  --sl-color-hairline-shade: var(--outline-variant);
+
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-green: #3f6b4a;
+  --sl-color-green-low: #e4f0e7;
+  --sl-color-green-high: #2b4a33;
+  --sl-color-orange: var(--on-secondary-container);
+  --sl-color-orange-low: var(--secondary-container);
+  --sl-color-orange-high: var(--on-secondary-container);
+  --sl-color-red: var(--error);
+  --sl-color-red-low: var(--error-container);
+  --sl-color-red-high: #7a1010;
+  --sl-color-blue: var(--tertiary);
+  --sl-color-blue-low: var(--surface-container);
+  --sl-color-blue-high: var(--on-surface);
+  --sl-color-purple: var(--primary);
+  --sl-color-purple-low: var(--surface-container);
+  --sl-color-purple-high: var(--on-primary-container);
+}
+
+/* --- Architectural: the page is set, not laid out ------------------------ */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1,
+.site-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+.site-title {
+  color: var(--primary);
+}
+
+/* Gold is the secondary, and it rules a section the way a border rules a
+   liturgical page — a hairline, never a fill. */
+.sl-markdown-content h2 {
+  border-top: 1px solid var(--secondary);
+  padding-top: 1rem;
+}
+
+.sl-markdown-content a {
+  color: var(--primary);
+  text-underline-offset: 0.16em;
+}
+
+.sidebar-content a[aria-current='page'] {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+/* --- Surfaces: the Material container ladder ----------------------------- */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface-container-lowest);
+  font-size: 0.9375rem;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--on-primary-container);
+  background: var(--surface-container);
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--surface-container-high);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--surface-container);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+}
+
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-left: 3px solid var(--secondary);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  padding-top: 0.15rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@sites/saloon-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Ana Saloon documentation site — narrative rendered from corpus/, diagrams compiled by archify.",
+  "scripts": {
+    "sync-corpus": "node scripts/sync-corpus.mjs",
+    "diagrams": "node scripts/build-diagrams.mjs",
+    "predev": "npm run sync-corpus && npm run diagrams",
+    "dev": "astro dev",
+    "docs": "npm run sync-corpus && npm run diagrams && astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/starlight": "^0.41.3",
+    "astro": "^7.1.1",
+    "sharp": "^0.35.4",
+    "@fontsource-variable/fraunces": "^5.2.5",
+    "@fontsource-variable/manrope": "^5.2.5",
+    "cookie": "^2.0.1"
+  }
+}

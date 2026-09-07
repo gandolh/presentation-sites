@@ -1,0 +1,208 @@
+/*
+ * AXA Tractări's docs are on the same wet road.
+ *
+ * `DESIGN.md`'s north star: **"Headlights on a wet road at 3am."** Dark by
+ * default — asphalt at night, not a white brochure — and the light comes from
+ * the things that rescue you: headlights, the rotating amber beacon, lit lane
+ * markings.
+ *
+ * Three of its calls are carried over, and two of them are the interesting ones:
+ *
+ *   • **No red.** Every competitor in the category uses red; amber is the actual
+ *     colour of a tow truck's warning light and is what makes this distinctive.
+ *     So there is no red on this site either — the error tone is the safety
+ *     orange, which is the same decision the app made.
+ *   • **Amber is identity; the safety orange is the ONE call action.** In the app
+ *     that means exactly one CTA wears it. Here there is nothing to call, so the
+ *     orange appears only on a genuine warning and the amber does the
+ *     navigational work.
+ *   • **Never pure black.** The ground is cold asphalt at 16% lightness.
+ *
+ * Big Shoulders Display (industrial signage, flat terminals) for headings,
+ * uppercase, as the site uses it; Archivo for body. Both self-hosted via
+ * Fontsource — DESIGN.md notes the Google CDN was rejected on GDPR grounds, and
+ * that constraint carries here unchanged.
+ */
+
+@import '@fontsource-variable/big-shoulders-display';
+@import '@fontsource-variable/archivo';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  --background: oklch(16% 0.012 250);
+  --surface-container: oklch(22% 0.015 250);
+  --surface-container-high: oklch(27% 0.016 250);
+  --on-surface: oklch(95% 0.008 90);
+  --on-surface-variant: oklch(72% 0.012 250);
+  --outline: oklch(42% 0.014 250);
+  --outline-variant: oklch(30% 0.014 250);
+
+  --primary: oklch(80% 0.16 80);
+  --accent: oklch(68% 0.2 45);
+  --headlight: oklch(95% 0.03 230);
+
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Archivo Variable', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sl-color-accent-low: oklch(28% 0.07 80);
+  --sl-color-accent: var(--primary);
+  --sl-color-accent-high: oklch(88% 0.14 80);
+
+  --sl-color-white: var(--on-surface);
+  --sl-color-black: var(--background);
+  --sl-color-gray-1: var(--on-surface);
+  --sl-color-gray-2: oklch(83% 0.01 250);
+  --sl-color-gray-3: var(--on-surface-variant);
+  --sl-color-gray-4: var(--outline);
+  --sl-color-gray-5: var(--outline-variant);
+  --sl-color-gray-6: var(--surface-container);
+  --sl-color-gray-7: oklch(19% 0.013 250);
+
+  --sl-color-text: var(--on-surface);
+  --sl-color-text-accent: var(--primary);
+  --sl-color-bg: var(--background);
+  --sl-color-bg-nav: var(--background);
+  --sl-color-bg-sidebar: var(--background);
+  --sl-color-bg-inline-code: var(--surface-container);
+  --sl-color-hairline: var(--outline-variant);
+  --sl-color-hairline-light: var(--outline-variant);
+  --sl-color-hairline-shade: var(--outline);
+
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-green: oklch(78% 0.14 150);
+  --sl-color-green-low: oklch(26% 0.06 150);
+  --sl-color-green-high: oklch(88% 0.13 150);
+  --sl-color-orange: var(--primary);
+  --sl-color-orange-low: oklch(26% 0.06 80);
+  --sl-color-orange-high: oklch(88% 0.14 80);
+  /* No red anywhere — the safety orange is the strongest tone this site has. */
+  --sl-color-red: var(--accent);
+  --sl-color-red-low: oklch(26% 0.08 45);
+  --sl-color-red-high: oklch(80% 0.18 45);
+  --sl-color-blue: var(--headlight);
+  --sl-color-blue-low: oklch(26% 0.02 230);
+  --sl-color-blue-high: var(--headlight);
+  --sl-color-purple: var(--primary);
+  --sl-color-purple-low: oklch(26% 0.06 80);
+  --sl-color-purple-high: oklch(88% 0.14 80);
+}
+
+:root[data-theme='light'] {
+  color-scheme: dark;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1,
+.site-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* The beacon opens a section. */
+.sl-markdown-content h2 {
+  border-top: 2px solid var(--primary);
+  padding-top: 0.9rem;
+}
+
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface-container);
+  font-size: 0.9375rem;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary);
+  border-bottom: 1px solid var(--outline);
+  padding: 0.45rem 0.7rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--surface-container-high);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-size: 0.86em;
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+}
+
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-left: 2px solid var(--primary);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--on-surface-variant);
+  padding-top: 0.1rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

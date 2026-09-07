@@ -12,7 +12,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "services/*"
+    "services/*",
+    "docs-site"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",

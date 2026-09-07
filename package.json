@@ -37,6 +37,7 @@
   },
   "workspaces": [
     "sites/*",
+    "sites/*/docs-site",
     "packages/*"
   ]
 }

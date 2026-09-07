@@ -1,0 +1,196 @@
+/*
+ * Fourteen Renderings' docs wear the CHROME, not any of the fourteen.
+ *
+ * `DESIGN.md` opens with the constraint that makes this site's docs unusual:
+ * **"This site has no single visual system. It has fourteen, plus one piece of
+ * neutral chrome that must not look like any of them."**
+ *
+ * So there is exactly one honest answer for a documentation surface here, and it
+ * is the one the site already worked out for its own switcher. That component is
+ * "the instrument, not the specimen", and it:
+ *
+ *   • lives outside `.ds-page`, where no theme rule can select into it;
+ *   • states every property outright rather than inheriting anything;
+ *   • keeps ONE fixed palette across all fourteen themes — `#1c1c1e`,
+ *     `#f2f2f7`, `#8e8e93` — "so it reads as browser furniture".
+ *
+ * These docs are the same kind of object. They describe fourteen design
+ * languages and must not appear to endorse one, so they use the switcher's
+ * palette verbatim and nothing else. Anything more expressive here would be the
+ * documentation taking a side in the study it is documenting.
+ *
+ * Inter is used deliberately and is the one place in this estate where that is
+ * the right call: it is the most neutral, least authored UI face available, and
+ * neutrality is the entire requirement. Elsewhere it would be a reflex; here it
+ * is the point.
+ */
+
+@import '@fontsource-variable/inter';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  /* The switcher's fixed palette, verbatim. */
+  --chrome-bg: #1c1c1e;
+  --chrome-fg: #f2f2f7;
+  --chrome-dim: #8e8e93;
+
+  --chrome-surface: #2c2c2e;
+  --chrome-surface-2: #3a3a3c;
+  --chrome-line: #48484a;
+
+  --font-ui: 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* No accent hue. Emphasis is weight and value, because a hue here would be a
+     fifteenth design language competing with the fourteen on display. */
+  --sl-color-accent-low: var(--chrome-surface-2);
+  --sl-color-accent: var(--chrome-fg);
+  --sl-color-accent-high: #ffffff;
+
+  --sl-color-white: var(--chrome-fg);
+  --sl-color-black: var(--chrome-bg);
+  --sl-color-gray-1: var(--chrome-fg);
+  --sl-color-gray-2: #c7c7cc;
+  --sl-color-gray-3: var(--chrome-dim);
+  --sl-color-gray-4: #636366;
+  --sl-color-gray-5: var(--chrome-line);
+  --sl-color-gray-6: var(--chrome-surface-2);
+  --sl-color-gray-7: var(--chrome-surface);
+
+  --sl-color-text: var(--chrome-fg);
+  --sl-color-text-accent: var(--chrome-fg);
+  --sl-color-bg: var(--chrome-bg);
+  --sl-color-bg-nav: var(--chrome-bg);
+  --sl-color-bg-sidebar: var(--chrome-bg);
+  --sl-color-bg-inline-code: var(--chrome-surface);
+  --sl-color-hairline: var(--chrome-line);
+  --sl-color-hairline-light: var(--chrome-line);
+  --sl-color-hairline-shade: var(--chrome-line);
+
+  --sl-font: var(--font-ui);
+  --sl-font-mono: var(--font-mono);
+
+  /* Asides are value steps, not colours. */
+  --sl-color-green: var(--chrome-fg);
+  --sl-color-green-low: var(--chrome-surface);
+  --sl-color-green-high: #ffffff;
+  --sl-color-orange: var(--chrome-fg);
+  --sl-color-orange-low: var(--chrome-surface);
+  --sl-color-orange-high: #ffffff;
+  --sl-color-red: var(--chrome-fg);
+  --sl-color-red-low: var(--chrome-surface-2);
+  --sl-color-red-high: #ffffff;
+  --sl-color-blue: var(--chrome-dim);
+  --sl-color-blue-low: var(--chrome-surface);
+  --sl-color-blue-high: var(--chrome-fg);
+  --sl-color-purple: var(--chrome-fg);
+  --sl-color-purple-low: var(--chrome-surface);
+  --sl-color-purple-high: #ffffff;
+}
+
+:root[data-theme='light'] {
+  color-scheme: dark;
+}
+
+/* Browser furniture: understated, consistent, forgettable — on purpose. */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1,
+.site-title {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: -0.014em;
+}
+
+.sl-markdown-content h2 {
+  border-top: 1px solid var(--chrome-line);
+  padding-top: 1rem;
+}
+
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--chrome-dim);
+  background: var(--chrome-surface);
+  border-bottom: 1px solid var(--chrome-line);
+  padding: 0.45rem 0.7rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--chrome-line);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--chrome-surface);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-size: 0.86em;
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--chrome-surface);
+  border: 1px solid var(--chrome-line);
+  border-radius: 6px;
+}
+
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--chrome-surface);
+  border: 1px solid var(--chrome-line);
+  border-radius: 6px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--chrome-dim);
+  line-height: 1.5;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--chrome-surface);
+  border: 1px solid var(--chrome-line);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.8125rem;
+  color: var(--chrome-dim);
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--chrome-fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,57 @@
+---
+title: BavAuto Gorj
+description: A BMW-specialist auto service in Târgu-Jiu — a dark instrument-panel site, and the decisions behind it.
+tableOfContents: false
+---
+
+**BavAuto Gorj** is a presentation site for a BMW-specialist auto service in
+Târgu-Jiu. Astro, static, Romanian.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/auto-service</code> on the shared origin</dd>
+  <dt>World</dt>
+  <dd>A dark instrument panel — background and surface are the same value</dd>
+  <dt>Depth</dt>
+  <dd>A five-step surface ladder and explicit bezel edges. <strong>Not shadow.</strong></dd>
+  <dt>Identity</dt>
+  <dd>Amber, carried across a dark field</dd>
+  <dt>Type</dt>
+  <dd>Archivo Variable at width 112, weight 800, uppercase display</dd>
+</dl>
+
+## Page structure
+
+The order answers the two questions a driver with a broken BMW has, in the order
+they have them:
+
+1. **Hero** — the specialism, stated immediately. "BMW" has to appear before
+   anything else, because a generalist garage is not what this reader is looking
+   for.
+2. **Services** — what is actually done here, concretely.
+3. **Why a specialist** — the argument, once the reader knows a specialist is on
+   offer.
+4. **Gallery / the workshop** — evidence.
+5. **Contact and location** — the close.
+
+## The design decisions worth knowing
+
+The token set lives as machine-readable frontmatter in
+[the design system](/wiki/design/), in OKLCH.
+
+- **Background and surface are the same value.** That is the instrument-panel
+  move: there is no "card floating on a page", there is a panel with an edge.
+- **Depth is a ladder, not a shadow.** Five `surface-container-*` steps plus
+  named bezel edges. A shadow on this ground would read as fog.
+- **Amber is identity, and it is never a large fill.** On a near-black ground a
+  filled amber block is a headlight — it points at something, so it may only be
+  used where pointing is intended.
+
+These docs reuse the same ladder for the same reason: a documentation page also
+has to distinguish a panel from its ground without spending a shadow.
+
+## What these docs are
+
+Everything under **The site** and **Operating it** is rendered from the site's
+own maintained markdown — `README.md`, `PRODUCT.md`, `DESIGN.md`, the brief, and
+the files under `docs/`. Only this page is authored here.

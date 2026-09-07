@@ -1,0 +1,68 @@
+---
+title: Fourteen Renderings
+description: One blog, fourteen design languages, the same words and photographs throughout — so that only the design varies.
+tableOfContents: false
+---
+
+**Fourteen Renderings** is a UI/UX study built as a working site: **one blog,
+fourteen design languages.** The same twelve posts, the same words, the same
+photographs, rendered in Minimalism, Swiss, Brutalism, NeoBrutalism, Maximalism,
+Surrealism, Bohemian, Ethereal, Skeuomorphism, Neumorphism, Claymorphism,
+Glassmorphism, Liquid Glass and Spatial UI.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/design-study</code> on the shared origin</dd>
+  <dt>Built with</dt>
+  <dd>Astro + React islands, static, <strong>no Tailwind</strong></dd>
+  <dt>Pages</dt>
+  <dd>183 — fourteen renderings of the same content, plus the landing gallery</dd>
+  <dt>The control</dt>
+  <dd>The content is held constant, so the only variable is the design</dd>
+</dl>
+
+## Why the content is held constant
+
+This is the whole method. Fourteen sites with fourteen different sets of copy
+would be fourteen opinions about writing as much as about design, and nothing
+could be attributed to either.
+
+Holding the twelve posts, their words and their photographs fixed means every
+difference a reader notices between two renderings is a difference in the design
+language and nothing else. It is a control, in the experimental sense.
+
+## The neutral layer, and why these docs look like it
+
+`DESIGN.md` states the constraint that makes this site unusual to document:
+
+> This site has no single visual system. It has fourteen, plus one piece of
+> neutral chrome that must not look like any of them.
+
+The chrome is the **switcher** — fixed to the bottom of all 183 pages. It is
+"the instrument, not the specimen", so it lives outside `.ds-page` where no
+theme rule can select into it, states every property outright rather than
+inheriting anything, and keeps one fixed palette across all fourteen themes **so
+it reads as browser furniture**.
+
+**These docs use that palette and nothing else.** A documentation site that
+described fourteen design languages while wearing one of them would be taking a
+side in its own study. The stylesheet says so, including why Inter — normally a
+reflex-reject — is the correct face here: neutrality is the entire requirement.
+
+## Page structure
+
+- **The landing gallery** — all fourteen, as entry points.
+- **A rendering** — the twelve posts, set in one design language, with the
+  switcher underneath.
+- **The written half** — one dossier per style, in `docs/styles/`, rendered on
+  this site under [The fourteen](/wiki/styles/).
+
+The written half matters as much as the built half: each dossier is where a
+style's rules are stated, so a rendering can be checked against a claim rather
+than judged on impression.
+
+## What these docs are
+
+Everything under **The fourteen** is rendered from `docs/styles/`, and the
+orientation pages from `README.md`, `PRODUCT.md` and `DESIGN.md`. Only this page
+is authored here.

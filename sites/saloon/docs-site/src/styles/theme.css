@@ -1,0 +1,243 @@
+/*
+ * Ana Saloon's docs wear the committed brand.
+ *
+ * `DESIGN.md` opens by saying what kind of document it is: the tokens were
+ * **captured from the live `global.css`**, so "this is the committed brand, not
+ * a proposal", and "identity preservation wins: new work composes within these
+ * tokens." A docs site is new work, so it composes within them.
+ *
+ * The theme is light, warm, boutique — "a soft blush-cream world lit like
+ * daylight in a calm studio, never sterile white, never dark." That rules out a
+ * dark mode here: offering one would be offering a world the brand does not
+ * have, so the toggle is removed.
+ *
+ * Two rules from DESIGN.md are load-bearing and easy to break by accident:
+ *
+ *   • **Gold is an accent, never a fill.** ≤10% of any surface. It appears here
+ *     on dividers, the focus ring and small flourishes — never as a background
+ *     and never as text colour on a heading.
+ *   • **Blush is the action colour.** So links and the active nav item are blush,
+ *     not gold, and the deep blush is the hover.
+ *
+ * Also explicitly forbidden there and honoured here: no gradient text, no
+ * side-stripe borders, no glassmorphism.
+ *
+ * Fraunces (display) and Manrope (body) are self-hosted via Fontsource, as in
+ * the site — DESIGN.md notes there are deliberately no external font requests.
+ */
+
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/manrope';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --background: #fff8f6;
+  --surface-lowest: #ffffff;
+  --surface-low: #fff1ec;
+  --surface-high: #fae4db;
+  --on-surface: #241914;
+  --on-surface-variant: #4f4442;
+  --primary: #705955;
+  --blush: #f4d6d0;
+  --blush-deep: #e8a6a0;
+  --gold: #c9a961;
+  --secondary: #745b1b;
+  --cream: #fbf7f2;
+  --error: #ba1a1a;
+  --outline: #817472;
+  --outline-variant: #d3c3c0;
+
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Manrope Variable', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sl-color-accent-low: var(--blush);
+  --sl-color-accent: var(--primary);
+  --sl-color-accent-high: #4a3a37;
+
+  --sl-color-white: #ffffff;
+  --sl-color-black: var(--on-surface);
+  --sl-color-gray-1: #362822;
+  --sl-color-gray-2: var(--on-surface-variant);
+  --sl-color-gray-3: var(--outline);
+  --sl-color-gray-4: var(--outline-variant);
+  --sl-color-gray-5: #e6d5d1;
+  --sl-color-gray-6: var(--surface-low);
+  --sl-color-gray-7: var(--background);
+
+  --sl-color-text: var(--on-surface);
+  --sl-color-text-accent: var(--primary);
+  --sl-color-bg: var(--background);
+  --sl-color-bg-nav: var(--background);
+  --sl-color-bg-sidebar: var(--background);
+  --sl-color-bg-inline-code: var(--surface-low);
+  --sl-color-hairline: var(--outline-variant);
+  --sl-color-hairline-light: var(--outline-variant);
+  --sl-color-hairline-shade: var(--outline-variant);
+
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-green: #3f6b4a;
+  --sl-color-green-low: #e4f0e7;
+  --sl-color-green-high: #2b4a33;
+  --sl-color-orange: var(--secondary);
+  --sl-color-orange-low: #f7eed6;
+  --sl-color-orange-high: #4c3c11;
+  --sl-color-red: var(--error);
+  --sl-color-red-low: #ffdad6;
+  --sl-color-red-high: #7a1010;
+  --sl-color-blue: var(--primary);
+  --sl-color-blue-low: var(--surface-low);
+  --sl-color-blue-high: #4a3a37;
+  --sl-color-purple: var(--primary);
+  --sl-color-purple-low: var(--blush);
+  --sl-color-purple-high: #4a3a37;
+}
+
+/* --- Two families on a contrast axis ------------------------------------- */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 30;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.site-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+/* --- Gold is a thin accent, never a fill --------------------------------- */
+.sl-markdown-content h2 {
+  border-top: 1px solid var(--gold);
+  padding-top: 1rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* --- Blush is the action colour ------------------------------------------ */
+.sl-markdown-content a {
+  color: var(--primary);
+  text-decoration-color: var(--blush-deep);
+  text-underline-offset: 0.16em;
+}
+
+.sl-markdown-content a:hover {
+  color: var(--blush-deep);
+}
+
+.sidebar-content a[aria-current='page'] {
+  background: var(--blush);
+  color: var(--on-surface);
+}
+
+::selection {
+  background: var(--blush);
+}
+
+/* --- Surfaces ------------------------------------------------------------ */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface-lowest);
+  font-size: 0.9375rem;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--surface-high);
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--surface-low);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-size: 0.875em;
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--cream);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+}
+
+/* --- Diagram frames ------------------------------------------------------ */
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* --- Key/value facts ----------------------------------------------------- */
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--secondary);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

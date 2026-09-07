@@ -1,0 +1,64 @@
+---
+title: Subcort
+description: A demo event-tent rental site for Gorj and Oltenia, built as a drawing set rather than a brochure.
+tableOfContents: false
+---
+
+**Subcort** is a demo presentation site for an event-tent rental and setup
+service in Gorj / Oltenia: a tent brought to the client's own location, mounted
+to plan, floored, lit, heated or cooled by season. Astro + React + Tailwind v4,
+static, Romanian, multi-page.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/subcort</code> on the shared origin</dd>
+  <dt>Built as</dt>
+  <dd>A drawing set — one marquee model drives everything you see</dd>
+  <dt>Photography</dt>
+  <dd><strong>None.</strong> The site ships no photographs at all.</dd>
+  <dt>Calls to action</dt>
+  <dd><strong>None.</strong> Informational by decision — see the product page.</dd>
+  <dt>Type</dt>
+  <dd>IBM Plex Sans — a drawing-office sans with real technical lineage</dd>
+</dl>
+
+## The two deliberate absences
+
+Both are decisions, not omissions, and both are recorded in the site's own
+documents.
+
+**No photography.** A tent rental site would normally be a gallery of marquees
+at weddings. This one is a *drawing set*: a single marquee model drives a
+Three.js hero that assembles itself, an exploded axonometric plate, and a scale
+plan. What that buys is precision — a photograph shows one tent at one event, an
+axonometric shows how the thing goes together and at what size.
+
+**No calls to action.** The site does not chase a booking. It answers what the
+service is, what sizes exist, and what is included by season, and it stops.
+`PRODUCT.md` records that as a deliberate choice.
+
+## Page structure
+
+Multi-page, and the pages map to the drawing set:
+
+1. **Home** — the assembling hero, and the one-line proposition.
+2. **The marquee** — the exploded axonometric: structure, floor, lighting,
+   climate.
+3. **Sizes** — the scale plan, at real dimensions.
+4. **By season** — what changes between summer and winter set-ups.
+5. **Contact** — plain, unpushy, informational.
+
+## The design decisions worth knowing
+
+Line work on sheet stock: near-white paper, a cold ink, hairlines that mean
+"measured", and **one** signal colour used where a drawing would use a leader or
+a callout. Square corners, no shadows, no fills, no glow — because none of those
+appear on a plate.
+
+These docs are part of the same drawing set, and the stylesheet says which rules
+it is enforcing.
+
+## What these docs are
+
+**The site** section is rendered from `README.md`, `PRODUCT.md` and `DESIGN.md`,
+which are the site's maintained working documents. Only this page is authored.

@@ -1,0 +1,63 @@
+---
+title: Ana Saloon
+description: A boutique nail salon in Târgu-Jiu — the site, the brand it was built on, and the decisions behind both.
+tableOfContents: false
+---
+
+**Ana Saloon** is a presentation site for a boutique nail salon in Târgu-Jiu.
+Astro + React + Tailwind v4, static, Romanian.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/saloon</code> on the shared origin</dd>
+  <dt>Built with</dt>
+  <dd>Astro, React islands, Tailwind v4 — static output</dd>
+  <dt>World</dt>
+  <dd>Light, warm, boutique. Never sterile white, never dark.</dd>
+  <dt>Type</dt>
+  <dd>Fraunces (display) + Manrope (body), self-hosted — no external font requests</dd>
+  <dt>Also ships</dt>
+  <dd>A <code>marketing/bots/</code> automation service</dd>
+</dl>
+
+## Page structure
+
+A single scrolling page, in the order a prospective client actually decides:
+
+1. **Hero** — the room, the name, and one line of what this place is.
+2. **Services** — what can be booked, with prices where they are fixed.
+3. **Gallery** — the work itself. This is the section that sells; everything
+   else supports it.
+4. **About** — who Ana is. Short, because the gallery has already made the case.
+5. **Contact and location** — the practical close: where, when, and how to book.
+
+The order is a claim about the reader: someone choosing a nail salon is looking
+at *work* first and reading second. Moving the gallery below the fold would be
+inverting that.
+
+## The design decisions worth knowing
+
+The full system is in [the design system](/wiki/design/), captured from the live
+tokens rather than proposed ahead of them — **"this is the committed brand, not a
+proposal"**, and new work composes within it.
+
+Three rules are easy to break by accident and are worth stating here:
+
+- **Colour strategy is restrained.** Tinted near-white surfaces carry the page, a
+  single blush brand colour does the work, and warmth comes from the surface
+  tint, the serif face and the photography — not from saturation.
+- **Gold is an accent, never a fill.** At most ~10% of any surface: dividers,
+  focus rings, small flourishes. Not a background, not gradient text.
+- **Blush is the action colour.** Buttons, selection, link hover.
+
+Explicitly out: gradient text, side-stripe borders, glassmorphism.
+
+## What these docs are
+
+Everything under **The site** is rendered from the site's own maintained
+markdown — `README.md`, `PRODUCT.md`, `DESIGN.md`, and the files under `docs/`.
+They are the working documents the site is built from, so they are published
+rather than summarised. Only this page is authored here.
+
+The docs use the salon's own tokens, for the same reason the site does: identity
+preservation wins.

@@ -1,0 +1,206 @@
+/*
+ * Subcort's docs are part of the drawing set.
+ *
+ * The site is built as a **drawing set** rather than as a brochure: one marquee
+ * model drives a Three.js hero that assembles itself, an exploded axonometric
+ * plate and a scale plan. It ships no photography, deliberately. PRODUCT.md
+ * records the other deliberate absence — the site carries **no calls to action**
+ * and is informational by design.
+ *
+ * Both of those shape this theme. A drawing set is line work on sheet stock:
+ * near-white paper, a cold ink, hairlines that mean "measured", and exactly one
+ * signal colour used where a drawing would use a leader or a callout. Nothing
+ * here fills, glows or floats, because nothing on a plate does.
+ *
+ * The token names below are the site's own (`ink`, `line`, `hair`, `sheet`,
+ * `paper`, `signal`), carried across in OKLCH so the two surfaces are the same
+ * colours rather than approximations.
+ *
+ * IBM Plex Sans is the site's face — a drawing-office sans with real technical
+ * lineage, which is why it was chosen over a neutral grotesque.
+ */
+
+@import '@fontsource-variable/ibm-plex-sans';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --ink: oklch(29% 0.028 234);
+  --line: oklch(52% 0.026 234);
+  --line-soft: oklch(76% 0.017 233);
+  --hair: oklch(90.5% 0.006 230);
+  --signal: oklch(52.5% 0.152 40);
+  --signal-hover: oklch(47% 0.145 39);
+  --signal-soft: oklch(95% 0.022 45);
+  --on-signal-soft: oklch(44% 0.14 39);
+  --sheet: oklch(98.6% 0.002 90);
+  --paper: oklch(100% 0 0);
+  --fill: oklch(94.5% 0.004 233);
+  --success: oklch(52% 0.1 155);
+  --error: oklch(52% 0.17 28);
+
+  --font-body: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sl-color-accent-low: var(--signal-soft);
+  --sl-color-accent: var(--signal);
+  --sl-color-accent-high: var(--signal-hover);
+
+  --sl-color-white: var(--paper);
+  --sl-color-black: var(--ink);
+  --sl-color-gray-1: oklch(35% 0.026 234);
+  --sl-color-gray-2: oklch(45% 0.026 234);
+  --sl-color-gray-3: var(--line);
+  --sl-color-gray-4: var(--line-soft);
+  --sl-color-gray-5: var(--hair);
+  --sl-color-gray-6: var(--fill);
+  --sl-color-gray-7: var(--sheet);
+
+  --sl-color-text: var(--ink);
+  --sl-color-text-accent: var(--signal);
+  --sl-color-bg: var(--sheet);
+  --sl-color-bg-nav: var(--sheet);
+  --sl-color-bg-sidebar: var(--sheet);
+  --sl-color-bg-inline-code: var(--fill);
+  --sl-color-hairline: var(--hair);
+  --sl-color-hairline-light: var(--hair);
+  --sl-color-hairline-shade: var(--line-soft);
+
+  --sl-font: var(--font-body);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-green: var(--success);
+  --sl-color-green-low: oklch(95% 0.03 155);
+  --sl-color-green-high: oklch(40% 0.1 155);
+  --sl-color-orange: var(--on-signal-soft);
+  --sl-color-orange-low: var(--signal-soft);
+  --sl-color-orange-high: var(--signal-hover);
+  --sl-color-red: var(--error);
+  --sl-color-red-low: oklch(95% 0.03 28);
+  --sl-color-red-high: oklch(40% 0.15 28);
+  --sl-color-blue: var(--line);
+  --sl-color-blue-low: var(--fill);
+  --sl-color-blue-high: var(--ink);
+  --sl-color-purple: var(--signal);
+  --sl-color-purple-low: var(--signal-soft);
+  --sl-color-purple-high: var(--signal-hover);
+}
+
+/* A plate has square corners and no shadow. */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1,
+.site-title {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+/* Section heads are ruled like a plate's title band. */
+.sl-markdown-content h2 {
+  border-top: 1px solid var(--line);
+  padding-top: 0.9rem;
+}
+
+/* Tables are schedules: hairlines, tabular figures. */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.45rem 0.7rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--hair);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--fill);
+  padding: 0.06em 0.32em;
+  font-size: 0.875em;
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+}
+
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--hair);
+  font-size: 0.8125rem;
+  color: var(--line);
+  line-height: 1.5;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--line);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,210 @@
+/*
+ * BavAuto Gorj's docs sit in the same dark bezel.
+ *
+ * `DESIGN.md` carries the token set as machine-readable frontmatter, in OKLCH,
+ * with a surface ladder built for a **dark instrument panel** — background and
+ * surface are the same value, and depth comes from a five-step
+ * `surface-container-*` ramp plus explicit bezel edges rather than from shadow.
+ *
+ * That ladder is what is reused here. A docs page has no bezel, but it has the
+ * same problem the ladder solves: distinguishing a panel from its ground without
+ * spending a shadow. Code blocks, tables and diagram frames step up the ramp.
+ *
+ * Amber (`primary`) is the identity colour across the dark field and is used as
+ * the app uses it — for the thing you act on, and the rule that opens a section.
+ * It is never a large fill: on a near-black ground a filled amber block is a
+ * headlight, and there is nothing here worth pointing one at.
+ *
+ * Archivo Variable at width 112 is the display face, as specified. Dark-only:
+ * the site's base surface tokens ARE the dark, and the inverse tokens exist for
+ * the rare light panel rather than for a second theme.
+ */
+
+@import '@fontsource-variable/archivo';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  --background: oklch(13.5% 0.008 255);
+  --surface-lowest: oklch(17% 0.01 255);
+  --surface-low: oklch(20% 0.012 256);
+  --surface: oklch(23.5% 0.014 256);
+  --surface-high: oklch(27.5% 0.016 257);
+  --surface-highest: oklch(31.5% 0.018 257);
+
+  --on-surface: oklch(96% 0.004 250);
+  --on-surface-variant: oklch(76% 0.01 255);
+  --outline: oklch(48% 0.014 256);
+  --outline-variant: oklch(29% 0.014 256);
+  --hairline-inset: oklch(22% 0.012 256);
+
+  --primary: oklch(72% 0.17 58);
+  --primary-hover: oklch(78% 0.155 62);
+  --primary-lift: oklch(84% 0.14 66);
+  --primary-deep: oklch(66% 0.17 55);
+  --on-primary: oklch(17% 0.04 55);
+
+  --font-display: 'Archivo Variable', 'Arial Narrow', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sl-color-accent-low: oklch(28% 0.07 55);
+  --sl-color-accent: var(--primary);
+  --sl-color-accent-high: var(--primary-lift);
+
+  --sl-color-white: var(--on-surface);
+  --sl-color-black: var(--background);
+  --sl-color-gray-1: var(--on-surface);
+  --sl-color-gray-2: oklch(85% 0.008 252);
+  --sl-color-gray-3: var(--on-surface-variant);
+  --sl-color-gray-4: var(--outline);
+  --sl-color-gray-5: var(--outline-variant);
+  --sl-color-gray-6: var(--surface-low);
+  --sl-color-gray-7: var(--surface-lowest);
+
+  --sl-color-text: var(--on-surface);
+  --sl-color-text-accent: var(--primary);
+  --sl-color-bg: var(--background);
+  --sl-color-bg-nav: var(--background);
+  --sl-color-bg-sidebar: var(--background);
+  --sl-color-bg-inline-code: var(--surface);
+  --sl-color-hairline: var(--outline-variant);
+  --sl-color-hairline-light: var(--hairline-inset);
+  --sl-color-hairline-shade: var(--outline-variant);
+
+  --sl-font: var(--font-display);
+  --sl-font-mono: var(--font-mono);
+
+  --sl-color-green: oklch(76% 0.15 150);
+  --sl-color-green-low: oklch(26% 0.06 150);
+  --sl-color-green-high: oklch(86% 0.14 150);
+  --sl-color-orange: var(--primary);
+  --sl-color-orange-low: oklch(26% 0.06 55);
+  --sl-color-orange-high: var(--primary-lift);
+  --sl-color-red: oklch(70% 0.17 25);
+  --sl-color-red-low: oklch(26% 0.08 25);
+  --sl-color-red-high: oklch(82% 0.15 25);
+  --sl-color-blue: var(--on-surface-variant);
+  --sl-color-blue-low: var(--surface);
+  --sl-color-blue-high: var(--on-surface);
+  --sl-color-purple: var(--primary);
+  --sl-color-purple-low: oklch(26% 0.06 55);
+  --sl-color-purple-high: var(--primary-lift);
+}
+
+:root[data-theme='light'] {
+  color-scheme: dark;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.content-panel h1,
+.site-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+/* Amber opens a section — a rule, not a fill. */
+.sl-markdown-content h2 {
+  border-top: 2px solid var(--primary);
+  padding-top: 0.9rem;
+}
+
+/* Depth is the surface ladder, never a shadow. */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface-lowest);
+  font-size: 0.9375rem;
+}
+
+.sl-markdown-content th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--on-surface-variant);
+  background: var(--surface);
+  border-bottom: 1px solid var(--outline);
+  padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.sl-markdown-content :not(pre) > code {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-size: 0.86em;
+}
+
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-left: 2px solid var(--primary);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

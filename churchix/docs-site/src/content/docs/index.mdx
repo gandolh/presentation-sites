@@ -1,0 +1,76 @@
+---
+title: Churchix
+description: A white-label church website platform — presentation sites plus a giving surface, with every parish independently deployed.
+tableOfContents: false
+---
+
+**Churchix** is a white-label church website platform: presentation websites plus
+a **giving** surface (donations and fundraising campaigns). Many parishes share
+one codebase and component/theme library — but each parish is an **independent,
+separately-deployed static site** with its own branding, content and funds.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/churchix</code> on the shared origin</dd>
+  <dt>Built with</dt>
+  <dd>Astro (static-first) with React islands; <code>@churchix/ui</code> for shared components and tokens</dd>
+  <dt>Market</dt>
+  <dd>Romanian churches, in Romania and the diaspora. v1 targets the Orthodox tradition.</dd>
+  <dt>Design system</dt>
+  <dd>Ecclesia Digitalis — reverent, formal, architectural</dd>
+  <dt>Giving in v1</dt>
+  <dd>IBAN, Form 230, SMS, a pomelnice form, and optionally a hosted card link</dd>
+</dl>
+
+## The independence model is the product
+
+The sentence that constrains everything else:
+
+> **No central backend, no multi-tenant database, no shared runtime.**
+
+Every parish gets its own build and its own CDN-hosted static site. Nothing is
+shared at runtime — only the codebase and the component library are.
+
+That is not a scaling shortcut, it is the offer. A parish that stops paying,
+moves host, or wants its site handed over is not entangled with anybody else's;
+and one parish's outage or mistake cannot reach another's. The optional Fastify
+service in `services/` is **single-tenant, per parish** for the same reason.
+
+Read [the independence model](/wiki/independence-model/) before proposing
+anything that would introduce shared state. It is the decision most likely to be
+eroded by a convenience.
+
+## Re-skinning is a token swap
+
+Ecclesia Digitalis is built so a parish's identity arrives by **swapping tokens
+and nothing else** — no per-church component forks, no per-church CSS.
+
+These docs consume the same token *names* and take the reference parish's
+values, exactly as an app in `apps/` does. Hard-coding a colour here would
+quietly contradict the property the platform is sold on.
+
+## Giving is deliberately server-light
+
+v1 does not run a payment backend. IBAN, Form 230, SMS and a pomelnice form
+cover what Romanian parishes actually use, and a hosted card link (Stripe
+Payment Link or Netopia) covers cards without Churchix ever touching card data
+or holding funds.
+
+A parish that later wants recurring giving, webhooks or live campaign totals can
+add the optional single-tenant service. See [donations](/wiki/donations/).
+
+## What these docs are
+
+Churchix already documents itself properly: `docs/wiki/` is a maintained wiki and
+`docs/adr/` holds the decision records. Both are **rendered** here on every
+build rather than restated, and only this page is authored.
+
+## Where to go next
+
+| If you want to | Read |
+|---|---|
+| Understand the shape | [Architecture](/wiki/architecture/) |
+| Add or change content | [The content model](/wiki/content-model/) · [Schemas](/wiki/schema/) |
+| Work on giving | [Donations](/wiki/donations/) |
+| Touch anything visual | [The design system](/wiki/design-system/) · [ADR 0002](/wiki/adr-0002/) |
+| Add a parish | [The independence model](/wiki/independence-model/) |

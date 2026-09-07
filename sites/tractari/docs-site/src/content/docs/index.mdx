@@ -1,0 +1,63 @@
+---
+title: AXA Tractări
+description: A demo towing and roadside-assistance site for Oltenia. One job — make a stranded driver call instantly.
+tableOfContents: false
+---
+
+**AXA Tractări** is a demo single-page site for a vehicle towing and
+roadside-assistance service covering Oltenia (Gorj, Dolj, Vâlcea, Olt,
+Mehedinți). Astro + React + Tailwind v4, static, Romanian.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/tractari</code> on the shared origin</dd>
+  <dt>One job</dt>
+  <dd>Make a stranded driver <strong>call instantly</strong>, from any scroll position, at any hour</dd>
+  <dt>World</dt>
+  <dd>Headlights on a wet road at 3am — dark by default, never pure black</dd>
+  <dt>Identity</dt>
+  <dd>Amber. <strong>No red</strong> — every competitor uses red.</dd>
+  <dt>Type</dt>
+  <dd>Big Shoulders Display (signage) + Archivo (body), self-hosted for GDPR</dd>
+</dl>
+
+## The one structural move
+
+Everything on this site is subordinate to a single requirement: a person
+standing on a hard shoulder must be able to call, **from wherever they have
+scrolled to**, without hunting.
+
+The cinematic 3D hero is enrichment, and it is explicitly not allowed to gate
+that. If the scene fails to load, is slow, or is disabled, the call action is
+still there and still works. That ordering — availability first, atmosphere
+second — is the site's whole architecture.
+
+## Page structure
+
+Single page, and short on purpose. A driver in trouble is not browsing.
+
+1. **Hero** — the service, the coverage area, and the call action, all above the
+   fold. The 3D scene sits behind this, never in front of it.
+2. **What is covered** — one service, stated plainly: tractări auto pe platformă.
+3. **The area** — Gorj, Dolj, Vâlcea, Olt, Mehedinți.
+4. **The three numbers** — the owners, so a call reaches a person.
+
+A persistent call affordance rides the whole page.
+
+## The design decisions worth knowing
+
+- **No red.** The entire Romanian "tractari auto" category is red-on-white with a
+  stock photo and four icon boxes. Amber is the actual colour of a tow truck's
+  warning light, and it is distinctive here precisely because nobody else uses
+  it. These docs carry no red either — the safety orange is the strongest tone
+  on the site.
+- **Amber is identity; the safety orange is the ONE call action.** Exactly one
+  element wears it.
+- **Never pure black.** Cold asphalt at 16% lightness.
+- The site also steps deliberately off the generic AI landing template — no
+  centred hero stack, no equal-box grid, no eyebrow on every section.
+
+## What these docs are
+
+**The site** section is rendered from `README.md`, `PRODUCT.md` and `DESIGN.md`.
+Only this page is authored.
