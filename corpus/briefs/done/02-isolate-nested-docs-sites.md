@@ -71,3 +71,26 @@ would fail the *site's* check.
   committed SVGs. Checking their workspace selection with `npm exec` is enough.
 - Careful with `:dev`: Astro 7 detaches `astro dev` when stdout is not a TTY.
   Stop any server you start (`npx astro dev stop` in the site).
+
+## Outcome — 2026-10-01
+
+Root scripts now select workspaces **by package name** (`ana-saloon`,
+`bavauto-gorj`, `subcort`, `tractari`, `design-study`), including `:build:mock`,
+`:placeholders` and `subcort:og`. `saloon:bots` keeps its `--prefix`. There is
+one new passthrough per site, `<site>:docs` → `npm run docs -w
+@sites/<site>-docs`. Each site's `tsconfig.json` excludes `docs-site`, and
+design-study's compact array style is kept. The `package.json` diff touches
+only the scripts.
+
+- `npm exec -w <name> -c pwd` → exactly one directory for each of the five.
+- `PUBLIC_BASE=/<site> npm run <site>:build` → exit **0** for all five (4, 7, 8,
+  1, 183 pages).
+- `npx astro check` → 0 errors in each, and no diagnostic mentions
+  `docs-site`. The hint counts collapsed (saloon 6, the rest 0, where each used
+  to report ~67), most of which came from the built Pagefind bundle.
+- Root `npm run build` → exit 0, all five sites built.
+- `npm run saloon:docs` and `npm run tractari:docs` build, and the committed
+  diagram HTML is unchanged.
+- `:placeholders` and `subcort:og` were **not run** (they rewrite committed
+  SVGs). Their selection is the same name-based `-w` checked above.
+- `:dev` was not started.
