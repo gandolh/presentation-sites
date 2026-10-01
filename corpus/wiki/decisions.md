@@ -1,6 +1,6 @@
 ---
 summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. Do not relitigate without a log entry.
-updated: 2026-08-23
+updated: 2026-10-01
 ---
 
 # Decisions
@@ -150,3 +150,17 @@ its own npm-workspaces monorepo.
 *Why:* it is a *product* with its own decision surface (giving, i18n, Orthodox
 domain rules), not a marketing site. Its docs are far larger than every other
 site's combined; merging them would blow this corpus's retrieval budget.
+
+## Each site's docs site lives inside the site
+
+**2026-09-06** (`eda07a0`) — The Starlight docs for a site are at
+`sites/<site>/docs-site/`, a workspace of their own (`sites/*/docs-site`), built
+from the site's own `README.md` / `PRODUCT.md` / `DESIGN.md` / `docs/`.
+*Rejected:* a separate docs tree (e.g. `docs-sites/<site>/`) or a docs repo — both
+put a site's documentation somewhere a lifted-out site would leave behind, and
+"a site is still a directory you can lift out" is a property this repo keeps.
+*The cost, and how it is paid:* a project nested inside another project. npm's
+path-based `-w` selected both (root scripts now select by package name), and
+each site's `tsconfig.json` must exclude `docs-site`. Moving them out is a
+larger, separate decision.
+

@@ -67,6 +67,21 @@ Every project uses the same layout, so you always know where to look:
 artifacts and keep those exact names at the project root — that is where the tool
 reads them.
 
+### Docs sites
+
+Each site also has a **documentation site**: a Starlight project at
+`sites/<site>/docs-site/`, rendered from that site's own `README.md`,
+`PRODUCT.md`, `DESIGN.md` and `docs/`. Build one from the root:
+
+```bash
+npm run saloon:docs          # → sites/saloon/docs-site/dist/, base /saloon/docs/
+```
+
+Its base `/<site>/docs/` is baked into its `astro.config.mjs` (override with
+`DOCS_BASE`), and it deploys to `https://gandolh.ro/<site>/docs/`. Edit the
+site's own files, never the generated pages under `src/content/docs/wiki/` —
+they are rewritten on every build. churchix has its own at `churchix/docs-site/`.
+
 Monorepo-level knowledge — layout, cross-site conventions, locked decisions,
 current state — lives in [`corpus/`](corpus/). Start at
 [`corpus/index.md`](corpus/index.md); health check with `bash corpus/lint.sh`.
@@ -123,12 +138,19 @@ build + upload tooling lives outside this repo.
    `astro.config.mjs`.
 2. Run `npm install` at the root — the `sites/*` glob picks it up automatically.
 3. Add `<site>:*` passthrough scripts to the root `package.json`, following the
-   `saloon:*` pattern (`npm run <script> -w sites/<site>`).
+   `saloon:*` pattern — select the workspace by its **package name**
+   (`npm run <script> -w <package-name>`), never by path: a path also selects the
+   site's nested docs-site.
 4. Add a `<site>: dev server` entry to `.vscode/launch.json` running
    `npm run <site>:dev` from `${workspaceFolder}`.
 5. Give it the doc shape above: `README.md`, `PRODUCT.md`, `DESIGN.md`, and a
    `docs/` directory if it needs one.
-6. List it under **Sites** above.
+6. Give it a docs site: copy `sites/saloon/docs-site/` to `sites/<site>/docs-site/`,
+   rename the package to `@sites/<site>-docs`, set the base in its
+   `astro.config.mjs` to `/<site>/docs/`, list the site's own pages in
+   `scripts/sync-corpus.mjs` (`PAGES`), add `"docs-site"` to the site's
+   `tsconfig.json` `exclude`, and add a root `"<site>:docs"` script.
+7. List it under **Sites** above.
 
 The root `.gitignore` needs no edit — its rules for `site.local.ts` and
 `public/images/real/` are site-agnostic `**/` patterns.

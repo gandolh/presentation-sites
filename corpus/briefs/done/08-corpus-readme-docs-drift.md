@@ -72,3 +72,37 @@ Depends on Task 02, for the `:docs` commands this documents.
 - `grep -rn 'Rendered from \`corpus/' sites/*/docs-site/scripts` → nothing.
 - A fresh reader who follows `index.md` → `overview.md` → `status.md` learns
   that design-study and the docs-sites exist, and how to build a docs-site.
+
+## Outcome — 2026-10-01
+
+Rewritten as synthesis, with every fact checked first:
+
+- `overview.md`: the "no dependency hoisting, no shared runtime, no cross-site
+  imports" paragraph now describes the workspace as it is (one hoisted
+  `node_modules`, one lockfile, `@sites/kit` as the only shared package, a
+  docs-site per site). Added a `design-study` row to the cast.
+- `architecture.md`: the globs now include `sites/*/docs-site`. The passthrough
+  example selects by package name, with the reason. A new **Docs sites** section
+  covers location, `@sites/<site>-docs`, the `tsconfig` exclusion, the
+  sync → diagrams → build pipeline, the gitignored rendered pages, the
+  committed-diagram mechanism, and the baked `/<site>/docs/` base with
+  `DOCS_BASE` and `https://gandolh.ro`.
+- `status.md`: a 2026-10-01 snapshot paragraph naming design-study and the
+  docs-sites. Brief links are repointed as briefs move to `done/`.
+- `README.md`: a "Docs sites" section with `npm run <site>:docs`. "Adding a new
+  site" gains a docs-site step, and its passthrough step now says to select by
+  package name.
+- `decisions.md`: one entry on why the docs-sites live inside their site (the
+  lift-out property), with the cost and how brief 02 paid it.
+- The five `sync-corpus.mjs` banners now read "Rendered from
+  `sites/<site>/<src>`" and "Edit the source in `sites/<site>/`". The rebuilt
+  saloon docs show it.
+
+**One brief fact did not hold as written:** "the rendered HTML under
+`public/diagrams/` is committed". The mechanism is real, but no site's
+docs-site has any `diagrams/` source or committed HTML yet, so the page says
+that rather than implying there are diagrams.
+
+Checks: `bash corpus/lint.sh` → OK after `--index`. `grep 'no dependency'
+overview.md` → nothing. `grep 'Rendered from \`corpus/'` in the docs scripts →
+nothing. `npm run saloon:docs` builds.

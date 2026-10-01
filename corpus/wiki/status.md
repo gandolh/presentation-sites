@@ -1,13 +1,17 @@
 ---
 summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
-# Status — 2026-08-23
+# Status — 2026-10-01
 
 ## Where things stand
 
-All five projects build. The repo is in a **maintenance + demo** phase rather than
+All six projects build — the five sites under `sites/` and churchix. Since the
+2026-08-23 snapshot, `design-study` joined the workspace and **every site gained a
+Starlight docs site** at `sites/<site>/docs-site/` (`eda07a0`), built with
+`npm run <site>:docs` and deployed at `https://gandolh.ro/<site>/docs/` — see
+[architecture.md](architecture.md#docs-sites). The repo is in a **maintenance + demo** phase rather than
 active feature work: the two real client sites (`saloon`, `auto-service`) are
 code-complete and waiting on human/real-data steps, the two demos (`subcort`,
 `tractari`) are finished showpieces, and `churchix` is the only one with an open
@@ -36,14 +40,14 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 [`briefs/todo/`](../briefs/todo/).
 
 **Now**
-- [01](../briefs/todo/01-astro-security-advisories.md) — clear the Astro RCE advisory + js-yaml/svgo in both lockfiles
-- [02](../briefs/todo/02-isolate-nested-docs-sites.md) — root `<site>:*` scripts exit 1 since the docs-sites; `astro check` scans them
+- [01](../briefs/done/01-astro-security-advisories.md) — clear the Astro RCE advisory + js-yaml/svgo in both lockfiles
+- [02](../briefs/done/02-isolate-nested-docs-sites.md) — root `<site>:*` scripts exit 1 since the docs-sites; `astro check` scans them
 - [03](../briefs/todo/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
 - [04](../briefs/todo/04-opening-hours-single-source.md) — opening hours retyped outside `site.ts` (saloon, auto-service)
 - [05](../briefs/todo/05-mobile-menu-focus-return.md) — mobile menus drop focus on close (saloon, auto-service, tractari)
 - [06](../briefs/todo/06-design-study-arrow-keys.md) — design-study arrow keys on a carousel jump to another theme
-- [07](../briefs/todo/07-remove-dead-vite-overrides.md) — dead per-site `vite` overrides (break a lifted-out site)
-- [08](../briefs/todo/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
+- [07](../briefs/done/07-remove-dead-vite-overrides.md) — dead per-site `vite` overrides (break a lifted-out site)
+- [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
 
 **Next**
 - [09](../briefs/todo/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals — needs an origin decision first

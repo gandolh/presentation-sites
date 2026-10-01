@@ -114,8 +114,8 @@ async function main() {
       '  maxHeadingLevel: 3',
       '---',
       '',
-      `:::note[Rendered from \`corpus/${src}\`${updated}]`,
-      'This page is generated from the project corpus and rewritten on every docs build. Edit the source in `corpus/`, not here.',
+      `:::note[Rendered from \`sites/saloon/${src}\`${updated}]`,
+      'This page is generated from the site\'s own docs and rewritten on every docs build. Edit the source in `sites/saloon/`, not here.',
       ':::',
       '',
     ]

@@ -451,3 +451,18 @@ opens, its X renders, and Escape still closes it with the focus trap intact.
 Corpus updated alongside: the decision and its measured cost in
 `wiki/decisions.md`, the icon stack in `wiki/architecture.md`, saloon's row in
 `wiki/status.md`, and the iconography rule in `sites/saloon/DESIGN.md`.
+
+## 2026-10-01 — corpus and README caught up with the docs-sites and design-study
+
+The monorepo docs had stopped tracking the repo after `design-study` (2026-08-23)
+and the per-site Starlight docs-sites (`eda07a0`). `overview.md` no longer claims
+"no dependency hoisting" (the workspaces decision replaced that) and has a
+`design-study` row; `architecture.md` lists the `sites/*/docs-site` glob, explains
+name-based workspace selection, and gains a **Docs sites** section;
+`status.md` mentions both; the README documents `npm run <site>:docs` and adds a
+docs-site step to "Adding a new site"; `decisions.md` records why the docs-sites
+live inside their site. Every rendered docs page's banner now names its real
+source, `sites/<site>/<src>`, instead of a `corpus/` that is not its source.
+Checked while writing: no site's docs-site has a diagram yet, so the committed
+`public/diagrams/` HTML is a mechanism, not content.
+
