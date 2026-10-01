@@ -14,6 +14,28 @@
 
 import type { SiteOverridesOf } from "@sites/kit";
 
+/**
+ * Opening hours, once. The contact table, the footer, the hero's status readout,
+ * the contact page's header and the JSON-LD Google reads for the business panel
+ * are all derived below — they used to be four hand-typed copies, and changing
+ * Saturday here would have left three of them, the search result included,
+ * still saying the old time.
+ */
+type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+export type OpeningHours = {
+  /** What the table says: "Luni – Vineri". */
+  label: string;
+  /** What the compact readout says: "L–V". */
+  short: string;
+  days: Weekday[];
+} & ({ opens: string; closes: string; closed?: never } | { closed: true });
+
+const HOURS: OpeningHours[] = [
+  { label: "Luni – Vineri", short: "L–V", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+  { label: "Sâmbătă", short: "Sâ", days: ["Saturday"], opens: "09:00", closes: "14:00" },
+  { label: "Duminică", short: "D", days: ["Sunday"], closed: true },
+];
+
 const defaults = {
   name: "BavAuto Gorj",
   // Short, enthusiast-flavoured tagline. "bavarez" = the cars' Bavarian origin.
@@ -67,11 +89,8 @@ const defaults = {
   },
 
   // Hours
-  hours: [
-    { day: "Luni – Vineri", value: "08:00 – 18:00" },
-    { day: "Sâmbătă", value: "09:00 – 14:00" },
-    { day: "Duminică", value: "Închis" },
-  ],
+  // Replaced wholesale by a local override (SiteOverridesOf replaces arrays).
+  hours: HOURS,
 
   // Social (placeholders — overridden in site.local.ts)
   social: {
@@ -149,3 +168,28 @@ export const site = {
 // NOTE: there is no production data guard here — a fake phone / CUI can reach
 // the live site. Fill real values in `site.local.ts` before the production
 // deploy (denumire, CUI, Reg. Com., autorizație RAR, telefon, adresă, geo).
+
+/** The table rows (contact, footer). A spaced en dash: "08:00 – 18:00". */
+export const hoursTable = site.hours.map((h) => ({
+  day: h.label,
+  value: h.closed ? "Închis" : `${h.opens} – ${h.closes}`,
+}));
+
+/** The instrument-cluster readout, open days only: "L–V 08:00–18:00 · Sâ 09:00–14:00". */
+export const hoursReadout = site.hours
+  .flatMap((h) => (h.closed ? [] : [`${h.short} ${h.opens}–${h.closes}`]))
+  .join(" · ");
+
+/** schema.org `openingHoursSpecification`. Closed days are omitted, as schema.org expects. */
+export const openingHoursSpecification = site.hours.flatMap((h) =>
+  h.closed
+    ? []
+    : [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: h.days.length === 1 ? h.days[0] : h.days,
+          opens: h.opens,
+          closes: h.closes,
+        },
+      ],
+);

@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { site, telLink, waLink } from "../content/site";
+import { hoursTable, site, telLink, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 
 const year = new Date().getFullYear();
@@ -50,7 +50,7 @@ const legalLinks = [
       <a href={`mailto:${site.email}`} class="ft__link">{site.email}</a>
       <p class="ft__addr">{site.address}, {site.city}</p>
       <dl class="ft__hours">
-        {site.hours.map((h) => (
+        {hoursTable.map((h) => (
           <div class="ft__hour">
             <dt>{h.day}</dt>
             <dd class="reading">{h.value}</dd>

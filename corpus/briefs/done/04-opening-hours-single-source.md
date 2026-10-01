@@ -60,3 +60,37 @@ JSON-LD states the brand promise rather than copying a table.
   Diff the output before and after.
 - Temporarily change one time in `site.ts` and rebuild: every rendering changes. Then revert.
 - `npx astro check` → clean in both sites.
+
+## Outcome — 2026-10-01
+
+Each `site.ts` declares `HOURS: OpeningHours[]`: `{ label, days, opens,
+closes }` or `{ label, days, closed: true }`, plus `short` for auto-service's
+readout. It feeds `hours`, and these are derived from the **merged** `site.hours`:
+
+- `hoursTable`: the `{ day, value }` rows the contact table (and auto-service's
+  footer) already rendered, in each site's punctuation (saloon `09:00 - 19:00`,
+  auto-service `08:00 – 18:00`).
+- `openingHoursSpecification`: closed days omitted, and a single day emitted as a
+  string (`"Saturday"`), the way the hand-written JSON-LD did.
+- auto-service `hoursReadout`: `L–V 08:00–18:00 · Sâ 09:00–14:00`, used by the
+  hero and (prefixed "Deschis") by the contact page header.
+
+auto-service `Base.astro`'s false "without duplicating the strings" comment is
+replaced by one that is true. `SiteOverridesOf` replaces arrays wholesale, so a
+local override replaces the whole schedule. **The real-data file was not
+read.** A count-only check (`grep -c hours`) showed saloon's local file does
+not override hours. No example was added to `site.local.example.ts`, since
+the example lists only what is expected to be overridden.
+
+Verified:
+- `grep -rn '0[89]:00\|1[0-9]:00' … --include=*.astro` → no matches.
+- Mock builds before and after, compared **byte for byte** and never printed:
+  saloon's 4 HTML files are identical. auto-service's 7 are identical once the
+  `MobileMenu.<hash>.js` chunk name is normalised (that island imports
+  `content/site.ts`, whose code changed). The rendered text and JSON-LD are
+  unchanged.
+- Mutation, then reverted: Saturday's closing time set to a marker value. saloon
+  `index.html` shows it 2× (table + JSON-LD) with the old time gone. auto-service
+  shows it 4× on `index.html` and `contact/` and 3× on `despre/` (table, footer,
+  readouts, JSON-LD), with the old time gone everywhere.
+- `npx astro check` → 0 errors in both sites.

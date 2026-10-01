@@ -1,7 +1,7 @@
 ---
 import Gauge from "./Gauge.astro";
 import Icon from "./Icon.astro";
-import { site, telLink, waLink } from "../content/site";
+import { hoursReadout, site, telLink, waLink } from "../content/site";
 
 // The three symptoms a worried owner actually arrives with. Each is a real
 // entry point: it opens WhatsApp with the symptom already written, so the
@@ -68,7 +68,7 @@ const symptoms = [
         <span class="hero__live" aria-hidden="true"></span>
         <span class="hero__status-item">Deschis acum</span>
         <span class="hero__sep" aria-hidden="true"></span>
-        <span class="hero__status-item hero__status-item--dim">L–V 08:00–18:00 · Sâ 09:00–14:00</span>
+        <span class="hero__status-item hero__status-item--dim">{hoursReadout}</span>
         <span class="hero__sep" aria-hidden="true"></span>
         <span class="hero__status-item hero__status-item--dim">{site.city} · {site.county}</span>
       </div>

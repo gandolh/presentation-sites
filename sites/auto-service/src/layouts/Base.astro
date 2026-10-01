@@ -9,7 +9,7 @@ import "@fontsource-variable/archivo/wdth.css";
 import "@fontsource-variable/hanken-grotesk/wght.css";
 import "@fontsource-variable/azeret-mono/wght.css";
 import "../styles/global.css";
-import { site } from "../content/site";
+import { openingHoursSpecification, site } from "../content/site";
 import { withBase } from "@sites/kit";
 
 interface Props {
@@ -36,22 +36,9 @@ const canonical = `${siteOrigin}${path}`;
 const ogImage = withBase("/images/og-image.png");
 const ogImageAbsolute = `${siteOrigin}/images/og-image.png`;
 
-// Map RO opening hours to schema.org day codes. Keeps the JSON-LD in sync with
-// the single source of truth in site.ts without duplicating the strings.
-const openingHours = [
-  {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "08:00",
-    closes: "18:00",
-  },
-  {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: "Saturday",
-    opens: "09:00",
-    closes: "14:00",
-  },
-];
+// The hours come from the single source in site.ts (`openingHoursSpecification`
+// is derived there, with the table and the readouts) — nothing is retyped here.
+const openingHours = openingHoursSpecification;
 ---
 
 <!doctype html>

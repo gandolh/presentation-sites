@@ -8,6 +8,25 @@
 
 import type { SiteOverridesOf } from "@sites/kit";
 
+/**
+ * Opening hours, once. Everything that states them — the contact table and the
+ * JSON-LD Google reads for the business panel — is derived below, so changing a
+ * time here changes it everywhere. It used to be retyped in the JSON-LD, which
+ * would have gone on telling search results the old hours.
+ */
+type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+export type OpeningHours = {
+  /** What the table says: "Luni - Vineri". */
+  label: string;
+  days: Weekday[];
+} & ({ opens: string; closes: string; closed?: never } | { closed: true });
+
+const HOURS: OpeningHours[] = [
+  { label: "Luni - Vineri", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
+  { label: "Sâmbătă", days: ["Saturday"], opens: "10:00", closes: "16:00" },
+  { label: "Duminică", days: ["Sunday"], closed: true },
+];
+
 const defaults = {
   name: "Unghii by Ana",
   tagline: "Unghii care vorbesc despre tine",
@@ -46,11 +65,8 @@ const defaults = {
   },
 
   // Hours
-  hours: [
-    { day: "Luni - Vineri", value: "09:00 - 19:00" },
-    { day: "Sâmbătă", value: "10:00 - 16:00" },
-    { day: "Duminică", value: "Închis" },
-  ],
+  // Replaced wholesale by a local override (SiteOverridesOf replaces arrays).
+  hours: HOURS,
 
   // Social (placeholders — overridden in site.local.ts)
   social: {
@@ -113,3 +129,23 @@ export const site = {
 // to allow staging deploys with placeholder data. Remember to fill real values
 // in `site.local.ts` before the real production deploy — nothing now blocks a
 // fake phone / CUI from reaching the live site.
+
+/** The contact table's rows. This site's style: a spaced hyphen, "09:00 - 19:00". */
+export const hoursTable = site.hours.map((h) => ({
+  day: h.label,
+  value: h.closed ? "Închis" : `${h.opens} - ${h.closes}`,
+}));
+
+/** schema.org `openingHoursSpecification`. Closed days are omitted, as schema.org expects. */
+export const openingHoursSpecification = site.hours.flatMap((h) =>
+  h.closed
+    ? []
+    : [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: h.days.length === 1 ? h.days[0] : h.days,
+          opens: h.opens,
+          closes: h.closes,
+        },
+      ],
+);

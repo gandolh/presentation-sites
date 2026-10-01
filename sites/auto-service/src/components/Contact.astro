@@ -1,7 +1,7 @@
 ---
 import Icon from "./Icon.astro";
 import MapConsent from "./MapConsent.tsx";
-import { site, telLink, waLink } from "../content/site";
+import { hoursTable, site, telLink, waLink } from "../content/site";
 
 /*
   The conversion moment, set on the one light material in this world: the
@@ -56,7 +56,7 @@ const Heading = heading;
             <dt class="legend">Program</dt>
             <dd>
               <ul class="ct__hours">
-                {site.hours.map((h) => (
+                {hoursTable.map((h) => (
                   <li>
                     <span>{h.day}</span>
                     <span class="reading">{h.value}</span>
