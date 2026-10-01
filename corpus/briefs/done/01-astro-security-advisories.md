@@ -55,3 +55,27 @@ pin `astro` **exactly** at `7.2.4` (`auto-service`, `subcort`, `tractari`,
 - `npx astro check` in each site → 0 errors.
 - `npm run churchix:build` → 10 pages. `npm --prefix churchix run typecheck` → 0 errors.
 - `git diff --stat` shows only manifests and lockfiles.
+
+## Outcome — 2026-10-01
+
+`astro` is `7.3.5` in the four exact-pin sites and `^7.3.5` in saloon, with pin
+styles kept. After `npm install`, a nested `astro@7.2.4` was still locked, and
+`npm audit` meanwhile also reported newer `fast-uri` and `undici` advisories,
+so `npm audit fix` (no `--force`) was run at the root. `js-yaml` and `svgo`
+were already cleared by the install. `churchix/`: `npm audit fix`.
+
+- `npm audit` → **0 vulnerabilities** at the root and in `churchix/`;
+  `npm ls astro` → only `7.3.5` (13 entries).
+- Built from inside each site with `PUBLIC_BASE=/<site>`, all exit 0 and the
+  page counts are unchanged: saloon 4, auto-service 7, subcort 8, tractari 1,
+  design-study 183.
+- `npx astro check` → 0 errors in all five.
+- `npm run churchix:build` → 10 pages; `npm --prefix churchix run typecheck` → 0
+  errors.
+- `git diff --stat`: five manifests and two lockfiles only.
+
+Release notes 7.2.5–7.3.5 (read from the upstream CHANGELOG): nothing marked
+breaking. They contain base-path segment-boundary and route-normalisation
+fixes, image-pipeline memory and concurrency fixes, and a responsive-image
+`object-position` fix. Nothing touches `build.format: "directory"` or React
+islands.
