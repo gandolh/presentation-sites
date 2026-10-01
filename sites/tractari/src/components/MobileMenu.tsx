@@ -6,6 +6,12 @@ type Link = { href: string; label: string };
 export default function MobileMenu({ links }: { links: Link[] }) {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+  // The button that opened the dialog. Closing by Esc or by the close button
+  // hands focus back to it — otherwise the dialog unmounts while it holds
+  // focus, focus falls to <body>, and a keyboard user's next Tab starts again
+  // from the top of the page. A navigation link does not: it moves focus on
+  // its own, to wherever it went.
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -32,6 +38,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setOpen(false);
+        buttonRef.current?.focus();
         return;
       }
       if (e.key !== "Tab") return;
@@ -55,6 +62,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
   return (
     <>
       <button
+        ref={buttonRef}
         type="button"
         aria-label="Deschide meniul"
         aria-expanded={open}
@@ -82,7 +90,10 @@ export default function MobileMenu({ links }: { links: Link[] }) {
             <button
               type="button"
               aria-label="Închide meniul"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setOpen(false);
+                buttonRef.current?.focus();
+              }}
               className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

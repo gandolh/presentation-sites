@@ -54,3 +54,27 @@ In a real browser at 390px wide, for each of the three sites:
 - saloon: choosing "Servicii" still closes the menu and lands on `#servicii`.
 - The Tab trap still cycles inside the open dialog.
 - `npx astro check` → clean in all three sites.
+
+## Outcome — 2026-10-01
+
+Each of the three menus gets a `buttonRef` on the open button. Esc and the close
+(X) button call `setOpen(false)` and then `buttonRef.current?.focus()`; the
+button is outside the dialog, so it is focusable before the dialog unmounts.
+Navigation links still only `setOpen(false)`, so the navigation moves focus.
+Focus-in on open, the Tab trap, the `document.body.style.overflow` scroll lock
+(which saloon's `MobileBookingBar` watches) and the `--i` stagger are
+unchanged.
+
+Verified in Playwright at 390×844 against each built site (`astro preview`
+under its sub-path), driving the keyboard:
+
+| | saloon | auto-service | tractari |
+|---|---|---|---|
+| Enter on menu button → focus in dialog | ✓ | ✓ | ✓ |
+| Esc → `activeElement` is the menu button | ✓ | ✓ | ✓ |
+| close (X) via Enter → the menu button | ✓ | ✓ | ✓ |
+| Tab × (items + 2) stays inside the dialog | ✓ | ✓ | ✓ |
+
+saloon: clicking "Servicii" closes the menu, lands on `#servicii` and leaves
+`body.style.overflow` empty. `npx astro check` → 0 errors in all three, and all
+three build at their sub-path.
