@@ -42,7 +42,7 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 **Now**
 - [01](../briefs/done/01-astro-security-advisories.md) — clear the Astro RCE advisory + js-yaml/svgo in both lockfiles
 - [02](../briefs/done/02-isolate-nested-docs-sites.md) — root `<site>:*` scripts exit 1 since the docs-sites; `astro check` scans them
-- [03](../briefs/todo/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
+- [03](../briefs/done/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
 - [04](../briefs/todo/04-opening-hours-single-source.md) — opening hours retyped outside `site.ts` (saloon, auto-service)
 - [05](../briefs/todo/05-mobile-menu-focus-return.md) — mobile menus drop focus on close (saloon, auto-service, tractari)
 - [06](../briefs/todo/06-design-study-arrow-keys.md) — design-study arrow keys on a carousel jump to another theme

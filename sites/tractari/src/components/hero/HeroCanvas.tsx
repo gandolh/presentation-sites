@@ -50,12 +50,21 @@ export default function HeroCanvas() {
       const onResize = () => sizeToHost();
       window.addEventListener("resize", onResize, { passive: true });
 
-      // Pause when off-screen or tab hidden (battery).
+      // Pause when off-screen or tab hidden (battery). Both halves: this used
+      // to restart the loop when the hero came back but never stop it when it
+      // left, so the scene rendered at the display's refresh rate for the rest
+      // of the visit once you had scrolled past it.
       let visible = true;
       const io = new IntersectionObserver(
         ([e]) => {
           visible = e.isIntersecting;
-          if (visible && !raf) { last = performance.now(); loop(); }
+          if (!visible) {
+            cancelAnimationFrame(raf);
+            raf = 0;
+          } else if (!raf && !document.hidden) {
+            last = performance.now();
+            loop();
+          }
         },
         { threshold: 0 },
       );
@@ -72,7 +81,12 @@ export default function HeroCanvas() {
       document.addEventListener("visibilitychange", onVis);
 
       function loop() {
-        if (disposed) return;
+        // A frame already in flight when the hero left (or the tab hid) must
+        // not re-arm the loop.
+        if (disposed || !visible || document.hidden) {
+          raf = 0;
+          return;
+        }
         const now = performance.now();
         const dt = Math.min((now - last) / 1000, 0.05); // clamp on tab refocus
         last = now;

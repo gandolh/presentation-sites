@@ -48,3 +48,31 @@ so a frame that is already in flight cannot re-arm the loop.
   - Scrolling back resumes the animation without a jump.
 - Reduced motion still never downloads the scene chunk. Switching tabs still pauses and resumes.
 - `npx astro check` in `sites/tractari` → 0 errors. The site builds with `PUBLIC_BASE=/tractari`.
+
+## Outcome — 2026-10-01
+
+The observer now cancels the pending frame and sets `raf = 0` when the host
+stops intersecting, and restarts (resetting `last`) only when it comes back and
+the tab is visible. `loop()` returns without rescheduling when `!visible ||
+document.hidden`, so a frame already in flight cannot re-arm it. The
+`visibilitychange` handler is unchanged.
+
+**Measured** with a temporary `window.__frames` counter (removed before
+commit), in Playwright with SwiftShader WebGL, against the built site served
+at `/tractari/`:
+
+| | in view | scrolled away | back in view |
+|---|---|---|---|
+| 390×844, fixed | +35 / 2 s | **+0** / 2 s | +37 / 2 s |
+| 1280×800, fixed | +25 / 2 s | **+0** / 2 s | +26 / 2 s |
+| 390×844, old code (control) | +35 | +34 | +41 |
+| 1280×800, old code (control) | +23 | +52 | +26 |
+
+Reduced motion: 0 frames, and no request for the `scene.<hash>.js` chunk.
+
+**Tab switching could not be observed headless.** Opening a second page in
+front leaves the first page's `visibilityState` at "visible", so the result
+(+2 frames, then +26 back) proves nothing. That path's logic is untouched
+apart from the new guard in `loop()`, which only adds a stop condition.
+
+`npx astro check` → 0 errors; `PUBLIC_BASE=/tractari npm run build` → 1 page.
