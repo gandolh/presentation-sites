@@ -51,3 +51,18 @@ manifests and the lockfile.
 - `grep -n '"overrides"' sites/*/package.json` → nothing.
 - `npm ls vite` → a single 8.x version, deduped.
 - All five sites build at their sub-path. `npx astro check` → clean in the four touched sites.
+
+## Outcome — 2026-10-01
+
+The four `"overrides"` blocks are deleted. `grep` for `from 'vite'` / `"vite"`
+across the four sites (`.ts`, `.mts`, `.mjs`, `.js`, `.astro`; `docs-site/`,
+`dist/` and `node_modules/` excluded) finds nothing, so the `"vite"`
+devDependency went too: Astro brings its own. The manifests were edited as
+JSON, so formatting is preserved.
+
+- `grep -n '"overrides"' sites/*/package.json` → nothing.
+- `npm ls vite` → a single `vite@8.2.2`, deduped everywhere. (A `4.3.3` in a
+  naive match was `@tailwindcss/vite`, not Vite.)
+- All five sites build at their sub-path with unchanged page counts (4, 7, 8,
+  1, 183); `npx astro check` → 0 errors in the four touched sites;
+  `npm audit` still 0.
