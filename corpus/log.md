@@ -1,5 +1,40 @@
 # Log
 
+## [2026-09-27] audit | improvements sweep — 11 briefs
+
+Read-only survey of the whole repo (the five sites, `@sites/kit`, the docs-sites,
+`marketing/bots`, root config; churchix only for health, since it keeps its own
+17-item backlog). Lenses: correctness, security, performance, DX/docs,
+dependencies, accessibility. Everything was checked against the running code:
+all five sites built at their sub-path, `astro check` on each, churchix typecheck
++ build (10 pages), 66 bots tests, `npm audit` in both workspaces, corpus lint.
+
+**24 raw findings → 11 briefs** (two pairs merged because each pair has one
+cause and one fix). Dropped as not real, by design, or linter-owned:
+- the removed production-data guard (removed by request);
+- design-study's `noindex` and missing OG tags (deliberate for a study);
+- subcort's menu, which is a disclosure rather than a modal, so it needs no initial focus move;
+- a UTF-8 chunk-split theory in the webhook (Meta escapes non-ASCII);
+- Phosphor's deprecated `List`/`X` names;
+- a non-constant-time verify-token compare (the token is low value);
+- two style nits.
+
+Headline: the root `<site>:build` scripts have exited 1 since the docs-sites
+landed (`-w sites/<x>` now selects the nested docs-site too). Every `og:image` is
+relative, and two are SVG. `astro` 7.2.4 carries a new critical advisory.
+
+Ranked **Now:** 01–08. **Next:** 09 (needs an origin decision), 10, 11. See
+[`wiki/status.md`](wiki/status.md) for the one-line list.
+
+**Watch** — named, not spec'd:
+- The docs-site scaffolding is copied six times (`build-diagrams.mjs`,
+  `Diagram.astro`, `content.config.ts`, `tsconfig.json` and `.gitignore` are
+  byte-identical, and `sync-corpus.mjs` differs only in data). One copy sits in
+  churchix, outside the workspace, so sharing it needs a decision.
+- The mobile-menu focus-trap logic is duplicated across three React islands.
+- Nothing stops placeholder CUI or phone values reaching a production build.
+  Revisit at real launch.
+
 ## [2026-08-23] design | auto-service reworked — *Bordcomputer*, the site as the car's cluster
 
 The owner was happy with the business idea and unhappy with the UI/UX. Three
