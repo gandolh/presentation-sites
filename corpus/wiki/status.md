@@ -52,7 +52,7 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 **Next**
 - [09](../briefs/todo/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals — needs an origin decision first
 - [10](../briefs/todo/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari (after 09)
-- [11](../briefs/todo/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
+- [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
 
 ## Note on the two doc layers
 

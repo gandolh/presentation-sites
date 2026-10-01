@@ -50,3 +50,28 @@ characters as `\uXXXX`, so the body is ASCII.
 
 - `npm run saloon:bots` (typecheck + tests) passes: the existing 66 tests plus the new ones.
 - No exported type or function signature in `src/core/` changes.
+
+## Outcome — 2026-10-01
+
+`readBody(req, limit)` collects `Buffer` chunks, counts bytes, and resolves
+`null` the moment the count passes `MAX_BODY_BYTES` (1 MiB); reading stops
+there. Otherwise it decodes `Buffer.concat(chunks)` once, so a character split
+across chunks is not mangled. The POST handler answers **413** with
+`connection: close` and destroys the request once the response is flushed. It
+does this **before reading anything** when `content-length` already exceeds
+the limit, and as soon as the limit is crossed otherwise. The signature check
+and dispatch are untouched and run only for a body within the cap. The server
+gets `headersTimeout` 10 s and `requestTimeout` 15 s.
+
+No exported signature changed (`startWebhookServer`, `parseMetaInbound`,
+`verifyMetaSignature`), and `webhook.ts`, the other `core/` contracts and
+`COMPLIANCE.md` are untouched.
+
+Tests start the real server on port 0 with a stub dispatcher:
+- a correctly signed small body → 200, dispatched;
+- a bad signature → 401, not dispatched;
+- a declared 2 MiB body → 413, not dispatched;
+- a streamed 4 MiB chunked body with no `content-length` → 413, not dispatched.
+
+`npm run saloon:bots` (typecheck + tests) passes: **70 = 66 existing + 4 new**.
+**Mutation:** with the cap set to `Infinity`, both oversized tests fail.

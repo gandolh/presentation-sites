@@ -22,14 +22,48 @@ export interface Dispatcher {
   dispatch(msg: InboundMessage): Promise<void>;
 }
 
-/** Read the full request body as a UTF-8 string (needed for signature check). */
-function readBody(req: IncomingMessage): Promise<string> {
+/**
+ * The largest POST body accepted, in bytes. Meta's webhook payloads are a few
+ * kilobytes (non-ASCII arrives escaped as \uXXXX), so 1 MiB is ample.
+ *
+ * The body has to be read in full before its signature can be checked, so
+ * without a cap anyone who can reach the port could make the process buffer a
+ * request of any size — a multi-gigabyte POST runs it out of memory and drops
+ * every inbound message until it restarts, without ever presenting a valid
+ * signature.
+ */
+const MAX_BODY_BYTES = 1024 * 1024;
+
+/**
+ * Read the request body as a UTF-8 string (needed for the signature check), or
+ * `null` the moment it exceeds `limit` — reading stops there and the caller
+ * answers 413. Collected as bytes and decoded once, so a multi-byte character
+ * split across chunks is not mangled.
+ */
+function readBody(req: IncomingMessage, limit: number): Promise<string | null> {
   return new Promise((resolve, reject) => {
-    let data = "";
-    req.on("data", (c) => (data += c));
-    req.on("end", () => resolve(data));
+    const chunks: Buffer[] = [];
+    let size = 0;
+    const onData = (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > limit) {
+        req.off("data", onData);
+        req.pause();
+        resolve(null);
+        return;
+      }
+      chunks.push(chunk);
+    };
+    req.on("data", onData);
+    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     req.on("error", reject);
   });
+}
+
+/** 413, then drop the connection rather than drain whatever is still coming. */
+function tooLarge(req: IncomingMessage, res: ServerResponse): void {
+  res.writeHead(413, { connection: "close" });
+  res.end(() => req.destroy());
 }
 
 /**
@@ -148,7 +182,20 @@ export function startWebhookServer(
 
     // POST: verified inbound events.
     if (req.method === "POST") {
-      const body = await readBody(req);
+      // Refuse an oversized body before reading any of it when it says so up
+      // front, and stop reading one that turns out to be when it does not.
+      const declared = Number(req.headers["content-length"]);
+      if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+        log.warn("webhook body too large — rejected", { declared });
+        tooLarge(req, res);
+        return;
+      }
+      const body = await readBody(req, MAX_BODY_BYTES);
+      if (body === null) {
+        log.warn("webhook body too large — rejected");
+        tooLarge(req, res);
+        return;
+      }
       const sig = req.headers["x-hub-signature-256"];
       if (!verifyMetaSignature(body, Array.isArray(sig) ? sig[0] : sig, appSecret)) {
         log.warn("webhook signature invalid — rejected");
@@ -176,6 +223,11 @@ export function startWebhookServer(
     res.writeHead(405);
     res.end();
   }
+
+  // Node's defaults let a slow-drip request hold a socket for 300 s. A webhook
+  // that Meta answers within milliseconds needs a fraction of that.
+  server.headersTimeout = 10_000;
+  server.requestTimeout = 15_000;
 
   server.listen(config.port, () => {
     log.info("webhook server listening", { port: config.port, path });
