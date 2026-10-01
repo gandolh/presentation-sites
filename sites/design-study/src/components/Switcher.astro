@@ -330,6 +330,13 @@ const index = styles.findIndex((s) => s.slug === slug) + 1;
     // Arrow stepping only makes sense while the picker is shut.
     if (sheet?.open) return;
 
+    // Nor when the key was handled already, or is aimed at something
+    // interactive: a carousel's dots are ARIA tabs, and an arrow on a focused
+    // tab means "next image", not "next design style" — it used to navigate
+    // away from the post being read. `G` above stays global on purpose.
+    if (event.defaultPrevented) return;
+    if (target?.closest('a, button, summary, [role="tab"], .ds-carousel')) return;
+
     if (event.key === "ArrowLeft" || event.key === "[") {
       if (prev) window.location.href = prev.href;
     } else if (event.key === "ArrowRight" || event.key === "]") {

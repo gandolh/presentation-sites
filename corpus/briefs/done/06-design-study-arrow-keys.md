@@ -56,3 +56,35 @@ jump.
 - The dots render and switch images correctly in minimalism, spatial and
   liquid-glass, which cover the three carousel implementations.
 - `npm run build` (which runs `check:routes`) → 183 pages. `npx astro check` → clean.
+
+## Outcome — 2026-10-01
+
+**Carousels.** A new `src/components/carousel-keys.ts` implements the tabs
+keyboard model once: `dotTabIndex` (a roving tabindex, only the selected dot is
+in the Tab order) and `onDotKey` (← / →, Home / End, each `preventDefault()`ed,
+selecting through the carousel's own function and then focusing the new dot).
+All three carousels use it: Embla's `scrollTo` in the base and liquid-glass
+carousels, `setActive` in spatial. It is a separate module, not an export of
+`Carousel.tsx`, so spatial (no Embla) does not import Embla. Roles,
+`aria-selected`, class names and DOM shape are unchanged, so no `theme.css`
+changed.
+
+**Switcher.** The arrow/bracket stepping now returns early when the event was
+`defaultPrevented` or the target is inside `a, button, summary, [role="tab"],
+.ds-carousel`, after the existing field and modifier checks. I first put that
+guard at the top and then moved it **below the `G` handler**. At the top, `G`
+would have stopped working while a link or button had focus, and the brief
+keeps `G` as it was.
+
+Verified in Playwright on a post page in each theme, against the built site
+(`/<theme>/the-weight-of-a-handle/`):
+
+| | minimalism | spatial | liquid-glass |
+|---|---|---|---|
+| → on a focused dot: URL unchanged, dot 2 selected and focused | ✓ | ✓ | ✓ |
+| End / Home: last / first selected and focused; one tabbable dot | ✓ | ✓ | ✓ |
+| → on the focused "Next image" button: URL unchanged | ✓ | ✓ | ✓ |
+| nothing focused, →: next theme, same post | ✓ | ✓ | ✓ |
+| `G` opens the picker, Esc closes it | ✓ | ✓ | ✓ |
+
+`npm run build` (with `check:routes`) → 183 pages; `npx astro check` → 0 errors.

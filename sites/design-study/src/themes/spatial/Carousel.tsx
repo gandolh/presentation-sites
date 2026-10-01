@@ -20,6 +20,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import type { CarouselProps } from "../../components/Carousel";
+import { dotTabIndex, onDotKey } from "../../components/carousel-keys";
 
 const GAP = 2.5;
 const DEPTH = 1.5;
@@ -155,7 +156,9 @@ export default function SpatialCarousel({ images, ratio, label }: CarouselProps)
               role="tab"
               aria-selected={active === i}
               aria-label={`Image ${i + 1}`}
+              tabIndex={dotTabIndex(active, i)}
               onClick={() => setActive(i)}
+              onKeyDown={(e) => onDotKey(e, i, count, setActive)}
             />
           ))}
         </div>

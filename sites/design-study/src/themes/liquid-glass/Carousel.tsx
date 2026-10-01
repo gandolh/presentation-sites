@@ -25,6 +25,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { CarouselProps } from "../../components/Carousel";
+import { dotTabIndex, onDotKey } from "../../components/carousel-keys";
 
 export default function LiquidGlassCarousel({ images, ratio, label }: CarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -165,7 +166,9 @@ export default function LiquidGlassCarousel({ images, ratio, label }: CarouselPr
                 role="tab"
                 aria-selected={selected === i}
                 aria-label={`Image ${i + 1}`}
+                tabIndex={dotTabIndex(selected, i)}
                 onClick={() => scrollTo(i)}
+                onKeyDown={(e) => onDotKey(e, i, count, scrollTo)}
               />
             ))}
           </div>

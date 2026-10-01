@@ -45,7 +45,7 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 - [03](../briefs/done/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
 - [04](../briefs/done/04-opening-hours-single-source.md) — opening hours retyped outside `site.ts` (saloon, auto-service)
 - [05](../briefs/done/05-mobile-menu-focus-return.md) — mobile menus drop focus on close (saloon, auto-service, tractari)
-- [06](../briefs/todo/06-design-study-arrow-keys.md) — design-study arrow keys on a carousel jump to another theme
+- [06](../briefs/done/06-design-study-arrow-keys.md) — design-study arrow keys on a carousel jump to another theme
 - [07](../briefs/done/07-remove-dead-vite-overrides.md) — dead per-site `vite` overrides (break a lifted-out site)
 - [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
 

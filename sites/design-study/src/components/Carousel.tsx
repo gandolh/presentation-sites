@@ -17,6 +17,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import { dotTabIndex, onDotKey } from "./carousel-keys";
 
 export type CarouselImage = { src: string; alt: string };
 
@@ -111,7 +112,9 @@ export default function Carousel({ images, ratio, label, variant }: CarouselProp
                 role="tab"
                 aria-selected={selected === i}
                 aria-label={`Image ${i + 1}`}
+                tabIndex={dotTabIndex(selected, i)}
                 onClick={() => scrollTo(i)}
+                onKeyDown={(e) => onDotKey(e, i, count, scrollTo)}
               />
             ))}
           </div>
