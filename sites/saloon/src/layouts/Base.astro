@@ -34,7 +34,11 @@ const {
 
 // Absolute on the configured `site` origin: scrapers and X need full URLs.
 const canonical = absoluteUrl(path);
-const ogImage = absoluteUrl("/images/og-image.svg");
+
+// Social platforms refuse SVG for og:image, so the card is a PNG built from
+// scripts/og-card.html with the site's real self-hosted faces. It is not a
+// photo, so it does not resolve through img().
+const ogImage = absoluteUrl("/images/og-image.png");
 ---
 
 <!doctype html>

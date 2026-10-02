@@ -35,11 +35,11 @@ per-site docs and is *not* duplicated here.
 
 ## Briefs
 
-Eleven open, from the 2026-09-27 improvements audit (ranked; see
-[`log.md`](../log.md)). New work: capture in [`todos/`](../todos/), promote to
+None open. All eleven from the 2026-09-27 improvements audit were done by
+2026-10-02 (ranked; see [`log.md`](../log.md)). New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
-**Now**
+**Wave 1**
 - [01](../briefs/done/01-astro-security-advisories.md) — clear the Astro RCE advisory + js-yaml/svgo in both lockfiles
 - [02](../briefs/done/02-isolate-nested-docs-sites.md) — root `<site>:*` scripts exit 1 since the docs-sites; `astro check` scans them
 - [03](../briefs/done/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
@@ -49,9 +49,9 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 - [07](../briefs/done/07-remove-dead-vite-overrides.md) — dead per-site `vite` overrides (break a lifted-out site)
 - [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
 
-**Next**
+**Wave 2**
 - [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now `https://gandolh.ro/<site>/`
-- [10](../briefs/todo/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari (after 09)
+- [10](../briefs/done/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari
 - [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
 
 ## Note on the two doc layers

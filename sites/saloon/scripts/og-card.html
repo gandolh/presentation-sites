@@ -1,0 +1,47 @@
+<!doctype html><html lang="ro"><head><meta charset="utf-8">
+<!--
+  SOURCE for public/images/og-image.png — the card WhatsApp, Facebook and the
+  rest show when a link to this site is shared.
+
+  Those platforms refuse an SVG og:image, so the card ships as a PNG. It is
+  authored in HTML so it uses the site's REAL self-hosted faces (Fraunces with
+  its SOFT axis, and Manrope) rather than a renderer's fallback, which would also
+  leave the Romanian diacritics to whatever font it picked. The words are the
+  site's own: site.name, site.tagline, site.description.
+
+  To regenerate: screenshot this file at exactly 1200x630 to
+  public/images/og-image.png (keep it under 300 KB — WhatsApp drops larger
+  previews). Fonts resolve from the repo-root node_modules.
+-->
+<style>
+@font-face{font-family:"Fraunces Card";src:url("../../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-ext-full-normal.woff2") format("woff2-variations");font-weight:100 900;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Fraunces Card";src:url("../../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2") format("woff2-variations");font-weight:100 900;}
+@font-face{font-family:"Fraunces Card";font-style:italic;src:url("../../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-ext-full-italic.woff2") format("woff2-variations");font-weight:100 900;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Fraunces Card";font-style:italic;src:url("../../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2") format("woff2-variations");font-weight:100 900;}
+@font-face{font-family:"Manrope Card";src:url("../../../node_modules/@fontsource/manrope/files/manrope-latin-ext-500-normal.woff2") format("woff2");font-weight:500;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Manrope Card";src:url("../../../node_modules/@fontsource/manrope/files/manrope-latin-500-normal.woff2") format("woff2");font-weight:500;}
+@font-face{font-family:"Manrope Card";src:url("../../../node_modules/@fontsource/manrope/files/manrope-latin-ext-600-normal.woff2") format("woff2");font-weight:600;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Manrope Card";src:url("../../../node_modules/@fontsource/manrope/files/manrope-latin-600-normal.woff2") format("woff2");font-weight:600;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{background:#fff8f6;position:relative;color:#241914;font-family:"Manrope Card",system-ui,sans-serif}
+/* The one blush shape — a soft oval like a polished nail, set off the right
+   edge, with the gold kept to a single hairline ring around it. */
+.nail{position:absolute;right:-90px;top:-40px;width:520px;height:710px;border-radius:50%;background:#f4d6d0}
+.nail::before{content:"";position:absolute;inset:34px;border-radius:50%;background:#fae4db}
+.ring{position:absolute;right:-118px;top:-68px;width:576px;height:766px;border-radius:50%;border:1.5px solid #c9a961}
+.wm{position:absolute;left:84px;top:72px;font-family:"Fraunces Card";font-style:italic;font-weight:500;
+  font-variation-settings:"SOFT" 30,"opsz" 40;font-size:40px;color:#705955;letter-spacing:-.2px}
+.rule{position:absolute;left:84px;top:140px;width:64px;height:1.5px;background:#c9a961}
+h1{position:absolute;left:80px;top:196px;width:640px;font-family:"Fraunces Card";font-weight:460;
+  font-variation-settings:"SOFT" 30,"opsz" 144;font-size:76px;line-height:1.06;letter-spacing:-1.2px}
+p{position:absolute;left:84px;top:428px;width:560px;font-size:25px;line-height:1.5;color:#4f4442;font-weight:500}
+.where{position:absolute;left:84px;bottom:58px;font-size:17px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#745b1b}
+</style></head><body>
+<div class="nail"></div><div class="ring"></div>
+<div class="wm">Unghii by Ana</div>
+<div class="rule"></div>
+<h1>Unghii care vorbesc despre tine</h1>
+<p>Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.</p>
+<div class="where">Târgu-Jiu · Gorj</div>
+</body></html>

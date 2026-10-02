@@ -62,3 +62,32 @@ Depends on Task 09: the card only shows in previews once the tag is absolute.
   diacritics are correct, and the text is readable at the ~500px width a chat
   preview uses.
 - No page head references `og-image.svg`.
+
+## Outcome — 2026-10-02
+
+Every card is an HTML source screenshotted by headless Chrome at 1200×630, using
+the site's own self-hosted faces from the root `node_modules`, and stored as a
+palette PNG:
+
+| Site | Source | PNG |
+|---|---|---|
+| saloon | `scripts/og-card.html`: blush-cream, one gold hairline, Fraunces (SOFT) + Manrope, the brand "Unghii by Ana" and the site's own tagline | 19 KB |
+| subcort | `scripts/gen-og.mjs` (`npm run subcort:og`) now writes `scripts/og-card.html` (the same marquee drawing, wrapped with the IBM Plex faces), runs Chrome, palette-encodes with `sharp`, and fails if the size is not 1200×630. The marquee moved 25 px right, clear of the headline. | 26 KB |
+| tractari | `scripts/og-card.html` (new): night asphalt, an amber→orange lane line running to the horizon with reflector posts, Big Shoulders Display + Archivo, the hero's copy, the five counties and a safety-orange "Sună acum" | 112 KB |
+
+The `sharp` route for subcort was ruled out first: IBM Plex is not installed
+system-wide, so librsvg would have set the type in a fallback face.
+
+Each head points `og:image`, `twitter:image` and the JSON-LD `image` at
+`absoluteUrl("/images/og-image.png")`, so no card goes through `img()`. tractari
+gained all three and is back to `summary_large_image`. The two old SVG cards are
+deleted, along with saloon's `gen-placeholders.mjs` block that produced one
+labelled "Ana Saloon". The pipeline notes in saloon's `public/images/real/README.md`
+and subcort's README are updated to match.
+
+Verified: `file` shows each PNG is 1200 x 630 and under 300 KB. Each was opened
+and checked: the name matches `site.name`, and ă â î ș ț render in the brand
+face. On tractari, the breve on "PLATFORMĂ" collided with the line above until
+the headline lines were spaced apart. `PUBLIC_BASE=/<site>` builds emit
+absolute `…/og-image.png` tags. No built page references `og-image.svg`.
+`astro check` is clean in all three.

@@ -67,12 +67,6 @@ async function main() {
     );
   }
 
-  // OG image
-  await writeFile(
-    join(outDir, "og-image.svg"),
-    svg({ width: 1200, height: 630, from: "#F4D6D0", to: "#C9A961", label: "Ana Saloon" }),
-  );
-
   console.log("✓ Placeholders generated in", outDir);
 }
 

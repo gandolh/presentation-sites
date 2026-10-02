@@ -466,3 +466,15 @@ source, `sites/<site>/<src>`, instead of a `corpus/` that is not its source.
 Checked while writing: no site's docs-site has a diagram yet, so the committed
 `public/diagrams/` HTML is a mechanism, not content.
 
+
+## 2026-10-02 — page heads carry absolute URLs, and every site has a PNG social card
+
+Briefs 09 and 10, the last two from the 2026-09-27 audit. The canonical origin
+is now where vps-deploy serves the sites, `https://gandolh.ro/<site>/`: each
+config sets `site: PUBLIC_SITE ?? "https://gandolh.ro"`, and the kit's new
+`absoluteUrl()` builds every crawler-facing URL. The agent took the brief's
+recommendation without asking the owner; the decision is in `decisions.md` and
+can be revisited. The canonical path now defaults to the rendered page, so the
+legal pages stop claiming the home page. saloon, subcort and tractari ship
+1200×630 PNG cards rendered from HTML in their own faces (19 / 26 / 112 KB). The
+SVG cards are gone.

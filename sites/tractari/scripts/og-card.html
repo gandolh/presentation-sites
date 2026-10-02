@@ -1,0 +1,108 @@
+<!doctype html><html lang="ro"><head><meta charset="utf-8">
+<!--
+  SOURCE for public/images/og-image.png — the card WhatsApp, Facebook and the
+  rest show when a link to this site is shared.
+
+  Those platforms refuse an SVG og:image, so the card ships as a PNG. It is
+  authored in HTML so it uses the site's REAL self-hosted faces (Big Shoulders
+  Display and Archivo) rather than a renderer's fallback, which would also leave
+  ă â î ș ț to whatever font it picked. The words are the hero's own.
+
+  To regenerate: google-chrome --headless=new --hide-scrollbars --window-size=1200,630
+  --virtual-time-budget=3000 --screenshot=<png> file://<this file>, then encode it
+  as a palette PNG under 300 KB (WhatsApp drops larger previews) to
+  public/images/og-image.png. Fonts resolve from the repo-root node_modules.
+-->
+<style>
+@font-face{font-family:"Shoulders Card";src:url("../../../node_modules/@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-ext-wght-normal.woff2") format("woff2-variations");font-weight:100 900;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Shoulders Card";src:url("../../../node_modules/@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-wght-normal.woff2") format("woff2-variations");font-weight:100 900;}
+@font-face{font-family:"Archivo Card";src:url("../../../node_modules/@fontsource-variable/archivo/files/archivo-latin-ext-wght-normal.woff2") format("woff2-variations");font-weight:100 900;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:"Archivo Card";src:url("../../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2") format("woff2-variations");font-weight:100 900;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+/* Tokens from src/styles/global.css: cold asphalt, amber beacon, safety orange. */
+body{position:relative;font-family:"Archivo Card",system-ui,sans-serif;color:oklch(95% 0.008 90);
+  background:radial-gradient(60% 70% at 78% 30%,oklch(68% 0.2 45 / .07),transparent 60%),
+    linear-gradient(180deg,oklch(13% 0.012 250),oklch(16% 0.013 250))}
+#road{position:absolute;inset:0}
+/* legibility scrim over the left, like the hero's */
+.scrim{position:absolute;inset:0;background:linear-gradient(90deg,oklch(13% 0.012 250 / .96) 0%,oklch(13% 0.012 250 / .82) 44%,transparent 70%)}
+.wm{position:absolute;left:76px;top:64px;display:flex;align-items:center;gap:14px}
+.wm span{width:13px;height:13px;border-radius:50%;background:oklch(80% 0.16 80);box-shadow:0 0 16px 2px oklch(80% 0.16 80 / .7)}
+.wm b{font-family:"Shoulders Card";font-weight:800;font-size:38px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.kicker{position:absolute;left:78px;top:164px;font-weight:700;font-size:20px;letter-spacing:.16em;text-transform:uppercase;color:oklch(80% 0.16 80)}
+h1{position:absolute;left:74px;top:208px;font-family:"Shoulders Card";font-weight:800;font-size:118px;line-height:.88;
+  letter-spacing:.005em;text-transform:uppercase;text-shadow:0 2px 30px oklch(0% 0 0 / .5)}
+h1 em{display:block;margin-top:16px;font-style:normal;color:oklch(80% 0.16 80);text-shadow:0 0 28px oklch(80% 0.16 80 / .55)}
+.counties{position:absolute;left:78px;bottom:66px;font-size:23px;font-weight:500;color:oklch(72% 0.012 250)}
+.counties b{color:oklch(95% 0.008 90);font-weight:600}
+.call{position:absolute;right:72px;bottom:56px;display:flex;align-items:center;gap:12px;height:58px;padding:0 26px;border-radius:5px;
+  background:oklch(68% 0.2 45);color:oklch(99% 0.004 90);box-shadow:0 8px 30px -8px oklch(68% 0.2 45 / .6);
+  font-family:"Shoulders Card";font-weight:800;font-size:28px;letter-spacing:.06em;text-transform:uppercase}
+</style></head><body>
+<!-- The night road from the hero's chase camera: a lane line running to the
+     horizon, reflector posts, and the headlights' wash on the asphalt. -->
+<svg id="road" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="beam" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="oklch(95% 0.03 230)" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="oklch(95% 0.03 230)" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lane" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="oklch(68% 0.2 45)"/>
+      <stop offset="100%" stop-color="oklch(80% 0.16 80)"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- asphalt ribbon, vanishing at (905,150) -->
+  <polygon points="895,150 915,150 1260,630 560,630" fill="oklch(21% 0.014 250)"/>
+  <polygon points="895,150 915,150 1260,630 560,630" fill="url(#beam)"/>
+  <!-- edge lines -->
+  <line x1="895" y1="150" x2="560" y2="630" stroke="oklch(95% 0.008 90)" stroke-opacity=".28" stroke-width="3"/>
+  <line x1="915" y1="150" x2="1260" y2="630" stroke="oklch(95% 0.008 90)" stroke-opacity=".28" stroke-width="3"/>
+  <g id="dashes" filter="url(#glow)"></g>
+  <g id="posts"></g>
+</svg>
+<div class="scrim"></div>
+<div class="wm"><span></span><b>AXA Tractări</b></div>
+<p class="kicker">Non-stop 24/7 · Oltenia</p>
+<h1>Tractări auto<em>pe platformă.</em></h1>
+<p class="counties"><b>Gorj</b> · Dolj · Vâlcea · Olt · Mehedinți</p>
+<div class="call">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 16.9v2.8a2 2 0 0 1-2.2 2 19.5 19.5 0 0 1-8.5-3 19.2 19.2 0 0 1-5.9-5.9 19.5 19.5 0 0 1-3-8.6 2 2 0 0 1 2-2.2h2.8a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L7.6 9.7a15.8 15.8 0 0 0 5.9 5.9l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+  Sună acum
+</div>
+<script>
+// Perspective: a point at depth t (0 = horizon, 1 = bottom edge) sits at
+// y = 150 + 480·t^k; dashes and posts shrink toward the vanishing point.
+const NS = "http://www.w3.org/2000/svg";
+const VX = 905, VY = 150, BY = 630;
+const at = (u) => VY + (BY - VY) * u;               // u in [0,1]
+const xLane = (y) => VX + (910 - VX) * (y - VY) / (BY - VY);
+const dashes = document.getElementById("dashes");
+for (let i = 0; i < 9; i++) {
+  const u0 = Math.pow((i + 0.15) / 9, 1.9), u1 = Math.pow((i + 0.6) / 9, 1.9);
+  const y0 = at(u0), y1 = at(u1), w = 2 + 14 * u1;
+  const p = document.createElementNS(NS, "polygon");
+  const x0 = xLane(y0), x1 = xLane(y1), w0 = 2 + 14 * u0;
+  p.setAttribute("points", `${x0 - w0 / 2},${y0} ${x0 + w0 / 2},${y0} ${x1 + w / 2},${y1} ${x1 - w / 2},${y1}`);
+  p.setAttribute("fill", "url(#lane)");
+  dashes.appendChild(p);
+}
+const posts = document.getElementById("posts");
+for (let i = 1; i < 7; i++) {
+  const u = Math.pow(i / 7, 1.9), y = at(u), h = 6 + 46 * u;
+  const xr = VX + 10 + (1260 - 915) * u + 30 * u;
+  const r = document.createElementNS(NS, "rect");
+  r.setAttribute("x", xr); r.setAttribute("y", y - h); r.setAttribute("width", 2 + 6 * u); r.setAttribute("height", h);
+  r.setAttribute("fill", "oklch(95% 0.008 90)"); r.setAttribute("fill-opacity", ".5");
+  posts.appendChild(r);
+  const c = document.createElementNS(NS, "rect");
+  c.setAttribute("x", xr); c.setAttribute("y", y - h); c.setAttribute("width", 2 + 6 * u); c.setAttribute("height", 3 + 8 * u);
+  c.setAttribute("fill", "oklch(80% 0.16 80)"); c.setAttribute("filter", "url(#glow)");
+  posts.appendChild(c);
+}
+</script>
+</body></html>

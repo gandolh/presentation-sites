@@ -18,8 +18,6 @@ Astro serves `public/` at the site root, so a file here is reachable at
      [`src/components/Hero.astro`](../../../src/components/Hero.astro).
    - **Portrait** — `src="/images/ana-portrait.svg"` in
      [`src/components/About.astro`](../../../src/components/About.astro).
-   - **OG / social preview** — `/images/og-image.svg` in
-     [`src/layouts/Base.astro`](../../../src/layouts/Base.astro) (3 spots).
 
 ## Notes
 

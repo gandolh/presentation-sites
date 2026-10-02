@@ -24,6 +24,10 @@ const {
 
 // Absolute on the configured `site` origin: scrapers and X need full URLs.
 const canonical = absoluteUrl(path);
+
+// Social platforms refuse SVG for og:image, so the card is a PNG built from
+// scripts/og-card.html with the site's real self-hosted faces.
+const ogImage = absoluteUrl("/images/og-image.png");
 ---
 
 <!doctype html>
@@ -44,12 +48,14 @@ const canonical = absoluteUrl(path);
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={canonical} />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Fonts are self-hosted via @fontsource (imported in the frontmatter) -->
 
@@ -62,6 +68,7 @@ const canonical = absoluteUrl(path);
         "@type": "AutomotiveBusiness",
         name: site.name,
         description: site.description,
+        image: ogImage,
         url: absoluteUrl("/"),
         telephone: `+${primaryPhone.e164}`,
         priceRange: "$$",
