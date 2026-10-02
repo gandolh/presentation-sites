@@ -10,29 +10,25 @@ import "@fontsource/ibm-plex-mono/500.css";
 import "@fontsource/ibm-plex-mono/600.css";
 import "../styles/global.css";
 import { site } from "../content/site";
-import { img } from "../content/images";
-import { withBase } from "@sites/kit";
+import { absoluteUrl, pagePath, withBase } from "@sites/kit";
 
 interface Props {
   title?: string;
   description?: string;
   // Root-relative path of this page (e.g. "/corturi/"). Used to build the
-  // per-page canonical + og:url. Defaults to the home page.
+  // per-page canonical + og:url. Defaults to the page being rendered.
   path?: string;
 }
 
 const {
   title = `${site.name} · Corturi pentru evenimente în ${site.county}`,
   description = site.description,
-  path = "/",
+  path = pagePath(Astro.url.pathname),
 } = Astro.props;
 
-// Public site origin — overwritten by the owner if a real domain is set.
-const siteOrigin = "https://subcort.ro";
-const canonical = `${siteOrigin}${path}`;
-
-const ogImage = img("og-image");
-const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
+// Absolute on the configured `site` origin: scrapers and X need full URLs.
+const canonical = absoluteUrl(path);
+const ogImage = absoluteUrl("/images/og-image.svg");
 ---
 
 <!doctype html>
@@ -73,8 +69,8 @@ const ogImageAbsolute = `${siteOrigin}/${ogImage.replace(/^\//, "")}`;
         "@type": "LocalBusiness",
         name: site.name,
         description: site.description,
-        image: ogImageAbsolute,
-        url: `${siteOrigin}/`,
+        image: ogImage,
+        url: absoluteUrl("/"),
         telephone: `+${site.phoneE164}`,
         areaServed: { "@type": "AdministrativeArea", name: `${site.county} / ${site.region}` },
         address: {

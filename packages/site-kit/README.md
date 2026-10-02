@@ -24,6 +24,23 @@ withBase("/favicon.svg"); // "/saloon/favicon.svg"
 Astro prefixes bundled assets (imported CSS/JS) on its own — this is only for
 paths written by hand or assembled as strings.
 
+### `absoluteUrl(path)` and `pagePath(pathname)`
+
+`absoluteUrl` builds the full URL of a root-relative path on the site's `site`
+origin (from `astro.config.mjs`), base included. Use it for every URL a scraper
+reads on its own: canonical, `og:url`, `og:image`, `twitter:image`, JSON-LD.
+
+```ts
+import { absoluteUrl, pagePath } from "@sites/kit";
+
+absoluteUrl("/images/og-image.png"); // "https://gandolh.ro/saloon/images/og-image.png"
+pagePath(Astro.url.pathname);        // "/termeni/": the current page, base stripped
+```
+
+A site with no `site` option makes `absoluteUrl` throw, so the build fails
+instead of shipping relative tags. `pagePath` is `withBase` run backwards, so a
+layout can name the page it is rendering without every page passing its path.
+
 ### `createImages({ hasReal, realExt, mockExt })`
 
 Builds a site's `img()` resolver for the mock/real image pipeline. Committed SVG

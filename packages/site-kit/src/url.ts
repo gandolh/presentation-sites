@@ -17,3 +17,34 @@ export function withBase(path: string): string {
   const clean = path.startsWith("/") ? path.slice(1) : path;
   return base.endsWith("/") ? `${base}${clean}` : `${base}/${clean}`;
 }
+
+// The absolute URL of a root-relative path, on the origin set by the consuming
+// site's `site` option in astro.config.mjs. For tags a crawler reads without a
+// page to resolve against: canonical, og:url, og:image, twitter:image, JSON-LD.
+//   absoluteUrl("/")                    → "https://gandolh.ro/saloon/"
+//   absoluteUrl("/images/og-image.png") → "https://gandolh.ro/saloon/images/og-image.png"
+//
+// A site without `site` gets a build error rather than silently shipping
+// relative tags that social scrapers and search engines cannot use.
+export function absoluteUrl(path: string): string {
+  const site = import.meta.env.SITE;
+  if (!site) {
+    throw new Error(
+      `absoluteUrl("${path}"): this site has no \`site\` in astro.config.mjs, ` +
+        "so there is no origin to build absolute URLs on. Add " +
+        "`site: process.env.PUBLIC_SITE ?? \"https://gandolh.ro\"`.",
+    );
+  }
+  return new URL(withBase(path), site).href;
+}
+
+// The inverse of withBase: the root-relative path of a pathname that already
+// carries the base. Lets a layout name the current page without every page
+// passing its own path.
+//   pagePath("/saloon/termeni/") → "/termeni/"   (base "/saloon/")
+export function pagePath(pathname: string): string {
+  const base = import.meta.env.BASE_URL; // trailing slash, e.g. "/saloon/" or "/"
+  const root = base.endsWith("/") ? base : `${base}/`;
+  if (pathname === root.slice(0, -1)) return "/";
+  return pathname.startsWith(root) ? `/${pathname.slice(root.length)}` : pathname;
+}

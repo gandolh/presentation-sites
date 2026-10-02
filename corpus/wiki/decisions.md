@@ -1,6 +1,6 @@
 ---
 summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. Do not relitigate without a log entry.
-updated: 2026-10-01
+updated: 2026-10-02
 ---
 
 # Decisions
@@ -49,6 +49,24 @@ own domain.
 *Why:* one VPS, one Caddy, many sub-paths — but dev must still run at `/`. The
 helper makes the difference invisible to components; the cost is that a raw
 `href="/x"` anywhere is a bug that only shows up in production.
+
+### The canonical origin is where the site is served
+
+**2026-10-02** — each site's `astro.config.mjs` sets
+`site: process.env.PUBLIC_SITE ?? "https://gandolh.ro"` next to `base`, and every
+URL a crawler reads without a page to resolve against (canonical, `og:url`,
+`og:image`, `twitter:image`, JSON-LD `url`/`image`) goes through `absoluteUrl()`
+in `@sites/kit`. With no `site`, that helper throws and the build fails.
+
+*Rejected:* keeping a hardcoded per-site origin (`anasaloon.ro`, `bavauto.ro`,
+`subcort.ro`, `axatractari.ro`) in each `Base.astro`.
+*Why:* none of those domains served the site. vps-deploy serves all of them at
+`https://gandolh.ro/<site>/`. Relative `og:image` tags previewed without an image,
+and the two demos pointed search engines at fictional brands' domains this repo
+does not control. A client site moves to its own domain at launch by building
+with `PUBLIC_SITE=https://<domain> PUBLIC_BASE=/`. No code changes.
+Recorded by the agent running brief 09, which took the brief's recommendation.
+The owner had not been asked yet.
 
 ## Images are addressed by logical name, mock and real are separate sources
 

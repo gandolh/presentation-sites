@@ -10,6 +10,10 @@ export default defineConfig({
   // Served under a sub-path on a shared VPS (e.g. http://HOST/saloon).
   // Override at build time with PUBLIC_BASE=/saloon; defaults to "/" for local dev.
   base: process.env.PUBLIC_BASE ?? '/',
+  // The origin the site is served from, for canonical / og / JSON-LD URLs
+  // (see absoluteUrl in @sites/kit). At launch on its own domain, build with
+  // PUBLIC_SITE=https://<domain> PUBLIC_BASE=/.
+  site: process.env.PUBLIC_SITE ?? 'https://gandolh.ro',
   integrations: [
     react(),
     // Phosphor, inlined at build time by astro-icon: no runtime, no sprite

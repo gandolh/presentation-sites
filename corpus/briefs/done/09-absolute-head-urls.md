@@ -83,3 +83,34 @@ own domain by building with `PUBLIC_SITE=https://anasaloon.ro PUBLIC_BASE=/`.
   with `https://example.test/` and contain no `/<site>/` segment.
 - Removing `site` from one config makes that build fail with the helper's error.
 - `npx astro check` → clean in the four sites.
+
+## Outcome — 2026-10-02
+
+**Decision:** canonical = where the site is served, as the brief recommended.
+Each site's config has `site: process.env.PUBLIC_SITE ?? "https://gandolh.ro"`,
+recorded in [decisions.md](../../wiki/decisions.md). The agent running the brief
+made this call; the owner was not asked first.
+
+`@sites/kit` gains `absoluteUrl(path)`, which is `new URL(withBase(path),
+import.meta.env.SITE)` and throws a named error when `site` is unset. It also
+gains `pagePath(pathname)`, the inverse of `withBase`. Each `Base.astro` dropped
+its hardcoded origin. `canonical`/`og:url` = `absoluteUrl(path)`, and `og:image`,
+`twitter:image` and the JSON-LD `image` share one absolute card URL. The JSON-LD
+`url` is `absoluteUrl("/")`. tractari has no `og:image` and uses
+`twitter:card = summary` until Task 10.
+
+Beyond the brief: `path` now defaults to `pagePath(Astro.url.pathname)` instead
+of `"/"`. Every legal page renders through `LegalLayout` with no path, so before
+this each one declared the home page as its canonical. saloon's `Base` gains the
+`path` prop it lacked.
+
+Verified:
+- `PUBLIC_BASE=/<site>`: home plus an inner page per site (saloon `/termeni/`,
+  auto-service `/servicii/` and `/cookie-uri/`, subcort `/zona/`). Every
+  canonical, og:url, og:image, twitter:image and JSON-LD url/image starts with
+  `https://gandolh.ro/<site>/`.
+- `PUBLIC_BASE=/ PUBLIC_SITE=https://example.test`: all four sites emit
+  `https://example.test/…` with no `/<site>/` segment.
+- tractari with `site` removed fails its build with the `absoluteUrl` error.
+- `astro check`: 0 errors and 0 warnings in all four. saloon's 6 hints were
+  already there.

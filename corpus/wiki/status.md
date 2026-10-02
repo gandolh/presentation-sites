@@ -1,6 +1,6 @@
 ---
 summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-10-01
+updated: 2026-10-02
 ---
 
 # Status — 2026-10-01
@@ -50,7 +50,7 @@ Eleven open, from the 2026-09-27 improvements audit (ranked; see
 - [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
 
 **Next**
-- [09](../briefs/todo/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals — needs an origin decision first
+- [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now `https://gandolh.ro/<site>/`
 - [10](../briefs/todo/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari (after 09)
 - [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
 
