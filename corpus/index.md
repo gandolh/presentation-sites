@@ -18,7 +18,7 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [architecture](wiki/architecture.md) — How this workspace is put together — the sites/ + packages/ layout, the per-site docs-sites, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
 - [decisions](wiki/decisions.md) — Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. Do not relitigate without a log entry.
 - [design-styles](wiki/design-styles.md) — Where the repo's design-language reference lives and how to reuse it — fourteen per-style dossiers under sites/design-study/docs/styles/, each carrying a CSS image-treatment recipe and prompt descriptors for generating imagery in that style.
-- [open-questions](wiki/open-questions.md) — The genuinely unresolved questions about this repo — whether per-site docs adopt the briefs lifecycle, and whether the two demo sites stay.
+- [open-questions](wiki/open-questions.md) — Nothing open as of 2026-10-06. The briefs-lifecycle and demo-sites questions were answered; see decisions.md.
 - [overview](wiki/overview.md) — What presentation-sites is — a monorepo of independent Romanian marketing sites, who each one is for, and what lives at the top level.
 - [status](wiki/status.md) — Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
 <!-- CATALOG:END -->

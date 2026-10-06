@@ -169,6 +169,21 @@ its own npm-workspaces monorepo.
 domain rules), not a marketing site. Its docs are far larger than every other
 site's combined; merging them would blow this corpus's retrieval budget.
 
+## churchix runs its own corpus; the finished sites keep checklists
+
+**2026-10-06** (owner) — churchix adopts the corpus-flow lifecycle *inside*
+`churchix/` ([brief 12](../briefs/todo/12-churchix-gets-a-corpus.md)): its
+numbered `docs/todo/` items become briefs with done/superseded folders, a log
+and a lint. This extends "churchix governs itself" rather than revising it; the
+corpus is churchix's own, not this one. saloon and auto-service keep plain
+`docs/` checklists. *Rejected:* the same machinery for finished marketing sites.
+
+## subcort and tractari stay
+
+**2026-10-06** (owner) — The two finished demos stay in this repo and stay
+deployed. *Rejected:* moving each to its own repo the way the showcase went, and
+taking them down. *Why:* they cost nothing to keep.
+
 ## Each site's docs site lives inside the site
 
 **2026-09-06** (`eda07a0`) — The Starlight docs for a site are at

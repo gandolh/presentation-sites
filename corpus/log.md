@@ -478,3 +478,11 @@ can be revisited. The canonical path now defaults to the rendered page, so the
 legal pages stop claiming the home page. saloon, subcort and tractari ship
 1200×630 PNG cards rendered from HTML in their own faces (19 / 26 / 112 KB). The
 SVG cards are gone.
+
+## 2026-10-06 — both open questions answered
+
+churchix gets a corpus of its own: brief 12 moves its wiki and its 17 numbered
+work items into `churchix/corpus/`, sorting each item into todo, done or
+superseded against the code. saloon and auto-service keep their checklists.
+subcort and tractari stay in the repo and stay deployed. Both recorded in
+decisions.md; open-questions.md is empty.
