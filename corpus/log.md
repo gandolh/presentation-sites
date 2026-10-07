@@ -499,3 +499,16 @@ builds from the new paths. This corpus, the README and `routing.md` now point at
 `churchix/corpus/` instead of `churchix/docs/wiki/`, and `decisions.md` notes that
 "corpus" now names two workspaces. The ADRs keep two dead links, since the brief
 barred touching them.
+
+## [2026-10-07] cleanup | saloon's old todo lists deleted
+
+The owner judged them outdated. Gone: `docs/todo/ROADMAP.md` and `TODO.md`,
+`marketing/ads/todo.md` (the ad plan), and the five `marketing/bots/<bot>/todo.md`
+plans written before the bots were built. Every pointer to them was removed:
+the bots' "Plan:" header comments, `COMPLIANCE.md` (a bot's API is now looked up
+in `marketing/README.md`), `SCAFFOLD_PLAN.md`, `MARKETING.md`, the saloon README
+tree, and `wiki/status.md`. `marketing/README.md` lost its "plan-only, no code
+yet" opening and now maps the real `src/` layout. `docs/STATUS.md` keeps its
+"what's left" summary, which still matches the code (the `TODO(impl)` markers
+and the mock contact and CUI data in `site.ts`), minus the roadmap's B1–B5 step
+codes. Bots: `npm run check`, 70 tests pass.

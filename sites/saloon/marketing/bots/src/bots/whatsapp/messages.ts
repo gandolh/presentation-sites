@@ -3,7 +3,7 @@
  * Phase 2 · Agent A. On-brand for Ana Saloon (warm, blush/cream/gold tone),
  * salon de manichiură în Târgu-Jiu. NO English in anything a client sees.
  *
- * Template names mirror marketing/bots/whatsapp/todo.md:
+ * Template names:
  *  - confirmare_programare (utility, art. 6(1)(b) contract)
  *  - reminder_programare    (utility, art. 6(1)(b) contract)
  *  - multumire_recenzie     (marketing, opt-in only — art. 6(1)(a))

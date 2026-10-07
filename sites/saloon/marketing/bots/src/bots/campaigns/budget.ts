@@ -11,7 +11,7 @@
  * No draft may be built without passing through both. There is no code path in
  * this bot that produces an ACTIVE campaign.
  *
- * Plan: ../../../campaigns/todo.md   Rules: ../../../COMPLIANCE.md (money safety)
+ * Rules: ../../../COMPLIANCE.md (money safety)
  */
 
 import type { BudgetCaps, CampaignDraft } from "../../core/index.ts";

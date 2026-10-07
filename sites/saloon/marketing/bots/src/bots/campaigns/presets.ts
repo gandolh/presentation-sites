@@ -10,7 +10,7 @@
  * PAUSED for human approval (#6). No real targeting params here — those are
  * filled at real-impl time (see `// TODO(impl):` in ./index.ts).
  *
- * Plan: ../../../campaigns/todo.md   Rules: ../../../COMPLIANCE.md
+ * Rules: ../../../COMPLIANCE.md
  */
 
 import type { CampaignObjective } from "../../core/index.ts";
@@ -42,7 +42,7 @@ export interface CampaignPreset {
 }
 
 /**
- * The recurring presets the bot can prepare (see campaigns/todo.md §scope).
+ * The recurring presets the bot can prepare.
  * Budgets here are deliberately conservative; anything above the config ceiling
  * is clamped, and the over-cap case is exercised in the tests.
  *

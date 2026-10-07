@@ -3,7 +3,6 @@
  * Phase 2 · Agent C. Implements this folder ONLY; codes against the FROZEN
  * `../../core/index.ts` contracts. No real API calls / tokens / uploads.
  *
- * Plan:  ../../../scheduler/todo.md
  * Rules: ../../../COMPLIANCE.md
  *
  * What it does: a publish-runner job pulls posts that are due (db.listDuePosts),

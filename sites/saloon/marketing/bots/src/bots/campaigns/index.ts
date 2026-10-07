@@ -2,7 +2,7 @@
  * Campaigns bot — prepare PAUSED ad drafts for human approval.
  * Phase 2 · Agent D implementation. Owns ONLY this folder.
  *
- * Plan: ../../../campaigns/todo.md   Rules: ../../../COMPLIANCE.md (money safety)
+ * Rules: ../../../COMPLIANCE.md (money safety)
  *
  * WHAT THIS DOES
  *  - "prepare drafts" job: turn each config-defined preset into a PAUSED

@@ -1,7 +1,7 @@
 /**
  * Per-platform publish caps — Scheduler bot (Phase 2 · Agent C).
  *
- * COMPLIANCE (../../../COMPLIANCE.md #5 + scheduler/todo.md "Limits"):
+ * COMPLIANCE (../../../COMPLIANCE.md #5):
  *   - Instagram: <=100 API-published posts / rolling 24h.
  *   - TikTok:    <=25 posts / rolling 24h (per account/day).
  *   - Facebook:  no hard documented per-day publish cap; we still bound it

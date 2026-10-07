@@ -20,8 +20,7 @@ Built with **Astro + React + Tailwind v4**. Pure static output, hostable on any 
 │   ├── ADR.md                # Architecture decisions & spec
 │   ├── tokens.md             # Design system (color, typography, tokens)
 │   ├── STATUS.md             # Where the project stands
-│   ├── LEGAL.md  MARKETING.md
-│   └── todo/                 # ROADMAP.md + TODO.md
+│   └── LEGAL.md  MARKETING.md
 ├── public/
 │   ├── favicon.svg
 │   └── images/               # SVG placeholders (to be replaced by photos)

@@ -2,7 +2,7 @@
  * Responses bot — inbound auto-reply on Instagram + Facebook.
  * Phase 2 · Agent B. Implements this folder ONLY (frozen core/ contracts).
  *
- * Plan: ../../../responses/todo.md   Rules: ../../../COMPLIANCE.md
+ * Rules: ../../../COMPLIANCE.md
  *
  * Scope (all user-initiated — COMPLIANCE #3, inbound-only):
  *  - First-touch auto-reply to an inbound IG DM or FB Page message.
@@ -135,7 +135,7 @@ async function sendReply(senders: Senders, logger: Logger, msg: OutboundMessage)
 /**
  * Configure the Ice-Breaker / quick-reply MENU on both surfaces. This is a
  * reply menu only — for people who already opened a chat — NOT outbound growth
- * (todo.md note + COMPLIANCE #2/#3). Best-effort: a failure here must not crash
+ * (COMPLIANCE #2/#3). Best-effort: a failure here must not crash
  * registration, so we catch + log.
  */
 async function configureIceBreakers(senders: Senders, logger: Logger): Promise<void> {

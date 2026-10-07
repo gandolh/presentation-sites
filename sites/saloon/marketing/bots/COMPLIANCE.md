@@ -55,7 +55,7 @@ comes from Meta's & TikTok's 2026 platform terms and from Romanian/EU law.
 
 ## Definition of done for ANY bot PR
 
-- [ ] Uses only the official API listed in its `todo.md`.
+- [ ] Uses only the official API listed for it in `../README.md`.
 - [ ] Responses trigger on inbound user events only; no engagement actions.
 - [ ] Campaigns are prepared as draft/paused for human approval; budget caps + spend kill-switch enforced.
 - [ ] STOP/opt-out handling on messaging; per-bot kill-switch env flag.

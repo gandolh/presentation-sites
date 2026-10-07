@@ -7,7 +7,7 @@ local dev — **not** full feature implementation, and **not** real API calls.
 Each bot ships as a stubbed module that type-checks and has a clear TODO surface
 for the real implementation later.
 
-Read `COMPLIANCE.md` and each bot's `todo.md` first. Nothing here calls a live
+Read `COMPLIANCE.md` first. Nothing here calls a live
 API or spends money.
 
 ## The collision problem (why we can't just fan out 5 agents)

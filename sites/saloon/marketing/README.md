@@ -1,7 +1,7 @@
 # Marketing & Automation — Ana Saloon
 
-Plan-only. No code yet. This folder holds **(1)** the advertising strategy and
-**(2)** the design for a set of *compliant* automation bots.
+This folder holds a set of *compliant* automation bots (`bots/`). They run in
+mock mode only; see `../docs/STATUS.md`.
 
 > Context: single-employee nail salon in Târgu-Jiu, Gorj. RO-only audience.
 > Booking is a WhatsApp deep-link + Formspree backup (no booking SaaS).
@@ -33,35 +33,36 @@ See `bots/COMPLIANCE.md` for the hard rules every bot must obey.
 ```
 marketing/
 ├── README.md                ← you are here
-├── ads/
-│   └── todo.md              ← paid ad strategy (Meta + TikTok), budgets, funnel
 └── bots/
     ├── COMPLIANCE.md        ← non-negotiable ToS/GDPR/money rules
-    ├── campaigns/todo.md    ← prepare ad campaigns (Marketing API) → human approves
-    ├── responses/todo.md    ← inbound auto-reply (WhatsApp + IG/FB Messaging)
-    ├── scheduler/todo.md    ← schedule & publish posts (Content Publishing + TikTok)
-    ├── whatsapp/todo.md      ← booking confirmations & reminders (Cloud API)
-    └── orchestrator/todo.md  ← shared host: webhooks, cron, secrets, kill-switches
+    ├── SCAFFOLD_PLAN.md     ← how the service was built (multi-agent)
+    └── src/
+        ├── core/            ← shared host: db, senders, webhook server, scheduler, kill-switches
+        └── bots/
+            ├── campaigns/   ← prepare ad campaigns (Marketing API) → human approves
+            ├── responses/   ← inbound auto-reply (WhatsApp + IG/FB Messaging)
+            ├── scheduler/   ← schedule & publish posts (Content Publishing + TikTok)
+            └── whatsapp/    ← booking confirmations & reminders (Cloud API)
 ```
 
 > `responses/` and `whatsapp/` overlap (both are WhatsApp messaging): `whatsapp/`
 > is the booking-specific confirmation/reminder flow; `responses/` is the
-> generic inbound auto-reply across all messaging surfaces. They'll share the
-> orchestrator's WhatsApp sender. Kept separate so the booking logic stays clear.
+> generic inbound auto-reply across all messaging surfaces. They share the
+> core WhatsApp sender. Kept separate so the booking logic stays clear.
 
 ## Phasing (do them in this order)
 
-1. **Ad strategy + organic** (`ads/todo.md`) — drives bookings day one, zero code.
-2. **WhatsApp bot** (`bots/whatsapp/todo.md`) — confirmations + reminders cut
-   no-shows; booking already flows through WhatsApp. Highest-ROI automation.
-3. **Orchestrator** (`bots/orchestrator/todo.md`) — the shared backend, built
-   when the WhatsApp bot needs a home for its webhook + scheduler.
-4. **Responses bot** (`bots/responses/todo.md`) — generic inbound auto-reply on
-   IG/FB once ads start sending message-leads there.
-5. **Scheduler** (`bots/scheduler/todo.md`) — post pipeline once the cross-post
-   queue (IG+FB+TikTok) becomes a chore to do by hand.
-6. **Campaign bot** (`bots/campaigns/todo.md`) — last; only worth automating once
-   the manual ad workflow is well understood and repeatable.
+1. **Ad strategy + organic** — drives bookings day one, zero code.
+2. **WhatsApp bot** — confirmations + reminders cut no-shows; booking already
+   flows through WhatsApp. Highest-ROI automation.
+3. **Shared core** — the shared backend, built when the WhatsApp bot needs a
+   home for its webhook + scheduler.
+4. **Responses bot** — generic inbound auto-reply on IG/FB once ads start
+   sending message-leads there.
+5. **Scheduler** — post pipeline once the cross-post queue (IG+FB+TikTok)
+   becomes a chore to do by hand.
+6. **Campaign bot** — last; only worth automating once the manual ad workflow
+   is well understood and repeatable.
 
 ## Costs
 

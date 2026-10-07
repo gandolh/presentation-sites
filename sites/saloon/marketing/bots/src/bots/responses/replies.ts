@@ -207,7 +207,7 @@ export function replyFor(intent: ReplyIntent): string {
 
 /**
  * Ice-breaker / quick-reply MENU — configured as a reply menu only (for people
- * who already opened a chat), NOT an outbound growth tactic (todo.md note,
+ * who already opened a chat), NOT an outbound growth tactic (see
  * COMPLIANCE #2/#3). RO-only, on-brand. `payload` is what comes back as the
  * inbound text when a user taps the chip; it maps 1:1 to an intent.
  */

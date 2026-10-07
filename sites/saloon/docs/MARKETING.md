@@ -20,8 +20,6 @@
 | Calendar sezonier RO (8 Martie, Paște, nunți mai–sept, Crăciun) + vârf CPM Q4 | ✅ plan |
 | **Nu** se cumpără urmăritori/like-uri; **nu** se depășește capacitatea unui scaun | ✅ regulă |
 
-Detaliul complet (pillars de conținut, structura campaniilor, oferte): `marketing/ads/todo.md`.
-
 ## 2. Decizia-cheie: „bots" = automatizare conformă, NU engagement
 
 Briful inițial cerea „bots care automatizează engagementul". S-a decis ferm
@@ -101,8 +99,7 @@ creează conturile (se testează pe ceva real). Marcată în cod cu `// TODO(imp
 - `scheduler/index.ts`: alertă la eșec de publicare + retry.
 
 Plus acțiunile pur de om (conturi, token-uri, aprobare template-uri/buget, DPA).
-Lista completă, împărțită pe **agent vs om**: `todo/ROADMAP.md`. Punct de
-reluare rapid: `STATUS.md`.
+Punct de reluare rapid: `STATUS.md`.
 
 ## 5. Costuri (cadru)
 

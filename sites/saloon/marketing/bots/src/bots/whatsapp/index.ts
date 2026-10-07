@@ -3,7 +3,7 @@
  * Phase 2 · Agent A. Implements ONLY this folder, against the FROZEN core
  * contracts (../../core/index.ts). Mock senders only — no real Cloud API calls.
  *
- * Plan: ../../../whatsapp/todo.md   Rules: ../../../COMPLIANCE.md
+ * Rules: ../../../COMPLIANCE.md
  *
  * What it wires:
  *  - registerJobs: confirmation + reminder (UTILITY templates) + nightly purge.
