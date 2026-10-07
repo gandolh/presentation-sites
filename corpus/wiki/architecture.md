@@ -1,6 +1,6 @@
 ---
 summary: How this workspace is put together — the sites/ + packages/ layout, the per-site docs-sites, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
-updated: 2026-10-01
+updated: 2026-10-07
 ---
 
 # Architecture
@@ -125,8 +125,10 @@ One shape per project, so a fresh reader never has to guess:
   docs/          STATUS, LEGAL, MARKETING, todo/ … (mostly Romanian)
 ```
 
-`corpus/` means **only** the root workspace. Per-site knowledge is `docs/`;
-churchix's wiki is `churchix/docs/wiki/`. See [decisions.md](decisions.md).
+`corpus/` at the root is this workspace. churchix runs a second one with the
+same shape at [`churchix/corpus/`](../../churchix/corpus/index.md), scoped to
+churchix. Per-site knowledge for the marketing sites is `docs/`. See
+[decisions.md](decisions.md).
 
 ## churchix — the exception
 
@@ -156,8 +158,7 @@ has its own at `churchix/docs-site/`. Each is a workspace of its own
 - **Content:** `scripts/sync-corpus.mjs` renders the site's own `README.md`,
   `PRODUCT.md`, `DESIGN.md` and selected `docs/*` into `src/content/docs/wiki/`,
   which is gitignored; each rendered page carries a banner naming its source
-  under `sites/<site>/`. It is not this corpus — "corpus" names only the root
-  workspace.
+  under `sites/<site>/`. It is not this corpus; the script name is historical.
 - **Diagrams:** `scripts/build-diagrams.mjs` compiles archify JSON from
   `diagrams/` into HTML under `public/diagrams/`, and the HTML is **committed**,
   because archify is a per-machine agent skill rather than an npm dependency. No

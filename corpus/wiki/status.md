@@ -1,9 +1,9 @@
 ---
 summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-10-02
+updated: 2026-10-07
 ---
 
-# Status — 2026-10-01
+# Status — 2026-10-07
 
 ## Where things stand
 
@@ -31,12 +31,12 @@ per-site docs and is *not* duplicated here.
 | `subcort` | Demo, complete. Reworked twice on 2026-08-23: first onto a *scoarța* (Oltenian rug) system, then — the owner found that too traditional — onto **Montaj**, the site as a drawing set. One marquee model in `src/lib/draft.ts` drives every graphic (WebGL hero, exploded plate, scale plan, OG card); ink for the object, one orange for annotation; no photography. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |
 | `design-study` | **New, 2026-08-23.** Not a marketing site — a UI/UX study. One fictional blog (*Ratio*, 12 posts, 18 shared placeholders) rendered in 14 design languages, content held constant so only design varies. 183 static pages; each theme owns its markup, layout and CSS, and loads only its own fonts. No Tailwind. The written half is 14 per-style dossiers carrying image-treatment recipes and prompt descriptors — see [`design-styles.md`](design-styles.md). | [`design-study/PRODUCT.md`](../../sites/design-study/PRODUCT.md), [`DESIGN.md`](../../sites/design-study/DESIGN.md) |
-| `churchix` | Active product. One church app scaffolded (`apps/parohia-harlesti-bacau`); shared packages + docs corpus in progress. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/docs/wiki/index.md`](../../churchix/docs/wiki/index.md) |
+| `churchix` | Active product. One church app (`apps/parohia-harlesti-bacau`) on the shared packages. Runs its own corpus since 2026-10-07: of its 17 design-integration briefs, 15 are done, 07 is superseded by the 2026-06-18 redesign, and 17 (audit follow-ups) is open. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/corpus/index.md`](../../churchix/corpus/index.md), [`churchix/corpus/wiki/status.md`](../../churchix/corpus/wiki/status.md) |
 
 ## Briefs
 
 None open. All eleven from the 2026-09-27 improvements audit were done by
-2026-10-02 (ranked; see [`log.md`](../log.md)). New work: capture in [`todos/`](../todos/), promote to
+2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
 **Wave 1**
@@ -53,6 +53,9 @@ None open. All eleven from the 2026-09-27 improvements audit were done by
 - [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now `https://gandolh.ro/<site>/`
 - [10](../briefs/done/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari
 - [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
+
+**From the owner's 2026-10-06 answers**
+- [12](../briefs/done/12-churchix-gets-a-corpus.md): churchix gets a corpus of its own, with its 17 work items sorted against the code
 
 ## Note on the two doc layers
 

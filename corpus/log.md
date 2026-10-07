@@ -486,3 +486,16 @@ work items into `churchix/corpus/`, sorting each item into todo, done or
 superseded against the code. saloon and auto-service keep their checklists.
 subcort and tractari stay in the repo and stay deployed. Both recorded in
 decisions.md; open-questions.md is empty.
+
+## [2026-10-07] done | Brief 12: churchix runs its own corpus
+
+churchix's wiki and its 17 numbered work items moved into `churchix/corpus/`
+(`67ace22`), with this corpus as the model, and churchix's lint passes. Checked
+against the code, 15 items are done, 07 is superseded by the 2026-06-18 redesign,
+and 17 (the audit follow-ups) is still open. The dependency table went to
+churchix's `wiki/status.md`, the conventions to `wiki/conventions.md`, and the
+swarm plan and the 2026-05-30 UI audit to churchix's log. The churchix docs site
+builds from the new paths. This corpus, the README and `routing.md` now point at
+`churchix/corpus/` instead of `churchix/docs/wiki/`, and `decisions.md` notes that
+"corpus" now names two workspaces. The ADRs keep two dead links, since the brief
+barred touching them.

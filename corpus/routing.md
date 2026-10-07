@@ -37,7 +37,7 @@ subtree.
 |---|---|
 | "Why is it built this way?" / "what was decided?" | `corpus/wiki/` (start at `index.md`; budget: ≤3 pages) |
 | "What's the state of site X?" | that site's own `STATUS.md` / `PRODUCT.md`, linked from `wiki/status.md` |
-| "How does churchix work?" | `churchix/CLAUDE.md`, then `churchix/docs/corpus/index.md` |
+| "How does churchix work?" | `churchix/CLAUDE.md`, then `churchix/corpus/index.md` |
 | "Who calls X?" / "where does feature Y live?" | `grep` — no code graph is bootstrapped, and the sites are small enough |
 | **"Did I get _every_ usage?"** (rename/refactor/delete) | **`grep -rnw`**, scoped to the one site directory |
 | "Is this image/asset actually used?" | `grep` the **logical name**, not the filename — images resolve through `src/content/images.ts` |
@@ -50,5 +50,5 @@ subtree.
 | Site design change | that site's `DESIGN.md` + `PRODUCT.md`, `src/styles/global.css` | other sites, `marketing/` | impeccable |
 | Cross-site / monorepo change | `corpus/wiki/architecture.md`, `corpus/wiki/decisions.md`, root `package.json`, root `README.md` | site internals | — |
 | Image / placeholder work | that site's `src/content/images.ts`, `gallery.ts`, `<site>/scripts/gen-*.mjs` (subcort: `src/lib/draft.ts`, no photos) | components | — |
-| churchix work | `churchix/CLAUDE.md`, the relevant `churchix/docs/corpus/*.md` | every other site | — |
+| churchix work | `churchix/CLAUDE.md`, `churchix/corpus/index.md`, then at most 3 `churchix/corpus/wiki/*.md` | every other site | — |
 | saloon bots work | `sites/saloon/marketing/bots/README.md`, `COMPLIANCE.md`, `src/core/types.ts` | the Astro site | — |

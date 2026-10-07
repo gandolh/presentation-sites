@@ -1,6 +1,6 @@
 ---
 summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. Do not relitigate without a log entry.
-updated: 2026-10-02
+updated: 2026-10-07
 ---
 
 # Decisions
@@ -172,10 +172,12 @@ site's combined; merging them would blow this corpus's retrieval budget.
 ## churchix runs its own corpus; the finished sites keep checklists
 
 **2026-10-06** (owner) — churchix adopts the corpus-flow lifecycle *inside*
-`churchix/` ([brief 12](../briefs/todo/12-churchix-gets-a-corpus.md)): its
+`churchix/` ([brief 12](../briefs/done/12-churchix-gets-a-corpus.md)): its
 numbered `docs/todo/` items become briefs with done/superseded folders, a log
 and a lint. This extends "churchix governs itself" rather than revising it; the
-corpus is churchix's own, not this one. saloon and auto-service keep plain
+corpus is churchix's own, not this one. It narrows "corpus names only this
+workspace": `churchix/corpus/` is a second corpus with the same shape, so the
+tooling reads it correctly. saloon and auto-service keep plain
 `docs/` checklists. *Rejected:* the same machinery for finished marketing sites.
 
 ## subcort and tractari stay

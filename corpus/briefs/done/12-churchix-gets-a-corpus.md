@@ -62,3 +62,7 @@ a lint, and the briefs-are-immutable rule.
 - Every one of the 17 items is in exactly one of todo/done/superseded, and each
   done one names its evidence.
 - The churchix docs site builds, if it depends on the moved paths.
+
+## Outcome (2026-10-07)
+
+Done in `67ace22`. `churchix/corpus/` has this corpus's shape, and `bash churchix/corpus/lint.sh` passes; it adds a check that each brief sits in exactly one folder and carries its closing note. `churchix/docs/` holds only `design/` and `adr/`. Checked against the code (`astro check` 0 errors, 10 pages built), briefs 01 to 06 and 08 to 16 are done, 07 is superseded by the `70999ff` redesign, and 17 stays in todo; each moved brief names its evidence in a closing note. The judgment calls: the README's dependency table became the brief table in churchix's `wiki/status.md`, and `_conventions.md` became `wiki/conventions.md`. `SWARM_PLAN.md` and `ui-audit-2026-05-30.md` became churchix log entries, because the plan ran to the end on 2026-05-29 and brief 17 covers every finding the audit left open. Only the relative link targets in the moved brief bodies changed. `research-brief.md` had 229 body lines, so it split in two with its text unchanged. The docs site reads the new paths and builds 14 pages, one fewer than before because the UI audit now renders inside the change log. Left as they were, by this brief's rules: both ADRs still link `../wiki/` and `../todo/` (the docs site maps those links), and a comment in `apps/parohia-harlesti-bacau/src/pages/program.astro` names the old log path.

@@ -1,6 +1,6 @@
 ---
 summary: What presentation-sites is — a monorepo of independent Romanian marketing sites, who each one is for, and what lives at the top level.
-updated: 2026-10-01
+updated: 2026-10-07
 ---
 
 # Overview
@@ -30,8 +30,8 @@ Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Olteni
 
 `churchix/` is structurally different from the rest: it is a product with shared
 `@churchix/*` packages and one independent Astro app per church, not a single
-site. It keeps its own [`CLAUDE.md`](../../churchix/CLAUDE.md) and its own docs
-under [`churchix/docs/`](../../churchix/docs/).
+site. It keeps its own [`CLAUDE.md`](../../churchix/CLAUDE.md) and its own
+corpus at [`churchix/corpus/`](../../churchix/corpus/index.md).
 
 A `showcase/` gallery site used to live here and was moved out of the repo
 (commit `93eba5d`, 2026-07-17). Nothing in this repo should reference it.
