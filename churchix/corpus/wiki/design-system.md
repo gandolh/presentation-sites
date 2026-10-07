@@ -1,5 +1,5 @@
 ---
-summary: The Ecclesia Digitalis design system. Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, and how a church re-skins by tokens alone. Some details predate the 2026-06-18 redesign.
+summary: The Ecclesia Digitalis design system. Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, and how a church re-skins by tokens alone. Covers the 2026-06-18 liturgical-rail redesign (Rail, PageShell, asymmetric hero) and the max-w guard.
 updated: 2026-10-07
 ---
 
@@ -15,14 +15,14 @@ The visual layer of every church site. It lives in `@churchix/ui` and re-skins p
 
 ## The token contract
 
-- A **Material-3 palette** (~50 color roles: `primary`, `on-primary`, `primary-container`, `secondary`, `surface`, `surface-container-{lowest…highest}`, `outline`, `outline-variant`, `error`, the `*-fixed` set, …), an M3 type scale (`display-lg`, `headline-lg`, `body-md`, `label-md`, `caption` — Source Serif 4 headings, Inter body), named spacing (`base/xs/sm/md/lg/xl/gutter/container-max`), and a radius scale.
+- A **Material-3 palette** (~50 color roles: `primary`, `on-primary`, `primary-container`, `secondary`, `surface`, `surface-container-{lowest…highest}`, `outline`, `outline-variant`, `error`, the `*-fixed` set, …), an M3 type scale (`display-lg`, `headline-lg`, `body-md`, `label-md`, `caption`, plus the redesign's `display-xl` and `overline`; Cardo headings with Source Serif 4 as the fallback, Inter body), named spacing (`base/xs/sm/md/lg/xl/gutter/container-max`), and a radius scale.
 - Roles are **CSS custom properties** wired into the Tailwind theme (`bg-primary` → `var(--primary)`).
 - **Churches set only a small seed set** — `primary`, `secondary` (gold), `surface` (and optional `error`/fonts/radius) — in their `site` content entry ([siteSchema.brand](../../packages/schemas/src/index.ts)). The remaining roles are **derived** in the base layer, not hand-set per church. This preserves ADR-0001's anti-sprawl spirit: the *church-facing* surface stays tiny even though the *system* uses the full palette.
 - Brand tokens are emitted as a `:root{…}` block by `BaseLayout` ([packages/ui/src/layouts/BaseLayout.astro](../../packages/ui/src/layouts/BaseLayout.astro)) from the church's content — so a church rebrands by editing content, not code. This is the mechanism behind the [independence-model](independence-model.md).
 
 ## Tradition as a variant
 
-v1 ships the **Orthodox** theme (burgundy `#4e0816`/`#6b1f2a`, gold `#785a02`, warm cream `#fcf9f4`). The same components accept an **evangelical** variant later (warmer palette, sans headings, photography-forward) purely by swapping tokens + the `tradition` flag — no new components. See [traditions](traditions.md).
+v1 ships the **Orthodox** theme (burgundy `#4e0816`/`#6b1f2a`, gold seed `#c8a24b`, warm cream `#fcf9f4`). The same components accept an **evangelical** variant later (warmer palette, sans headings, photography-forward) purely by swapping tokens + the `tradition` flag — no new components. See [traditions](traditions.md).
 
 ## Hard constraints (every component)
 
@@ -47,11 +47,27 @@ A church re-skins by setting a **small seed set** in `site.brand`; `BaseLayout` 
 
 Fixed (not seed-driven): the **tertiary** neutral family + `--inverse-surface`/`--inverse-on-surface` use DESIGN.md literals. `color-mix()` ships in all evergreen browsers (2023+); a church needing pixel-exact tones sets the seed directly — derivation never blocks a build.
 
-**AA contrast (default Orthodox palette, verified):** primary `#4e0816` on cream `#fcf9f4` = 14.6:1; `primary-container #6b1f2a` = 10.8:1; `on-surface` = 16.3:1; `on-surface-variant` = 8.9:1; white-on-primary = 15.3:1; error = 6.2:1 — all pass AA text. **Gold flag:** the realistic church gold (`#c8a24b`/`#c9a227`, what the reference apps seed as `secondary`) is only **2.2:1** on cream — it MUST stay decorative (dividers, ≥3px borders, fills behind `on-secondary`), never body text on light. The DESIGN.md token gold `#785a02` passes (6.1) but is darker than what churches actually pick.
+**AA contrast (default Orthodox palette, verified):** primary `#4e0816` on cream `#fcf9f4` = 14.6:1; `primary-container #6b1f2a` = 10.8:1; `on-surface` = 16.3:1; `on-surface-variant` = 8.9:1; white-on-primary = 15.3:1; error = 6.2:1 — all pass AA text. **Gold flag:** the church gold seed (`#c8a24b`, the `--secondary` default in `tokens.css`) is only **2.2:1** on cream — it MUST stay decorative (dividers, ≥3px borders, fills behind `on-secondary`), never body text on light. The DESIGN.md token gold `#785a02` passes (6.1) but is darker than the `#c8a24b` seed the audit adopted on 2026-05-30.
+
+## The 2026-06-18 redesign ("liturgical rail")
+
+Commit `70999ff` rebuilt the visual identity on the same token contract. The one move is the liturgical week as a vertical spine.
+
+- **[Rail](../../packages/ui/src/components/Rail.astro)** — a thin gold vertical rule with day/feast diamond markers down the left margin of a content column. Decorative (`aria-hidden`), built only from `--secondary` and `--outline-variant`, so it adds structure and no palette. Collapses to a hairline on mobile.
+- **[PageShell](../../packages/ui/src/components/PageShell.astro)** — the inner-page frame: overline kicker, display title, lede and a gold rule, left-aligned, with the Rail beside the body and an optional `actions` slot. It wraps `max-w-container-max mx-auto px-sm md:px-gutter` and is used by every inner page except the 404 (`ErrorLayout`) and the announcement detail page, which sets the same container itself. The home page also sets its own sections.
+- **[Hero](../../packages/ui/src/components/Hero.astro)** — an asymmetric split. Left is the identity (overline, church name in `display-xl`, the live "next service", CTAs). Right is a framed image above a quiet "this week" timeline built from the schedule. It degrades with no image (tonal burgundy panel and glyph), no schedule or no next service.
+- **Type tokens** in [theme.css](../../packages/ui/src/styles/theme.css): `display-xl` (clamped 2.75 to 4.5rem, the hero name) and `overline` (11px, 0.22em tracking, the formal micro-label used by PageShell, SectionHeading and Footer).
+- Header's active nav uses an animated gold underline. SectionHeading gained an optional kicker and a gold rule. Light-surface eyebrows use `on-secondary-container` (AA-safe), not the pale `secondary-fixed`, which only clears contrast on the dark burgundy band.
 
 ## Component & page inventory
 
-Global chrome (header w/ language switcher + Donează CTA, footer, section heading, divider), home (hero, announcements strip, program+about bento), core pages (Program Slujbe, announcements, despre, livestream, gallery, events, contact), giving (donate landing, campaign card w/ goal thermometer, pomelnice form), and system primitives (buttons, inputs, cards, badges, alerts, empty states, 404). The full inventory + states is in [ADR-0001 §3](../../docs/adr/0001-design-system-foundation.md); the build breakdown is in [status](status.md).
+Global chrome (Header with language switcher and Donează CTA, Footer, SectionHeading, Divider, Rail, PageShell), primitives (Button, Card, Badge, Field, Alert, EmptyState, Icon), feature components (Hero, ServiceSchedule, AnnouncementList, CampaignCard, GivingChannels) and the 10 pages of `apps/parohia-harlesti-bacau`: home, program, anunturi list and detail, donatii, pomelnice, contact, despre, 404.
+
+**Home** ([index.astro](../../apps/parohia-harlesti-bacau/src/pages/index.astro)) is now the asymmetric Hero, then an announcements section on the Rail (a wide lead card plus up to three stacked smaller cards, pinned first), then a quiet burgundy "despre" band with a quick-facts list (hram, eparhie, Sfânta Liturghie). It is no longer hero, announcements strip and Program + About bento (brief 07, superseded). The original inventory is in [ADR-0001 §3](../../docs/adr/0001-design-system-foundation.md); the build breakdown is in [status](status.md).
+
+## Tailwind `max-w-*` guard
+
+In this theme bare `max-w-sm|md|lg|xl` bind to the spacing scale (`max-w-xl` is 4rem) and collapse layouts; see the note in [theme.css](../../packages/ui/src/styles/theme.css). Use `max-w-2xl` and up, or `max-w-[NNrem]`. `packages/ui/scripts/check-max-w.mjs` fails on a bare class in `.astro`, `.tsx` and `.ts` under `apps/` and `packages/`, and runs in `npm run lint` through the `@churchix/ui` `lint` script. Variants such as `sm:max-w-md` are not flagged. The container itself is `max-w-container-max` (1200px, `--spacing-container-max`).
 
 ## Empty-state pattern
 
@@ -81,11 +97,11 @@ Guidance: pick a list-appropriate `icon` (`push_pin`/announcements, `campaign`/c
 
 ## Reference-app rollout & visual-QA deviations (item 14)
 
-Both reference apps (`parohia-berinta-maramures`, `parohia-harlesti-bacau`) are fully on the M3 system; every page (index, program, anunturi list+detail, donatii, pomelnice, contact, despre, 404) uses the shared chrome + primitives. The two apps are the **white-label proof**: identical structure, distinct brand seeds — Berinta `--primary:#1e3a5f` (blue) / `--secondary:#c9a227`, Harlesti `--primary:#6b1f2a` (burgundy) / `--secondary:#c8a24b`. Colors flow only through the `text-primary → --color-primary → --primary → :root seed` token chain, so a re-skin is a `site.json` brand edit with **no code change** and no hex in page markup beyond the per-church `:root` seed block.
+The one app, `apps/parohia-harlesti-bacau`, is fully on the M3 system; every page (index, program, anunturi list+detail, donatii, pomelnice, contact, despre, 404) uses the shared chrome + primitives. Its brand seeds are `--primary:#6b1f2a` (burgundy) / `--secondary:#c8a24b` (gold). A second reference app (Berinta, blue) existed at the time of the rollout and was removed before 2026-05-30, so the white-label claim now rests on the token chain, not on a second site. Colors flow only through the `text-primary → --color-primary → --primary → :root seed` token chain, so a re-skin is a `site.json` brand edit with **no code change** and no hex in page markup beyond the per-church `:root` seed block.
 
 **Contact** = `SectionHeading` + a parish-data `Card` (`church` icon, `<dl>` with tel/mailto links) + a `Card`-framed `mapEmbedUrl` iframe + a `candle`-icon prayer-request form (`Field` × Nume/Email/Mesaj + primary `Button`). The form is **server-light**: it `mailto:`-submits when the church email is set, else a plain `method=post` placeholder — no backend is assumed (PCI/independence-safe). **Despre** = diacritic-safe `.cx-prose` (line-height 1.75, token-colored `h2`) + an optional **leadership** grid ordered by `staff.order`.
 
-The **`staff`** collection (shared `staffSchema`) is **optional**: registered in both apps' `content.config.ts`, seeded with placeholder Preot paroh / Consiliul entries; empty or absent → despre renders prose only.
+The **`staff`** collection (shared `staffSchema`) is **optional**: registered in the app's `content.config.ts`, seeded with placeholder Preot paroh / Consiliul entries; empty or absent → despre renders prose only.
 
 Intentional deviations from the Stitch reference screens (all reviewed):
 - **Prayer-form submit** uses a *trailing* `send` icon; the Stitch pomelnice mock shows a leading icon. Kept trailing to match the Button convention used elsewhere.
@@ -94,9 +110,9 @@ Intentional deviations from the Stitch reference screens (all reviewed):
 
 ## Accessibility (WCAG AA) — contract & audit (item 15)
 
-The system holds **WCAG 2.1 AA** across the realistic brand range. Verified with axe-core 4 (Playwright) on both reference apps' key pages — **0 critical/serious/moderate violations**.
+The system holds **WCAG 2.1 AA** across the realistic brand range. Verified with axe-core 4 (Playwright) on both reference apps' key pages at the time — **0 critical/serious/moderate violations**.
 
-**Contrast contract** (computed for both seed brands — Berinta blue `#1e3a5f`, Harlesti burgundy `#6b1f2a`):
+**Contrast contract** (computed for the Harlesti burgundy `#6b1f2a` seed and the Berinta blue `#1e3a5f` seed it was first checked against):
 
 | Pair | Ratio | Use |
 | --- | --- | --- |
