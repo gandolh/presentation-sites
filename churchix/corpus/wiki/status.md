@@ -19,9 +19,8 @@ brief 07.
 
 Open work:
 
-- Brief 17, the audit follow-ups (its line below says what is left).
+- The arch-mask treatment for icons and murals, deferred from brief 17.
 - The owner questions still open in [decisions](decisions.md): Q4 and Q6 to Q10.
-- Wiki drift from the redesign and the audit, captured in [todos/](../todos/).
 
 ## Briefs
 
@@ -46,18 +45,12 @@ ones it depends on. Every brief honors [conventions](conventions.md).
 | 14 | [Reference-app rollout + second-brand proof](../briefs/done/14-reference-app-rollout.md) | 05 to 13 | D | done (Berinta since removed) |
 | 15 | [a11y, i18n and long-string pass](../briefs/done/15-a11y-i18n-pass.md) | 14 | E | done |
 | 16 | [UI audit across the pages](../briefs/done/16-ui-audit-pages.md) | 14, 15 | F | done (one app, two viewports, RO) |
-| 17 | [UI audit follow-ups](../briefs/todo/17-audit-followups.md) | 16 | F | todo, see below |
+| 17 | [UI audit follow-ups](../briefs/done/17-audit-followups.md) | 16 | F | done (arch mask deferred) |
 
-**Brief 17, task by task (checked 2026-10-07):** task 1 is done, because
-`70999ff` put both announcement pages on `max-w-container-max` with the
-responsive gutters. `PageShell.astro` covers most of task 4, but the home page
-still hand-rolls its sections. Tasks 2 and 3 are open: `--maxw` and the `.cx-*`
-set still sit in `tokens.css` with no consumers left, and
-`--container-container-max` is still in `theme.css`. Task 5 (arch mask) waits
-for real photography. Task 6 is open and has already regressed:
-`Hero.astro:140` puts `max-w-xl` on the hero subtitle, which compiles to
-`max-width: var(--spacing-xl)` (4rem). The home page passes no subtitle today,
-so nothing renders wrong yet.
+**Brief 17** closed on 2026-10-07. Task 1 was already done by the redesign,
+tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard in
+`npm run lint`), task 4 was dropped as covered by `PageShell`, and task 5 (arch
+mask) is deferred until real photography lands. See the 2026-10-07 log entry.
 
 New work: capture it in [todos/](../todos/), then promote it to
 `briefs/todo/` with the next free number (18).

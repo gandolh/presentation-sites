@@ -240,3 +240,15 @@ log. Left alone because this migration may not touch them: both ADRs still link
 `../wiki/` and `../todo/` (the docs site maps those links to the new pages), and a
 comment in `apps/parohia-harlesti-bacau/src/pages/program.astro` still names the
 old log path.
+
+## [2026-10-07] done | Brief 17 — UI audit follow-ups
+
+Task 1 was already done by the 2026-06-18 redesign (`70999ff`): the announcement list uses `PageShell` and the detail page uses `max-w-container-max` with the responsive gutters. Tasks 2 and 3 shipped. `--maxw` and the unused `.cx-container`, `.cx-section`, `.cx-section--surface`, `.cx-btn`, `.cx-btn--outline` and `.cx-card` left `tokens.css`, and `--container-container-max` left `theme.css`, after a grep of the whole tree found no consumers. The component-scoped `.cx-prose`, `.cx-schedule` and `.cx-pomelnice-pattern` are live and stay.
+
+Decisions. Task 4, the shared `<Container>` primitive, is dropped as covered: `PageShell.astro` already wraps `max-w-container-max mx-auto px-sm md:px-gutter` for every inner page, and the home page and announcement detail set the container themselves. Task 5, the arch mask and sharp corners for icons and murals, is deferred until real church photography and iconography land; nothing is built.
+
+Task 6, the `max-w-*` guard, was added rather than declined. In this theme bare `max-w-sm|md|lg|xl` bind to `--spacing-*` and collapse layouts, and the regression had already happened once (`Hero.astro` put `max-w-xl`, 4rem, on the subtitle). `packages/ui/scripts/check-max-w.mjs` is a dependency-free Node script that scans `.astro`, `.tsx` and `.ts` under `apps/` and `packages/`. It runs from the `@churchix/ui` `lint` script, which the root `npm run lint` already fans out to. Variants, `max-w-2xl` and up, and `max-w-[NNrem]` pass. The Hero offender became `max-w-[36rem]`, the value `xl` was meant to carry. No CI or git hook was added. The brief moved to `briefs/done/` with an outcome note; `npm run typecheck`, `npm run lint` and the app build pass.
+
+## [2026-10-07] maintenance | Wiki drift after the audit and the redesign
+
+[design-system](wiki/design-system.md) now matches the code: gold seed `#c8a24b`, Cardo headings with Source Serif 4 as the fallback, one app, and a new section on the `70999ff` redesign (`Rail`, `PageShell`, the asymmetric `Hero`, the `display-xl` and `overline` tokens). Its page inventory describes the current home page, and it records the `max-w` guard. [i18n-and-glossary](wiki/i18n-and-glossary.md) got the same font fix. The todo `wiki-drift-after-redesign` is deleted.

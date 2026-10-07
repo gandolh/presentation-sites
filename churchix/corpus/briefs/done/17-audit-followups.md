@@ -27,3 +27,12 @@ Close out the items flagged-but-not-fixed during the 2026-05-30 UI/UX audit (see
 - [ ] Dead `--container-container-max` token removed.
 - [ ] Decision recorded for the `<Container>` primitive and the arch-mask treatment (do, defer, or drop) in `docs/wiki/log.md`.
 - [ ] `max-w-*` collision guard added or consciously declined, with rationale logged.
+
+## Outcome (2026-10-07)
+
+- **Task 1:** already done by the 2026-06-18 redesign (`70999ff`). `anunturi/index.astro` uses `<PageShell>` and `anunturi/[slug].astro` uses `max-w-container-max mx-auto px-sm md:px-gutter`. Confirmed, nothing changed.
+- **Task 2:** shipped. `--maxw` and the dead `.cx-container`, `.cx-section`, `.cx-section--surface`, `.cx-btn`, `.cx-btn--outline` and `.cx-card` rules are gone from `packages/ui/src/styles/tokens.css`. A grep of the whole tree found no consumers. The component-scoped `.cx-prose`, `.cx-schedule` and `.cx-pomelnice-pattern` stay.
+- **Task 3:** shipped. `--container-container-max` removed from `theme.css`; nothing referenced it.
+- **Task 4:** dropped as covered. `PageShell.astro` already wraps the container for every inner page. Logged, nothing built.
+- **Task 5:** deferred until real church photography and iconography land. Logged, nothing built.
+- **Task 6:** shipped. `packages/ui/scripts/check-max-w.mjs` runs from the `@churchix/ui` `lint` script, so `npm run lint` fails on a bare `max-w-(sm|md|lg|xl)`. It found one real offender, `Hero.astro` (`max-w-xl`, now `max-w-[36rem]`). Rationale is in [log.md](../../log.md).

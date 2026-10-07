@@ -185,7 +185,4 @@
   --text-caption: 12px;
   --text-caption--line-height: 16px;
   --text-caption--font-weight: 400;
-
-  /* Max-width container token (12-col / 1200px grid). */
-  --container-container-max: 1200px;
 }
