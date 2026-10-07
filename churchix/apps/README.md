@@ -27,4 +27,4 @@ A typical church app contains roughly:
 
 What varies per church: **branding tokens, content, languages, enabled features, funds/campaigns, giving links**. What comes from `@churchix/ui`: layouts, components, and islands — but each church **owns its own page files**, so it can diverge freely (independence over DRY).
 
-See [../docs/wiki/architecture.md](../docs/wiki/architecture.md) and [../docs/wiki/content-model.md](../docs/wiki/content-model.md).
+See [../corpus/wiki/architecture.md](../corpus/wiki/architecture.md) and [../corpus/wiki/content-model.md](../corpus/wiki/content-model.md).

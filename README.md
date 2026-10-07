@@ -85,8 +85,9 @@ they are rewritten on every build. churchix has its own at `churchix/docs-site/`
 Monorepo-level knowledge — layout, cross-site conventions, locked decisions,
 current state — lives in [`corpus/`](corpus/). Start at
 [`corpus/index.md`](corpus/index.md); health check with `bash corpus/lint.sh`.
-The word **corpus** means exactly one thing in this repo: that workspace. Per-site
-knowledge is `docs/`, and churchix's wiki is `churchix/docs/wiki/`.
+The word **corpus** means a corpus-flow workspace: that one, and churchix's own at
+[`churchix/corpus/`](churchix/corpus/index.md), which has the same shape. Per-site
+knowledge for the marketing sites is `docs/`.
 
 ## Working on a site
 

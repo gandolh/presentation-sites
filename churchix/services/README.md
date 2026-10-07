@@ -1,6 +1,6 @@
 # services/ — optional, per-church backend (NOT used in v1)
 
-Churchix v1 has **no shared backend**. Each church is an independent static site (see [../docs/wiki/architecture.md](../docs/wiki/architecture.md) and [../docs/wiki/independence-model.md](../docs/wiki/independence-model.md)). This directory holds a **template** for a backend that an individual church can deploy **for itself** if it later needs server logic — it is **never** a shared, multi-tenant service. Full design: [../docs/wiki/optional-backend.md](../docs/wiki/optional-backend.md).
+Churchix v1 has **no shared backend**. Each church is an independent static site (see [../corpus/wiki/architecture.md](../corpus/wiki/architecture.md) and [../corpus/wiki/independence-model.md](../corpus/wiki/independence-model.md)). This directory holds a **template** for a backend that an individual church can deploy **for itself** if it later needs server logic — it is **never** a shared, multi-tenant service. Full design: [../corpus/wiki/optional-backend.md](../corpus/wiki/optional-backend.md).
 
 A church would only need this for:
 
@@ -26,4 +26,4 @@ api/
 
 Webhooks/IPN are the source of truth; card data never touches the server (PCI **SAQ A**); money is integer minor units.
 
-See [../docs/wiki/donations.md](../docs/wiki/donations.md) and [../docs/wiki/optional-backend.md](../docs/wiki/optional-backend.md).
+See [../corpus/wiki/donations.md](../corpus/wiki/donations.md) and [../corpus/wiki/optional-backend.md](../corpus/wiki/optional-backend.md).

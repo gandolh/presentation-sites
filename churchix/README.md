@@ -22,25 +22,26 @@ Built for the **Romanian church market**, in Romania and the diaspora. **v1 targ
 packages/   # the shared "core library" — UI, theme tokens, schemas, config
 apps/       # one independent Astro site per church (content + branding only)
 services/   # optional, per-church backend template (not used in v1)
-docs/       # architecture & product documentation (start here)
+corpus/     # the wiki, the work briefs and the log (start here)
+docs/       # design source (design/) and architecture decision records (adr/)
 ```
 
 ## Documentation
 
-Docs live as an LLM-maintained wiki under [docs/wiki/](docs/wiki/index.md) — start at the [index](docs/wiki/index.md). A good reading order:
+Docs live in an LLM-maintained corpus under [corpus/](corpus/index.md). Start at the [index](corpus/index.md). A good reading order:
 
-1. [overview](docs/wiki/overview.md) — what Churchix is.
-2. [architecture](docs/wiki/architecture.md) — monorepo, frontend, static-per-build; and [independence-model](docs/wiki/independence-model.md).
-3. [content-model](docs/wiki/content-model.md) — page inventory + content schemas; with [traditions](docs/wiki/traditions.md) and [i18n-and-glossary](docs/wiki/i18n-and-glossary.md).
-4. [donations](docs/wiki/donations.md) — the v1 giving stack; [optional-backend](docs/wiki/optional-backend.md) for the future API.
-5. [design-system](docs/wiki/design-system.md) — the Tailwind + Material-3 design system.
-6. [decisions](docs/wiki/decisions.md) — settled + open questions; [research-brief](docs/wiki/research-brief.md) for the full rationale.
+1. [overview](corpus/wiki/overview.md) — what Churchix is.
+2. [architecture](corpus/wiki/architecture.md) — monorepo, frontend, static-per-build; and [independence-model](corpus/wiki/independence-model.md).
+3. [content-model](corpus/wiki/content-model.md) — page inventory + content schemas; with [traditions](corpus/wiki/traditions.md) and [i18n-and-glossary](corpus/wiki/i18n-and-glossary.md).
+4. [donations](corpus/wiki/donations.md) — the v1 giving stack; [optional-backend](corpus/wiki/optional-backend.md) for the future API.
+5. [design-system](corpus/wiki/design-system.md) — the Tailwind + Material-3 design system.
+6. [decisions](corpus/wiki/decisions.md) — settled + open questions; [research-brief](corpus/wiki/research-brief.md) for the full rationale.
 
-Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Active design-integration work is tracked in [docs/todo/](docs/todo/README.md). [CLAUDE.md](CLAUDE.md) is the working brief for AI assistants and new contributors.
+Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Work is tracked as numbered briefs in [corpus/briefs/](corpus/wiki/status.md), with the state of each in [status](corpus/wiki/status.md). [CLAUDE.md](CLAUDE.md) is the working brief for AI assistants and new contributors.
 
 ## Status
 
-Early. The shared packages (`@churchix/ui`, `@churchix/schemas`, `@churchix/config`) and two reference church apps exist and build. The [Ecclesia Digitalis design system](docs/design/DESIGN.md) is being integrated next — tracked in [docs/todo/](docs/todo/README.md).
+Early. The shared packages (`@churchix/ui`, `@churchix/schemas`, `@churchix/config`) and one reference church app (`apps/parohia-harlesti-bacau`) exist and build. The [Ecclesia Digitalis design system](docs/design/DESIGN.md) is integrated; the audit follow-ups are still open. See [status](corpus/wiki/status.md).
 
 ## Getting started
 

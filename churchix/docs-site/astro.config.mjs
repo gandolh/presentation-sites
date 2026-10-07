@@ -5,11 +5,11 @@ import starlight from '@astrojs/starlight'
 /**
  * Churchix's documentation site.
  *
- * Churchix already keeps its documentation properly — `docs/wiki/` is a real
+ * Churchix already keeps its documentation properly — `corpus/` is a real
  * maintained wiki, and `docs/adr/` holds the architecture decision records. This
  * site renders both and authors one orientation page.
  *
- * The site lives in `docs-site/` because `docs/` holds that content.
+ * The site lives in `docs-site/` because `docs/` holds the ADRs and the design.
  *
  * Deployed at https://gandolh.ro/churchix/docs/.
  */
@@ -70,7 +70,6 @@ export default defineConfig({
             { label: 'The design system', link: '/wiki/design-system/' },
             { label: 'ADR 0001 — foundation', link: '/wiki/adr-0001/' },
             { label: 'ADR 0002 — Tailwind + Material 3', link: '/wiki/adr-0002/' },
-            { label: 'UI audit', link: '/wiki/ui-audit/' },
           ],
         },
         {
