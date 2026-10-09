@@ -75,3 +75,8 @@ drift.
   (`public/images/real/*`) are **gitignored**. Never paste their contents into a
   corpus page.
 - Most site content is **Romanian**. Don't run English prose/style skills over it.
+
+## brief-board
+
+Brief progress goes on brief-board. Run `brief-board guide` before you
+start or resume a brief, and follow it.
