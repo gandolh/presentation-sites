@@ -1,157 +1,64 @@
 # presentation-sites
 
-An **npm-workspaces monorepo** for presentation/marketing sites. Every site
-lives under [`sites/`](sites/) as its own workspace; shared helpers live in
-[`packages/`](packages/). [`churchix/`](churchix/) sits outside the workspace —
-it is a separate project with workspaces of its own.
+Websites for small businesses in Gorj, Romania, one static Astro site per business, kept together in one npm-workspaces repo. It also holds Churchix, a platform for parish sites, and a design study.
 
+<table>
+<tr>
+<td width="33%" valign="top"><a href="https://gandolh.ro/saloon/"><img src="docs/images/saloon-home.webp" alt="Ana Saloon home page: the headline 'Unghii care vorbesc despre tine', a green WhatsApp booking button and a photo of a hand with pink and blue nails"></a><br><b>Nail salon</b>, Târgu-Jiu<br><a href="https://gandolh.ro/saloon/">gandolh.ro/saloon</a></td>
+<td width="33%" valign="top"><a href="https://gandolh.ro/auto-service/"><img src="docs/images/auto-service-home.webp" alt="BavAuto Gorj home page on a dark background: the headline 'BMW-ul tău, pe mâini care îl citesc.' beside a drawn rev counter and a smaller gauge"></a><br><b>BMW repair garage</b>, Târgu-Jiu<br><a href="https://gandolh.ro/auto-service/">gandolh.ro/auto-service</a></td>
+<td width="33%" valign="top"><a href="https://gandolh.ro/tractari/"><img src="docs/images/tractari-home.webp" alt="AXA Tractări home page: the headline 'Tractări auto pe platformă.' in white and yellow over a 3D night scene of a tow truck on a winding road"></a><br><b>Car towing</b> demo, Oltenia<br><a href="https://gandolh.ro/tractari/">gandolh.ro/tractari</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://gandolh.ro/subcort/"><img src="docs/images/subcort-home.webp" alt="Subcort home page: the headline 'Un spațiu pregătit, oriunde ai nevoie de el.' beside a line drawing of a marquee tent, with a strip of tent sizes below"></a><br><b>Event tent rental</b> demo, Gorj<br><a href="https://gandolh.ro/subcort/">gandolh.ro/subcort</a></td>
+<td width="33%" valign="top"><a href="https://gandolh.ro/churchix/"><img src="docs/images/churchix-home.webp" alt="Parish home page built on Churchix: the parish name in a large burgundy serif, the next service, and this week's schedule"></a><br><b>Orthodox parish</b> on the Churchix platform<br><a href="https://gandolh.ro/churchix/">gandolh.ro/churchix</a></td>
+<td width="33%" valign="top"><a href="https://gandolh.ro/design-study/"><img src="docs/images/design-study-home.webp" alt="Fourteen Renderings index page: the title on a dark background above a grid of style cards, starting with Minimalism, Swiss Design and Brutalism"></a><br><b>Design study</b>: one blog in 14 styles<br><a href="https://gandolh.ro/design-study/">gandolh.ro/design-study</a></td>
+</tr>
+</table>
+
+**Status:** Maintenance and demos, as of the [2026-10-07 status page](corpus/wiki/status.md). All six are live on gandolh.ro. The two client sites, the salon and the garage, are code-complete and wait on the owners' real data, so both still show a "site în lucru" banner. The towing and tent sites are finished demos for made-up firms. Churchix is the only one with an open roadmap.
+
+## What it does
+
+- Gives each business its own Romanian-language site, built around one action: phone the business or message it on WhatsApp.
+- Builds each site to plain static files, which Caddy serves under the site's own path on gandolh.ro.
+- Keeps real phone numbers, addresses and photos out of git. They sit in gitignored files that the build merges in, so a clone builds with placeholders.
+- Gives every site a docs site at `/<site>/docs/`, rendered from that site's own README, PRODUCT.md, DESIGN.md and notes.
+
+The sites share one small package, `@sites/kit`, and nothing else, so you can redesign or remove one without touching the others. There is no CMS. Content is typed TypeScript inside each site, and changing it means a rebuild. Deploy lives in a separate repo.
+
+## How it works
+
+`package.json` at the root is an npm-workspaces root over `sites/*`, `sites/*/docs-site` and `packages/*`. Each site is Astro 7 with static output, React islands where something has to be interactive, and Tailwind v4, except design-study, which uses none. Root scripts such as `saloon:dev` pass through to one workspace by its package name. `@sites/kit` supplies base-path URLs and the switch between committed SVG placeholders and real photos. churchix is its own monorepo inside this one, with its own lockfile. More in [docs/architecture.md](docs/architecture.md).
+
+## Run it locally
+
+Requires Node 22.12 or later. Tested on Node 24.
+
+```bash
+npm install            # once, at the root; covers every site
+npm run tractari:dev   # Astro dev server, http://localhost:4321/ by default
 ```
-presentation-sites/
-├── sites/          one workspace per deployable site
-├── packages/       code shared by those sites (@sites/kit)
-├── churchix/       the white-label platform — its own monorepo, not a workspace here
-├── corpus/         repo-level knowledge
-└── package.json    the workspace root + passthrough scripts
-```
 
-## Sites
+Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The salon's dev script asks for real photos, which are not in git, so on a fresh clone run `npm run saloon -- dev:mock` instead. Builds, docs sites, churchix and the port flag: [docs/getting-started.md](docs/getting-started.md).
 
-- **[sites/saloon/](sites/saloon/)** — Ana Saloon, a boutique nail salon in Târgu-Jiu
-  (Astro + React + Tailwind v4, static). Includes its own docs (`docs/`)
-  and the `marketing/bots/` automation service. Deploy sub-path `/saloon`.
-  See [sites/saloon/README.md](sites/saloon/README.md) and
-  [sites/saloon/docs/STATUS.md](sites/saloon/docs/STATUS.md) to get oriented.
-- **[sites/auto-service/](sites/auto-service/)** — BavAuto Gorj, a BMW-specialist auto
-  service in Târgu-Jiu (Astro, static). Deploy sub-path `/auto-service`. See
-  [sites/auto-service/README.md](sites/auto-service/README.md).
-- **[sites/subcort/](sites/subcort/)** — Subcort, a demo event-tent rental site for
-  Gorj/Oltenia (Astro + React + Tailwind v4, static). Built as a drawing set:
-  one marquee model drives a Three.js hero that assembles itself, an exploded
-  axonometric plate and a scale plan. Ships no photography.
-  Deploy sub-path `/subcort`.
-  See [sites/subcort/README.md](sites/subcort/README.md).
-- **[sites/tractari/](sites/tractari/)** — AXA Tractări, a demo car-towing site for Oltenia
-  (Astro + React + Tailwind v4, static). Minimalist, with a Three.js hero scene
-  of a tow truck driving a night road. Deploy sub-path `/tractari`. See
-  [sites/tractari/README.md](sites/tractari/README.md).
-- **[sites/design-study/](sites/design-study/)** — *Fourteen Renderings*, a UI/UX
-  study rather than a marketing site (Astro + React islands, static, no Tailwind).
-  One fictional blog rendered in 14 design languages — Minimalism, Swiss,
-  Brutalism, NeoBrutalism, Maximalism, Surrealism, Bohemian, Ethereal,
-  Skeuomorphism, Neumorphism, Claymorphism, Glassmorphism, Liquid Glass and
-  Spatial UI — with the content held constant so only the design varies. The
-  written half lives in [sites/design-study/docs/styles/](sites/design-study/docs/styles/),
-  one dossier per style. Deploy sub-path `/design-study`. See
-  [sites/design-study/README.md](sites/design-study/README.md).
-- **[churchix/](churchix/)** — Churchix, a white-label platform for Orthodox
-  church sites plus a giving surface. Unlike the others it is a product, not a
-  single site: its own npm-workspaces monorepo with shared `@churchix/*`
-  packages and one independent Astro app per church. See
-  [churchix/CLAUDE.md](churchix/CLAUDE.md).
+## Project layout
 
-> Each site owns its content, build and docs. What they share is deliberately
-> small and explicit: the `@sites/kit` package. Nothing else crosses between them.
-
-## Docs — one shape everywhere
-
-Every project uses the same layout, so you always know where to look:
-
-| Where | What |
+| Path | What lives there |
 |---|---|
-| `sites/<site>/README.md` | how to run it, what it is, its sub-path |
-| `sites/<site>/PRODUCT.md` | product truth — who it's for, what it must do |
-| `sites/<site>/DESIGN.md` | the visual system |
-| `sites/<site>/docs/` | everything else: STATUS, LEGAL, MARKETING, todo/ (mostly Romanian) |
+| `sites/` | One workspace per site: `saloon`, `auto-service`, `subcort`, `tractari`, `design-study`. Each has its own README, PRODUCT.md, DESIGN.md and a Starlight `docs-site/` |
+| `packages/site-kit/` | `@sites/kit`, the only code the sites share |
+| `churchix/` | Churchix, a white-label platform for Orthodox parish sites. Its own monorepo, not a workspace here |
+| `corpus/` | The repo's wiki: layout, decisions, status, work briefs |
+| `docs/` | The guides and images this README links to |
+| `package.json` | Workspace root and the per-site passthrough scripts |
 
-`PRODUCT.md` and `DESIGN.md` are [impeccable](https://github.com/pbakaus/impeccable)
-artifacts and keep those exact names at the project root — that is where the tool
-reads them.
+## Docs
 
-### Docs sites
+- [docs/](docs/README.md): every site with its live URL, docs site and README, plus setup, architecture and adding a site
+- Docs sites: `https://gandolh.ro/<site>/docs/`, for example [gandolh.ro/saloon/docs](https://gandolh.ro/saloon/docs/)
+- [Project wiki](corpus/index.md): decisions, status and the briefs behind past work
+- [churchix/README.md](churchix/README.md) and its own [wiki](churchix/corpus/index.md)
 
-Each site also has a **documentation site**: a Starlight project at
-`sites/<site>/docs-site/`, rendered from that site's own `README.md`,
-`PRODUCT.md`, `DESIGN.md` and `docs/`. Build one from the root:
+## License
 
-```bash
-npm run saloon:docs          # → sites/saloon/docs-site/dist/, base /saloon/docs/
-```
-
-Its base `/<site>/docs/` is baked into its `astro.config.mjs` (override with
-`DOCS_BASE`), and it deploys to `https://gandolh.ro/<site>/docs/`. Edit the
-site's own files, never the generated pages under `src/content/docs/wiki/` —
-they are rewritten on every build. churchix has its own at `churchix/docs-site/`.
-
-Monorepo-level knowledge — layout, cross-site conventions, locked decisions,
-current state — lives in [`corpus/`](corpus/). Start at
-[`corpus/index.md`](corpus/index.md); health check with `bash corpus/lint.sh`.
-The word **corpus** means a corpus-flow workspace: that one, and churchix's own at
-[`churchix/corpus/`](churchix/corpus/index.md), which has the same shape. Per-site
-knowledge for the marketing sites is `docs/`.
-
-## Working on a site
-
-Install **once, at the repo root** — npm resolves every workspace and hoists
-dependencies into the root `node_modules/`. There are no per-site installs and
-no per-site lockfiles.
-
-```bash
-npm install                  # once, at the root — covers every site + packages/
-
-# From the repo root
-npm run saloon:dev
-npm run saloon:build
-npm run saloon -- preview    # run any of saloon's own scripts
-npm run build                # build every site
-
-# Or from inside a site
-cd sites/saloon && npm run dev
-```
-
-`churchix/` is **not** part of this workspace — it has its own lockfile and its
-own `packages/*` workspaces. Install and run it separately (`npm run
-churchix:install`, `npm run churchix:build`).
-
-### Shared code
-
-Anything genuinely identical across sites lives in
-[`packages/site-kit`](packages/site-kit/) (`@sites/kit`) — currently `withBase()`
-for sub-path URLs, the `createImages()` mock/real pipeline, and the
-`SiteOverridesOf` type. It ships TypeScript source with no build step; Vite
-compiles it as part of whichever site imports it.
-
-The bar for putting something there is **identical logic, not similar logic**.
-Anything a site configures stays in the site — see
-[the package README](packages/site-kit/README.md) for what is deliberately
-excluded and why.
-
-### Deploy
-
-Deployment is not part of this repo. Each site builds to a static `dist/` and is
-served by **Caddy** under its own sub-path (e.g. `/saloon`) on the VPS; the
-build + upload tooling lives outside this repo.
-
-## Adding a new site
-
-1. Create `sites/<name>/` with its own `package.json` — mirror
-   [`sites/saloon/`](sites/saloon/). Depend on `"@sites/kit": "*"` and add
-   `ssr: { noExternal: ["@sites/kit"] }` to its `vite` block in
-   `astro.config.mjs`.
-2. Run `npm install` at the root — the `sites/*` glob picks it up automatically.
-3. Add `<site>:*` passthrough scripts to the root `package.json`, following the
-   `saloon:*` pattern — select the workspace by its **package name**
-   (`npm run <script> -w <package-name>`), never by path: a path also selects the
-   site's nested docs-site.
-4. Add a `<site>: dev server` entry to `.vscode/launch.json` running
-   `npm run <site>:dev` from `${workspaceFolder}`.
-5. Give it the doc shape above: `README.md`, `PRODUCT.md`, `DESIGN.md`, and a
-   `docs/` directory if it needs one.
-6. Give it a docs site: copy `sites/saloon/docs-site/` to `sites/<site>/docs-site/`,
-   rename the package to `@sites/<site>-docs`, set the base in its
-   `astro.config.mjs` to `/<site>/docs/`, list the site's own pages in
-   `scripts/sync-corpus.mjs` (`PAGES`), add `"docs-site"` to the site's
-   `tsconfig.json` `exclude`, and add a root `"<site>:docs"` script.
-7. List it under **Sites** above.
-
-The root `.gitignore` needs no edit — its rules for `site.local.ts` and
-`public/images/real/` are site-agnostic `**/` patterns.
+No license file yet; all rights reserved.
