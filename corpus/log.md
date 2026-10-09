@@ -512,3 +512,10 @@ yet" opening and now maps the real `src/` layout. `docs/STATUS.md` keeps its
 "what's left" summary, which still matches the code (the `TODO(impl)` markers
 and the mock contact and CUI data in `site.ts`), minus the roadmap's B1–B5 step
 codes. Bots: `npm run check`, 70 tests pass.
+
+## [2026-10-09] brief | Brief 13 filed: tractari hero reads "sauMehedinți"
+
+Found during the README refresh; nothing fixed. `Hero.astro:39-40` ends a line with "sau" and starts the
+next with `{site.counties.at(-1)}`, and Astro drops the break between them, so the live page shows the
+words run together (also in the current `dist/`). The fix needs a tractari redeploy, which the owner
+runs from the deploy repo.
