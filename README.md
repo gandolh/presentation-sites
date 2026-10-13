@@ -4,23 +4,23 @@ Websites for small businesses in Gorj, Romania, one static Astro site per busine
 
 <table>
 <tr>
-<td width="33%" valign="top"><a href="https://gandolh.ro/saloon/"><img src="docs/images/saloon-home.webp" alt="Ana Saloon home page: the headline 'Unghii care vorbesc despre tine', a green WhatsApp booking button and a photo of a hand with pink and blue nails"></a><br><b>Nail salon</b>, Târgu-Jiu<br><a href="https://gandolh.ro/saloon/">gandolh.ro/saloon</a></td>
-<td width="33%" valign="top"><a href="https://gandolh.ro/auto-service/"><img src="docs/images/auto-service-home.webp" alt="BavAuto Gorj home page on a dark background: the headline 'BMW-ul tău, pe mâini care îl citesc.' beside a drawn rev counter and a smaller gauge"></a><br><b>BMW repair garage</b>, Târgu-Jiu<br><a href="https://gandolh.ro/auto-service/">gandolh.ro/auto-service</a></td>
-<td width="33%" valign="top"><a href="https://gandolh.ro/tractari/"><img src="docs/images/tractari-home.webp" alt="AXA Tractări home page: the headline 'Tractări auto pe platformă.' in white and yellow over a 3D night scene of a tow truck on a winding road"></a><br><b>Car towing</b> demo, Oltenia<br><a href="https://gandolh.ro/tractari/">gandolh.ro/tractari</a></td>
+<td width="33%" valign="top"><img src="docs/images/saloon-home.webp" alt="Ana Saloon home page: the headline 'Unghii care vorbesc despre tine', a green WhatsApp booking button and a photo of a hand with pink and blue nails"><br><b>Nail salon</b>, Târgu-Jiu<br><code>/saloon/</code></td>
+<td width="33%" valign="top"><img src="docs/images/auto-service-home.webp" alt="BavAuto Gorj home page on a dark background: the headline 'BMW-ul tău, pe mâini care îl citesc.' beside a drawn rev counter and a smaller gauge"><br><b>BMW repair garage</b>, Târgu-Jiu<br><code>/auto-service/</code></td>
+<td width="33%" valign="top"><img src="docs/images/tractari-home.webp" alt="AXA Tractări home page: the headline 'Tractări auto pe platformă.' in white and yellow over a 3D night scene of a tow truck on a winding road"><br><b>Car towing</b> demo, Oltenia<br><code>/tractari/</code></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><a href="https://gandolh.ro/subcort/"><img src="docs/images/subcort-home.webp" alt="Subcort home page: the headline 'Un spațiu pregătit, oriunde ai nevoie de el.' beside a line drawing of a marquee tent, with a strip of tent sizes below"></a><br><b>Event tent rental</b> demo, Gorj<br><a href="https://gandolh.ro/subcort/">gandolh.ro/subcort</a></td>
-<td width="33%" valign="top"><a href="https://gandolh.ro/churchix/"><img src="docs/images/churchix-home.webp" alt="Parish home page built on Churchix: the parish name in a large burgundy serif, the next service, and this week's schedule"></a><br><b>Orthodox parish</b> on the Churchix platform<br><a href="https://gandolh.ro/churchix/">gandolh.ro/churchix</a></td>
-<td width="33%" valign="top"><a href="https://gandolh.ro/design-study/"><img src="docs/images/design-study-home.webp" alt="Fourteen Renderings index page: the title on a dark background above a grid of style cards, starting with Minimalism, Swiss Design and Brutalism"></a><br><b>Design study</b>: one blog in 14 styles<br><a href="https://gandolh.ro/design-study/">gandolh.ro/design-study</a></td>
+<td width="33%" valign="top"><img src="docs/images/subcort-home.webp" alt="Subcort home page: the headline 'Un spațiu pregătit, oriunde ai nevoie de el.' beside a line drawing of a marquee tent, with a strip of tent sizes below"><br><b>Event tent rental</b> demo, Gorj<br><code>/subcort/</code></td>
+<td width="33%" valign="top"><img src="docs/images/churchix-home.webp" alt="Parish home page built on Churchix: the parish name in a large burgundy serif, the next service, and this week's schedule"><br><b>Orthodox parish</b> on the Churchix platform<br><code>/churchix/</code></td>
+<td width="33%" valign="top"><img src="docs/images/design-study-home.webp" alt="Fourteen Renderings index page: the title on a dark background above a grid of style cards, starting with Minimalism, Swiss Design and Brutalism"><br><b>Design study</b>: one blog in 14 styles<br><code>/design-study/</code></td>
 </tr>
 </table>
 
-**Status:** Maintenance and demos, as of the [2026-10-07 status page](corpus/wiki/status.md). All six are live on gandolh.ro. The two client sites, the salon and the garage, are code-complete and wait on the owners' real data, so both still show a "site în lucru" banner. The towing and tent sites are finished demos for made-up firms. Churchix is the only one with an open roadmap.
+**Status:** Maintenance and demos, as of the [2026-10-07 status page](corpus/wiki/status.md). All six are live on the production site. The two client sites, the salon and the garage, are code-complete and wait on the owners' real data, so both still show a "site în lucru" banner. The towing and tent sites are finished demos for made-up firms. Churchix is the only one with an open roadmap.
 
 ## What it does
 
 - Gives each business its own Romanian-language site, built around one action: phone the business or message it on WhatsApp.
-- Builds each site to plain static files, which Caddy serves under the site's own path on gandolh.ro.
+- Builds each site to plain static files, which Caddy serves under the site's own path on the production domain.
 - Keeps real phone numbers, addresses and photos out of git. They sit in gitignored files that the build merges in, so a clone builds with placeholders.
 - Gives every site a docs site at `/<site>/docs/`, rendered from that site's own README, PRODUCT.md, DESIGN.md and notes.
 
@@ -55,7 +55,7 @@ Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The s
 ## Docs
 
 - [docs/](docs/README.md): every site with its live URL, docs site and README, plus setup, architecture and adding a site
-- Docs sites: `https://gandolh.ro/<site>/docs/`, for example [gandolh.ro/saloon/docs](https://gandolh.ro/saloon/docs/)
+- Docs sites: `/<site>/docs/`, for example `/saloon/docs/`
 - [Project wiki](corpus/index.md): decisions, status and the briefs behind past work
 - [churchix/README.md](churchix/README.md) and its own [wiki](churchix/corpus/index.md)
 

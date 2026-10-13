@@ -12,4 +12,4 @@ These steps moved here from the old root README. `sites/saloon/` is the model to
 
 The root `.gitignore` needs no edit. Its rules for `site.local.ts` and `public/images/real/` are `**/` patterns that cover any site.
 
-Deploy is a separate step in the deploy repo: the site needs a stack there before it appears at `https://gandolh.ro/<name>/`.
+Deploy is a separate step in the deploy repo: the site needs a stack there before it appears at `/<name>/`.

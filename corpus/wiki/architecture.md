@@ -164,6 +164,6 @@ has its own at `churchix/docs-site/`. Each is a workspace of its own
   because archify is a per-machine agent skill rather than an npm dependency. No
   site has a diagram yet (2026-10-01); the mechanism is in place.
 - **Base:** `/<site>/docs/` is baked into `astro.config.mjs` (`DOCS_BASE`
-  overrides it), with `site: 'https://gandolh.ro'`; vps-deploy verifies the base
-  rather than setting it. Deployed at `https://gandolh.ro/<site>/docs/`.
+  overrides it), with `site: 'https://example.com'`; vps-deploy verifies the base
+  rather than setting it. Deployed at `/<site>/docs/`.
 

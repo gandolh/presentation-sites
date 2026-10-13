@@ -5,7 +5,7 @@
 Audit 2026-09-27 (see [log](../../log.md)). Each site assembles its absolute
 URLs by hand from a hardcoded origin, and none of those origins is where the
 sites are actually served. vps-deploy's `PresentationSiteStack` serves every
-site at `https://gandolh.ro/<site>/`. This is the emitted head from sub-path
+site at `/<site>/`. This is the emitted head from sub-path
 builds (`PUBLIC_BASE=/<site>`):
 
 | Site | canonical / og:url | og:image, twitter:image | JSON-LD image |
@@ -39,7 +39,7 @@ Sources:
 What should each site's canonical origin be *today*?
 
 **Recommended:** canonical = where the site is served. Add
-`site: process.env.PUBLIC_SITE ?? "https://gandolh.ro"` next to the existing
+`site: process.env.PUBLIC_SITE ?? "https://example.com"` next to the existing
 env-driven `base` in each `astro.config.mjs`. This extends the "sub-path
 hosting via an env-driven base" decision in
 [decisions.md](../../wiki/decisions.md). At launch, a client site moves to its
@@ -77,7 +77,7 @@ own domain by building with `PUBLIC_SITE=https://anasaloon.ro PUBLIC_BASE=/`.
 
 - Build each site with `PUBLIC_BASE=/<site>`. In `dist/index.html` and one inner
   page per site, every `canonical`, `og:url`, `og:image`, `twitter:image` and
-  JSON-LD `url`/`image` starts with `https://gandolh.ro/<site>/` (or whichever
+  JSON-LD `url`/`image` starts with the production origin plus `/<site>/` (or whichever
   origin was chosen).
 - Build with `PUBLIC_BASE=/ PUBLIC_SITE=https://example.test`: the same tags start
   with `https://example.test/` and contain no `/<site>/` segment.
@@ -87,7 +87,7 @@ own domain by building with `PUBLIC_SITE=https://anasaloon.ro PUBLIC_BASE=/`.
 ## Outcome — 2026-10-02
 
 **Decision:** canonical = where the site is served, as the brief recommended.
-Each site's config has `site: process.env.PUBLIC_SITE ?? "https://gandolh.ro"`,
+Each site's config has `site: process.env.PUBLIC_SITE ?? "https://example.com"`,
 recorded in [decisions.md](../../wiki/decisions.md). The agent running the brief
 made this call; the owner was not asked first.
 
@@ -108,7 +108,7 @@ Verified:
 - `PUBLIC_BASE=/<site>`: home plus an inner page per site (saloon `/termeni/`,
   auto-service `/servicii/` and `/cookie-uri/`, subcort `/zona/`). Every
   canonical, og:url, og:image, twitter:image and JSON-LD url/image starts with
-  `https://gandolh.ro/<site>/`.
+  the production origin plus `/<site>/`.
 - `PUBLIC_BASE=/ PUBLIC_SITE=https://example.test`: all four sites emit
   `https://example.test/…` with no `/<site>/` segment.
 - tractari with `site` removed fails its build with the `absoluteUrl` error.

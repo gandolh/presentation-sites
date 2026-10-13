@@ -1,6 +1,6 @@
 # Architecture
 
-The repo is an npm-workspaces root with three kinds of workspace: the sites, their docs sites, and one shared package. churchix sits beside them as a separate monorepo. Every site and docs site builds to static files that Caddy serves under a path on gandolh.ro. The only server code is saloon's `marketing/bots/` automation service, which runs in mock mode and is not live yet.
+The repo is an npm-workspaces root with three kinds of workspace: the sites, their docs sites, and one shared package. churchix sits beside them as a separate monorepo. Every site and docs site builds to static files that Caddy serves under a path on the production domain. The only server code is saloon's `marketing/bots/` automation service, which runs in mock mode and is not live yet.
 
 ```mermaid
 flowchart LR
@@ -9,7 +9,7 @@ flowchart LR
   kit["packages/site-kit<br/>@sites/kit"] -.->|withBase, createImages| sites
   sites -->|README, PRODUCT, DESIGN, docs| docs
   local["site.local.ts and public/images/real<br/>gitignored"] -.->|merged at build| sites
-  sites -->|dist| caddy["Caddy on the VPS<br/>gandolh.ro/site/"]
+  sites -->|dist| caddy["Caddy on the VPS<br/>/site/"]
   docs -->|dist| caddy
   churchix["churchix/<br/>own monorepo"] -->|apps/church/dist| caddy
 ```
@@ -38,7 +38,7 @@ Every project uses the same layout:
 1. Edit the typed content in `sites/<site>/src/content/`. Real contact details go in the gitignored `site.local.ts`.
 2. `npm run <site>:dev` shows it locally at `/`.
 3. `npm run <site>:build` writes `dist/`. Deploy builds with `PUBLIC_BASE=/<site>` so every link goes through `withBase()` to the right path.
-4. The deploy repo uploads `dist/` and Caddy serves it at `https://gandolh.ro/<site>/`.
+4. The deploy repo uploads `dist/` and Caddy serves it at `/<site>/`.
 
 ## Going deeper
 

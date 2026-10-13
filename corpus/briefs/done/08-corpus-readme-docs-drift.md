@@ -35,7 +35,7 @@ Facts to record. Verify each one before writing it down:
   `public/diagrams/` is **committed**, because archify is a per-machine agent
   skill, not an npm dependency.
 - The base `/<site>/docs/` is baked into `astro.config.mjs` (override with
-  `DOCS_BASE`), and the site deploys to `https://gandolh.ro/<site>/docs/`.
+  `DOCS_BASE`), and the site deploys to `/<site>/docs/`.
 
 ## Files you OWN
 
@@ -86,7 +86,7 @@ Rewritten as synthesis, with every fact checked first:
   covers location, `@sites/<site>-docs`, the `tsconfig` exclusion, the
   sync → diagrams → build pipeline, the gitignored rendered pages, the
   committed-diagram mechanism, and the baked `/<site>/docs/` base with
-  `DOCS_BASE` and `https://gandolh.ro`.
+  `DOCS_BASE` and the `https://example.com` default origin.
 - `status.md`: a 2026-10-01 snapshot paragraph naming design-study and the
   docs-sites. Brief links are repointed as briefs move to `done/`.
 - `README.md`: a "Docs sites" section with `npm run <site>:docs`. "Adding a new

@@ -74,7 +74,7 @@ Each site has a Starlight docs site at `sites/<site>/docs-site/`, a workspace of
 npm run saloon:docs      # → sites/saloon/docs-site/dist/, base /saloon/docs/
 ```
 
-The script renders the site's own `README.md`, `PRODUCT.md`, `DESIGN.md` and selected `docs/` files into `src/content/docs/wiki/`, compiles any diagrams, then runs `astro build`. Edit the site's own files, never the generated pages under `src/content/docs/wiki/`: every build rewrites them. The base `/<site>/docs/` is set in the docs site's `astro.config.mjs` and `DOCS_BASE` overrides it. The live copy is at `https://gandolh.ro/<site>/docs/`.
+The script renders the site's own `README.md`, `PRODUCT.md`, `DESIGN.md` and selected `docs/` files into `src/content/docs/wiki/`, compiles any diagrams, then runs `astro build`. Edit the site's own files, never the generated pages under `src/content/docs/wiki/`: every build rewrites them. The base `/<site>/docs/` is set in the docs site's `astro.config.mjs` and `DOCS_BASE` overrides it. The live copy is at `/<site>/docs/`.
 
 churchix has its own docs site at `churchix/docs-site/`.
 

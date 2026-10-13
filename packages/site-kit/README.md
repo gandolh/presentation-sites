@@ -33,7 +33,7 @@ reads on its own: canonical, `og:url`, `og:image`, `twitter:image`, JSON-LD.
 ```ts
 import { absoluteUrl, pagePath } from "@sites/kit";
 
-absoluteUrl("/images/og-image.png"); // "https://gandolh.ro/saloon/images/og-image.png"
+absoluteUrl("/images/og-image.png"); // "https://example.com/saloon/images/og-image.png"
 pagePath(Astro.url.pathname);        // "/termeni/": the current page, base stripped
 ```
 

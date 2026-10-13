@@ -10,7 +10,7 @@ updated: 2026-10-07
 All six projects build — the five sites under `sites/` and churchix. Since the
 2026-08-23 snapshot, `design-study` joined the workspace and **every site gained a
 Starlight docs site** at `sites/<site>/docs-site/` (`eda07a0`), built with
-`npm run <site>:docs` and deployed at `https://gandolh.ro/<site>/docs/` — see
+`npm run <site>:docs` and deployed at `/<site>/docs/` — see
 [architecture.md](architecture.md#docs-sites). The repo is in a **maintenance + demo** phase rather than
 active feature work: the two real client sites (`saloon`, `auto-service`) are
 code-complete and waiting on human/real-data steps, the two demos (`subcort`,
@@ -50,7 +50,7 @@ One open: [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md), the t
 - [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
 
 **Wave 2**
-- [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now `https://gandolh.ro/<site>/`
+- [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now the production origin plus `/<site>/`
 - [10](../briefs/done/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari
 - [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
 
