@@ -252,3 +252,7 @@ Task 6, the `max-w-*` guard, was added rather than declined. In this theme bare 
 ## [2026-10-07] maintenance | Wiki drift after the audit and the redesign
 
 [design-system](wiki/design-system.md) now matches the code: gold seed `#c8a24b`, Cardo headings with Source Serif 4 as the fallback, one app, and a new section on the `70999ff` redesign (`Rail`, `PageShell`, the asymmetric `Hero`, the `display-xl` and `overline` tokens). Its page inventory describes the current home page, and it records the `max-w` guard. [i18n-and-glossary](wiki/i18n-and-glossary.md) got the same font fix. The todo `wiki-drift-after-redesign` is deleted.
+
+## [2026-10-18] todo | Brief 18 filed: the docs site moves from Starlight to Docusaurus
+
+The owner's call (2026-10-18), one brief in every repo with a docs site. [18](briefs/todo/18-docs-site-on-docusaurus.md) keeps the URLs, the parish palette and the sync's `PAGES`/`MOVED`, and pins React to the apps' version so `@churchix/ui` never sees two copies. The 12 pages built cleanly through Docusaurus. The church sites stay Astro. The deploy waits on vps-deploy brief 11.

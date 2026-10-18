@@ -46,6 +46,7 @@ ones it depends on. Every brief honors [conventions](conventions.md).
 | 15 | [a11y, i18n and long-string pass](../briefs/done/15-a11y-i18n-pass.md) | 14 | E | done |
 | 16 | [UI audit across the pages](../briefs/done/16-ui-audit-pages.md) | 14, 15 | F | done (one app, two viewports, RO) |
 | 17 | [UI audit follow-ups](../briefs/done/17-audit-followups.md) | 16 | F | done (arch mask deferred) |
+| 18 | [Docs site from Starlight to Docusaurus](../briefs/todo/18-docs-site-on-docusaurus.md) | none | — | todo (filed 2026-10-18) |
 
 **Brief 17** closed on 2026-10-07. Task 1 was already done by the redesign,
 tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard in
@@ -53,4 +54,4 @@ tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard 
 mask) is deferred until real photography lands. See the 2026-10-07 log entry.
 
 New work: capture it in [todos/](../todos/), then promote it to
-`briefs/todo/` with the next free number (18).
+`briefs/todo/` with the next free number (19).
