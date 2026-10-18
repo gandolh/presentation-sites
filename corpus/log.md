@@ -519,3 +519,7 @@ Found during the README refresh; nothing fixed. `Hero.astro:39-40` ends a line w
 next with `{site.counties.at(-1)}`, and Astro drops the break between them, so the live page shows the
 words run together (also in the current `dist/`). The fix needs a tractari redeploy, which the owner
 runs from the deploy repo.
+
+## [2026-10-18] brief | Brief 14 filed: the five sites' docs sites move from Starlight to Docusaurus
+
+The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; [14](briefs/todo/14-docs-sites-on-docusaurus.md) sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.

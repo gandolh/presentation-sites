@@ -35,7 +35,7 @@ per-site docs and is *not* duplicated here.
 
 ## Briefs
 
-One open: [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede reads "sauMehedinți" (filed 2026-10-09). All eleven from the 2026-09-27 improvements audit were done by
+Two open: [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede reads "sauMehedinți" (filed 2026-10-09), and [14](../briefs/todo/14-docs-sites-on-docusaurus.md), the five sites' docs sites move from Starlight to Docusaurus (filed 2026-10-18). All eleven from the 2026-09-27 improvements audit were done by
 2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
