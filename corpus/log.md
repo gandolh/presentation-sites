@@ -523,3 +523,7 @@ runs from the deploy repo.
 ## [2026-10-18] brief | Brief 14 filed: the five sites' docs sites move from Starlight to Docusaurus
 
 The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; [14](briefs/todo/14-docs-sites-on-docusaurus.md) sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.
+
+## [2026-10-19] done | Brief 13: the space before a wrapped expression stays
+
+`afc6898`. Astro drops a line break that sits between text and an expression opening the next line. The tractari hero lede now keeps "sau {last county}" on one line and reads "Olt sau Mehedinți?". A sweep of every `.astro` and `.tsx` file found the same wrap on the saloon and auto-service terms pages ("aparține" run into the business name), fixed the same way. Copy unchanged; `astro check` and the three builds pass. Live after the owner redeploys tractari, saloon and auto-service.

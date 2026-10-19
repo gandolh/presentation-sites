@@ -49,3 +49,7 @@ paste it anywhere.
 - `npm run check` (and the site's build) pass.
 - **Deploy:** the fix reaches the live page only after tractari is redeployed. Deploy lives in a
   separate repo, so the owner runs it; this brief does not.
+
+## Outcome (2026-10-19)
+
+Done in `afc6898`. In `Hero.astro` the two county expressions and the "sau" between them now sit on one line, so no line break separates text from an expression; the copy is unchanged. The built `dist/index.html` reads "sau Mehedinți?" (`grep -c "sau Mehedin"` is 1, and the brief's `sauMehedin` grep finds nothing). The sweep of every `.astro` and `.tsx` file under `sites/` for a line of text followed by a line that opens with an expression found one more case, the same wrap on two pages: the terms pages of saloon and auto-service read "aparține" run into the business name. Both are fixed the same way, and their built `termeni/index.html` now has the space. The site has no `npm run check` script, so `npx astro check` was run in tractari, saloon and auto-service (0 errors each), and `npm run <site>:build` passes for all three. The fix reaches the live pages only after the owner redeploys tractari, saloon and auto-service.

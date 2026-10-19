@@ -1,6 +1,6 @@
 ---
 summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-10-07
+updated: 2026-10-19
 ---
 
 # Status — 2026-10-07
@@ -35,7 +35,7 @@ per-site docs and is *not* duplicated here.
 
 ## Briefs
 
-Two open: [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede reads "sauMehedinți" (filed 2026-10-09), and [14](../briefs/todo/14-docs-sites-on-docusaurus.md), the five sites' docs sites move from Starlight to Docusaurus (filed 2026-10-18). All eleven from the 2026-09-27 improvements audit were done by
+One open: [14](../briefs/todo/14-docs-sites-on-docusaurus.md), the five sites' docs sites move from Starlight to Docusaurus (filed 2026-10-18). [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", was done on 2026-10-19 and waits on a redeploy. All eleven from the 2026-09-27 improvements audit were done by
 2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
@@ -57,8 +57,11 @@ Two open: [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md), the t
 **From the owner's 2026-10-06 answers**
 - [12](../briefs/done/12-churchix-gets-a-corpus.md): churchix gets a corpus of its own, with its 17 work items sorted against the code
 
+**From the 2026-10-09 README refresh**
+- [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md): tractari hero lede ran "sau" into the last county; the terms pages of saloon and auto-service had the same wrap
+
 **Open**
-- [13](../briefs/todo/13-tractari-hero-sau-mehedinti-no-space.md): tractari hero lede runs "sau" into the last county
+- [14](../briefs/todo/14-docs-sites-on-docusaurus.md): the five docs sites move from Starlight to Docusaurus
 
 ## Note on the two doc layers
 
