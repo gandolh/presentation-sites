@@ -1,0 +1,261 @@
+/*
+ * Subcort's docs are part of the drawing set.
+ *
+ * The site is built as a **drawing set** rather than as a brochure: one marquee
+ * model drives a Three.js hero that assembles itself, an exploded axonometric
+ * plate and a scale plan. It ships no photography, deliberately. PRODUCT.md
+ * records the other deliberate absence — the site carries **no calls to action**
+ * and is informational by design.
+ *
+ * Both of those shape this theme. A drawing set is line work on sheet stock:
+ * near-white paper, a cold ink, hairlines that mean "measured", and exactly one
+ * signal colour used where a drawing would use a leader or a callout. Nothing
+ * here fills, glows or floats, because nothing on a plate does.
+ *
+ * The token names below are the site's own (`ink`, `line`, `hair`, `sheet`,
+ * `paper`, `signal`), carried across in OKLCH so the two surfaces are the same
+ * colours rather than approximations.
+ *
+ * IBM Plex Sans is the site's face — a drawing-office sans with real technical
+ * lineage, which is why it was chosen over a neutral grotesque.
+ *
+ * Light only, because a plate is drawn on sheet stock. docusaurus.config.ts
+ * sets colorMode to light with no switch, and the token block below also
+ * covers [data-theme='dark'], so a crafted `?docusaurus-data-theme=dark`
+ * cannot repaint the sheet.
+ *
+ * Ported from the Starlight theme on 2026-10-19: the site's own tokens are
+ * unchanged, and the --sl-* mapping became the --ifm-* (Infima) one below.
+ */
+
+@import '@fontsource-variable/ibm-plex-sans';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  color-scheme: light only;
+
+  --ink: oklch(29% 0.028 234);
+  --line: oklch(52% 0.026 234);
+  --line-soft: oklch(76% 0.017 233);
+  --hair: oklch(90.5% 0.006 230);
+  --signal: oklch(52.5% 0.152 40);
+  --signal-hover: oklch(47% 0.145 39);
+  --signal-soft: oklch(95% 0.022 45);
+  --on-signal-soft: oklch(44% 0.14 39);
+  --sheet: oklch(98.6% 0.002 90);
+  --paper: oklch(100% 0 0);
+  --fill: oklch(94.5% 0.004 233);
+  --success: oklch(52% 0.1 155);
+  --error: oklch(52% 0.17 28);
+
+  --font-body: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The one signal colour, and its steps. */
+  --ifm-color-primary: var(--signal);
+  --ifm-color-primary-dark: var(--signal-hover);
+  --ifm-color-primary-darker: oklch(44.5% 0.14 39);
+  --ifm-color-primary-darkest: oklch(37% 0.12 38);
+  --ifm-color-primary-light: oklch(57.5% 0.15 41);
+  --ifm-color-primary-lighter: oklch(60.5% 0.145 42);
+  --ifm-color-primary-lightest: oklch(68% 0.13 44);
+
+  /* The grey scale, from the sheet to the ink. */
+  --ifm-color-emphasis-0: var(--sheet);
+  --ifm-color-emphasis-100: var(--fill);
+  --ifm-color-emphasis-200: var(--hair);
+  --ifm-color-emphasis-300: var(--line-soft);
+  --ifm-color-emphasis-400: oklch(64% 0.022 234);
+  --ifm-color-emphasis-500: var(--line);
+  --ifm-color-emphasis-600: oklch(45% 0.026 234);
+  --ifm-color-emphasis-700: oklch(40% 0.026 234);
+  --ifm-color-emphasis-800: oklch(35% 0.026 234);
+  --ifm-color-emphasis-900: var(--ink);
+  --ifm-color-emphasis-1000: var(--ink);
+
+  --ifm-background-color: var(--sheet);
+  --ifm-background-surface-color: var(--sheet);
+  --ifm-navbar-background-color: var(--sheet);
+  --ifm-font-color-base: var(--ink);
+  --ifm-heading-color: var(--ink);
+  --ifm-color-content-secondary: var(--line);
+  --ifm-link-color: var(--signal);
+  --ifm-link-hover-color: var(--signal-hover);
+  --ifm-menu-color: var(--line);
+  --ifm-menu-color-active: var(--on-signal-soft);
+  --ifm-menu-color-background-active: var(--signal-soft);
+  --ifm-menu-color-background-hover: var(--fill);
+  --ifm-toc-border-color: var(--hair);
+  --ifm-hr-background-color: var(--hair);
+  --ifm-table-border-color: var(--hair);
+  --ifm-table-stripe-background: transparent;
+  --ifm-code-background: var(--fill);
+  --ifm-code-font-size: 0.875em;
+  --ifm-navbar-shadow: none;
+
+  --ifm-font-family-base: var(--font-body);
+  --ifm-heading-font-family: var(--font-body);
+  --ifm-font-family-monospace: var(--font-mono);
+
+  /* Admonitions. The rendered-page banner is a note (the secondary alert). */
+  --ifm-color-secondary-dark: var(--line);
+  --ifm-color-secondary-contrast-background: var(--fill);
+  --ifm-color-secondary-contrast-foreground: var(--ink);
+  --ifm-color-info-dark: var(--line);
+  --ifm-color-info-contrast-background: var(--fill);
+  --ifm-color-info-contrast-foreground: var(--ink);
+  --ifm-color-success-dark: var(--success);
+  --ifm-color-success-contrast-background: oklch(95% 0.03 155);
+  --ifm-color-success-contrast-foreground: oklch(40% 0.1 155);
+  --ifm-color-warning-dark: var(--on-signal-soft);
+  --ifm-color-warning-contrast-background: var(--signal-soft);
+  --ifm-color-warning-contrast-foreground: var(--signal-hover);
+  --ifm-color-danger-dark: var(--error);
+  --ifm-color-danger-contrast-background: oklch(95% 0.03 28);
+  --ifm-color-danger-contrast-foreground: oklch(40% 0.15 28);
+}
+
+/* A plate has square corners and no shadow. */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+/* Section heads are ruled like a plate's title band. */
+.markdown h2 {
+  border-top: 1px solid var(--line);
+  padding-top: 0.9rem;
+}
+
+/* Prose links only: the sidebar, the TOC and the navbar stay plain. */
+.markdown a:not(.hash-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+/* "You are here". Not .menu__link--active: Infima puts that on the parent
+   category of the current page as well. */
+.menu__link[aria-current='page'] {
+  font-weight: 600;
+}
+
+/* Tables are schedules: hairlines, tabular figures. Infima makes a table a
+   scrolling block, so the ground goes on the rows. */
+.markdown table {
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.markdown tr {
+  background: var(--paper);
+}
+
+.markdown th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--line);
+  background: var(--paper);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0.45rem 0.7rem;
+}
+
+.markdown td {
+  border: 0;
+  border-bottom: 1px solid var(--hair);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  background: var(--fill);
+  border: 0;
+  padding: 0.06em 0.32em;
+  font-variant-ligatures: none;
+}
+
+/* The Prism theme paints the block's ground inline, so the override needs
+   !important. */
+.theme-code-block {
+  --prism-background-color: var(--paper) !important;
+  border: 1px solid var(--line-soft);
+}
+
+.theme-code-block pre {
+  background-color: var(--paper) !important;
+}
+
+/* --- Diagram frames (Diagram.tsx) ---------------------------------------- */
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--hair);
+  font-size: 0.8125rem;
+  color: var(--line);
+  line-height: 1.5;
+}
+
+/* --- Key/value facts ----------------------------------------------------- */
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--line);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
