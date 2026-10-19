@@ -1,10 +1,10 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    // @docusaurus/tsconfig still sets baseUrl, which TypeScript 6 deprecates.
+    "ignoreDeprecations": "6.0",
+    "noEmit": true
+  },
+  "include": ["src", "docusaurus.config.ts", "sidebars.ts"],
+  "exclude": ["dist", ".docusaurus", "node_modules", "static"]
 }
