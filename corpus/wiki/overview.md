@@ -1,6 +1,6 @@
 ---
 summary: What presentation-sites is — a monorepo of independent Romanian marketing sites, who each one is for, and what lives at the top level.
-updated: 2026-10-07
+updated: 2026-10-19
 ---
 
 # Overview
@@ -12,7 +12,7 @@ npm workspace per site under `sites/`. The root hoists every dependency into one
 pipeline and one type; nothing else crosses between them (see
 [decisions.md](decisions.md)). The root carries passthrough npm scripts, shared
 editor config and this corpus. Each site also has its own **documentation site**
-— a Starlight project at `sites/<site>/docs-site/`, built with
+— a Docusaurus project at `sites/<site>/docs-site/`, built with
 `npm run <site>:docs` (see [architecture.md](architecture.md#docs-sites)).
 
 Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Oltenia**.

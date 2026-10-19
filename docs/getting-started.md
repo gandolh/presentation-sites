@@ -68,13 +68,20 @@ Each site builds to `sites/<site>/dist/`, which git ignores. The base path comes
 
 ## Docs sites
 
-Each site has a Starlight docs site at `sites/<site>/docs-site/`, a workspace of its own named `@sites/<site>-docs`:
+Each site has a Docusaurus docs site at `sites/<site>/docs-site/`, a workspace of its own named `@sites/<site>-docs`:
 
 ```bash
 npm run saloon:docs      # → sites/saloon/docs-site/dist/, base /saloon/docs/
 ```
 
-The script renders the site's own `README.md`, `PRODUCT.md`, `DESIGN.md` and selected `docs/` files into `src/content/docs/wiki/`, compiles any diagrams, then runs `astro build`. Edit the site's own files, never the generated pages under `src/content/docs/wiki/`: every build rewrites them. The base `/<site>/docs/` is set in the docs site's `astro.config.mjs` and `DOCS_BASE` overrides it. The live copy is at `/<site>/docs/`.
+The script renders the site's own `README.md`, `PRODUCT.md`, `DESIGN.md` and selected `docs/` files into `docs/wiki/`, compiles any diagrams, then runs `docusaurus build --out-dir dist`. Edit the site's own files, never the generated pages under `docs/wiki/`: every build rewrites them. A link in those files to a page the docs site renders becomes a link between docs pages, and a link to anything else in the repo opens it on GitHub. A broken link fails the build. The base `/<site>/docs/` is set in the docs site's `docusaurus.config.ts` and `DOCS_BASE` overrides it. The live copy is at `/<site>/docs/`.
+
+To look at a build, serve `dist/` under its base with any static server, not `docusaurus serve`, which mishandles the hashed font files when URLs end in a slash:
+
+```bash
+mkdir -p /tmp/serve/saloon && ln -sfn "$PWD/sites/saloon/docs-site/dist" /tmp/serve/saloon/docs
+python3 -m http.server 4360 --directory /tmp/serve   # → http://localhost:4360/saloon/docs/
+```
 
 churchix has its own docs site at `churchix/docs-site/`.
 

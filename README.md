@@ -45,7 +45,7 @@ Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The s
 
 | Path | What lives there |
 |---|---|
-| `sites/` | One workspace per site: `saloon`, `auto-service`, `subcort`, `tractari`, `design-study`. Each has its own README, PRODUCT.md, DESIGN.md and a Starlight `docs-site/` |
+| `sites/` | One workspace per site: `saloon`, `auto-service`, `subcort`, `tractari`, `design-study`. Each has its own README, PRODUCT.md, DESIGN.md and a Docusaurus `docs-site/` |
 | `packages/site-kit/` | `@sites/kit`, the only code the sites share |
 | `churchix/` | Churchix, a white-label platform for Orthodox parish sites. Its own monorepo, not a workspace here |
 | `corpus/` | The repo's wiki: layout, decisions, status, work briefs |

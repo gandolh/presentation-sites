@@ -5,7 +5,7 @@ The repo is an npm-workspaces root with three kinds of workspace: the sites, the
 ```mermaid
 flowchart LR
   root["root package.json<br/>passthrough scripts"] --> sites["sites/*<br/>Astro 7, static"]
-  root --> docs["sites/*/docs-site<br/>Starlight"]
+  root --> docs["sites/*/docs-site<br/>Docusaurus"]
   kit["packages/site-kit<br/>@sites/kit"] -.->|withBase, createImages| sites
   sites -->|README, PRODUCT, DESIGN, docs| docs
   local["site.local.ts and public/images/real<br/>gitignored"] -.->|merged at build| sites
@@ -16,7 +16,7 @@ flowchart LR
 
 - **sites/** holds five sites, each its own workspace. saloon, auto-service, subcort and tractari share one shape: Astro 7 with static output, React 19 islands where something has to be interactive, Tailwind v4 with its tokens in CSS, and content as typed TypeScript in `src/content/*.ts`. tractari and subcort add a Three.js hero. design-study is Astro with React islands and no Tailwind; each of its 14 themes owns its markup, CSS and fonts.
 - **packages/site-kit** is `@sites/kit`. It holds the code that was byte-identical across sites: `withBase()` for sub-path URLs, `createImages()` for the placeholder/real photo switch, and the `SiteOverridesOf` type. It ships TypeScript source with no build step, so each site lists it under `vite.ssr.noExternal` and Vite compiles it per site. The bar for adding to it is identical logic, not similar logic; [its README](../packages/site-kit/README.md) lists what was kept out and why.
-- **`sites/<site>/docs-site`** is a Starlight site that renders the site's own Markdown into pages at `/<site>/docs/`.
+- **`sites/<site>/docs-site`** is a Docusaurus site that renders the site's own Markdown into pages at `/<site>/docs/`.
 - **churchix/** is a white-label platform: shared `@churchix/*` packages and one independent Astro app per parish. It is not a workspace here because one workspace root cannot nest inside another. [churchix/CLAUDE.md](../churchix/CLAUDE.md) governs it.
 
 ## Where each kind of doc lives

@@ -1,6 +1,6 @@
 ---
 summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. Do not relitigate without a log entry.
-updated: 2026-10-07
+updated: 2026-10-19
 ---
 
 # Decisions
@@ -188,7 +188,8 @@ taking them down. *Why:* they cost nothing to keep.
 
 ## Each site's docs site lives inside the site
 
-**2026-09-06** (`eda07a0`) — The Starlight docs for a site are at
+**2026-09-06** (`eda07a0`) — The docs for a site (Docusaurus since 2026-10-19,
+Starlight before) are at
 `sites/<site>/docs-site/`, a workspace of their own (`sites/*/docs-site`), built
 from the site's own `README.md` / `PRODUCT.md` / `DESIGN.md` / `docs/`.
 *Rejected:* a separate docs tree (e.g. `docs-sites/<site>/`) or a docs repo — both

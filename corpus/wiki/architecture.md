@@ -1,6 +1,6 @@
 ---
 summary: How this workspace is put together — the sites/ + packages/ layout, the per-site docs-sites, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
-updated: 2026-10-07
+updated: 2026-10-19
 ---
 
 # Architecture
@@ -13,7 +13,7 @@ presentation-sites/
   package-lock.json   one lockfile for every site and package
   node_modules/       hoisted; per-site node_modules do not exist
   sites/<name>/       one deployable site per workspace
-  sites/<name>/docs-site/  that site's Starlight docs — a workspace of its own
+  sites/<name>/docs-site/  that site's Docusaurus docs — a workspace of its own
   packages/site-kit/  @sites/kit — the only code shared between sites
   churchix/           NOT a workspace here — its own root, lockfile and packages/*
   corpus/             this knowledge workspace
@@ -148,22 +148,35 @@ without revisiting [decisions.md](decisions.md).
 
 ## Docs sites
 
-Each site has a **Starlight docs site** at `sites/<site>/docs-site/`, and churchix
-has its own at `churchix/docs-site/`. Each is a workspace of its own
+Each site has a **Docusaurus docs site** at `sites/<site>/docs-site/` (Starlight
+until 2026-10-19, brief 14), and churchix has its own at `churchix/docs-site/`.
+Each is a workspace of its own
 (`@sites/<site>-docs`), excluded from its parent site's `tsconfig.json` so
-`astro check` on the site does not walk it.
+`astro check` on the site does not walk its `.tsx` files.
 
 - **Build:** `npm run <site>:docs` from the root (or `npm run docs` inside the
-  docs-site) runs `sync-corpus`, then `diagrams`, then `astro build`.
+  docs-site) runs `sync-corpus`, then `diagrams`, then
+  `docusaurus build --out-dir dist`. Hashed assets land under `<base>assets/`.
 - **Content:** `scripts/sync-corpus.mjs` renders the site's own `README.md`,
-  `PRODUCT.md`, `DESIGN.md` and selected `docs/*` into `src/content/docs/wiki/`,
-  which is gitignored; each rendered page carries a banner naming its source
-  under `sites/<site>/`. It is not this corpus; the script name is historical.
+  `PRODUCT.md`, `DESIGN.md` and selected `docs/*` (its `PAGES` list, whose slugs
+  are the URLs) into `docs/wiki/`, which is gitignored; each rendered page
+  carries a banner naming its source under `sites/<site>/`. It is not this
+  corpus; the script name is historical. Each link is resolved against its
+  source file: a page in `PAGES` becomes a link between docs pages, anything
+  else in the repo a GitHub URL (`tree/` for a folder, `raw/` for an image).
+  `onBrokenLinks: 'throw'` fails the build on a dead one. The one authored page
+  is `docs/index.mdx`, served at the base.
+- **Theme:** each site picks one mode in `docusaurus.config.ts` — saloon and
+  subcort light only, the other three dark only, none with a toggle — and puts
+  its own tokens on Infima's `--ifm-*` variables in `src/css/custom.css`. The
+  `browserslist` in each docs package is load-bearing: without it Infima's
+  tokens beat the site's.
 - **Diagrams:** `scripts/build-diagrams.mjs` compiles archify JSON from
-  `diagrams/` into HTML under `public/diagrams/`, and the HTML is **committed**,
+  `diagrams/` into HTML under `static/diagrams/`, and the HTML is **committed**,
   because archify is a per-machine agent skill rather than an npm dependency. No
-  site has a diagram yet (2026-10-01); the mechanism is in place.
-- **Base:** `/<site>/docs/` is baked into `astro.config.mjs` (`DOCS_BASE`
-  overrides it), with `site: 'https://example.com'`; vps-deploy verifies the base
-  rather than setting it. Deployed at `/<site>/docs/`.
+  site has a diagram yet (2026-10-19); the mechanism is in place.
+- **Base:** `/<site>/docs/` is baked into `docusaurus.config.ts` (`DOCS_BASE`
+  overrides it), with `url` set to the production origin, the same one the
+  site's `astro.config.mjs` uses; vps-deploy verifies the base rather than
+  setting it. Deployed at `/<site>/docs/`.
 
