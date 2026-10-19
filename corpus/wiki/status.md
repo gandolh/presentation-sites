@@ -9,7 +9,7 @@ updated: 2026-10-19
 
 All six projects build — the five sites under `sites/` and churchix. Since the
 2026-08-23 snapshot, `design-study` joined the workspace and **every site gained a
-Starlight docs site** at `sites/<site>/docs-site/` (`eda07a0`), built with
+docs site** at `sites/<site>/docs-site/` (`eda07a0`; Starlight, on Docusaurus since 2026-10-19), built with
 `npm run <site>:docs` and deployed at `/<site>/docs/` — see
 [architecture.md](architecture.md#docs-sites). The repo is in a **maintenance + demo** phase rather than
 active feature work: the two real client sites (`saloon`, `auto-service`) are
@@ -35,7 +35,7 @@ per-site docs and is *not* duplicated here.
 
 ## Briefs
 
-One open: [14](../briefs/todo/14-docs-sites-on-docusaurus.md), the five sites' docs sites move from Starlight to Docusaurus (filed 2026-10-18). [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", was done on 2026-10-19 and waits on a redeploy. All eleven from the 2026-09-27 improvements audit were done by
+None open. [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", and [14](../briefs/done/14-docs-sites-on-docusaurus.md), the five docs sites on Docusaurus, were done on 2026-10-19; both wait on a deploy, and 14's waits on vps-deploy brief 11 first. All eleven from the 2026-09-27 improvements audit were done by
 2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
@@ -60,8 +60,8 @@ One open: [14](../briefs/todo/14-docs-sites-on-docusaurus.md), the five sites' d
 **From the 2026-10-09 README refresh**
 - [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md): tractari hero lede ran "sau" into the last county; the terms pages of saloon and auto-service had the same wrap
 
-**Open**
-- [14](../briefs/todo/14-docs-sites-on-docusaurus.md): the five docs sites move from Starlight to Docusaurus
+**From the owner's 2026-10-18 Docusaurus call**
+- [14](../briefs/done/14-docs-sites-on-docusaurus.md): the five docs sites move from Starlight to Docusaurus; links to source files go to GitHub
 
 ## Note on the two doc layers
 

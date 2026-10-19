@@ -522,8 +522,12 @@ runs from the deploy repo.
 
 ## [2026-10-18] brief | Brief 14 filed: the five sites' docs sites move from Starlight to Docusaurus
 
-The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; [14](briefs/todo/14-docs-sites-on-docusaurus.md) sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.
+The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; [14](briefs/done/14-docs-sites-on-docusaurus.md) sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.
 
 ## [2026-10-19] done | Brief 13: the space before a wrapped expression stays
 
 `afc6898`. Astro drops a line break that sits between text and an expression opening the next line. The tractari hero lede now keeps "sau {last county}" on one line and reads "Olt sau Mehedinți?". A sweep of every `.astro` and `.tsx` file found the same wrap on the saloon and auto-service terms pages ("aparține" run into the business name), fixed the same way. Copy unchanged; `astro check` and the three builds pass. Live after the owner redeploys tractari, saloon and auto-service.
+
+## [2026-10-19] done | Brief 14: the five docs sites run on Docusaurus
+
+One commit per site (`22194b7`, `aa1dbc3`, `fe3639c`, `17abb94`, `f17663d`) and one for the mentions (`9dfb1aa`). Docusaurus 3.10.2 on React 19.2.8, one copy across the workspace. Every published URL is kept, plus `/search/`, and the dark sites lost their do-nothing toggle. The sync resolves links against the source file, so the 13 dead links to source files now open on GitHub, and a broken link fails the build. subcort declares the `sharp` its `gen-og.mjs` uses. Three gotchas the skill's guide does not list: `readme.md` is served at its folder's URL unless it has a `slug:`, `:::note[Title]` is not rendered in a `.md` page, and `@docusaurus/tsconfig`'s `baseUrl` fails TypeScript 6. The details are in the brief's outcome. The deploy waits on vps-deploy brief 11.

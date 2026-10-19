@@ -160,3 +160,14 @@ Then, once for the repo:
 - Deploying. The owner deploys after vps-deploy brief 11 flips the five docs
   stacks.
 - Moving any marketing site off Astro.
+
+## Outcome (2026-10-19)
+
+Done, one commit per site: saloon `22194b7` (with the lockfile and subcort's `sharp` 0.35.4 line), auto-service `aa1dbc3`, subcort `fe3639c`, tractari `17abb94`, design-study `f17663d`, and the mentions in `9dfb1aa`. Docusaurus 3.10.2, with React pinned at 19.2.8 (exact in the four sites that pin exactly, `^` in saloon). Checks: `npm run <site>:docs` exits 0 for all five with `onBrokenLinks: 'throw'` and no sync warnings. Each route list equals `/tmp/<site>-routes-before.txt` plus `./search/index.html` (9, 8, 4, 4 and 19 pages). `<base>assets/` is in each `index.html`, and `grep -rl _astro sites/*/docs-site/dist` finds nothing. `npm ls react` shows only 19.2.8. `npm run typecheck` is clean in each docs package, `npx astro check` has 0 errors in each site, and `npm run build` and the five `<site>:build` pass. `npm run subcort:og` still writes a byte-identical card. In the browser, each `dist/` was served at its base by `python3 -m http.server`: each landing page and one synced page render in the site's faces and colours, saloon and subcort are light and the other three dark, none shows a toggle, the faces load with no 404s, a search on saloon returns results, and the README's `HeroCanvas.tsx` link opens the file on GitHub in a new tab. Every rewritten GitHub link that was checked answers 200.
+
+Three things the guide did not cover, each hit here:
+- Docusaurus serves a file named `readme.md` at its folder's URL (`/wiki/`), so the sync writes `slug:` on every page to keep `/wiki/readme/`.
+- In a `.md` page (CommonMark under `format: 'detect'`) the `:::note[Title]` form is not rendered: the title comes out as an unknown `<mdxadmonitiontitle>` element. The banner's title is the note's first line instead. The skill's `references/sync-corpus.mjs` has the same banner.
+- `@docusaurus/tsconfig` sets `baseUrl`, which TypeScript 6.0.3 rejects (TS5101), so each docs `tsconfig.json` sets `"ignoreDeprecations": "6.0"`. And the Prism theme paints a code block's background inline, so each `custom.css` overrides it with `!important`.
+
+Also changed: `build-diagrams.mjs` no longer fails when `diagrams/` is missing (git keeps no empty folder, so a fresh clone has none). `url` stays the production origin, as `site` was in the Starlight configs and is in each site's `astro.config.mjs`, so the sitemap keeps absolute URLs. The screenshots are not in the repo. Not done here: the deploy, which waits on vps-deploy brief 11 switching the five docs stacks' asset check to `assets/`.
