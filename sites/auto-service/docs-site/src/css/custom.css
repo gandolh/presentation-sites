@@ -1,0 +1,258 @@
+/*
+ * BavAuto Gorj's docs sit in the same dark bezel.
+ *
+ * `DESIGN.md` carries the token set as machine-readable frontmatter, in OKLCH,
+ * with a surface ladder built for a **dark instrument panel** — background and
+ * surface are the same value, and depth comes from a five-step
+ * `surface-container-*` ramp plus explicit bezel edges rather than from shadow.
+ *
+ * That ladder is what is reused here. A docs page has no bezel, but it has the
+ * same problem the ladder solves: distinguishing a panel from its ground without
+ * spending a shadow. Code blocks, tables and diagram frames step up the ramp.
+ *
+ * Amber (`primary`) is the identity colour across the dark field and is used as
+ * the app uses it — for the thing you act on, and the rule that opens a section.
+ * It is never a large fill: on a near-black ground a filled amber block is a
+ * headlight, and there is nothing here worth pointing one at.
+ *
+ * Archivo Variable at width 112 is the display face, as specified. Dark-only:
+ * the site's base surface tokens ARE the dark, and the inverse tokens exist for
+ * the rare light panel rather than for a second theme. docusaurus.config.ts sets
+ * colorMode to dark with no switch, and the token block below also covers
+ * [data-theme='light'], so a crafted `?docusaurus-data-theme=light` paints the
+ * same panel.
+ *
+ * Ported from the Starlight theme on 2026-10-19: the site's own tokens are
+ * unchanged, and the --sl-* mapping became the --ifm-* (Infima) one below.
+ */
+
+@import '@fontsource-variable/archivo';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  color-scheme: dark;
+
+  --background: oklch(13.5% 0.008 255);
+  --surface-lowest: oklch(17% 0.01 255);
+  --surface-low: oklch(20% 0.012 256);
+  --surface: oklch(23.5% 0.014 256);
+  --surface-high: oklch(27.5% 0.016 257);
+  --surface-highest: oklch(31.5% 0.018 257);
+
+  --on-surface: oklch(96% 0.004 250);
+  --on-surface-variant: oklch(76% 0.01 255);
+  --outline: oklch(48% 0.014 256);
+  --outline-variant: oklch(29% 0.014 256);
+  --hairline-inset: oklch(22% 0.012 256);
+
+  --primary: oklch(72% 0.17 58);
+  --primary-hover: oklch(78% 0.155 62);
+  --primary-lift: oklch(84% 0.14 66);
+  --primary-deep: oklch(66% 0.17 55);
+  --on-primary: oklch(17% 0.04 55);
+
+  --font-display: 'Archivo Variable', 'Arial Narrow', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The accent ramp: amber, its deep step and its lifts. */
+  --ifm-color-primary: var(--primary);
+  --ifm-color-primary-dark: var(--primary-deep);
+  --ifm-color-primary-darker: oklch(62% 0.165 54);
+  --ifm-color-primary-darkest: oklch(52% 0.15 52);
+  --ifm-color-primary-light: var(--primary-hover);
+  --ifm-color-primary-lighter: oklch(81% 0.15 64);
+  --ifm-color-primary-lightest: var(--primary-lift);
+
+  /* The grey scale, from the bezel up to the printed legend. */
+  --ifm-color-emphasis-0: var(--background);
+  --ifm-color-emphasis-100: var(--surface-lowest);
+  --ifm-color-emphasis-200: var(--surface);
+  --ifm-color-emphasis-300: var(--outline-variant);
+  --ifm-color-emphasis-400: oklch(38% 0.014 256);
+  --ifm-color-emphasis-500: var(--outline);
+  --ifm-color-emphasis-600: var(--on-surface-variant);
+  --ifm-color-emphasis-700: oklch(85% 0.008 252);
+  --ifm-color-emphasis-800: oklch(90% 0.006 251);
+  --ifm-color-emphasis-900: var(--on-surface);
+  --ifm-color-emphasis-1000: var(--on-surface);
+
+  --ifm-background-color: var(--background);
+  --ifm-background-surface-color: var(--background);
+  --ifm-navbar-background-color: var(--background);
+  --ifm-font-color-base: var(--on-surface);
+  --ifm-heading-color: var(--on-surface);
+  --ifm-color-content-secondary: var(--on-surface-variant);
+  --ifm-link-color: var(--primary);
+  --ifm-link-hover-color: var(--primary-lift);
+  --ifm-menu-color: var(--on-surface-variant);
+  --ifm-menu-color-active: var(--primary);
+  --ifm-menu-color-background-active: oklch(28% 0.07 55);
+  --ifm-menu-color-background-hover: var(--surface-low);
+  --ifm-toc-border-color: var(--outline-variant);
+  --ifm-hr-background-color: var(--outline-variant);
+  --ifm-table-border-color: var(--outline-variant);
+  --ifm-table-stripe-background: transparent;
+  --ifm-code-background: var(--surface);
+  --ifm-code-font-size: 0.86em;
+  --ifm-dropdown-background-color: var(--surface-low);
+  --docusaurus-highlighted-code-line-bg: var(--surface-high);
+
+  --ifm-font-family-base: var(--font-display);
+  --ifm-heading-font-family: var(--font-display);
+  --ifm-font-family-monospace: var(--font-mono);
+
+  /* Admonitions. The rendered-page banner is a note (the secondary alert). */
+  --ifm-color-secondary-dark: var(--on-surface-variant);
+  --ifm-color-secondary-contrast-background: var(--surface);
+  --ifm-color-secondary-contrast-foreground: var(--on-surface);
+  --ifm-color-info-dark: var(--on-surface-variant);
+  --ifm-color-info-contrast-background: var(--surface);
+  --ifm-color-info-contrast-foreground: var(--on-surface);
+  --ifm-color-success-dark: oklch(76% 0.15 150);
+  --ifm-color-success-contrast-background: oklch(26% 0.06 150);
+  --ifm-color-success-contrast-foreground: oklch(86% 0.14 150);
+  --ifm-color-warning-dark: var(--primary);
+  --ifm-color-warning-contrast-background: oklch(26% 0.06 55);
+  --ifm-color-warning-contrast-foreground: var(--primary-lift);
+  --ifm-color-danger-dark: oklch(70% 0.17 25);
+  --ifm-color-danger-contrast-background: oklch(26% 0.08 25);
+  --ifm-color-danger-contrast-foreground: oklch(82% 0.15 25);
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.navbar__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+/* Amber opens a section — a rule, not a fill. */
+.markdown h2 {
+  border-top: 2px solid var(--primary);
+  padding-top: 0.9rem;
+}
+
+/* Prose links only: the sidebar, the TOC and the navbar stay plain. */
+.markdown a:not(.hash-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+/* "You are here". Not .menu__link--active: Infima puts that on the parent
+   category of the current page as well. */
+.menu__link[aria-current='page'] {
+  font-weight: 700;
+}
+
+/* Depth is the surface ladder, never a shadow. Infima makes a table a
+   scrolling block, so the ground goes on the rows. */
+.markdown table {
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.markdown tr {
+  background: var(--surface-lowest);
+}
+
+.markdown th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--on-surface-variant);
+  background: var(--surface);
+  border: 0;
+  border-bottom: 1px solid var(--outline);
+  padding: 0.5rem 0.75rem;
+}
+
+.markdown td {
+  border: 0;
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-variant-ligatures: none;
+}
+
+/* The Prism theme paints the block's ground inline, so the override needs
+   !important. */
+.theme-code-block {
+  --prism-background-color: var(--surface-lowest) !important;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.theme-code-block pre {
+  background-color: var(--surface-lowest) !important;
+}
+
+/* --- Diagram frames (Diagram.tsx) ---------------------------------------- */
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* --- Key/value facts ----------------------------------------------------- */
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  border-left: 2px solid var(--primary);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
