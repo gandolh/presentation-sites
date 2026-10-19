@@ -1,0 +1,262 @@
+/*
+ * AXA Tractări's docs are on the same wet road.
+ *
+ * `DESIGN.md`'s north star: **"Headlights on a wet road at 3am."** Dark by
+ * default — asphalt at night, not a white brochure — and the light comes from
+ * the things that rescue you: headlights, the rotating amber beacon, lit lane
+ * markings.
+ *
+ * Three of its calls are carried over, and two of them are the interesting ones:
+ *
+ *   • **No red.** Every competitor in the category uses red; amber is the actual
+ *     colour of a tow truck's warning light and is what makes this distinctive.
+ *     So there is no red on this site either — the error tone is the safety
+ *     orange, which is the same decision the app made.
+ *   • **Amber is identity; the safety orange is the ONE call action.** In the app
+ *     that means exactly one CTA wears it. Here there is nothing to call, so the
+ *     orange appears only on a genuine warning and the amber does the
+ *     navigational work.
+ *   • **Never pure black.** The ground is cold asphalt at 16% lightness.
+ *
+ * Big Shoulders Display (industrial signage, flat terminals) for headings,
+ * uppercase, as the site uses it; Archivo for body. Both self-hosted via
+ * Fontsource — DESIGN.md notes the Google CDN was rejected on GDPR grounds, and
+ * that constraint carries here unchanged.
+ *
+ * Dark only, because the road is at night. docusaurus.config.ts sets colorMode
+ * to dark with no switch, and the token block below also covers
+ * [data-theme='light'], so a crafted `?docusaurus-data-theme=light` paints the
+ * same asphalt.
+ *
+ * Ported from the Starlight theme on 2026-10-19: the site's own tokens are
+ * unchanged, and the --sl-* mapping became the --ifm-* (Infima) one below.
+ */
+
+@import '@fontsource-variable/big-shoulders-display';
+@import '@fontsource-variable/archivo';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  color-scheme: dark;
+
+  --background: oklch(16% 0.012 250);
+  --surface-container: oklch(22% 0.015 250);
+  --surface-container-high: oklch(27% 0.016 250);
+  --on-surface: oklch(95% 0.008 90);
+  --on-surface-variant: oklch(72% 0.012 250);
+  --outline: oklch(42% 0.014 250);
+  --outline-variant: oklch(30% 0.014 250);
+
+  --primary: oklch(80% 0.16 80);
+  --accent: oklch(68% 0.2 45);
+  --headlight: oklch(95% 0.03 230);
+
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Archivo Variable', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The beacon amber, and its steps. */
+  --ifm-color-primary: var(--primary);
+  --ifm-color-primary-dark: oklch(74% 0.16 78);
+  --ifm-color-primary-darker: oklch(70% 0.155 77);
+  --ifm-color-primary-darkest: oklch(58% 0.14 74);
+  --ifm-color-primary-light: oklch(84% 0.15 81);
+  --ifm-color-primary-lighter: oklch(88% 0.14 80);
+  --ifm-color-primary-lightest: oklch(93% 0.09 82);
+
+  /* The grey scale, from the asphalt up to the lane markings. */
+  --ifm-color-emphasis-0: var(--background);
+  --ifm-color-emphasis-100: oklch(19% 0.013 250);
+  --ifm-color-emphasis-200: var(--surface-container);
+  --ifm-color-emphasis-300: var(--outline-variant);
+  --ifm-color-emphasis-400: oklch(36% 0.014 250);
+  --ifm-color-emphasis-500: var(--outline);
+  --ifm-color-emphasis-600: var(--on-surface-variant);
+  --ifm-color-emphasis-700: oklch(83% 0.01 250);
+  --ifm-color-emphasis-800: oklch(89% 0.009 170);
+  --ifm-color-emphasis-900: var(--on-surface);
+  --ifm-color-emphasis-1000: var(--on-surface);
+
+  --ifm-background-color: var(--background);
+  --ifm-background-surface-color: var(--background);
+  --ifm-navbar-background-color: var(--background);
+  --ifm-font-color-base: var(--on-surface);
+  --ifm-heading-color: var(--on-surface);
+  --ifm-color-content-secondary: var(--on-surface-variant);
+  --ifm-link-color: var(--primary);
+  --ifm-link-hover-color: oklch(88% 0.14 80);
+  --ifm-menu-color: var(--on-surface-variant);
+  --ifm-menu-color-active: var(--primary);
+  --ifm-menu-color-background-active: oklch(28% 0.07 80);
+  --ifm-menu-color-background-hover: var(--surface-container);
+  --ifm-toc-border-color: var(--outline-variant);
+  --ifm-hr-background-color: var(--outline-variant);
+  --ifm-table-border-color: var(--outline-variant);
+  --ifm-table-stripe-background: transparent;
+  --ifm-code-background: var(--surface-container-high);
+  --ifm-code-font-size: 0.86em;
+  --ifm-dropdown-background-color: var(--surface-container);
+  --docusaurus-highlighted-code-line-bg: var(--surface-container-high);
+
+  --ifm-font-family-base: var(--font-body);
+  --ifm-heading-font-family: var(--font-display);
+  --ifm-font-family-monospace: var(--font-mono);
+
+  /* Admonitions. The rendered-page banner is a note (the secondary alert). */
+  --ifm-color-secondary-dark: var(--headlight);
+  --ifm-color-secondary-contrast-background: oklch(26% 0.02 230);
+  --ifm-color-secondary-contrast-foreground: var(--on-surface);
+  --ifm-color-info-dark: var(--headlight);
+  --ifm-color-info-contrast-background: oklch(26% 0.02 230);
+  --ifm-color-info-contrast-foreground: var(--on-surface);
+  --ifm-color-success-dark: oklch(78% 0.14 150);
+  --ifm-color-success-contrast-background: oklch(26% 0.06 150);
+  --ifm-color-success-contrast-foreground: oklch(88% 0.13 150);
+  --ifm-color-warning-dark: var(--primary);
+  --ifm-color-warning-contrast-background: oklch(26% 0.06 80);
+  --ifm-color-warning-contrast-foreground: oklch(88% 0.14 80);
+  /* No red anywhere — the safety orange is the strongest tone this site has. */
+  --ifm-color-danger: var(--accent);
+  --ifm-color-danger-dark: var(--accent);
+  --ifm-color-danger-contrast-background: oklch(26% 0.08 45);
+  --ifm-color-danger-contrast-foreground: oklch(80% 0.18 45);
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.navbar__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* The beacon opens a section. */
+.markdown h2 {
+  border-top: 2px solid var(--primary);
+  padding-top: 0.9rem;
+}
+
+/* Prose links only: the sidebar, the TOC and the navbar stay plain. */
+.markdown a:not(.hash-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+/* "You are here". Not .menu__link--active: Infima puts that on the parent
+   category of the current page as well. */
+.menu__link[aria-current='page'] {
+  font-weight: 700;
+}
+
+/* Infima makes a table a scrolling block, so the ground goes on the rows. */
+.markdown table {
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.markdown tr {
+  background: var(--surface-container);
+}
+
+.markdown th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary);
+  background: var(--surface-container);
+  border: 0;
+  border-bottom: 1px solid var(--outline);
+  padding: 0.45rem 0.7rem;
+}
+
+.markdown td {
+  border: 0;
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  background: var(--surface-container-high);
+  border: 0;
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-variant-ligatures: none;
+}
+
+/* The Prism theme paints the block's ground inline, so the override needs
+   !important. */
+.theme-code-block {
+  --prism-background-color: var(--surface-container) !important;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.theme-code-block pre {
+  background-color: var(--surface-container) !important;
+}
+
+/* --- Diagram frames (Diagram.tsx) ---------------------------------------- */
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* --- Key/value facts ----------------------------------------------------- */
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-left: 2px solid var(--primary);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--on-surface-variant);
+  padding-top: 0.1rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
