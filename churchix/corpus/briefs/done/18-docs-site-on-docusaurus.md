@@ -114,3 +114,49 @@ dead-link problem the five other sites have.
 
 Deploying. The owner deploys after vps-deploy brief 11 flips the `churchix`
 docs stack.
+
+## Outcome (2026-10-21)
+
+Done in one commit with the corpus updates. Docusaurus 3.10.2, with `react` and
+`react-dom` at `^19.2.8`, the church app's own range, so npm installs one copy.
+Checks: `npm run docs -w docs-site` exits 0 with `onBrokenLinks: 'throw'` and
+prints no warnings. The route list equals `/tmp/churchix-routes-before.txt` plus
+`./search/index.html` (13 pages). `dist/index.html` references
+`/churchix/docs/assets/`, and `grep -rl _astro docs-site/dist` finds nothing.
+`npm ls react` shows only 19.2.8. `npm run build --workspaces --if-present` (10
+app pages) and `npm run typecheck --workspaces --if-present` (`astro check` 0
+errors, docs `tsc` clean) pass. In the browser, with `dist/` served at
+`/churchix/docs/` by `python3 -m http.server`: the landing page and
+`/wiki/design-system/` render in the parish palette, Cardo 400/700 and Source
+Serif 4 load with no 404s, there is no toggle and a stored `theme=dark` is
+ignored, the ADR pages' links go where `MOVED` sends them (the `wiki/` pages to
+`/churchix/docs/wiki/<slug>/`, `docs/todo/` to `corpus/wiki/status.md` on
+GitHub), and a search for "pomelnice" returns results. Desktop and phone
+screenshots were compared with the Starlight build; they are not in the repo.
+`bash corpus/lint.sh` passes.
+
+Changed beyond the output directory and the frontmatter key:
+- Links between rendered pages are relative file links (`./<slug>.md`), so the
+  build checks them. The Starlight build published them as `/wiki/<slug>/`
+  without the base, and so did `index.mdx`; every cross-page link on the old
+  site went to a 404 under `/churchix/docs/`.
+- The banner is a bare `:::note` with its title as the first body line. A
+  bracketed title holding inline code does not render in a `.md` page. Each
+  synced page also sets `slug:`.
+- Headings take `--primary`, as the church sites' base rule in
+  `packages/ui/src/styles/tokens.css` does. The Starlight theme mapped
+  `--sl-color-white` to white, and Starlight's light mode uses that variable as
+  its strongest text colour, so page titles, section heads, sidebar group
+  labels and the "On this page" label rendered white on the cream ground. The
+  port does not keep that. Sizes, leading and the landing page's centred 45rem
+  measure match the old site.
+- `Diagram.astro` became `Diagram.tsx`, and `build-diagrams.mjs` no longer fails
+  when `diagrams/` is missing (git keeps no empty folder).
+- The sitemap is `sitemap.xml` now, not `sitemap-index.xml` and `sitemap-0.xml`.
+  Nothing links to either.
+- Docusaurus adds breadcrumbs and previous/next links and puts search on the
+  right, as on the monorepo's five other docs sites.
+
+Not done: the deploy. The `churchix` `DocsStack` in vps-deploy's `app.ts` has no
+`generator`, so it still checks for `_astro/` until it gets
+`generator: "docusaurus"` (vps-deploy brief 11).

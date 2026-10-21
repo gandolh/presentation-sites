@@ -1,16 +1,16 @@
-// Sync churchix's hand-authored docs into the Starlight content tree. The
+// Sync churchix's hand-authored docs into the Docusaurus docs tree. The
 // sources are the corpus (corpus/index.md, corpus/CLAUDE.md, corpus/log.md,
 // corpus/wiki/*.md) and the ADRs (docs/adr/*.md). This script only *renders*
 // them; it never writes back.
 //
 //   corpus/wiki/<page>.md ─┐
-//   corpus/*.md            ┼─►  src/content/docs/wiki/<slug>.md
-//   docs/adr/*.md          ┘     (frontmatter rewritten to Starlight's schema,
-//                                 links to other rendered pages remapped to /wiki/<slug>/,
+//   corpus/*.md            ┼─►  docs/wiki/<slug>.md
+//   docs/adr/*.md          ┘     (frontmatter rewritten to Docusaurus's keys,
+//                                 links to other rendered pages remapped to ./<slug>.md,
 //                                 every other relative link pointed at GitHub)
 //
 // The generated files carry a "do not edit" banner and are gitignored. Run via
-// `npm run sync-corpus` (also runs automatically before `dev` and `docs`).
+// `npm run sync-corpus` (also runs automatically before `start` and `docs`).
 
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -21,11 +21,12 @@ const here = dirname(fileURLToPath(import.meta.url))
 // docs-site/scripts/ → the churchix root is two levels up. Every `src` below is
 // relative to it.
 const root = resolve(here, '../..')
-const outDir = resolve(here, '../src/content/docs/wiki')
+const outDir = resolve(here, '../docs/wiki')
 const GITHUB = 'https://github.com/gandolh/presentation-sites/blob/main/churchix'
 
 // Which pages become docs, in sidebar-ish order. `slug` is the URL/file stem
-// under /wiki/; links between these are rewritten to /wiki/<slug>/.
+// under /wiki/; links between these are rewritten to ./<slug>.md. The slugs are
+// the published URLs: don't rename one without a redirect.
 const PAGES = [
   { src: 'corpus/index.md', slug: 'index-wiki' },
   { src: 'corpus/wiki/architecture.md', slug: 'architecture' },
@@ -84,8 +85,10 @@ function extractTitle(body, fallback) {
 
 /**
  * Resolve every relative link from the folder of the page it sits in. A link to
- * another rendered page becomes its /wiki/<slug>/ route; anything else inside
- * churchix (briefs, todos, source files) points at the repo on GitHub.
+ * another rendered page becomes a relative file link (./<slug>.md), which
+ * Docusaurus resolves to /wiki/<slug>/ under any baseUrl and checks at build
+ * time; anything else inside churchix (briefs, todos, source files) points at
+ * the repo on GitHub.
  */
 function rewriteLinks(body, src) {
   const fromDir = dirname(resolve(root, src))
@@ -98,7 +101,7 @@ function rewriteLinks(body, src) {
     const rel = relocate(relative(root, resolve(fromDir, pathPart)).split(sep).join('/'))
     if (rel.startsWith('..')) return whole
     const slug = SLUG_BY_SRC.get(rel)
-    if (slug) return `](/wiki/${slug}/${hash})`
+    if (slug) return `](./${slug}.md${hash})`
     return `](${GITHUB}/${rel}${hash})`
   })
 }
@@ -131,11 +134,17 @@ async function main() {
       '---',
       `title: ${yamlEscape(title)}`,
       description ? `description: ${yamlEscape(description)}` : null,
-      'tableOfContents:',
-      '  maxHeadingLevel: 3',
+      // Explicit, because Docusaurus serves a file named after its folder (or
+      // readme.md / index.md) at the folder's URL, and the URL is the slug.
+      `slug: ${slug}`,
+      'toc_max_heading_level: 3',
       '---',
       '',
-      `:::note[Rendered from \`churchix/${src}\`${updated}]`,
+      // No :::note[title] here: in a .md page (CommonMark) Docusaurus does not
+      // render a bracketed title that holds inline code, so the title goes in
+      // the body as its first line.
+      ':::note',
+      `**Rendered from \`churchix/${src}\`${updated}.**`,
       'This page is generated from churchix\'s own docs and rewritten on every docs build. Edit the source in `churchix/`, not here.',
       ':::',
       '',
@@ -146,7 +155,7 @@ async function main() {
     await writeFile(resolve(outDir, `${slug}.md`), front + rewriteLinks(body, src).trimStart(), 'utf8')
     count++
   }
-  console.log(`sync-corpus: wrote ${count} page(s) → src/content/docs/wiki/`)
+  console.log(`sync-corpus: wrote ${count} page(s) → docs/wiki/`)
 }
 
 main().catch((err) => {

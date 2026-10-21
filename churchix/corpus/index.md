@@ -49,7 +49,7 @@ read the brief directories wholesale.
   (Tailwind + Material 3, accepted).
 - [../docs/design/](../docs/design/DESIGN.md): the raw design source:
   `DESIGN.md` and the four Stitch reference screens.
-- [../docs-site/](../docs-site/): the Starlight site that renders selected
+- [../docs-site/](../docs-site/): the Docusaurus site that renders selected
   corpus pages and the ADRs (`npm run docs -w docs-site`).
 
 ## Health

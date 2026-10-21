@@ -1,15 +1,16 @@
 ---
 summary: Dated snapshot of churchix. What is built, the state and dependencies of all 17 design-integration briefs in one line each, and what is still open. Start here after a break.
-updated: 2026-10-07
+updated: 2026-10-21
 ---
-# Status (2026-10-07)
+# Status (2026-10-21)
 
 ## Where things stand
 
 One church app, `apps/parohia-harlesti-bacau`, builds 10 static pages on the
-shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-10-07).
+shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-10-21).
 The second reference app, `parohia-berinta-maramures`, was removed before
-2026-05-30. Deploy is not in this repo.
+2026-05-30. Deploy is not in this repo. The docs site in `docs-site/` moved
+to Docusaurus on 2026-10-21; the church sites stay Astro.
 
 The *Ecclesia Digitalis* design system is integrated. Briefs 01 to 15 shipped on
 2026-05-29 and the UI audit (brief 16) on 2026-05-30. The liturgical-rail
@@ -46,12 +47,18 @@ ones it depends on. Every brief honors [conventions](conventions.md).
 | 15 | [a11y, i18n and long-string pass](../briefs/done/15-a11y-i18n-pass.md) | 14 | E | done |
 | 16 | [UI audit across the pages](../briefs/done/16-ui-audit-pages.md) | 14, 15 | F | done (one app, two viewports, RO) |
 | 17 | [UI audit follow-ups](../briefs/done/17-audit-followups.md) | 16 | F | done (arch mask deferred) |
-| 18 | [Docs site from Starlight to Docusaurus](../briefs/todo/18-docs-site-on-docusaurus.md) | none | — | todo (filed 2026-10-18) |
+| 18 | [Docs site from Starlight to Docusaurus](../briefs/done/18-docs-site-on-docusaurus.md) | none | — | done (deploy waits on vps-deploy) |
 
 **Brief 17** closed on 2026-10-07. Task 1 was already done by the redesign,
 tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard in
 `npm run lint`), task 4 was dropped as covered by `PageShell`, and task 5 (arch
 mask) is deferred until real photography lands. See the 2026-10-07 log entry.
+
+**Brief 18** closed on 2026-10-21. The docs site builds with Docusaurus at the
+same `/churchix/docs/` URLs, plus `/search/`, from the same `dist/`, light only
+and in the parish palette. It is not deployed: vps-deploy has to switch the
+churchix docs stack to its Docusaurus asset check first. See the 2026-10-21 log
+entry.
 
 New work: capture it in [todos/](../todos/), then promote it to
 `briefs/todo/` with the next free number (19).

@@ -1,0 +1,324 @@
+/*
+ * Churchix's docs wear Ecclesia Digitalis.
+ *
+ * `DESIGN.md` names the system and its register in one line: **"reverent,
+ * formal, architectural"** — and states the property the whole platform depends
+ * on, that it **"re-skins per church by token swap alone."**
+ *
+ * That last part is why this theme is written the way it is. Churchix is a
+ * white-label platform: the whole value proposition is that a parish's identity
+ * arrives by swapping tokens and nothing else. So these docs consume the *token
+ * names* and take the reference parish's values, exactly as an app in `apps/`
+ * does. Hard-coding a hex anywhere below the token block would quietly
+ * contradict the thing being documented.
+ *
+ * The register carries into the type: Cardo is a humanist serif with a
+ * liturgical lineage, and it is the display face for the same reason the sites
+ * use it — a parish site set in a grotesque reads as a startup.
+ *
+ * Light only. The sites are light, and a dark parish site is not a thing that
+ * exists; offering one here would be inventing a second design system for a
+ * platform whose entire premise is that there is only one. docusaurus.config.ts
+ * sets colorMode to light with no switch, and the token block below also covers
+ * [data-theme='dark'], so a crafted `?docusaurus-data-theme=dark` cannot repaint
+ * the site either.
+ *
+ * Ported from the Starlight theme on 2026-10-21: the parish tokens are
+ * unchanged, and the --sl-* mapping became the --ifm-* (Infima) one below.
+ * Headings take --primary, as the church sites' own base rule does
+ * (packages/ui/src/styles/tokens.css). The Starlight theme had mapped
+ * --sl-color-white to white, which Starlight's light mode reads as its
+ * strongest text colour, so its headings rendered white on the cream ground.
+ */
+
+@import '@fontsource/cardo/400.css';
+@import '@fontsource/cardo/700.css';
+@import '@fontsource-variable/source-serif-4';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  color-scheme: light only;
+
+  /* The reference parish's token values. A church swaps these; the names stay. */
+  --primary: #4e0816;
+  --on-primary: #ffffff;
+  --primary-container: #611220;
+  --on-primary-container: #160207;
+  --secondary: #c8a24b;
+  --on-secondary: #ffffff;
+  --secondary-container: #e6cd9b;
+  --on-secondary-container: #3c3017;
+  --surface: #fcf9f4;
+  --background: #fcf9f4;
+  --on-surface: #1c1c19;
+  --on-surface-variant: #544243;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f0eb;
+  --surface-container: #ebe8e3;
+  --surface-container-high: #e3e0db;
+  --surface-container-highest: #dbd8d3;
+  --inverse-surface: #31302d;
+  --inverse-on-surface: #f3f0eb;
+  --outline: #8e8786;
+  --outline-variant: #dcc2c3;
+  --tertiary: #29241c;
+  --error: #ba1a1a;
+  --error-container: #fde7e5;
+
+  --font-display: 'Cardo', 'Source Serif 4 Variable', Georgia, serif;
+  --font-body: 'Source Serif 4 Variable', Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* The accent ramp: --primary darkened and lightened by 10/15/30% lightness. */
+  --ifm-color-primary: var(--primary);
+  --ifm-color-primary-dark: #460714;
+  --ifm-color-primary-darker: #420713;
+  --ifm-color-primary-darkest: #37060f;
+  --ifm-color-primary-light: #560918;
+  --ifm-color-primary-lighter: #5a0919;
+  --ifm-color-primary-lightest: #650a1d;
+
+  /* The grey scale, from the ground to the ink: the Material container ladder. */
+  --ifm-color-emphasis-0: var(--background);
+  --ifm-color-emphasis-100: var(--surface-container-low);
+  --ifm-color-emphasis-200: var(--surface-container);
+  --ifm-color-emphasis-300: var(--outline-variant);
+  --ifm-color-emphasis-400: #b5a4a5;
+  --ifm-color-emphasis-500: var(--outline);
+  --ifm-color-emphasis-600: var(--on-surface-variant);
+  --ifm-color-emphasis-700: #433536;
+  --ifm-color-emphasis-800: #2e2c28;
+  --ifm-color-emphasis-900: var(--on-surface);
+  --ifm-color-emphasis-1000: var(--on-surface);
+
+  --ifm-background-color: var(--background);
+  --ifm-background-surface-color: var(--background);
+  --ifm-navbar-background-color: var(--surface-container-lowest);
+  --ifm-font-color-base: var(--on-surface);
+  --ifm-heading-color: var(--primary);
+  --ifm-color-content-secondary: var(--on-surface-variant);
+  --ifm-link-color: var(--primary);
+  --ifm-link-hover-color: var(--primary-container);
+  --ifm-menu-color: var(--on-surface-variant);
+  --ifm-menu-color-active: var(--on-secondary-container);
+  --ifm-menu-color-background-active: var(--secondary-container);
+  --ifm-menu-color-background-hover: var(--surface-container-low);
+  --ifm-toc-border-color: var(--outline-variant);
+  --ifm-hr-background-color: var(--outline-variant);
+  --ifm-table-border-color: var(--outline-variant);
+  --ifm-table-stripe-background: transparent;
+  --ifm-code-background: var(--surface-container);
+  --ifm-code-font-size: 0.875em;
+  --docusaurus-highlighted-code-line-bg: var(--surface-container);
+
+  --ifm-font-family-base: var(--font-body);
+  --ifm-heading-font-family: var(--font-display);
+  --ifm-font-family-monospace: var(--font-mono);
+  /* The Starlight site's leading: a serif body wants it looser. */
+  --ifm-line-height-base: 1.75;
+
+  /* Admonitions. The rendered-page banner is a note (the secondary alert). */
+  --ifm-color-secondary-dark: var(--tertiary);
+  --ifm-color-secondary-contrast-background: var(--surface-container);
+  --ifm-color-secondary-contrast-foreground: var(--on-surface);
+  --ifm-color-info-dark: var(--tertiary);
+  --ifm-color-info-contrast-background: var(--surface-container);
+  --ifm-color-info-contrast-foreground: var(--on-surface);
+  --ifm-color-success-dark: #3f6b4a;
+  --ifm-color-success-contrast-background: #e4f0e7;
+  --ifm-color-success-contrast-foreground: #2b4a33;
+  --ifm-color-warning-dark: var(--on-secondary-container);
+  --ifm-color-warning-contrast-background: var(--secondary-container);
+  --ifm-color-warning-contrast-foreground: var(--on-secondary-container);
+  --ifm-color-danger-dark: var(--error);
+  --ifm-color-danger-contrast-background: var(--error-container);
+  --ifm-color-danger-contrast-foreground: #7a1010;
+}
+
+/* --- Architectural: the page is set, not laid out ------------------------ */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.navbar__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+.navbar__title {
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+/* The page title and section heads, at the sizes the Starlight site set them. */
+.markdown h1:first-child {
+  --ifm-h1-font-size: 2.625rem;
+}
+
+.markdown h2 {
+  --ifm-h2-font-size: 2.1875rem;
+}
+
+@media (max-width: 50rem) {
+  .markdown h1:first-child {
+    --ifm-h1-font-size: 2.1875rem;
+  }
+
+  .markdown h2 {
+    --ifm-h2-font-size: 1.8125rem;
+  }
+}
+
+/* The landing page has no table of contents, so its column would run the full
+   width of the content area; hold it to the reading measure, centred, as the
+   Starlight site did. (docItemContainer is a CSS-module class, hence the
+   attribute match.) */
+.docs-doc-id-index [class^='docItemContainer'] {
+  max-width: 45rem;
+  margin-inline: auto;
+}
+
+/* The sidebar's group labels are set like the headings they introduce. */
+.menu__list-item-collapsible .menu__link--sublist,
+.menu__link--sublist-caret,
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+/* Gold is the secondary, and it rules a section the way a border rules a
+   liturgical page — a hairline, never a fill. */
+.markdown h2 {
+  border-top: 1px solid var(--secondary);
+  padding-top: 1rem;
+}
+
+/* Prose links only: the sidebar, the TOC and the navbar stay plain. */
+.markdown a:not(.hash-link) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+/* "You are here". Not .menu__link--active: Infima puts that on the parent
+   category of the current page as well. */
+.menu__link[aria-current='page'] {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+/* --- Surfaces: the Material container ladder ----------------------------- */
+/* Infima makes a table a scrolling block, so the ground goes on the cells. */
+.markdown table {
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.markdown tr {
+  background: var(--surface-container-lowest);
+}
+
+.markdown th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--on-primary-container);
+  background: var(--surface-container);
+  border: 0;
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0.5rem 0.75rem;
+}
+
+.markdown td {
+  border: 0;
+  border-bottom: 1px solid var(--surface-container-high);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  background: var(--surface-container);
+  border: 0;
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-family: var(--font-mono);
+}
+
+/* The Prism theme paints the block's ground inline, so the override needs
+   !important. */
+.theme-code-block {
+  --prism-background-color: var(--surface-container-lowest) !important;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.theme-code-block pre {
+  background-color: var(--surface-container-lowest) !important;
+}
+
+/* --- Diagram frames (Diagram.tsx) ---------------------------------------- */
+.doc-diagram {
+  margin: 1.75rem 0;
+}
+
+.doc-diagram__frame {
+  width: 100%;
+  display: block;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+}
+
+.doc-diagram__caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* --- Key/value facts (the landing page) ---------------------------------- */
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-left: 3px solid var(--secondary);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--on-surface-variant);
+  padding-top: 0.15rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

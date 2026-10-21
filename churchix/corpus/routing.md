@@ -49,4 +49,4 @@ has its own corpus at [`../../corpus/`](../../corpus/index.md). Read
 | Church app page change | the page under `apps/<church>/src/pages/`, its content collection | other apps | none |
 | Content schema change | `packages/schemas/src/index.ts`, [`wiki/content-model.md`](wiki/content-model.md) | components | none |
 | Giving change | [`wiki/donations.md`](wiki/donations.md), `GivingChannels.astro`, `PomelnicForm.tsx` | [`wiki/optional-backend.md`](wiki/optional-backend.md) unless adding a backend | none |
-| Docs-site change | `../docs-site/scripts/sync-corpus.mjs`, `../docs-site/astro.config.mjs` | the generated `src/content/docs/wiki/` | none |
+| Docs-site change | `../docs-site/scripts/sync-corpus.mjs`, `../docs-site/docusaurus.config.ts`, `../docs-site/sidebars.ts` | the generated `../docs-site/docs/wiki/` | none |
