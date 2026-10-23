@@ -260,3 +260,9 @@ The owner's call (2026-10-18), one brief in every repo with a docs site. [18](br
 ## [2026-10-21] done | Brief 18 — the docs site runs on Docusaurus
 
 [18](briefs/done/18-docs-site-on-docusaurus.md) is built. `docs-site/` is a Docusaurus 3.10.2 site with the same 13 URLs under `/churchix/docs/` plus `/search/`, built into the same `dist/`, light only through three `colorMode` keys. The theme keeps the parish tokens and maps them onto Infima's variables. The sync keeps its `PAGES`, `MOVED` and GitHub base, writes to `docs/wiki/`, and turns links between rendered pages into `./<slug>.md` file links that the build checks. That fixes a bug the Starlight site had: it published those links as `/wiki/<slug>/` without the base, so every one of them was a 404. The port also drops a Starlight token inversion that set the headings in white on cream; headings are `--primary` now, as in the church sites. `react` and `react-dom` sit at the app's `^19.2.8` and `npm ls react` shows one copy. The build passes with `onBrokenLinks: 'throw'`, as do every workspace's build and typecheck. Not deployed: vps-deploy's `churchix` docs stack needs `generator: "docusaurus"` first.
+
+## [2026-10-23] todo | Brief 19 filed: Base UI for the phone menu
+
+The owner asked for Base UI in the projects that still hand-build their
+widgets. [Brief 19](briefs/todo/19-base-ui-mobile-nav.md) moves the
+`MobileNav` island to Base UI `Dialog` and records the JS cost.

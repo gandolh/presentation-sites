@@ -531,3 +531,10 @@ The owner's call (2026-10-18), one brief in every repo with a docs site; churchi
 ## [2026-10-19] done | Brief 14: the five docs sites run on Docusaurus
 
 One commit per site (`22194b7`, `aa1dbc3`, `fe3639c`, `17abb94`, `f17663d`) and one for the mentions (`9dfb1aa`). Docusaurus 3.10.2 on React 19.2.8, one copy across the workspace. Every published URL is kept, plus `/search/`, and the dark sites lost their do-nothing toggle. The sync resolves links against the source file, so the 13 dead links to source files now open on GitHub, and a broken link fails the build. subcort declares the `sharp` its `gen-og.mjs` uses. Three gotchas the skill's guide does not list: `readme.md` is served at its folder's URL unless it has a `slug:`, `:::note[Title]` is not rendered in a `.md` page, and `@docusaurus/tsconfig`'s `baseUrl` fails TypeScript 6. The details are in the brief's outcome. The deploy waits on vps-deploy brief 11.
+
+## [2026-10-23] todo | Brief 15 filed: Base UI for the phone menus
+
+The owner asked for Base UI in the projects that still hand-build their
+widgets. [Brief 15](briefs/todo/15-base-ui-mobile-menus.md) moves the four
+sites' `MobileMenu` islands to Base UI `Dialog` and records the JS cost; the
+`.astro` widgets stay zero-JS. churchix has its own brief 19.

@@ -1,6 +1,6 @@
 ---
 summary: Dated snapshot of churchix. What is built, the state and dependencies of all 17 design-integration briefs in one line each, and what is still open. Start here after a break.
-updated: 2026-10-21
+updated: 2026-10-23
 ---
 # Status (2026-10-21)
 
@@ -48,6 +48,7 @@ ones it depends on. Every brief honors [conventions](conventions.md).
 | 16 | [UI audit across the pages](../briefs/done/16-ui-audit-pages.md) | 14, 15 | F | done (one app, two viewports, RO) |
 | 17 | [UI audit follow-ups](../briefs/done/17-audit-followups.md) | 16 | F | done (arch mask deferred) |
 | 18 | [Docs site from Starlight to Docusaurus](../briefs/done/18-docs-site-on-docusaurus.md) | none | — | done (deploy waits on vps-deploy) |
+| 19 | [Phone menu on Base UI](../briefs/todo/19-base-ui-mobile-nav.md) | none | — | todo (filed 2026-10-23) |
 
 **Brief 17** closed on 2026-10-07. Task 1 was already done by the redesign,
 tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard in
@@ -61,4 +62,4 @@ churchix docs stack to its Docusaurus asset check first. See the 2026-10-21 log
 entry.
 
 New work: capture it in [todos/](../todos/), then promote it to
-`briefs/todo/` with the next free number (19).
+`briefs/todo/` with the next free number (20).

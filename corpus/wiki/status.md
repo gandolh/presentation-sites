@@ -1,6 +1,6 @@
 ---
 summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-10-19
+updated: 2026-10-23
 ---
 
 # Status — 2026-10-07
@@ -35,7 +35,7 @@ per-site docs and is *not* duplicated here.
 
 ## Briefs
 
-None open. [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", and [14](../briefs/done/14-docs-sites-on-docusaurus.md), the five docs sites on Docusaurus, were done on 2026-10-19; both wait on a deploy, and 14's waits on vps-deploy brief 11 first. All eleven from the 2026-09-27 improvements audit were done by
+Open: [15](../briefs/todo/15-base-ui-mobile-menus.md), the four phone menus on Base UI `Dialog` (filed 2026-10-23; churchix has its own brief 19). [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", and [14](../briefs/done/14-docs-sites-on-docusaurus.md), the five docs sites on Docusaurus, were done on 2026-10-19; both wait on a deploy, and 14's waits on vps-deploy brief 11 first. All eleven from the 2026-09-27 improvements audit were done by
 2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
 
@@ -62,6 +62,9 @@ None open. [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the 
 
 **From the owner's 2026-10-18 Docusaurus call**
 - [14](../briefs/done/14-docs-sites-on-docusaurus.md): the five docs sites move from Starlight to Docusaurus; links to source files go to GitHub
+
+**From the owner's 2026-10-23 Base UI call**
+- [15](../briefs/todo/15-base-ui-mobile-menus.md): the four sites' phone menus move to Base UI `Dialog`; the `.astro` widgets stay zero-JS
 
 ## Note on the two doc layers
 
