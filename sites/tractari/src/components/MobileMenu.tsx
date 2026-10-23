@@ -1,72 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { Dialog } from "@base-ui/react/dialog";
+import { useRef, useState } from "react";
 import { site, phones, telLink } from "../content/site";
 
 type Link = { href: string; label: string };
 
 export default function MobileMenu({ links }: { links: Link[] }) {
   const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  // The button that opened the dialog. Closing by Esc or by the close button
-  // hands focus back to it — otherwise the dialog unmounts while it holds
-  // focus, focus falls to <body>, and a keyboard user's next Tab starts again
-  // from the top of the page. A navigation link does not: it moves focus on
-  // its own, to wherever it went.
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
-  // On open: move focus into the dialog and trap Tab. Esc closes.
-  useEffect(() => {
-    if (!open) return;
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const focusable = () =>
-      Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-
-    focusable()[0]?.focus();
-
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false);
-        buttonRef.current?.focus();
-        return;
-      }
-      if (e.key !== "Tab") return;
-      const items = focusable();
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  // Base UI's Dialog traps focus, locks the page's scroll, closes on Esc and
+  // hands focus back to the button. A navigation link does not get focus
+  // back: it moves focus on its own, to wherever it went.
+  const leftByLink = useRef(false);
+  const follow = () => {
+    leftByLink.current = true;
+    setOpen(false);
+  };
 
   return (
-    <>
-      <button
-        ref={buttonRef}
-        type="button"
+    <Dialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        leftByLink.current = false;
+        setOpen(next);
+      }}
+    >
+      <Dialog.Trigger
         aria-label="Deschide meniul"
-        aria-expanded={open}
-        onClick={() => setOpen(true)}
         className="nav-burger inline-flex items-center justify-center w-11 h-11 rounded-md text-[var(--color-on-surface)] hover:bg-white/10 transition-colors"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -74,33 +32,26 @@ export default function MobileMenu({ links }: { links: Link[] }) {
           <line x1="4" y1="12" x2="20" y2="12" />
           <line x1="4" y1="17" x2="20" y2="17" />
         </svg>
-      </button>
+      </Dialog.Trigger>
 
-      {open && (
-        <div
-          ref={dialogRef}
+      <Dialog.Portal>
+        <Dialog.Popup
           className="mobile-menu fixed inset-0 z-[var(--z-overlay)] flex flex-col text-[var(--color-on-surface)]"
-          role="dialog"
-          aria-modal="true"
           aria-label="Meniu de navigare"
+          finalFocus={() => !leftByLink.current}
         >
           <div className="roadline roadline--full" aria-hidden="true" />
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
             <span className="wordmark text-xl">{site.name}</span>
-            <button
-              type="button"
+            <Dialog.Close
               aria-label="Închide meniul"
-              onClick={() => {
-                setOpen(false);
-                buttonRef.current?.focus();
-              }}
               className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="6" y1="6" x2="18" y2="18" />
                 <line x1="18" y1="6" x2="6" y2="18" />
               </svg>
-            </button>
+            </Dialog.Close>
           </div>
 
           <nav className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
@@ -108,7 +59,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={follow}
                 className="mobile-menu__link font-display font-extrabold uppercase text-3xl tracking-wide transition-colors hover:text-[var(--color-primary)]"
                 style={{ "--i": i } as React.CSSProperties}
               >
@@ -123,7 +74,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
               <a
                 key={p.e164}
                 href={telLink(p.e164)}
-                onClick={() => setOpen(false)}
+                onClick={follow}
                 className="btn btn-call w-full justify-between"
               >
                 <span className="text-[0.8rem] font-semibold opacity-80">{p.label}</span>
@@ -131,8 +82,8 @@ export default function MobileMenu({ links }: { links: Link[] }) {
               </a>
             ))}
           </div>
-        </div>
-      )}
-    </>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

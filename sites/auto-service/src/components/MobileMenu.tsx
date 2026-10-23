@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { Dialog } from "@base-ui/react/dialog";
+import { useRef, useState } from "react";
 import { site, telLink, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 
@@ -16,81 +17,37 @@ const CLOSE = "M5.6 5.6l12.8 12.8 M18.4 5.6 5.6 18.4";
 
 export default function MobileMenu({ current = "/" }: { current?: string }) {
   const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  // The button that opened the dialog. Closing by Esc or by the close button
-  // hands focus back to it — otherwise the dialog unmounts while it holds
-  // focus, focus falls to <body>, and a keyboard user's next Tab starts again
-  // from the top of the page. A navigation link does not: it moves focus on
-  // its own, to wherever it went.
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const focusable = () =>
-      Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ),
-      );
-
-    focusable()[0]?.focus();
-
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false);
-        buttonRef.current?.focus();
-        return;
-      }
-      if (e.key !== "Tab") return;
-      const items = focusable();
-      if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  // Base UI's Dialog traps focus, locks the page's scroll, closes on Esc and
+  // hands focus back to the button. A navigation link does not get focus
+  // back: it moves focus on its own, to wherever it went.
+  const leftByLink = useRef(false);
+  const follow = () => {
+    leftByLink.current = true;
+    setOpen(false);
+  };
 
   return (
-    <>
-      <button
-        ref={buttonRef}
-        type="button"
+    <Dialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        leftByLink.current = false;
+        setOpen(next);
+      }}
+    >
+      <Dialog.Trigger
         aria-label="Deschide meniul"
-        aria-expanded={open}
-        onClick={() => setOpen(true)}
         className="nav-burger lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d={BURGER} />
         </svg>
-      </button>
+      </Dialog.Trigger>
 
-      {open && (
-        <div
-          ref={dialogRef}
+      <Dialog.Portal>
+        <Dialog.Popup
           className="mobile-menu fixed inset-0 z-[var(--z-overlay)] flex flex-col text-[var(--color-on-surface)]"
-          role="dialog"
-          aria-modal="true"
           aria-label="Meniu de navigare"
+          finalFocus={() => !leftByLink.current}
         >
           <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-outline-variant)]">
             <span className="flex items-center gap-2.5">
@@ -101,19 +58,14 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
               />
               <span className="wordmark text-lg uppercase">{site.name}</span>
             </span>
-            <button
-              type="button"
+            <Dialog.Close
               aria-label="Închide meniul"
-              onClick={() => {
-                setOpen(false);
-                buttonRef.current?.focus();
-              }}
               className="inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d={CLOSE} />
               </svg>
-            </button>
+            </Dialog.Close>
           </div>
 
           <nav className="flex-1 flex flex-col justify-center gap-1 px-6">
@@ -121,7 +73,7 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
               <a
                 key={link.href}
                 href={withBase(link.href)}
-                onClick={() => setOpen(false)}
+                onClick={follow}
                 aria-current={current === link.href ? "page" : undefined}
                 className={
                   "mobile-menu__link flex items-baseline gap-4 py-3 border-b border-[var(--color-outline-variant)] transition-colors " +
@@ -142,12 +94,12 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
               className="mobile-menu__link flex flex-col gap-3 mt-8"
               style={{ "--i": links.length } as React.CSSProperties}
             >
-              <a href={telLink()} onClick={() => setOpen(false)} className="btn btn-primary btn-lg w-full" data-cta="menu-call">
+              <a href={telLink()} onClick={follow} className="btn btn-primary btn-lg w-full" data-cta="menu-call">
                 Sună acum · {site.phone}
               </a>
               <a
                 href={waLink()}
-                onClick={() => setOpen(false)}
+                onClick={follow}
                 className="btn btn-whatsapp w-full"
                 target="_blank"
                 rel="noopener"
@@ -157,8 +109,8 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
               </a>
             </div>
           </nav>
-        </div>
-      )}
-    </>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
