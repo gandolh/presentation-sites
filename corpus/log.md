@@ -535,6 +535,18 @@ One commit per site (`22194b7`, `aa1dbc3`, `fe3639c`, `17abb94`, `f17663d`) and 
 ## [2026-10-23] todo | Brief 15 filed: Base UI for the phone menus
 
 The owner asked for Base UI in the projects that still hand-build their
-widgets. [Brief 15](briefs/todo/15-base-ui-mobile-menus.md) moves the four
+widgets. [Brief 15](briefs/done/15-base-ui-mobile-menus.md) moves the four
 sites' `MobileMenu` islands to Base UI `Dialog` and records the JS cost; the
 `.astro` widgets stay zero-JS. churchix has its own brief 19.
+
+## [2026-10-23] done | Brief 15: the phone menus on Base UI
+
+[Brief 15](briefs/done/15-base-ui-mobile-menus.md) is built. The four
+`MobileMenu` islands are Base UI `Dialog`s, and the hand-written traps, Esc
+handlers and scroll locks are gone. subcort keeps Motion, through the popup's
+`render` and a `keepMounted` portal, and portals into its header, whose
+`backdrop-filter` places the panel. The other three portal to `<body>`, which
+stops tractari's demo banner and auto-service's call dock showing over the
+open menu. The cost is about +20 kB gzip a site. The decision and the size
+table are in [decisions-ui.md](wiki/decisions-ui.md), split out of
+`decisions.md`, which was at its line limit.
