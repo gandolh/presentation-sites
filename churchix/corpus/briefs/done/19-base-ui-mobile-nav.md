@@ -69,3 +69,56 @@ corpus/wiki/{decisions,status}.md
   - the menu reads correctly under a second brand. Swap the `site.json`
     seeds for a throwaway build.
 - `bash corpus/lint.sh` passes.
+
+## Outcome (2026-10-23)
+
+Done. `MobileNav` is a Base UI `Dialog`:
+
+- the toggle is `Dialog.Trigger`, keeping its changing `aria-label`;
+- the sheet is `Dialog.Popup`, rendered as the `<nav>` with its classes.
+
+There is no separate `Dialog.Close`: as before, the toggle (now an X) closes
+it, along with Esc and a press outside. The sheet is portalled into the
+island's own `relative` wrapper, so it still hangs under the toggle. Nav and
+locale links close it through a `leftByLink` ref, so `finalFocus` doesn't send
+focus back to the toggle. Every prop stays, and so do both `aria-current`
+marks. The Escape handler, the trap and the focus return are deleted, and
+the header comment says what Base UI provides. `@base-ui/react` is `^1.9.0`
+in `packages/ui`.
+
+**Size:** the `MobileNav` chunk goes from 4,051 B (1,648 gzip) to 63,342 B
+(21,249 gzip). The parish site's JS goes from 227.6 kB (72.8 gzip) to
+287.5 kB (93.1 gzip). This is recorded in
+[decisions.md](../../wiki/decisions.md).
+
+Checked: `npm run typecheck`, `lint`, `test` and `build` in `churchix/`. No
+workspace has a `test` script, so `test` runs nothing. In the parish site's
+preview at 390 px, before and after:
+
+- the menu opens with focus on Acasă;
+- 16 Tabs stay inside;
+- Esc and the toggle close it with focus back on the toggle;
+- Despre navigates (through the `ClientRouter`) and is marked active when the
+  menu reopens;
+- the page no longer scrolls behind the open sheet. Before it did, since
+  there was no scroll lock; the brief asked for one.
+
+The screenshots match, with only gradient noise of 10 levels or less.
+
+The definition of done holds:
+
+- no raw hex in the island;
+- under a throwaway second brand (`#1f4e6b` / `#7aa35b` / `#f2f6f8`, with
+  `en` added so the locale list shows), the menu's active link, underline,
+  Donează button and sheet tint follow the seeds, Română carries
+  `aria-current`, and English navigates to `/en/`. `site.json` was restored
+  afterwards.
+
+**One finding outside this brief.** The seeds in `site.json` don't reach the
+built pages. `BaseLayout.astro` emits `:root{--primary:…}` before the
+stylesheet holding `tokens.css`, whose own `:root` defaults then win. So the
+parish renders `#4e0816`, not its `#6b1f2a`, and the second-brand check had to
+apply the seeds after the stylesheet in the browser. This is filed as
+[brand-seeds-lose-to-token-defaults.md](../../todos/brand-seeds-lose-to-token-defaults.md).
+
+brief-board is down, so nothing was posted there.

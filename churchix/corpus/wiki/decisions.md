@@ -1,6 +1,6 @@
 ---
-summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds) and the owner questions still open (Q4, Q6 to Q10).
-updated: 2026-05-29
+summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs) and the owner questions still open (Q4, Q6 to Q10).
+updated: 2026-10-23
 ---
 # Open Questions — decisions needed from the product owner
 
@@ -35,3 +35,15 @@ These shape v1 scope and the central architecture fork. Each notes the recommend
 
 ### Still open
 Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 scaffold; offering integration later), Q7 (e-Factura/SAF-T), Q8 (Form 230/107 PDF generation), Q9 (i18n ownership — currently per-church content), Q10 (ChMS scope).
+
+## Decided (2026-10-23)
+
+- **Base UI for island dialogs.** The owner's call, to match their apps. The
+  phone menu (`MobileNav`) is a Base UI `Dialog`
+  ([brief 19](../briefs/done/19-base-ui-mobile-nav.md)), which gives the focus
+  trap, Esc, the scroll lock and focus return. It is styled by the M3 tokens
+  as before. *Cost, measured:* the island goes from 1.6 to 21.2 kB gzip, and
+  the parish site's JS from 72.8 to 93.1 kB gzip (+20.4 kB). *Rejected:*
+  keeping the hand-built trap, and turning `.astro` widgets into islands to
+  use more of Base UI, which would add JS to static pages. `CopyIban` and
+  `PomelnicForm` have no overlay and stay as they are.

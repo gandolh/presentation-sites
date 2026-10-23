@@ -264,5 +264,19 @@ The owner's call (2026-10-18), one brief in every repo with a docs site. [18](br
 ## [2026-10-23] todo | Brief 19 filed: Base UI for the phone menu
 
 The owner asked for Base UI in the projects that still hand-build their
-widgets. [Brief 19](briefs/todo/19-base-ui-mobile-nav.md) moves the
+widgets. [Brief 19](briefs/done/19-base-ui-mobile-nav.md) moves the
 `MobileNav` island to Base UI `Dialog` and records the JS cost.
+
+## [2026-10-23] done | Brief 19: the phone menu on Base UI
+
+[Brief 19](briefs/done/19-base-ui-mobile-nav.md) is built. `MobileNav` is a
+Base UI `Dialog`, portalled into its own wrapper so the sheet still hangs under
+the toggle. The hand-written trap, Escape and focus return are gone, and the
+page now stays put behind the open sheet. Typecheck, lint and build pass; there
+are no tests. The parish site is checked at 390 px before and after, and under
+a throwaway second brand. Cost: +20.4 kB gzip, recorded in
+[decisions.md](wiki/decisions.md).
+
+The second-brand check found that the seeds in `site.json` never reach the
+built pages, because `tokens.css`'s `:root` defaults come later and win.
+Filed as [a todo](todos/brand-seeds-lose-to-token-defaults.md).
