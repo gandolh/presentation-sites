@@ -550,3 +550,7 @@ stops tractari's demo banner and auto-service's call dock showing over the
 open menu. The cost is about +20 kB gzip a site. The decision and the size
 table are in [decisions-ui.md](wiki/decisions-ui.md), split out of
 `decisions.md`, which was at its line limit.
+
+## [2026-10-31] maintenance | README and images checked; still current
+
+A README refresh pass with the readme-docs standard. The README already met it, every relative link resolves, and its status matches [status.md](wiki/status.md). The six images are desktop home pages at 1440×720; the site changes since they were taken on 2026-10-09 are the phone menus on Base UI and the docs sites' move to Docusaurus, neither of which they show, so none was retaken. Checked: `npm install` at the root and `npm run tractari:dev` answering on port 4321.
