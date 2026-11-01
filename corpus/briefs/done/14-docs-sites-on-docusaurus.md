@@ -10,7 +10,7 @@ its own brief (`churchix/corpus/briefs/todo/18-…`).
 
 The recipe is written and verified. The `corpus-docs-site` skill
 (personal-skills v0.31.0, source in
-`~/projects/my-personal-skills/skills/corpus-docs-site/`) now scaffolds
+`my-personal-skills/skills/corpus-docs-site`) now scaffolds
 Docusaurus 3.10, and `references/migrating-from-starlight.md` beside it holds
 the file, config and content maps plus ten gotchas, each hit during a real
 port. **Read that guide first.** The files this brief tells you to copy are in
@@ -77,7 +77,7 @@ changes once. For each `sites/<site>/docs-site/`:
    against the source file's directory inside the site:
    - a page in `PAGES` becomes a relative file link (`./design.md#…`);
    - anything else in the repo becomes
-     `https://github.com/gandolh/presentation-sites/blob/main/sites/<site>/<path>`
+     `https://github.com/<owner>/presentation-sites/blob/main/sites/<site>/<path>`
      (`tree/` for a directory, `raw/` for an image);
    - fenced code is skipped, and link text that wraps across lines still
      counts as one link.

@@ -4,7 +4,7 @@
 > Dacă revii la proiect, citește întâi acest fișier.
 >
 > Notă: repo-ul a fost redenumit pe GitHub în **`presentation-sites`**
-> (`github.com/gandolh/presentation-sites`). Tot ce e implementat acum e însă
+> (`github.com/<owner>/presentation-sites`). Tot ce e implementat acum e însă
 > doar pentru Ana Saloon.
 
 ## Pe scurt

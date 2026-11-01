@@ -5,7 +5,7 @@
 **Review skill:** a general-purpose agent over the diff (no repo review command)
 **PR skill:** propose git commands (no PR tooling wired; `gh` is available)
 **Issue tracker:** none. Work is captured in `corpus/todos/` and specced in `corpus/briefs/`.
-**Code host:** GitHub (`gh`), `github.com/gandolh/presentation-sites`. churchix is
+**Code host:** GitHub (`gh`), `github.com/<owner>/presentation-sites`. churchix is
 the `churchix/` folder of that repo, not a repo of its own.
 
 **Scope note:** this corpus covers `churchix/` only. The monorepo layer above it

@@ -5,7 +5,7 @@
 **Review skill:** a general-purpose agent over the diff (no repo review command)
 **PR skill:** propose git commands (no PR tooling wired; `gh` is available)
 **Issue tracker:** none — work is captured in `corpus/todos/` and per-site `todo/` dirs
-**Code host:** GitHub (`gh`) — `github.com/gandolh/presentation-sites`
+**Code host:** GitHub (`gh`) — `github.com/<owner>/presentation-sites`
 
 **Scope note:** this corpus covers the **monorepo layer**. Work inside a single
 site is usually a 1–2 file change routed inline; work inside `churchix/` should
