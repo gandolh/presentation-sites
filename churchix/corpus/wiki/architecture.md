@@ -1,6 +1,6 @@
 ---
 summary: How Churchix is built. npm-workspaces monorepo, Astro static-first with React islands, shared Zod content schemas, token-only branding, one static build per church. Read before changing package boundaries or the build.
-updated: 2026-05-29
+updated: 2026-11-02
 ---
 
 # Architecture
@@ -84,3 +84,27 @@ There is **no multi-tenancy** — isolation is total because nothing is shared a
 - **Sites (v1):** each church is static, hosted independently on a CDN (Cloudflare Pages / Netlify / Vercel). Custom domain per church.
 - **Secrets:** per-church build/deploy env vars (payment-link URLs, form endpoints). No shared secret store.
 - **Optional per-church API:** if a church adds the backend, it brings its own EU-region Fastify + PostgreSQL (+ Redis/BullMQ for receipts), single-tenant. Provider keys live in that church's secret manager, never in code.
+
+## Docs site
+
+`docs-site/` is a Docusaurus 3.10.2 site (since 2026-10-21; Starlight before)
+at `/churchix/docs/`, light only in the parish palette.
+`docs-site/scripts/sync-corpus.mjs` renders this corpus (index, CLAUDE.md, log,
+every wiki page in its `PAGES` list) and the ADRs into the gitignored
+`docs-site/docs/wiki/`. A link between rendered pages becomes a relative file link
+(`./<slug>.md`), so the build checks it with `onBrokenLinks: 'throw'`; `MOVED`
+maps old paths the ADRs still use (`../wiki/`, `../todo/`); anything else in
+churchix becomes a GitHub URL. The Starlight build had published those links
+without the base, so every cross-page link went to a 404.
+
+- `react` and `react-dom` use the church app's range, so npm installs one copy.
+- Each synced page sets `slug:`, and the banner is a bare `:::note` with its
+  title as the first line: a bracketed title holding inline code doesn't render
+  in a `.md` page.
+- Headings take `--primary`, as the church sites do. Starlight had rendered
+  them white on cream.
+- `build-diagrams.mjs` tolerates a missing `diagrams/`; `Diagram.tsx` renders
+  one.
+- vps-deploy checks for `/churchix/docs/assets/` in `index.html` since
+  2026-10-21.
+

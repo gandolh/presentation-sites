@@ -15,7 +15,7 @@ Both rules have the same specificity, so the later one wins and every church
 renders with the default palette. The parish shows `#4e0816`, not its
 `#6b1f2a`. A second brand's seeds change nothing either.
 
-Found during brief 19's second-brand check (2026-10-23). It undercuts the
+Found during the phone menu's second-brand check (2026-10-23). It undercuts the
 white-label rule that a church re-skins by token swap alone.
 
 ## Acceptance

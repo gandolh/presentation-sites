@@ -80,7 +80,7 @@ PUBLIC_SITE_WIP=1 npm run build -w apps/<church>   # build with the "Site în lu
 
 ## Where to look
 
-Docs and work live in [corpus/](corpus/index.md), an LLM-maintained wiki with a briefs lifecycle. Its rules, including the retrieval budget, are in [corpus/CLAUDE.md](corpus/CLAUDE.md): read `corpus/index.md`, then at most 2 or 3 wiki pages. Work is a numbered brief in `corpus/briefs/todo/`, and every brief's state is one line in [status](corpus/wiki/status.md). When you land work, move the brief to `corpus/briefs/done/` with an outcome note, add a [log](corpus/log.md) entry, and fold what you learned into the wiki. Check it with `bash corpus/lint.sh`.
+Docs and work live in [corpus/](corpus/index.md), an LLM-maintained wiki with a briefs lifecycle. Its rules, including the retrieval budget, are in [corpus/CLAUDE.md](corpus/CLAUDE.md): read `corpus/index.md`, then at most 2 or 3 wiki pages. Work is a numbered brief in `corpus/briefs/todo/`, and [status](corpus/wiki/status.md) has a dated snapshot per area. When you land work, move the brief to `corpus/briefs/done/` with an outcome note, add a [log](corpus/log.md) entry, and fold what you learned into the wiki. Check it with `bash corpus/lint.sh`.
 
 - Start here → [corpus/index.md](corpus/index.md) · [overview](corpus/wiki/overview.md)
 - How it's built → [architecture](corpus/wiki/architecture.md) · [independence-model](corpus/wiki/independence-model.md)

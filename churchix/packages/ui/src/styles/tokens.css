@@ -3,7 +3,7 @@
  * "Ecclesia Digitalis" Orthodox burgundy/gold/cream defaults from docs/design/DESIGN.md.
  *
  * HOW THEMING WORKS
- *   - theme.css (item 01) maps every Tailwind utility to `var(--<token>)`
+ *   - theme.css maps every Tailwind utility to `var(--<token>)`
  *     (e.g. `bg-primary` -> `var(--primary)`, `text-on-surface-variant` ->
  *     `var(--on-surface-variant)`). This file declares the CANONICAL default
  *     value of every one of those variables under `:root`.
@@ -136,7 +136,7 @@
   --radius: 0.5rem;
 
   /* ───────────── Legacy compatibility aliases ─────────────
-   * Pre-M3 components/app pages (tier B+, NOT owned by item 02) still read these.
+   * Pre-M3 components/app pages (tier B+, outside the token contract) still read these.
    * They are thin aliases onto the M3 contract so the old class set keeps rendering
    * with the new tokens; remove when those components migrate to M3 utilities.
    * BaseLayout also continues to emit --brand-* from seeds for the same reason. */

@@ -28,7 +28,7 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [overview](wiki/overview.md) — What Churchix is. White-label church websites plus giving for Romanian parishes, v1 Orthodox, every church its own static deployment. The orientation page.
 - [research-brief-giving](wiki/research-brief-giving.md) — Archive, part two of the original research brief, kept verbatim. The Fastify donations API and payment-provider pick (§4), the giving feature set and PostgreSQL data model (§5), and the ten owner questions (§6). Read §4 and §5 as the optional single-tenant backend, with tenant_id dropped.
 - [research-brief](wiki/research-brief.md) — Archive, part one of the original research brief, kept verbatim. The Romanian church-site landscape (§1), the multi-tenancy recommendation later rejected (§2), and the Astro monorepo and content architecture (§3). Read it for the why behind architecture.md.
-- [status](wiki/status.md) — Dated snapshot of churchix. What is built, the state and dependencies of all 17 design-integration briefs in one line each, and what is still open. Start here after a break.
+- [status](wiki/status.md) — Dated snapshot of churchix as of 2026-11-02, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, what waits on a deploy, and what is still open. Start here after a break.
 - [traditions](wiki/traditions.md) — The two Romanian church markets, Orthodox and evangelical, where they converge and diverge, and what each needs. v1 targets Orthodox.
 <!-- CATALOG:END -->
 
@@ -38,8 +38,9 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [briefs/todo/](briefs/todo/): numbered work specs, ready to build
 - [briefs/done/](briefs/done/) · [briefs/superseded/](briefs/superseded/): the immutable archive
 
-Brief state lives in one line each in [wiki/status.md](wiki/status.md). Don't
-read the brief directories wholesale.
+Where things stand is a dated line per area in [wiki/status.md](wiki/status.md);
+briefs run in number order (restarted at 01 on 2026-11-02). Don't read the
+brief directories wholesale.
 
 ## Outside the corpus (linked, not copied)
 

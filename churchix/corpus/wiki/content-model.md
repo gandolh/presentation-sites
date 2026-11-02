@@ -1,6 +1,6 @@
 ---
 summary: The page inventory a church site needs and where its Content Collections and Zod schemas live (packages/schemas). Read before adding a page type or a content field.
-updated: 2026-10-07
+updated: 2026-11-02
 ---
 
 # Content Model — what a church site contains
@@ -44,7 +44,7 @@ Defined once in `@churchix/schemas` and imported by each church's `content.confi
 
 ### Schema definitions live in code, not here
 
-The authoritative Zod schemas are in **[packages/schemas/src/index.ts](../../packages/schemas/src/index.ts)** — `siteSchema` (identity + `brand` tokens + `tradition` + `features` + `contact` + `giving`), `sermonSchema`, `eventSchema`, `staffSchema` (with `order` for hierarchy), `announcementSchema` (`pinned`), `serviceScheduleSchema` (`weekday`/`cadence`/`note`), and `campaignSchema` (money in minor units + `goalAmountMinor`/`raisedAmountMinor` + `status`). Read the file rather than a copy — this page intentionally doesn't duplicate it. The `brand` object's token set is governed by [design-system](design-system.md) and [ADR-0002](../../docs/adr/0002-tailwind-material3-design-system.md); brief [03](../briefs/done/03-schema-brand-tokens.md) aligned `brand` with the Material-3 seed tokens (`accent` became `secondary`).
+The authoritative Zod schemas are in **[packages/schemas/src/index.ts](../../packages/schemas/src/index.ts)** — `siteSchema` (identity + `brand` tokens + `tradition` + `features` + `contact` + `giving`), `sermonSchema`, `eventSchema`, `staffSchema` (with `order` for hierarchy), `announcementSchema` (`pinned`), `serviceScheduleSchema` (`weekday`/`cadence`/`note`), and `campaignSchema` (money in minor units + `goalAmountMinor`/`raisedAmountMinor` + `status`). Read the file rather than a copy — this page intentionally doesn't duplicate it. The `brand` object's token set is governed by [design-system](design-system.md) and [ADR-0002](../../docs/adr/0002-tailwind-material3-design-system.md); on 2026-05-29 `brand` was aligned with the Material-3 seed tokens (`accent` became `secondary`).
 
 ### Example: a church's `content.config.ts`
 

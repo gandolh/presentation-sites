@@ -1,6 +1,6 @@
 ---
 summary: The calls about what the sites' React islands depend on - one icon family inlined at build time (Phosphor), and Base UI's Dialog under the four phone menus, with the measured JS each costs. Split out of decisions.md on 2026-10-23.
-updated: 2026-10-23
+updated: 2026-11-02
 ---
 
 # Decisions: the islands' UI dependencies
@@ -36,7 +36,7 @@ regresses, check the import style first.
 **2026-10-23**, the owner's call, to match their apps (atrium, imbatranimOS,
 sports-app, trips and others). The four phone menus (saloon, auto-service,
 subcort, tractari) are Base UI `Dialog`s
-([brief 15](../briefs/done/15-base-ui-mobile-menus.md)). Base UI does the focus
+([site-patterns.md](site-patterns.md)). Base UI does the focus
 trap, Esc, the scroll lock and focus return, and each site keeps its Tailwind
 classes and tokens. subcort keeps its Motion choreography through the popup's
 `render`.
@@ -56,7 +56,7 @@ to static pages.
 | tractari | 196.2 kB | 216.6 kB | +20.3 kB |
 
 Raw, it is about 59 kB a site. The menu islands load with `client:load`, so
-every page pays it. If that matters for a site, a later brief can try
+every page pays it. If that matters for a site, a later change can try
 `client:idle` or `client:visible` for the menu island.
 
 *The rule this creates:* a dialog in an island is Base UI's, not hand-built.

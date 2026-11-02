@@ -1,6 +1,6 @@
 ---
 summary: The two Romanian church markets, Orthodox and evangelical, where they converge and diverge, and what each needs. v1 targets Orthodox.
-updated: 2026-10-07
+updated: 2026-11-02
 ---
 
 # Two traditions, one platform
@@ -17,7 +17,7 @@ Churchix must serve **both** Romanian church markets. They converge on schedule 
 
 ## Orthodox / Greek-Catholic add-ons
 
-- **Pomelnice** — submit names of the living (`pomelnic de vii`) and departed (`pentru cei adormiți`) for prayer, usually with a small offering. First-class feature; no Protestant analog. See [donations](donations.md) and brief [12](../briefs/done/12-pomelnic-form.md), which built the form.
+- **Pomelnice** — submit names of the living (`pomelnic de vii`) and departed (`pentru cei adormiți`) for prayer, usually with a small offering. First-class feature; no Protestant analog. See [donations](donations.md); the form is `packages/ui/src/islands/PomelnicForm.tsx`.
 - **Orthodox calendar** — saint of the day + fasting rules.
 - **Sacrament arrangement** info — Botez, Cununie, Parastas, Spovedanie.
 - **IBAN-first giving** — RON/EUR/USD accounts displayed; cash in person.

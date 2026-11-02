@@ -41,8 +41,8 @@ corpus/
 1. Read `index.md`. Then read **at most 2 or 3 wiki pages**.
 2. Needing more than three is a signal that a page must split or a summary is
    too vague. It is not a licence to read more.
-3. Never read `briefs/` or `todos/` wholesale. `wiki/status.md` holds every
-   brief's state in one line.
+3. Never read `briefs/` or `todos/` wholesale. `wiki/status.md` holds a dated
+   snapshot per area.
 4. Prefer a page's `summary:` line over opening the page.
 
 ## Page rules
@@ -58,6 +58,8 @@ corpus/
 - Absolute dates (`2026-05-29`), never "yesterday".
 - One concept per file. Split past about 200 body lines and cross-link.
 - Money in any example is integer minor units plus an explicit currency.
+- Code comments don't cite brief numbers ("brief 12", "(item 05)"). Say what
+  the code does and why; the history belongs in `log.md`.
 - The wiki is **synthesis**. Chronology belongs in `log.md`.
 
 ## Source-of-truth ordering
@@ -81,18 +83,19 @@ drift.
   paragraph: `## Outcome (YYYY-MM-DD)` naming the evidence (files, commits, the
   log entry, a build result), or `## Superseded (YYYY-MM-DD)` naming what
   replaced it.
-- Briefs 01 to 17 were written in `docs/todo/` and moved here on 2026-10-07.
-  Only their relative link targets were rebased so they resolve from the new
-  folders; the text is as written.
-- Their prose still names `docs/wiki/log.md`, which no longer exists. Read [`log.md`](log.md).
+- Numbering restarted at 01 on 2026-11-02. The nineteen briefs before that
+  (the 2026-05-29 design-integration programme, the docs site and the phone
+  menu) were folded into the wiki and deleted; the last commit holding them is
+  `79a267e` ([log.md](log.md), "Briefs reset"). `wiki/status.md` no longer
+  lists briefs.
 
 ## Workflows
 
 - **Capture** → `todos/<slug>.md`, prose, with `created:` and `status: open`.
 - **Promote** → `briefs/todo/NN-slug.md` with Context, Files you OWN, Files you
-  must NOT touch, What to do, and Acceptance. Add its line to `wiki/status.md`.
+  must NOT touch, What to do, and Acceptance. Briefs run in number order.
 - **Complete** → `git mv` the brief to `briefs/done/`, append the outcome note,
-  add a `log.md` entry, update its line in `wiki/status.md`, and fold durable
+  add a `log.md` entry, update the area's line in `wiki/status.md`, and fold durable
   findings into the wiki page they belong to.
 - **Ingest** a source (research, a decision, a design change) → update every
   page it touches and synthesize rather than append. A new concept gets a new

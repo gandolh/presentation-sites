@@ -55,7 +55,7 @@ export const siteSchema = z.object({
   url: optionalUrl,
 
   // Material-3 seed tokens. A church sets the *seeds* (primary, secondary,
-  // optionally surface/error); BaseLayout (item 02) derives the full M3 role
+  // optionally surface/error); BaseLayout derives the full M3 role
   // set as CSS custom properties. `accent` is the legacy name for `secondary`
   // (the gold) — kept as a deprecated optional alias so older `site.json`
   // files keep validating and `BaseLayout`'s existing `b.accent` read still

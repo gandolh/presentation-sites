@@ -1,66 +1,50 @@
 ---
-summary: Dated snapshot of churchix. What is built, the state and dependencies of all 17 design-integration briefs in one line each, and what is still open. Start here after a break.
-updated: 2026-10-23
+summary: Dated snapshot of churchix as of 2026-11-02, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, what waits on a deploy, and what is still open. Start here after a break.
+updated: 2026-11-02
 ---
-# Status (2026-10-23)
-
-## Where things stand
+# Status (2026-11-02)
 
 One church app, `apps/parohia-harlesti-bacau`, builds 10 static pages on the
 shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-10-21).
 The second reference app, `parohia-berinta-maramures`, was removed before
-2026-05-30. Deploy is not in this repo. The docs site in `docs-site/` moved
-to Docusaurus on 2026-10-21; the church sites stay Astro.
+2026-05-30. Deploy is not in this repo. No brief is open; brief numbering
+restarted at 01 on 2026-11-02 (see [log.md](../log.md)).
 
-The *Ecclesia Digitalis* design system is integrated. Briefs 01 to 15 shipped on
-2026-05-29 and the UI audit (brief 16) on 2026-05-30. The liturgical-rail
-redesign (`70999ff`, 2026-06-18) then rebuilt the hero, the home page and the
-inner-page headers around `Rail.astro` and `PageShell.astro`. That superseded
-brief 07.
+## By area
 
-Open work:
+- **Design system** (2026-05-29). *Ecclesia Digitalis* on Tailwind v4 and the
+  M3 token contract, self-hosted fonts and icons, the primitives, header and
+  footer, the service schedule, announcements, giving, the campaign
+  thermometer, the pomelnice form and the error pages
+  ([design-system.md](design-system.md)). The 2026-05-30 UI audit fixed three
+  rendering bugs; its follow-ups closed 2026-10-07 (dead `.cx-*` rules gone, a
+  `max-w` guard in `npm run lint`).
+- **Home and inner pages** (2026-06-18). The liturgical-rail redesign
+  (`70999ff`) rebuilt the hero, the home page and the inner-page headers
+  around `Rail.astro` and `PageShell.astro`.
+- **Accessibility and i18n** (2026-05-29). Skip link, AA contrast across the
+  brand range, one `h1` a page; axe found no critical, serious or moderate
+  violations.
+- **Docs site** (2026-10-21). Docusaurus at the same `/churchix/docs/` URLs
+  plus `/search/` ([architecture.md](architecture.md#docs-site)).
+- **Phone menu** (2026-10-23). `MobileNav` on Base UI `Dialog`, +20.4 kB gzip
+  on the parish site ([decisions.md](decisions.md)).
 
-- The arch-mask treatment for icons and murals, deferred from brief 17.
-- [The brand seeds lose to tokens.css's defaults](../todos/brand-seeds-lose-to-token-defaults.md) in the built pages (found 2026-10-23).
-- The owner questions still open in [decisions](decisions.md): Q4 and Q6 to Q10.
+## Waiting on a deploy
 
-## Briefs
+The docs site and the phone menu are not known to be deployed. vps-deploy
+flipped the churchix docs stack to its Docusaurus asset check on 2026-10-21,
+so the docs deploy can go ahead.
 
-The design-integration programme. Tiers run A to F, and a brief needs only the
-ones it depends on. Every brief honors [conventions](conventions.md).
+## Open
 
-| # | Brief | Depends on | Tier | State |
-|---|---|---|---|---|
-| 01 | [Tailwind in the monorepo + shared M3 config](../briefs/done/01-tailwind-setup.md) | none | A | done |
-| 02 | [M3 token contract: CSS vars, Tailwind theme, per-church brand](../briefs/done/02-token-contract.md) | 01 | A to B | done |
-| 03 | [`@churchix/schemas` brand object for the M3 seeds](../briefs/done/03-schema-brand-tokens.md) | none | A | done |
-| 04 | [Self-hosted fonts + icons, diacritic-safe](../briefs/done/04-icons-fonts.md) | 01 | A | done (headings now default to Cardo) |
-| 05 | [Primitives: Button, Card, Badge, Field, Alert, EmptyState, Divider](../briefs/done/05-primitives.md) | 02, 04 | B | done |
-| 06 | [Header (lang switcher + Donează) and Footer](../briefs/done/06-header-footer.md) | 02, 04, 05 | C | done |
-| 07 | [Home: hero, pinned strip, Program + About bento](../briefs/superseded/07-home-hero-sections.md) | 05, 06 | C | superseded by `70999ff` |
-| 08 | [Program Slujbe: day blocks, cadence notes, PDF](../briefs/done/08-service-schedule.md) | 05, 06 | C | done (header now `PageShell`) |
-| 09 | [Announcements list + detail, pinned accent](../briefs/done/09-announcements.md) | 05, 06 | C | done |
-| 10 | [Donate page: card CTA, copy IBANs, Form 230, SMS](../briefs/done/10-giving-donate.md) | 05, 06 | C | done |
-| 11 | [Campaign card with goal thermometer](../briefs/done/11-campaign-thermometer.md) | 05 | C | done |
-| 12 | [Pomelnice form island](../briefs/done/12-pomelnic-form.md) | 05 | C | done |
-| 13 | [404 / error / empty-state pages](../briefs/done/13-error-empty-pages.md) | 05, 06 | C | done |
-| 14 | [Reference-app rollout + second-brand proof](../briefs/done/14-reference-app-rollout.md) | 05 to 13 | D | done (Berinta since removed) |
-| 15 | [a11y, i18n and long-string pass](../briefs/done/15-a11y-i18n-pass.md) | 14 | E | done |
-| 16 | [UI audit across the pages](../briefs/done/16-ui-audit-pages.md) | 14, 15 | F | done (one app, two viewports, RO) |
-| 17 | [UI audit follow-ups](../briefs/done/17-audit-followups.md) | 16 | F | done (arch mask deferred) |
-| 18 | [Docs site from Starlight to Docusaurus](../briefs/done/18-docs-site-on-docusaurus.md) | none | — | done (deploy waits on vps-deploy) |
-| 19 | [Phone menu on Base UI](../briefs/done/19-base-ui-mobile-nav.md) | none | — | done 2026-10-23 (+20 kB gzip; not deployed) |
-
-**Brief 17** closed on 2026-10-07. Task 1 was already done by the redesign,
-tasks 2, 3 and 6 shipped (legacy `.cx-*` and dead tokens removed, `max-w` guard in
-`npm run lint`), task 4 was dropped as covered by `PageShell`, and task 5 (arch
-mask) is deferred until real photography lands. See the 2026-10-07 log entry.
-
-**Brief 18** closed on 2026-10-21. The docs site builds with Docusaurus at the
-same `/churchix/docs/` URLs, plus `/search/`, from the same `dist/`, light only
-and in the parish palette. It is not deployed: vps-deploy has to switch the
-churchix docs stack to its Docusaurus asset check first. See the 2026-10-21 log
-entry.
+- [The brand seeds lose to tokens.css's defaults](../todos/brand-seeds-lose-to-token-defaults.md)
+  in the built pages (found 2026-10-23), so a church can't yet re-skin by
+  token swap alone.
+- The arch-mask treatment for icons and murals, deferred until real
+  photography lands.
+- The owner questions still open in [decisions](decisions.md): Q4 and Q6 to
+  Q10.
 
 New work: capture it in [todos/](../todos/), then promote it to
-`briefs/todo/` with the next free number (20).
+`briefs/todo/` with the next free number (01).

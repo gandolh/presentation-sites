@@ -522,7 +522,7 @@ runs from the deploy repo.
 
 ## [2026-10-18] brief | Brief 14 filed: the five sites' docs sites move from Starlight to Docusaurus
 
-The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; [14](briefs/done/14-docs-sites-on-docusaurus.md) sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.
+The owner's call (2026-10-18), one brief in every repo with a docs site; churchix has its own (its brief 18). The marketing sites stay Astro. Building each site's docs through Docusaurus found 13 links to source files that are dead on the live sites today. The old sync leaves `src/...` links relative; 14 sends them to GitHub. It also declares `sharp` in `sites/subcort`, whose `gen-og.mjs` relied on the docs-sites' copy. The deploy waits on vps-deploy brief 11.
 
 ## [2026-10-19] done | Brief 13: the space before a wrapped expression stays
 
@@ -535,13 +535,13 @@ One commit per site (`22194b7`, `aa1dbc3`, `fe3639c`, `17abb94`, `f17663d`) and 
 ## [2026-10-23] todo | Brief 15 filed: Base UI for the phone menus
 
 The owner asked for Base UI in the projects that still hand-build their
-widgets. [Brief 15](briefs/done/15-base-ui-mobile-menus.md) moves the four
+widgets. Brief 15 moves the four
 sites' `MobileMenu` islands to Base UI `Dialog` and records the JS cost; the
 `.astro` widgets stay zero-JS. churchix has its own brief 19.
 
 ## [2026-10-23] done | Brief 15: the phone menus on Base UI
 
-[Brief 15](briefs/done/15-base-ui-mobile-menus.md) is built. The four
+Brief 15 is built. The four
 `MobileMenu` islands are Base UI `Dialog`s, and the hand-written traps, Esc
 handlers and scroll locks are gone. subcort keeps Motion, through the popup's
 `render` and a `keepMounted` portal, and portals into its header, whose
@@ -554,3 +554,21 @@ table are in [decisions-ui.md](wiki/decisions-ui.md), split out of
 ## [2026-10-31] maintenance | README and images checked; still current
 
 A README refresh pass with the readme-docs standard. The README already met it, every relative link resolves, and its status matches [status.md](wiki/status.md). The six images are desktop home pages at 1440×720; the site changes since they were taken on 2026-10-09 are the phone menus on Base UI and the docs sites' move to Docusaurus, neither of which they show, so none was retaken. Checked: `npm install` at the root and `npm run tractari:dev` answering on port 4321.
+
+## [2026-11-02] maintenance | Briefs reset
+
+Part of an estate-wide reset. The fifteen briefs in `briefs/done/` are folded
+into the wiki and deleted, and churchix's nineteen with them (its own log has
+the entry); brief numbering restarts at 01 in both corpora. The old briefs
+read like the grilling that fed the first corpus. The last commit that held
+them is `79a267e`: read one with
+`git show 79a267e:corpus/briefs/done/10-raster-social-cards.md`. Brief numbers
+in the entries above refer to that set.
+
+New page: [site-patterns.md](wiki/site-patterns.md), the as-built patterns the
+audit fixes left across the sites (social cards, opening hours, the phone
+menus, the WebGL hero pause, carousel keys, the bots body cap, dependency
+hygiene). [architecture.md](wiki/architecture.md) gained the Docusaurus
+gotchas. [status.md](wiki/status.md) dropped its brief list for a dated line
+per area.
+

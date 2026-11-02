@@ -19,9 +19,10 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [decisions-ui](wiki/decisions-ui.md) — The calls about what the sites' React islands depend on - one icon family inlined at build time (Phosphor), and Base UI's Dialog under the four phone menus, with the measured JS each costs. Split out of decisions.md on 2026-10-23.
 - [decisions](wiki/decisions.md) — Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md. Do not relitigate without a log entry.
 - [design-styles](wiki/design-styles.md) — Where the repo's design-language reference lives and how to reuse it — fourteen per-style dossiers under sites/design-study/docs/styles/, each carrying a CSS image-treatment recipe and prompt descriptors for generating imagery in that style.
-- [open-questions](wiki/open-questions.md) — Nothing open as of 2026-10-07. The briefs-lifecycle and demo-sites questions were answered on 2026-10-06 and brief 12 is done; see decisions.md.
+- [open-questions](wiki/open-questions.md) — Nothing open as of 2026-10-07. The briefs-lifecycle and demo-sites questions were answered on 2026-10-06 and churchix got its corpus on 2026-10-07; see decisions.md.
 - [overview](wiki/overview.md) — What presentation-sites is — a monorepo of independent Romanian marketing sites, who each one is for, and what lives at the top level.
-- [status](wiki/status.md) — Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
+- [site-patterns](wiki/site-patterns.md) — The as-built patterns several sites share, from the 2026-09-27 improvements audit fixes (2026-10-01/02) and later rounds. Social cards as screenshotted HTML, opening hours from one HOURS list, the phone menus on Base UI and how a link closes them, pausing a WebGL hero off-screen, design-study's carousel keys, the saloon bots webhook body cap, and the dependency hygiene rules (no dead Vite overrides, audit at the root and in churchix). Read before copying a fix from one site to another.
+- [status](wiki/status.md) — Dated snapshot (2026-11-02) of where each site stands, the recent work per area, what waits on a deploy, and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
 <!-- CATALOG:END -->
 
 ## Work
@@ -30,8 +31,9 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [briefs/todo/](briefs/todo/) — numbered work specs, ready to build
 - [briefs/done/](briefs/done/) · [briefs/superseded/](briefs/superseded/) — immutable archive
 
-Brief state lives in one line each in [wiki/status.md](wiki/status.md); don't
-read the brief directories wholesale.
+Where things stand is a dated line per area in [wiki/status.md](wiki/status.md);
+briefs run in number order (restarted at 01 on 2026-11-02). Don't read the
+brief directories wholesale.
 
 ## Per-site docs (this corpus links down, it does not duplicate)
 

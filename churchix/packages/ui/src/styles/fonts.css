@@ -19,10 +19,9 @@
  * variable face (400/500 used by the design). `font-display: swap` everywhere → text is
  * visible immediately with the fallback, no invisible-text flash.
  *
- * WIRING (downstream items 02 / 14): import this once, app-wide, alongside tokens.css —
- * e.g. add `@import './fonts.css';` to the top of tokens.css, or import
- * `@churchix/ui/styles/fonts.css` from BaseLayout. It is intentionally NOT auto-imported
- * here to avoid colliding with item 02's ownership of tokens.css / BaseLayout.
+ * WIRING: imported once, app-wide, by tokens.css (`@import './fonts.css';`), so every
+ * church page gets it. It is intentionally NOT auto-imported here: tokens.css and
+ * BaseLayout own the token contract.
  */
 
 /* ---------------------------------------------------------------- Source Serif 4 */

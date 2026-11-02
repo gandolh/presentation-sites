@@ -1,6 +1,6 @@
 ---
 summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md. Do not relitigate without a log entry.
-updated: 2026-10-23
+updated: 2026-11-02
 ---
 
 # Decisions
@@ -65,7 +65,7 @@ in `@sites/kit`. With no `site`, that helper throws and the build fails.
 and the two demos pointed search engines at fictional brands' domains this repo
 does not control. A client site moves to its own domain at launch by building
 with `PUBLIC_SITE=https://<domain> PUBLIC_BASE=/`. No code changes.
-Recorded by the agent running brief 09, which took the brief's recommendation.
+Recorded by the agent that built it, which took the spec's recommendation.
 The owner had not been asked yet.
 
 ## Images are addressed by logical name, mock and real are separate sources
@@ -153,7 +153,7 @@ site's combined; merging them would blow this corpus's retrieval budget.
 ## churchix runs its own corpus; the finished sites keep checklists
 
 **2026-10-06** (owner) — churchix adopts the corpus-flow lifecycle *inside*
-`churchix/` ([brief 12](../briefs/done/12-churchix-gets-a-corpus.md)): its
+`churchix/` (built 2026-10-07): its
 numbered `docs/todo/` items become briefs with done/superseded folders, a log
 and a lint. This extends "churchix governs itself" rather than revising it; the
 corpus is churchix's own, not this one. It narrows "corpus names only this

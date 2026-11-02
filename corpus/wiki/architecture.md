@@ -1,6 +1,6 @@
 ---
 summary: How this workspace is put together — the sites/ + packages/ layout, the per-site docs-sites, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
-updated: 2026-10-19
+updated: 2026-11-02
 ---
 
 # Architecture
@@ -149,7 +149,7 @@ without revisiting [decisions.md](decisions.md).
 ## Docs sites
 
 Each site has a **Docusaurus docs site** at `sites/<site>/docs-site/` (Starlight
-until 2026-10-19, brief 14), and churchix has its own at `churchix/docs-site/`.
+until 2026-10-19), and churchix has its own at `churchix/docs-site/`.
 Each is a workspace of its own
 (`@sites/<site>-docs`), excluded from its parent site's `tsconfig.json` so
 `astro check` on the site does not walk its `.tsx` files.
@@ -179,4 +179,13 @@ Each is a workspace of its own
   overrides it), with `url` set to the production origin, the same one the
   site's `astro.config.mjs` uses; vps-deploy verifies the base rather than
   setting it. Deployed at `/<site>/docs/`.
+- **Gotchas** (2026-10-19): Docusaurus serves a file named `readme.md` at its
+  folder's URL, so the sync writes `slug:` on every page to keep
+  `/wiki/readme/`. In a `.md` page the `:::note[Title]` form renders an unknown
+  element, so the banner's title is the note's first line.
+  `@docusaurus/tsconfig` sets `baseUrl`, which TypeScript 6 rejects (TS5101),
+  so each docs `tsconfig.json` sets `"ignoreDeprecations": "6.0"`. Prism paints
+  a code block's background inline, so `custom.css` overrides it with
+  `!important`. `build-diagrams.mjs` tolerates a missing `diagrams/`, since git
+  keeps no empty folder.
 

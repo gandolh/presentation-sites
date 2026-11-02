@@ -1,6 +1,6 @@
 ---
 summary: Mandatory languages, Romanian diacritic rules, and the domain vocabulary (pomelnice, zeciuială, Form 230 and the rest). Read before writing user-facing strings.
-updated: 2026-10-07
+updated: 2026-11-02
 ---
 
 # i18n, diacritics & domain glossary
@@ -15,7 +15,7 @@ i18n is **mandatory, not optional**, and Romanian diacritics must work end-to-en
 ## Two nuances that trip people up
 
 1. **Liturgical/theological terms stay in Romanian even inside English pages** — e.g. an EN nav item may still read "Slujbele religioase". Don't force-translate domain vocabulary. This is expected, not a bug.
-2. **Full Romanian diacritics (ă, â, î, ș, ț) must work everywhere:** UTF-8 storage, web fonts, URL slugs, search, and generated PDFs/receipts. Validate end-to-end — the chosen fonts (Cardo headings with Source Serif 4 as the fallback, plus Inter body) must cover Latin Extended-A; German umlauts too. See brief [04](../briefs/done/04-icons-fonts.md) for the fonts and brief [15](../briefs/done/15-a11y-i18n-pass.md) for the a11y and i18n pass.
+2. **Full Romanian diacritics (ă, â, î, ș, ț) must work everywhere:** UTF-8 storage, web fonts, URL slugs, search, and generated PDFs/receipts. Validate end-to-end — the chosen fonts (Cardo headings with Source Serif 4 as the fallback, plus Inter body) must cover Latin Extended-A; German umlauts too. The fonts are self-hosted from `@fontsource` with `latin` and `latin-ext` ranges (`packages/ui/src/styles/fonts.css`); the a11y and i18n pass is in [design-system](design-system.md).
 
 Layouts must also **survive long strings** — DE and RO are verbose; nothing should clip.
 

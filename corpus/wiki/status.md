@@ -1,9 +1,9 @@
 ---
-summary: Dated snapshot of where each site stands and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-10-23
+summary: Dated snapshot (2026-11-02) of where each site stands, the recent work per area, what waits on a deploy, and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
+updated: 2026-11-02
 ---
 
-# Status — 2026-10-07
+# Status — 2026-11-02
 
 ## Where things stand
 
@@ -31,40 +31,35 @@ per-site docs and is *not* duplicated here.
 | `subcort` | Demo, complete. Reworked twice on 2026-08-23: first onto a *scoarța* (Oltenian rug) system, then — the owner found that too traditional — onto **Montaj**, the site as a drawing set. One marquee model in `src/lib/draft.ts` drives every graphic (WebGL hero, exploded plate, scale plan, OG card); ink for the object, one orange for annotation; no photography. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |
 | `design-study` | **New, 2026-08-23.** Not a marketing site — a UI/UX study. One fictional blog (*Ratio*, 12 posts, 18 shared placeholders) rendered in 14 design languages, content held constant so only design varies. 183 static pages; each theme owns its markup, layout and CSS, and loads only its own fonts. No Tailwind. The written half is 14 per-style dossiers carrying image-treatment recipes and prompt descriptors — see [`design-styles.md`](design-styles.md). | [`design-study/PRODUCT.md`](../../sites/design-study/PRODUCT.md), [`DESIGN.md`](../../sites/design-study/DESIGN.md) |
-| `churchix` | Active product. One church app (`apps/parohia-harlesti-bacau`) on the shared packages. Runs its own corpus since 2026-10-07: of its 17 design-integration briefs, 15 are done, 07 is superseded by the 2026-06-18 redesign, and 17 (audit follow-ups) is open. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/corpus/index.md`](../../churchix/corpus/index.md), [`churchix/corpus/wiki/status.md`](../../churchix/corpus/wiki/status.md) |
+| `churchix` | Active product. One church app (`apps/parohia-harlesti-bacau`) on the shared packages. Runs its own corpus since 2026-10-07. Docs site on Docusaurus 2026-10-21, phone menu on Base UI 2026-10-23; open: the brand seeds lose to the token defaults in built pages. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/corpus/index.md`](../../churchix/corpus/index.md), [`churchix/corpus/wiki/status.md`](../../churchix/corpus/wiki/status.md) |
 
-## Briefs
+## Recent work, by area
 
-[15](../briefs/done/15-base-ui-mobile-menus.md), the four phone menus on Base UI `Dialog`, was done on 2026-10-23 and waits on a deploy (churchix has its own brief 19). [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md), the tractari hero lede that read "sauMehedinți", and [14](../briefs/done/14-docs-sites-on-docusaurus.md), the five docs sites on Docusaurus, were done on 2026-10-19; both wait on a deploy, and 14's waits on vps-deploy brief 11 first. All eleven from the 2026-09-27 improvements audit were done by
-2026-10-02 (ranked; see [`log.md`](../log.md)), and brief 12 on 2026-10-07. New work: capture in [`todos/`](../todos/), promote to
+- **Security and workspace** (2026-10-01). Astro's RCE advisory and the
+  js-yaml/svgo findings cleared at the root and in churchix; root scripts pick
+  sites by package name so the nested docs-sites stop matching; dead per-site
+  Vite overrides gone ([site-patterns.md](site-patterns.md)).
+- **Head URLs and social cards** (2026-10-02). Canonicals, `og:*` and JSON-LD
+  are absolute at the production origin plus `/<site>/`; saloon, subcort and
+  tractari got PNG cards ([decisions.md](decisions.md),
+  [site-patterns.md](site-patterns.md)).
+- **Site fixes** (2026-10-01). tractari's hero pauses off-screen, opening
+  hours come from one `HOURS` list, design-study's arrow keys stay on a
+  focused carousel, and the saloon bots webhook caps bodies at 1 MiB.
+- **Docs sites** (2026-10-19). All five on Docusaurus, links to source files
+  going to GitHub ([architecture.md](architecture.md#docs-sites)).
+- **Copy** (2026-10-19). tractari's hero lede no longer runs "sau" into the
+  last county; the saloon and auto-service terms pages had the same wrap.
+- **Phone menus** (2026-10-23). The four sites' menus on Base UI `Dialog`,
+  about +20 kB gzip a site ([decisions-ui.md](decisions-ui.md)).
+- **churchix** got a corpus of its own on 2026-10-07.
+
+Not known to be deployed yet: the copy fix
+(tractari, saloon, auto-service), the five Docusaurus docs sites (vps-deploy
+flipped their asset checks on 2026-10-19) and the phone menus. No brief is
+open; brief numbering restarted at 01 on 2026-11-02 (see
+[log.md](../log.md)). New work: capture in [`todos/`](../todos/), promote to
 [`briefs/todo/`](../briefs/todo/).
-
-**Wave 1**
-- [01](../briefs/done/01-astro-security-advisories.md) — clear the Astro RCE advisory + js-yaml/svgo in both lockfiles
-- [02](../briefs/done/02-isolate-nested-docs-sites.md) — root `<site>:*` scripts exit 1 since the docs-sites; `astro check` scans them
-- [03](../briefs/done/03-tractari-hero-offscreen-pause.md) — tractari WebGL hero never pauses off-screen
-- [04](../briefs/done/04-opening-hours-single-source.md) — opening hours retyped outside `site.ts` (saloon, auto-service)
-- [05](../briefs/done/05-mobile-menu-focus-return.md) — mobile menus drop focus on close (saloon, auto-service, tractari)
-- [06](../briefs/done/06-design-study-arrow-keys.md) — design-study arrow keys on a carousel jump to another theme
-- [07](../briefs/done/07-remove-dead-vite-overrides.md) — dead per-site `vite` overrides (break a lifted-out site)
-- [08](../briefs/done/08-corpus-readme-docs-drift.md) — corpus + README silent on docs-sites and design-study (after 02)
-
-**Wave 2**
-- [09](../briefs/done/09-absolute-head-urls.md) — relative `og:image`, wrong canonicals; canonical is now the production origin plus `/<site>/`
-- [10](../briefs/done/10-raster-social-cards.md) — PNG social cards for saloon, subcort, tractari
-- [11](../briefs/done/11-bots-webhook-body-cap.md) — bots webhook buffers unbounded bodies — before live wiring
-
-**From the owner's 2026-10-06 answers**
-- [12](../briefs/done/12-churchix-gets-a-corpus.md): churchix gets a corpus of its own, with its 17 work items sorted against the code
-
-**From the 2026-10-09 README refresh**
-- [13](../briefs/done/13-tractari-hero-sau-mehedinti-no-space.md): tractari hero lede ran "sau" into the last county; the terms pages of saloon and auto-service had the same wrap
-
-**From the owner's 2026-10-18 Docusaurus call**
-- [14](../briefs/done/14-docs-sites-on-docusaurus.md): the five docs sites move from Starlight to Docusaurus; links to source files go to GitHub
-
-**From the owner's 2026-10-23 Base UI call**
-- [15](../briefs/done/15-base-ui-mobile-menus.md): done 2026-10-23, the four sites' phone menus on Base UI `Dialog` (+~20 kB gzip a site); the `.astro` widgets stay zero-JS
 
 ## Note on the two doc layers
 

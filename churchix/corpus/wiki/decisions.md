@@ -1,6 +1,6 @@
 ---
 summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs) and the owner questions still open (Q4, Q6 to Q10).
-updated: 2026-10-23
+updated: 2026-11-02
 ---
 # Open Questions — decisions needed from the product owner
 
@@ -40,7 +40,7 @@ Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 
 
 - **Base UI for island dialogs.** The owner's call, to match their apps. The
   phone menu (`MobileNav`) is a Base UI `Dialog`
-  ([brief 19](../briefs/done/19-base-ui-mobile-nav.md)), which gives the focus
+  (2026-10-23), which gives the focus
   trap, Esc, the scroll lock and focus return. It is styled by the M3 tokens
   as before. *Cost, measured:* the island goes from 1.6 to 21.2 kB gzip, and
   the parish site's JS from 72.8 to 93.1 kB gzip (+20.4 kB). *Rejected:*

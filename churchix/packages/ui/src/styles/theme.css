@@ -8,10 +8,10 @@
  *     @import "@churchix/ui/styles/theme.css";
  *
  * Theming is CSS-variable-native: every M3 color maps to a `var(--<token>)` so a church
- * rebrands by overriding those variables (item 02 / BaseLayout) WITHOUT touching components.
+ * rebrands by overriding those variables (tokens.css / BaseLayout) WITHOUT touching components.
  *
  * --------------------------------------------------------------------------------------
- * TOKEN CONTRACT OWNERSHIP (item 02):
+ * TOKEN CONTRACT OWNERSHIP (tokens.css):
  *   The CANONICAL default value of every `--<token>` referenced below lives in
  *   `tokens.css` (the M3 contract: seeds + color-mix-derived roles). tokens.css is
  *   imported by BaseLayout, so those defaults are present on every church page, and

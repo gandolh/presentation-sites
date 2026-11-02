@@ -37,7 +37,7 @@ Docs live in an LLM-maintained corpus under [corpus/](corpus/index.md). Start at
 5. [design-system](corpus/wiki/design-system.md) — the Tailwind + Material-3 design system.
 6. [decisions](corpus/wiki/decisions.md) — settled + open questions; [research-brief](corpus/wiki/research-brief.md) for the full rationale.
 
-Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Work is tracked as numbered briefs in [corpus/briefs/](corpus/wiki/status.md), with the state of each in [status](corpus/wiki/status.md). [CLAUDE.md](CLAUDE.md) is the working brief for AI assistants and new contributors.
+Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Work is specced as numbered briefs in `corpus/briefs/`; where things stand is in [status](corpus/wiki/status.md). [CLAUDE.md](CLAUDE.md) is the working brief for AI assistants and new contributors.
 
 ## Status
 

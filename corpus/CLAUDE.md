@@ -39,6 +39,8 @@ corpus/
 - One concept per file; split past ~200 body lines.
 - The wiki is **synthesis**, rewritten freely as understanding improves.
   Chronology belongs in `log.md`.
+- Code comments don't cite brief numbers ("brief 09", "(brief 14)"). Say what
+  the code does and why; the history belongs in `log.md`.
 
 ## Source-of-truth ordering
 
@@ -57,7 +59,12 @@ drift.
 
 - **Capture** → `corpus/todos/<slug>.md`.
 - **Promote** → `corpus/briefs/todo/<NN>-<slug>.md`. Numbers are stable; never
-  renumber when a brief moves.
+  renumber when a brief moves. Briefs run in number order; `wiki/status.md`
+  gives a dated line per area, not a brief list.
+- Numbering restarted at 01 on 2026-11-02. The fifteen briefs before that
+  were folded into the wiki and deleted; the last commit holding them is
+  `79a267e` ([log.md](log.md), "Briefs reset"). churchix's own corpus
+  restarted the same day.
 - **Complete** → move the brief verbatim to `briefs/done/`, append a `log.md`
   entry, fold durable findings into `wiki/`.
 - **Lint** → `bash corpus/lint.sh`, then sweep by hand for contradictions and

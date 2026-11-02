@@ -101,7 +101,7 @@ Cross-cutting hardening sweep across the now-complete restyled system; minimal s
 
 ## [2026-05-30] audit | UI/UX audit + fixes on parohia-harlesti-bacau (brief 16)
 
-This was `docs/ui-audit-2026-05-30.md`, moved here on 2026-10-07. It is the evidence for [brief 16](briefs/done/16-ui-audit-pages.md). Brief 17 covers every finding it left open, so it is history.
+This was `docs/ui-audit-2026-05-30.md`, moved here on 2026-10-07. It is the evidence for brief 16. Brief 17 covers every finding it left open, so it is history.
 
 **Date:** 2026-05-30
 **App:** `parohia-harlesti-bacau` (the only church kept; `parohia-berinta-maramures` removed earlier).
@@ -200,7 +200,7 @@ asymmetric split: identity and next service on the left, a framed image over a
 Program + About bento for a lead-plus-stacked announcements block and a burgundy
 "despre" band. `theme.css` gained the `display-xl` and `overline` type tokens.
 Build: 10 pages, `astro check` 0 errors. This superseded
-[brief 07](briefs/superseded/07-home-hero-sections.md).
+brief 07.
 
 ## [2026-08-23] restructure | docs/corpus/ renamed docs/wiki/
 
@@ -255,21 +255,21 @@ Task 6, the `max-w-*` guard, was added rather than declined. In this theme bare 
 
 ## [2026-10-18] todo | Brief 18 filed: the docs site moves from Starlight to Docusaurus
 
-The owner's call (2026-10-18), one brief in every repo with a docs site. [18](briefs/done/18-docs-site-on-docusaurus.md) keeps the URLs, the parish palette and the sync's `PAGES`/`MOVED`, and pins React to the apps' version so `@churchix/ui` never sees two copies. The 12 pages built cleanly through Docusaurus. The church sites stay Astro. The deploy waits on vps-deploy brief 11.
+The owner's call (2026-10-18), one brief in every repo with a docs site. 18 keeps the URLs, the parish palette and the sync's `PAGES`/`MOVED`, and pins React to the apps' version so `@churchix/ui` never sees two copies. The 12 pages built cleanly through Docusaurus. The church sites stay Astro. The deploy waits on vps-deploy brief 11.
 
 ## [2026-10-21] done | Brief 18 — the docs site runs on Docusaurus
 
-[18](briefs/done/18-docs-site-on-docusaurus.md) is built. `docs-site/` is a Docusaurus 3.10.2 site with the same 13 URLs under `/churchix/docs/` plus `/search/`, built into the same `dist/`, light only through three `colorMode` keys. The theme keeps the parish tokens and maps them onto Infima's variables. The sync keeps its `PAGES`, `MOVED` and GitHub base, writes to `docs/wiki/`, and turns links between rendered pages into `./<slug>.md` file links that the build checks. That fixes a bug the Starlight site had: it published those links as `/wiki/<slug>/` without the base, so every one of them was a 404. The port also drops a Starlight token inversion that set the headings in white on cream; headings are `--primary` now, as in the church sites. `react` and `react-dom` sit at the app's `^19.2.8` and `npm ls react` shows one copy. The build passes with `onBrokenLinks: 'throw'`, as do every workspace's build and typecheck. Not deployed: vps-deploy's `churchix` docs stack needs `generator: "docusaurus"` first.
+18 is built. `docs-site/` is a Docusaurus 3.10.2 site with the same 13 URLs under `/churchix/docs/` plus `/search/`, built into the same `dist/`, light only through three `colorMode` keys. The theme keeps the parish tokens and maps them onto Infima's variables. The sync keeps its `PAGES`, `MOVED` and GitHub base, writes to `docs/wiki/`, and turns links between rendered pages into `./<slug>.md` file links that the build checks. That fixes a bug the Starlight site had: it published those links as `/wiki/<slug>/` without the base, so every one of them was a 404. The port also drops a Starlight token inversion that set the headings in white on cream; headings are `--primary` now, as in the church sites. `react` and `react-dom` sit at the app's `^19.2.8` and `npm ls react` shows one copy. The build passes with `onBrokenLinks: 'throw'`, as do every workspace's build and typecheck. Not deployed: vps-deploy's `churchix` docs stack needs `generator: "docusaurus"` first.
 
 ## [2026-10-23] todo | Brief 19 filed: Base UI for the phone menu
 
 The owner asked for Base UI in the projects that still hand-build their
-widgets. [Brief 19](briefs/done/19-base-ui-mobile-nav.md) moves the
+widgets. Brief 19 moves the
 `MobileNav` island to Base UI `Dialog` and records the JS cost.
 
 ## [2026-10-23] done | Brief 19: the phone menu on Base UI
 
-[Brief 19](briefs/done/19-base-ui-mobile-nav.md) is built. `MobileNav` is a
+Brief 19 is built. `MobileNav` is a
 Base UI `Dialog`, portalled into its own wrapper so the sheet still hangs under
 the toggle. The hand-written trap, Escape and focus return are gone, and the
 page now stays put behind the open sheet. Typecheck, lint and build pass; there
@@ -280,3 +280,19 @@ a throwaway second brand. Cost: +20.4 kB gzip, recorded in
 The second-brand check found that the seeds in `site.json` never reach the
 built pages, because `tokens.css`'s `:root` defaults come later and win.
 Filed as [a todo](todos/brand-seeds-lose-to-token-defaults.md).
+
+## [2026-11-02] maintenance | Briefs reset
+
+Part of an estate-wide reset. The eighteen done briefs and the superseded 07
+are folded into the wiki and deleted; brief numbering restarts at 01. The old
+briefs read like the grilling that fed the first corpus. The last commit that
+held them is `79a267e`: read one with
+`git show 79a267e:churchix/corpus/briefs/done/10-giving-donate.md`. Brief and
+item numbers in the entries above refer to that set.
+
+Most of the programme was already in [design-system.md](wiki/design-system.md)
+and this log. [architecture.md](wiki/architecture.md) gained the docs site's
+as-built notes, [design-system.md](wiki/design-system.md) the phone menu and
+the open brand-seed bug, and [status.md](wiki/status.md) is a per-area
+snapshot instead of a brief table.
+

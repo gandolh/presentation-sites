@@ -1,6 +1,6 @@
 ---
 summary: The cross-cutting rules every churchix brief honors (white-label, tokens-only styling, i18n and diacritics, money, PCI SAQ A, accessibility), the design sources they point at, and the definition of done. Read before building any brief.
-updated: 2026-10-07
+updated: 2026-11-02
 ---
 # Conventions every brief must honor
 
@@ -50,4 +50,4 @@ Cross-cutting rules. If a brief contradicts these, the rule wins. Note the confl
 2. `npm run build --workspaces --if-present` passes for every app under `apps/`.
 3. No raw hex or hardcoded church values in `packages/*`.
 4. The component works under a *second* brand by token swap. Only one app exists now, so swap the seeds in its `site.json` for a throwaway build.
-5. The brief moves to `briefs/done/` with an outcome note naming the evidence, [log.md](../log.md) gets an entry, and [status](status.md) gets its line updated. See [CLAUDE.md](../CLAUDE.md).
+5. The brief moves to `briefs/done/` with an outcome note naming the evidence, [log.md](../log.md) gets an entry, and [status](status.md) gets the area's line updated. See [CLAUDE.md](../CLAUDE.md).
