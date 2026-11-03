@@ -1,14 +1,15 @@
 ---
 summary: Dated snapshot of churchix as of 2026-11-02, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, what waits on a deploy, and what is still open. Start here after a break.
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 # Status (2026-11-02)
 
 One church app, `apps/parohia-harlesti-bacau`, builds 10 static pages on the
 shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-10-21).
 The second reference app, `parohia-berinta-maramures`, was removed before
-2026-05-30. Deploy is not in this repo. No brief is open; brief numbering
-restarted at 01 on 2026-11-02 (see [log.md](../log.md)).
+2026-05-30. Deploy is not in this repo. Brief 01 is open (2026-11-03); brief numbering
+restarted at 01 on 2026-11-02 (see [log.md](../log.md)), and the next free
+number is 02.
 
 ## By area
 
@@ -38,9 +39,9 @@ so the docs deploy can go ahead.
 
 ## Open
 
-- [The brand seeds lose to tokens.css's defaults](../todos/brand-seeds-lose-to-token-defaults.md)
+- [The brand seeds lose to tokens.css's defaults](../briefs/todo/01-brand-seeds-win-over-the-token-defaults.md)
   in the built pages (found 2026-10-23), so a church can't yet re-skin by
-  token swap alone.
+  token swap alone: brief 01.
 - The arch-mask treatment for icons and murals, deferred until real
   photography lands.
 - The owner questions still open in [decisions](decisions.md): Q4 and Q6 to

@@ -1,6 +1,6 @@
 ---
 summary: The Ecclesia Digitalis design system. Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, and how a church re-skins by tokens alone. Covers the 2026-06-18 liturgical-rail redesign (Rail, PageShell, asymmetric hero) and the max-w guard.
-updated: 2026-11-02
+updated: 2026-11-03
 ---
 
 # Design system — "Ecclesia Digitalis"
@@ -99,7 +99,7 @@ Guidance: pick a list-appropriate `icon` (`push_pin`/announcements, `campaign`/c
 
 The one app, `apps/parohia-harlesti-bacau`, is fully on the M3 system; every page (index, program, anunturi list+detail, donatii, pomelnice, contact, despre, 404) uses the shared chrome + primitives. Its brand seeds are `--primary:#6b1f2a` (burgundy) / `--secondary:#c8a24b` (gold). A second reference app (Berinta, blue) existed at the time of the rollout and was removed before 2026-05-30, so the white-label claim now rests on the token chain, not on a second site. Colors flow only through the `text-primary → --color-primary → --primary → :root seed` token chain, so a re-skin is a `site.json` brand edit with **no code change** and no hex in page markup beyond the per-church `:root` seed block.
 
-**Open (found 2026-10-23):** in the built pages the seeds don't win. `BaseLayout.astro` writes the `:root` seed block before the stylesheet that carries `tokens.css`'s own `:root` defaults, so the parish renders `#4e0816`, not `#6b1f2a`, and a second brand's seeds change nothing until this is fixed ([todo](../todos/brand-seeds-lose-to-token-defaults.md)).
+**Open (found 2026-10-23):** in the built pages the seeds don't win. `BaseLayout.astro` writes the `:root` seed block before the stylesheet that carries `tokens.css`'s own `:root` defaults, so the parish renders `#4e0816`, not `#6b1f2a`, and a second brand's seeds change nothing until this is fixed (brief 01).
 
 **Contact** = `SectionHeading` + a parish-data `Card` (`church` icon, `<dl>` with tel/mailto links) + a `Card`-framed `mapEmbedUrl` iframe + a `candle`-icon prayer-request form (`Field` × Nume/Email/Mesaj + primary `Button`). The form is **server-light**: it `mailto:`-submits when the church email is set, else a plain `method=post` placeholder — no backend is assumed (PCI/independence-safe). **Despre** = diacritic-safe `.cx-prose` (line-height 1.75, token-colored `h2`) + an optional **leadership** grid ordered by `staff.order`.
 

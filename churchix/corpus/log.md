@@ -279,7 +279,7 @@ a throwaway second brand. Cost: +20.4 kB gzip, recorded in
 
 The second-brand check found that the seeds in `site.json` never reach the
 built pages, because `tokens.css`'s `:root` defaults come later and win.
-Filed as [a todo](todos/brand-seeds-lose-to-token-defaults.md).
+Filed as a todo (brief 01 since 2026-11-03).
 
 ## [2026-11-02] maintenance | Briefs reset
 
@@ -296,3 +296,11 @@ as-built notes, [design-system.md](wiki/design-system.md) the phone menu and
 the open brand-seed bug, and [status.md](wiki/status.md) is a per-area
 snapshot instead of a brief table.
 
+
+## [2026-11-03] todo | Brief 01: the brand seeds win over the token defaults; the board name
+
+Promoted from the todo `brand-seeds-lose-to-token-defaults` in an estate-wide grill with the owner,
+with the todo's acceptance as the spec; the todo is deleted. This corpus also names itself for
+brief-board: `board-name` holds `churchix`, so its tickets never file under `presentation-sites`
+(brief-board's decision "A corpus nested deeper names itself"), and [CLAUDE.md](CLAUDE.md) has the
+brief-board section.

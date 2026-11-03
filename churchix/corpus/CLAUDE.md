@@ -117,3 +117,11 @@ drift.
 - Church-facing copy is Romanian. Do not run English prose skills over it.
 - The docs site renders selected corpus pages. `../docs-site/scripts/sync-corpus.mjs`
   lists them by path, so a renamed or moved page must be updated there too.
+
+## brief-board
+
+This corpus is the brief-board project `churchix` (the name in
+[`board-name`](board-name)), not `presentation-sites`, the repo it sits in.
+Brief progress goes on brief-board. Run `brief-board guide` before you
+start or resume a brief, and follow it, passing `--project churchix` to its
+commands.
