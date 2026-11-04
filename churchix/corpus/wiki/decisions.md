@@ -1,6 +1,6 @@
 ---
-summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs) and the owner questions still open (Q4, Q6 to Q10).
-updated: 2026-11-02
+summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs, Cardo headings for the parish) and the owner questions still open (Q4, Q6 to Q10).
+updated: 2026-11-04
 ---
 # Open Questions — decisions needed from the product owner
 
@@ -47,3 +47,11 @@ Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 
   keeping the hand-built trap, and turning `.astro` widgets into islands to
   use more of Base UI, which would add JS to static pages. `CopyIban` and
   `PomelnicForm` have no overlay and stay as they are.
+
+## Decided (2026-11-04)
+
+- **The parish keeps Cardo headings.** Once the brand seeds won over the token
+  defaults, the parish's leftover `fontHeading` (Source Serif 4) would have
+  switched its headings away from the design's Cardo. The owner kept Cardo, so
+  the field is removed from its `site.json` and the parish falls back to the
+  default `--font-heading`.

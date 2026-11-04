@@ -22,8 +22,8 @@ brief is open; brief numbering restarted at 01 on 2026-11-02 (see
   `max-w` guard in `npm run lint`).
 - **Brand seeds** (2026-11-04). `tokens.css` keeps its defaults in
   `:where(:root)`, so a church's `site.json` seeds win and it re-skins by
-  token swap alone. The parish now renders its own `#6b1f2a` and its
-  `fontHeading`, Source Serif 4 ([design-system.md](design-system.md)).
+  token swap alone. The parish now renders its own `#6b1f2a`, and keeps the
+  system's Cardo headings ([design-system.md](design-system.md)).
 - **Home and inner pages** (2026-06-18). The liturgical-rail redesign
   (`70999ff`) rebuilt the hero, the home page and the inner-page headers
   around `Rail.astro` and `PageShell.astro`.
@@ -43,9 +43,6 @@ check on 2026-10-21, so the docs deploy can go ahead.
 
 ## Open
 
-- The parish's heading face now that its seeds win: Source Serif 4 as its
-  `site.json` asks, or Cardo like the design
-  ([open-questions](open-questions.md)).
 - The arch-mask treatment for icons and murals, deferred until real
   photography lands.
 - The owner questions still open in [decisions](decisions.md): Q4 and Q6 to

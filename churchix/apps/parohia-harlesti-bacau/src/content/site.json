@@ -13,7 +13,6 @@
       "secondary": "#c8a24b",
       "surface": "#faf6ef",
       "onPrimary": "#ffffff",
-      "fontHeading": "\"Source Serif 4\", Georgia, serif",
       "fontBody": "\"Inter\", system-ui, sans-serif",
       "radius": "0.5rem",
       "logo": "/logo.svg",

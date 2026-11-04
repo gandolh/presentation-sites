@@ -322,3 +322,14 @@ errors and the build passes (10 pages); there are no tests.
 The parish's other brand fields are live now too, so its headings changed
 from Cardo to Source Serif 4, the `fontHeading` in its `site.json`. Left as it
 is and asked in the new page [open-questions](wiki/open-questions.md).
+
+## [2026-11-04] decision | The parish keeps Cardo headings
+
+The owner answered the question brief 01 opened: the parish keeps the design's
+Cardo headings. The leftover `fontHeading` (Source Serif 4) is removed from
+its `site.json`, so it falls back to the default `--font-heading`. `astro
+check` reports 0 errors and the build passes; in the built home page the
+headings compute to Cardo, only Cardo and Inter faces load, and `--primary`
+is still `#6b1f2a`. Recorded in [decisions](wiki/decisions.md);
+[open-questions](wiki/open-questions.md) is empty again, and
+[design-system](wiki/design-system.md) and [status](wiki/status.md) say Cardo.
