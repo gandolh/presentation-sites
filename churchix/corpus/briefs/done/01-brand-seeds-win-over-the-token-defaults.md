@@ -46,3 +46,18 @@ the white-label rule that a church re-skins by token swap alone
 - A throwaway second brand in `site.json` re-skins the header, the menu and
   the buttons without a browser-side override; revert it afterwards.
 - `astro check` reports 0 errors and the build passes.
+
+## Outcome (2026-11-04)
+
+Built. `packages/ui/src/styles/tokens.css` keeps its defaults in
+`:where(:root)` (zero specificity), so `BaseLayout.astro`'s plain `:root` seed
+block wins whatever the order; the why is in
+[design-system.md](../../wiki/design-system.md), "How the seeds win". In the
+built parish site `--primary` reads `#6b1f2a` and the derived roles follow it
+(`--primary-container` is `color-mix(in srgb, #6b1f2a 80%, #fff)`); the header
+CTA and hero buttons render `rgb(107, 31, 42)`. A throwaway second brand
+(`#1e3a5f` / `#2e8b57`) re-skinned the header, the phone menu and the buttons,
+then `site.json` was reverted. `astro check`: 0 errors; the build passes (10
+pages). The parish's headings are now its own `fontHeading`, Source Serif 4:
+see [open-questions](../../wiki/open-questions.md). Log entry
+`[2026-11-04] done | Brief 01`.

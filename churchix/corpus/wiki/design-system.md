@@ -1,6 +1,6 @@
 ---
 summary: The Ecclesia Digitalis design system. Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, and how a church re-skins by tokens alone. Covers the 2026-06-18 liturgical-rail redesign (Rail, PageShell, asymmetric hero) and the max-w guard.
-updated: 2026-11-03
+updated: 2026-11-04
 ---
 
 # Design system — "Ecclesia Digitalis"
@@ -18,7 +18,7 @@ The visual layer of every church site. It lives in `@churchix/ui` and re-skins p
 - A **Material-3 palette** (~50 color roles: `primary`, `on-primary`, `primary-container`, `secondary`, `surface`, `surface-container-{lowest…highest}`, `outline`, `outline-variant`, `error`, the `*-fixed` set, …), an M3 type scale (`display-lg`, `headline-lg`, `body-md`, `label-md`, `caption`, plus the redesign's `display-xl` and `overline`; Cardo headings with Source Serif 4 as the fallback, Inter body), named spacing (`base/xs/sm/md/lg/xl/gutter/container-max`), and a radius scale.
 - Roles are **CSS custom properties** wired into the Tailwind theme (`bg-primary` → `var(--primary)`).
 - **Churches set only a small seed set** — `primary`, `secondary` (gold), `surface` (and optional `error`/fonts/radius) — in their `site` content entry ([siteSchema.brand](../../packages/schemas/src/index.ts)). The remaining roles are **derived** in the base layer, not hand-set per church. This preserves ADR-0001's anti-sprawl spirit: the *church-facing* surface stays tiny even though the *system* uses the full palette.
-- Brand tokens are emitted as a `:root{…}` block by `BaseLayout` ([packages/ui/src/layouts/BaseLayout.astro](../../packages/ui/src/layouts/BaseLayout.astro)) from the church's content — so a church rebrands by editing content, not code. This is the mechanism behind the [independence-model](independence-model.md).
+- Brand tokens are emitted as a `:root{…}` block by `BaseLayout` ([packages/ui/src/layouts/BaseLayout.astro](../../packages/ui/src/layouts/BaseLayout.astro)) from the church's content. It outranks the `:where(:root)` defaults in `tokens.css` (see "How the seeds win" below), so a church rebrands by editing content, not code. This is the mechanism behind the [independence-model](independence-model.md).
 
 ## Tradition as a variant
 
@@ -99,7 +99,9 @@ Guidance: pick a list-appropriate `icon` (`push_pin`/announcements, `campaign`/c
 
 The one app, `apps/parohia-harlesti-bacau`, is fully on the M3 system; every page (index, program, anunturi list+detail, donatii, pomelnice, contact, despre, 404) uses the shared chrome + primitives. Its brand seeds are `--primary:#6b1f2a` (burgundy) / `--secondary:#c8a24b` (gold). A second reference app (Berinta, blue) existed at the time of the rollout and was removed before 2026-05-30, so the white-label claim now rests on the token chain, not on a second site. Colors flow only through the `text-primary → --color-primary → --primary → :root seed` token chain, so a re-skin is a `site.json` brand edit with **no code change** and no hex in page markup beyond the per-church `:root` seed block.
 
-**Open (found 2026-10-23):** in the built pages the seeds don't win. `BaseLayout.astro` writes the `:root` seed block before the stylesheet that carries `tokens.css`'s own `:root` defaults, so the parish renders `#4e0816`, not `#6b1f2a`, and a second brand's seeds change nothing until this is fixed (brief 01).
+**How the seeds win (since 2026-11-04).** In a built page `BaseLayout.astro` writes the `:root` seed block in the head before the `<link>` to the stylesheet that carries `tokens.css`. Both are unlayered, so specificity decides, and with equal specificity the later defaults won: until 2026-11-04 every church rendered the default palette. Now `tokens.css` keeps its defaults in `:where(:root)`, which has zero specificity, so the seed block wins whatever the order. We picked this over moving the seeds to `html:root` because the fix sits with the defaults: the seed block stays the plain `:root{…}` every comment and page describes, `theme.css` needs no change, and any later `:root` rule (a church's own stylesheet, say) also beats a default. Tailwind's own `@theme` variables sit in `@layer theme` and still lose to the unlayered defaults. The derived roles are computed on the root element from whichever seed wins there, so they follow the church: the parish reads `--primary` `#6b1f2a` and `--primary-container` `color-mix(in srgb, #6b1f2a 80%, #fff)`. A throwaway second brand (blue primary, green secondary) re-skinned the header CTA, the nav links, the menu toggle, the phone menu's active link and the hero buttons with no browser-side override.
+
+The fix also makes the parish's other brand fields live. Its `site.json` sets `fontHeading` to Source Serif 4 and `surface` to `#faf6ef`, so its headings are now Source Serif 4, not the system's Cardo. Whether the parish keeps that is in [open-questions](open-questions.md).
 
 **Contact** = `SectionHeading` + a parish-data `Card` (`church` icon, `<dl>` with tel/mailto links) + a `Card`-framed `mapEmbedUrl` iframe + a `candle`-icon prayer-request form (`Field` × Nume/Email/Mesaj + primary `Button`). The form is **server-light**: it `mailto:`-submits when the church email is set, else a plain `method=post` placeholder — no backend is assumed (PCI/independence-safe). **Despre** = diacritic-safe `.cx-prose` (line-height 1.75, token-colored `h2`) + an optional **leadership** grid ordered by `staff.order`.
 

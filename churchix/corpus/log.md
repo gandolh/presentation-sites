@@ -304,3 +304,21 @@ with the todo's acceptance as the spec; the todo is deleted. This corpus also na
 brief-board: `board-name` holds `churchix`, so its tickets never file under `presentation-sites`
 (brief-board's decision "A corpus nested deeper names itself"), and [CLAUDE.md](CLAUDE.md) has the
 brief-board section.
+
+## [2026-11-04] done | Brief 01: the brand seeds win over the token defaults
+
+[Brief 01](briefs/done/01-brand-seeds-win-over-the-token-defaults.md) is built.
+`tokens.css` keeps its defaults in `:where(:root)`, so `BaseLayout`'s plain
+`:root` seed block wins even though it lands in the head before the
+stylesheet. We picked this over `html:root` on the seeds so the fix sits with
+the defaults and the seed block stays as documented
+([design-system.md](wiki/design-system.md), "How the seeds win").
+
+Checked in the built parish site: `--primary` is `#6b1f2a` and the derived
+roles follow it. A throwaway second brand re-skinned the header, the phone
+menu and the buttons, then `site.json` was reverted. `astro check` reports 0
+errors and the build passes (10 pages); there are no tests.
+
+The parish's other brand fields are live now too, so its headings changed
+from Cardo to Source Serif 4, the `fontHeading` in its `site.json`. Left as it
+is and asked in the new page [open-questions](wiki/open-questions.md).

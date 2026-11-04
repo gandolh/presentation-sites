@@ -1,6 +1,6 @@
 ---
 summary: Front door to the churchix corpus. The catalog of wiki pages, where the work lives, and the sources outside the corpus.
-updated: 2026-10-07
+updated: 2026-11-04
 ---
 
 # Corpus index
@@ -24,11 +24,12 @@ New here? Read [wiki/overview.md](wiki/overview.md), then
 - [donations](wiki/donations.md) — The server-light v1 giving stack (IBAN, Form 230, SMS, pomelnice, hosted card link) and the Romania-specific giving rules. Read before touching giving UI or money handling.
 - [i18n-and-glossary](wiki/i18n-and-glossary.md) — Mandatory languages, Romanian diacritic rules, and the domain vocabulary (pomelnice, zeciuială, Form 230 and the rest). Read before writing user-facing strings.
 - [independence-model](wiki/independence-model.md) — Why each church is a fully independent deployment with nothing shared at runtime, and why that rules out multi-tenancy. Read before proposing any shared state.
+- [open-questions](wiki/open-questions.md) — Owner questions opened by build work since 2026-11-04 (the parish's heading face once its seeds win). The older product questions (Q4, Q6 to Q10) stay in decisions.md. Delete a question here once it is answered.
 - [optional-backend](wiki/optional-backend.md) — The optional single-tenant Fastify donations API a church can add later for live totals, recurring giving and webhooks, with its data model. Never a shared service and not needed for v1.
 - [overview](wiki/overview.md) — What Churchix is. White-label church websites plus giving for Romanian parishes, v1 Orthodox, every church its own static deployment. The orientation page.
 - [research-brief-giving](wiki/research-brief-giving.md) — Archive, part two of the original research brief, kept verbatim. The Fastify donations API and payment-provider pick (§4), the giving feature set and PostgreSQL data model (§5), and the ten owner questions (§6). Read §4 and §5 as the optional single-tenant backend, with tenant_id dropped.
 - [research-brief](wiki/research-brief.md) — Archive, part one of the original research brief, kept verbatim. The Romanian church-site landscape (§1), the multi-tenancy recommendation later rejected (§2), and the Astro monorepo and content architecture (§3). Read it for the why behind architecture.md.
-- [status](wiki/status.md) — Dated snapshot of churchix as of 2026-11-02, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, what waits on a deploy, and what is still open. Start here after a break.
+- [status](wiki/status.md) — Dated snapshot of churchix as of 2026-11-04, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, the brand seeds winning over the token defaults, what waits on a deploy, and what is still open. Start here after a break.
 - [traditions](wiki/traditions.md) — The two Romanian church markets, Orthodox and evangelical, where they converge and diverge, and what each needs. v1 targets Orthodox.
 <!-- CATALOG:END -->
 

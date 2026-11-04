@@ -6,7 +6,7 @@
  *   - theme.css maps every Tailwind utility to `var(--<token>)`
  *     (e.g. `bg-primary` -> `var(--primary)`, `text-on-surface-variant` ->
  *     `var(--on-surface-variant)`). This file declares the CANONICAL default
- *     value of every one of those variables under `:root`.
+ *     value of every one of those variables under `:where(:root)`.
  *   - tokens.css is imported by BaseLayout, so these defaults are present on
  *     every church page. theme.css contributes ONLY the @theme mapping + the
  *     anti-purge @source glob; it no longer carries a duplicate palette.
@@ -15,6 +15,13 @@
  *     `:root{…}` block. The DERIVED roles below recompute from the seeds via
  *     `color-mix()`, so the whole palette shifts from ~4 inputs — no church
  *     ever hand-sets the full M3 role set.
+ *   - The defaults sit in `:where(:root)`, which has zero specificity, so any
+ *     plain `:root` rule beats them whatever the stylesheet order. In a built
+ *     page the seed block comes BEFORE the stylesheet that carries this file,
+ *     so a plain `:root` here would win by coming later and every church would
+ *     render the default palette. Both blocks are unlayered, so specificity
+ *     alone decides. The derived roles are computed on the root element from
+ *     whichever seed wins there, so they follow the church's seeds.
  *
  * ───────────────────────────── SEED vs DERIVED ─────────────────────────────
  *  Church-settable SEEDS (in site.brand, emitted by BaseLayout):
@@ -54,7 +61,8 @@
  * tokens.css is the single app-wide entry (via BaseLayout), so we wire fonts here. */
 @import './fonts.css';
 
-:root {
+/* Zero specificity on purpose: the church's `:root` seed block must win (see above). */
+:where(:root) {
   /* ───────────── SEEDS (church-settable; BaseLayout overrides these) ───────────── */
   --primary: #4e0816; /* burgundy */
   --secondary: #c8a24b; /* gold (decorative accent only — never body text on light).

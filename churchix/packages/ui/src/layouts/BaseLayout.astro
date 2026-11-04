@@ -39,6 +39,9 @@ const showWip = !!wipFlag && wipFlag !== 'false' && wipFlag !== '0';
 // tokens.css. Never emit the full palette per church (white-label discipline).
 // `b.secondary` is the canonical gold (was `b.accent`); the legacy `--brand-*`
 // aliases stay until tier-B components migrate to M3 utilities.
+// The block stays a plain `:root`: tokens.css keeps its defaults in
+// `:where(:root)` (zero specificity), so these seeds win even though this
+// inline style lands in the head before the layout's stylesheet.
 const brandVars = [
   // M3 seeds
   `--primary:${b.primary}`,
