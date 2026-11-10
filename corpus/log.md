@@ -572,3 +572,13 @@ hygiene). [architecture.md](wiki/architecture.md) gained the Docusaurus
 gotchas. [status.md](wiki/status.md) dropped its brief list for a dated line
 per area.
 
+
+## [2026-11-09] todo | Brief 01: Hallmark against taste-skill 2.5 on one site
+
+From the owner's review of popular design skills: nutlope/hallmark and
+leonxlnx/taste-skill 2.5.1 both target small-business websites, which is
+this repo's work. The brief is a bake-off on the auto-service home page,
+built in `design-study/` and never in the live site. The owner judges, and
+the winner becomes the company-site skill in the owner's library. It waits
+on the owner's grilling on 2026-11-10. See the
+[brief](briefs/todo/01-hallmark-against-taste-skill-on-one-site.md).
