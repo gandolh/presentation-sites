@@ -21,7 +21,7 @@ Navigation is `Nav.astro` plus `MobileMenu.tsx` (a `Drawer` after brief 04); `Wi
 
 What its design docs fix today (`sites/saloon/DESIGN.md`, `PRODUCT.md`, `docs/ADR.md`):
 
-- Light, warm, boutique: a blush-cream surface, one blush brand colour, gold as a thin accent under 10% of a surface, a serif display face. "Never sterile white, never dark" (`DESIGN.md`, "Theme"). Brief 04 gives it a dark theme under the owner's Q18 answer, so this line is reopened there.
+- Light, warm, boutique: a blush-cream surface, one blush brand colour, gold as a thin accent under 10% of a surface, a serif display face. "Never sterile white, never dark" (`DESIGN.md`, "Theme"). The owner answered on 2026-11-10 that the client sites keep the one look designed for each, so this stays: no dark theme and no theme switch.
 - **Imagery is the brand**: real photographs of Ana's work in `public/images/real/`, resolved by logical name through `src/content/images.ts` (`DESIGN.md`, "Iconography & Imagery").
 - Romanian only. No e-commerce, no blog, no client accounts (`docs/ADR.md`).
 - The booking message is pre-filled WhatsApp (`Booking.astro`, `MobileBookingBar.astro`); the built home page has 11 `wa.me` links and 4 `tel:` links.
@@ -30,7 +30,6 @@ What its design docs fix today (`sites/saloon/DESIGN.md`, `PRODUCT.md`, `docs/AD
 
 1. **Photographs.** Default: Ana's own photographs stay the imagery. Hallmark's licensed set fills only the mock-image mode (`PUBLIC_IMAGE_SOURCE` unset), never the real build.
 2. **The parked testimonials stay parked.** Hallmark's "no invented facts" rule forbids inventing reviews.
-3. **Does "never dark" go?** Brief 04 adds the theme switch. Default: the dark palette is designed here, in the same blush and gold family, not inverted.
 
 ## Files you OWN
 
@@ -41,7 +40,7 @@ What its design docs fix today (`sites/saloon/DESIGN.md`, `PRODUCT.md`, `docs/AD
 ## Files you must NOT touch
 
 - `sites/saloon/marketing/bots/`, the opening hours (`HOURS`), the phone and WhatsApp numbers, and every business fact.
-- The legal pages' text beyond layout, and the theme script.
+- The legal pages' text beyond layout.
 - Other sites and `churchix/`.
 
 ## What to do
@@ -56,5 +55,5 @@ Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](0
 
 ## Interplay
 
-- Briefs 03 and 04 first. The redesign replaces brief 04's stopgap dark palette.
+- Briefs 03 and 04 first. The redesign stays light and adds no theme switch.
 - The Ana Saloon social-card and marketing assets in `sites/saloon/marketing` read the brand colours: check them after the token change.

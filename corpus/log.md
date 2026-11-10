@@ -590,7 +590,17 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 
 - [02](briefs/todo/02-pin-base-ui-exactly.md): saloon's `^1.9.0` becomes `1.9.0`. Three sites already pin; the lockfile resolves 1.9.0.
 - [03](briefs/todo/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
-- [04](briefs/todo/04-base-ui-by-the-conventions-with-the-theme-switch.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
+- [04](briefs/todo/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
 - [05](briefs/todo/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/todo/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/todo/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
 
 Brief 01, the Hallmark against taste-skill bake-off, moved to `briefs/superseded/` under the same answer to Q39; its links in this log and in [status.md](wiki/status.md) now point there. `design-study` gets no redesign brief (it is a study), and the repo has no server, so no server brief. Churchix's briefs are in its own corpus.
+
+## [2026-11-10] brief | Briefs 04-08: no theme switch on the client sites
+
+The owner answered Q18 for the client sites: the Light / Dark / System switch goes in the apps only, and
+auto-service, saloon, subcort and tractari each keep the one look designed for each. Brief 04 is renamed
+[Base UI by the conventions](briefs/todo/04-base-ui-by-the-conventions.md) and loses the switch, its stopgap
+palette, its stored key, its cookie-page sentence and its acceptance; the phone menus on `Drawer` (Q40) and the
+rest stay. The owner questions about dark-first and "never dark" are settled and removed. Briefs 05-08 add no
+switch: saloon and subcort stay light, auto-service and tractari stay dark. Brief 03 already vendors
+`house-style` (Q6) at width 120.

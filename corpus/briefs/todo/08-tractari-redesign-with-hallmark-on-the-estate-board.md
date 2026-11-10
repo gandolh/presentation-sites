@@ -16,7 +16,7 @@ One route: `/`, `sites/tractari/src/pages/index.astro`. It renders `DemoBanner`,
 
 What its design docs fix today (`sites/tractari/DESIGN.md`, `PRODUCT.md`):
 
-- "Headlights on a wet road at 3am": **dark by default**, asphalt at night. Amber is the identity, one hotter safety-orange is reserved for the call action. Brief 04 asks the owner whether the light-by-default rule applies to it.
+- "Headlights on a wet road at 3am": **dark by default**, asphalt at night. Amber is the identity, one hotter safety-orange is reserved for the call action. The owner answered on 2026-11-10 that the client sites keep the one look designed for each, so it stays dark, with no light theme and no theme switch.
 - The 3D scene is the main accent. The page is otherwise minimalist.
 - Anti-references: the Romanian "tractari auto" market (red on white, stock tow-truck photo, four icon boxes), and the generic AI landing page (centred hero stack, equal-box grids, an eyebrow on every section).
 - Motion and performance rules: `DESIGN.md`, "Motion & accessibility" and "Performance". Hero pause off-screen: [wiki/site-patterns.md](../../wiki/site-patterns.md).
@@ -25,7 +25,6 @@ What its design docs fix today (`sites/tractari/DESIGN.md`, `PRODUCT.md`):
 
 1. **The world stays.** Default: Hallmark proposes inside the night road, with one alternative on the board.
 2. **Photographs.** Default: none. The anti-reference names the stock tow-truck photo, and the scene is the visual.
-3. **A light theme** for the Q18 switch is designed here, replacing brief 04's stopgap: a daylight road, not a white brochure. *Repo question for the owner: does it ship, or is the dark-only identity kept (see brief 04)?*
 
 ## Files you OWN
 
@@ -36,7 +35,7 @@ What its design docs fix today (`sites/tractari/DESIGN.md`, `PRODUCT.md`):
 ## Files you must NOT touch
 
 - The numbers, the coverage list and every business fact in `src/content/`.
-- The theme script, other sites and `churchix/`.
+- Other sites and `churchix/`.
 
 ## What to do
 

@@ -2,7 +2,7 @@
 
 **Depends on:**
 
-- In Churchix: brief 03 (the harness) and brief 04 (Base UI by the conventions, with the theme switch).
+- In Churchix: brief 03 (the harness) and brief 04 (Base UI by the conventions).
 - In the root corpus of this repo: its brief 05, [A redesign of auto-service with Hallmark, on the estate board](../../../../corpus/briefs/todo/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Its section "The steps all four redesigns share" holds the steps and the acceptance every redesign shares: screenshots, a proposal on the board, the owner's approval, a token change first, then one screen per commit, and the Floor checks. They are not repeated here.
 - In the owner's skills library: brief 24, now "vendor Hallmark as the design skill, and adopt taste-skill 2.5's ideas" (palettes and type dealt by trade, and its copy layer), and the estate redesign board, one artifact with a page per app.
 - The owner's answer of 2026-11-10 to Q39: no bake-off, Hallmark redesigns every web UI.
@@ -46,7 +46,6 @@ What its design docs fix today:
 2. **Cardo stays for headings.** Default: yes, until the owner reopens it on the board.
 3. **Tone.** Default: formal and liturgical. Hallmark's copy layer is used for structure and rhythm only. Every parish fact, time, name and IBAN comes from the church's content, and nothing is invented.
 4. **Photographs.** Default: a parish supplies its own. The template ships none, and Hallmark's licensed set appears only in the board's mock-ups, labelled as such.
-5. **The dark theme** from brief 04 is designed here, replacing the derived one, if the owner wants a better one. *Repo question for the owner.*
 
 ## Files you OWN
 
@@ -57,20 +56,19 @@ What its design docs fix today:
 ## Files you must NOT touch
 
 - The church content under `apps/*/src/content/`, `packages/schemas` (unless decision 1 adds a seed), and the giving logic (the IBAN, Form 230, SMS and endpoint behaviour).
-- The theme script and the switch from brief 04, beyond their tokens.
 - The root corpus and the sites under `sites/`.
 
 ## What to do
 
 Steps 1 to 5 of "The steps all four redesigns share" in the root corpus's brief 05, with these specifics:
 
-1. Screenshots of the nine routes above, at 1280 and 390 px, in both themes, with the parish's seeds **and** with a second set of seeds (a different brand), kept out of git. A template redesign must hold for any church.
+1. Screenshots of the nine routes above, at 1280 and 390 px, with the parish's seeds **and** with a second set of seeds (a different brand), kept out of git. A template redesign must hold for any church.
 2. The proposal goes on Churchix's page of the estate redesign board.
 3. After approval, one commit for the token change (`tokens.css`, `theme.css`, fonts), then one per screen in this order: `/`, `/donatii`, `/pomelnice`, `/program`, `/anunturi` and its entry, `/despre`, `/contact`, 404.
 
 ## Acceptance
 
-- [ ] The common acceptance in the root corpus's brief 05 (step 6 there), for every route in both themes and with both seed sets.
+- [ ] The common acceptance in the root corpus's brief 05 (step 6 there), for every route and with both seed sets.
 - [ ] `npm run check` and `npm run build` pass, and `node packages/ui/scripts/check-max-w.mjs` prints `check-max-w: ok`.
 - [ ] `/donatii` shows every IBAN, the Form 230 note and the SMS line the content holds, and the copy-IBAN control works from the keyboard (a Playwright test on the built page).
 - [ ] The pomelnice form's labels, errors and success state are reachable by keyboard and a screen reader name (a Playwright accessibility-tree assertion).
@@ -79,5 +77,5 @@ Steps 1 to 5 of "The steps all four redesigns share" in the root corpus's brief 
 
 ## Interplay
 
-- Briefs 03 and 04 first. Brief 04's derived dark palette and the switch stay unless decision 5 replaces the palette.
+- Briefs 03 and 04 first. The parish sites keep the one look designed for each church (owner, 2026-11-10, Q18): the redesign adds no theme switch and no dark palette.
 - The docs site renders selected corpus pages (`docs-site/scripts/sync-corpus.mjs`): update its page list if a wiki page is renamed.

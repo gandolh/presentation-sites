@@ -25,14 +25,13 @@ What its design docs fix today (`sites/subcort/DESIGN.md`):
 - **Montaj, the site as a drawing set.** Every page is a numbered sheet. Every graphic is a projection of one marquee model in `src/lib/draft.ts`: the WebGL hero, the exploded plate, the scale plan and the OG card must always agree (`DESIGN.md`, section 1).
 - **The object is ink, every annotation is orange**, with no exceptions (the Annotation Rule).
 - **No photography**: every graphic comes from the one model.
-- Light throughout, a near-white sheet (`DESIGN.md:150`). Brief 04 gives it a dark theme under Q18.
+- Light throughout, a near-white sheet (`DESIGN.md:150`). The owner answered on 2026-11-10 that the client sites keep the one look designed for each, so it stays light, with no dark theme and no theme switch.
 - Optional extras (catering, music, decor) go through local partners, at extra cost, never in-house (`PRODUCT.md`).
 
 ## Owner decisions (defaults)
 
 1. **Montaj stays the world.** Default: Hallmark proposes inside it (the drawing-set system is the site's whole idea and the owner reworked it twice), and shows one alternative on the board.
 2. **No photography.** Default: stays. Hallmark's licensed photographs are not proposed here unless the owner reopens it on the board.
-3. **The dark theme is an inverted drawing**: light ink on a dark sheet, orange annotations kept. Default: this is designed here, replacing brief 04's stopgap.
 
 ## Files you OWN
 
@@ -43,7 +42,7 @@ What its design docs fix today (`sites/subcort/DESIGN.md`):
 ## Files you must NOT touch
 
 - The marquee model's dimensions and the facts in `src/content/`. A figure that is not there is not invented.
-- The legal text beyond layout, and the theme script.
+- The legal text beyond layout.
 - Other sites and `churchix/`.
 
 ## What to do

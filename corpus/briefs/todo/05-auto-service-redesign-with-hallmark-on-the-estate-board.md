@@ -2,7 +2,7 @@
 
 **Depends on:**
 
-- In this repo: brief 03 (the harness) and brief 04 (Base UI by the conventions, with the theme switch).
+- In this repo: brief 03 (the harness) and brief 04 (Base UI by the conventions).
 - In the owner's skills library:
   - brief 24, now "vendor Hallmark as the design skill, and adopt taste-skill 2.5's ideas": palettes and type dealt by trade, and its copy layer;
   - the estate redesign board: one artifact with a page per app, owned by the skills library.
@@ -18,21 +18,21 @@ BavAuto Gorj is the site of an independent family BMW specialist workshop in Tâ
 
 ### The steps all four redesigns share (briefs 05-08)
 
-1. **Today's screens.** Take screenshots of every screen at 1280 and 390 px, in both themes once brief 04 is in. Keep them out of git. Put the files where the board takes them.
+1. **Today's screens.** Take screenshots of every screen at 1280 and 390 px. Keep them out of git. Put the files where the board takes them.
 2. **A proposal per screen with Hallmark.** Use its page built from the job, the tiered browser lint, and taste-skill 2.5's trade palette, type pairing and copy layer where they help. Work inside the site's recorded decisions (`DESIGN.md`, `PRODUCT.md`, [wiki/decisions-ui.md](../../wiki/decisions-ui.md), the site's own `docs/`) unless the owner reopens one on the board. Photographs come only from Hallmark's openly licensed set, credited on the page, and only where the site has no decision against photography.
 3. **The board.** Put the proposal on the site's page of the estate redesign board, beside today's screenshots.
 4. **Approval.** The owner approves it on the board. Nothing below starts before that.
-5. **Build.** First a token change (colours, type, radii, both themes), then one screen per commit. The theme switch from brief 04 and its script stay as they are.
+5. **Build.** First a token change (colours, type, radii), then one screen per commit. The site keeps its one dark look: no theme switch is added (owner, 2026-11-10, Q18).
 6. **Acceptance for every site's redesign.**
    - The owner's approval on the board, recorded in [log.md](../../log.md) with the date.
-   - Hallmark's **Floor** checks as commands or tests, in both themes, at 1280 and 390 px:
+   - Hallmark's **Floor** checks as commands or tests, at 1280 and 390 px:
      - text contrast of at least 4.5:1 (3:1 for large text), from a script over the built page;
      - a visible focus ring on every interactive element (a Playwright keyboard pass);
      - a `prefers-reduced-motion` path with no looping or large motion (a Playwright run with the media feature on);
      - no invented facts or numbers: every figure, name, price and claim traces to the site's `src/content` or `PRODUCT.md` (a grep list in the outcome note);
      - no horizontal scroll at 390 px (`document.documentElement.scrollWidth <= innerWidth`).
    - `npm run check` and `npm run <site>:build` pass, and `bash corpus/lint.sh` ends clean.
-7. **Interplay for every site's redesign.** Briefs 03 and 04 come first. The theme switch (Q18) must work in both themes after the redesign. The site's docs (`DESIGN.md`, `docs/`) are updated to the new system in the last commit.
+7. **Interplay for every site's redesign.** Briefs 03 and 04 come first. Each site keeps the one look designed for it, dark or light, and none gets a theme switch (owner, 2026-11-10, Q18). The site's docs (`DESIGN.md`, `docs/`) are updated to the new system in the last commit.
 
 ### What auto-service has (read 2026-11-10)
 
@@ -54,7 +54,7 @@ What its design docs fix today:
 - **No photography, by decision.** The owner confirmed none is coming, so the gallery was deleted and the workshop is drawn (`BayScene.astro`; `DESIGN.md:260, 269, 441`). A redesign proposes none, unless the owner reopens this on the board.
 - **No BMW roundel**, and a standing independence disclaimer. The BMW blue and M tri-colour are used nominatively.
 - **The services surface is a legend board of hairlines and lamps, not a card grid.** It is a stated anti-reference.
-- **Dark-first** (brief 04's open question on whether the light-by-default rule applies to it).
+- **Dark**, with no light theme and no theme switch (owner, 2026-11-10: the client sites keep the one look designed for each).
 - Romanian only; a phone call is the measured outcome.
 
 ## Owner decisions (defaults)
@@ -74,7 +74,7 @@ What its design docs fix today:
 
 - The legal pages' text (`confidentialitate`, `cookie-uri`, `termeni`) beyond layout.
 - The phone number, address, hours and every business fact. They come from `src/content/site.ts` and are placeholders until the owner has real ones (`07XX XXX XXX`, `sites/auto-service/src/content/site.ts:59`).
-- Other sites, `churchix/`, and the theme script.
+- Other sites and `churchix/`.
 
 ## What to do
 
@@ -91,5 +91,5 @@ Steps 1 to 5 of "The steps all four redesigns share", then:
 
 ## Interplay
 
-- Briefs 03 and 04 first. Brief 04's stopgap palettes are replaced here.
+- Briefs 03 and 04 first. Brief 04's phone menu (`Drawer`) is what this brief styles, inside the site's dark look.
 - Briefs 06-08 reuse this brief's common section.
