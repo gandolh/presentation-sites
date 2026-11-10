@@ -4,6 +4,8 @@ updated: 2026-11-04
 ---
 # Status (2026-11-04)
 
+Base UI is pinned exactly at 1.9.0 in `@churchix/ui` (brief 02, 2026-11-10).
+
 One church app, `apps/parohia-harlesti-bacau`, builds 10 static pages on the
 shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-11-04).
 The second reference app, `parohia-berinta-maramures`, was removed before

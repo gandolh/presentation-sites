@@ -52,3 +52,10 @@ One commit.
 ## Interplay
 
 - Brief 04 reports rule 1 as 0 findings once this is in.
+
+## Outcome (2026-11-10)
+
+Commit `chore(deps): pin @base-ui/react to 1.9.0 exactly in @churchix/ui`: `packages/ui/package.json` and
+`package-lock.json`, one changed line each. `npm ls @base-ui/react` shows only 1.9.0, the lockfile holds no `^`
+range for it, and `npm run build` passes (10 pages). Nothing changes at runtime, so no deploy. The owner question
+on pinning the fonts stays open.
