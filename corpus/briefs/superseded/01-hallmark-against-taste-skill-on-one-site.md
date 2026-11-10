@@ -1,3 +1,5 @@
+> Superseded on 2026-11-10 by the owner's answer to Q39 (the skills library's open questions): no bake-off. Hallmark redesigns every web UI, with the useful parts of taste-skill 2.5. See briefs 05-08.
+
 # Task 01: Hallmark against taste-skill 2.5 on one site
 
 ## Context

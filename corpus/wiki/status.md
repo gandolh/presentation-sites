@@ -57,7 +57,7 @@ per-site docs and is *not* duplicated here.
 Not known to be deployed yet: the copy fix
 (tractari, saloon, auto-service), the five Docusaurus docs sites (vps-deploy
 flipped their asset checks on 2026-10-19) and the phone menus. Brief 01,
-[Hallmark against taste-skill on one site](../briefs/todo/01-hallmark-against-taste-skill-on-one-site.md),
+[Hallmark against taste-skill on one site](../briefs/superseded/01-hallmark-against-taste-skill-on-one-site.md),
 was filed on 2026-11-09 and waits on the owner's grilling of 2026-11-10; brief
 numbering restarted at 01 on 2026-11-02 (see
 [log.md](../log.md)). New work: capture in [`todos/`](../todos/), promote to
