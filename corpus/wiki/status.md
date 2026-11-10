@@ -7,6 +7,9 @@ updated: 2026-11-09
 
 ## Where things stand
 
+Base UI is pinned exactly at 1.9.0 in every site (saloon was the last on a range; brief 02, 2026-11-10).
+
+
 All six projects build — the five sites under `sites/` and churchix. Since the
 2026-08-23 snapshot, `design-study` joined the workspace and **every site gained a
 docs site** at `sites/<site>/docs-site/` (`eda07a0`; Starlight, on Docusaurus since 2026-10-19), built with

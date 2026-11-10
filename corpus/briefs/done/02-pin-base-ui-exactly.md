@@ -63,3 +63,10 @@ One commit.
 
 - Brief 04's `check-base-ui` reports rule 1 as 0 findings once this is in.
 - The Churchix corpus has its own pin brief for `packages/ui` (`@base-ui/react` `^1.9.0` at `churchix/packages/ui/package.json:25`).
+
+## Outcome (2026-11-10)
+
+Commit `chore(deps): pin @base-ui/react to 1.9.0 exactly in saloon`: `sites/saloon/package.json` and
+`package-lock.json`, one changed line each. `npm ls @base-ui/react` shows only 1.9.0, the lockfile holds no
+`^` range for it, and `npm run saloon:build` passes (4 pages). Nothing changes at runtime, so no deploy.
+The owner question on pinning saloon's other ranges stays open.
