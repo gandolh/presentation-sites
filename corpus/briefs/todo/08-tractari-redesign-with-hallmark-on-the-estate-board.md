@@ -30,7 +30,8 @@ What its design docs fix today (`sites/tractari/DESIGN.md`, `PRODUCT.md`):
 
 - `sites/tractari/src/styles/global.css`, `src/components/*` (including `hero/`, for colour and layout only), `src/layouts/*`, `src/pages/index.astro`.
 - `sites/tractari/DESIGN.md`.
-- Corpus: [wiki/status.md](../../wiki/status.md), [log.md](../../log.md).
+- For the gsap step in Interplay only: `sites/tractari/package.json`, the root `package-lock.json`, the `sites/tractari` entry in `knip.config.js`, and the gsap lines in `sites/tractari/README.md` and `PRODUCT.md`.
+- Corpus: [wiki/status.md](../../wiki/status.md), [log.md](../../log.md), and the corpus lines that name gsap.
 
 ## Files you must NOT touch
 
