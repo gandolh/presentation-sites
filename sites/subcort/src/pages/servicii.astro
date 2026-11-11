@@ -29,7 +29,9 @@ import { services } from "../content/services";
       <ul class="services">
         {services.map((s, i) => (
           <li class="reveal service">
-            <span class="callout-no" aria-hidden="true">{i + 1}</span>
+            <span class="callout-no" aria-hidden="true">
+              {i + 1}
+            </span>
             <h3 class="heading-md mt-4">{s.title}</h3>
             <p class="mt-3 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
           </li>
@@ -41,13 +43,11 @@ import { services } from "../content/services";
     <Plate no="02.2 · Notă" note="Condiții" title="Toate, prin parteneri locali">
       <div class="mt-7 grid gap-5 md:grid-cols-2 md:gap-10">
         <p class="prose-measure leading-relaxed text-[var(--color-ink-2)]">
-          Aceste servicii sunt asigurate de furnizori din zonă, cu care lucrăm.
-          Le coordonăm pentru tine ca să fie la locul lor înainte de eveniment,
-          dar alegerea îți aparține și costul lor se adaugă separat de cort.
+          Aceste servicii sunt asigurate de furnizori din zonă, cu care lucrăm. Le coordonăm pentru tine ca să fie la
+          locul lor înainte de eveniment, dar alegerea îți aparține și costul lor se adaugă separat de cort.
         </p>
         <p class="prose-measure leading-relaxed text-[var(--color-ink-2)]">
-          Nu impunem un pachet fix. Poți lua doar cortul, sau cortul plus
-          oricare dintre cele de mai sus.
+          Nu impunem un pachet fix. Poți lua doar cortul, sau cortul plus oricare dintre cele de mai sus.
         </p>
       </div>
     </Plate>
@@ -57,7 +57,17 @@ import { services } from "../content/services";
 </Base>
 
 <style>
-  .services { display: grid; gap: 2.25rem 3rem; }
-  @media (min-width: 760px) { .services { grid-template-columns: repeat(3, 1fr); } }
-  .service { border-top: 1.5px solid var(--color-ink); padding-top: 1.25rem; }
+  .services {
+    display: grid;
+    gap: 2.25rem 3rem;
+  }
+  @media (min-width: 760px) {
+    .services {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .service {
+    border-top: 1.5px solid var(--color-ink);
+    padding-top: 1.25rem;
+  }
 </style>

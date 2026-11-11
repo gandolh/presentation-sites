@@ -82,11 +82,7 @@ test("registerJobs registers confirmation, reminder and purge jobs", () => {
   const { deps } = makeDeps();
   const scheduler = createScheduler();
   createBot(deps, { now: fixedClock }).registerJobs?.(scheduler);
-  assert.deepEqual(scheduler.jobNames().sort(), [
-    "whatsapp:confirmations",
-    "whatsapp:purge",
-    "whatsapp:reminders",
-  ]);
+  assert.deepEqual(scheduler.jobNames().sort(), ["whatsapp:confirmations", "whatsapp:purge", "whatsapp:reminders"]);
 });
 
 // ---------------------------------------------------------------------------
@@ -269,9 +265,7 @@ test("detectIntent recognizes keywords and numeric menu choices", () => {
 test("purge job removes appointments past the retention window", async () => {
   const { deps, db } = makeDeps();
   // Old appointment: last interaction > 365 days before NOW.
-  await db.upsertAppointment(
-    appointment({ id: "old", lastInteractionAt: "2024-01-01T00:00:00.000Z" }),
-  );
+  await db.upsertAppointment(appointment({ id: "old", lastInteractionAt: "2024-01-01T00:00:00.000Z" }));
   await db.upsertAppointment(appointment({ id: "fresh" }));
   const scheduler = createScheduler();
   createBot(deps, { now: fixedClock }).registerJobs?.(scheduler);

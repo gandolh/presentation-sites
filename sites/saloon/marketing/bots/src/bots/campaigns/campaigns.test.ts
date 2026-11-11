@@ -131,10 +131,7 @@ test("registerJobs registers the prepare + auto-pause jobs", () => {
   const names: string[] = [];
   bot.registerJobs?.({ register: (name) => names.push(name) });
 
-  assert.deepEqual(
-    names.sort(),
-    ["campaigns.autopause-full-calendar", "campaigns.prepare-drafts"],
-  );
+  assert.deepEqual(names.sort(), ["campaigns.autopause-full-calendar", "campaigns.prepare-drafts"]);
 });
 
 test("auto-pause pauses lead campaigns only when the calendar is full (no approval needed)", async () => {
@@ -146,10 +143,17 @@ test("auto-pause pauses lead campaigns only when the calendar is full (no approv
   assert.equal(log.pausedCampaigns.length, 0);
 
   // Calendar full -> pause exactly the lead presets, and inform (not ask) a human.
-  const fullDb: Db = { ...createInMemoryDb(), async isCalendarFull() { return true; } };
+  const fullDb: Db = {
+    ...createInMemoryDb(),
+    async isCalendarFull() {
+      return true;
+    },
+  };
   await autoPauseIfFull({ log: quietLog, db: fullDb, senders });
 
-  const leadKeys = PRESETS.filter((p) => p.leadGen).map((p) => p.key).sort();
+  const leadKeys = PRESETS.filter((p) => p.leadGen)
+    .map((p) => p.key)
+    .sort();
   assert.deepEqual([...log.pausedCampaigns].sort(), leadKeys);
   // Pausing stops spend -> it's informational, never an approval request.
   assert.ok(leadKeys.length > 0, "expected at least one lead preset");

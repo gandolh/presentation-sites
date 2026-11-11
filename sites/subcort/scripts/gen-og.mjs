@@ -18,15 +18,13 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
-import {
-  marquee, isometric, pts, tone, dimension,
-  INK, LINE, SIGNAL, SHEET,
-} from "../src/lib/draft.ts";
+import { marquee, isometric, pts, tone, dimension, INK, LINE, SIGNAL, SHEET } from "../src/lib/draft.ts";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const outDir = join(scriptsDir, "..", "public", "images");
 
-const W = 1200, H = 630;
+const W = 1200,
+  H = 630;
 const M = marquee();
 const P = isometric({ scale: 13.5, cx: 880, cy: 300 });
 
@@ -34,7 +32,8 @@ let g = "";
 const deck = M.panels.find((p) => p.part === "deck");
 g += `<polygon points="${pts(deck.quad, P)}" fill="#EDEFF1" stroke="${LINE}" stroke-width="1.1"/>`;
 for (const [a, b] of M.members) {
-  const [x1, y1] = P(a); const [x2, y2] = P(b);
+  const [x1, y1] = P(a);
+  const [x2, y2] = P(b);
   g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="1.5" stroke-linecap="round"/>`;
 }
 for (const p of M.panels.filter((p) => p.part !== "deck")) {
@@ -103,16 +102,22 @@ console.log("wrote scripts/og-card.html");
 const tmp = await mkdtemp(join(tmpdir(), "subcort-og-"));
 try {
   const shot = join(tmp, "card.png");
-  execFileSync(process.env.CHROME ?? "google-chrome", [
-    "--headless=new", "--disable-gpu", "--hide-scrollbars",
-    "--force-device-scale-factor=1", `--window-size=${W},${H}`,
-    // give the @font-face files time to load before the capture
-    "--virtual-time-budget=3000",
-    `--screenshot=${shot}`, pathToFileURL(cardPath).href,
-  ], { stdio: "ignore" });
-  const info = await sharp(shot)
-    .png({ palette: true, compressionLevel: 9 })
-    .toFile(join(outDir, "og-image.png"));
+  execFileSync(
+    process.env.CHROME ?? "google-chrome",
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--hide-scrollbars",
+      "--force-device-scale-factor=1",
+      `--window-size=${W},${H}`,
+      // give the @font-face files time to load before the capture
+      "--virtual-time-budget=3000",
+      `--screenshot=${shot}`,
+      pathToFileURL(cardPath).href,
+    ],
+    { stdio: "ignore" },
+  );
+  const info = await sharp(shot).png({ palette: true, compressionLevel: 9 }).toFile(join(outDir, "og-image.png"));
   if (info.width !== W || info.height !== H) {
     throw new Error(`og-image.png came out ${info.width}x${info.height}, expected ${W}x${H}`);
   }

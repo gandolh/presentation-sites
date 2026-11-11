@@ -42,11 +42,7 @@ export function createWebhookRouter(): WebhookRouter & {
  * Verify Meta's `X-Hub-Signature-256` header against the raw request body.
  * Returns false on any mismatch / missing input (never throws on bad input).
  */
-export function verifyMetaSignature(
-  rawBody: string,
-  signatureHeader: string | undefined,
-  appSecret: string,
-): boolean {
+export function verifyMetaSignature(rawBody: string, signatureHeader: string | undefined, appSecret: string): boolean {
   if (!signatureHeader?.startsWith("sha256=")) return false;
   const expected = createHmac("sha256", appSecret).update(rawBody).digest("hex");
   const provided = signatureHeader.slice("sha256=".length);

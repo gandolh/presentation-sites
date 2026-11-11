@@ -5,9 +5,7 @@
 // Progressive by construction. The still below is a real isometric drawing in
 // the HTML; WebGL is a dynamic import that only happens for a visitor who has
 // not asked for reduced motion, has WebGL, and has the hero near the viewport.
-import {
-  marquee, isometric, pts, tone, INK, LINE,
-} from "../lib/draft";
+import { marquee, isometric, pts, tone, INK, LINE } from "../lib/draft";
 
 const M = marquee();
 const P = isometric({ scale: 15, cx: 340, cy: 250 });
@@ -16,7 +14,8 @@ for (const p of M.panels.filter((p) => p.part === "deck")) {
   still += `<polygon points="${pts(p.quad, P)}" fill="#EDEFF1" stroke="${LINE}" stroke-width="1.1"/>`;
 }
 for (const [a, b] of M.members) {
-  const [x1, y1] = P(a); const [x2, y2] = P(b);
+  const [x1, y1] = P(a);
+  const [x2, y2] = P(b);
   still += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="1.5" stroke-linecap="round"/>`;
 }
 for (const p of M.panels.filter((p) => p.part !== "deck")) {
@@ -34,23 +33,48 @@ for (const p of M.panels.filter((p) => p.part !== "deck")) {
 </div>
 
 <style>
-  .stage { position: relative; width: 100%; aspect-ratio: 5 / 4; }
-  @media (min-width: 900px) { .stage { aspect-ratio: 7 / 5; } }
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+  }
+  @media (min-width: 900px) {
+    .stage {
+      aspect-ratio: 7 / 5;
+    }
+  }
 
   .stage__canvas {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    display: block; opacity: 0; transition: opacity 450ms ease-out;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 450ms ease-out;
   }
-  .stage[data-live] .stage__canvas { opacity: 1; }
+  .stage[data-live] .stage__canvas {
+    opacity: 1;
+  }
 
   .stage__still {
-    position: absolute; inset: 0;
-    display: grid; place-items: center;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
     padding: 3%;
     transition: opacity 350ms ease-out;
   }
-  .stage__still svg { width: 100%; height: auto; max-height: 100%; overflow: visible; }
-  .stage[data-live] .stage__still { opacity: 0; pointer-events: none; }
+  .stage__still svg {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    overflow: visible;
+  }
+  .stage[data-live] .stage__still {
+    opacity: 0;
+    pointer-events: none;
+  }
 </style>
 
 <script>
@@ -64,25 +88,31 @@ for (const p of M.panels.filter((p) => p.part !== "deck")) {
     try {
       const c = document.createElement("canvas");
       return !!(c.getContext("webgl2") || c.getContext("webgl"));
-    } catch { return false; }
+    } catch {
+      return false;
+    }
   }
 
-  if (stage && canvas &&
-      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      webglAvailable()) {
-    const near = new IntersectionObserver((entries) => {
-      if (!entries.some((e) => e.isIntersecting)) return;
-      near.disconnect();
-      void boot(stage, canvas);
-    }, { rootMargin: "300px" });
+  if (stage && canvas && !matchMedia("(prefers-reduced-motion: reduce)").matches && webglAvailable()) {
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        near.disconnect();
+        void boot(stage, canvas);
+      },
+      { rootMargin: "300px" },
+    );
     near.observe(stage);
   }
 
   async function boot(stage: HTMLElement, canvas: HTMLCanvasElement) {
     const { createTentScene } = await import("./hero/tent-scene");
     let s: ReturnType<typeof createTentScene>;
-    try { s = createTentScene(canvas, window.devicePixelRatio || 1); }
-    catch { return; } // the drawing stays, which is why it ships in the HTML
+    try {
+      s = createTentScene(canvas, window.devicePixelRatio || 1);
+    } catch {
+      return;
+    } // the drawing stays, which is why it ships in the HTML
 
     stage.setAttribute("data-live", "");
 
@@ -94,7 +124,11 @@ for (const p of M.panels.filter((p) => p.part !== "deck")) {
     new ResizeObserver(fit).observe(stage);
 
     let raf = 0;
-    const loop = () => { s.apply(); s.render(); raf = requestAnimationFrame(loop); };
+    const loop = () => {
+      s.apply();
+      s.render();
+      raf = requestAnimationFrame(loop);
+    };
     loop();
 
     // The assembly: the frame draws in, then the layers land — deck, walls,
@@ -104,7 +138,10 @@ for (const p of M.panels.filter((p) => p.part !== "deck")) {
       .add(s.state, { explode: 0, duration: 1700, ease: "outExpo" }, "-=380");
 
     animate(s.state, {
-      spin: [{ to: 0.2, duration: 30000 }, { to: -0.04, duration: 30000 }],
+      spin: [
+        { to: 0.2, duration: 30000 },
+        { to: -0.04, duration: 30000 },
+      ],
       loop: true,
       ease: "inOutSine",
     });
@@ -112,7 +149,10 @@ for (const p of M.panels.filter((p) => p.part !== "deck")) {
     new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (e.isIntersecting && !raf) loop();
-        else if (!e.isIntersecting && raf) { cancelAnimationFrame(raf); raf = 0; }
+        else if (!e.isIntersecting && raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
       }
     }).observe(stage);
 

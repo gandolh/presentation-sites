@@ -6,28 +6,36 @@
 import { site, telLink, waLink } from "../content/site";
 ---
 
-{
-  site.wip.show && (
-    <div id="wip-banner" class="relative z-[var(--z-sticky)] border-b border-[var(--color-outline-variant)] bg-[oklch(10%_0.008_255)] text-[var(--color-on-surface)]">
-      <div class="m-stripe m-stripe--full" aria-hidden="true" />
-      <div class="container-page flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
-        <span class="inline-flex items-center gap-2">
-          <span class="wip-dot" aria-hidden="true" />
-          <span class="text-[0.8rem] font-semibold leading-tight">{site.wip.text}</span>
+{site.wip.show && (
+  <div
+    id="wip-banner"
+    class="relative z-[var(--z-sticky)] border-b border-[var(--color-outline-variant)] bg-[oklch(10%_0.008_255)] text-[var(--color-on-surface)]"
+  >
+    <div class="m-stripe m-stripe--full" aria-hidden="true" />
+    <div class="container-page flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
+      <span class="inline-flex items-center gap-2">
+        <span class="wip-dot" aria-hidden="true" />
+        <span class="text-[0.8rem] font-semibold leading-tight">{site.wip.text}</span>
+      </span>
+      <span class="inline-flex items-center gap-3 text-[0.8rem] font-semibold">
+        <a href={telLink()} class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
+          {site.phone}
+        </a>
+        <span class="text-[var(--color-outline)]" aria-hidden="true">
+          ·
         </span>
-        <span class="inline-flex items-center gap-3 text-[0.8rem] font-semibold">
-          <a href={telLink()} class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
-            {site.phone}
-          </a>
-          <span class="text-[var(--color-outline)]" aria-hidden="true">·</span>
-          <a href={waLink()} target="_blank" rel="noopener" class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
-            WhatsApp
-          </a>
-        </span>
-      </div>
+        <a
+          href={waLink()}
+          target="_blank"
+          rel="noopener"
+          class="text-[var(--color-primary-bright)] hover:underline underline-offset-2"
+        >
+          WhatsApp
+        </a>
+      </span>
     </div>
-  )
-}
+  </div>
+)}
 
 <style>
   /* Brand-blue info accent, not a green "open/live" status light (which would

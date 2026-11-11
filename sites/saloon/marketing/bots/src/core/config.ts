@@ -139,10 +139,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
  */
 export function assertSecretsForLive(config: Config): void {
   if (config.mockMode) return;
-  const required: (keyof Config["secrets"])[] = [
-    "metaAppSecret",
-    "metaVerifyToken",
-  ];
+  const required: (keyof Config["secrets"])[] = ["metaAppSecret", "metaVerifyToken"];
   const missing = required.filter((k) => !config.secrets[k]);
   if (missing.length > 0) {
     throw new Error(`Missing required secrets for live mode: ${missing.join(", ")}`);

@@ -3,48 +3,34 @@ import { gallery } from "../content/gallery";
 import { site } from "../content/site";
 ---
 
-<section
-  id="galerie"
-  class="section section--airy bg-[var(--color-surface-container-low)]"
->
+<section id="galerie" class="section section--airy bg-[var(--color-surface-container-low)]">
   <div class="container-page">
     <div class="reveal">
       <h2 class="heading-lg">Lucrări recente</h2>
-      <p class="mt-4 max-w-[55ch] text-[var(--color-on-surface-variant)]">
-        Croite pe stilul fiecărei cliente.
-      </p>
+      <p class="mt-4 max-w-[55ch] text-[var(--color-on-surface-variant)]">Croite pe stilul fiecărei cliente.</p>
     </div>
 
-    <div
-      class="mt-8 md:mt-12 columns-2 md:columns-3 gap-4 [column-fill:_balance]"
-    >
-      {
-        gallery.map((img, i) => (
-          <figure
-            class="reveal mb-4 break-inside-avoid rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
-            style={`--i: ${i}`}
-          >
-            <img
-              src={img.src}
-              alt={img.alt}
-              loading={i < 3 ? "eager" : "lazy"}
-              decoding="async"
-              width="600"
-              height="800"
-              class="gallery-img w-full h-auto block"
-            />
-          </figure>
-        ))
-      }
+    <div class="mt-8 md:mt-12 columns-2 md:columns-3 gap-4 [column-fill:_balance]">
+      {gallery.map((img, i) => (
+        <figure
+          class="reveal mb-4 break-inside-avoid rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
+          style={`--i: ${i}`}
+        >
+          <img
+            src={img.src}
+            alt={img.alt}
+            loading={i < 3 ? "eager" : "lazy"}
+            decoding="async"
+            width="600"
+            height="800"
+            class="gallery-img w-full h-auto block"
+          />
+        </figure>
+      ))}
     </div>
 
     <div class="mt-12 text-center">
-      <a
-        href={site.social.instagram}
-        target="_blank"
-        rel="noopener"
-        class="btn btn-secondary"
-      >
+      <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-secondary">
         Urmărește-mă pe Instagram
       </a>
     </div>

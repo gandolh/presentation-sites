@@ -9,12 +9,7 @@
  * campaigns prepared PAUSED for human approval (#6), spend kill-switch (#8).
  */
 
-import type {
-  OutboundMessage,
-  ScheduledPost,
-  CampaignDraft,
-  Platform,
-} from "./types.ts";
+import type { OutboundMessage, ScheduledPost, CampaignDraft, Platform } from "./types.ts";
 
 /** WhatsApp Cloud API — replies + utility/marketing templates. */
 export interface WhatsAppSender {

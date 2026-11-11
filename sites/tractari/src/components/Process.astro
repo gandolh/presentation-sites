@@ -17,6 +17,7 @@ const steps = [
   },
 ];
 ---
+
 <section id="cum-functioneaza" class="stop section relative bg-[var(--color-surface-container-low)]">
   <span class="stop__marker" aria-hidden="true"></span>
   <div class="container-page relative z-[2]">
@@ -30,7 +31,9 @@ const steps = [
     <ol class="timeline mt-10 reveal" style="--tl-dir:180deg;">
       {steps.map((s, i) => (
         <li class="timeline__step">
-          <span class="timeline__node" aria-hidden="true">{i + 1}</span>
+          <span class="timeline__node" aria-hidden="true">
+            {i + 1}
+          </span>
           <h3 class="heading-md text-[var(--color-on-surface)]">{s.title}</h3>
           <p class="mt-2 text-[var(--color-on-surface-variant)]">{s.body}</p>
         </li>

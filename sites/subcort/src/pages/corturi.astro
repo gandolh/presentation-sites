@@ -21,7 +21,8 @@ const parsed = tents.map((t) => {
 const maxArea = Math.max(...parsed.map((p) => p.areaNum));
 
 const formats = parsed.map((p) => ({
-  w: p.w, d: p.d,
+  w: p.w,
+  d: p.d,
   label: `${p.w} × ${p.d} m`,
   area: p.areaNum,
   seated: p.seated,
@@ -64,13 +65,17 @@ const formats = parsed.map((p) => ({
               <th scope="col">Suprafață</th>
               <th scope="col">Cu mese</th>
               <th scope="col">În picioare</th>
-              <th scope="col" class="tbl__bar">Scară relativă</th>
+              <th scope="col" class="tbl__bar">
+                Scară relativă
+              </th>
             </tr>
           </thead>
           <tbody>
             {parsed.map((t) => (
               <tr>
-                <th scope="row" class="tbl__size dim">{t.size}</th>
+                <th scope="row" class="tbl__size dim">
+                  {t.size}
+                </th>
                 <td class="dim">{t.area}</td>
                 <td>{t.seated}</td>
                 <td>{t.standing}</td>
@@ -88,23 +93,22 @@ const formats = parsed.map((p) => ({
       </div>
 
       <p class="mt-7 prose-measure text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
-        Capacitățile sunt orientative și se schimbă în funcție de plan: mese
-        rotunde, mese lungi, bufet sau scaune în rânduri. Pentru un teren cu
-        formă neregulată, găsim împreună varianta care se potrivește.
+        Capacitățile sunt orientative și se schimbă în funcție de plan: mese rotunde, mese lungi, bufet sau scaune în
+        rânduri. Pentru un teren cu formă neregulată, găsim împreună varianta care se potrivește.
       </p>
 
       <ul class="notes">
         {parsed.map((t) => (
-          <li><b class="dim">{t.size}</b><span>{t.note}</span></li>
+          <li>
+            <b class="dim">{t.size}</b>
+            <span>{t.note}</span>
+          </li>
         ))}
       </ul>
     </Plate>
 
     <Plate no="01.3 · Dotări" note="Incluse & opționale" title="Dotări">
-      <p class="lede mt-5">
-        Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de cum
-        vrei spațiul.
-      </p>
+      <p class="lede mt-5">Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de cum vrei spațiul.</p>
 
       <div class="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
         <div>
@@ -115,7 +119,9 @@ const formats = parsed.map((p) => ({
           <ul class="mt-6 grid gap-5">
             {included.map((a, i) => (
               <li class="reveal flex gap-4">
-                <span class="callout-no" aria-hidden="true">{i + 1}</span>
+                <span class="callout-no" aria-hidden="true">
+                  {i + 1}
+                </span>
                 <div>
                   <h3 class="heading-md">{a.title}</h3>
                   <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
@@ -133,7 +139,9 @@ const formats = parsed.map((p) => ({
           <ul class="mt-6 grid gap-5">
             {optional.map((a, i) => (
               <li class="reveal flex gap-4">
-                <span class="callout-no" aria-hidden="true">{i + 4}</span>
+                <span class="callout-no" aria-hidden="true">
+                  {i + 4}
+                </span>
                 <div>
                   <h3 class="heading-md">{a.title}</h3>
                   <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
@@ -150,8 +158,15 @@ const formats = parsed.map((p) => ({
 </Base>
 
 <style>
-  .tbl-wrap { margin-top: 2rem; overflow-x: auto; }
-  .tbl { width: 100%; border-collapse: collapse; min-width: 42rem; }
+  .tbl-wrap {
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 42rem;
+  }
   .tbl th[scope="col"] {
     text-align: left;
     font-family: var(--font-mono);
@@ -164,7 +179,8 @@ const formats = parsed.map((p) => ({
     border-bottom: 1.5px solid var(--color-ink);
     white-space: nowrap;
   }
-  .tbl td, .tbl th[scope="row"] {
+  .tbl td,
+  .tbl th[scope="row"] {
     padding: 1.05rem 1.25rem 1.05rem 0;
     border-bottom: 1px solid var(--color-hair);
     vertical-align: middle;
@@ -178,27 +194,67 @@ const formats = parsed.map((p) => ({
     color: var(--color-ink) !important;
     white-space: nowrap;
   }
-  .tbl__bar { width: 32%; }
+  .tbl__bar {
+    width: 32%;
+  }
 
   /* A dimension bar: extension ticks at each end, the measured run between. */
-  .dimbar { display: block; position: relative; height: 14px; }
+  .dimbar {
+    display: block;
+    position: relative;
+    height: 14px;
+  }
   .dimbar::before {
-    content: ""; position: absolute; left: 0; right: 0; top: 50%;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
     border-top: 1px dashed var(--color-hair);
   }
   .dimbar i {
-    position: absolute; left: 0; top: 50%; width: var(--f);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: var(--f);
     border-top: 1.5px solid var(--color-signal);
   }
-  .dimbar i::before, .dimbar i::after {
-    content: ""; position: absolute; top: -5px; height: 11px;
+  .dimbar i::before,
+  .dimbar i::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    height: 11px;
     border-left: 1.5px solid var(--color-signal);
   }
-  .dimbar i::before { left: 0; }
-  .dimbar i::after { right: 0; }
+  .dimbar i::before {
+    left: 0;
+  }
+  .dimbar i::after {
+    right: 0;
+  }
 
-  .notes { margin-top: 2rem; display: grid; gap: 0.7rem; }
-  @media (min-width: 760px) { .notes { grid-template-columns: repeat(2, 1fr); gap: 0.7rem 2.5rem; } }
-  .notes li { display: flex; gap: 0.9rem; font-size: 0.9rem; line-height: 1.55; color: var(--color-ink-2); }
-  .notes b { flex: 0 0 5.5rem; color: var(--color-ink); font-weight: 600; }
+  .notes {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  @media (min-width: 760px) {
+    .notes {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem 2.5rem;
+    }
+  }
+  .notes li {
+    display: flex;
+    gap: 0.9rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-ink-2);
+  }
+  .notes b {
+    flex: 0 0 5.5rem;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
 </style>

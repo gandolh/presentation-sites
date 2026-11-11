@@ -22,7 +22,12 @@ export type OpeningHours = {
 } & ({ opens: string; closes: string; closed?: never } | { closed: true });
 
 const HOURS: OpeningHours[] = [
-  { label: "Luni - Vineri", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
+  {
+    label: "Luni - Vineri",
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "09:00",
+    closes: "19:00",
+  },
   { label: "Sâmbătă", days: ["Saturday"], opens: "10:00", closes: "16:00" },
   { label: "Duminică", days: ["Sunday"], closed: true },
 ];
@@ -30,8 +35,7 @@ const HOURS: OpeningHours[] = [
 const defaults = {
   name: "Unghii by Ana",
   tagline: "Unghii care vorbesc despre tine",
-  description:
-    "Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.",
+  description: "Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.",
   city: "Târgu-Jiu",
   county: "Gorj",
   country: "România",
@@ -60,8 +64,7 @@ const defaults = {
     // Last review date of the legal documents (update when content changes).
     documentsUpdated: "29 mai 2026",
     // Retention chosen per the legal audit (see ana_saloon_legal memory).
-    dataRetention:
-      "12 luni de la ultima programare (30 de zile pentru solicitările care nu se finalizează)",
+    dataRetention: "12 luni de la ultima programare (30 de zile pentru solicitările care nu se finalizează)",
   },
 
   // Hours
@@ -92,8 +95,7 @@ const defaults = {
 // typed — the client just hits send (PRODUCT.md: "booking is one tap away").
 // Pass a service name to tailor the opener; omit for the generic greeting.
 export function waLink(message?: string): string {
-  const text =
-    message ?? "Bună, Ana! Aș dori o programare. Când ai un loc liber?";
+  const text = message ?? "Bună, Ana! Aș dori o programare. Când ai un loc liber?";
   return `https://wa.me/${site.whatsappE164}?text=${encodeURIComponent(text)}`;
 }
 
@@ -105,12 +107,8 @@ export type SiteOverrides = SiteOverridesOf<typeof defaults>;
 // the file is absent, so a fresh clone / CI without secrets falls back cleanly
 // to the placeholders above. The path is a literal so Vite can statically
 // analyse it.
-const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>(
-  "./site.local.ts",
-  { eager: true },
-);
-const overrides: SiteOverrides =
-  Object.values(localModules)[0]?.siteOverrides ?? {};
+const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>("./site.local.ts", { eager: true });
+const overrides: SiteOverrides = Object.values(localModules)[0]?.siteOverrides ?? {};
 
 // Shallow merge for top-level scalars/arrays, one level of nested merge for the
 // object groups (legal / social / stats / geo) so a local file can override a

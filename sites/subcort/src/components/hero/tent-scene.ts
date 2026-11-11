@@ -38,7 +38,12 @@ const LINE = 0x5e7180;
 const SIGNAL = 0xc2481e;
 
 /** The four real formats, span × length in metres. */
-const FORMATS: Array<[number, number]> = [[8, 8], [15, 10], [20, 10], [20, 15]];
+const FORMATS: Array<[number, number]> = [
+  [8, 8],
+  [15, 10],
+  [20, 10],
+  [20, 15],
+];
 
 function footprint(t: number) {
   const x = Math.min(0.9999, Math.max(0, t)) * (FORMATS.length - 1);
@@ -104,7 +109,10 @@ export function createTentScene(
   spec: MarqueeSpec = DEFAULT_MARQUEE,
 ): TentScene {
   const renderer = new THREE.WebGLRenderer({
-    canvas: canvasEl, antialias: true, alpha: true, powerPreference: "high-performance",
+    canvas: canvasEl,
+    antialias: true,
+    alpha: true,
+    powerPreference: "high-performance",
   });
   renderer.setPixelRatio(Math.min(dpr, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -158,7 +166,8 @@ export function createTentScene(
   function apply() {
     const { w, d } = footprint(state.size);
     const { eave, ridge, bay } = spec;
-    const hw = w / 2, hd = d / 2;
+    const hw = w / 2,
+      hd = d / 2;
     const n = Math.max(2, Math.round(d / bay));
     const bays: number[] = [];
     for (let i = 0; i <= n; i++) bays.push(-hd + (i * d) / n);
@@ -170,13 +179,50 @@ export function createTentScene(
     gDeck.position.y = -e * SEP * 0.9;
 
     // ---- envelope, from explicit corner points ----------------------------
-    const qRoofL: P3[] = [[-hw, eave, -hd], [0, ridge, -hd], [0, ridge, hd], [-hw, eave, hd]];
-    const qRoofR: P3[] = [[hw, eave, -hd], [0, ridge, -hd], [0, ridge, hd], [hw, eave, hd]];
-    const qWallL: P3[] = [[-hw, 0, -hd], [-hw, eave, -hd], [-hw, eave, hd], [-hw, 0, hd]];
-    const qWallR: P3[] = [[hw, 0, -hd], [hw, eave, -hd], [hw, eave, hd], [hw, 0, hd]];
-    const qGableA: P3[] = [[-hw, 0, -hd], [-hw, eave, -hd], [0, ridge, -hd], [hw, eave, -hd], [hw, 0, -hd]];
-    const qGableB: P3[] = [[-hw, 0, hd], [-hw, eave, hd], [0, ridge, hd], [hw, eave, hd], [hw, 0, hd]];
-    const qDeck: P3[] = [[-hw, 0, -hd], [hw, 0, -hd], [hw, 0, hd], [-hw, 0, hd]];
+    const qRoofL: P3[] = [
+      [-hw, eave, -hd],
+      [0, ridge, -hd],
+      [0, ridge, hd],
+      [-hw, eave, hd],
+    ];
+    const qRoofR: P3[] = [
+      [hw, eave, -hd],
+      [0, ridge, -hd],
+      [0, ridge, hd],
+      [hw, eave, hd],
+    ];
+    const qWallL: P3[] = [
+      [-hw, 0, -hd],
+      [-hw, eave, -hd],
+      [-hw, eave, hd],
+      [-hw, 0, hd],
+    ];
+    const qWallR: P3[] = [
+      [hw, 0, -hd],
+      [hw, eave, -hd],
+      [hw, eave, hd],
+      [hw, 0, hd],
+    ];
+    const qGableA: P3[] = [
+      [-hw, 0, -hd],
+      [-hw, eave, -hd],
+      [0, ridge, -hd],
+      [hw, eave, -hd],
+      [hw, 0, -hd],
+    ];
+    const qGableB: P3[] = [
+      [-hw, 0, hd],
+      [-hw, eave, hd],
+      [0, ridge, hd],
+      [hw, eave, hd],
+      [hw, 0, hd],
+    ];
+    const qDeck: P3[] = [
+      [-hw, 0, -hd],
+      [hw, 0, -hd],
+      [hw, 0, hd],
+      [-hw, 0, hd],
+    ];
 
     roofL.set(qRoofL, tone(qRoofL));
     roofR.set(qRoofR, tone(qRoofR));
@@ -214,10 +260,14 @@ export function createTentScene(
       put(hw, eave, z, 0, ridge, z);
     }
     for (let i = 0; i < bays.length - 1; i++) {
-      const a = bays[i], b = bays[i + 1];
+      const a = bays[i],
+        b = bays[i + 1];
       const runs: Array<[number, number]> = [
-        [-hw, eave], [0, ridge], [hw, eave],
-        [-hw / 2, (eave + ridge) / 2], [hw / 2, (eave + ridge) / 2],
+        [-hw, eave],
+        [0, ridge],
+        [hw, eave],
+        [-hw / 2, (eave + ridge) / 2],
+        [hw / 2, (eave + ridge) / 2],
       ];
       for (const [x, y] of runs) put(x, y, a, x, y, b);
     }
@@ -240,7 +290,9 @@ export function createTentScene(
     camera.lookAt(0, ridge * 0.4 + e * SEP * 0.3, 0);
   }
 
-  function render() { renderer.render(scene, camera); }
+  function render() {
+    renderer.render(scene, camera);
+  }
 
   function resize(w: number, h: number) {
     renderer.setSize(w, h, false);

@@ -11,11 +11,7 @@
 export type Platform = "whatsapp" | "instagram" | "facebook" | "tiktok";
 
 /** Names of the bot modules. Used for kill-switch flags and logging. */
-export type BotName =
-  | "whatsapp"
-  | "responses"
-  | "scheduler"
-  | "campaigns";
+export type BotName = "whatsapp" | "responses" | "scheduler" | "campaigns";
 
 /**
  * GDPR posture (see docs/LEGAL.md). Booking flows rely on art. 6(1)(b)
@@ -24,10 +20,7 @@ export type BotName =
 export type OptInStatus = "opted_in" | "opted_out" | "unknown";
 
 /** Service offered by the salon (the 3 from the site). */
-export type ServiceKind =
-  | "manichiura_semipermanenta"
-  | "gel_constructie"
-  | "nail_art";
+export type ServiceKind = "manichiura_semipermanenta" | "gel_constructie" | "nail_art";
 
 /** A booked or requested appointment. */
 export interface Appointment {

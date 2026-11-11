@@ -41,13 +41,6 @@ export const steps: Step[] = [
 export const coverage = {
   primary: "Gorj",
   region: "Oltenia",
-  localities: [
-    "Târgu-Jiu",
-    "Motru",
-    "Rovinari",
-    "Bumbești-Jiu",
-    "Târgu Cărbunești",
-    "Novaci",
-  ],
+  localities: ["Târgu-Jiu", "Motru", "Rovinari", "Bumbești-Jiu", "Târgu Cărbunești", "Novaci"],
   note: "Acoperim județul Gorj și ne deplasăm în toată Oltenia. Pentru localitățile mai îndepărtate, transportul se stabilește în funcție de distanță.",
 };

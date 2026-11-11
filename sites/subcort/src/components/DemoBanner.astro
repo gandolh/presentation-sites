@@ -3,9 +3,15 @@
 // the company and contact details on it are fictional.
 import { site } from "../content/site";
 ---
+
 {site.demo.show && (
   <div class="demo-note">
-    <div class="sheet"><p><span class="dim">NOTĂ</span>{site.demo.text}</p></div>
+    <div class="sheet">
+      <p>
+        <span class="dim">NOTĂ</span>
+        {site.demo.text}
+      </p>
+    </div>
   </div>
 )}
 

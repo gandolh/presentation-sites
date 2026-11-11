@@ -23,36 +23,36 @@
 @theme {
   /* ---- Surfaces (asphalt at night — the default state) -------------------
      Near-black with a cold blue-grey cast, never pure #000 which reads flat. */
-  --color-background: oklch(16% 0.012 250);          /* page bg, cold asphalt */
+  --color-background: oklch(16% 0.012 250); /* page bg, cold asphalt */
   --color-surface: oklch(16% 0.012 250);
   --color-surface-container-lowest: oklch(14% 0.011 250);
   --color-surface-container-low: oklch(19% 0.013 250);
-  --color-surface-container: oklch(22% 0.015 250);   /* cards, panels */
+  --color-surface-container: oklch(22% 0.015 250); /* cards, panels */
   --color-surface-container-high: oklch(26% 0.016 250);
   --color-surface-container-highest: oklch(30% 0.017 250);
 
   /* ---- Ink (warm off-white on asphalt) ------------------------------------
      Warm near-white, NOT clinical pure white. Body clears AA comfortably. */
-  --color-on-surface: oklch(95% 0.008 90);           /* body + headings */
-  --color-on-surface-variant: oklch(72% 0.012 250);  /* secondary, ≥4.5:1 */
+  --color-on-surface: oklch(95% 0.008 90); /* body + headings */
+  --color-on-surface-variant: oklch(72% 0.012 250); /* secondary, ≥4.5:1 */
   --color-outline: oklch(45% 0.014 250);
-  --color-outline-variant: oklch(30% 0.014 250);     /* hairlines on dark */
+  --color-outline-variant: oklch(30% 0.014 250); /* hairlines on dark */
 
   /* ---- Inverse (the RARE light panel — e.g. a callout) --------------------
      When something must read as "paper" against the dark, it uses these. */
-  --color-inverse-surface: oklch(95% 0.008 90);      /* warm off-white panel */
+  --color-inverse-surface: oklch(95% 0.008 90); /* warm off-white panel */
   --color-inverse-surface-2: oklch(90% 0.01 90);
-  --color-inverse-on-surface: oklch(20% 0.012 250);  /* dark ink on light */
+  --color-inverse-on-surface: oklch(20% 0.012 250); /* dark ink on light */
   --color-inverse-on-surface-variant: oklch(40% 0.014 250);
 
   /* ---- Primary: AMBER beacon (the committed identity) --------------------
      The seed (hue ~75). Bright enough to glow on asphalt. Used for the
      wordmark mark, eyebrows, the 24/7 badge, signature lines, headlight glow.
      DARK ink rides on the filled amber (amber is a light colour) → AA. */
-  --color-primary: oklch(80% 0.16 80);               /* amber #F5A623-ish */
+  --color-primary: oklch(80% 0.16 80); /* amber #F5A623-ish */
   --color-primary-hover: oklch(74% 0.155 78);
-  --color-on-primary: oklch(18% 0.02 80);            /* near-black on amber */
-  --color-primary-container: oklch(30% 0.05 80);     /* amber-tinted dark chip */
+  --color-on-primary: oklch(18% 0.02 80); /* near-black on amber */
+  --color-primary-container: oklch(30% 0.05 80); /* amber-tinted dark chip */
   --color-on-primary-container: oklch(86% 0.13 82);
   /* Softer amber used for large text / glows where full chroma is too loud. */
   --color-primary-bright: oklch(84% 0.15 82);
@@ -60,10 +60,10 @@
   /* ---- Accent: SAFETY ORANGE (urgency — the phone CTA) -------------------
      The one colour reserved for "call now". Hotter and redder than amber so
      it pops off the amber identity. White text on it clears AA. */
-  --color-accent: oklch(68% 0.2 45);                 /* safety orange #FF6B2B-ish */
+  --color-accent: oklch(68% 0.2 45); /* safety orange #FF6B2B-ish */
   --color-accent-hover: oklch(63% 0.205 42);
-  --color-on-accent: oklch(99% 0.004 90);            /* white on orange */
-  --color-accent-soft: oklch(32% 0.08 45);           /* orange-tinted dark wash */
+  --color-on-accent: oklch(99% 0.004 90); /* white on orange */
+  --color-accent-soft: oklch(32% 0.08 45); /* orange-tinted dark wash */
   --color-on-accent-soft: oklch(82% 0.14 50);
   --color-accent-bright: oklch(74% 0.19 48);
 
@@ -125,15 +125,20 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     font-weight: 700;
-    line-height: 1.0;
+    line-height: 1;
     letter-spacing: 0.005em; /* condensed caps breathe a touch */
     text-wrap: balance;
   }
 
-  p { text-wrap: pretty; }
+  p {
+    text-wrap: pretty;
+  }
 
   ::selection {
     background-color: var(--color-primary);
@@ -155,10 +160,14 @@
     padding-inline: 1.25rem;
   }
   @media (min-width: 768px) {
-    .container-page { padding-inline: 2rem; }
+    .container-page {
+      padding-inline: 2rem;
+    }
   }
 
-  .section { padding-block: clamp(3.5rem, 7vw, 7rem); }
+  .section {
+    padding-block: clamp(3.5rem, 7vw, 7rem);
+  }
 
   /* ====================================================================== */
   /*  THE ROAD SPINE — the one structural move made literal.                */
@@ -168,32 +177,39 @@
   /*  Desktop: the spine lives in a left gutter. Mobile: it collapses to a    */
   /*  hairline at the far-left edge so content keeps full width.             */
   /* ====================================================================== */
-  .road { position: relative; }
+  .road {
+    position: relative;
+  }
 
   /* The lane line: a dashed centre-marking streaming down the page, amber
      easing to safety-orange. A repeating mask makes it read as painted road
      dashes rather than a solid bar. */
   .road__line {
     position: absolute;
-    top: 0; bottom: 0;
+    top: 0;
+    bottom: 0;
     left: clamp(1.4rem, 3.5vw, 3.5rem);
     width: 3px;
     z-index: 0;
     pointer-events: none;
     background: linear-gradient(var(--color-primary), var(--color-accent));
     -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
-            mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
+    mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
     opacity: 0.5;
   }
   @media (max-width: 1023px) {
-    .road__line { left: 0.5rem; opacity: 0.32; }
+    .road__line {
+      left: 0.5rem;
+      opacity: 0.32;
+    }
   }
   /* A soft amber glow travelling down the dashes — the truck's light moving
      along the road. Pure decoration; off under reduced motion. */
   .road__line::after {
     content: "";
     position: absolute;
-    left: -7px; right: -7px;
+    left: -7px;
+    right: -7px;
     height: 20vh;
     border-radius: var(--radius-full);
     background: radial-gradient(50% 50% at 50% 50%, oklch(82% 0.16 82 / 0.85) 0%, oklch(82% 0.16 82 / 0) 72%);
@@ -201,49 +217,80 @@
     animation: road-travel 9s linear infinite;
   }
   @keyframes road-travel {
-    0%   { top: -20vh; opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
+    0% {
+      top: -20vh;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .road__line::after { animation: none; opacity: 0; }
+    .road__line::after {
+      animation: none;
+      opacity: 0;
+    }
   }
 
   /* A STOP: a section anchored to the spine. On desktop its content is pushed
      past the rail; the marker node sits ON the line. */
-  .stop { position: relative; }
+  .stop {
+    position: relative;
+  }
   @media (min-width: 1024px) {
-    .stop > .container-page { padding-left: clamp(5rem, 8vw, 8rem); }
+    .stop > .container-page {
+      padding-left: clamp(5rem, 8vw, 8rem);
+    }
   }
   .stop__marker {
     position: absolute;
-    top: clamp(3.5rem, 7vw, 7rem);    /* aligns with the section top padding */
+    top: clamp(3.5rem, 7vw, 7rem); /* aligns with the section top padding */
     left: clamp(1.4rem, 3.5vw, 3.5rem);
     transform: translateX(-50%);
     z-index: 1;
     display: none;
-    width: 1.15rem; height: 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
     border-radius: var(--radius-full);
     background: var(--color-background);
     border: 2px solid var(--color-primary);
-    box-shadow: 0 0 0 5px var(--color-background), 0 0 22px 2px oklch(80% 0.16 80 / 0.5);
+    box-shadow:
+      0 0 0 5px var(--color-background),
+      0 0 22px 2px oklch(80% 0.16 80 / 0.5);
   }
   .stop__marker::before {
     content: "";
-    position: absolute; inset: 3px;
+    position: absolute;
+    inset: 3px;
     border-radius: var(--radius-full);
     background: var(--color-primary);
   }
-  @media (min-width: 1024px) { .stop__marker { display: block; } }
+  @media (min-width: 1024px) {
+    .stop__marker {
+      display: block;
+    }
+  }
 
   /* The destination node — end of the drive. Larger, safety-orange, filled. */
   .stop__marker--end {
-    width: 1.5rem; height: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 5px var(--color-background), 0 0 28px 3px oklch(68% 0.2 45 / 0.6);
+    box-shadow:
+      0 0 0 5px var(--color-background),
+      0 0 28px 3px oklch(68% 0.2 45 / 0.6);
   }
-  .stop__marker--end::before { background: var(--color-accent); inset: 4px; }
+  .stop__marker--end::before {
+    background: var(--color-accent);
+    inset: 4px;
+  }
 
   /* ---- The road-line (the signature) -------------------------------------
      A thin two-tone bar evoking a lit lane marking: amber easing into safety
@@ -255,7 +302,11 @@
     border-radius: var(--radius-full);
     background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
   }
-  .roadline--full { width: 100%; height: 3px; border-radius: 0; }
+  .roadline--full {
+    width: 100%;
+    height: 3px;
+    border-radius: 0;
+  }
 
   /* ---- Eyebrow — caps, tracked, amber. Used sparingly. ------------------- */
   .eyebrow {
@@ -267,7 +318,9 @@
     color: var(--color-primary);
   }
 
-  .tnum { font-variant-numeric: tabular-nums; }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
 
   /* ---- Section opener (replaces the 01/02/03 + eyebrow reflex) ------------
      A stop on the road gets a short distance-marker label tied to the spine,
@@ -285,7 +338,8 @@
   }
   .stop-label::before {
     content: "";
-    width: 1.6rem; height: 2px;
+    width: 1.6rem;
+    height: 2px;
     background: var(--color-primary);
     flex: none;
   }
@@ -319,7 +373,10 @@
   }
 
   /* A single word in a heading gets the amber glow underline. */
-  .glow-word { color: var(--color-primary); text-shadow: 0 0 28px oklch(80% 0.16 80 / 0.55); }
+  .glow-word {
+    color: var(--color-primary);
+    text-shadow: 0 0 28px oklch(80% 0.16 80 / 0.55);
+  }
 
   /* ---- Wordmark ----------------------------------------------------------- */
   .wordmark {
@@ -347,18 +404,28 @@
     color: var(--color-primary);
   }
   .badge-nonstop__dot {
-    width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full);
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
     background: var(--color-primary);
     box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7);
     animation: beacon-pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
   @keyframes beacon-pulse {
-    0%   { box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7); }
-    70%  { box-shadow: 0 0 0 0.6rem oklch(80% 0.16 80 / 0); }
-    100% { box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0); }
+    0% {
+      box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 0.6rem oklch(80% 0.16 80 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .badge-nonstop__dot { animation: none; }
+    .badge-nonstop__dot {
+      animation: none;
+    }
   }
 
   /* ---- Buttons ------------------------------------------------------------ */
@@ -384,7 +451,9 @@
       box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .btn:active { transform: translateY(1px); }
+  .btn:active {
+    transform: translateY(1px);
+  }
 
   /* The PHONE button — safety orange, the one CTA that matters. */
   .btn-call {
@@ -414,7 +483,10 @@
     border: 1px solid var(--color-outline-variant);
     border-radius: var(--radius-lg);
     padding: 1.6rem;
-    transition: border-color 220ms ease, transform 220ms ease, background-color 220ms ease;
+    transition:
+      border-color 220ms ease,
+      transform 220ms ease,
+      background-color 220ms ease;
   }
   .card-service:hover {
     border-color: oklch(80% 0.16 80 / 0.5);
@@ -422,7 +494,9 @@
     transform: translateY(-3px);
   }
   @media (prefers-reduced-motion: reduce) {
-    .card-service:hover { transform: none; }
+    .card-service:hover {
+      transform: none;
+    }
   }
 
   /* ---- Service tiles (Servicii stop) -------------------------------------
@@ -439,11 +513,18 @@
       grid-template-columns: repeat(2, 1fr);
       grid-auto-rows: 1fr;
     }
-    .svc-grid__lead { grid-column: 1 / -1; }
+    .svc-grid__lead {
+      grid-column: 1 / -1;
+    }
   }
   @media (min-width: 1024px) {
-    .svc-grid { grid-template-columns: repeat(3, 1fr); }
-    .svc-grid__lead { grid-column: 1 / 3; grid-row: span 1; }
+    .svc-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .svc-grid__lead {
+      grid-column: 1 / 3;
+      grid-row: span 1;
+    }
   }
   .svc-tile {
     position: relative;
@@ -455,14 +536,21 @@
     background-color: var(--color-surface-container);
     border: 1px solid var(--color-outline-variant);
     overflow: hidden;
-    transition: border-color 220ms ease, background-color 220ms ease, transform 220ms ease;
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      transform 220ms ease;
   }
   .svc-tile:hover {
     border-color: oklch(80% 0.16 80 / 0.45);
     background-color: var(--color-surface-container-high);
     transform: translateY(-3px);
   }
-  @media (prefers-reduced-motion: reduce) { .svc-tile:hover { transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .svc-tile:hover {
+      transform: none;
+    }
+  }
   /* The lead tile carries an amber edge-glow so it reads as the real product. */
   .svc-tile--lead {
     background:
@@ -471,8 +559,12 @@
     border-color: oklch(80% 0.16 80 / 0.3);
   }
   .svc-tile__icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.6rem; height: 2.6rem; flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: none;
     border-radius: var(--radius-md);
     background: var(--color-primary-container);
     color: var(--color-primary);
@@ -482,12 +574,18 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.01em;
-    line-height: 1.0;
+    line-height: 1;
     font-size: 1.2rem;
     color: var(--color-on-surface);
   }
-  .svc-tile--lead .svc-tile__title { font-size: clamp(1.5rem, 3vw, 2rem); }
-  .svc-tile__body { color: var(--color-on-surface-variant); font-size: 0.95rem; line-height: 1.5; }
+  .svc-tile--lead .svc-tile__title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  .svc-tile__body {
+    color: var(--color-on-surface-variant);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 
   /* Small uppercase chip/tag. */
   .chip {
@@ -518,39 +616,69 @@
   }
 
   /* ---- Process timeline (Cum funcționează) ------------------------------- */
-  .timeline { position: relative; display: grid; gap: 2rem; }
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+  }
   .timeline::before {
     content: "";
     position: absolute;
     background: linear-gradient(var(--tl-dir, 90deg), var(--color-primary) 0%, var(--color-accent) 100%);
     opacity: 0.5;
-    left: 1rem; top: 0.6rem; bottom: 0.6rem; width: 2px;
+    left: 1rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 2px;
     --tl-dir: 180deg;
   }
-  .timeline__step { position: relative; padding-left: 3.5rem; }
+  .timeline__step {
+    position: relative;
+    padding-left: 3.5rem;
+  }
   .timeline__node {
-    position: absolute; left: 0; top: 0;
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.1rem; height: 2.1rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
     border-radius: var(--radius-full);
     background: var(--color-surface);
     border: 2px solid var(--color-primary);
     font-family: var(--font-display);
-    font-weight: 800; font-size: 1.05rem;
+    font-weight: 800;
+    font-size: 1.05rem;
     color: var(--color-primary);
     font-variant-numeric: tabular-nums;
   }
   @media (min-width: 1024px) {
-    .timeline { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-    .timeline::before {
-      left: 1.05rem; right: 1.05rem; top: 1.05rem; bottom: auto;
-      width: auto; height: 2px; --tl-dir: 90deg;
+    .timeline {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
     }
-    .timeline__step { padding-left: 0; padding-top: 3.25rem; }
+    .timeline::before {
+      left: 1.05rem;
+      right: 1.05rem;
+      top: 1.05rem;
+      bottom: auto;
+      width: auto;
+      height: 2px;
+      --tl-dir: 90deg;
+    }
+    .timeline__step {
+      padding-left: 0;
+      padding-top: 3.25rem;
+    }
   }
 
   /* ---- Scroll reveal (visible by default; JS opts into hidden start) ------ */
-  .reveal { opacity: 1; transform: none; }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
   .js-reveal .reveal {
     opacity: 0;
     transform: translateY(16px);
@@ -558,11 +686,20 @@
       opacity 750ms cubic-bezier(0.16, 1, 0.3, 1),
       transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .js-reveal .reveal.is-visible { opacity: 1; transform: translateY(0); }
-  .js-reveal .reveal.reveal-now { transition: none; }
+  .js-reveal .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .js-reveal .reveal.reveal-now {
+    transition: none;
+  }
   @media (prefers-reduced-motion: reduce) {
     .js-reveal .reveal,
-    .js-reveal .reveal.is-visible { opacity: 1; transform: none; transition: none; }
+    .js-reveal .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   /* ---- Mobile menu overlay (MobileMenu.tsx island) ----------------------- */
@@ -576,20 +713,38 @@
     animation: mobile-menu-link-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(70ms + var(--i, 0) * 45ms);
   }
-  @keyframes mobile-menu-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes mobile-menu-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   @keyframes mobile-menu-link-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .mobile-menu, .mobile-menu__link { animation: none; }
+    .mobile-menu,
+    .mobile-menu__link {
+      animation: none;
+    }
   }
 
   /* ---- Call dock (mobile, CallDock.tsx) ----------------------------------
      Persistent bottom bar — the load-bearing call action. */
   .call-dock {
     position: fixed;
-    left: 0; right: 0; bottom: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: var(--z-sticky);
     padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(to top, oklch(11% 0.012 255) 60%, oklch(11% 0.012 255 / 0));
@@ -612,25 +767,35 @@
     box-shadow: 0 8px 30px -8px oklch(68% 0.2 45 / 0.7);
   }
   .call-dock__icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.2rem; height: 2.2rem; border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: var(--radius-full);
     background: oklch(100% 0 0 / 0.18);
   }
   .call-dock__toggle {
     width: 3rem;
-    display: inline-flex; align-items: center; justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: var(--radius-md);
     background-color: var(--color-surface-container-high);
     color: var(--color-on-surface);
     border: 1px solid var(--color-outline-variant);
   }
   .call-dock__more {
-    display: flex; flex-direction: column; gap: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     margin-bottom: 0.5rem;
     animation: dock-more-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .call-dock__more-link {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0.7rem 1rem;
     border-radius: var(--radius-md);
     background-color: var(--color-surface-container-high);
@@ -638,19 +803,36 @@
     color: var(--color-on-surface);
     text-decoration: none;
   }
-  @keyframes dock-more-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  @media (prefers-reduced-motion: reduce) { .call-dock__more { animation: none; } }
+  @keyframes dock-more-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .call-dock__more {
+      animation: none;
+    }
+  }
   /* Page gets bottom padding on mobile so the dock never covers content. */
   @media (max-width: 1023px) {
-    body { padding-bottom: 5.5rem; }
+    body {
+      padding-bottom: 5.5rem;
+    }
   }
 }
 
 /* Utility: hide visually but keep for screen readers (skip link). */
 .sr-only {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

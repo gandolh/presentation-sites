@@ -27,7 +27,15 @@ export default function MobileMenu({ links }: { links: Link[] }) {
         aria-label="Deschide meniul"
         className="nav-burger inline-flex items-center justify-center w-11 h-11 rounded-md text-[var(--color-on-surface)] hover:bg-white/10 transition-colors"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        >
           <line x1="4" y1="7" x2="20" y2="7" />
           <line x1="4" y1="12" x2="20" y2="12" />
           <line x1="4" y1="17" x2="20" y2="17" />
@@ -47,7 +55,15 @@ export default function MobileMenu({ links }: { links: Link[] }) {
               aria-label="Închide meniul"
               className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <line x1="6" y1="6" x2="18" y2="18" />
                 <line x1="18" y1="6" x2="6" y2="18" />
               </svg>
@@ -71,12 +87,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
           {/* All three numbers — the point of the site. */}
           <div className="px-6 pb-8 pt-4 border-t border-white/10 flex flex-col gap-3">
             {phones.map((p) => (
-              <a
-                key={p.e164}
-                href={telLink(p.e164)}
-                onClick={follow}
-                className="btn btn-call w-full justify-between"
-              >
+              <a key={p.e164} href={telLink(p.e164)} onClick={follow} className="btn btn-call w-full justify-between">
                 <span className="text-[0.8rem] font-semibold opacity-80">{p.label}</span>
                 <span className="tnum text-[1.05rem]">{p.display}</span>
               </a>

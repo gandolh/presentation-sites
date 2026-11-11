@@ -17,43 +17,35 @@ const legalLinks = [
 ];
 ---
 
-<footer
-  class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)] mt-12"
->
+<footer class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)] mt-12">
   <div class="container-page py-16 grid gap-12 md:grid-cols-4">
     <div>
       <span class="wordmark text-3xl">Unghii by Ana</span>
-      <p class="mt-4 text-sm opacity-80 max-w-xs">
-        {site.description}
-      </p>
+      <p class="mt-4 text-sm opacity-80 max-w-xs">{site.description}</p>
     </div>
 
     <nav class="flex flex-col gap-1">
       <span class="label-md opacity-60 uppercase mb-2">Navigare</span>
-      {
-        links.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map((link) => (
+        <a
+          href={withBase(link.href)}
+          class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <nav class="flex flex-col gap-1">
       <span class="label-md opacity-60 uppercase mb-2">Legal</span>
-      {
-        legalLinks.map((link) => (
-          <a
-            href={withBase(link.href)}
-            class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {legalLinks.map((link) => (
+        <a
+          href={withBase(link.href)}
+          class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="flex flex-col gap-1">
@@ -61,13 +53,15 @@ const legalLinks = [
       <a
         href={`tel:+${site.phoneE164}`}
         class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100"
-        >{site.phone}</a
       >
+        {site.phone}
+      </a>
       <a
         href={`mailto:${site.email}`}
         class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100"
-        >{site.email}</a
       >
+        {site.email}
+      </a>
       <p class="text-sm opacity-90 mt-1">
         {site.address}, {site.city}
       </p>
@@ -119,18 +113,15 @@ const legalLinks = [
   <div class="footer-legal border-t border-white/10 py-6 text-xs opacity-70">
     <div class="container-page space-y-3">
       <p class="leading-relaxed">
-        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {
-          site.legal.regNumber
-        }{
-          site.legal.form === "SRL" && site.legal.shareCapital
-            ? ` · Capital social: ${site.legal.shareCapital}`
-            : ""
-        } · {site.address}, {site.city}, jud. {site.county}
+        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}
+        {site.legal.form === "SRL" && site.legal.shareCapital
+          ? ` · Capital social: ${site.legal.shareCapital}`
+          : ""} · {site.address}, {site.city}, jud. {site.county}
       </p>
-      <div
-        class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
-      >
-        <p>© {year} {site.name}. Toate drepturile rezervate.</p>
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <p>
+          © {year} {site.name}. Toate drepturile rezervate.
+        </p>
         <a
           href="https://reclamatiisal.anpc.ro/"
           target="_blank"
@@ -138,10 +129,9 @@ const legalLinks = [
           aria-label="ANPC: Soluționarea Alternativă a Litigiilor"
           class="inline-flex items-center gap-2 hover:opacity-100"
         >
-          <span
-            class="inline-flex items-center justify-center rounded bg-white/10 px-2 py-1 label-md uppercase"
-            >ANPC</span
-          >
+          <span class="inline-flex items-center justify-center rounded bg-white/10 px-2 py-1 label-md uppercase">
+            ANPC
+          </span>
           <span>Soluționarea Alternativă a Litigiilor (SAL)</span>
         </a>
       </div>

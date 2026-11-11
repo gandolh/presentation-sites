@@ -10,31 +10,27 @@ const links = [
 ];
 ---
 
-<header
-  id="site-nav"
-  class="sticky md:fixed inset-x-0 z-40 transition-colors duration-300"
-  data-scrolled="false"
->
+<header id="site-nav" class="sticky md:fixed inset-x-0 z-40 transition-colors duration-300" data-scrolled="false">
   <div class="container-page flex items-center justify-between py-4">
-    <a href="#acasa" class="wordmark text-2xl md:text-3xl">Unghii by Ana</a>
+    <a href="#acasa" class="wordmark text-2xl md:text-3xl">
+      Unghii by Ana
+    </a>
 
     <nav class="hidden md:flex items-center gap-8">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class="label-md inline-flex items-center min-h-[24px] py-1 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="label-md inline-flex items-center min-h-[24px] py-1 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href="#programari" class="hidden md:inline-flex btn btn-primary"
-        >Programează-te</a
-      >
+      <a href="#programari" class="hidden md:inline-flex btn btn-primary">
+        Programează-te
+      </a>
       <MobileMenu client:load />
     </div>
   </div>
@@ -59,13 +55,10 @@ const links = [
 
     const sentinel = document.createElement("div");
     sentinel.setAttribute("aria-hidden", "true");
-    sentinel.style.cssText =
-      "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;";
+    sentinel.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;";
     document.body.prepend(sentinel);
 
-    new IntersectionObserver(
-      ([entry]) => set(!entry.isIntersecting),
-    ).observe(sentinel);
+    new IntersectionObserver(([entry]) => set(!entry.isIntersecting)).observe(sentinel);
   })();
 </script>
 

@@ -11,11 +11,15 @@ const lead = {
 };
 const tiles = [
   { title: "Intervenții rapide", body: "Pornim din Târgu-Jiu spre tine în câteva minute, ziua sau noaptea." },
-  { title: "Asistență la fața locului", body: "Pană, baterie descărcată, ai rămas fără combustibil — uneori te punem pe drum pe loc." },
+  {
+    title: "Asistență la fața locului",
+    body: "Pană, baterie descărcată, ai rămas fără combustibil — uneori te punem pe drum pe loc.",
+  },
   { title: "Transport în siguranță", body: "Ancorare corectă, mașina ajunge la service exact cum a plecat." },
   { title: "Prețuri transparente", body: "Îți spunem costul la telefon, înainte să pornim. Fără surprize." },
 ];
 ---
+
 <section id="servicii" class="stop section relative">
   <span class="stop__marker" aria-hidden="true"></span>
   <div class="container-page relative z-[2]">
@@ -26,8 +30,7 @@ const tiles = [
           Un singur lucru, <span class="glow-word">făcut bine.</span>
         </h2>
         <p class="mt-5 max-w-md text-lg text-[var(--color-on-surface-variant)]">
-          Tractări auto pe platformă, non-stop. Restul sunt lucrurile care fac
-          intervenția rapidă și fără bătăi de cap.
+          Tractări auto pe platformă, non-stop. Restul sunt lucrurile care fac intervenția rapidă și fără bătăi de cap.
         </p>
       </div>
       <a href={telLink(primaryPhone.e164)} class="btn btn-call shrink-0 reveal">
@@ -39,9 +42,19 @@ const tiles = [
     <div class="svc-grid mt-10 reveal">
       <article class="svc-tile svc-tile--lead svc-grid__lead">
         <span class="svc-tile__icon" aria-hidden="true">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 7h11v8H3z" /><path d="M14 10h4l3 3v2h-7z" />
-            <circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" />
+          <svg
+            class="w-6 h-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 7h11v8H3z" />
+            <path d="M14 10h4l3 3v2h-7z" />
+            <circle cx="7" cy="18" r="2" />
+            <circle cx="17" cy="18" r="2" />
           </svg>
         </span>
         <h3 class="svc-tile__title">{lead.title}</h3>
@@ -51,8 +64,17 @@ const tiles = [
       {tiles.map((t) => (
         <article class="svc-tile">
           <span class="svc-tile__icon" aria-hidden="true">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+            <svg
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
             </svg>
           </span>
           <h3 class="svc-tile__title">{t.title}</h3>

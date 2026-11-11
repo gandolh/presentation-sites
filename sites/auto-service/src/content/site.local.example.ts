@@ -16,21 +16,21 @@ import type { SiteOverrides } from "./site";
 
 export const siteOverrides: SiteOverrides = {
   // --- Contact -------------------------------------------------------------
-  phone: "07XX XXX XXX",        // afișat: ex. "0723 456 789"
-  phoneE164: "40700000000",     // pentru tel: — fără +, fără spații
-  whatsappE164: "40700000000",  // pentru wa.me/ — fără +, fără spații
+  phone: "07XX XXX XXX", // afișat: ex. "0723 456 789"
+  phoneE164: "40700000000", // pentru tel: — fără +, fără spații
+  whatsappE164: "40700000000", // pentru wa.me/ — fără +, fără spații
   email: "contact@bavauto.ro",
   address: "Str. ... nr. ...",
   postalCode: "210000",
 
   // --- Legal / identificare firmă (Legea 365/2002) ------------------------
   legal: {
-    form: "SRL",                          // "SRL" | "PFA" | "II"
-    legalName: "BavAuto Gorj S.R.L.",     // exact din actul constitutiv
-    cui: "RO00000000",                    // CUI / CIF de la ANAF
-    regNumber: "J18/000/2024",            // J… (SRL) sau F… (PFA)
-    shareCapital: "200 RON",              // doar SRL; "" pentru PFA
-    rarAuth: "Autorizație RAR nr. ____",  // dacă atelierul e autorizat RAR; "" dacă nu se aplică
+    form: "SRL", // "SRL" | "PFA" | "II"
+    legalName: "BavAuto Gorj S.R.L.", // exact din actul constitutiv
+    cui: "RO00000000", // CUI / CIF de la ANAF
+    regNumber: "J18/000/2024", // J… (SRL) sau F… (PFA)
+    shareCapital: "200 RON", // doar SRL; "" pentru PFA
+    rarAuth: "Autorizație RAR nr. ____", // dacă atelierul e autorizat RAR; "" dacă nu se aplică
     dpoEmail: "contact@bavauto.ro",
   },
 

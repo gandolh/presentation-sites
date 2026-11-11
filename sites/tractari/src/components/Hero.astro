@@ -10,6 +10,7 @@ import { site, primaryPhone, telLink } from "../content/site";
 // All copy is real HTML (the no-JS / reduced-motion / SEO source of truth);
 // the WebGL scene degrades to the CSS night-road backdrop.
 ---
+
 <section
   id="hero"
   class="hero-root relative isolate overflow-hidden"
@@ -36,9 +37,8 @@ import { site, primaryPhone, telLink } from "../content/site";
       </h1>
 
       <p class="hero-lede reveal">
-        Ai rămas pe drum în {site.counties.slice(0, -1).join(", ")} sau {site.counties.at(-1)}?
-        Venim cu platforma și ducem mașina în siguranță acolo unde ai nevoie.
-        La orice oră.
+        Ai rămas pe drum în {site.counties.slice(0, -1).join(", ")} sau {site.counties.at(-1)}? Venim cu platforma și
+        ducem mașina în siguranță acolo unde ai nevoie. La orice oră.
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row gap-3 reveal">
@@ -75,11 +75,21 @@ import { site, primaryPhone, telLink } from "../content/site";
     z-index: 0;
     overflow: hidden;
   }
-  :global(.hero-canvas) { position: absolute; inset: 0; z-index: 1; }
-  :global(.hero-canvas canvas) { width: 100%; height: 100%; display: block; }
+  :global(.hero-canvas) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  :global(.hero-canvas canvas) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 
   .hero-stage__backdrop {
-    position: absolute; inset: 0; z-index: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     background:
       radial-gradient(60% 38% at 50% 16%, oklch(80% 0.16 80 / 0.2) 0%, oklch(80% 0.16 80 / 0) 60%),
       radial-gradient(46% 32% at 50% 8%, oklch(95% 0.03 230 / 0.12) 0%, oklch(95% 0.03 230 / 0) 55%),
@@ -87,8 +97,14 @@ import { site, primaryPhone, telLink } from "../content/site";
   }
   .hero-stage__backdrop::after {
     content: "";
-    position: absolute; inset: 0;
-    background: conic-gradient(from 90deg at 50% 118%, transparent 0deg, oklch(45% 0.014 250 / 0.3) 10deg, transparent 20deg);
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(
+      from 90deg at 50% 118%,
+      transparent 0deg,
+      oklch(45% 0.014 250 / 0.3) 10deg,
+      transparent 20deg
+    );
     opacity: 0.8;
   }
 
@@ -96,27 +112,45 @@ import { site, primaryPhone, telLink } from "../content/site";
      plus a gentle full-frame vignette so the scene reads as a photographed
      plate and the type never floats on a bright patch. */
   .hero-scrim {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
     background:
-      linear-gradient(to top, oklch(11% 0.012 255 / 0.92) 0%, oklch(13% 0.012 255 / 0.55) 28%, oklch(13% 0.012 255 / 0) 58%),
+      linear-gradient(
+        to top,
+        oklch(11% 0.012 255 / 0.92) 0%,
+        oklch(13% 0.012 255 / 0.55) 28%,
+        oklch(13% 0.012 255 / 0) 58%
+      ),
       linear-gradient(to right, oklch(11% 0.012 255 / 0.7) 0%, oklch(11% 0.012 255 / 0) 55%),
       radial-gradient(120% 80% at 50% 30%, oklch(11% 0.012 255 / 0) 55%, oklch(8% 0.012 255 / 0.6) 100%);
   }
 
   .hero-kicker {
-    display: inline-flex; align-items: center; gap: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--font-body);
-    font-weight: 700; font-size: 0.82rem;
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--color-primary);
   }
   .hero-beacon {
-    width: 0.55rem; height: 0.55rem; border-radius: var(--radius-full);
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: var(--radius-full);
     background: var(--color-primary);
     box-shadow: 0 0 0 0 oklch(80% 0.16 80 / 0.7);
     animation: beacon-pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
-  @media (prefers-reduced-motion: reduce) { .hero-beacon { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-beacon {
+      animation: none;
+    }
+  }
 
   .hero-title {
     margin-top: 1.1rem;
@@ -138,19 +172,38 @@ import { site, primaryPhone, telLink } from "../content/site";
   }
 
   .scroll-cue {
-    width: 1px; height: 40px;
+    width: 1px;
+    height: 40px;
     background: linear-gradient(var(--color-primary), transparent);
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
   }
   .scroll-cue::after {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 11px;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 11px;
     background: var(--color-primary);
     animation: scroll-cue 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
   @keyframes scroll-cue {
-    0% { transform: translateY(-12px); opacity: 0; }
-    40% { opacity: 1; }
-    100% { transform: translateY(42px); opacity: 0; }
+    0% {
+      transform: translateY(-12px);
+      opacity: 0;
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(42px);
+      opacity: 0;
+    }
   }
-  @media (prefers-reduced-motion: reduce) { .scroll-cue::after { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue::after {
+      animation: none;
+    }
+  }
 </style>

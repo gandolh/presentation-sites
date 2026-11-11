@@ -17,9 +17,7 @@ test("parses a WhatsApp inbound text message", () => {
         changes: [
           {
             value: {
-              messages: [
-                { from: "40755123456", type: "text", text: { body: "Programare" }, timestamp: "1700000000" },
-              ],
+              messages: [{ from: "40755123456", type: "text", text: { body: "Programare" }, timestamp: "1700000000" }],
             },
           },
         ],
@@ -47,9 +45,7 @@ test("parses an Instagram messaging event", () => {
     object: "instagram",
     entry: [
       {
-        messaging: [
-          { sender: { id: "ig_123" }, message: { text: "Bună" }, timestamp: 1700000000000 },
-        ],
+        messaging: [{ sender: { id: "ig_123" }, message: { text: "Bună" }, timestamp: 1700000000000 }],
       },
     ],
   };
@@ -64,9 +60,7 @@ test("ignores echo messages (our own outbound) on Messenger", () => {
     object: "page",
     entry: [
       {
-        messaging: [
-          { sender: { id: "page" }, message: { text: "auto-reply", is_echo: true }, timestamp: 1 },
-        ],
+        messaging: [{ sender: { id: "page" }, message: { text: "auto-reply", is_echo: true }, timestamp: 1 }],
       },
     ],
   };
@@ -114,11 +108,7 @@ async function withServer(run: (port: number, dispatched: InboundMessage[]) => P
 }
 
 /** POST a body, optionally streamed in chunks without a content-length. */
-function post(
-  port: number,
-  body: string | Buffer[],
-  headers: Record<string, string> = {},
-): Promise<number> {
+function post(port: number, body: string | Buffer[], headers: Record<string, string> = {}): Promise<number> {
   return new Promise((resolve, reject) => {
     const req = request({ port, method: "POST", path: "/bots/webhook", headers }, (res) => {
       res.resume();
@@ -146,7 +136,9 @@ const sign = (body: string) => `sha256=${createHmac("sha256", SECRET).update(bod
 
 const signedMessage = JSON.stringify({
   object: "whatsapp_business_account",
-  entry: [{ changes: [{ value: { messages: [{ from: "40755123456", type: "text", text: { body: "Programare" } }] } }] }],
+  entry: [
+    { changes: [{ value: { messages: [{ from: "40755123456", type: "text", text: { body: "Programare" } }] } }] },
+  ],
 });
 
 test("server: a correctly signed small body gets 200 and is dispatched", async () => {
@@ -179,10 +171,14 @@ test("server: a declared oversized body gets 413 before any of it is read", asyn
 test("server: a streamed oversized body (no content-length) gets 413 and is not dispatched", async () => {
   await withServer(async (port, dispatched) => {
     const chunk = Buffer.alloc(64 * 1024, "x");
-    const status = await post(port, Array.from({ length: 64 }, () => chunk), {
-      "transfer-encoding": "chunked",
-      "x-hub-signature-256": "sha256=00",
-    });
+    const status = await post(
+      port,
+      Array.from({ length: 64 }, () => chunk),
+      {
+        "transfer-encoding": "chunked",
+        "x-hub-signature-256": "sha256=00",
+      },
+    );
     assert.equal(status, 413);
     assert.equal(dispatched.length, 0);
   });

@@ -13,13 +13,7 @@
 
 import type { CoreDeps, BotModule, Config } from "../../core/index.ts";
 import { Cadence } from "../../core/index.ts";
-import {
-  makeReminderJob,
-  makeConfirmationJob,
-  makePurgeJob,
-  jobDepsFrom,
-  type Clock,
-} from "./jobs.ts";
+import { makeReminderJob, makeConfirmationJob, makePurgeJob, jobDepsFrom, type Clock } from "./jobs.ts";
 import { makeInboundHandler, handlerDepsFrom } from "./handler.ts";
 
 /** Allow tests to inject a deterministic clock; defaults to real time. */
@@ -43,11 +37,7 @@ export const createBot = (deps: CoreDeps, opts: WhatsAppBotOptions = {}): BotMod
       // no-show reducer.
       scheduler.register("whatsapp:reminders", Cadence.hourly, makeReminderJob(jd));
       // Retention purge (COMPLIANCE #10): nightly, config-driven windows.
-      scheduler.register(
-        "whatsapp:purge",
-        Cadence.daily,
-        makePurgeJob({ ...jd, config: deps.config }),
-      );
+      scheduler.register("whatsapp:purge", Cadence.daily, makePurgeJob({ ...jd, config: deps.config }));
       log.debug("whatsapp jobs registered", {
         jobs: ["whatsapp:confirmations", "whatsapp:reminders", "whatsapp:purge"],
       });

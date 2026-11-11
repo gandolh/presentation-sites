@@ -9,9 +9,5 @@
 // spurious "possibly undefined" errors at every `.map()` over site data.
 // Arrays are therefore all-or-nothing.
 export type SiteOverridesOf<T> = {
-  [K in keyof T]?: T[K] extends readonly unknown[]
-    ? T[K]
-    : T[K] extends object
-      ? Partial<T[K]>
-      : T[K];
+  [K in keyof T]?: T[K] extends readonly unknown[] ? T[K] : T[K] extends object ? Partial<T[K]> : T[K];
 };

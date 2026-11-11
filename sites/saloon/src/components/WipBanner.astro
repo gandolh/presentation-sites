@@ -9,9 +9,7 @@
 <div id="wip-banner">
   <div class="container-page wip-banner__inner">
     <span class="wip-banner__dot" aria-hidden="true"></span>
-    <span class="wip-banner__text">
-      Site în lucru. Pentru programări, scrie-mi oricând pe WhatsApp.
-    </span>
+    <span class="wip-banner__text">Site în lucru. Pentru programări, scrie-mi oricând pe WhatsApp.</span>
   </div>
 </div>
 
@@ -70,10 +68,7 @@
     if (!banner) return;
     const mq = window.matchMedia("(min-width: 768px)");
     function setHeight() {
-      document.documentElement.style.setProperty(
-        "--wip-banner-h",
-        mq.matches ? banner.offsetHeight + "px" : "0px",
-      );
+      document.documentElement.style.setProperty("--wip-banner-h", mq.matches ? banner.offsetHeight + "px" : "0px");
     }
     setHeight();
     window.addEventListener("resize", setHeight, { passive: true });

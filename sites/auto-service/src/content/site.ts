@@ -31,7 +31,13 @@ export type OpeningHours = {
 } & ({ opens: string; closes: string; closed?: never } | { closed: true });
 
 const HOURS: OpeningHours[] = [
-  { label: "Luni – Vineri", short: "L–V", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
+  {
+    label: "Luni – Vineri",
+    short: "L–V",
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "18:00",
+  },
   { label: "Sâmbătă", short: "Sâ", days: ["Saturday"], opens: "09:00", closes: "14:00" },
   { label: "Duminică", short: "D", days: ["Sunday"], closed: true },
 ];
@@ -127,8 +133,7 @@ const defaults = {
 // tailor the opener; omit for the generic greeting.
 export function waLink(message?: string): string {
   const text =
-    message ??
-    "Bună ziua! Aș dori o programare / un deviz pentru BMW-ul meu. Model și an: ___. Problema: ___.";
+    message ?? "Bună ziua! Aș dori o programare / un deviz pentru BMW-ul meu. Model și an: ___. Problema: ___.";
   return `https://wa.me/${site.whatsappE164}?text=${encodeURIComponent(text)}`;
 }
 
@@ -145,12 +150,8 @@ export type SiteOverrides = SiteOverridesOf<typeof defaults>;
 // the file is absent, so a fresh clone / CI without secrets falls back cleanly
 // to the placeholders above. The path is a literal so Vite can statically
 // analyse it.
-const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>(
-  "./site.local.ts",
-  { eager: true },
-);
-const overrides: SiteOverrides =
-  Object.values(localModules)[0]?.siteOverrides ?? {};
+const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>("./site.local.ts", { eager: true });
+const overrides: SiteOverrides = Object.values(localModules)[0]?.siteOverrides ?? {};
 
 // Shallow merge for top-level scalars/arrays, one level of nested merge for the
 // object groups (legal / social / stats / geo) so a local file can override a

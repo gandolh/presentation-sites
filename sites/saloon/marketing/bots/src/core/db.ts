@@ -78,9 +78,7 @@ export function createInMemoryDb(): Db {
       return appointments.get(id);
     },
     async listAppointmentsBetween(fromIso, toIso) {
-      return [...appointments.values()].filter(
-        (a) => a.startsAt >= fromIso && a.startsAt < toIso,
-      );
+      return [...appointments.values()].filter((a) => a.startsAt >= fromIso && a.startsAt < toIso);
     },
     async isCalendarFull(_days) {
       // Stub: scaffold has no real calendar. Real impl checks free slots.

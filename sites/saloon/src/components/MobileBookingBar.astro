@@ -121,9 +121,7 @@ import { site, waLink } from "../content/site";
     // WhatsApp CTA; the footer's WhatsApp link is just a small social icon, so
     // the bar stays visible over the footer — that's exactly where a mobile
     // visitor instinctively looks for a way to get in touch.
-    const suppressors = ["#programari", "#contact"]
-      .map((sel) => document.querySelector(sel))
-      .filter(Boolean);
+    const suppressors = ["#programari", "#contact"].map((sel) => document.querySelector(sel)).filter(Boolean);
 
     let suppressedBySection = false;
     let menuOpen = false;

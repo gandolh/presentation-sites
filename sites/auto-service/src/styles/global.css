@@ -35,19 +35,19 @@
   /* ---- The binnacle: ground and steel wells ------------------------------
      Near-black graphite carrying the faintest cool cast. Panels step UP in
      lightness out of the ground the way a well is machined into a bezel. */
-  --color-background: oklch(13.5% 0.008 255);              /* ~#07090c */
+  --color-background: oklch(13.5% 0.008 255); /* ~#07090c */
   --color-surface: oklch(13.5% 0.008 255);
-  --color-surface-container-lowest: oklch(17% 0.010 255);  /* default panel */
+  --color-surface-container-lowest: oklch(17% 0.01 255); /* default panel */
   --color-surface-container-low: oklch(20% 0.012 256);
   --color-surface-container: oklch(23.5% 0.014 256);
   --color-surface-container-high: oklch(27.5% 0.016 257);
   --color-surface-container-highest: oklch(31.5% 0.018 257);
 
   /* ---- Printed legends (ink on the dial face) ---------------------------- */
-  --color-on-surface: oklch(96% 0.004 250);          /* silver-white legends */
-  --color-on-surface-variant: oklch(76% 0.010 255);  /* secondary print */
+  --color-on-surface: oklch(96% 0.004 250); /* silver-white legends */
+  --color-on-surface-variant: oklch(76% 0.01 255); /* secondary print */
   --color-outline: oklch(48% 0.014 256);
-  --color-outline-variant: oklch(29% 0.014 256);     /* hairline / bezel edge */
+  --color-outline-variant: oklch(29% 0.014 256); /* hairline / bezel edge */
 
   /* ---- Inverse: the brushed-aluminium console trim -----------------------
      THE TRIM RULE. The one light material in this world is the anodised
@@ -59,30 +59,30 @@
   --color-inverse-surface-2: oklch(93% 0.004 250);
   --color-inverse-on-surface: oklch(20% 0.012 256);
   --color-inverse-on-surface-variant: oklch(40% 0.014 256);
-  --color-link-on-trim: oklch(42% 0.140 45);         /* the one link colour ON the trim */
+  --color-link-on-trim: oklch(42% 0.14 45); /* the one link colour ON the trim */
 
   /* ---- PRIMARY: the illumination -----------------------------------------
      BMW's night-cluster amber. This is the only accent hue the system owns,
      and it appears only on what is live. Near-black label on the fill clears
      AA comfortably (~9:1); the brighter tint is the one used AS TEXT on the
      ground (~11:1). */
-  --color-primary: oklch(72% 0.170 58);              /* ~#ff8a1e lit control */
-  --color-primary-hover: oklch(78% 0.155 62);        /* filament brightens */
-  --color-on-primary: oklch(17% 0.040 55);           /* dark bulb-glass ink */
-  --color-primary-container: oklch(26% 0.055 58);    /* dim amber well */
-  --color-on-primary-container: oklch(88% 0.080 62);
-  --color-primary-bright: oklch(82% 0.125 65);       /* amber AS TEXT on dark */
-  --color-primary-edge: oklch(46% 0.060 58);         /* amber-tinted hover border */
+  --color-primary: oklch(72% 0.17 58); /* ~#ff8a1e lit control */
+  --color-primary-hover: oklch(78% 0.155 62); /* filament brightens */
+  --color-on-primary: oklch(17% 0.04 55); /* dark bulb-glass ink */
+  --color-primary-container: oklch(26% 0.055 58); /* dim amber well */
+  --color-on-primary-container: oklch(88% 0.08 62);
+  --color-primary-bright: oklch(82% 0.125 65); /* amber AS TEXT on dark */
+  --color-primary-edge: oklch(46% 0.06 58); /* amber-tinted hover border */
 
   /* ---- M motorsport tri-color: the LED segment coding --------------------
      Canonical order, never reordered: light blue -> indigo -> red. */
   --color-m-blue: oklch(68% 0.15 242);
   --color-m-indigo: oklch(52% 0.17 285);
-  --color-m-red: oklch(60% 0.22 27);                 /* also the needle */
+  --color-m-red: oklch(60% 0.22 27); /* also the needle */
 
   /* ---- Status ------------------------------------------------------------ */
-  --color-success: oklch(72% 0.16 150);              /* "deschis acum" */
-  --color-warning: oklch(80% 0.15 82);               /* check-control amber */
+  --color-success: oklch(72% 0.16 150); /* "deschis acum" */
+  --color-warning: oklch(80% 0.15 82); /* check-control amber */
   --color-error: oklch(64% 0.22 27);
   --color-on-error: oklch(99% 0 0);
 
@@ -131,7 +131,9 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -146,18 +148,28 @@
     font-variant-numeric: tabular-nums;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
-    font-variation-settings: "wdth" 112, "wght" 800;
+    font-variation-settings:
+      "wdth" 112,
+      "wght" 800;
     font-weight: 800;
     line-height: 1.08;
     letter-spacing: -0.026em;
     text-wrap: balance;
   }
 
-  p { text-wrap: pretty; }
+  p {
+    text-wrap: pretty;
+  }
 
-  a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
 
   ::selection {
     background-color: var(--color-primary);
@@ -178,11 +190,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background-image: repeating-linear-gradient(
-      0deg,
-      oklch(100% 0 0 / 0.014) 0 1px,
-      transparent 1px 3px
-    );
+    background-image: repeating-linear-gradient(0deg, oklch(100% 0 0 / 0.014) 0 1px, transparent 1px 3px);
   }
 }
 
@@ -197,10 +205,14 @@
   }
 
   @media (min-width: 768px) {
-    .container-page { padding-inline: 2.25rem; }
+    .container-page {
+      padding-inline: 2.25rem;
+    }
   }
 
-  .section { padding-block: clamp(3.25rem, 6.5vw, 5.75rem); }
+  .section {
+    padding-block: clamp(3.25rem, 6.5vw, 5.75rem);
+  }
 
   /* ---- Printed legend ------------------------------------------------------
      The small tracked mono label that appears on a real dial: a field name, a
@@ -214,7 +226,9 @@
     text-transform: uppercase;
     color: var(--color-on-surface-variant);
   }
-  .legend--dim { color: var(--color-outline); }
+  .legend--dim {
+    color: var(--color-outline);
+  }
 
   /* Readings: part numbers, phone, km, codes, hours. */
   .reading {
@@ -241,7 +255,9 @@
       var(--color-m-red) 67% 100%
     );
   }
-  .m-stripe--full { width: 100%; }
+  .m-stripe--full {
+    width: 100%;
+  }
   .m-stripe--v {
     width: 3px;
     height: auto;
@@ -265,10 +281,22 @@
     background-color: oklch(24% 0.012 256);
     box-shadow: inset 0 0 0 1px oklch(31% 0.014 256);
   }
-  .led--blue   { background-color: var(--color-m-blue);   box-shadow: 0 0 8px oklch(68% 0.15 242 / 0.7); }
-  .led--indigo { background-color: var(--color-m-indigo); box-shadow: 0 0 8px oklch(52% 0.17 285 / 0.8); }
-  .led--red    { background-color: var(--color-m-red);    box-shadow: 0 0 8px oklch(60% 0.22 27 / 0.75); }
-  .led--amber  { background-color: var(--color-primary);  box-shadow: 0 0 8px oklch(72% 0.17 58 / 0.75); }
+  .led--blue {
+    background-color: var(--color-m-blue);
+    box-shadow: 0 0 8px oklch(68% 0.15 242 / 0.7);
+  }
+  .led--indigo {
+    background-color: var(--color-m-indigo);
+    box-shadow: 0 0 8px oklch(52% 0.17 285 / 0.8);
+  }
+  .led--red {
+    background-color: var(--color-m-red);
+    box-shadow: 0 0 8px oklch(60% 0.22 27 / 0.75);
+  }
+  .led--amber {
+    background-color: var(--color-primary);
+    box-shadow: 0 0 8px oklch(72% 0.17 58 / 0.75);
+  }
 
   /* ---- Controls ------------------------------------------------------------
      A button is a switch on the dash: tight radius, firm edge, and the primary
@@ -295,7 +323,9 @@
       box-shadow 200ms var(--ease-out-quart),
       transform 110ms var(--ease-out-quart);
   }
-  .btn:active { transform: translateY(1px); }
+  .btn:active {
+    transform: translateY(1px);
+  }
 
   /* PRIMARY = the phone call. The one lit control on the whole bord. */
   .btn-primary {
@@ -303,21 +333,16 @@
       180deg,
       oklch(78% 0.155 62) 0%,
       var(--color-primary) 58%,
-      oklch(66% 0.170 55) 100%
+      oklch(66% 0.17 55) 100%
     );
     color: var(--color-on-primary);
     box-shadow:
-      inset 0 0 0 1px oklch(86% 0.10 68 / 0.85),
+      inset 0 0 0 1px oklch(86% 0.1 68 / 0.85),
       0 9px 26px -10px oklch(72% 0.17 58 / 0.62),
       0 0 34px -8px oklch(72% 0.17 58 / 0.42);
   }
   .btn-primary:hover {
-    background-image: linear-gradient(
-      180deg,
-      oklch(84% 0.140 66) 0%,
-      oklch(78% 0.155 62) 58%,
-      oklch(70% 0.165 58) 100%
-    );
+    background-image: linear-gradient(180deg, oklch(84% 0.14 66) 0%, oklch(78% 0.155 62) 58%, oklch(70% 0.165 58) 100%);
     box-shadow:
       inset 0 0 0 1px oklch(90% 0.09 70 / 0.9),
       0 10px 30px -10px oklch(74% 0.17 58 / 0.7),
@@ -335,7 +360,9 @@
     border-color: oklch(50% 0.016 256);
     background-color: oklch(23% 0.013 256);
   }
-  .btn-whatsapp :where(svg) { color: var(--color-whatsapp); }
+  .btn-whatsapp :where(svg) {
+    color: var(--color-whatsapp);
+  }
   .trim .btn-whatsapp {
     background-color: transparent;
     color: var(--color-inverse-on-surface);
@@ -345,7 +372,9 @@
     border-color: var(--color-inverse-on-surface);
     background-color: oklch(0% 0 0 / 0.05);
   }
-  .trim .btn-whatsapp :where(svg) { color: oklch(48% 0.13 153); }
+  .trim .btn-whatsapp :where(svg) {
+    color: oklch(48% 0.13 153);
+  }
 
   /* Unlit switch — the default control on the bezel. */
   .btn-outline {
@@ -367,7 +396,10 @@
     background-color: oklch(0% 0 0 / 0.05);
   }
 
-  .btn-lg { padding: 1.1rem 1.9rem; font-size: 1rem; }
+  .btn-lg {
+    padding: 1.1rem 1.9rem;
+    font-size: 1rem;
+  }
 
   /* On the aluminium trim the amber control still reads as the primary action,
      but the bloom goes: a filament glows against night, not against metal. */
@@ -385,7 +417,9 @@
   /* ---- Headings: stamped dial legends, set wide ---------------------------- */
   .heading-xl {
     font-family: var(--font-display);
-    font-variation-settings: "wdth" 112, "wght" 800;
+    font-variation-settings:
+      "wdth" 112,
+      "wght" 800;
     font-weight: 800;
     font-size: clamp(2.7rem, 6.4vw, 4.75rem);
     line-height: 1.02;
@@ -394,7 +428,9 @@
   }
   .heading-lg {
     font-family: var(--font-display);
-    font-variation-settings: "wdth" 110, "wght" 800;
+    font-variation-settings:
+      "wdth" 110,
+      "wght" 800;
     font-weight: 800;
     font-size: clamp(2rem, 4.2vw, 3rem);
     line-height: 1.08;
@@ -403,7 +439,9 @@
   }
   .heading-md {
     font-family: var(--font-display);
-    font-variation-settings: "wdth" 106, "wght" 700;
+    font-variation-settings:
+      "wdth" 106,
+      "wght" 700;
     font-weight: 700;
     font-size: clamp(1.2rem, 2.2vw, 1.5rem);
     line-height: 1.2;
@@ -420,7 +458,9 @@
 
   .wordmark {
     font-family: var(--font-display);
-    font-variation-settings: "wdth" 118, "wght" 800;
+    font-variation-settings:
+      "wdth" 118,
+      "wght" 800;
     font-weight: 800;
     letter-spacing: 0.005em;
     line-height: 1;
@@ -435,11 +475,7 @@
 
   /* Panel that reads as the top edge of the binnacle. */
   .bezel-edge {
-    background-image: linear-gradient(
-      180deg,
-      oklch(20% 0.012 256) 0%,
-      oklch(15% 0.009 255) 100%
-    );
+    background-image: linear-gradient(180deg, oklch(20% 0.012 256) 0%, oklch(15% 0.009 255) 100%);
     box-shadow:
       inset 0 1px 0 oklch(100% 0 0 / 0.055),
       0 1px 0 oklch(0% 0 0 / 0.6);
@@ -465,49 +501,56 @@
         oklch(100% 0 0 / 0.03) 74%,
         oklch(100% 0 0 / 0.34) 100%
       ),
-      repeating-linear-gradient(
-        0deg,
-        oklch(0% 0 0 / 0.055) 0 1px,
-        oklch(100% 0 0 / 0.07) 1px 2px,
-        transparent 2px 4px
-      ),
-      repeating-linear-gradient(
-        0deg,
-        transparent 0 6px,
-        oklch(0% 0 0 / 0.035) 6px 7px,
-        transparent 7px 13px
-      );
+      repeating-linear-gradient(0deg, oklch(0% 0 0 / 0.055) 0 1px, oklch(100% 0 0 / 0.07) 1px 2px, transparent 2px 4px),
+      repeating-linear-gradient(0deg, transparent 0 6px, oklch(0% 0 0 / 0.035) 6px 7px, transparent 7px 13px);
     box-shadow:
       inset 0 1px 0 oklch(100% 0 0 / 0.7),
       inset 0 -1px 0 oklch(0% 0 0 / 0.16);
     border-block: 1px solid oklch(0% 0 0 / 0.22);
   }
-  .trim :where(h1, h2, h3, h4, strong) { color: var(--color-inverse-on-surface); }
-  .trim :where(.legend) { color: var(--color-inverse-on-surface-variant); }
+  .trim :where(h1, h2, h3, h4, strong) {
+    color: var(--color-inverse-on-surface);
+  }
+  .trim :where(.legend) {
+    color: var(--color-inverse-on-surface-variant);
+  }
 
   /* ---- Fields --------------------------------------------------------------- */
   .input {
     width: 100%;
     padding: 0.85rem 1rem;
     border-radius: var(--radius-md);
-    background-color: oklch(17% 0.010 255);
+    background-color: oklch(17% 0.01 255);
     border: 1.5px solid var(--color-outline-variant);
     font-family: var(--font-body);
     font-size: 1rem;
     color: var(--color-on-surface);
-    transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+    transition:
+      border-color 160ms var(--ease-out),
+      box-shadow 160ms var(--ease-out);
   }
-  .input::placeholder { color: var(--color-on-surface-variant); opacity: 0.75; }
+  .input::placeholder {
+    color: var(--color-on-surface-variant);
+    opacity: 0.75;
+  }
   .input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px oklch(72% 0.17 58 / 0.17);
   }
-  textarea.input { resize: vertical; min-height: 7rem; }
-  select.input { appearance: none; }
+  textarea.input {
+    resize: vertical;
+    min-height: 7rem;
+  }
+  select.input {
+    appearance: none;
+  }
 
   /* ---- Scroll reveal (visible by default; JS opts into a hidden start) ----- */
-  .reveal { opacity: 1; transform: none; }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
   .js-reveal .reveal {
     opacity: 0;
     transform: translateY(12px);
@@ -515,8 +558,13 @@
       opacity 700ms var(--ease-out),
       transform 700ms var(--ease-out);
   }
-  .js-reveal .reveal.is-visible { opacity: 1; transform: translateY(0); }
-  .js-reveal .reveal.reveal-now { transition: none; }
+  .js-reveal .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .js-reveal .reveal.reveal-now {
+    transition: none;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .js-reveal .reveal,
@@ -530,11 +578,7 @@
   /* ---- Mobile menu overlay (MobileMenu.tsx island) ------------------------- */
   .mobile-menu {
     background-color: oklch(12% 0.008 255);
-    background-image: radial-gradient(
-      130% 92% at 100% 0%,
-      oklch(72% 0.17 58 / 0.16) 0%,
-      oklch(72% 0.17 58 / 0) 62%
-    );
+    background-image: radial-gradient(130% 92% at 100% 0%, oklch(72% 0.17 58 / 0.16) 0%, oklch(72% 0.17 58 / 0) 62%);
     box-shadow: 0 10px 54px -14px oklch(0% 0 0 / 0.85);
     animation: mobile-menu-in 280ms var(--ease-out) both;
   }
@@ -542,21 +586,39 @@
     animation: mobile-menu-link-in 400ms var(--ease-out) both;
     animation-delay: calc(60ms + var(--i, 0) * 42ms);
   }
-  @keyframes mobile-menu-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes mobile-menu-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   @keyframes mobile-menu-link-in {
-    from { opacity: 0; transform: translateY(9px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(9px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .mobile-menu, .mobile-menu__link { animation: none; }
+    .mobile-menu,
+    .mobile-menu__link {
+      animation: none;
+    }
   }
 }
 
 /* Utility: hide visually but keep for screen readers (skip link). */
 .sr-only {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;

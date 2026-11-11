@@ -78,12 +78,8 @@ const defaults = {
 
 export type SiteOverrides = SiteOverridesOf<typeof defaults>;
 
-const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>(
-  "./site.local.ts",
-  { eager: true },
-);
-const overrides: SiteOverrides =
-  Object.values(localModules)[0]?.siteOverrides ?? {};
+const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>("./site.local.ts", { eager: true });
+const overrides: SiteOverrides = Object.values(localModules)[0]?.siteOverrides ?? {};
 
 export const site = {
   ...defaults,

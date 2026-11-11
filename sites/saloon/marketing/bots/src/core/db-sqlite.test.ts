@@ -44,7 +44,10 @@ test("listAppointmentsBetween filters by startsAt window", async () => {
   await db.upsertAppointment(appt({ id: "in", startsAt: "2026-06-10T09:00:00.000Z" }));
   await db.upsertAppointment(appt({ id: "out", startsAt: "2026-07-10T09:00:00.000Z" }));
   const found = await db.listAppointmentsBetween("2026-06-01T00:00:00.000Z", "2026-06-30T00:00:00.000Z");
-  assert.deepEqual(found.map((a) => a.id), ["in"]);
+  assert.deepEqual(
+    found.map((a) => a.id),
+    ["in"],
+  );
   await db.close();
 });
 

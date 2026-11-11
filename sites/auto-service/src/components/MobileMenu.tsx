@@ -38,7 +38,17 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
         aria-label="Deschide meniul"
         className="nav-burger lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
           <path d={BURGER} />
         </svg>
       </Dialog.Trigger>
@@ -62,7 +72,17 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
               aria-label="Închide meniul"
               className="inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] transition-colors hover:bg-white/8"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d={CLOSE} />
               </svg>
             </Dialog.Close>

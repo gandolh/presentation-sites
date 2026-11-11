@@ -13,13 +13,7 @@
 import { DatabaseSync } from "node:sqlite";
 
 import type { Db, OptOutRecord } from "./db.ts";
-import type {
-  Appointment,
-  Lead,
-  ScheduledPost,
-  CampaignDraft,
-  OptInStatus,
-} from "./types.ts";
+import type { Appointment, Lead, ScheduledPost, CampaignDraft, OptInStatus } from "./types.ts";
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS appointments (
@@ -153,9 +147,16 @@ export function createSqliteDb(path: string): Db {
              confirmationSentAt=excluded.confirmationSentAt`,
         )
         .run(
-          a.id, a.phoneE164, a.clientName, a.service, a.startsAt, a.status,
-          a.createdAt, a.lastInteractionAt,
-          a.reminderSentAt ?? null, a.confirmationSentAt ?? null,
+          a.id,
+          a.phoneE164,
+          a.clientName,
+          a.service,
+          a.startsAt,
+          a.status,
+          a.createdAt,
+          a.lastInteractionAt,
+          a.reminderSentAt ?? null,
+          a.confirmationSentAt ?? null,
         );
     },
 
@@ -196,8 +197,13 @@ export function createSqliteDb(path: string): Db {
            VALUES (?,?,?,?,?,?,?)`,
         )
         .run(
-          l.id, l.platform, l.phoneE164 ?? null, l.clientName ?? null,
-          l.message ?? null, l.marketingOptIn, l.createdAt,
+          l.id,
+          l.platform,
+          l.phoneE164 ?? null,
+          l.clientName ?? null,
+          l.message ?? null,
+          l.marketingOptIn,
+          l.createdAt,
         );
     },
 
@@ -209,8 +215,13 @@ export function createSqliteDb(path: string): Db {
            VALUES (?,?,?,?,?,?,?)`,
         )
         .run(
-          p.id, p.assetRef, p.captionRo, JSON.stringify(p.targets),
-          p.publishAt, p.status, p.results ? JSON.stringify(p.results) : null,
+          p.id,
+          p.assetRef,
+          p.captionRo,
+          JSON.stringify(p.targets),
+          p.publishAt,
+          p.status,
+          p.results ? JSON.stringify(p.results) : null,
         );
     },
 
@@ -228,8 +239,13 @@ export function createSqliteDb(path: string): Db {
              status=?, results=? WHERE id=?`,
         )
         .run(
-          p.assetRef, p.captionRo, JSON.stringify(p.targets), p.publishAt,
-          p.status, p.results ? JSON.stringify(p.results) : null, p.id,
+          p.assetRef,
+          p.captionRo,
+          JSON.stringify(p.targets),
+          p.publishAt,
+          p.status,
+          p.results ? JSON.stringify(p.results) : null,
+          p.id,
         );
     },
 
@@ -242,9 +258,18 @@ export function createSqliteDb(path: string): Db {
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
         )
         .run(
-          c.id, c.platform, c.presetKey, c.objective, c.status, c.dailyBudgetMinor,
-          c.currency, JSON.stringify(c.audience), c.creativeRef, c.copyRo,
-          c.createdAt, c.approvalState,
+          c.id,
+          c.platform,
+          c.presetKey,
+          c.objective,
+          c.status,
+          c.dailyBudgetMinor,
+          c.currency,
+          JSON.stringify(c.audience),
+          c.creativeRef,
+          c.copyRo,
+          c.createdAt,
+          c.approvalState,
         );
     },
 
@@ -271,9 +296,7 @@ export function createSqliteDb(path: string): Db {
       const apptCutoff = new Date(now - appointmentDays * 86_400_000).toISOString();
       const leadCutoff = new Date(now - enquiryDays * 86_400_000).toISOString();
 
-      const a = sql
-        .prepare("DELETE FROM appointments WHERE lastInteractionAt < ?")
-        .run(apptCutoff);
+      const a = sql.prepare("DELETE FROM appointments WHERE lastInteractionAt < ?").run(apptCutoff);
       const l = sql.prepare("DELETE FROM leads WHERE createdAt < ?").run(leadCutoff);
 
       return { appointments: Number(a.changes), leads: Number(l.changes) };

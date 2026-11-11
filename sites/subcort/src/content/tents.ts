@@ -59,38 +59,32 @@ export interface Amenity {
 export const amenities: Amenity[] = [
   {
     title: "Pardoseală modulară",
-    description:
-      "Podea stabilă, nivelată, montată peste teren, confortabilă chiar și pe iarbă sau pământ.",
+    description: "Podea stabilă, nivelată, montată peste teren, confortabilă chiar și pe iarbă sau pământ.",
     kind: "inclus",
   },
   {
     title: "Iluminat interior",
-    description:
-      "Corpuri de iluminat calde, distribuite uniform, pentru o atmosferă plăcută seara.",
+    description: "Corpuri de iluminat calde, distribuite uniform, pentru o atmosferă plăcută seara.",
     kind: "inclus",
   },
   {
     title: "Pereți laterali",
-    description:
-      "Laterale care se pot deschide sau închide complet, în funcție de vreme și de cum vrei spațiul.",
+    description: "Laterale care se pot deschide sau închide complet, în funcție de vreme și de cum vrei spațiul.",
     kind: "inclus",
   },
   {
     title: "Încălzire",
-    description:
-      "Surse de căldură dimensionate pentru cort, pentru evenimentele din sezonul rece.",
+    description: "Surse de căldură dimensionate pentru cort, pentru evenimentele din sezonul rece.",
     kind: "optional",
   },
   {
     title: "Răcire / ventilație",
-    description:
-      "Climatizare și ventilație pentru zilele călduroase de vară, ca spațiul să rămână respirabil.",
+    description: "Climatizare și ventilație pentru zilele călduroase de vară, ca spațiul să rămână respirabil.",
     kind: "optional",
   },
   {
     title: "Mobilier",
-    description:
-      "Mese și scaune aranjate după planul tău: rotunde, dreptunghiulare sau în rânduri.",
+    description: "Mese și scaune aranjate după planul tău: rotunde, dreptunghiulare sau în rânduri.",
     kind: "optional",
   },
 ];

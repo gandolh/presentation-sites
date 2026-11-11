@@ -32,7 +32,7 @@ export function absoluteUrl(path: string): string {
     throw new Error(
       `absoluteUrl("${path}"): this site has no \`site\` in astro.config.mjs, ` +
         "so there is no origin to build absolute URLs on. Add " +
-        "`site: process.env.PUBLIC_SITE ?? \"https://gandolh.ro\"`.",
+        '`site: process.env.PUBLIC_SITE ?? "https://gandolh.ro"`.',
     );
   }
   return new URL(withBase(path), site).href;

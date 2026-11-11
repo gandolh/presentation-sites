@@ -10,20 +10,20 @@
 
 @theme {
   /* ---- ink ------------------------------------------------------------- */
-  --color-ink: oklch(29% 0.028 234);              /* #22303A                 */
-  --color-ink-2: oklch(48% 0.024 233);            /* secondary text          */
-  --color-line: oklch(52% 0.026 234);             /* #5E7180 — object lines  */
-  --color-line-soft: oklch(76% 0.017 233);        /* #A7B4BE — extension     */
-  --color-hair: oklch(90.5% 0.006 230);           /* rules and cell borders  */
+  --color-ink: oklch(29% 0.028 234); /* #22303A                 */
+  --color-ink-2: oklch(48% 0.024 233); /* secondary text          */
+  --color-line: oklch(52% 0.026 234); /* #5E7180 — object lines  */
+  --color-line-soft: oklch(76% 0.017 233); /* #A7B4BE — extension     */
+  --color-hair: oklch(90.5% 0.006 230); /* rules and cell borders  */
 
   /* ---- the annotation layer -------------------------------------------- */
-  --color-signal: oklch(52.5% 0.152 40);          /* #C2481E — clears AA as text */
+  --color-signal: oklch(52.5% 0.152 40); /* #C2481E — clears AA as text */
   --color-signal-hover: oklch(47% 0.145 39);
   --color-signal-soft: oklch(95% 0.022 45);
   --color-on-signal-soft: oklch(44% 0.14 39);
 
   /* ---- sheet ----------------------------------------------------------- */
-  --color-sheet: oklch(98.6% 0.002 90);           /* #FBFBFA — the paper     */
+  --color-sheet: oklch(98.6% 0.002 90); /* #FBFBFA — the paper     */
   --color-paper: oklch(100% 0 0);
   --color-fill: oklch(94.5% 0.004 233);
   --color-fill-2: oklch(96.6% 0.003 233);
@@ -53,8 +53,12 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
@@ -70,7 +74,10 @@
   }
 
   /* Browser surfaces belong to the drawing too. */
-  ::selection { background: var(--color-signal); color: #fff; }
+  ::selection {
+    background: var(--color-signal);
+    color: #fff;
+  }
   :root {
     accent-color: var(--color-signal);
     caret-color: var(--color-signal);
@@ -83,9 +90,19 @@
     outline-offset: 3px;
   }
 
-  a { text-underline-offset: 0.22em; text-decoration-thickness: from-font; }
-  h1, h2, h3 { text-wrap: balance; }
-  p, li { text-wrap: pretty; }
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: from-font;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
 }
 
 /* ==========================================================================
@@ -100,11 +117,19 @@
     padding-inline: var(--sheet-pad);
   }
 
-  .plate { padding-block: clamp(3rem, 6vw, 5.5rem); }
-  .plate--tight { padding-block: clamp(2rem, 4vw, 3.25rem); }
+  .plate {
+    padding-block: clamp(3rem, 6vw, 5.5rem);
+  }
+  .plate--tight {
+    padding-block: clamp(2rem, 4vw, 3.25rem);
+  }
 
-  .rule { border-top: 1px solid var(--color-hair); }
-  .rule--heavy { border-top: 1.5px solid var(--color-ink); }
+  .rule {
+    border-top: 1px solid var(--color-hair);
+  }
+  .rule--heavy {
+    border-top: 1.5px solid var(--color-ink);
+  }
 
   /* ---- the plate header ------------------------------------------------
      Numbering is earned here: a drawing set is a numbered register, and the
@@ -117,9 +142,13 @@
     border-top: 1.5px solid var(--color-ink);
   }
   @media (min-width: 900px) {
-    .plate-head { grid-template-columns: 11rem minmax(0, 1fr); }
+    .plate-head {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
   }
-  .plate-head > * { min-width: 0; }
+  .plate-head > * {
+    min-width: 0;
+  }
   .plate-no {
     font-family: var(--font-mono);
     font-size: 0.78rem;
@@ -154,7 +183,9 @@
     color: var(--color-ink-2);
     max-width: 54ch;
   }
-  .prose-measure { max-width: 68ch; }
+  .prose-measure {
+    max-width: 68ch;
+  }
 
   /* ---- annotation ------------------------------------------------------ */
   .callout-no {
@@ -186,7 +217,10 @@
   }
   /* Measurements are set in the mono face — this is a drawing, and the
      numerals have to align down a column. */
-  .dim { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .dim {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
 
   /* ---- the title-block strip ------------------------------------------ */
   .titleblock {
@@ -200,7 +234,9 @@
     padding: 0.85rem 1.15rem;
     border-right: 1px solid var(--color-hair);
   }
-  .titleblock > div:last-child { border-right: 0; }
+  .titleblock > div:last-child {
+    border-right: 0;
+  }
   .titleblock dt {
     font-family: var(--font-mono);
     font-size: 0.7rem;
@@ -217,8 +253,13 @@
   }
 
   /* ---- surfaces — flat; a drawing has no shadows, depth is line weight -- */
-  .panel { background: var(--color-paper); border: 1px solid var(--color-hair); }
-  .panel--fill { background: var(--color-fill-2); }
+  .panel {
+    background: var(--color-paper);
+    border: 1px solid var(--color-hair);
+  }
+  .panel--fill {
+    background: var(--color-fill-2);
+  }
 
   .chip {
     display: inline-flex;
@@ -231,7 +272,9 @@
     text-transform: uppercase;
     border: 1px solid currentColor;
   }
-  .chip-included { color: var(--color-ink-2); }
+  .chip-included {
+    color: var(--color-ink-2);
+  }
   .chip-optional {
     color: var(--color-on-signal-soft);
     background: var(--color-signal-soft);
@@ -245,9 +288,14 @@
     color: var(--color-ink);
     text-decoration: underline;
     text-decoration-color: var(--color-line-soft);
-    transition: color 160ms ease-out, text-decoration-color 160ms ease-out;
+    transition:
+      color 160ms ease-out,
+      text-decoration-color 160ms ease-out;
   }
-  .link-quiet:hover { color: var(--color-signal); text-decoration-color: currentColor; }
+  .link-quiet:hover {
+    color: var(--color-signal);
+    text-decoration-color: currentColor;
+  }
 
   .btn-outline {
     display: inline-flex;
@@ -258,14 +306,19 @@
     font-size: 0.92rem;
     border: 1px solid var(--color-line);
     color: var(--color-ink);
-    transition: border-color 160ms ease-out, color 160ms ease-out, background 160ms ease-out;
+    transition:
+      border-color 160ms ease-out,
+      color 160ms ease-out,
+      background 160ms ease-out;
   }
   .btn-outline:hover {
     border-color: var(--color-signal);
     color: var(--color-signal);
     background: var(--color-signal-soft);
   }
-  .btn-outline:active { transform: translateY(1px); }
+  .btn-outline:active {
+    transform: translateY(1px);
+  }
 }
 
 /* ==========================================================================
@@ -273,7 +326,10 @@
    ========================================================================== */
 
 @layer utilities {
-  .js-reveal .reveal { opacity: 0; transform: translateY(9px); }
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(9px);
+  }
   .js-reveal .reveal.is-visible {
     opacity: 1;
     transform: none;
@@ -281,17 +337,26 @@
       opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
       transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .js-reveal .reveal.reveal-now { transition: none; }
+  .js-reveal .reveal.reveal-now {
+    transition: none;
+  }
   @media (prefers-reduced-motion: reduce) {
-    .js-reveal .reveal { opacity: 1; transform: none; }
+    .js-reveal .reveal {
+      opacity: 1;
+      transform: none;
+    }
   }
 
-  .tnum { font-variant-numeric: tabular-nums; }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
 
   .sr-only {
     position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
@@ -313,7 +378,9 @@
     border-bottom: 1px solid transparent;
     transition: border-color 200ms ease-out;
   }
-  .nav[data-stuck] { border-bottom-color: var(--color-hair); }
+  .nav[data-stuck] {
+    border-bottom-color: var(--color-hair);
+  }
   .nav__inner {
     height: var(--nav-h, 4.25rem);
     display: flex;
@@ -321,9 +388,21 @@
     justify-content: space-between;
     gap: 1.5rem;
   }
-  .nav__word { font-weight: 700; font-size: 1.2rem; letter-spacing: -0.005em; color: var(--color-ink); }
-  .nav__links { display: none; gap: 1.85rem; }
-  @media (min-width: 880px) { .nav__links { display: flex; } }
+  .nav__word {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+  }
+  .nav__links {
+    display: none;
+    gap: 1.85rem;
+  }
+  @media (min-width: 880px) {
+    .nav__links {
+      display: flex;
+    }
+  }
   .nav__link {
     position: relative;
     display: inline-flex;
@@ -334,12 +413,18 @@
     color: var(--color-ink-2);
     transition: color 160ms ease-out;
   }
-  .nav__link:hover { color: var(--color-ink); }
-  .nav__link.is-current { color: var(--color-ink); font-weight: 600; }
+  .nav__link:hover {
+    color: var(--color-ink);
+  }
+  .nav__link.is-current {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
   .nav__link.is-current::after {
     content: "";
     position: absolute;
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
     bottom: calc(50% - 0.95rem);
     height: 2px;
     background: var(--color-signal);
@@ -354,15 +439,33 @@
     margin-right: -0.5rem;
     color: var(--color-ink);
   }
-  @media (min-width: 880px) { .menu-btn { display: none; } }
-  .menu-btn__bars { display: grid; gap: 5px; width: 22px; }
-  .menu-btn__bars i {
-    display: block; height: 1.5px; background: currentColor;
-    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out;
+  @media (min-width: 880px) {
+    .menu-btn {
+      display: none;
+    }
   }
-  .menu-btn__bars[data-open] i:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .menu-btn__bars[data-open] i:nth-child(2) { opacity: 0; }
-  .menu-btn__bars[data-open] i:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .menu-btn__bars {
+    display: grid;
+    gap: 5px;
+    width: 22px;
+  }
+  .menu-btn__bars i {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition:
+      transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease-out;
+  }
+  .menu-btn__bars[data-open] i:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .menu-btn__bars[data-open] i:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-btn__bars[data-open] i:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
 
   .menu-panel {
     position: fixed;
@@ -373,7 +476,9 @@
     box-shadow: 0 18px 40px -26px oklch(29% 0.028 234 / 0.5);
     padding: 0.25rem var(--sheet-pad) 1.25rem;
   }
-  .menu-panel nav { display: grid; }
+  .menu-panel nav {
+    display: grid;
+  }
   .menu-panel__link {
     display: flex;
     align-items: baseline;
@@ -385,7 +490,9 @@
     color: var(--color-ink);
     border-bottom: 1px solid var(--color-hair);
   }
-  .menu-panel__link:last-child { border-bottom: 0; }
+  .menu-panel__link:last-child {
+    border-bottom: 0;
+  }
   .menu-panel__link span {
     font-family: var(--font-mono);
     font-size: 0.72rem;
@@ -393,7 +500,9 @@
     color: var(--color-line);
   }
   .menu-panel__link[data-current],
-  .menu-panel__link[data-current] span { color: var(--color-signal); }
+  .menu-panel__link[data-current] span {
+    color: var(--color-signal);
+  }
 }
 
 /* ==========================================================================
@@ -401,13 +510,33 @@
    ========================================================================== */
 
 @layer components {
-  .scale { display: grid; gap: 1.75rem; align-items: start; }
-  @media (min-width: 900px) { .scale { grid-template-columns: 1.5fr 1fr; gap: 3rem; } }
+  .scale {
+    display: grid;
+    gap: 1.75rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .scale {
+      grid-template-columns: 1.5fr 1fr;
+      gap: 3rem;
+    }
+  }
 
-  .scale__plan { background: var(--color-paper); border: 1px solid var(--color-hair); padding: 0.6rem; }
-  .scale__svg { display: block; width: 100%; height: auto; }
+  .scale__plan {
+    background: var(--color-paper);
+    border: 1px solid var(--color-hair);
+    padding: 0.6rem;
+  }
+  .scale__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 
-  .scale__pick { display: flex; flex-wrap: wrap; }
+  .scale__pick {
+    display: flex;
+    flex-wrap: wrap;
+  }
   .scale__btn {
     padding: 0.55rem 0.85rem;
     margin: 0 -1px -1px 0;
@@ -417,16 +546,25 @@
     color: var(--color-ink-2);
     border: 1px solid var(--color-line-soft);
     background: var(--color-paper);
-    transition: color 160ms ease-out, border-color 160ms ease-out, background 160ms ease-out;
+    transition:
+      color 160ms ease-out,
+      border-color 160ms ease-out,
+      background 160ms ease-out;
   }
-  .scale__btn:hover { color: var(--color-ink); border-color: var(--color-line); }
+  .scale__btn:hover {
+    color: var(--color-ink);
+    border-color: var(--color-line);
+  }
   .scale__btn[data-on] {
     color: #fff;
     background: var(--color-signal);
     border-color: var(--color-signal);
   }
 
-  .scale__data { margin-top: 1.5rem; border-top: 1.5px solid var(--color-ink); }
+  .scale__data {
+    margin-top: 1.5rem;
+    border-top: 1.5px solid var(--color-ink);
+  }
   .scale__data > div {
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--color-hair);
@@ -435,6 +573,14 @@
     justify-content: space-between;
     gap: 1rem;
   }
-  .scale__data .datum-value { font-size: 1.12rem; }
-  .scale__note { margin-top: 1.25rem; font-size: 0.92rem; line-height: 1.6; color: var(--color-ink-2); max-width: 42ch; }
+  .scale__data .datum-value {
+    font-size: 1.12rem;
+  }
+  .scale__note {
+    margin-top: 1.25rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    max-width: 42ch;
+  }
 }

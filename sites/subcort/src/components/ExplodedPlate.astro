@@ -9,10 +9,7 @@
 // The viewBox is computed from the geometry rather than hand-set, so the
 // drawing can never grow out of its box when the spread or scale changes.
 
-import {
-  marquee, isometric, pts, tone, callout,
-  INK, LINE, LINE_SOFT, FILL, type P3,
-} from "../lib/draft";
+import { marquee, isometric, pts, tone, callout, INK, LINE, LINE_SOFT, FILL, type P3 } from "../lib/draft";
 
 interface Props {
   /** Vertical separation between layers, in metres. */
@@ -24,8 +21,7 @@ const M = marquee();
 const SCALE = 16;
 const P0 = isometric({ scale: SCALE, cx: 0, cy: 0 });
 
-const lift = (q: readonly P3[], dy: number): P3[] =>
-  q.map(([x, y, z]) => [x, y + dy, z] as P3);
+const lift = (q: readonly P3[], dy: number): P3[] => q.map(([x, y, z]) => [x, y + dy, z] as P3);
 
 const deckY = -spread * 0.9;
 const deck = M.panels.find((p) => p.part === "deck")!;
@@ -44,8 +40,10 @@ const all: P3[] = [
 ];
 const xs = all.map((p) => P0(p)[0]);
 const ys = all.map((p) => P0(p)[1]);
-const minX = Math.min(...xs), maxX = Math.max(...xs);
-const minY = Math.min(...ys), maxY = Math.max(...ys);
+const minX = Math.min(...xs),
+  maxX = Math.max(...xs);
+const minY = Math.min(...ys),
+  maxY = Math.max(...ys);
 
 // Room on each side for the callout labels, which sit outside the object.
 const PAD_X = 285;
@@ -62,13 +60,15 @@ for (let i = 1; i < 6; i++) {
   const t = i / 6;
   const a: P3 = [-M.hw, deckY, -M.hd + t * M.spec.d];
   const b: P3 = [M.hw, deckY, -M.hd + t * M.spec.d];
-  const [x1, y1] = P(a); const [x2, y2] = P(b);
+  const [x1, y1] = P(a);
+  const [x2, y2] = P(b);
   g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${LINE_SOFT}" stroke-width=".7"/>`;
 }
 
 // ---- the frame: drawn heaviest, because it is the object ------------------
 for (const [a, b] of M.members) {
-  const [x1, y1] = P(a); const [x2, y2] = P(b);
+  const [x1, y1] = P(a);
+  const [x2, y2] = P(b);
   g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/>`;
 }
 
@@ -98,20 +98,23 @@ g += callout(4, [a4[0], a4[1]], [LEFT, VB_H - PAD_Y - 24], "Pardoseală modular�
   <svg viewBox={`0 0 ${VB_W.toFixed(0)} ${VB_H.toFixed(0)}`} role="img" aria-labelledby="ex-t ex-d">
     <title id="ex-t">Vedere explodată a cortului</title>
     <desc id="ex-d">
-      Desen axonometric al unui cort de 15 × 10 m, cu straturile separate pe
-      verticală: 1 membrana și acoperișul, 2 pereții laterali, 3 structura
-      portantă, 4 pardoseala modulară.
+      Desen axonometric al unui cort de 15 × 10 m, cu straturile separate pe verticală: 1 membrana și acoperișul, 2
+      pereții laterali, 3 structura portantă, 4 pardoseala modulară.
     </desc>
     <g set:html={g} />
   </svg>
-  <figcaption class="dim">
-    Fig. 1 — Cort 15 × 10 m, vedere explodată. Axonometrie, scara 1:100.
-  </figcaption>
+  <figcaption class="dim">Fig. 1 — Cort 15 × 10 m, vedere explodată. Axonometrie, scara 1:100.</figcaption>
 </figure>
 
 <style>
-  .plate-drawing { margin: 0; }
-  .plate-drawing svg { display: block; width: 100%; height: auto; }
+  .plate-drawing {
+    margin: 0;
+  }
+  .plate-drawing svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
   figcaption {
     margin-top: 1.15rem;
     font-size: 0.7rem;

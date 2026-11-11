@@ -46,7 +46,11 @@ const arc = (cx, cy, r, a0, a1) => {
 
 /** The dial, drawn once and reused at both sizes. */
 function dial(cx, cy, r, { ticks = true } = {}) {
-  const A0 = -125, A1 = 125, MAX = 8, VAL = 0.82, REDLINE = 6.5;
+  const A0 = -125,
+    A1 = 125,
+    MAX = 8,
+    VAL = 0.82,
+    REDLINE = 6.5;
   const tR = r - r * 0.14;
   let out = `
   <circle cx="${cx}" cy="${cy}" r="${r}" fill="${C.bezel}"/>

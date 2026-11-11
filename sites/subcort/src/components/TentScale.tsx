@@ -137,9 +137,7 @@ export default function TentScale({ formats, initial = 1 }: Props) {
 
   // Keep the hero's structure, when it is on the page, on the same format.
   useEffect(() => {
-    window.dispatchEvent(
-      new CustomEvent("subcort:size", { detail: { size: i / (formats.length - 1) } }),
-    );
+    window.dispatchEvent(new CustomEvent("subcort:size", { detail: { size: i / (formats.length - 1) } }));
   }, [i, formats.length]);
 
   const fLong = long(f);
@@ -168,13 +166,7 @@ export default function TentScale({ formats, initial = 1 }: Props) {
           <rect width={VB_W} height={VB_H} fill="url(#ts-m5)" />
 
           {/* the footprint */}
-          <rect
-            ref={rect}
-            fill="#22303A"
-            fillOpacity={0.06}
-            stroke="#22303A"
-            strokeWidth={0.18}
-          />
+          <rect ref={rect} fill="#22303A" fillOpacity={0.06} stroke="#22303A" strokeWidth={0.18} />
           <line ref={ridge} stroke="#C2481E" strokeWidth={0.13} strokeDasharray="0.8 0.55" />
 
           {/* dimensions */}
@@ -203,14 +195,7 @@ export default function TentScale({ formats, initial = 1 }: Props) {
 
           {/* the car, for scale — the thing everyone can judge */}
           <g>
-            <rect
-              x={PAD}
-              y={VB_H - CAR_W - 0.6}
-              width={CAR_L}
-              height={CAR_W}
-              rx={0.35}
-              fill="#C6CDD3"
-            />
+            <rect x={PAD} y={VB_H - CAR_W - 0.6} width={CAR_L} height={CAR_W} rx={0.35} fill="#C6CDD3" />
             <text
               x={PAD + CAR_L + 0.8}
               y={VB_H - CAR_W / 2 - 0.6}
@@ -245,7 +230,9 @@ export default function TentScale({ formats, initial = 1 }: Props) {
         <dl className="scale__data">
           <div>
             <dt className="datum-key">Suprafață</dt>
-            <dd className="datum-value dim"><Rolling value={f.area} suffix=" m²" /></dd>
+            <dd className="datum-value dim">
+              <Rolling value={f.area} suffix=" m²" />
+            </dd>
           </div>
           <div>
             <dt className="datum-key">Cu mese</dt>

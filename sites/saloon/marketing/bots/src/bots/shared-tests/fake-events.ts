@@ -41,10 +41,7 @@ const DEFAULT_FROM_ID: Record<Platform, string> = {
  * the optional `raw` field when supplied (keeps it valid under
  * exactOptionalPropertyTypes).
  */
-export function fakeInboundMessage(
-  platform: Platform,
-  opts: FakeEventOptions = {},
-): InboundMessage {
+export function fakeInboundMessage(platform: Platform, opts: FakeEventOptions = {}): InboundMessage {
   const base: InboundMessage = {
     platform,
     fromId: opts.fromId ?? DEFAULT_FROM_ID[platform],
@@ -71,10 +68,7 @@ export function fakeFacebookMessage(opts: FakeEventOptions = {}): InboundMessage
 }
 
 /** A STOP / opt-out inbound message — convenience for testing suppression flows. */
-export function fakeStopMessage(
-  platform: Platform,
-  opts: FakeEventOptions = {},
-): InboundMessage {
+export function fakeStopMessage(platform: Platform, opts: FakeEventOptions = {}): InboundMessage {
   return fakeInboundMessage(platform, { text: "STOP", ...opts });
 }
 
@@ -82,9 +76,6 @@ export function fakeStopMessage(
  * A message that arrives OUTSIDE the 24h service window — for testing the
  * template-only path (#4). Defaults to WhatsApp.
  */
-export function fakeOutOfWindowMessage(
-  platform: Platform = "whatsapp",
-  opts: FakeEventOptions = {},
-): InboundMessage {
+export function fakeOutOfWindowMessage(platform: Platform = "whatsapp", opts: FakeEventOptions = {}): InboundMessage {
   return fakeInboundMessage(platform, { withinServiceWindow: false, ...opts });
 }

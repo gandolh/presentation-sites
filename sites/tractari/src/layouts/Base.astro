@@ -74,10 +74,7 @@ const ogImage = absoluteUrl("/images/og-image.png");
         priceRange: "$$",
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
-          dayOfWeek: [
-            "Monday", "Tuesday", "Wednesday", "Thursday",
-            "Friday", "Saturday", "Sunday",
-          ],
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           opens: "00:00",
           closes: "23:59",
         },
@@ -117,16 +114,15 @@ const ogImage = absoluteUrl("/images/og-image.png");
       // (no-JS, crawlers, link-preview bots). Honour reduced-motion too.
       (function () {
         const prefersReduced =
-          typeof matchMedia === "function" &&
-          matchMedia("(prefers-reduced-motion: reduce)").matches;
+          typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (typeof IntersectionObserver === "undefined" || prefersReduced) {
           return;
         }
         document.documentElement.classList.add("js-reveal");
-        const reveals = Array.prototype.slice.call(
-          document.querySelectorAll(".reveal"),
-        );
-        function show(el) { el.classList.add("is-visible"); }
+        const reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+        function show(el) {
+          el.classList.add("is-visible");
+        }
         const io = new IntersectionObserver(
           function (entries) {
             entries.forEach(function (entry) {
@@ -138,7 +134,9 @@ const ogImage = absoluteUrl("/images/og-image.png");
           },
           { rootMargin: "-40px 0px" },
         );
-        reveals.forEach(function (el) { io.observe(el); });
+        reveals.forEach(function (el) {
+          io.observe(el);
+        });
         const vh = window.innerHeight || document.documentElement.clientHeight;
         reveals.forEach(function (el) {
           if (el.getBoundingClientRect().top < vh) {

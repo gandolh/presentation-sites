@@ -78,10 +78,22 @@ export function marquee(spec: MarqueeSpec = DEFAULT_MARQUEE): Marquee {
 
   // Portal frames across the span, one per bay line.
   for (const z of bays) {
-    members.push([[-hw, 0, z], [-hw, eave, z]]);
-    members.push([[hw, 0, z], [hw, eave, z]]);
-    members.push([[-hw, eave, z], [0, ridge, z]]);
-    members.push([[hw, eave, z], [0, ridge, z]]);
+    members.push([
+      [-hw, 0, z],
+      [-hw, eave, z],
+    ]);
+    members.push([
+      [hw, 0, z],
+      [hw, eave, z],
+    ]);
+    members.push([
+      [-hw, eave, z],
+      [0, ridge, z],
+    ]);
+    members.push([
+      [hw, eave, z],
+      [0, ridge, z],
+    ]);
   }
 
   // Longitudinal members: ridge, eaves, footings and mid-slope purlins.
@@ -89,28 +101,83 @@ export function marquee(spec: MarqueeSpec = DEFAULT_MARQUEE): Marquee {
     const a = bays[i];
     const b = bays[i + 1];
     const runs: Array<[number, number]> = [
-      [-hw, 0], [-hw, eave], [0, ridge], [hw, eave], [hw, 0],
-      [-hw / 2, (eave + ridge) / 2], [hw / 2, (eave + ridge) / 2],
+      [-hw, 0],
+      [-hw, eave],
+      [0, ridge],
+      [hw, eave],
+      [hw, 0],
+      [-hw / 2, (eave + ridge) / 2],
+      [hw / 2, (eave + ridge) / 2],
     ];
-    for (const [x, y] of runs) members.push([[x, y, a], [x, y, b]]);
+    for (const [x, y] of runs)
+      members.push([
+        [x, y, a],
+        [x, y, b],
+      ]);
   }
 
   const panels: Panel[] = [];
   for (let i = 0; i < bays.length - 1; i++) {
     const a = bays[i];
     const b = bays[i + 1];
-    panels.push({ part: "roof", quad: [[-hw, eave, a], [0, ridge, a], [0, ridge, b], [-hw, eave, b]] });
-    panels.push({ part: "roof", quad: [[hw, eave, a], [0, ridge, a], [0, ridge, b], [hw, eave, b]] });
-    panels.push({ part: "wall", quad: [[-hw, 0, a], [-hw, eave, a], [-hw, eave, b], [-hw, 0, b]] });
-    panels.push({ part: "wall", quad: [[hw, 0, a], [hw, eave, a], [hw, eave, b], [hw, 0, b]] });
+    panels.push({
+      part: "roof",
+      quad: [
+        [-hw, eave, a],
+        [0, ridge, a],
+        [0, ridge, b],
+        [-hw, eave, b],
+      ],
+    });
+    panels.push({
+      part: "roof",
+      quad: [
+        [hw, eave, a],
+        [0, ridge, a],
+        [0, ridge, b],
+        [hw, eave, b],
+      ],
+    });
+    panels.push({
+      part: "wall",
+      quad: [
+        [-hw, 0, a],
+        [-hw, eave, a],
+        [-hw, eave, b],
+        [-hw, 0, b],
+      ],
+    });
+    panels.push({
+      part: "wall",
+      quad: [
+        [hw, 0, a],
+        [hw, eave, a],
+        [hw, eave, b],
+        [hw, 0, b],
+      ],
+    });
   }
   for (const z of [-hd, hd]) {
     panels.push({
       part: "gable",
-      quad: [[-hw, 0, z], [-hw, eave, z], [0, ridge, z], [hw, eave, z], [hw, 0, z]],
+      quad: [
+        [-hw, 0, z],
+        [-hw, eave, z],
+        [0, ridge, z],
+        [hw, eave, z],
+        [hw, 0, z],
+      ],
     });
   }
-  panels.push({ part: "deck", quad: [[-hw, 0, -hd], [hw, 0, -hd], [hw, 0, hd], [-hw, 0, hd]] });
+  panels.push({
+    part: "deck",
+    quad: [
+      [-hw, 0, -hd],
+      [hw, 0, -hd],
+      [hw, 0, hd],
+      [-hw, 0, hd],
+    ],
+  });
 
   return { spec, members, panels, hw, hd, bays };
 }
@@ -137,10 +204,12 @@ export function isometric({
 }
 
 export const pts = (quad: readonly P3[], project: Projector) =>
-  quad.map((p) => {
-    const [X, Y] = project(p);
-    return `${X.toFixed(1)},${Y.toFixed(1)}`;
-  }).join(" ");
+  quad
+    .map((p) => {
+      const [X, Y] = project(p);
+      return `${X.toFixed(1)},${Y.toFixed(1)}`;
+    })
+    .join(" ");
 
 /** Painter's algorithm: far panels first. */
 export function sortByDepth(panels: Panel[], project: Projector): Panel[] {
@@ -156,11 +225,7 @@ export function tone(quad: readonly P3[], base = 252): string {
   const [a, b, c] = quad;
   const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
   const v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
-  const n = [
-    u[1] * v[2] - u[2] * v[1],
-    u[2] * v[0] - u[0] * v[2],
-    u[0] * v[1] - u[1] * v[0],
-  ];
+  const n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
   const len = Math.hypot(n[0], n[1], n[2]) || 1;
   const L = [-0.42, 0.84, 0.34];
   const d = Math.abs((n[0] * L[0] + n[1] * L[1] + n[2] * L[2]) / len);
@@ -185,8 +250,10 @@ export function dimension(
   const ang = Math.atan2(y2 - y1, x2 - x1);
   const nx = Math.sin(ang) * offset;
   const ny = -Math.cos(ang) * offset;
-  const ax = x1 + nx, ay = y1 + ny;
-  const bx = x2 + nx, by = y2 + ny;
+  const ax = x1 + nx,
+    ay = y1 + ny;
+  const bx = x2 + nx,
+    by = y2 + ny;
   const t = 5; // tick half-length, drawn at 45° like a drafting tick
   const tick = (px: number, py: number) =>
     `<line x1="${(px - Math.cos(ang + Math.PI / 4) * t).toFixed(1)}" y1="${(py - Math.sin(ang + Math.PI / 4) * t).toFixed(1)}"
@@ -223,8 +290,12 @@ export function callout(
     <circle cx="${x}" cy="${y}" r="${r}" fill="${SHEET}" stroke="${SIGNAL}" stroke-width="1.5"/>
     <text x="${x}" y="${y + 4.4}" text-anchor="middle"
       font-family="'IBM Plex Mono',monospace" font-size="12.5" font-weight="600" fill="${SIGNAL}">${n}</text>
-    ${label ? `<text x="${x + dx}" y="${y + 4.4}" text-anchor="${align}"
-      font-family="'IBM Plex Sans',sans-serif" font-size="13.5" font-weight="600" fill="${INK}">${label}</text>` : ""}
+    ${
+      label
+        ? `<text x="${x + dx}" y="${y + 4.4}" text-anchor="${align}"
+      font-family="'IBM Plex Sans',sans-serif" font-size="13.5" font-weight="600" fill="${INK}">${label}</text>`
+        : ""
+    }
   </g>`;
 }
 

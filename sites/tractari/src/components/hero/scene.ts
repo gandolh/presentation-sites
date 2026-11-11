@@ -73,7 +73,8 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   {
     const uvs: number[] = [];
     for (let i = 0; i < ROAD_SEG; i++) {
-      const v0 = i, v1 = i + 1;
+      const v0 = i,
+        v1 = i + 1;
       uvs.push(0, v0, 1, v0, 0, v1, 0, v1, 1, v0, 1, v1);
     }
     roadShape.setAttribute("position", new THREE.BufferAttribute(roadPos, 3));
@@ -91,7 +92,12 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
 
   // Dashed centre-line: emissive amber slabs placed along the curve.
   const dashGeo = new THREE.BoxGeometry(0.16, 0.02, 1.8);
-  const dashMat = new THREE.MeshStandardMaterial({ color: AMBER, emissive: AMBER, emissiveIntensity: 1.5, roughness: 0.6 });
+  const dashMat = new THREE.MeshStandardMaterial({
+    color: AMBER,
+    emissive: AMBER,
+    emissiveIntensity: 1.5,
+    roughness: 0.6,
+  });
   const DASHES = 70;
   const dashes = new THREE.InstancedMesh(dashGeo, dashMat, DASHES);
   const dummy = new THREE.Object3D();
@@ -105,7 +111,7 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
     // map into (-(ROAD_LEN - VIS_BEHIND), VIS_BEHIND]
     const span = ROAD_LEN;
     let z = ((raw % span) + span) % span; // 0..span
-    z = z - (span - VIS_BEHIND);          // shift so most is ahead (-Z)
+    z = z - (span - VIS_BEHIND); // shift so most is ahead (-Z)
     return z;
   }
   // The visible road curve is roadX(zWorld + travel): as travel grows the whole
@@ -119,17 +125,31 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   updateRoad = (travel: number) => {
     let p = 0;
     for (let i = 0; i < ROAD_SEG; i++) {
-      const z0 = roadZ[i]!, z1 = roadZ[i + 1]!;
-      const c0 = curveX(z0, travel), c1 = curveX(z1, travel);
+      const z0 = roadZ[i]!,
+        z1 = roadZ[i + 1]!;
+      const c0 = curveX(z0, travel),
+        c1 = curveX(z1, travel);
       const hw = ROAD_W / 2;
       // tri 1
-      roadPos[p++] = c0 - hw; roadPos[p++] = 0; roadPos[p++] = z0;
-      roadPos[p++] = c0 + hw; roadPos[p++] = 0; roadPos[p++] = z0;
-      roadPos[p++] = c1 - hw; roadPos[p++] = 0; roadPos[p++] = z1;
+      roadPos[p++] = c0 - hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z0;
+      roadPos[p++] = c0 + hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z0;
+      roadPos[p++] = c1 - hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z1;
       // tri 2
-      roadPos[p++] = c1 - hw; roadPos[p++] = 0; roadPos[p++] = z1;
-      roadPos[p++] = c0 + hw; roadPos[p++] = 0; roadPos[p++] = z0;
-      roadPos[p++] = c1 + hw; roadPos[p++] = 0; roadPos[p++] = z1;
+      roadPos[p++] = c1 - hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z1;
+      roadPos[p++] = c0 + hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z0;
+      roadPos[p++] = c1 + hw;
+      roadPos[p++] = 0;
+      roadPos[p++] = z1;
     }
     roadShape.attributes.position.needsUpdate = true;
   };
@@ -184,7 +204,13 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
 
   // Brighter "AXA red-amber" cab so the truck pops against the night road.
   const paint = new THREE.MeshStandardMaterial({ color: 0x3a4150, roughness: 0.4, metalness: 0.55 });
-  const amberPaint = new THREE.MeshStandardMaterial({ color: AMBER, roughness: 0.4, metalness: 0.35, emissive: AMBER, emissiveIntensity: 0.18 });
+  const amberPaint = new THREE.MeshStandardMaterial({
+    color: AMBER,
+    roughness: 0.4,
+    metalness: 0.35,
+    emissive: AMBER,
+    emissiveIntensity: 0.18,
+  });
   const deckMat = new THREE.MeshStandardMaterial({ color: 0x4a525d, roughness: 0.55, metalness: 0.5 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x0a1825, roughness: 0.12, metalness: 0.9 });
   const chrome = new THREE.MeshStandardMaterial({ color: 0x8893a0, roughness: 0.25, metalness: 0.95 });
@@ -272,7 +298,10 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   // Fenders over each wheel
   const fenderMat = new THREE.MeshStandardMaterial({ color: 0x1b1f27, roughness: 0.6, metalness: 0.4 });
   const fenderSpots: [number, number][] = [
-    [0.95, 1.7], [-0.95, 1.7], [0.95, -1.45], [-0.95, -1.45],
+    [0.95, 1.7],
+    [-0.95, 1.7],
+    [0.95, -1.45],
+    [-0.95, -1.45],
   ];
   for (const [x, z] of fenderSpots) {
     const fender = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.12, 1.4), fenderMat);
@@ -286,7 +315,12 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   const hubMat = new THREE.MeshStandardMaterial({ color: 0x60686f, roughness: 0.4, metalness: 0.8 });
   const wheels: THREE.Group[] = [];
   const wheelSpots: [number, number][] = [
-    [0.95, 1.7], [-0.95, 1.7], [0.95, -1.9], [-0.95, -1.9], [0.95, -1.0], [-0.95, -1.0],
+    [0.95, 1.7],
+    [-0.95, 1.7],
+    [0.95, -1.9],
+    [-0.95, -1.9],
+    [0.95, -1.0],
+    [-0.95, -1.0],
   ];
   for (const [x, z] of wheelSpots) {
     const wg = new THREE.Group();
@@ -326,7 +360,8 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   // faces the chase camera after the 180° body rotation, so it reads clearly.
   {
     const pc = document.createElement("canvas");
-    pc.width = 256; pc.height = 64;
+    pc.width = 256;
+    pc.height = 64;
     const ctx = pc.getContext("2d")!;
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, 256, 64);
@@ -343,11 +378,18 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
     ctx.textAlign = "left";
     ctx.fillText("GJ 01 AAV", 46, 47);
     // thin border
-    ctx.strokeStyle = "#111317"; ctx.lineWidth = 4;
+    ctx.strokeStyle = "#111317";
+    ctx.lineWidth = 4;
     ctx.strokeRect(2, 2, 252, 60);
     const plateTex = new THREE.CanvasTexture(pc);
     plateTex.colorSpace = THREE.SRGBColorSpace;
-    const plateMat = new THREE.MeshStandardMaterial({ map: plateTex, roughness: 0.5, emissive: 0xffffff, emissiveMap: plateTex, emissiveIntensity: 0.25 });
+    const plateMat = new THREE.MeshStandardMaterial({
+      map: plateTex,
+      roughness: 0.5,
+      emissive: 0xffffff,
+      emissiveMap: plateTex,
+      emissiveIntensity: 0.25,
+    });
     const plate = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.225), plateMat);
     plate.position.set(0, 0.7, -2.79);
     plate.rotation.y = Math.PI; // face outward at the -Z end
@@ -356,7 +398,10 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
 
   // Rotating amber beacon bar on the cab roof
   const beacon = new THREE.Group();
-  const beaconBar = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.22), new THREE.MeshStandardMaterial({ color: ORANGE, emissive: ORANGE, emissiveIntensity: 2.4, roughness: 0.4 }));
+  const beaconBar = new THREE.Mesh(
+    new THREE.BoxGeometry(0.9, 0.12, 0.22),
+    new THREE.MeshStandardMaterial({ color: ORANGE, emissive: ORANGE, emissiveIntensity: 2.4, roughness: 0.4 }),
+  );
   beacon.add(beaconBar);
   const beaconLight = new THREE.PointLight(ORANGE, 5, 12, 2);
   beaconLight.position.y = 0.2;

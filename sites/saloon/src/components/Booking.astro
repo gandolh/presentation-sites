@@ -4,42 +4,28 @@ import { site, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 ---
 
-<section
-  id="programari"
-  class="section bg-[var(--color-surface-container-low)]"
->
+<section id="programari" class="section bg-[var(--color-surface-container-low)]">
   <div class="container-page grid md:grid-cols-2 gap-12 items-start">
     <div class="reveal">
       <h2 class="heading-lg">Programează-te</h2>
-      <p
-        class="mt-6 text-[var(--color-on-surface-variant)] leading-relaxed"
-      >
-        Scrie-mi pe WhatsApp sau sună-mă, spune-mi ce serviciu te interesează și
-        îți confirm programarea în cel mai scurt timp.
+      <p class="mt-6 text-[var(--color-on-surface-variant)] leading-relaxed">
+        Scrie-mi pe WhatsApp sau sună-mă, spune-mi ce serviciu te interesează și îți confirm programarea în cel mai
+        scurt timp.
       </p>
 
-      <div
-        class="mt-6 rounded-[1rem] bg-[var(--color-surface-container-lowest)] border border-[var(--color-outline-variant)] px-5 py-4"
-      >
-        <p class="label-md uppercase text-[var(--color-secondary)]">
-          Bun de știut
-        </p>
-        <ul
-          class="mt-3 space-y-2 text-sm text-[var(--color-on-surface-variant)] leading-relaxed"
-        >
+      <div class="mt-6 rounded-[1rem] bg-[var(--color-surface-container-lowest)] border border-[var(--color-outline-variant)] px-5 py-4">
+        <p class="label-md uppercase text-[var(--color-secondary)]">Bun de știut</p>
+        <ul class="mt-3 space-y-2 text-sm text-[var(--color-on-surface-variant)] leading-relaxed">
+          <li>Programarea devine fermă după mesajul meu de confirmare pe WhatsApp.</li>
           <li>
-            Programarea devine fermă după mesajul meu de confirmare pe WhatsApp.
+            Te rog anunță-mă cu minimum <strong>24 de ore</strong> înainte dacă vrei să anulezi sau să reprogramezi.
           </li>
           <li>
-            Te rog anunță-mă cu minimum <strong>24 de ore</strong> înainte dacă
-            vrei să anulezi sau să reprogramezi.
-          </li>
-          <li>
-            Detalii complete în <a
-              href={withBase("/termeni/")}
-              class="underline underline-offset-2 hover:text-[var(--color-on-surface)]"
-              >Termeni și condiții</a
-            >.
+            Detalii complete în{" "}
+            <a href={withBase("/termeni/")} class="underline underline-offset-2 hover:text-[var(--color-on-surface)]">
+              Termeni și condiții
+            </a>
+            .
           </li>
         </ul>
       </div>

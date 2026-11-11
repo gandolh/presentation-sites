@@ -5,15 +5,7 @@
  */
 
 /** What the user seems to want. `unknown` -> fallback reply (always offers a human). */
-export type Intent =
-  | "stop"
-  | "start"
-  | "services"
-  | "prices"
-  | "booking"
-  | "location"
-  | "greeting"
-  | "unknown";
+export type Intent = "stop" | "start" | "services" | "prices" | "booking" | "location" | "greeting" | "unknown";
 
 /** Lowercase + strip RO diacritics so "Programări" matches "programari". */
 export function normalize(text: string): string {
@@ -51,8 +43,7 @@ export function detectIntent(rawText: string): Intent {
   if (t === "1" || /\bservic/.test(t)) return "services";
   if (t === "2" || /\bpret/.test(t) || /\btarif/.test(t) || /\bcost/.test(t)) return "prices";
   if (t === "3" || /\bprogram(are|ari)?\b/.test(t) || /\brezerv/.test(t)) return "booking";
-  if (t === "4" || /\blocat/.test(t) || /\badres/.test(t) || /\bunde\b/.test(t) || /\bharta/.test(t))
-    return "location";
+  if (t === "4" || /\blocat/.test(t) || /\badres/.test(t) || /\bunde\b/.test(t) || /\bharta/.test(t)) return "location";
 
   if (/\bbun[aă]?\b/.test(t) || /\bsalut\b/.test(t) || /\bbuna ziua\b/.test(t)) return "greeting";
 

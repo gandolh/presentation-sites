@@ -15,6 +15,7 @@ const nodes = [
 ];
 const spokes = nodes.filter((n) => !n.hub);
 ---
+
 <section id="acoperire" class="stop section relative grain bg-[var(--color-surface-container-lowest)]">
   <span class="stop__marker" aria-hidden="true"></span>
   <div class="container-page relative z-[2]">
@@ -25,24 +26,27 @@ const spokes = nodes.filter((n) => !n.hub);
           Toată <span class="glow-word">Oltenia</span>, dintr-un singur apel.
         </h2>
         <p class="mt-5 max-w-md text-[var(--color-on-surface-variant)] text-lg">
-          Cu baza în {site.city}, ajungem rapid în {site.counties.length} județe.
-          Pe autostradă, pe drum național sau pe o uliță de țară — venim la tine.
+          Cu baza în {site.city}, ajungem rapid în {site.counties.length} județe. Pe autostradă, pe drum național sau pe
+          o uliță de țară — venim la tine.
         </p>
         <ul class="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-md">
-          {
-            nodes.map((n) => (
-              <li class="flex items-center gap-2.5">
-                <span class="w-2 h-2 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
-                <span class="font-semibold text-[var(--color-on-surface)]">{n.name}</span>
-              </li>
-            ))
-          }
+          {nodes.map((n) => (
+            <li class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
+              <span class="font-semibold text-[var(--color-on-surface)]">{n.name}</span>
+            </li>
+          ))}
         </ul>
       </div>
 
       <div class="reveal">
         <div class="relative rounded-[var(--radius-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] p-4 overflow-hidden">
-          <svg viewBox="0 0 480 360" class="w-full h-auto coverage-map" role="img" aria-label={`Hartă de acoperire: ${site.counties.join(", ")}`}>
+          <svg
+            viewBox="0 0 480 360"
+            class="w-full h-auto coverage-map"
+            role="img"
+            aria-label={`Hartă de acoperire: ${site.counties.join(", ")}`}
+          >
             <defs>
               <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.5" />
@@ -65,44 +69,63 @@ const spokes = nodes.filter((n) => !n.hub);
             </g>
 
             <!-- routes hub → each county -->
-            {
-              spokes.map((n, i) => (
-                <line
-                  class="route"
-                  x1={hub.x} y1={hub.y} x2={n.x} y2={n.y}
-                  stroke="url(#route)" stroke-width="2" stroke-linecap="round"
-                  style={`--d:${i * 0.4}s`}
-                />
-              ))
-            }
+            {spokes.map((n, i) => (
+              <line
+                class="route"
+                x1={hub.x}
+                y1={hub.y}
+                x2={n.x}
+                y2={n.y}
+                stroke="url(#route)"
+                stroke-width="2"
+                stroke-linecap="round"
+                style={`--d:${i * 0.4}s`}
+              />
+            ))}
 
             <!-- hub glow -->
             <circle cx={hub.x} cy={hub.y} r="46" fill="url(#hubGlow)" class="hub-glow" />
 
             <!-- county nodes -->
-            {
-              nodes.map((n, i) => (
-                <g class="node" style={`--d:${i * 0.25}s`}>
-                  {n.hub ? (
-                    <>
-                      <circle cx={n.x} cy={n.y} r="8" fill="var(--color-primary)" />
-                      <circle cx={n.x} cy={n.y} r="8" fill="none" stroke="var(--color-primary)" stroke-width="1.5" class="ping" />
-                    </>
-                  ) : (
-                    <circle cx={n.x} cy={n.y} r="5" fill="var(--color-accent)" stroke="var(--color-surface-container)" stroke-width="2" />
-                  )}
-                  <text
-                    x={n.x} y={n.y - 14}
-                    text-anchor="middle"
-                    fill="var(--color-on-surface)"
-                    font-size="13"
-                    font-family="var(--font-display)"
-                    font-weight="800"
-                    style="text-transform:uppercase;letter-spacing:0.04em"
-                  >{n.name}</text>
-                </g>
-              ))
-            }
+            {nodes.map((n, i) => (
+              <g class="node" style={`--d:${i * 0.25}s`}>
+                {n.hub ? (
+                  <>
+                    <circle cx={n.x} cy={n.y} r="8" fill="var(--color-primary)" />
+                    <circle
+                      cx={n.x}
+                      cy={n.y}
+                      r="8"
+                      fill="none"
+                      stroke="var(--color-primary)"
+                      stroke-width="1.5"
+                      class="ping"
+                    />
+                  </>
+                ) : (
+                  <circle
+                    cx={n.x}
+                    cy={n.y}
+                    r="5"
+                    fill="var(--color-accent)"
+                    stroke="var(--color-surface-container)"
+                    stroke-width="2"
+                  />
+                )}
+                <text
+                  x={n.x}
+                  y={n.y - 14}
+                  text-anchor="middle"
+                  fill="var(--color-on-surface)"
+                  font-size="13"
+                  font-family="var(--font-display)"
+                  font-weight="800"
+                  style="text-transform:uppercase;letter-spacing:0.04em"
+                >
+                  {n.name}
+                </text>
+              </g>
+            ))}
           </svg>
         </div>
       </div>
@@ -133,19 +156,47 @@ const spokes = nodes.filter((n) => !n.hub);
     transform-box: fill-box;
     animation: hub-breathe 4s ease-in-out infinite;
   }
-  @keyframes route-draw { to { stroke-dashoffset: 0; } }
-  @keyframes node-in { to { opacity: 1; } }
+  @keyframes route-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes node-in {
+    to {
+      opacity: 1;
+    }
+  }
   @keyframes map-ping {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(3.2); opacity: 0; }
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(3.2);
+      opacity: 0;
+    }
   }
   @keyframes hub-breathe {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .coverage-map .route { stroke-dashoffset: 0; animation: none; }
-    .coverage-map .node { opacity: 1; animation: none; }
-    .coverage-map .ping, .coverage-map .hub-glow { animation: none; }
+    .coverage-map .route {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+    .coverage-map .node {
+      opacity: 1;
+      animation: none;
+    }
+    .coverage-map .ping,
+    .coverage-map .hub-glow {
+      animation: none;
+    }
   }
 </style>

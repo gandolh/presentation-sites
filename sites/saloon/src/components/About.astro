@@ -3,15 +3,10 @@ import { site } from "../content/site";
 import { img } from "../content/images";
 ---
 
-<section
-  id="despre"
-  class="section bg-[var(--color-surface-container-low)]"
->
+<section id="despre" class="section bg-[var(--color-surface-container-low)]">
   <div class="container-page grid md:grid-cols-2 gap-12 md:gap-20 items-center">
     <div class="reveal order-2 md:order-1">
-      <div
-        class="aspect-[4/5] w-full max-w-md mx-auto md:mx-0 rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
-      >
+      <div class="aspect-[4/5] w-full max-w-md mx-auto md:mx-0 rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]">
         <img
           src={img("ana-portrait")}
           alt="Portret al Anei"
@@ -27,50 +22,34 @@ import { img } from "../content/images";
       <h2 class="heading-lg">Bună, sunt Ana</h2>
       <span class="gold-divider"></span>
 
-      <div
-        class="mt-6 space-y-4 text-[var(--color-on-surface-variant)] leading-relaxed"
-      >
+      <div class="mt-6 space-y-4 text-[var(--color-on-surface-variant)] leading-relaxed">
         <p>
-          Am început manichiura lucrând pentru prietene și familie, iar de
-          câțiva ani o fac cu seriozitate, pentru tot mai multe cliente. Pun
-          suflet în fiecare set de unghii și știu că pot livra un rezultat de
-          care să fii mulțumită.
+          Am început manichiura lucrând pentru prietene și familie, iar de câțiva ani o fac cu seriozitate, pentru tot
+          mai multe cliente. Pun suflet în fiecare set de unghii și știu că pot livra un rezultat de care să fii
+          mulțumită.
         </p>
         <p>
-          Lucrez cu produse de calitate, în condiții de igienă atente, și îmi
-          place să ascult ce își dorește fiecare clientă, ca rezultatul să fie
-          exact pe gustul tău.
+          Lucrez cu produse de calitate, în condiții de igienă atente, și îmi place să ascult ce își dorește fiecare
+          clientă, ca rezultatul să fie exact pe gustul tău.
         </p>
-        <p>
-          Dacă vrei unghii îngrijite și un moment doar pentru tine, te aștept în
-          Iezureni.
-        </p>
+        <p>Dacă vrei unghii îngrijite și un moment doar pentru tine, te aștept în Iezureni.</p>
       </div>
 
       <!-- Signature sign-off: the page's warmest moment, signed in Ana's own
            hand. Uses the italic Fraunces wordmark face (the brand mark) + the
            gold accent, so it reads as a personal signature, not a label. -->
-      <p
-        class="signature mt-6 text-[var(--color-primary)]"
-        aria-label="semnat, Ana"
-      >
+      <p class="signature mt-6 text-[var(--color-primary)]" aria-label="semnat, Ana">
         <span aria-hidden="true">cu drag, Ana</span>
       </p>
 
       <div class="mt-10 grid grid-cols-2 gap-4 max-w-sm">
         <div class="text-center">
-          <p class="heading-md text-[var(--color-on-surface)]">
-            {site.stats.years}
-          </p>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">
-            ani de experiență
-          </p>
+          <p class="heading-md text-[var(--color-on-surface)]">{site.stats.years}</p>
+          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">ani de experiență</p>
         </div>
         <div class="text-center">
           <p class="heading-md text-[var(--color-on-surface)]">1&nbsp;la&nbsp;1</p>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">
-            doar tu și Ana
-          </p>
+          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">doar tu și Ana</p>
         </div>
       </div>
     </div>
@@ -85,7 +64,9 @@ import { img } from "../content/images";
   .signature {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 40, "opsz" 40;
+    font-variation-settings:
+      "SOFT" 40,
+      "opsz" 40;
     font-style: italic;
     font-weight: 500;
     font-size: 1.5rem;

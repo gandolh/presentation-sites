@@ -5,64 +5,57 @@ import { site } from "../content/site";
 
 <LegalLayout title="Politică de confidențialitate">
   <p class="note">
-    <strong>Site demonstrativ.</strong> Acest document este un model orientativ,
-    cu date fictive. Nu reprezintă o politică de confidențialitate a unei firme
-    reale și nu trebuie folosit ca atare. Câmpurile (denumire, CUI, date de
+    <strong>Site demonstrativ.</strong> Acest document este un model orientativ, cu date fictive. Nu reprezintă o
+    politică de confidențialitate a unei firme reale și nu trebuie folosit ca atare. Câmpurile (denumire, CUI, date de
     contact) sunt completate cu valori-exemplu.
   </p>
 
   <p>
-    Această politică explică, pe scurt, cum ar fi prelucrate datele cu caracter
-    personal de către {site.legal.legalName} („Subcort"), în calitate de
-    operator, în conformitate cu Regulamentul (UE) 2016/679 (GDPR).
+    Această politică explică, pe scurt, cum ar fi prelucrate datele cu caracter personal de către {site.legal.legalName}{" "}
+    („Subcort"), în calitate de operator, în conformitate cu Regulamentul (UE) 2016/679 (GDPR).
   </p>
 
   <h2>1. Ce date colectăm</h2>
   <p>
-    Site-ul Subcort este pur informativ: nu conține formulare, nu cere cont și
-    nu colectează date prin completarea vreunui câmp. Datele cu caracter
-    personal pot ajunge la noi doar dacă <strong>ne contactezi direct</strong>
-    prin telefon sau email, și se rezumă la ce alegi tu să ne comunici: nume,
-    număr de telefon sau adresă de email, detaliile evenimentului (data, locul,
-    numărul de invitați).
+    Site-ul Subcort este pur informativ: nu conține formulare, nu cere cont și nu colectează date prin completarea
+    vreunui câmp. Datele cu caracter personal pot ajunge la noi doar dacă <strong>ne contactezi direct</strong>
+    prin telefon sau email, și se rezumă la ce alegi tu să ne comunici: nume, număr de telefon sau adresă de email,
+    detaliile evenimentului (data, locul, numărul de invitați).
   </p>
 
   <h2>2. Scopul și temeiul prelucrării</h2>
   <p>
-    Datele transmise de tine ar fi folosite exclusiv pentru a-ți răspunde și
-    pentru a pregăti o eventuală ofertă sau prestare a serviciului. Temeiul
-    juridic este executarea de măsuri precontractuale la cererea ta și,
-    ulterior, executarea contractului (art. 6 alin. (1) lit. b) GDPR). Nu îți
-    cerem un consimțământ separat pentru a-ți răspunde la o solicitare.
+    Datele transmise de tine ar fi folosite exclusiv pentru a-ți răspunde și pentru a pregăti o eventuală ofertă sau
+    prestare a serviciului. Temeiul juridic este executarea de măsuri precontractuale la cererea ta și, ulterior,
+    executarea contractului (art. 6 alin. (1) lit. b) GDPR). Nu îți cerem un consimțământ separat pentru a-ți răspunde
+    la o solicitare.
   </p>
 
   <h2>3. Cât timp păstrăm datele</h2>
-  <p>
-    Datele ar fi păstrate {site.legal.dataRetention}.
-  </p>
+  <p>Datele ar fi păstrate {site.legal.dataRetention}.</p>
 
   <h2>4. Cui le divulgăm</h2>
   <p>
-    Pentru serviciile prin parteneri (catering, muzică, decor), datele strict
-    necesare ar putea fi transmise furnizorului local ales, doar pentru
-    organizarea evenimentului tău. Nu vindem și nu închiriem date cu caracter
+    Pentru serviciile prin parteneri (catering, muzică, decor), datele strict necesare ar putea fi transmise
+    furnizorului local ales, doar pentru organizarea evenimentului tău. Nu vindem și nu închiriem date cu caracter
     personal către terți.
   </p>
 
   <h2>5. Drepturile tale</h2>
   <p>
-    Ai dreptul de acces, rectificare, ștergere, restricționare, portabilitate și
-    opoziție, precum și dreptul de a depune o plângere la Autoritatea Națională
-    de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP,
-    <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">dataprotection.ro</a>).
-    Pentru exercitarea lor, ne poți scrie la
+    Ai dreptul de acces, rectificare, ștergere, restricționare, portabilitate și opoziție, precum și dreptul de a depune
+    o plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP,
+    <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">
+      dataprotection.ro
+    </a>
+    ). Pentru exercitarea lor, ne poți scrie la
     <a href={`mailto:${site.legal.dpoEmail}`}>{site.legal.dpoEmail}</a>.
   </p>
 
   <h2>6. Date de contact operator</h2>
   <p>
     {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.:
-    {site.legal.regNumber} · {site.address}, {site.city}, jud. {site.county} ·
-    Email: <a href={`mailto:${site.email}`}>{site.email}</a>.
+    {site.legal.regNumber} · {site.address}, {site.city}, jud. {site.county} · Email:{" "}
+    <a href={`mailto:${site.email}`}>{site.email}</a>.
   </p>
 </LegalLayout>

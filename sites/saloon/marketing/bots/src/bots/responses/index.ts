@@ -59,10 +59,7 @@ function buildReply(platform: Platform, toId: string, text: string): OutboundMes
  * Core handler for one inbound message on IG or FB. Depends only on injected
  * deps so it's trivially testable.
  */
-async function handleInbound(
-  msg: InboundMessage,
-  deps: { logger: Logger; db: Db; senders: Senders },
-): Promise<void> {
+async function handleInbound(msg: InboundMessage, deps: { logger: Logger; db: Db; senders: Senders }): Promise<void> {
   const { logger, db, senders } = deps;
   const intent: ReplyIntent = detectIntent(msg.text);
 
@@ -161,8 +158,7 @@ export const createBot = (deps: CoreDeps): BotModule => {
     registerWebhooks(router: WebhookRouter) {
       // Subscribe the SAME inbound handler for both IG and FB `messages`.
       // No `comments`/engagement subscription — inbound messages only.
-      const handler = (msg: InboundMessage) =>
-        handleInbound(msg, { logger: log, db: deps.db, senders: deps.senders });
+      const handler = (msg: InboundMessage) => handleInbound(msg, { logger: log, db: deps.db, senders: deps.senders });
       for (const platform of PLATFORMS) {
         router.onMessage(platform, handler);
       }

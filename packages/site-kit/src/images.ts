@@ -17,9 +17,7 @@ export type ImageSource = "mock" | "real";
 
 /** The source this build is using. Set `PUBLIC_IMAGE_SOURCE=real` to flip it. */
 export const IMAGE_SOURCE: ImageSource =
-  (import.meta.env.PUBLIC_IMAGE_SOURCE as string | undefined) === "real"
-    ? "real"
-    : "mock";
+  (import.meta.env.PUBLIC_IMAGE_SOURCE as string | undefined) === "real" ? "real" : "mock";
 
 export type CreateImagesOptions = {
   /**

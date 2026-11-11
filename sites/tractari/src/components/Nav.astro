@@ -28,17 +28,19 @@ const links = [
     </a>
 
     <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navigare principală">
-      {
-        links.map((link) => (
-          <a href={link.href} class="nav-link text-[0.92rem] font-semibold transition-colors">
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map((link) => (
+        <a href={link.href} class="nav-link text-[0.92rem] font-semibold transition-colors">
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href={telLink(primaryPhone.e164)} class="btn btn-call hidden sm:inline-flex !py-2.5 !px-4 !text-[0.95rem]" data-call="nav">
+      <a
+        href={telLink(primaryPhone.e164)}
+        class="btn btn-call hidden sm:inline-flex !py-2.5 !px-4 !text-[0.95rem]"
+        data-call="nav"
+      >
         <PhoneIcon />
         <span class="tnum">{primaryPhone.display}</span>
       </a>
@@ -64,15 +66,23 @@ const links = [
 <style>
   /* Small amber dot before the wordmark — a beacon, the brand mark in miniature. */
   .nav-mark {
-    width: 0.6rem; height: 0.6rem; border-radius: var(--radius-full);
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: var(--radius-full);
     background: var(--color-primary);
     box-shadow: 0 0 12px 1px oklch(80% 0.16 80 / 0.7);
     transition: box-shadow 300ms ease;
   }
-  .group:hover .nav-mark { box-shadow: 0 0 18px 3px oklch(80% 0.16 80 / 0.9); }
+  .group:hover .nav-mark {
+    box-shadow: 0 0 18px 3px oklch(80% 0.16 80 / 0.9);
+  }
 
-  .nav-link { color: var(--color-on-surface-variant); }
-  .nav-link:hover { color: var(--color-primary); }
+  .nav-link {
+    color: var(--color-on-surface-variant);
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
 
   /* The bar always has a solid asphalt background + hairline so it never
      overlaps the hero panel transparently. On scroll it deepens slightly and

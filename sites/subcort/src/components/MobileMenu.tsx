@@ -9,8 +9,15 @@ import { Dialog } from "@base-ui/react/dialog";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-export interface MenuLink { href: string; label: string; no: string }
-interface Props { links: MenuLink[]; current?: string }
+export interface MenuLink {
+  href: string;
+  label: string;
+  no: string;
+}
+interface Props {
+  links: MenuLink[];
+  current?: string;
+}
 
 export default function MobileMenu({ links, current = "/" }: Props) {
   const [open, setOpen] = useState(false);
@@ -31,7 +38,9 @@ export default function MobileMenu({ links, current = "/" }: Props) {
       <Dialog.Trigger ref={triggerRef} className="menu-btn">
         <span className="sr-only">{open ? "Închide meniul" : "Deschide meniul"}</span>
         <span className="menu-btn__bars" data-open={open || undefined} aria-hidden="true">
-          <i /><i /><i />
+          <i />
+          <i />
+          <i />
         </span>
       </Dialog.Trigger>
 

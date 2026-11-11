@@ -13,14 +13,5 @@ import { createImages } from "@sites/kit";
 export { IMAGE_SOURCE } from "@sites/kit";
 
 export const img = createImages({
-  hasReal: [
-    "hero",
-    "ana-portrait",
-    "gallery-01",
-    "gallery-02",
-    "gallery-03",
-    "gallery-04",
-    "gallery-05",
-    "gallery-06",
-  ],
+  hasReal: ["hero", "ana-portrait", "gallery-01", "gallery-02", "gallery-03", "gallery-04", "gallery-05", "gallery-06"],
 });

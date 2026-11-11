@@ -19,8 +19,7 @@ const KEY = [
   {
     n: 1,
     title: "Membrană & acoperiș",
-    description:
-      "Învelitoarea care ține apa și soarele afară, tensionată peste structură și fixată pe toată lungimea.",
+    description: "Învelitoarea care ține apa și soarele afară, tensionată peste structură și fixată pe toată lungimea.",
   },
   {
     n: 2,
@@ -52,50 +51,71 @@ const KEY = [
     <section class="sheet hero" aria-label="Subcort — corturi pentru evenimente">
       <div class="hero__grid">
         <div class="hero__copy">
-          <p class="plate-no">Subcort · {site.county} — {site.region}</p>
+          <p class="plate-no">
+            Subcort · {site.county} — {site.region}
+          </p>
           <h1 class="heading-xl mt-5">Un spațiu pregătit, oriunde ai nevoie de el.</h1>
           <p class="lede mt-7">
-            Aducem structura la tine, o ridicăm pe terenul tău și o pregătim
-            complet — pardoseală, pereți, iluminat și climatizare. Tu te ocupi
-            de eveniment, noi de spațiul în care are loc.
+            Aducem structura la tine, o ridicăm pe terenul tău și o pregătim complet — pardoseală, pereți, iluminat și
+            climatizare. Tu te ocupi de eveniment, noi de spațiul în care are loc.
           </p>
         </div>
-        <div class="hero__art"><HeroScene /></div>
+        <div class="hero__art">
+          <HeroScene />
+        </div>
       </div>
     </section>
 
     {/* The title-block strip: the key dimensions along the foot of the sheet. */}
     <div class="sheet">
       <dl class="titleblock">
-        <div><dt>Deschidere</dt><dd class="dim">8 – 20 m</dd></div>
-        <div><dt>Suprafață</dt><dd class="dim">64 – 300 m²</dd></div>
-        <div><dt>Capacitate</dt><dd class="dim">40 – 320</dd></div>
-        <div><dt>Montaj</dt><dd>La tine acasă</dd></div>
-        <div><dt>Zonă</dt><dd>{site.county} · {site.region}</dd></div>
+        <div>
+          <dt>Deschidere</dt>
+          <dd class="dim">8 – 20 m</dd>
+        </div>
+        <div>
+          <dt>Suprafață</dt>
+          <dd class="dim">64 – 300 m²</dd>
+        </div>
+        <div>
+          <dt>Capacitate</dt>
+          <dd class="dim">40 – 320</dd>
+        </div>
+        <div>
+          <dt>Montaj</dt>
+          <dd>La tine acasă</dd>
+        </div>
+        <div>
+          <dt>Zonă</dt>
+          <dd>
+            {site.county} · {site.region}
+          </dd>
+        </div>
       </dl>
     </div>
 
     {/* ===================== PLATE 01 — the exploded view ===================== */}
     <Plate no="01 · Alcătuire" note="Axonometrie 1:100" title="Ce vine odată cu cortul">
       <p class="lede mt-5">
-        Venim cu structura, o ridicăm pe terenul tău și o pregătim complet.
-        Lăsăm un spațiu gata de folosit, potrivit oricărei ocazii, și revenim
-        după eveniment ca să demontăm.
+        Venim cu structura, o ridicăm pe terenul tău și o pregătim complet. Lăsăm un spațiu gata de folosit, potrivit
+        oricărei ocazii, și revenim după eveniment ca să demontăm.
       </p>
 
-      <div class="mt-10"><ExplodedPlate /></div>
+      <div class="mt-10">
+        <ExplodedPlate />
+      </div>
 
       {/* This list is the drawing's key: the numbers here are the callout
           numbers on the plate above, in the same order. */}
       <ul class="parts">
         {KEY.map((k) => (
           <li class="reveal part">
-            <span class="callout-no" aria-hidden="true">{k.n}</span>
+            <span class="callout-no" aria-hidden="true">
+              {k.n}
+            </span>
             <div>
               <h3 class="heading-md">{k.title}</h3>
-              <p class="mt-2 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
-                {k.description}
-              </p>
+              <p class="mt-2 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{k.description}</p>
             </div>
           </li>
         ))}
@@ -104,7 +124,19 @@ const KEY = [
       <p class="mt-9">
         <a href={withBase("/corturi/")} class="btn-outline">
           Vezi dimensiunile și dotările
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
         </a>
       </p>
     </Plate>
@@ -113,18 +145,17 @@ const KEY = [
         The numbers carry information here: the order is the content. */}
     <Plate no="02 · Execuție" note="Succesiunea lucrărilor" title="Cum funcționează">
       <p class="lede mt-5">
-        Patru etape, de la prima discuție până la demontare. De logistică ne
-        ocupăm noi, cap-coadă.
+        Patru etape, de la prima discuție până la demontare. De logistică ne ocupăm noi, cap-coadă.
       </p>
 
       <ol class="steps">
         {steps.map((s) => (
           <li class="reveal step">
-            <span class="step__no dim" aria-hidden="true">{s.n}</span>
+            <span class="step__no dim" aria-hidden="true">
+              {s.n}
+            </span>
             <h3 class="heading-md mt-3">{s.title}</h3>
-            <p class="mt-2.5 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
-              {s.description}
-            </p>
+            <p class="mt-2.5 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
           </li>
         ))}
       </ol>
@@ -135,23 +166,72 @@ const KEY = [
 </Base>
 
 <style>
-  .hero { padding-block: clamp(1.5rem, 3vw, 2.75rem) clamp(2rem, 4vw, 3.25rem); }
-  .hero__grid { display: grid; gap: 1.5rem; align-items: center; }
-  @media (min-width: 900px) {
-    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 3rem; }
-    .hero__copy { max-width: 34rem; }
+  .hero {
+    padding-block: clamp(1.5rem, 3vw, 2.75rem) clamp(2rem, 4vw, 3.25rem);
   }
-  .hero__copy h1 { max-width: 15ch; }
+  .hero__grid {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: 3rem;
+    }
+    .hero__copy {
+      max-width: 34rem;
+    }
+  }
+  .hero__copy h1 {
+    max-width: 15ch;
+  }
 
   /* The callout list mirrors the numbers on the drawing above it. */
-  .parts { margin-top: 3rem; display: grid; gap: 1.75rem 3rem; }
-  @media (min-width: 700px) { .parts { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1150px) { .parts { grid-template-columns: repeat(4, 1fr); } }
-  .part { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .parts {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1.75rem 3rem;
+  }
+  @media (min-width: 700px) {
+    .parts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1150px) {
+    .parts {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .part {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
 
-  .steps { margin-top: 2.75rem; display: grid; gap: 2rem 2.5rem; }
-  @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1050px) { .steps { grid-template-columns: repeat(4, 1fr); } }
-  .step { border-top: 1.5px solid var(--color-ink); padding-top: 1rem; }
-  .step__no { font-size: 0.78rem; font-weight: 500; color: var(--color-signal); letter-spacing: 0.08em; }
+  .steps {
+    margin-top: 2.75rem;
+    display: grid;
+    gap: 2rem 2.5rem;
+  }
+  @media (min-width: 640px) {
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1050px) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .step {
+    border-top: 1.5px solid var(--color-ink);
+    padding-top: 1rem;
+  }
+  .step__no {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--color-signal);
+    letter-spacing: 0.08em;
+  }
 </style>

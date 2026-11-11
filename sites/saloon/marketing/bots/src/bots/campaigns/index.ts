@@ -28,25 +28,10 @@
 
 import { randomUUID } from "node:crypto";
 
-import type {
-  CoreDeps,
-  BotModule,
-  Config,
-  Scheduler,
-  Logger,
-  Db,
-  Senders,
-  CampaignDraft,
-} from "../../core/index.ts";
+import type { CoreDeps, BotModule, Config, Scheduler, Logger, Db, Senders, CampaignDraft } from "../../core/index.ts";
 import { Cadence } from "../../core/index.ts";
 
-import {
-  PRESETS,
-  SALON_CITY,
-  SALON_GEO_RADIUS_KM,
-  SALON_MIN_AGE,
-  type CampaignPreset,
-} from "./presets.ts";
+import { PRESETS, SALON_CITY, SALON_GEO_RADIUS_KM, SALON_MIN_AGE, type CampaignPreset } from "./presets.ts";
 import { assertPaused, clampDailyBudget } from "./budget.ts";
 
 /** Job names — exported so tests / ops can trigger them deterministically. */
@@ -125,12 +110,7 @@ function notificationBody(draft: CampaignDraft, clamped: boolean): string {
  * clamped), create it PAUSED via the MarketingClient, persist for audit, and
  * notify a human. Honors the spend kill-switch: prepares NOTHING if it's off.
  */
-export async function prepareDrafts(deps: {
-  config: Config;
-  log: Logger;
-  db: Db;
-  senders: Senders;
-}): Promise<void> {
+export async function prepareDrafts(deps: { config: Config; log: Logger; db: Db; senders: Senders }): Promise<void> {
   const { config, log, db, senders } = deps;
 
   // Spend kill-switch (COMPLIANCE #8): off => prepare nothing live.
@@ -163,10 +143,7 @@ export async function prepareDrafts(deps: {
     });
 
     // Human-in-the-loop: notify a person to review + publish.
-    await senders.notifier.notify(
-      `Campanie pregătită (PAUSED) — ${preset.key}`,
-      notificationBody(draft, clamped),
-    );
+    await senders.notifier.notify(`Campanie pregătită (PAUSED) — ${preset.key}`, notificationBody(draft, clamped));
   }
 }
 
@@ -175,11 +152,7 @@ export async function prepareDrafts(deps: {
  * Pausing only stops spend, so it's safe without approval (COMPLIANCE #7).
  * Resuming is deliberately NOT automated — a human must do that.
  */
-export async function autoPauseIfFull(deps: {
-  log: Logger;
-  db: Db;
-  senders: Senders;
-}): Promise<void> {
+export async function autoPauseIfFull(deps: { log: Logger; db: Db; senders: Senders }): Promise<void> {
   const { log, db, senders } = deps;
 
   const full = await db.isCalendarFull(CALENDAR_FULL_LOOKAHEAD_DAYS);

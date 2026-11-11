@@ -24,8 +24,8 @@ const Heading = heading;
       <div class="reveal ct__head">
         <Heading class="heading-lg">Hai cu mașina la noi</Heading>
         <p class="ct__lede">
-          Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj
-          pe WhatsApp — poți atașa și o poză cu martorul aprins sau cu piesa.
+          Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp — poți atașa și o poză cu
+          martorul aprins sau cu piesa.
         </p>
       </div>
     )}
@@ -37,7 +37,13 @@ const Heading = heading;
             <Icon name="phone" size={18} />
             <span class="reading ct__num">{site.phone}</span>
           </a>
-          <a href={waLink()} target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg ct__btn" data-cta="contact-whatsapp">
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener"
+            class="btn btn-whatsapp btn-lg ct__btn"
+            data-cta="contact-whatsapp"
+          >
             <Icon name="whatsapp" size={18} />
             <span>WhatsApp</span>
           </a>
@@ -46,11 +52,19 @@ const Heading = heading;
         <dl class="ct__facts">
           <div class="ct__fact">
             <dt class="legend">Adresă</dt>
-            <dd>{site.address}<br />{site.city}, jud. {site.county}</dd>
+            <dd>
+              {site.address}
+              <br />
+              {site.city}, jud. {site.county}
+            </dd>
           </div>
           <div class="ct__fact">
             <dt class="legend">Email</dt>
-            <dd><a href={`mailto:${site.email}`} class="ct__mail">{site.email}</a></dd>
+            <dd>
+              <a href={`mailto:${site.email}`} class="ct__mail">
+                {site.email}
+              </a>
+            </dd>
           </div>
           <div class="ct__fact ct__fact--wide">
             <dt class="legend">Program</dt>
@@ -78,7 +92,9 @@ const Heading = heading;
 </section>
 
 <style>
-  .ct__head { max-width: 52ch; }
+  .ct__head {
+    max-width: 52ch;
+  }
   .ct__lede {
     margin-top: 1.1rem;
     font-size: 1.06rem;
@@ -86,14 +102,38 @@ const Heading = heading;
     color: var(--color-inverse-on-surface-variant);
   }
 
-  .ct__grid { display: grid; gap: 2.25rem; }
-  .ct__grid--spaced { margin-top: 2.75rem; }
-  @media (min-width: 1024px) { .ct__grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+  .ct__grid {
+    display: grid;
+    gap: 2.25rem;
+  }
+  .ct__grid--spaced {
+    margin-top: 2.75rem;
+  }
+  @media (min-width: 1024px) {
+    .ct__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
 
-  .ct__actions { display: flex; flex-direction: column; gap: 0.75rem; }
-  @media (min-width: 520px) { .ct__actions { flex-direction: row; } }
-  .ct__btn { flex: 1; }
-  .ct__num { font-size: 0.95rem; letter-spacing: 0.11em; font-weight: 700; }
+  .ct__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  @media (min-width: 520px) {
+    .ct__actions {
+      flex-direction: row;
+    }
+  }
+  .ct__btn {
+    flex: 1;
+  }
+  .ct__num {
+    font-size: 0.95rem;
+    letter-spacing: 0.11em;
+    font-weight: 700;
+  }
 
   .ct__facts {
     display: grid;
@@ -102,9 +142,18 @@ const Heading = heading;
     padding-top: 1.75rem;
     border-top: 1px solid oklch(0% 0 0 / 0.16);
   }
-  @media (min-width: 560px) { .ct__facts { grid-template-columns: repeat(2, 1fr); } }
-  .ct__fact--wide { grid-column: 1 / -1; }
-  .ct__fact dd { margin-top: 0.5rem; line-height: 1.6; }
+  @media (min-width: 560px) {
+    .ct__facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .ct__fact--wide {
+    grid-column: 1 / -1;
+  }
+  .ct__fact dd {
+    margin-top: 0.5rem;
+    line-height: 1.6;
+  }
 
   .ct__mail {
     font-weight: 600;
@@ -112,9 +161,15 @@ const Heading = heading;
     text-decoration: underline;
     text-decoration-color: color-mix(in oklab, var(--color-link-on-trim) 40%, transparent);
   }
-  .ct__mail:hover { text-decoration-color: currentColor; }
+  .ct__mail:hover {
+    text-decoration-color: currentColor;
+  }
 
-  .ct__hours { list-style: none; margin: 0.35rem 0 0; padding: 0; }
+  .ct__hours {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+  }
   .ct__hours li {
     display: flex;
     justify-content: space-between;
@@ -122,8 +177,12 @@ const Heading = heading;
     padding-block: 0.45rem;
     border-top: 1px solid oklch(0% 0 0 / 0.12);
   }
-  .ct__hours li:first-child { border-top: 0; }
-  .ct__hours li span:last-child { font-weight: 600; }
+  .ct__hours li:first-child {
+    border-top: 0;
+  }
+  .ct__hours li span:last-child {
+    font-weight: 600;
+  }
 
   .ct__map {
     width: 100%;
@@ -135,7 +194,12 @@ const Heading = heading;
     box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.5);
   }
   @media (min-width: 1024px) {
-    .ct__mapwrap { display: flex; }
-    .ct__map { aspect-ratio: auto; height: 100%; }
+    .ct__mapwrap {
+      display: flex;
+    }
+    .ct__map {
+      aspect-ratio: auto;
+      height: 100%;
+    }
   }
 </style>

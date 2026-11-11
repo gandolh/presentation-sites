@@ -15,61 +15,49 @@ import { waLink } from "../content/site";
     <div class="reveal">
       <h2 class="heading-lg">Servicii & prețuri</h2>
       <p class="mt-4 max-w-[55ch] text-[var(--color-on-surface-variant)]">
-        Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe
-        WhatsApp.
+        Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe WhatsApp.
       </p>
     </div>
 
     <ul class="mt-10 md:mt-14">
-      {
-        services.map((s, i) => (
-          <li
-            class="reveal border-t border-[var(--color-outline-variant)] last:border-b"
-            style={`--i: ${i}`}
-          >
-            <div class="py-7 md:py-9 grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline">
-              <div>
-                <h3 class="heading-md">{s.title}</h3>
-                <p class="label-md uppercase mt-1.5 text-[var(--color-secondary)]">
-                  {s.subtitle}
-                </p>
-                <p class="mt-3 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">
-                  {s.description}
-                </p>
-              </div>
-
-              <div class="flex items-baseline gap-6 md:flex-col md:items-end md:gap-3 md:text-right">
-                <span class="font-display text-2xl whitespace-nowrap tabular-nums text-[var(--color-gold-ink)]">
-                  {s.price}
-                </span>
-                <a
-                  href={waLink(
-                    `Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`,
-                  )}
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] underline underline-offset-4 decoration-[var(--color-outline-variant)] hover:decoration-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors"
-                >
-                  Programează →
-                </a>
-              </div>
+      {services.map((s, i) => (
+        <li class="reveal border-t border-[var(--color-outline-variant)] last:border-b" style={`--i: ${i}`}>
+          <div class="py-7 md:py-9 grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline">
+            <div>
+              <h3 class="heading-md">{s.title}</h3>
+              <p class="label-md uppercase mt-1.5 text-[var(--color-secondary)]">{s.subtitle}</p>
+              <p class="mt-3 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">{s.description}</p>
             </div>
-          </li>
-        ))
-      }
+
+            <div class="flex items-baseline gap-6 md:flex-col md:items-end md:gap-3 md:text-right">
+              <span class="font-display text-2xl whitespace-nowrap tabular-nums text-[var(--color-gold-ink)]">
+                {s.price}
+              </span>
+              <a
+                href={waLink(`Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`)}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] underline underline-offset-4 decoration-[var(--color-outline-variant)] hover:decoration-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors"
+              >
+                Programează →
+              </a>
+            </div>
+          </div>
+        </li>
+      ))}
     </ul>
 
     <p class="mt-10 text-sm text-[var(--color-on-surface-variant)]">
       Nu găsești ce cauți?{" "}
       <a
-        href={waLink(
-          "Bună, Ana! Aș vrea să întreb despre un serviciu care nu e în listă.",
-        )}
+        href={waLink("Bună, Ana! Aș vrea să întreb despre un serviciu care nu e în listă.")}
         target="_blank"
         rel="noopener"
         class="font-semibold text-[var(--color-on-surface)] underline underline-offset-4 hover:text-[var(--color-blush-deep)]"
-        >Întreabă-mă pe WhatsApp</a
-      >.
+      >
+        Întreabă-mă pe WhatsApp
+      </a>
+      .
     </p>
   </div>
 </section>

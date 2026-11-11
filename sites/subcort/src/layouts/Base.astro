@@ -113,16 +113,13 @@ const ogImage = absoluteUrl("/images/og-image.png");
       // a short timeout regardless of scroll.
       (function () {
         const prefersReduced =
-          typeof matchMedia === "function" &&
-          matchMedia("(prefers-reduced-motion: reduce)").matches;
+          typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (typeof IntersectionObserver === "undefined" || prefersReduced) {
           return; // leave content visible, skip animation entirely
         }
 
         document.documentElement.classList.add("js-reveal");
-        const reveals = Array.prototype.slice.call(
-          document.querySelectorAll(".reveal"),
-        );
+        const reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
 
         function show(el) {
           el.classList.add("is-visible");
@@ -166,6 +163,5 @@ const ogImage = absoluteUrl("/images/og-image.png");
         window.setTimeout(revealAll, 2500);
       })();
     </script>
-
-</body>
+  </body>
 </html>

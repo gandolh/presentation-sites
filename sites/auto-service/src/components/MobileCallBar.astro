@@ -36,7 +36,11 @@ import { site, telLink, waLink } from "../content/site";
     -webkit-backdrop-filter: blur(14px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  @media (min-width: 1024px) { .callbar { display: none; } }
+  @media (min-width: 1024px) {
+    .callbar {
+      display: none;
+    }
+  }
 
   .callbar__inner {
     display: grid;
@@ -44,6 +48,11 @@ import { site, telLink, waLink } from "../content/site";
     gap: 0.6rem;
     padding: 0.6rem 0.75rem;
   }
-  .callbar__wa { padding-inline: 1.15rem; color: var(--color-whatsapp); }
-  .callbar__wa:hover { color: var(--color-whatsapp-hover); }
+  .callbar__wa {
+    padding-inline: 1.15rem;
+    color: var(--color-whatsapp);
+  }
+  .callbar__wa:hover {
+    color: var(--color-whatsapp-hover);
+  }
 </style>

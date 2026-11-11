@@ -3,7 +3,9 @@ import { site } from "../content/site";
 import { withBase } from "@sites/kit";
 import MobileMenu from "./MobileMenu.tsx";
 
-interface Props { current?: string }
+interface Props {
+  current?: string;
+}
 const { current = "/" } = Astro.props;
 
 // The sheet register. Numbering is real here — this is a drawing set, and the
@@ -19,12 +21,18 @@ const links = [
 
 <header class="nav" data-nav>
   <div class="sheet nav__inner">
-    <a href={withBase("/")} class="nav__word" aria-label={`${site.name} — acasă`}>SUBCORT</a>
+    <a href={withBase("/")} class="nav__word" aria-label={`${site.name} — acasă`}>
+      SUBCORT
+    </a>
     <nav class="nav__links" aria-label="Navigare principală">
       {links.map((l) => (
-        <a href={withBase(l.href)}
-           class:list={["nav__link", current === l.href && "is-current"]}
-           aria-current={current === l.href ? "page" : undefined}>{l.label}</a>
+        <a
+          href={withBase(l.href)}
+          class:list={["nav__link", current === l.href && "is-current"]}
+          aria-current={current === l.href ? "page" : undefined}
+        >
+          {l.label}
+        </a>
       ))}
     </nav>
     <MobileMenu client:load links={links.map((l) => ({ ...l, href: withBase(l.href) }))} current={current} />

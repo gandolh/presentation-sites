@@ -47,7 +47,6 @@ export function createLogger(minLevel: LogLevel = "info", scope = ""): Logger {
     info: (m, meta) => emit("info", m, meta),
     warn: (m, meta) => emit("warn", m, meta),
     error: (m, meta) => emit("error", m, meta),
-    child: (childScope) =>
-      createLogger(minLevel, scope ? `${scope}:${childScope}` : childScope),
+    child: (childScope) => createLogger(minLevel, scope ? `${scope}:${childScope}` : childScope),
   };
 }

@@ -56,8 +56,7 @@ export interface PublishRunnerOptions {
   sleep?: (ms: number) => Promise<void>;
 }
 
-const realSleep = (ms: number): Promise<void> =>
-  ms <= 0 ? Promise.resolve() : new Promise((r) => setTimeout(r, ms));
+const realSleep = (ms: number): Promise<void> => (ms <= 0 ? Promise.resolve() : new Promise((r) => setTimeout(r, ms)));
 
 /**
  * Build a per-platform result object honoring exactOptionalPropertyTypes:

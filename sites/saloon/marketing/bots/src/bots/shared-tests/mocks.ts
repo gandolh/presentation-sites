@@ -137,9 +137,4 @@ export function sampleInboundMessage(overrides: Overrides<InboundMessage> = {}):
 }
 
 /** All platforms, handy for table-driven tests. */
-export const ALL_PLATFORMS: readonly Platform[] = [
-  "whatsapp",
-  "instagram",
-  "facebook",
-  "tiktok",
-];
+export const ALL_PLATFORMS: readonly Platform[] = ["whatsapp", "instagram", "facebook", "tiktok"];

@@ -10,17 +10,15 @@ interface Props {
   updated?: string;
 }
 
-const {
-  title,
-  description = `${title} · ${site.name}`,
-  updated = site.legal.documentsUpdated,
-} = Astro.props;
+const { title, description = `${title} · ${site.name}`, updated = site.legal.documentsUpdated } = Astro.props;
 ---
 
 <Base title={`${title} · ${site.name}`} description={description}>
   <header class="border-b border-[var(--color-hair)]">
     <div class="sheet flex items-center justify-between gap-4 py-5">
-      <a href={withBase("/")} class="text-[1.2rem] font-bold tracking-[-0.005em]">SUBCORT</a>
+      <a href={withBase("/")} class="text-[1.2rem] font-bold tracking-[-0.005em]">
+        SUBCORT
+      </a>
       <a href={withBase("/")} class="btn-outline !py-2 !px-3.5 !text-[0.86rem]">
         ← Înapoi la site
       </a>
@@ -29,9 +27,7 @@ const {
 
   <main id="main" class="sheet max-w-3xl py-12 md:py-20">
     <h1 class="heading-lg">{title}</h1>
-    <p class="mt-4 text-sm text-[var(--color-ink-2)] dim">
-      Ultima actualizare: {updated}
-    </p>
+    <p class="mt-4 text-sm text-[var(--color-ink-2)] dim">Ultima actualizare: {updated}</p>
 
     <article class="legal-prose mt-10">
       <slot />
@@ -64,22 +60,35 @@ const {
     margin-top: 1.75rem;
     margin-bottom: 0.5rem;
   }
-  .legal-prose p { margin-bottom: 1rem; }
+  .legal-prose p {
+    margin-bottom: 1rem;
+  }
   .legal-prose ul,
   .legal-prose ol {
     margin: 0 0 1.15rem 1.15rem;
     display: grid;
     gap: 0.45rem;
   }
-  .legal-prose ul { list-style: square; }
-  .legal-prose ol { list-style: decimal; }
-  .legal-prose li::marker { color: var(--color-signal); }
-  .legal-prose strong { color: var(--color-ink); font-weight: 700; }
+  .legal-prose ul {
+    list-style: square;
+  }
+  .legal-prose ol {
+    list-style: decimal;
+  }
+  .legal-prose li::marker {
+    color: var(--color-signal);
+  }
+  .legal-prose strong {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
   .legal-prose a {
     color: var(--color-ink);
     text-decoration: underline;
     text-decoration-color: var(--color-line-soft);
-    transition: color 160ms ease-out, text-decoration-color 160ms ease-out;
+    transition:
+      color 160ms ease-out,
+      text-decoration-color 160ms ease-out;
   }
   .legal-prose a:hover {
     color: var(--color-signal);

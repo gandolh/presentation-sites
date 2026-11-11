@@ -80,12 +80,8 @@ export type SiteOverrides = SiteOverridesOf<typeof defaults>;
 // Eagerly glob the optional local file. `import.meta.glob` resolves to {} when
 // the file is absent, so a fresh clone / CI without it falls back cleanly to
 // the placeholders above. The path is a literal so Vite can statically analyse it.
-const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>(
-  "./site.local.ts",
-  { eager: true },
-);
-const overrides: SiteOverrides =
-  Object.values(localModules)[0]?.siteOverrides ?? {};
+const localModules = import.meta.glob<{ siteOverrides: SiteOverrides }>("./site.local.ts", { eager: true });
+const overrides: SiteOverrides = Object.values(localModules)[0]?.siteOverrides ?? {};
 
 // Shallow merge for top-level scalars/arrays, one level of nested merge for the
 // object groups so a local file can override a single nested field.

@@ -96,11 +96,7 @@ const ogImage = absoluteUrl("/images/og-image.png");
           longitude: site.geo.lng,
         },
         openingHoursSpecification,
-        sameAs: [
-          site.social.instagram,
-          site.social.facebook,
-          site.social.tiktok,
-        ],
+        sameAs: [site.social.instagram, site.social.facebook, site.social.tiktok],
       })}
     />
   </head>
@@ -129,17 +125,14 @@ const ogImage = absoluteUrl("/images/og-image.png");
       // already-visible default; it can never hide content.
       (function () {
         const prefersReduced =
-          typeof matchMedia === "function" &&
-          matchMedia("(prefers-reduced-motion: reduce)").matches;
+          typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (typeof IntersectionObserver === "undefined" || prefersReduced) {
           return; // leave content visible, skip animation entirely
         }
 
         // Gate the hidden initial state on JS being present.
         document.documentElement.classList.add("js-reveal");
-        const reveals = Array.prototype.slice.call(
-          document.querySelectorAll(".reveal"),
-        );
+        const reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
 
         function show(el) {
           el.classList.add("is-visible");

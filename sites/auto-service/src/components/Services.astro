@@ -32,7 +32,9 @@ const SYMBOL: Record<string, string> = {
 <section class="section" id={id} aria-labelledby={`${id}-title`}>
   <div class="container-page">
     <div class="svc__head reveal">
-      <h2 id={`${id}-title`} class="heading-lg">{title}</h2>
+      <h2 id={`${id}-title`} class="heading-lg">
+        {title}
+      </h2>
       <p class="svc__lede">{lede}</p>
     </div>
 
@@ -54,7 +56,10 @@ const SYMBOL: Record<string, string> = {
 
     <p class="svc__foot reveal">
       Nu găsești aici ce ai nevoie?
-      <a class="svc__link" href={telLink()}>Sună-ne</a> și îți spunem din vorbă, fără obligații.
+      <a class="svc__link" href={telLink()}>
+        Sună-ne
+      </a>{" "}
+      și îți spunem din vorbă, fără obligații.
     </p>
   </div>
 </section>
@@ -80,7 +85,10 @@ const SYMBOL: Record<string, string> = {
     border-top: 1px solid var(--color-outline-variant);
   }
   @media (min-width: 900px) {
-    .svc__board { grid-template-columns: repeat(2, 1fr); column-gap: 3.25rem; }
+    .svc__board {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 3.25rem;
+    }
   }
 
   .svc__row {
@@ -97,7 +105,7 @@ const SYMBOL: Record<string, string> = {
     display: grid;
     place-items: center;
     color: var(--color-on-surface-variant);
-    background-color: oklch(17% 0.010 255);
+    background-color: oklch(17% 0.01 255);
     box-shadow: inset 0 0 0 1px oklch(26% 0.013 256);
     border-radius: var(--radius);
     transition:
@@ -111,13 +119,18 @@ const SYMBOL: Record<string, string> = {
     color: var(--color-on-primary);
     background-color: var(--color-primary);
     box-shadow:
-      inset 0 0 0 1px oklch(86% 0.10 68 / 0.7),
+      inset 0 0 0 1px oklch(86% 0.1 68 / 0.7),
       0 0 20px -4px oklch(72% 0.17 58 / 0.65);
   }
 
-  .svc__title { margin-bottom: 0.28rem; }
+  .svc__title {
+    margin-bottom: 0.28rem;
+  }
   /* A printed legend, not a lit one: amber belongs to the live control. */
-  .svc__sub { color: var(--color-on-surface-variant); margin-bottom: 0.6rem; }
+  .svc__sub {
+    color: var(--color-on-surface-variant);
+    margin-bottom: 0.6rem;
+  }
   .svc__desc {
     font-size: 0.9rem;
     line-height: 1.6;
@@ -136,5 +149,7 @@ const SYMBOL: Record<string, string> = {
     text-decoration: underline;
     text-decoration-color: oklch(82% 0.125 65 / 0.45);
   }
-  .svc__link:hover { text-decoration-color: currentColor; }
+  .svc__link:hover {
+    text-decoration-color: currentColor;
+  }
 </style>

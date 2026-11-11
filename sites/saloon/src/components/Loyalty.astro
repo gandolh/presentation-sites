@@ -4,15 +4,12 @@ import { Icon } from "astro-icon/components";
 
 <section id="loialitate" class="section">
   <div class="container-page">
-    <div
-      class="reveal relative rounded-[1.5rem] overflow-hidden bg-[var(--color-primary-container)] px-8 md:px-16 py-12 md:py-20"
-    >
+    <div class="reveal relative rounded-[1.5rem] overflow-hidden bg-[var(--color-primary-container)] px-8 md:px-16 py-12 md:py-20">
       <!-- Decorative gold motif -->
       <div
         aria-hidden="true"
         class="loyalty-gold-motif absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-30"
-      >
-      </div>
+      ></div>
 
       <div class="relative grid md:grid-cols-2 gap-10 items-center">
         <div>
@@ -24,22 +21,17 @@ import { Icon } from "astro-icon/components";
 
         <div class="space-y-5">
           <div class="flex gap-4 items-start">
-            <div
-              class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center font-display text-lg"
-            >
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center font-display text-lg">
               5
             </div>
             <p class="text-[var(--color-on-surface)] leading-relaxed">
               La fiecare <strong>a 5-a programare</strong>, primești
-              <strong>20% reducere</strong> la serviciul ales. Ne ținem evidența,
-              tu te bucuri de unghii frumoase.
+              <strong>20% reducere</strong> la serviciul ales. Ne ținem evidența, tu te bucuri de unghii frumoase.
             </p>
           </div>
 
           <div class="flex gap-4 items-start">
-            <div
-              class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center"
-            >
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center">
               <Icon name="ph:users-three" size={20} aria-hidden="true" />
             </div>
             <p class="text-[var(--color-on-surface)] leading-relaxed">
@@ -49,21 +41,18 @@ import { Icon } from "astro-icon/components";
           </div>
 
           <div class="flex gap-4 items-start">
-            <div
-              class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center"
-            >
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white text-[var(--color-on-primary-container)] flex items-center justify-center">
               <Icon name="ph:gift" size={20} aria-hidden="true" />
             </div>
             <p class="text-[var(--color-on-surface)] leading-relaxed">
-              <strong>Voucher cadou</strong>: surprinde pe cineva drag cu un
-              card cadou pentru serviciile mele. Scrie-mi pe WhatsApp și
-              îl pregătesc.
+              <strong>Voucher cadou</strong>: surprinde pe cineva drag cu un card cadou pentru serviciile mele. Scrie-mi
+              pe WhatsApp și îl pregătesc.
             </p>
           </div>
 
-          <a href="#programari" class="btn btn-on-blush mt-2"
-            >Programează-te acum</a
-          >
+          <a href="#programari" class="btn btn-on-blush mt-2">
+            Programează-te acum
+          </a>
         </div>
       </div>
     </div>
@@ -73,10 +62,6 @@ import { Icon } from "astro-icon/components";
 <style>
   /* Decorative gold motif — brand gold token, not a hard-coded hex. */
   .loyalty-gold-motif {
-    background: radial-gradient(
-      circle,
-      var(--color-gold) 0%,
-      transparent 65%
-    );
+    background: radial-gradient(circle, var(--color-gold) 0%, transparent 65%);
   }
 </style>

@@ -28,27 +28,47 @@ const legalLinks = [
       </span>
       <p class="ft__tagline">{site.tagline}</p>
       <div class="ft__social">
-        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener"><Icon name="facebook" size={18} /></a>
-        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener"><Icon name="instagram" size={18} /></a>
-        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /></a>
+        <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener">
+          <Icon name="facebook" size={18} />
+        </a>
+        <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener">
+          <Icon name="instagram" size={18} />
+        </a>
+        <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={18} />
+        </a>
       </div>
     </div>
 
     <nav class="ft__col" aria-label="Navigare subsol">
       <p class="legend">Navigare</p>
-      {links.map((l) => <a href={withBase(l.href)} class="ft__link">{l.label}</a>)}
+      {links.map((l) => (
+        <a href={withBase(l.href)} class="ft__link">
+          {l.label}
+        </a>
+      ))}
     </nav>
 
     <nav class="ft__col" aria-label="Pagini legale">
       <p class="legend">Legal</p>
-      {legalLinks.map((l) => <a href={withBase(l.href)} class="ft__link">{l.label}</a>)}
+      {legalLinks.map((l) => (
+        <a href={withBase(l.href)} class="ft__link">
+          {l.label}
+        </a>
+      ))}
     </nav>
 
     <div class="ft__col">
       <p class="legend">Contact</p>
-      <a href={telLink()} class="ft__link ft__link--read">{site.phone}</a>
-      <a href={`mailto:${site.email}`} class="ft__link">{site.email}</a>
-      <p class="ft__addr">{site.address}, {site.city}</p>
+      <a href={telLink()} class="ft__link ft__link--read">
+        {site.phone}
+      </a>
+      <a href={`mailto:${site.email}`} class="ft__link">
+        {site.email}
+      </a>
+      <p class="ft__addr">
+        {site.address}, {site.city}
+      </p>
       <dl class="ft__hours">
         {hoursTable.map((h) => (
           <div class="ft__hour">
@@ -64,17 +84,17 @@ const legalLinks = [
   <div class="ft__legal">
     <div class="container-page">
       <p class="ft__ident">
-        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}{
-          site.legal.form === "SRL" && site.legal.shareCapital
-            ? ` · Capital social: ${site.legal.shareCapital}`
-            : ""
-        }{site.legal.rarAuth ? ` · ${site.legal.rarAuth}` : ""} · {site.address}, {site.city}, jud. {site.county}
+        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}
+        {site.legal.form === "SRL" && site.legal.shareCapital ? ` · Capital social: ${site.legal.shareCapital}` : ""}
+        {site.legal.rarAuth ? ` · ${site.legal.rarAuth}` : ""} · {site.address}, {site.city}, jud. {site.county}
       </p>
 
       <p class="ft__disclaimer">{site.independence}</p>
 
       <div class="ft__bottom">
-        <p>© {year} {site.name}. Toate drepturile rezervate.</p>
+        <p>
+          © {year} {site.name}. Toate drepturile rezervate.
+        </p>
         <a
           href="https://reclamatiisal.anpc.ro/"
           target="_blank"
@@ -102,16 +122,34 @@ const legalLinks = [
     gap: 2.5rem;
     padding-block: clamp(2.75rem, 6vw, 4rem);
   }
-  @media (min-width: 720px) { .ft__grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1024px) { .ft__grid { grid-template-columns: 1.5fr 1fr 1.15fr 1.15fr; gap: 3rem; } }
+  @media (min-width: 720px) {
+    .ft__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .ft__grid {
+      grid-template-columns: 1.5fr 1fr 1.15fr 1.15fr;
+      gap: 3rem;
+    }
+  }
 
-  .ft__wm { display: inline-flex; align-items: center; gap: 0.65rem; }
+  .ft__wm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
   .ft__pilot {
-    width: 8px; height: 8px; border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
     background: var(--color-primary);
     box-shadow: 0 0 9px oklch(72% 0.17 58 / 0.85);
   }
-  .ft__name { font-size: 1.22rem; text-transform: uppercase; }
+  .ft__name {
+    font-size: 1.22rem;
+    text-transform: uppercase;
+  }
   .ft__tagline {
     margin-top: 1rem;
     max-width: 32ch;
@@ -119,21 +157,35 @@ const legalLinks = [
     line-height: 1.62;
     color: var(--color-on-surface-variant);
   }
-  .ft__social { display: flex; gap: 0.35rem; margin-top: 1.4rem; }
+  .ft__social {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 1.4rem;
+  }
   .ft__social a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem; height: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     margin-left: -0.5rem;
     color: var(--color-on-surface-variant);
     transition: color 180ms var(--ease-out);
   }
-  .ft__social a:first-child { margin-left: -0.5rem; }
-  .ft__social a:hover { color: var(--color-primary-bright); }
+  .ft__social a:first-child {
+    margin-left: -0.5rem;
+  }
+  .ft__social a:hover {
+    color: var(--color-primary-bright);
+  }
 
-  .ft__col { display: flex; flex-direction: column; }
-  .ft__col .legend { margin-bottom: 0.55rem; }
+  .ft__col {
+    display: flex;
+    flex-direction: column;
+  }
+  .ft__col .legend {
+    margin-bottom: 0.55rem;
+  }
   .ft__link {
     display: inline-flex;
     align-items: center;
@@ -143,11 +195,26 @@ const legalLinks = [
     text-decoration: none;
     transition: color 160ms var(--ease-out);
   }
-  .ft__link:hover { color: var(--color-primary-bright); text-decoration: underline; }
-  .ft__link--read { font-family: var(--font-mono); letter-spacing: 0.1em; color: var(--color-on-surface); }
-  .ft__addr { font-size: 0.875rem; color: var(--color-on-surface-variant); margin-top: 0.25rem; }
+  .ft__link:hover {
+    color: var(--color-primary-bright);
+    text-decoration: underline;
+  }
+  .ft__link--read {
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface);
+  }
+  .ft__addr {
+    font-size: 0.875rem;
+    color: var(--color-on-surface-variant);
+    margin-top: 0.25rem;
+  }
 
-  .ft__hours { margin-top: 1.25rem; display: grid; gap: 0.4rem; }
+  .ft__hours {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.4rem;
+  }
   .ft__hour {
     display: flex;
     justify-content: space-between;
@@ -155,7 +222,10 @@ const legalLinks = [
     font-size: 0.78rem;
     color: var(--color-on-surface-variant);
   }
-  .ft__hour dd { color: var(--color-on-surface); font-size: 0.66rem; }
+  .ft__hour dd {
+    color: var(--color-on-surface);
+    font-size: 0.66rem;
+  }
 
   .ft__legal {
     border-top: 1px solid var(--color-outline-variant);
@@ -164,8 +234,13 @@ const legalLinks = [
     line-height: 1.65;
     color: var(--color-on-surface-variant);
   }
-  .ft__ident { margin-bottom: 0.75rem; }
-  .ft__disclaimer { max-width: 82ch; margin-bottom: 1rem; }
+  .ft__ident {
+    margin-bottom: 0.75rem;
+  }
+  .ft__disclaimer {
+    max-width: 82ch;
+    margin-bottom: 1rem;
+  }
   .ft__bottom {
     display: flex;
     flex-direction: column;
@@ -173,7 +248,11 @@ const legalLinks = [
     align-items: flex-start;
   }
   @media (min-width: 768px) {
-    .ft__bottom { flex-direction: row; align-items: center; justify-content: space-between; }
+    .ft__bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
   .ft__anpc {
     display: inline-flex;
@@ -182,7 +261,9 @@ const legalLinks = [
     color: var(--color-on-surface);
     text-decoration: none;
   }
-  .ft__anpc:hover { color: var(--color-primary-bright); }
+  .ft__anpc:hover {
+    color: var(--color-primary-bright);
+  }
   .ft__anpc-mark {
     font-family: var(--font-mono);
     font-weight: 700;
@@ -195,6 +276,8 @@ const legalLinks = [
 
   /* The mobile call bar is fixed over the bottom; keep the SAL line clear. */
   @media (max-width: 1023.98px) {
-    .ft__legal { padding-bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
+    .ft__legal {
+      padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+    }
   }
 </style>

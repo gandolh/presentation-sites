@@ -32,10 +32,7 @@ function mustLog(app: App): SentLog {
   assert.ok(app.sentLog, "mock-mode app must expose sentLog");
   return app.sentLog;
 }
-import {
-  JOB_PREPARE_DRAFTS,
-  JOB_AUTOPAUSE_FULL,
-} from "../campaigns/index.ts";
+import { JOB_PREPARE_DRAFTS, JOB_AUTOPAUSE_FULL } from "../campaigns/index.ts";
 import { PUBLISH_RUNNER_JOB } from "../scheduler/index.ts";
 import { fakeWhatsAppMessage, fakeInstagramMessage } from "./fake-events.ts";
 import { sampleScheduledPost, FIXED_NOW_ISO } from "./mocks.ts";
@@ -83,11 +80,7 @@ test("WhatsApp STOP records an opt-out in the shared db and acknowledges exactly
   await app.router.dispatch(fakeWhatsAppMessage({ text: "STOP", fromId: from }));
 
   // Opt-out persisted to the SHARED db (not just the handler's local state).
-  assert.equal(
-    await app.deps.db.isOptedOut("whatsapp", from),
-    true,
-    "STOP recorded an opt-out in the shared db",
-  );
+  assert.equal(await app.deps.db.isOptedOut("whatsapp", from), true, "STOP recorded an opt-out in the shared db");
   // Exactly one warm acknowledgement — never a burst.
   assert.equal(log.whatsappMessages.length, 1, "STOP sends exactly one acknowledgement");
 
@@ -114,11 +107,7 @@ test("responses bot: an opted-out IG contact is then fully silenced on the NEXT 
 
   // A later message from the same opted-out contact gets NO reply at all.
   await app.router.dispatch(fakeInstagramMessage({ text: "Programare", fromId: from }));
-  assert.equal(
-    log.metaReplies.length,
-    afterStop,
-    "opted-out IG contact receives no further automated replies",
-  );
+  assert.equal(log.metaReplies.length, afterStop, "opted-out IG contact receives no further automated replies");
 });
 
 // ---------------------------------------------------------------------------
@@ -143,11 +132,7 @@ test("campaigns prepare-drafts job (via scheduler) only ever produces PAUSED dra
     assert.equal(d.approvalState, "awaiting_review", "human must approve before spend");
   }
   // Every prepared draft pairs with a human-approval notification.
-  assert.equal(
-    log.notifications.length,
-    drafts.length,
-    "one approval notification per prepared draft",
-  );
+  assert.equal(log.notifications.length, drafts.length, "one approval notification per prepared draft");
 });
 
 test("campaigns budget guard clamps an over-cap preset under integration (tiny cap)", async () => {
@@ -190,10 +175,7 @@ test("scheduler publish-runner (via scheduler) publishes a due post to all targe
   const app = buildApp(loadConfig(fullEnv()));
   const log = mustLog(app);
 
-  assert.ok(
-    app.scheduler.jobNames().includes(PUBLISH_RUNNER_JOB),
-    "publish-runner job is registered",
-  );
+  assert.ok(app.scheduler.jobNames().includes(PUBLISH_RUNNER_JOB), "publish-runner job is registered");
 
   // Enqueue a post whose publishAt is in the past relative to "now" so it's due.
   // FIXED_NOW_ISO (2026-03) is well in the past, so any real Date.now() makes it due.

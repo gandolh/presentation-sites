@@ -59,9 +59,7 @@ export interface CapLedger {
   countInWindow(platform: Platform, nowMs: number): number;
 }
 
-export function createCapLedger(
-  caps: Readonly<Partial<Record<Platform, PlatformCap>>> = PLATFORM_CAPS,
-): CapLedger {
+export function createCapLedger(caps: Readonly<Partial<Record<Platform, PlatformCap>>> = PLATFORM_CAPS): CapLedger {
   /** Epoch-ms timestamps of successful publishes, per platform. */
   const stamps = new Map<Platform, number[]>();
 

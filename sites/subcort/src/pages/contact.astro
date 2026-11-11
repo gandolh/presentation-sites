@@ -31,15 +31,25 @@ import { site, telLink } from "../content/site";
         <dl class="contact-list">
           <div class="contact-row">
             <dt class="datum-key">Telefon</dt>
-            <dd><a href={telLink()} class="contact-big link-quiet dim">{site.phone}</a></dd>
+            <dd>
+              <a href={telLink()} class="contact-big link-quiet dim">
+                {site.phone}
+              </a>
+            </dd>
           </div>
           <div class="contact-row">
             <dt class="datum-key">Email</dt>
-            <dd><a href={`mailto:${site.email}`} class="contact-big link-quiet">{site.email}</a></dd>
+            <dd>
+              <a href={`mailto:${site.email}`} class="contact-big link-quiet">
+                {site.email}
+              </a>
+            </dd>
           </div>
           <div class="contact-row">
             <dt class="datum-key">Adresă</dt>
-            <dd class="contact-big">{site.address}, {site.city}, jud. {site.county}</dd>
+            <dd class="contact-big">
+              {site.address}, {site.city}, jud. {site.county}
+            </dd>
           </div>
         </dl>
 
@@ -54,8 +64,7 @@ import { site, telLink } from "../content/site";
             ))}
           </dl>
           <p class="mt-5 text-[0.87rem] leading-relaxed text-[var(--color-ink-2)]">
-            Pentru montaje în zone mai îndepărtate din {site.region}, stabilim
-            programul în funcție de distanță.
+            Pentru montaje în zone mai îndepărtate din {site.region}, stabilim programul în funcție de distanță.
           </p>
         </aside>
       </div>
@@ -66,12 +75,29 @@ import { site, telLink } from "../content/site";
 </Base>
 
 <style>
-  .contact-grid { display: grid; gap: 2.5rem; margin-top: 0.5rem; }
-  @media (min-width: 860px) { .contact-grid { grid-template-columns: 1.35fr 1fr; gap: 4rem; align-items: start; } }
+  .contact-grid {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 0.5rem;
+  }
+  @media (min-width: 860px) {
+    .contact-grid {
+      grid-template-columns: 1.35fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
 
-  .contact-row { padding: 1.25rem 0; border-top: 1px solid var(--color-hair); }
-  .contact-row:first-child { border-top: 1.5px solid var(--color-ink); }
-  .contact-row:last-child { border-bottom: 1px solid var(--color-hair); }
+  .contact-row {
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-hair);
+  }
+  .contact-row:first-child {
+    border-top: 1.5px solid var(--color-ink);
+  }
+  .contact-row:last-child {
+    border-bottom: 1px solid var(--color-hair);
+  }
   .contact-big {
     display: inline-block;
     margin-top: 0.45rem;
@@ -81,10 +107,20 @@ import { site, telLink } from "../content/site";
     overflow-wrap: anywhere;
   }
 
-  .hours { background: var(--color-fill-2); border: 1px solid var(--color-hair); padding: 1.5rem; }
-  .hours__row {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 1rem; padding: 0.65rem 0; border-bottom: 1px solid var(--color-hair);
+  .hours {
+    background: var(--color-fill-2);
+    border: 1px solid var(--color-hair);
+    padding: 1.5rem;
   }
-  .hours__row:last-child { border-bottom: 0; }
+  .hours__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--color-hair);
+  }
+  .hours__row:last-child {
+    border-bottom: 0;
+  }
 </style>

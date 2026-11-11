@@ -20,11 +20,7 @@ import {
   type Platform,
 } from "../../core/index.ts";
 
-import {
-  createBot,
-  makePublishRunner,
-  PUBLISH_RUNNER_JOB,
-} from "./index.ts";
+import { createBot, makePublishRunner, PUBLISH_RUNNER_JOB } from "./index.ts";
 import { createCapLedger, type PlatformCap } from "./caps.ts";
 
 // Quiet logger so test output stays clean.
@@ -92,11 +88,7 @@ test("publishes a due post to every target and marks it published", async () => 
 
   // Running again must NOT re-publish an already-published post.
   await run();
-  assert.equal(
-    log.published.length,
-    post.targets.length,
-    "an already-published post must not be published again",
-  );
+  assert.equal(log.published.length, post.targets.length, "an already-published post must not be published again");
 });
 
 test("records a per-platform result for each target", async () => {
@@ -149,9 +141,7 @@ test("cap guard blocks the (cap+1)th publish to a platform", async () => {
 
   // Enqueue CAP+1 due IG-only posts.
   for (let i = 0; i < CAP + 1; i++) {
-    await db.enqueuePost(
-      duePost({ id: `ig_${i}`, targets: ["instagram"], publishAt: "2026-05-29T09:00:00.000Z" }),
-    );
+    await db.enqueuePost(duePost({ id: `ig_${i}`, targets: ["instagram"], publishAt: "2026-05-29T09:00:00.000Z" }));
   }
 
   const updates: ScheduledPost[] = [];

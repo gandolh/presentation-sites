@@ -89,9 +89,7 @@ export function buildApp(config: Config = loadConfig()): App {
 
   // sentLog is present in mock mode, absent (undefined) in live mode. With
   // exactOptionalPropertyTypes we include the key only when it has a value.
-  return sentLog
-    ? { config, bots, router, scheduler, sentLog, deps }
-    : { config, bots, router, scheduler, deps };
+  return sentLog ? { config, bots, router, scheduler, sentLog, deps } : { config, bots, router, scheduler, deps };
 }
 
 /**

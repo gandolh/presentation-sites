@@ -8,7 +8,9 @@
   line the pictogram set uses, lit from below by the same amber. Nothing here
   claims anything: it is a picture of the work, not a photo of a place.
 */
-interface Props { class?: string }
+interface Props {
+  class?: string;
+}
 const { class: className = "" } = Astro.props;
 ---
 
@@ -49,7 +51,13 @@ const { class: className = "" } = Astro.props;
   <path d="M20 468h880" fill="none" stroke="var(--color-outline-variant)" stroke-width="1.2" stroke-dasharray="10 9" />
 
   <!-- two-post lift -->
-  <g fill="none" stroke="var(--color-on-surface-variant)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <g
+    fill="none"
+    stroke="var(--color-on-surface-variant)"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
     <path d="M150 452V96h34v356Z" />
     <path d="M736 452V96h34v356Z" />
     <path d="M150 96h620" />
@@ -68,7 +76,13 @@ const { class: className = "" } = Astro.props;
     <path d="M700 284h-38" />
   </g>
   <!-- glass house -->
-  <g fill="none" stroke="var(--color-on-surface-variant)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <g
+    fill="none"
+    stroke="var(--color-on-surface-variant)"
+    stroke-width="1.7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
     <path d="M356 202l30-30 92-8-4 38Z" />
     <path d="M492 202l4-38 60 4 42 34Z" />
   </g>
@@ -107,7 +121,13 @@ const { class: className = "" } = Astro.props;
   <!-- the inspection lamp: the single live element in the scene -->
   <g>
     <path d="M812 96v168" fill="none" stroke="var(--color-outline)" stroke-width="1.4" />
-    <path d="M796 264h32l10 22h-52Z" fill="none" stroke="var(--color-primary)" stroke-width="2.2" stroke-linejoin="round" />
+    <path
+      d="M796 264h32l10 22h-52Z"
+      fill="none"
+      stroke="var(--color-primary)"
+      stroke-width="2.2"
+      stroke-linejoin="round"
+    />
     <circle cx="812" cy="292" r="7" fill="var(--color-primary)" />
     <path d="M786 300l-22 66h96l-22-66Z" fill="var(--color-primary)" opacity="0.14" />
   </g>
@@ -115,5 +135,9 @@ const { class: className = "" } = Astro.props;
 
 <style>
   /* See Gauge.astro: the SVG owns its own box. */
-  svg { display: block; width: 100%; height: auto; }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 </style>

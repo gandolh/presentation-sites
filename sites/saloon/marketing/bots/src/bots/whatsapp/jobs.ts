@@ -128,12 +128,7 @@ export function makeConfirmationJob(deps: JobDeps): () => Promise<void> {
  * from an inbound flow). Exposed so the webhook handler / future admin action
  * can confirm without waiting for the cron scan. Returns whether it sent.
  */
-export async function sendConfirmation(
-  appt: Appointment,
-  senders: Senders,
-  db: Db,
-  log: Logger,
-): Promise<boolean> {
+export async function sendConfirmation(appt: Appointment, senders: Senders, db: Db, log: Logger): Promise<boolean> {
   if (await db.isOptedOut(PLATFORM, appt.phoneE164)) {
     log.debug("confirmation skipped (opted out)", { to: redact(appt.phoneE164) });
     return false;

@@ -1,14 +1,25 @@
 ---
 // A sheet header: the plate number and scale on the left, the title on the
 // right. Every subpage opens with one, so the set reads as a set.
-interface Props { title: string; lead?: string; plate: string; scale?: string }
+interface Props {
+  title: string;
+  lead?: string;
+  plate: string;
+  scale?: string;
+}
 const { title, lead, plate, scale } = Astro.props;
 ---
 
 <header class="sheet plate--tight">
   <div class="plate-head">
     <p class="plate-no">
-      Planșa {plate}{scale && <><br />{scale}</>}
+      Planșa {plate}
+      {scale && (
+        <>
+          <br />
+          {scale}
+        </>
+      )}
     </p>
     <div>
       <h1 class="heading-xl max-w-[17ch]">{title}</h1>

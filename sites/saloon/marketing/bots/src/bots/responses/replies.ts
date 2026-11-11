@@ -22,14 +22,7 @@ export const WHATSAPP_BOOKING_URL = `https://wa.me/${WHATSAPP_E164}`;
 
 /** Keyword intents the FAQ map recognises. */
 export type ReplyIntent =
-  | "greeting"
-  | "servicii"
-  | "preturi"
-  | "programare"
-  | "locatie"
-  | "program"
-  | "stop"
-  | "fallback";
+  "greeting" | "servicii" | "preturi" | "programare" | "locatie" | "program" | "stop" | "fallback";
 
 /**
  * Salon hours, in Europe/Bucharest, mirrored from the site (`site.hours`).
@@ -119,7 +112,10 @@ export function isStopKeyword(text: string): boolean {
  * the payload string (e.g. "PROGRAMARE"); typed text is keyword-matched.
  */
 const INTENT_KEYWORDS: { intent: ReplyIntent; words: string[] }[] = [
-  { intent: "programare", words: ["programare", "programari", "rezervare", "rezerva", "booking", "vreau o programare"] },
+  {
+    intent: "programare",
+    words: ["programare", "programari", "rezervare", "rezerva", "booking", "vreau o programare"],
+  },
   { intent: "preturi", words: ["pret", "preturi", "tarif", "tarife", "cat costa", "costa"] },
   { intent: "servicii", words: ["servicii", "serviciu", "ce faceti", "ce oferiti", "gel", "manichiura", "nail art"] },
   { intent: "locatie", words: ["locatie", "adresa", "unde sunteti", "unde va aflati", "harta"] },

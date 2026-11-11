@@ -25,22 +25,13 @@ import type {
 } from "./senders.ts";
 import type { Config } from "./config.ts";
 import type { Logger } from "./logger.ts";
-import type {
-  OutboundMessage,
-  ScheduledPost,
-  CampaignDraft,
-  Platform,
-} from "./types.ts";
+import type { OutboundMessage, ScheduledPost, CampaignDraft, Platform } from "./types.ts";
 
 const GRAPH = "https://graph.facebook.com";
 const GRAPH_VERSION = "v21.0";
 
 /** Small typed fetch helper. Throws on non-2xx so callers surface failures. */
-async function graphPost(
-  url: string,
-  token: string,
-  body: Record<string, unknown>,
-): Promise<Record<string, unknown>> {
+async function graphPost(url: string, token: string, body: Record<string, unknown>): Promise<Record<string, unknown>> {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -176,19 +167,14 @@ function createContentPublisher(config: Config, log: Logger): ContentPublisher {
     const containerId = String(created.id);
     // Poll until the container finishes processing before publishing.
     for (let i = 0; i < 30; i++) {
-      const status = await graphGet(
-        `${GRAPH}/${GRAPH_VERSION}/${containerId}?fields=status_code`,
-        igToken(),
-      );
+      const status = await graphGet(`${GRAPH}/${GRAPH_VERSION}/${containerId}?fields=status_code`, igToken());
       if (status.status_code === "FINISHED") break;
       if (status.status_code === "ERROR") throw new Error("IG media processing failed");
       await new Promise((r) => setTimeout(r, 2000));
     }
-    const published = await graphPost(
-      `${GRAPH}/${GRAPH_VERSION}/${igUserId}/media_publish`,
-      igToken(),
-      { creation_id: containerId },
-    );
+    const published = await graphPost(`${GRAPH}/${GRAPH_VERSION}/${igUserId}/media_publish`, igToken(), {
+      creation_id: containerId,
+    });
     return String(published.id);
   }
 
@@ -262,16 +248,12 @@ function createMarketingClient(config: Config, log: Logger): MarketingClient {
         return { ok: false, error: "refused: campaign must be PAUSED" };
       }
       try {
-        const json = await graphPost(
-          `${GRAPH}/${GRAPH_VERSION}/act_${account()}/campaigns`,
-          token(),
-          {
-            name: `${draft.presetKey} (${draft.createdAt})`,
-            objective: draft.objective,
-            status: "PAUSED", // money safety: never ACTIVE
-            special_ad_categories: [],
-          },
-        );
+        const json = await graphPost(`${GRAPH}/${GRAPH_VERSION}/act_${account()}/campaigns`, token(), {
+          name: `${draft.presetKey} (${draft.createdAt})`,
+          objective: draft.objective,
+          status: "PAUSED", // money safety: never ACTIVE
+          special_ad_categories: [],
+        });
         log.info("paused campaign created", { preset: draft.presetKey });
         return { ok: true, draftId: String(json.id) };
         // TODO(impl): create ad set (geo radius, age, daily_budget =
@@ -293,10 +275,7 @@ function createMarketingClient(config: Config, log: Logger): MarketingClient {
     },
 
     async getInsights(externalId: string) {
-      const json = await graphGet(
-        `${GRAPH}/${GRAPH_VERSION}/${externalId}/insights?fields=spend,actions`,
-        token(),
-      );
+      const json = await graphGet(`${GRAPH}/${GRAPH_VERSION}/${externalId}/insights?fields=spend,actions`, token());
       const row = (json.data as { spend?: string }[] | undefined)?.[0];
       const spendMinor = row?.spend ? Math.round(Number(row.spend) * 100) : 0;
       return { spendMinor, results: 0 };

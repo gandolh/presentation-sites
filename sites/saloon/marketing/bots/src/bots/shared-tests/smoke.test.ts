@@ -18,16 +18,8 @@ import assert from "node:assert/strict";
 import { buildApp } from "../../server.ts";
 import { loadConfig, type BotName } from "../../core/index.ts";
 import { createFakeClock } from "./fake-clock.ts";
-import {
-  sampleAppointment,
-  sampleScheduledPost,
-  FIXED_NOW_ISO,
-} from "./mocks.ts";
-import {
-  fakeWhatsAppMessage,
-  fakeInstagramMessage,
-  fakeFacebookMessage,
-} from "./fake-events.ts";
+import { sampleAppointment, sampleScheduledPost, FIXED_NOW_ISO } from "./mocks.ts";
+import { fakeWhatsAppMessage, fakeInstagramMessage, fakeFacebookMessage } from "./fake-events.ts";
 
 /** Env with every bot + ads spend enabled, in mock mode. Strings, like real env. */
 function fullyEnabledEnv(): NodeJS.ProcessEnv {

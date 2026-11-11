@@ -6,39 +6,30 @@ import { testimonials } from "../content/testimonials";
 ---
 
 {testimonials.length > 0 && (
-<section id="testimoniale" class="section">
-  <div class="container-page">
-    <div class="reveal max-w-2xl mx-auto text-center">
-      <h2 class="heading-lg">Ce spun clientele mele</h2>
-      <span class="gold-divider"></span>
-    </div>
+  <section id="testimoniale" class="section">
+    <div class="container-page">
+      <div class="reveal max-w-2xl mx-auto text-center">
+        <h2 class="heading-lg">Ce spun clientele mele</h2>
+        <span class="gold-divider"></span>
+      </div>
 
-    <div class="mt-12 grid gap-6 md:grid-cols-3">
-      {
-        testimonials.map((t) => (
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {testimonials.map((t) => (
           <figure class="card reveal flex flex-col">
-            <div
-              class="flex items-center gap-0.5 text-[var(--color-gold)]"
-              aria-label={`${t.rating} din 5 stele`}
-            >
+            <div class="flex items-center gap-0.5 text-[var(--color-gold)]" aria-label={`${t.rating} din 5 stele`}>
               {Array.from({ length: t.rating }).map(() => (
                 <Icon name="ph:quotes" size={24} aria-hidden="true" />
               ))}
             </div>
-            <blockquote
-              class="mt-5 font-display italic text-lg leading-relaxed text-[var(--color-on-surface)]"
-            >
+            <blockquote class="mt-5 font-display italic text-lg leading-relaxed text-[var(--color-on-surface)]">
               “{t.quote}”
             </blockquote>
-            <figcaption
-              class="mt-6 pt-6 border-t border-[var(--color-outline-variant)] font-semibold text-[var(--color-on-surface)]"
-            >
+            <figcaption class="mt-6 pt-6 border-t border-[var(--color-outline-variant)] font-semibold text-[var(--color-on-surface)]">
               {t.author}
             </figcaption>
           </figure>
-        ))
-      }
+        ))}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 )}

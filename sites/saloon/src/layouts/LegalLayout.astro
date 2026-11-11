@@ -10,17 +10,15 @@ interface Props {
   updated?: string;
 }
 
-const {
-  title,
-  description = `${title} · ${site.name}`,
-  updated = site.legal.documentsUpdated,
-} = Astro.props;
+const { title, description = `${title} · ${site.name}`, updated = site.legal.documentsUpdated } = Astro.props;
 ---
 
 <Base title={`${title} · ${site.name}`} description={description}>
   <header class="border-b border-[var(--color-outline-variant)]">
     <div class="container-page flex items-center justify-between py-5">
-      <a href={withBase("/")} class="wordmark text-2xl md:text-3xl">Unghii by Ana</a>
+      <a href={withBase("/")} class="wordmark text-2xl md:text-3xl">
+        Unghii by Ana
+      </a>
       <a
         href={withBase("/")}
         class="label-md uppercase text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
@@ -31,18 +29,13 @@ const {
   </header>
 
   <main class="container-page max-w-3xl py-12 md:py-20">
-    <a
-      href={withBase("/")}
-      class="label-md uppercase text-[var(--color-blush-deep)] hover:underline"
-    >
+    <a href={withBase("/")} class="label-md uppercase text-[var(--color-blush-deep)] hover:underline">
       ← Acasă
     </a>
 
     <h1 class="heading-xl mt-4">{title}</h1>
     <span class="gold-divider"></span>
-    <p class="mt-2 text-sm text-[var(--color-on-surface-variant)]">
-      Ultima actualizare: {updated}
-    </p>
+    <p class="mt-2 text-sm text-[var(--color-on-surface-variant)]">Ultima actualizare: {updated}</p>
 
     <article class="legal-prose mt-10">
       <slot />
