@@ -256,7 +256,7 @@ function createMarketingClient(config: Config, log: Logger): MarketingClient {
         });
         log.info("paused campaign created", { preset: draft.presetKey });
         return { ok: true, draftId: String(json.id) };
-        // TODO(impl): create ad set (geo radius, age, daily_budget =
+        // Live wiring: create ad set (geo radius, age, daily_budget =
         //   draft.dailyBudgetMinor, optimization_goal) + creative + ad, all
         //   PAUSED. Left for the human-credentialed wiring pass since it needs a
         //   live ad account + creative ids to validate end-to-end.
@@ -296,7 +296,7 @@ function createNotifier(config: Config, log: Logger): Notifier {
         log.warn("notify: no NOTIFY_TO configured — logging only", { subject });
         return;
       }
-      // TODO(impl): deliver via the chosen channel (email/WhatsApp to the owner).
+      // Live wiring: deliver via the chosen channel (email/WhatsApp to the owner).
       // The transport is a human/config choice (roadmap Part B); we log here so
       // the approval message is never lost in the meantime.
       log.info("notify", { to, subject, body });

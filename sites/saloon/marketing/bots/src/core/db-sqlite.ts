@@ -92,19 +92,6 @@ function rowToAppointment(r: Record<string, unknown>): Appointment {
   return a;
 }
 
-function rowToLead(r: Record<string, unknown>): Lead {
-  const l: Lead = {
-    id: String(r.id),
-    platform: r.platform as Lead["platform"],
-    marketingOptIn: r.marketingOptIn as OptInStatus,
-    createdAt: String(r.createdAt),
-  };
-  if (r.phoneE164 != null) l.phoneE164 = String(r.phoneE164);
-  if (r.clientName != null) l.clientName = String(r.clientName);
-  if (r.message != null) l.message = String(r.message);
-  return l;
-}
-
 function rowToPost(r: Record<string, unknown>): ScheduledPost {
   const p: ScheduledPost = {
     id: String(r.id),
@@ -162,7 +149,7 @@ export function createSqliteDb(path: string): Db {
 
     async getAppointment(id: string) {
       const row = sql.prepare("SELECT * FROM appointments WHERE id = ?").get(id);
-      return row ? rowToAppointment(row as Record<string, unknown>) : undefined;
+      return row ? rowToAppointment(row) : undefined;
     },
 
     async listAppointmentsBetween(fromIso: string, toIso: string) {

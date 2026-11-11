@@ -12,7 +12,7 @@ all via official platform APIs. No engagement automation. See
 
 Frozen `core/` contracts + all four bots scaffolded + shared test harness, built
 by parallel agents and integrated. **Mock mode only** — no real API calls, no
-tokens, no spend. Each bot is a typed, tested stub with `// TODO(impl):` markers
+tokens, no spend. Each bot is a typed, tested stub with `// Live wiring:` markers
 where live API wiring goes (a separate, later task).
 
 - `npm run typecheck` — clean (strict).

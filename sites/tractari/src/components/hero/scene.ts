@@ -125,8 +125,9 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   updateRoad = (travel: number) => {
     let p = 0;
     for (let i = 0; i < ROAD_SEG; i++) {
-      const z0 = roadZ[i]!,
-        z1 = roadZ[i + 1]!;
+      // Both indices are in range (roadZ has ROAD_SEG + 1 entries); `?? 0` only narrows the read.
+      const z0 = roadZ[i] ?? 0,
+        z1 = roadZ[i + 1] ?? 0;
       const c0 = curveX(z0, travel),
         c1 = curveX(z1, travel);
       const hw = ROAD_W / 2;
@@ -362,7 +363,8 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
     const pc = document.createElement("canvas");
     pc.width = 256;
     pc.height = 64;
-    const ctx = pc.getContext("2d")!;
+    const ctx = pc.getContext("2d");
+    if (!ctx) throw new Error("The licence plate needs a 2D canvas context.");
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, 256, 64);
     // EU blue band

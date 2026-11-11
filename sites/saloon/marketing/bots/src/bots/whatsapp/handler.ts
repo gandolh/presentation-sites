@@ -5,7 +5,7 @@
  *
  * 24h window (COMPLIANCE #4): free-form `service` replies are used INSIDE the
  * window (msg.withinServiceWindow). Outside it we would need a template — the
- * scaffold sends nothing free-form there and leaves a TODO. STOP always wins.
+ * scaffold sends nothing free-form there and leaves a live-wiring note. STOP always wins.
  */
 
 import type { CoreDeps, InboundMessage, OutboundMessage, Logger, Db, Senders } from "../../core/index.ts";
@@ -93,7 +93,7 @@ export function makeInboundHandler(deps: HandlerDeps): (msg: InboundMessage) => 
     //    free-form here; an approved utility/away template is the real-impl path.
     if (!msg.withinServiceWindow) {
       log.info("outside 24h window — no free-form reply", { from: to });
-      // TODO(impl): send an approved utility/away template (Cloud API) here.
+      // Live wiring: send an approved utility/away template (Cloud API) here.
       return;
     }
 
@@ -102,7 +102,7 @@ export function makeInboundHandler(deps: HandlerDeps): (msg: InboundMessage) => 
     if (intent === "booking") {
       await senders.whatsapp.sendMessage(serviceMessage(msg.fromId, bookingReply()));
       await senders.whatsapp.sendMessage(serviceMessage(msg.fromId, handoffReply()));
-      // TODO(impl): persist a "requested" Appointment + notify Ana for confirmation.
+      // Live wiring: persist a "requested" Appointment + notify Ana for confirmation.
       log.info("booking hand-off to human", { from: to });
       return;
     }

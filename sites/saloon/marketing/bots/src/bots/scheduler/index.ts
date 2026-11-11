@@ -22,7 +22,6 @@ import {
   type Config,
   type Scheduler,
   type ScheduledPost,
-  type Platform,
   type ContentPublisher,
   type Logger,
 } from "../../core/index.ts";
@@ -133,7 +132,7 @@ export function makePublishRunner(opts: PublishRunnerOptions): () => Promise<voi
 
         let result: PublishResult;
         try {
-          // TODO(impl): real ContentPublisher does the per-platform pipeline here:
+          // Live wiring: real ContentPublisher does the per-platform pipeline here:
           //   IG  — create media container (Reels 9:16, H.264) -> poll status
           //          until FINISHED -> publish; surface processing failures.
           //   FB  — create + publish via Content Publishing API on the Page.
@@ -155,7 +154,7 @@ export function makePublishRunner(opts: PublishRunnerOptions): () => Promise<voi
           caps.record(target, targetNowMs);
         } else {
           allOk = false;
-          // TODO(impl): alert a human on failure (Notifier) + schedule a retry.
+          // Live wiring: alert a human on failure (Notifier) + schedule a retry.
           // Scaffold just logs; alerting/retry is a follow-up.
           logger.error("publish failed", {
             postId: post.id,

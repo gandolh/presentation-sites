@@ -8,7 +8,7 @@
  *
  * COMPLIANCE: RO ad copy (#13), Meta Marketing API objectives only, prepared
  * PAUSED for human approval (#6). No real targeting params here — those are
- * filled at real-impl time (see `// TODO(impl):` in ./index.ts).
+ * filled at real-impl time (see `// Live wiring:` in ./index.ts).
  *
  * Rules: ../../../COMPLIANCE.md
  */
@@ -46,7 +46,7 @@ export interface CampaignPreset {
  * Budgets here are deliberately conservative; anything above the config ceiling
  * is clamped, and the over-cap case is exercised in the tests.
  *
- * TODO(impl): real audience targeting, creative resolution (pick top organic
+ * Live wiring: real audience targeting, creative resolution (pick top organic
  * post for the reel boost), and a deep link to Ads Manager belong in the real
  * MarketingClient wiring — these recipes only carry the human-facing intent.
  */

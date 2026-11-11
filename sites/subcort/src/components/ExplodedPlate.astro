@@ -24,7 +24,8 @@ const P0 = isometric({ scale: SCALE, cx: 0, cy: 0 });
 const lift = (q: readonly P3[], dy: number): P3[] => q.map(([x, y, z]) => [x, y + dy, z] as P3);
 
 const deckY = -spread * 0.9;
-const deck = M.panels.find((p) => p.part === "deck")!;
+const deck = M.panels.find((p) => p.part === "deck");
+if (!deck) throw new Error("The marquee has no deck panel.");
 const deckLifted = lift(deck.quad, deckY);
 
 const LAYERS = [

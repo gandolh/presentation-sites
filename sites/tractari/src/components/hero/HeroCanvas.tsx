@@ -33,17 +33,19 @@ export default function HeroCanvas() {
     let cleanup = () => {};
     let last = performance.now();
 
-    (async () => {
+    void (async () => {
       const { createScene } = await import("./scene");
       if (disposed) return;
 
-      const host = canvas.parentElement!;
+      const host = canvas.parentElement;
+      if (!host) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
-      scene = createScene(canvas, dpr);
+      const created = createScene(canvas, dpr);
+      scene = created;
 
       const sizeToHost = () => {
         const { clientWidth: w, clientHeight: h } = host;
-        scene!.resize(Math.max(w, 1), Math.max(h, 1));
+        created.resize(Math.max(w, 1), Math.max(h, 1));
       };
       sizeToHost();
 

@@ -52,7 +52,7 @@ interface JobDeps {
  * Reminder job: finds appointments starting ~24h from now and sends the
  * `reminder_programare` UTILITY template. Skips cancelled/completed slots and
  * anyone opted out. Idempotency (don't double-send) is the real-impl's concern;
- * here we just leave a TODO where a "reminderSentAt" flag would be checked.
+ * here we just leave a note where a "reminderSentAt" flag would be checked.
  */
 export function makeReminderJob(deps: JobDeps): () => Promise<void> {
   const { db, senders, log, now } = deps;

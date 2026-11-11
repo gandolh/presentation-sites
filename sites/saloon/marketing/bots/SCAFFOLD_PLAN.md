@@ -138,7 +138,7 @@ Shared rules for every Phase 2 agent:
 - Honor `COMPLIANCE.md`: inbound-only handlers, kill-switch via `enabled()`,
   PII redaction, retention purge hook registered.
 - Add unit tests against the mocks (or hand fixtures to Agent E).
-- Leave clear `// TODO(impl):` markers where the real API call goes.
+- Leave clear `// Live wiring:` markers where the real API call goes.
 - Touch ONLY files under your own `bots/<name>/`.
 
 - [ ] **Agent A — `bots/whatsapp/`**: register reminder + confirmation jobs

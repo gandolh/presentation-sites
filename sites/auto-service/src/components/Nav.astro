@@ -66,11 +66,11 @@ const [wordA, wordB] = site.name.split(" ");
 
 <script is:inline>
   (function () {
-    var nav = document.getElementById("site-nav");
+    const nav = document.getElementById("site-nav");
     if (!nav) return;
     if (nav.dataset.overlay === "true") {
-      var setH = function () {
-        var h = nav.offsetHeight + "px";
+      const setH = function () {
+        const h = nav.offsetHeight + "px";
         nav.style.setProperty("--nav-h", h);
         document.documentElement.style.setProperty("--nav-h", h);
       };

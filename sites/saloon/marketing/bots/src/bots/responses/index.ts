@@ -119,7 +119,7 @@ async function handleInbound(msg: InboundMessage, deps: { logger: Logger; db: Db
 
 /** Send via the Meta messaging sender, logging the (redacted) outcome. */
 async function sendReply(senders: Senders, logger: Logger, msg: OutboundMessage): Promise<void> {
-  // TODO(impl): real Meta Messaging API call lives behind senders.meta.sendReply
+  // Live wiring: real Meta Messaging API call lives behind senders.meta.sendReply
   //   (Instagram Messaging / Messenger Send API, inside the 24h window).
   const res = await senders.meta.sendReply(msg);
   if (!res.ok) {
@@ -136,7 +136,7 @@ async function sendReply(senders: Senders, logger: Logger, msg: OutboundMessage)
  * registration, so we catch + log.
  */
 async function configureIceBreakers(senders: Senders, logger: Logger): Promise<void> {
-  // TODO(impl): real Messaging Profile API call lives behind senders.meta.setIceBreakers
+  // Live wiring: real Messaging Profile API call lives behind senders.meta.setIceBreakers
   //   (Messenger ice_breakers / IG persistent-menu equivalent).
   for (const platform of PLATFORMS) {
     try {

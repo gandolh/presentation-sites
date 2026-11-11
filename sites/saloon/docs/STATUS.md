@@ -60,13 +60,13 @@ node --experimental-strip-types src/server.ts   # boot mock: toți boții OFF im
 ### Cod, dar BLOCAT pe acțiunile de om (trecerea finală de cablare live)
 Se face **după** ce conturile există, ca să poată fi testat pe ceva real:
 - `senders-live.ts` — în `createPausedCampaign`, partea de **ad set + creative + ad**
-  (rămasă `TODO(impl)`; are nevoie de un cont de reclame real + ID de creativ).
+  (rămasă `Live wiring`; are nevoie de un cont de reclame real + ID de creativ).
 - `Notifier` — alege canalul (email/WhatsApp) și trimite efectiv (acum doar loghează).
 - `whatsapp/handler.ts` — persistă programarea „requested" + notifică Ana;
   template utility/away în afara ferestrei de 24h.
 - `scheduler/index.ts` — alertă la eșec de publicare + retry.
 
-> Toate sunt marcate în cod cu `// TODO(impl):` — caută acel șir în
+> Toate sunt marcate în cod cu `// Live wiring:` — caută acel șir în
 > `marketing/bots/src`.
 
 ## Hărți rapide (unde e ce)

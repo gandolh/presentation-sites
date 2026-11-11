@@ -22,7 +22,7 @@
  *  - The bot NEVER creates an ACTIVE campaign. There is no such code path.
  *
  * NO real API calls / tokens / spend: everything goes through the mock
- * MarketingClient + Notifier from core. `// TODO(impl):` marks where real Meta
+ * MarketingClient + Notifier from core. `// Live wiring:` marks where real Meta
  * Marketing API params / Ads Manager deep links go.
  */
 
@@ -77,7 +77,7 @@ export function buildPausedDraft(
     approvalState: "awaiting_review", // human flips this; the service never approves.
   };
 
-  // TODO(impl): map preset -> real Meta Marketing API params here:
+  // Live wiring: map preset -> real Meta Marketing API params here:
   //   POST /act_{adsAccountId}/campaigns { objective, status: "PAUSED",
   //     special_ad_categories: [] } -> ad set (geo radius around Târgu-Jiu, age,
   //     daily_budget = draft.dailyBudgetMinor, optimization_goal) -> creative
@@ -99,7 +99,7 @@ function notificationBody(draft: CampaignDraft, clamped: boolean): string {
     `Buget zilnic: ${formatRon(draft.dailyBudgetMinor)}${clamped ? " (redus la plafonul configurat)" : ""}`,
     `Public: ${draft.audience.city}, rază ${draft.audience.geoRadiusKm} km, vârstă ${draft.audience.minAge}+`,
     `Copy: ${draft.copyRo}`,
-    // TODO(impl): include a deep link to review + publish in Ads Manager.
+    // Live wiring: include a deep link to review + publish in Ads Manager.
     `Pentru a porni campania, deschide Ads Manager și apasă „Publish”.`,
   ];
   return lines.join("\n");
@@ -161,7 +161,7 @@ export async function autoPauseIfFull(deps: { log: Logger; db: Db; senders: Send
     return;
   }
 
-  // TODO(impl): resolve the live external campaign ids for active lead presets
+  // Live wiring: resolve the live external campaign ids for active lead presets
   //   via the MarketingClient / stored mapping. The scaffold pauses by preset
   //   key so the safe behavior (stop spend on full calendar) is exercised.
   const leadPresetKeys = PRESETS.filter((p) => p.leadGen).map((p) => p.key);

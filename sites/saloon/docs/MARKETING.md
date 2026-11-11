@@ -90,7 +90,7 @@ Serviciul rulează **end-to-end în mock mode**; **nu e activat live** (niciun a
 real / token / cheltuială până la `BOTS_MOCK_MODE=false` cu secrete reale).
 
 Mai rămâne o **trecere finală de cablare live**, posibilă doar **după** ce omul
-creează conturile (se testează pe ceva real). Marcată în cod cu `// TODO(impl):`:
+creează conturile (se testează pe ceva real). Marcată în cod cu `// Live wiring:`:
 - în `senders-live.ts` `createPausedCampaign`: ad set + creative + ad (necesită
   cont de reclame + ID creativ real);
 - `Notifier`: alegerea canalului (email/WhatsApp) + trimiterea efectivă;
