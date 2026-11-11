@@ -43,6 +43,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:conventions && npm run saloon:bots",
+    "check:fast": "node scripts/check-fast.mjs",
+    "check:conventions": "knip && depcruise sites/auto-service/src sites/saloon/src sites/subcort/src sites/tractari/src packages/site-kit/src sites/saloon/marketing/bots/src && node vendor/house-style/bin/check-base-ui.mjs --warn-only && node vendor/house-style/bin/check-structure.mjs",
     "house-style:sync": "node vendor/house-style/bin/sync.mjs"
   },
   "workspaces": [
