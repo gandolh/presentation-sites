@@ -1,10 +1,15 @@
 ---
 summary: Dated snapshot of churchix as of 2026-11-04, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, the brand seeds winning over the token defaults, what waits on a deploy, and what is still open. Start here after a break.
-updated: 2026-11-04
+updated: 2026-11-11
 ---
 # Status (2026-11-04)
 
 Base UI is pinned exactly at 1.9.0 in `@churchix/ui` (brief 02, 2026-11-10).
+
+The house style and the quality gate are in (brief 03, 2026-11-11): Prettier, ESLint with the Astro layer, a typecheck in
+every workspace, knip, dependency-cruiser and the two checkers, and `.claude/rules`. `npm run check` takes 25.7 s warm
+and `check:fast` 8.7 s. `check-base-ui` runs `--warn-only` (4 warnings) until brief 04. Built locally, not pushed, and
+the owner deploys.
 
 One church app, `apps/parohia-harlesti-bacau`, builds 10 static pages on the
 shared `@churchix/*` packages, and `astro check` reports 0 errors (2026-11-04).

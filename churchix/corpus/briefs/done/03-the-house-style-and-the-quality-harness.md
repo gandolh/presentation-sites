@@ -110,3 +110,85 @@ One commit per step, each with `npm run build` green.
 
 - Brief 04 adds the Base UI audit and `better-tailwindcss`. Brief 05 starts after the reformat.
 - The root harness brief and this one use the same vendored library and the same Astro layer. A change to one is made in the other.
+
+## Outcome (2026-11-11)
+
+Built on `main`, committed locally and not pushed. In order: `8f07329` vendor house-style 1.1.0 and pin its tools and the
+Astro plugins, `9dbd9c8` Prettier at width 120, `e528c75` `style: format with Prettier`, `d5e5c36` the hash in the
+repo-root `.git-blame-ignore-revs` (git reads that one file for the whole repository), `d12b322` the tsconfig flags and a
+typecheck in both packages, `ee22b6f` ESLint with the Astro layer and the fixes, `7227482` the gate, `cae3ba4`
+`.claude/rules`, the `.gitignore` line and `CLAUDE.md`, then this closeout. The decisions are in
+[decisions.md](../../wiki/decisions.md).
+
+**Step 1, measured** (Node 24.22, TypeScript 6.0.3, ESLint 10.9.1, Prettier 3.9.10): `tsc --noEmit` alone gave the 7
+errors in `packages/ui` and the 2 in `packages/schemas` the brief names. `exactOptionalPropertyTypes`: 1 in ui, 0 in
+schemas, 5 in the app (the `donatii`, `index`, `pomelnice` and `anunturi/index` pages); left off for the owner's call.
+`erasableSyntaxOnly`, `noImplicitOverride` and `noUncheckedIndexedAccess` add 0 errors in the app. The pins moved the
+hoisted `@astrojs/compiler-rs` from 0.5.1 to 0.5.3, as at the root, and `prettier` from 3.9.6 to 3.9.10; the built pages
+do not depend on either.
+
+**The reformat** (`e528c75`): 42 files, +1,123 and -1,247 lines. `git diff -w` isn't empty (rewrapped lines), so the
+compare stands in. esbuild over the 29 tracked `.ts`, `.tsx`, `.mjs`, `.css` and `.json` files (minified, JSON parsed):
+28 identical, 1 different: `PomelnicForm.tsx`, where `{" "}` after "configurat — setați" became a trailing space in the
+text, the same string. The app built before and after (a second "before" build matched the first byte for byte): the same
+files; 3 of the 10 pages differ, only in whitespace at a tag boundary inside a span ("Fixat" in the announcement
+cards), and equal once whitespace around tags is collapsed.
+
+**Lint, per rule** (final config, before and after the fixes): before, 17 errors; after, 0 errors and 0 warnings.
+
+| Rule | Before | After |
+|---|---|---|
+| `no-non-null-assertion` | 11 (nine pages' `getEntry(...)!`, `index.astro` `WEEK_ORDER[...]!`, `MobileNav` `locales!`) | 0 |
+| `no-misused-promises` | 2 (`CopyIban.tsx`, `PomelnicForm.tsx`) | 0 |
+| `no-var` | 2 (`contact.astro`'s inline script; not in the brief's count) | 0 |
+| `no-unused-vars` | 1 (`GivingChannels.astro`, `Badge`) | 0 |
+| `no-unused-expressions` | 1 (`Header.astro`'s `isOpen() ? close() : open()`; not in the brief's count) | 0 |
+| `no-unnecessary-type-assertion` | 0 (the brief's `index.astro:39` is needed once the app has `noUncheckedIndexedAccess`) | 0 |
+| `no-floating-promises`, `await-thenable`, `switch-exhaustiveness-check`, `consistent-type-imports`, `no-undef`, enum, `any`, `ban-ts-comment`, `no-console`, `no-default-export`, `no-warning-comments`, `react-hooks` | 0 | 0 |
+
+The fixes: the nine pages read the site entry through a new `getSite()` in `apps/parohia-harlesti-bacau/src/lib/site.ts`,
+which throws if the entry is missing (a page used to read `.data` of `undefined`, so the build failed either way);
+`index.astro` takes `?? "mon"` for the weekday (the index is always 0 to 6); `MobileNav` narrows a `localeList`; the two
+handlers are `() => void onCopy()` and `(event) => void onSubmit(event)`; the unused import goes; the inline script uses
+`const`. The built output of these: the same pages; the CSS chunk is renamed (`BaseLayout.*.css` to `site.*.css`, same
+bytes), and the three island chunks change only by the lines above.
+
+**The packages' typecheck** (decision 1): `packages/ui` has `noEmit`, `allowImportingTsExtensions` and
+`types: ["vite/client"]`; the icon prop is typed as the glyph pair `{ o, f }` it receives; `packages/schemas` builds the
+`features` and `giving` defaults with `.prefault({})`. In zod 4, `.default({})` returns the value as is and doesn't
+parse it, so a site entry without `giving` would get `{}`, not the currency and IBAN defaults: `.prefault({})` is the
+zod 3 behaviour the schema reads as. Today's `site.json` has both objects, so the build is unchanged.
+
+**Checkers** (`check:conventions`): knip 0 errors; dependency-cruiser 0 violations in 12 modules (its
+`not-to-unresolvable` rule is redeclared in `.dependency-cruiser.cjs` to allow Astro's `astro:` modules, as the house
+rule allows `virtual:`); `check-base-ui --warn-only` 0 errors and 4 warnings that are errors when strict (rule 3: the
+`MobileNav` Base UI import; rule 5: `fonts.css`, `theme.css`, `tokens.css` beside the one stylesheet), left for brief 04;
+`check-structure` strict, 0 errors and 1 rule-11 warning (`PomelnicForm.tsx`, 463 lines).
+
+**Timings** (warm): `npm run check` 25.7 s; `npm run typecheck` 8.3 s; `npx eslint .` 13.3 s; `check:fast` 8.7 s with one
+`.astro` page changed.
+
+**Checks run:** `npm run check` (exit 0), `npx prettier --check .` (0), `npm run house-style:sync -- --check` (0), the
+reformat compares above, five deliberate violations (`enum`, `!`, `console.log` in `packages/ui/src/lib`, `// TODO`, an
+`export default`) each making `npm run lint` exit 1, `git check-ignore -v .claude/rules/churchix.md` (prints nothing),
+`bash corpus/lint.sh`.
+
+**Deviations:**
+
+- `.prettierignore` also keeps out `apps/*/src/content/` (the churches' JSON, which "Files you must NOT touch" protects)
+  and `docs/design/` (HTML exported from the design tool); the brief listed five entries.
+- The configs are `eslint.config.js`, `prettier.config.mjs`, `knip.config.js` and `.dependency-cruiser.cjs`;
+  `conventions.json` sits in `scripts/`, where the house puts it. `.npmrc` sets `save-exact=true`.
+- The root `typecheck` and `lint` name the three workspaces (`@churchix/schemas`, `@churchix/ui`, the app) so the
+  Docusaurus site's `tsc` stays out of the harness. `check` ends with `build`, as the brief says, and `build` still runs
+  every workspace.
+- `check:fast` runs the app's `astro check` for any changed package file as well, since the app compiles the packages.
+- `check-structure` runs strict (it reports no error); `check-base-ui` stays `--warn-only` until brief 04.
+- The app's `typescript` pin moved from `^6.0.3` to `6.0.3`; `docs-site` keeps `^6.0.3` (a pin the sync reports only).
+- knip: `@churchix/config` stays in the app's devDependencies though the app extends Astro's base (every church app
+  lists it); `zod` is imported as a type in three `ui` components without being listed (it comes with
+  `@churchix/schemas`); both are `ignoreDependencies` entries with a comment.
+- Two findings the brief didn't count (`no-var`, `no-unused-expressions`) were fixed with the others.
+
+**Owner steps:** `git config blame.ignoreRevsFile .git-blame-ignore-revs`; from the vps-deploy checkout,
+`node cli.ts churchix deploy` (the built pages change only in chunk names and whitespace). The docs site did not change.

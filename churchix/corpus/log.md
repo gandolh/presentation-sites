@@ -340,7 +340,7 @@ is still `#6b1f2a`. Recorded in [decisions](wiki/decisions.md);
 Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwind, conventions enforced) and the grilling of 2026-11-10.
 
 - [02](briefs/done/02-pin-base-ui-exactly.md): `packages/ui` has `^1.9.0` (`packages/ui/package.json:25`); the lockfile resolves 1.9.0.
-- [03](briefs/todo/03-the-house-style-and-the-quality-harness.md): the root corpus's Astro-aware harness, applied to Churchix. It has a `format` script and no Prettier, no ESLint, and no typecheck for its two packages (7 and 2 `tsc` errors when run alone). Prettier changes 40 of 42 files, about 24% of lines, at any width. `churchix/.gitignore:49` hides `.claude/`.
+- [03](briefs/done/03-the-house-style-and-the-quality-harness.md): the root corpus's Astro-aware harness, applied to Churchix. It has a `format` script and no Prettier, no ESLint, and no typecheck for its two packages (7 and 2 `tsc` errors when run alone). Prettier changes 40 of 42 files, about 24% of lines, at any width. `churchix/.gitignore:49` hides `.claude/`.
 - [04](briefs/todo/04-base-ui-by-the-conventions.md): the phone menu on the swipeable `Drawer` (Q40), wrappers in `packages/ui/src/primitives/`, and the Light / Dark / System switch (Q18), with a dark theme derived from the church's seeds. No Tailwind brief: Churchix is on Tailwind v4.
 - [05](briefs/todo/05-parish-template-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign of the parish template, as a token set and layout, on the estate board (Q39). It links the root corpus's brief 05 for the shared steps.
 
@@ -358,3 +358,13 @@ no dark palette. Brief 03 already vendors `house-style` (Q6) at width 120.
 
 `packages/ui/package.json` now pins `@base-ui/react` at `1.9.0` (was `^1.9.0`); the lockfile range followed. No
 installed version moved. The build passes.
+
+## [2026-11-11] brief | 03 The house style and the quality harness
+
+Vendored `house-style` 1.1.0 into `churchix/vendor/house-style/` and pinned its tools, with the Astro plugins. Prettier
+at width 120 (the reformat is its own commit, `e528c75`, in the repo-root `.git-blame-ignore-revs`), the tsconfig flags,
+and a typecheck in both packages (the 7 and 2 `tsc` errors fixed; `schemas` uses `prefault`). ESLint with the Astro layer:
+17 errors fixed, 0 left. `npm run check` (25.7 s) and `check:fast` (8.7 s) are the gate; `check-base-ui` is
+`--warn-only` until brief 04. `.claude/rules/churchix.md` is committed. The built pages are unchanged apart from chunk
+names and whitespace. See [the outcome](briefs/done/03-the-house-style-and-the-quality-harness.md).
+

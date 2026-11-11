@@ -1,6 +1,6 @@
 ---
 summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs, Cardo headings for the parish) and the owner questions still open (Q4, Q6 to Q10).
-updated: 2026-11-04
+updated: 2026-11-11
 ---
 # Open Questions — decisions needed from the product owner
 
@@ -55,3 +55,18 @@ Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 
   switched its headings away from the design's Cardo. The owner kept Cardo, so
   the field is removed from its `site.json` and the parish falls back to the
   default `--font-heading`.
+
+## Decided (2026-11-11)
+
+- **The house style and a quality gate, vendored.** Churchix keeps its own copy of `house-style` 1.1.0 in
+  `vendor/house-style/` (the root's copy is separate), refreshed by `npm run house-style:sync`. Prettier at width 120
+  with double quotes and semicolons, plus `prettier-plugin-astro`; ESLint with the house config and
+  `eslint-plugin-astro`; `astro check` in the app and `tsc` in both packages; knip and dependency-cruiser; the two
+  checkers. `npm run check` is the whole gate and `npm run check:fast` the quick one. *Why Churchix has its own:* it is
+  its own npm project with its own lockfile, and the root harness leaves `churchix/` out. *Rejected:* a shared copy
+  at the repo root, which would tie Churchix's lockfile to the sites'.
+- **A default export is allowed in `*.config.*` and in `packages/ui/src/islands/*.tsx`**, which Astro imports by
+  default. Nowhere else.
+- **Markdown, the churches' content and the design source stay out of Prettier.**
+- **`.claude/rules/` is committed**: the `.claude/` ignore line became `.claude/settings.local.json`.
+- **`exactOptionalPropertyTypes` stays off** (1 error in ui, 5 in the app); the owner decides when it goes on.
