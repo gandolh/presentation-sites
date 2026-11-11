@@ -39,7 +39,7 @@ export default [
     name: "churchix/astro",
     files: ["**/*.astro"],
     plugins: shapes.plugins,
-    languageOptions: { parserOptions: { project: true, tsconfigRootDir: root } },
+    languageOptions: { parserOptions: { project: true } },
     rules: { ...shapes.rules, ...typed.rules },
   },
 ];
