@@ -71,19 +71,12 @@ drift.
   stale claims.
 - **Never commit corpus changes unless the user asks.**
 
-## Repo-specific gotchas
+## Repo-wide rules
 
-- Images resolve by **logical name** through `src/content/images.ts`. Grepping a
-  filename will report a used image as unused. Check `gallery.ts` and the
-  site's `scripts/gen-*.mjs` generator too. (`subcort` is the exception — it
-  ships no photography; every graphic is projected from the one marquee model in
-  `src/lib/draft.ts`.)
-- Real business data (`src/content/site.local.ts`) and real photos
-  (`public/images/real/*`) are **gitignored**. Never paste their contents into a
-  corpus page.
-- Most site content is **Romanian**. Don't run English prose/style skills over it.
-
-## brief-board
-
-Brief progress goes on brief-board. Run `brief-board guide` before you
-start or resume a brief, and follow it.
+The commands, the places that mislead, the hard rules and the brief-board
+section are in the root [CLAUDE.md](../CLAUDE.md); the rules for the sites'
+code are in [.claude/rules/sites.md](../.claude/rules/sites.md). For the
+corpus itself: real business data (`src/content/site.local.ts`) and real
+photos (`public/images/real/*`) are gitignored, so never paste their contents
+into a corpus page, and don't run English prose skills over the Romanian
+site copy a page quotes.
