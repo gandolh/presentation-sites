@@ -97,7 +97,7 @@ export const siteSchema = z.object({
       giving: z.boolean().default(true),
       campaigns: z.boolean().default(true),
     })
-    .default({}),
+    .prefault({}),
 
   contact: z.object({
     address: z.string(),
@@ -122,7 +122,7 @@ export const siteSchema = z.object({
       smsAmount: z.string().optional(),
       pomelniceEndpoint: z.string().optional(), // where the pomelnice form POSTs
     })
-    .default({}),
+    .prefault({}),
 });
 export type SiteConfig = z.infer<typeof siteSchema>;
 

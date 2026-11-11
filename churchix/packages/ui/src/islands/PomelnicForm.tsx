@@ -317,7 +317,7 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
 
 interface NameCardProps {
   tone: "vii" | "adormiti";
-  icon: string;
+  icon: { o: string; f: string };
   iconFilled?: boolean;
   title: string;
   description: string;

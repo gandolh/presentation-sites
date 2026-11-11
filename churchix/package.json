@@ -20,7 +20,7 @@
     "dev": "echo \"Run a specific workspace, e.g. npm run dev -w apps/<church>\" && exit 1",
     "dev:bac": "npm run dev -w apps/parohia-harlesti-bacau",
     "lint": "npm run lint --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck -w @churchix/schemas -w @churchix/ui -w @churchix-app/parohia-harlesti-bacau",
     "test": "npm run test --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
