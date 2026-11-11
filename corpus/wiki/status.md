@@ -1,6 +1,6 @@
 ---
 summary: Dated snapshot (2026-11-02) of where each site stands, the recent work per area, what waits on a deploy, and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-11-09
+updated: 2026-11-11
 ---
 
 # Status — 2026-11-02
@@ -8,6 +8,8 @@ updated: 2026-11-09
 ## Where things stand
 
 Base UI is pinned exactly at 1.9.0 in every site (saloon was the last on a range; brief 02, 2026-11-10).
+
+The house style is checked since 2026-11-11 (brief 03): Prettier at width 120 with the Astro plugin, the house ESLint config with an Astro layer, `astro check` in every site, `npm run check` and `npm run check:fast` ([decisions-house-style.md](decisions-house-style.md)). Waits on a deploy of the four live sites and design-study.
 
 
 All six projects build — the five sites under `sites/` and churchix. Since the

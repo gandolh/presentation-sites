@@ -1,6 +1,6 @@
 ---
-summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md. Do not relitigate without a log entry.
-updated: 2026-11-02
+summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md, the house style and its checks on decisions-house-style.md. Do not relitigate without a log entry.
+updated: 2026-11-11
 ---
 
 # Decisions
@@ -139,6 +139,12 @@ shared logic.
 
 Icons (one family, inlined at build time) and Base UI under the phone menus
 live in [decisions-ui.md](decisions-ui.md).
+
+## The house style, formatted and checked, with Astro
+
+**2026-11-11** — Prettier at width 120, the vendored house-style ESLint config
+with a local Astro layer, the tsconfig flags and the `npm run check` gate live
+in [decisions-house-style.md](decisions-house-style.md).
 
 ## churchix governs itself
 

@@ -589,7 +589,7 @@ on the owner's grilling on 2026-11-10. See the
 Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwind, conventions enforced) and the grilling of 2026-11-10.
 
 - [02](briefs/done/02-pin-base-ui-exactly.md): saloon's `^1.9.0` becomes `1.9.0`. Three sites already pin; the lockfile resolves 1.9.0.
-- [03](briefs/todo/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
+- [03](briefs/done/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
 - [04](briefs/todo/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
 - [05](briefs/todo/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/todo/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/todo/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
 
@@ -609,3 +609,24 @@ switch: saloon and subcort stay light, auto-service and tractari stay dark. Brie
 
 `sites/saloon/package.json` now pins `@base-ui/react` at `1.9.0` (was `^1.9.0`); the lockfile range followed. No
 installed version moved. Saloon's build passes.
+
+## [2026-11-11] brief | 03 The house style and the quality harness, with Astro
+
+house-style 1.1.0 vendored in `vendor/house-style/`, with its tools pinned at the root and `.npmrc` saving exact
+versions. Prettier at width 120 with `prettier-plugin-astro`, one reformat commit (`c1f4892`, 129 of 170 files),
+skipped by `.git-blame-ignore-revs`. ESLint: `houseStyle()` plus `eslint-plugin-astro`, and the house shapes and
+typed rules applied to `.astro` files (`project: true`). The four live sites take `erasableSyntaxOnly` and
+`noImplicitOverride`, saloon and auto-service `noUncheckedIndexedAccess`; every site's `typecheck` is `astro
+check`. `npm run check` (60.7 s), `check:fast` (8-11.5 s with one changed file), `check:conventions` (knip,
+dependency-cruiser, `check-base-ui --warn-only`, `check-structure`). A root `CLAUDE.md` and
+`.claude/rules/sites.md`; corpus/CLAUDE.md hands its repo-wide sections to the root.
+
+Step 1's measurements: `exactOptionalPropertyTypes` 0 errors in all four live sites; `noUncheckedIndexedAccess`
+subcort 86, tractari 5; lint 27.9 s, of which the bots take 2.7 s, so they stay in the root lint; the
+`@vitest/eslint-plugin` pin stays because the house config imports it. Lint went from 26 errors to 0; seven
+warnings stay (six `!` in the bots' tests, one `process.env` read in the bots). The bots' `TODO(impl)` comments
+became `// Live wiring:` notes, listed in [saloon-bots-live-wiring.md](todos/saloon-bots-live-wiring.md). The
+reformat's compare (esbuild over 101 files, the five sites built before and after) and every count are in the
+[brief's outcome](briefs/done/03-the-house-style-and-the-quality-harness.md); the decisions are on
+[decisions-house-style.md](wiki/decisions-house-style.md). Waits on a deploy of the five sites. Questions on the
+board: format design-study too, drop the unused `gsap`, turn on `exactOptionalPropertyTypes`.
