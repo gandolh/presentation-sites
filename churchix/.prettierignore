@@ -1,0 +1,20 @@
+# Markdown stays out of Prettier (decided 2026-11-10).
+*.md
+
+# The generated house-style copy.
+/vendor/house-style/
+
+# The Docusaurus docs site is its own project with its own checks.
+/docs-site/
+
+# Lockfiles, build output and generated files.
+package-lock.json
+node_modules/
+dist/
+.astro/
+
+# Each church's content (JSON, MDX) is written by the church, not formatted by the house.
+/apps/*/src/content/
+
+# The design source: HTML exported from the design tool, kept as it came.
+/docs/design/
