@@ -12,6 +12,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "typecheck": "astro check",
     "og": "node scripts/gen-og.mjs"
   },
   "dependencies": {

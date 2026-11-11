@@ -4,6 +4,11 @@
   "exclude": ["dist", "docs-site"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    // The house flags Astro's strict preset doesn't set (house-style).
+    "erasableSyntaxOnly": true,
+    "noImplicitOverride": true
+    // noUncheckedIndexedAccess stays off for now (2026-11-11): it finds 5 errors here, counted in
+    // corpus/log.md. It comes on with the work that fixes them.
   }
 }

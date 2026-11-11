@@ -39,6 +39,7 @@
     "churchix": "npm --prefix churchix run",
     "churchix:install": "npm --prefix churchix install",
     "churchix:build": "npm --prefix churchix run build",
+    "typecheck": "npm run typecheck -w @sites/kit -w bavauto-gorj -w ana-saloon -w subcort -w tractari -w design-study",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "house-style:sync": "node vendor/house-style/bin/sync.mjs"
