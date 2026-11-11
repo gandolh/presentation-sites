@@ -41,29 +41,29 @@
  * @example Donate-page featured project
  *   <CampaignCard campaign={c} variant="project" />
  */
-import type { campaignSchema } from '@churchix/schemas';
-import type { z } from 'zod';
-import Card from './Card.astro';
-import Badge from './Badge.astro';
-import Button from './Button.astro';
-import Icon from './Icon.astro';
+import type { campaignSchema } from "@churchix/schemas";
+import type { z } from "zod";
+import Card from "./Card.astro";
+import Badge from "./Badge.astro";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
 
 type Campaign = z.infer<typeof campaignSchema>;
 
 interface Props {
   campaign: Campaign;
-  variant?: 'card' | 'project';
+  variant?: "card" | "project";
   class?: string;
   [key: string]: unknown;
 }
 
-const { campaign, variant = 'card', class: className, ...rest } = Astro.props;
+const { campaign, variant = "card", class: className, ...rest } = Astro.props;
 
 // Money: integer minor units + EXPLICIT currency, always. No floats retained.
 const money = (minor: number) =>
-  new Intl.NumberFormat('ro-RO', {
-    style: 'currency',
-    currency: campaign.currency || 'RON',
+  new Intl.NumberFormat("ro-RO", {
+    style: "currency",
+    currency: campaign.currency || "RON",
     maximumFractionDigits: 0,
   }).format(minor / 100);
 
@@ -74,17 +74,15 @@ const pct =
     : 0;
 
 const deadlineFmt = campaign.deadline
-  ? new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' }).format(
-      campaign.deadline,
-    )
+  ? new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "long", year: "numeric" }).format(campaign.deadline)
   : null;
 
-const isProject = variant === 'project';
-const isActive = campaign.status === 'active';
-const isCompleted = campaign.status === 'completed';
+const isProject = variant === "project";
+const isActive = campaign.status === "active";
+const isCompleted = campaign.status === "completed";
 
-const ctaLabel = isProject ? 'Susține Proiectul' : 'Contribuie';
-const categoryLabel = isProject ? 'Proiect Special' : 'Campanie';
+const ctaLabel = isProject ? "Susține Proiectul" : "Contribuie";
+const categoryLabel = isProject ? "Proiect Special" : "Campanie";
 
 // Project variant uses the featured gold bottom-border accent + edge-to-edge media header.
 ---
@@ -94,44 +92,36 @@ const categoryLabel = isProject ? 'Proiect Special' : 'Campanie';
   featured={isProject}
   radius="lg"
   padding="none"
-  class:list={['cx-campaign-card flex flex-col', className]}
+  class:list={["cx-campaign-card flex flex-col", className]}
   {...rest}
 >
-  {
-    isProject && campaign.cover && (
-      <img
-        src={campaign.cover}
-        alt={campaign.title}
-        class="h-48 w-full object-cover bg-surface-variant"
-        loading="lazy"
-        decoding="async"
-      />
-    )
-  }
-  {
-    isProject && !campaign.cover && (
-      <div
-        class="flex h-48 w-full flex-col items-center justify-center gap-sm bg-primary/5 text-on-surface-variant"
-        aria-hidden="true"
-      >
-        <Icon name="church" size={40} class="text-primary/30" />
-        <span class="font-label-md text-label-md text-on-surface-variant/60">Proiect parohial</span>
-      </div>
-    )
-  }
+  {isProject && campaign.cover && (
+    <img
+      src={campaign.cover}
+      alt={campaign.title}
+      class="h-48 w-full object-cover bg-surface-variant"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+  {isProject && !campaign.cover && (
+    <div
+      class="flex h-48 w-full flex-col items-center justify-center gap-sm bg-primary/5 text-on-surface-variant"
+      aria-hidden="true"
+    >
+      <Icon name="church" size={40} class="text-primary/30" />
+      <span class="font-label-md text-label-md text-on-surface-variant/60">Proiect parohial</span>
+    </div>
+  )}
 
   <div class="flex flex-1 flex-col gap-sm p-md">
     <div>
-      <Badge tone={isProject ? 'secondary' : 'neutral'}>{categoryLabel}</Badge>
+      <Badge tone={isProject ? "secondary" : "neutral"}>{categoryLabel}</Badge>
     </div>
 
     <h3 class="font-headline-md text-headline-md text-primary">{campaign.title}</h3>
 
-    {
-      campaign.summary && (
-        <p class="font-body-md text-body-md text-on-surface-variant">{campaign.summary}</p>
-      )
-    }
+    {campaign.summary && <p class="font-body-md text-body-md text-on-surface-variant">{campaign.summary}</p>}
 
     {/* Goal thermometer — gold fill on a muted track; progress is text + bar, never color-only. */}
     <div class="mt-xs">
@@ -157,36 +147,28 @@ const categoryLabel = isProject ? 'Proiect Special' : 'Campanie';
       </p>
     </div>
 
-    {
-      deadlineFmt && (
-        <p class="font-caption text-caption text-on-surface-variant">Termen: {deadlineFmt}</p>
-      )
-    }
+    {deadlineFmt && <p class="font-caption text-caption text-on-surface-variant">Termen: {deadlineFmt}</p>}
 
     <div class="mt-auto pt-xs">
-      {
-        isActive && campaign.cardUrl && (
-          <Button
-            href={campaign.cardUrl}
-            variant={isProject ? 'secondary' : 'primary'}
-            shape="rounded"
-            block
-            trailingIcon="arrow_forward"
-            rel="noopener"
-            target="_blank"
-          >
-            {ctaLabel}
-          </Button>
-        )
-      }
-      {
-        isCompleted && (
-          <p class="flex items-center gap-xs font-label-md text-label-md text-primary">
-            <Icon name="payments" size={18} />
-            Obiectiv atins — mulțumim!
-          </p>
-        )
-      }
+      {isActive && campaign.cardUrl && (
+        <Button
+          href={campaign.cardUrl}
+          variant={isProject ? "secondary" : "primary"}
+          shape="rounded"
+          block
+          trailingIcon="arrow_forward"
+          rel="noopener"
+          target="_blank"
+        >
+          {ctaLabel}
+        </Button>
+      )}
+      {isCompleted && (
+        <p class="flex items-center gap-xs font-label-md text-label-md text-primary">
+          <Icon name="payments" size={18} />
+          Obiectiv atins — mulțumim!
+        </p>
+      )}
     </div>
   </div>
 </Card>

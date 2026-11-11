@@ -4,7 +4,9 @@
   "private": true,
   "description": "Shared base config (tsconfig) for Churchix church apps and packages.",
   "type": "module",
-  "files": ["tsconfig.json"],
+  "files": [
+    "tsconfig.json"
+  ],
   "exports": {
     "./tsconfig.json": "./tsconfig.json"
   }

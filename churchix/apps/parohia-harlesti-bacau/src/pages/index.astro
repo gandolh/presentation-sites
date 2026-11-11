@@ -1,59 +1,65 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import Hero from '@churchix/ui/components/Hero.astro';
-import Rail from '@churchix/ui/components/Rail.astro';
-import Card from '@churchix/ui/components/Card.astro';
-import Badge from '@churchix/ui/components/Badge.astro';
-import Icon from '@churchix/ui/components/Icon.astro';
-import { withBase } from '@churchix/ui/lib/base.ts';
+import { getEntry, getCollection } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import Hero from "@churchix/ui/components/Hero.astro";
+import Rail from "@churchix/ui/components/Rail.astro";
+import Card from "@churchix/ui/components/Card.astro";
+import Badge from "@churchix/ui/components/Badge.astro";
+import Icon from "@churchix/ui/components/Icon.astro";
+import { withBase } from "@churchix/ui/lib/base.ts";
 
-const site = (await getEntry('site', 'config'))!.data;
+const site = (await getEntry("site", "config"))!.data;
 
 // ── Schedule → compact "this week" timeline rows for the hero ─────────────────
-const schedule = (await getCollection('schedule')).map((e) => e.data);
+const schedule = (await getCollection("schedule")).map((e) => e.data);
 
 const WEEKDAY_ABBR_RO: Record<string, string> = {
-  mon: 'Lun', tue: 'Mar', wed: 'Mie', thu: 'Joi',
-  fri: 'Vin', sat: 'Sâm', sun: 'Dum',
+  mon: "Lun",
+  tue: "Mar",
+  wed: "Mie",
+  thu: "Joi",
+  fri: "Vin",
+  sat: "Sâm",
+  sun: "Dum",
 };
-const WEEK_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+const WEEK_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
 
 // Weekly services, ordered Mon→Sun then by time, for the hero timeline.
 const weekly = schedule
   .filter((s) => s.weekday)
   .sort((a, b) => {
-    const d = WEEK_ORDER.indexOf(a.weekday as (typeof WEEK_ORDER)[number]) -
+    const d =
+      WEEK_ORDER.indexOf(a.weekday as (typeof WEEK_ORDER)[number]) -
       WEEK_ORDER.indexOf(b.weekday as (typeof WEEK_ORDER)[number]);
     return d !== 0 ? d : a.time.localeCompare(b.time);
   });
 
 const weekRows = weekly.map((s) => ({
-  day: WEEKDAY_ABBR_RO[s.weekday as string] ?? '',
+  day: WEEKDAY_ABBR_RO[s.weekday as string] ?? "",
   time: s.time,
   label: s.label,
-  highlight: s.weekday === 'sun',
+  highlight: s.weekday === "sun",
 }));
 
 // ── Hero "next service": soonest weekly service from today onward ─────────────
 const NOW_WEEKDAY = WEEK_ORDER[(new Date().getDay() + 6) % 7]!;
 const WEEKDAY_RO: Record<string, string> = {
-  mon: 'Luni', tue: 'Marți', wed: 'Miercuri', thu: 'Joi',
-  fri: 'Vineri', sat: 'Sâmbătă', sun: 'Duminică',
+  mon: "Luni",
+  tue: "Marți",
+  wed: "Miercuri",
+  thu: "Joi",
+  fri: "Vineri",
+  sat: "Sâmbătă",
+  sun: "Duminică",
 };
 const nextSvc =
-  weekly.find(
-    (s) =>
-      WEEK_ORDER.indexOf(s.weekday as (typeof WEEK_ORDER)[number]) >=
-      WEEK_ORDER.indexOf(NOW_WEEKDAY),
-  ) ?? weekly[0];
-const nextService = nextSvc
-  ? `${nextSvc.label} · ${WEEKDAY_RO[nextSvc.weekday as string]} ${nextSvc.time}`
-  : undefined;
+  weekly.find((s) => WEEK_ORDER.indexOf(s.weekday as (typeof WEEK_ORDER)[number]) >= WEEK_ORDER.indexOf(NOW_WEEKDAY)) ??
+  weekly[0];
+const nextService = nextSvc ? `${nextSvc.label} · ${WEEKDAY_RO[nextSvc.weekday as string]} ${nextSvc.time}` : undefined;
 
 // ── Announcements → asymmetric lead + stacked ─────────────────────────────────
-const fmtDate = new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
-const anunturi = (await getCollection('announcements'))
+const fmtDate = new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "short", year: "numeric" });
+const anunturi = (await getCollection("announcements"))
   .map((e) => ({ slug: e.id, ...e.data }))
   .sort((a, b) => {
     if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
@@ -92,7 +98,7 @@ const rest = anunturi.slice(1, 4);
               <h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-primary m-0">Anunțuri</h2>
             </div>
             <a
-              href={withBase('/anunturi')}
+              href={withBase("/anunturi")}
               class="inline-flex shrink-0 items-center gap-1 font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors"
             >
               Vezi toate
@@ -113,7 +119,9 @@ const rest = anunturi.slice(1, 4);
               >
                 <div>
                   {lead.pinned ? (
-                    <Badge tone="secondary" icon="push_pin" class="mb-sm">Fixat</Badge>
+                    <Badge tone="secondary" icon="push_pin" class="mb-sm">
+                      Fixat
+                    </Badge>
                   ) : (
                     <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant mb-sm">
                       <Icon name="event" size={14} />
@@ -137,13 +145,7 @@ const rest = anunturi.slice(1, 4);
             <!-- Stacked smaller stories -->
             <div class="lg:col-span-5 flex flex-col gap-md">
               {rest.map((a) => (
-                <Card
-                  as="article"
-                  href={withBase(`/anunturi/${a.slug}`)}
-                  radius="lg"
-                  padding="md"
-                  class="group flex-1"
-                >
+                <Card as="article" href={withBase(`/anunturi/${a.slug}`)} radius="lg" padding="md" class="group flex-1">
                   <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant mb-xs">
                     <Icon name="event" size={14} />
                     {fmtDate.format(a.date)}
@@ -170,11 +172,10 @@ const rest = anunturi.slice(1, 4);
             Un spațiu al păcii și al regăsirii
           </h2>
           <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-primary/85 text-pretty">
-            {site.tagline ??
-              'Vă invităm să luați parte la sfintele slujbe și la viața comunității noastre parohiale.'}
+            {site.tagline ?? "Vă invităm să luați parte la sfintele slujbe și la viața comunității noastre parohiale."}
           </p>
           <a
-            href={withBase('/despre')}
+            href={withBase("/despre")}
             class="mt-lg inline-flex items-center gap-xs font-label-md text-label-md uppercase text-secondary-fixed border-b border-secondary-fixed/60 pb-1 hover:text-on-primary hover:border-on-primary transition-colors"
           >
             Citește istoricul

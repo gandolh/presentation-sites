@@ -29,82 +29,72 @@
  */
 interface Props {
   featured?: boolean;
-  radius?: 'sm' | 'md' | 'lg';
-  padding?: 'none' | 'sm' | 'md' | 'lg';
+  radius?: "sm" | "md" | "lg";
+  padding?: "none" | "sm" | "md" | "lg";
   interactive?: boolean;
   href?: string;
-  as?: 'div' | 'article' | 'section' | 'li';
+  as?: "div" | "article" | "section" | "li";
   class?: string;
   [key: string]: unknown;
 }
 
 const {
   featured = false,
-  radius = 'sm',
-  padding = 'md',
+  radius = "sm",
+  padding = "md",
   interactive = false,
   href,
-  as = 'div',
+  as = "div",
   class: className,
   ...rest
 } = Astro.props;
 
 // Standard element radius is 0.5rem (`rounded`) per DESIGN.md §Shapes.
 const radii = {
-  sm: 'rounded',
-  md: 'rounded-md',
-  lg: 'rounded-lg',
+  sm: "rounded",
+  md: "rounded-md",
+  lg: "rounded-lg",
 } as const;
 
 const paddings = {
-  none: '',
-  sm: 'p-sm',
-  md: 'p-md',
-  lg: 'p-lg',
+  none: "",
+  sm: "p-sm",
+  md: "p-md",
+  lg: "p-lg",
 } as const;
 
 const isLink = Boolean(href);
 const isInteractive = interactive || isLink;
 
-const base =
-  'block bg-surface-container-lowest border border-outline-variant/30 shadow-sm overflow-hidden';
+const base = "block bg-surface-container-lowest border border-outline-variant/30 shadow-sm overflow-hidden";
 
-const accentClass = featured ? 'border-b-2 border-b-secondary' : '';
+const accentClass = featured ? "border-b-2 border-b-secondary" : "";
 
 const interactiveClass = isInteractive
-  ? 'transition-[box-shadow,transform,opacity] duration-200 hover:shadow-md hover:-translate-y-0.5 ' +
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
-  : '';
+  ? "transition-[box-shadow,transform,opacity] duration-200 hover:shadow-md hover:-translate-y-0.5 " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+  : "";
 
-const classes = [
-  base,
-  radii[radius],
-  paddings[padding],
-  accentClass,
-  interactiveClass,
-  className,
-];
+const classes = [base, radii[radius], paddings[padding], accentClass, interactiveClass, className];
 
 // A linked card normally renders as `<a>`. But when the caller also asks for a
 // list item (`as="li"`, e.g. inside a `<ul>` grid), emitting `<a>` directly under
 // `<ul>` is invalid list markup (axe: "list"). In that case wrap the `<a>` in an
 // `<li>` so the list keeps valid `ul > li > a` structure; the visual card styling
 // stays on the `<a>` (the clickable surface).
-const wrapInListItem = isLink && as === 'li';
-const Tag = isLink ? 'a' : as;
+const wrapInListItem = isLink && as === "li";
+const Tag = isLink ? "a" : as;
 const tagProps = isLink ? { href } : {};
 ---
 
-{
-  wrapInListItem ? (
-    <li class="contents">
-      <Tag class:list={classes} {...tagProps} {...rest}>
-        <slot />
-      </Tag>
-    </li>
-  ) : (
+{wrapInListItem ? (
+  <li class="contents">
     <Tag class:list={classes} {...tagProps} {...rest}>
       <slot />
     </Tag>
-  )
-}
+  </li>
+) : (
+  <Tag class:list={classes} {...tagProps} {...rest}>
+    <slot />
+  </Tag>
+)}

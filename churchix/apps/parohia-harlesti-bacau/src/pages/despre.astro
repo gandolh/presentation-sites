@@ -1,16 +1,14 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import PageShell from '@churchix/ui/components/PageShell.astro';
-import Card from '@churchix/ui/components/Card.astro';
-import Icon from '@churchix/ui/components/Icon.astro';
+import { getEntry, getCollection } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import PageShell from "@churchix/ui/components/PageShell.astro";
+import Card from "@churchix/ui/components/Card.astro";
+import Icon from "@churchix/ui/components/Icon.astro";
 
-const site = (await getEntry('site', 'config'))!.data;
+const site = (await getEntry("site", "config"))!.data;
 
 // Leadership, ordered by `staff.order`. Optional collection — empty/absent is fine.
-const staff = (await getCollection('staff'))
-  .map((e) => e.data)
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const staff = (await getCollection("staff")).map((e) => e.data).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 ---
 
 <BaseLayout site={site} title="Despre parohie" path="/despre">
@@ -22,13 +20,12 @@ const staff = (await getCollection('staff'))
   >
     <article class="cx-prose font-body-lg text-body-lg text-on-surface">
       <p>
-        Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău,
-        a fost ridicată în anul 1846. Parohia a primit statut de sine stătător în anul 2002,
-        fiind anterior filie a unei parohii învecinate.
+        Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău, a fost ridicată în anul
+        1846. Parohia a primit statut de sine stătător în anul 2002, fiind anterior filie a unei parohii învecinate.
       </p>
       <p>
-        În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia
-        aparține de Arhiepiscopia Romanului și Bacăului, Protopopiatul Bacău.
+        În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia aparține de Arhiepiscopia
+        Romanului și Bacăului, Protopopiatul Bacău.
       </p>
       <h2>Hramul</h2>
       <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
@@ -55,9 +52,7 @@ const staff = (await getCollection('staff'))
                   <p class="font-overline text-overline uppercase text-on-secondary-container mt-xs">{p.role}</p>
                 </div>
               </div>
-              {p.bio && (
-                <p class="font-body-md text-body-md text-on-surface-variant">{p.bio}</p>
-              )}
+              {p.bio && <p class="font-body-md text-body-md text-on-surface-variant">{p.bio}</p>}
             </Card>
           ))}
         </ul>

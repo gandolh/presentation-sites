@@ -35,7 +35,7 @@
  *   </Field>
  */
 interface Props {
-  as?: 'input' | 'textarea' | 'select';
+  as?: "input" | "textarea" | "select";
   label: string;
   name: string;
   id?: string;
@@ -52,11 +52,11 @@ interface Props {
 }
 
 const {
-  as = 'input',
+  as = "input",
   label,
   name,
   id,
-  type = 'text',
+  type = "text",
   required = false,
   placeholder,
   value,
@@ -68,19 +68,19 @@ const {
   ...rest
 } = Astro.props;
 
-const fieldId = id ?? `f-${name}`.replace(/[^a-zA-Z0-9_-]/g, '-');
+const fieldId = id ?? `f-${name}`.replace(/[^a-zA-Z0-9_-]/g, "-");
 const hintId = hint ? `${fieldId}-hint` : undefined;
 const errorId = error ? `${fieldId}-error` : undefined;
-const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
 const controlBase =
-  'w-full px-3 py-3 rounded bg-transparent font-body-md text-body-md text-on-surface ' +
-  'placeholder:text-on-surface-variant/75 transition-colors duration-200 ' +
-  'focus:outline-none focus:ring-2 focus:ring-primary focus:border-secondary';
+  "w-full px-3 py-3 rounded bg-transparent font-body-md text-body-md text-on-surface " +
+  "placeholder:text-on-surface-variant/75 transition-colors duration-200 " +
+  "focus:outline-none focus:ring-2 focus:ring-primary focus:border-secondary";
 
 const borderClass = error
-  ? 'border border-error focus:ring-error focus:border-error'
-  : 'border border-outline-variant/50';
+  ? "border border-error focus:ring-error focus:border-error"
+  : "border border-outline-variant/50";
 
 const controlClasses = [controlBase, borderClass, className];
 
@@ -88,53 +88,47 @@ const commonProps = {
   id: fieldId,
   name,
   required: required || undefined,
-  'aria-required': required ? 'true' : undefined,
-  'aria-invalid': error ? 'true' : undefined,
-  'aria-describedby': describedBy,
+  "aria-required": required ? "true" : undefined,
+  "aria-invalid": error ? "true" : undefined,
+  "aria-describedby": describedBy,
 };
 ---
 
 <div class="flex flex-col gap-1">
-  <label
-    for={fieldId}
-    class:list={[
-      'font-label-md text-label-md text-on-surface',
-      labelHidden && 'sr-only',
-    ]}
-  >
+  <label for={fieldId} class:list={["font-label-md text-label-md text-on-surface", labelHidden && "sr-only"]}>
     {label}
-    {required && <span class="text-error" aria-hidden="true"> *</span>}
+    {required && (
+      <span class="text-error" aria-hidden="true">
+        {" "}
+        *
+      </span>
+    )}
   </label>
 
-  {
-    as === 'textarea' ? (
-      <textarea
-        class:list={controlClasses}
-        placeholder={placeholder}
-        rows={rows}
-        {...commonProps}
-        {...rest}
-      >{value}</textarea>
-    ) : as === 'select' ? (
-      <select class:list={controlClasses} {...commonProps} {...rest}>
-        <slot />
-      </select>
-    ) : (
-      <input
-        class:list={controlClasses}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        {...commonProps}
-        {...rest}
-      />
-    )
-  }
+  {as === "textarea" ? (
+    <textarea
+      class:list={controlClasses}
+      placeholder={placeholder}
+      rows={rows}
+      {...commonProps}
+      {...rest}
+    >{value}</textarea>
+  ) : as === "select" ? (
+    <select class:list={controlClasses} {...commonProps} {...rest}>
+      <slot />
+    </select>
+  ) : (
+    <input class:list={controlClasses} type={type} placeholder={placeholder} value={value} {...commonProps} {...rest} />
+  )}
 
   {hint && !error && (
-    <p id={hintId} class="font-caption text-caption text-on-surface-variant">{hint}</p>
+    <p id={hintId} class="font-caption text-caption text-on-surface-variant">
+      {hint}
+    </p>
   )}
   {error && (
-    <p id={errorId} class="font-caption text-caption text-error">{error}</p>
+    <p id={errorId} class="font-caption text-caption text-error">
+      {error}
+    </p>
   )}
 </div>

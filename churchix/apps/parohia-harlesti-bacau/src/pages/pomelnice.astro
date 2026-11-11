@@ -1,50 +1,48 @@
 ---
-import { getEntry } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import PageShell from '@churchix/ui/components/PageShell.astro';
-import EmptyState from '@churchix/ui/components/EmptyState.astro';
-import Button from '@churchix/ui/components/Button.astro';
-import PomelnicForm from '@churchix/ui/islands/PomelnicForm.tsx';
-import { withBase } from '@churchix/ui/lib/base.ts';
+import { getEntry } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import PageShell from "@churchix/ui/components/PageShell.astro";
+import EmptyState from "@churchix/ui/components/EmptyState.astro";
+import Button from "@churchix/ui/components/Button.astro";
+import PomelnicForm from "@churchix/ui/islands/PomelnicForm.tsx";
+import { withBase } from "@churchix/ui/lib/base.ts";
 
-const site = (await getEntry('site', 'config'))!.data;
+const site = (await getEntry("site", "config"))!.data;
 const endpoint = site.giving?.pomelniceEndpoint || undefined;
-const currency = site.giving?.currency ?? 'RON';
+const currency = site.giving?.currency ?? "RON";
 const enabled = site.features.pomelnice;
 ---
 
 <BaseLayout site={site} title="Pomelnice" path="/pomelnice">
-  {
-    enabled ? (
+  {enabled ? (
+    <div class="relative">
+      <div class="cx-pomelnice-pattern" aria-hidden="true"></div>
       <div class="relative">
-        <div class="cx-pomelnice-pattern" aria-hidden="true"></div>
-        <div class="relative">
-          <PageShell
-            title="Trimite un pomelnic"
-            kicker="Pomenire la Sfânta Liturghie"
-            lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
-            markers={7}
-            wide
-          >
-            <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
-          </PageShell>
-        </div>
-      </div>
-    ) : (
-      <PageShell title="Pomelnice" kicker="Pomenire" markers={6}>
-        <EmptyState
-          as="h2"
-          icon="candle"
-          title="Pomelnice indisponibile"
-          message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+        <PageShell
+          title="Trimite un pomelnic"
+          kicker="Pomenire la Sfânta Liturghie"
+          lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
+          markers={7}
+          wide
         >
-          <Button slot="cta" href={withBase('/contact')} variant="secondary" shape="rounded">
-            Contactați parohia
-          </Button>
-        </EmptyState>
-      </PageShell>
-    )
-  }
+          <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
+        </PageShell>
+      </div>
+    </div>
+  ) : (
+    <PageShell title="Pomelnice" kicker="Pomenire" markers={6}>
+      <EmptyState
+        as="h2"
+        icon="candle"
+        title="Pomelnice indisponibile"
+        message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+      >
+        <Button slot="cta" href={withBase("/contact")} variant="secondary" shape="rounded">
+          Contactați parohia
+        </Button>
+      </EmptyState>
+    </PageShell>
+  )}
 </BaseLayout>
 
 <style>

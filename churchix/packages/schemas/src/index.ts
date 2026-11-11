@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Shared content-collection schemas for every Churchix church app.
@@ -9,23 +9,16 @@ import { z } from 'zod';
  * outside an Astro context. Image/file paths are strings under `public/`.
  */
 
-export const Locale = z.enum(['ro', 'en', 'it', 'es', 'de']);
+export const Locale = z.enum(["ro", "en", "it", "es", "de"]);
 export type Locale = z.infer<typeof Locale>;
 
 // Churches routinely leave optional fields blank ("") in JSON. Treat empty
 // strings as "unset" so an empty email/URL doesn't fail validation.
-const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+const emptyToUndefined = (v: unknown) => (v === "" ? undefined : v);
 const optionalEmail = z.preprocess(emptyToUndefined, z.string().email().optional());
 const optionalUrl = z.preprocess(emptyToUndefined, z.string().url().optional());
 
-export const Tradition = z.enum([
-  'orthodox',
-  'greek-catholic',
-  'pentecostal',
-  'baptist',
-  'adventist',
-  'other',
-]);
+export const Tradition = z.enum(["orthodox", "greek-catholic", "pentecostal", "baptist", "adventist", "other"]);
 
 const NavItem = z.object({
   label: z.string(),
@@ -35,7 +28,7 @@ const NavItem = z.object({
 const Iban = z.object({
   label: z.string(),
   iban: z.string(),
-  currency: z.string().default('RON'),
+  currency: z.string().default("RON"),
   // Account holder, exactly as it appears at the bank — shown prominently on the
   // giving page so a donor can verify the beneficiary before sending (the highest-
   // stakes "is this the real parish account?" moment). Optional; when present the
@@ -48,10 +41,10 @@ const Iban = z.object({
 export const siteSchema = z.object({
   name: z.string(),
   shortName: z.string().optional(),
-  tradition: Tradition.default('orthodox'),
+  tradition: Tradition.default("orthodox"),
   tagline: z.string().optional(),
-  locales: z.array(Locale).min(1).default(['ro']),
-  defaultLocale: Locale.default('ro'),
+  locales: z.array(Locale).min(1).default(["ro"]),
+  defaultLocale: Locale.default("ro"),
   url: optionalUrl,
 
   // Material-3 seed tokens. A church sets the *seeds* (primary, secondary,
@@ -79,8 +72,8 @@ export const siteSchema = z.object({
       ogImage: z.string().optional(),
     })
     .refine((b) => b.secondary != null || b.accent != null, {
-      message: 'brand requires `secondary` (or the deprecated `accent` alias)',
-      path: ['secondary'],
+      message: "brand requires `secondary` (or the deprecated `accent` alias)",
+      path: ["secondary"],
     })
     .transform((b) => {
       // Keep `secondary` and `accent` mirrored so both old and new readers work.
@@ -119,7 +112,7 @@ export const siteSchema = z.object({
 
   giving: z
     .object({
-      currency: z.string().default('RON'),
+      currency: z.string().default("RON"),
       ibans: z.array(Iban).default([]),
       cardUrl: optionalUrl, // hosted Stripe Payment Link / Netopia page
       form230: z.boolean().default(false),
@@ -168,9 +161,9 @@ export const announcementSchema = z.object({
 
 export const serviceScheduleSchema = z.object({
   label: z.string(),
-  weekday: z.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']).optional(),
+  weekday: z.enum(["mon", "tue", "wed", "thu", "fri", "sat", "sun"]).optional(),
   time: z.string(),
-  cadence: z.enum(['weekly', 'biweekly', 'monthly', 'special']).default('weekly'),
+  cadence: z.enum(["weekly", "biweekly", "monthly", "special"]).default("weekly"),
   order: z.number().default(0),
   note: z.string().optional(),
 });
@@ -180,9 +173,9 @@ export const campaignSchema = z.object({
   summary: z.string().optional(),
   goalAmountMinor: z.number().int().nonnegative(),
   raisedAmountMinor: z.number().int().nonnegative().default(0),
-  currency: z.string().default('RON'),
+  currency: z.string().default("RON"),
   deadline: z.coerce.date().optional(),
-  status: z.enum(['active', 'completed', 'archived']).default('active'),
+  status: z.enum(["active", "completed", "archived"]).default("active"),
   cardUrl: z.string().url().optional(),
   cover: z.string().optional(),
   order: z.number().default(0),

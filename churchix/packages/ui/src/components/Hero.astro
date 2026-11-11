@@ -39,9 +39,9 @@
  * @prop {string}  [secondaryLabel]   @prop {string} [secondaryHref]  Extra outline CTA.
  * @prop {string}  [class]
  */
-import Icon from './Icon.astro';
-import Rail from './Rail.astro';
-import { withBase } from '../lib/base.ts';
+import Icon from "./Icon.astro";
+import Rail from "./Rail.astro";
+import { withBase } from "../lib/base.ts";
 
 interface WeekRow {
   day: string;
@@ -80,17 +80,17 @@ const {
   image,
   imageAlt,
   nextService,
-  nextServiceLabel = 'Următoarea slujbă',
+  nextServiceLabel = "Următoarea slujbă",
   week = [],
-  weekLabel = 'Săptămâna aceasta',
+  weekLabel = "Săptămâna aceasta",
   weekHref,
-  weekHrefLabel = 'Programul complet',
+  weekHrefLabel = "Programul complet",
   giving = true,
-  ctaLabel = 'Donează',
+  ctaLabel = "Donează",
   ctaHref,
   sermons = false,
   livestreamHref,
-  livestreamLabel = 'Urmărește live',
+  livestreamLabel = "Urmărește live",
   secondaryLabel,
   secondaryHref,
   class: className,
@@ -104,20 +104,14 @@ const showSecondary = Boolean(secondaryHref && secondaryLabel);
 const hasActions = showGiving || showLivestream || showSecondary;
 ---
 
-<section
-  class:list={[
-    'relative overflow-hidden bg-surface',
-    className,
-  ]}
->
+<section class:list={["relative overflow-hidden bg-surface", className]}>
   {/* Quiet tonal wash + a faint corner glyph so the cream hero never feels empty
       on an image-less parish, without resorting to a dark scrim. */}
   <div
     class="pointer-events-none absolute inset-0 -z-0"
     aria-hidden="true"
     style="background: radial-gradient(120% 80% at 88% 0%, color-mix(in srgb, var(--secondary) 9%, transparent), transparent 55%), radial-gradient(90% 70% at 0% 100%, color-mix(in srgb, var(--primary) 6%, transparent), transparent 60%);"
-  >
-  </div>
+  ></div>
 
   <div class="relative z-10 w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
     <div class="flex gap-sm md:gap-lg">
@@ -126,32 +120,20 @@ const hasActions = showGiving || showLivestream || showSecondary;
       <div class="min-w-0 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl items-stretch">
         <!-- LEFT: identity + next service + CTAs -->
         <div class="lg:col-span-6 flex flex-col justify-center">
-          {eyebrow && (
-            <p class="font-overline text-overline uppercase text-on-secondary-container mb-sm">
-              {eyebrow}
-            </p>
-          )}
+          {eyebrow && <p class="font-overline text-overline uppercase text-on-secondary-container mb-sm">{eyebrow}</p>}
 
-          <h1 class="font-display-xl text-display-xl text-primary text-balance m-0">
-            {title}
-          </h1>
+          <h1 class="font-display-xl text-display-xl text-primary text-balance m-0">{title}</h1>
 
           {subtitle && (
-            <p class="mt-md max-w-[36rem] font-body-lg text-body-lg text-on-surface-variant text-pretty">
-              {subtitle}
-            </p>
+            <p class="mt-md max-w-[36rem] font-body-lg text-body-lg text-on-surface-variant text-pretty">{subtitle}</p>
           )}
 
           {nextService && (
             <div class="mt-lg flex items-start gap-sm border-l-2 border-secondary pl-md">
               <Icon name="schedule" size={22} class="mt-1 text-secondary shrink-0" />
               <div class="min-w-0">
-                <p class="font-overline text-overline uppercase text-on-surface-variant">
-                  {nextServiceLabel}
-                </p>
-                <p class="font-headline-md text-headline-md text-primary text-balance">
-                  {nextService}
-                </p>
+                <p class="font-overline text-overline uppercase text-on-surface-variant">{nextServiceLabel}</p>
+                <p class="font-headline-md text-headline-md text-primary text-balance">{nextService}</p>
               </div>
             </div>
           )}
@@ -199,8 +181,8 @@ const hasActions = showGiving || showLivestream || showSecondary;
               {hasImage ? (
                 <img
                   src={image}
-                  alt={imageAlt ?? ''}
-                  aria-hidden={imageAlt ? undefined : 'true'}
+                  alt={imageAlt ?? ""}
+                  aria-hidden={imageAlt ? undefined : "true"}
                   class="block h-full min-h-[16rem] w-full object-cover"
                   width="1280"
                   height="720"
@@ -222,9 +204,7 @@ const hasActions = showGiving || showLivestream || showSecondary;
           {hasWeek && (
             <div class="rounded-lg border border-outline-variant/40 bg-surface-container-lowest/80 backdrop-blur-sm shadow-sm">
               <div class="flex items-center justify-between gap-sm border-b border-outline-variant/30 px-md py-sm">
-                <span class="font-overline text-overline uppercase text-on-surface-variant">
-                  {weekLabel}
-                </span>
+                <span class="font-overline text-overline uppercase text-on-surface-variant">{weekLabel}</span>
                 {weekHref && (
                   <a
                     href={withBase(weekHref)}
@@ -239,27 +219,21 @@ const hasActions = showGiving || showLivestream || showSecondary;
                 {week.map((row) => (
                   <li
                     class:list={[
-                      'flex items-baseline gap-sm px-md py-sm border-b border-outline-variant/15 last:border-b-0',
-                      row.highlight && 'bg-secondary/5',
+                      "flex items-baseline gap-sm px-md py-sm border-b border-outline-variant/15 last:border-b-0",
+                      row.highlight && "bg-secondary/5",
                     ]}
                   >
                     <span
                       class:list={[
-                        'font-overline text-overline uppercase w-12 shrink-0',
-                        row.highlight ? 'text-primary' : 'text-on-surface-variant',
+                        "font-overline text-overline uppercase w-12 shrink-0",
+                        row.highlight ? "text-primary" : "text-on-surface-variant",
                       ]}
                     >
                       {row.day}
                     </span>
-                    <span class="font-label-md text-label-md tabular-nums w-14 shrink-0 text-primary">
-                      {row.time}
-                    </span>
-                    <span class="font-body-md text-body-md text-on-surface min-w-0 break-words">
-                      {row.label}
-                    </span>
-                    {row.highlight && (
-                      <Icon name="church" fill size={15} class="ml-auto shrink-0 text-secondary" />
-                    )}
+                    <span class="font-label-md text-label-md tabular-nums w-14 shrink-0 text-primary">{row.time}</span>
+                    <span class="font-body-md text-body-md text-on-surface min-w-0 break-words">{row.label}</span>
+                    {row.highlight && <Icon name="church" fill size={15} class="ml-auto shrink-0 text-secondary" />}
                   </li>
                 ))}
               </ul>

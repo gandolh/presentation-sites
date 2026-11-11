@@ -36,15 +36,15 @@
  *   <Button variant="secondary" shape="rounded">Vezi programul</Button>
  *   <Button variant="ghost" size="sm" icon="content_copy">Copiază</Button>
  */
-import Icon from './Icon.astro';
-import type { IconName } from './icons.ts';
+import Icon from "./Icon.astro";
+import type { IconName } from "./icons.ts";
 
 interface Props {
-  variant?: 'primary' | 'secondary' | 'ghost';
-  shape?: 'pill' | 'rounded';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "primary" | "secondary" | "ghost";
+  shape?: "pill" | "rounded";
+  size?: "sm" | "md" | "lg";
   href?: string;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   icon?: IconName;
   trailingIcon?: IconName;
   iconFill?: boolean;
@@ -55,11 +55,11 @@ interface Props {
 }
 
 const {
-  variant = 'primary',
-  shape = 'rounded',
-  size = 'md',
+  variant = "primary",
+  shape = "rounded",
+  size = "md",
   href,
-  type = 'button',
+  type = "button",
   icon,
   trailingIcon,
   iconFill = false,
@@ -70,48 +70,38 @@ const {
 } = Astro.props;
 
 const base =
-  'inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase ' +
-  'transition-[color,background-color,box-shadow,transform,opacity] duration-200 select-none ' +
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface ' +
-  'active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:pointer-events-none';
+  "inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase " +
+  "transition-[color,background-color,box-shadow,transform,opacity] duration-200 select-none " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface " +
+  "active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:pointer-events-none";
 
 // `rounded` = the DESIGN.md standard 0.5rem; `pill` for chip-like CTAs.
 const shapes = {
-  pill: 'rounded-full',
-  rounded: 'rounded',
+  pill: "rounded-full",
+  rounded: "rounded",
 } as const;
 
 // Generous horizontal padding for long Romanian verbs.
 const sizes = {
-  sm: 'px-4 py-2.5 text-label-md',
-  md: 'px-6 py-3',
-  lg: 'px-8 py-4 text-body-md',
+  sm: "px-4 py-2.5 text-label-md",
+  md: "px-6 py-3",
+  lg: "px-8 py-4 text-body-md",
 } as const;
 
 const variants = {
   // Solid burgundy. on-primary passes AA over burgundy.
-  primary: 'bg-primary text-on-primary hover:shadow-md hover:bg-primary-container',
+  primary: "bg-primary text-on-primary hover:shadow-md hover:bg-primary-container",
   // Gold OUTLINE; burgundy label (AA-safe). Gold fills the surface gently on hover.
-  secondary:
-    'border border-secondary text-primary bg-transparent hover:bg-secondary-container/20 hover:shadow-sm',
+  secondary: "border border-secondary text-primary bg-transparent hover:bg-secondary-container/20 hover:shadow-sm",
   // Transparent; burgundy label.
-  ghost: 'bg-transparent text-primary hover:bg-surface-container-high',
+  ghost: "bg-transparent text-primary hover:bg-surface-container-high",
 } as const;
 
-const classes = [
-  base,
-  shapes[shape],
-  sizes[size],
-  variants[variant],
-  block ? 'w-full' : '',
-  className,
-];
+const classes = [base, shapes[shape], sizes[size], variants[variant], block ? "w-full" : "", className];
 
-const iconSize = size === 'lg' ? 20 : 18;
-const Tag = href ? 'a' : 'button';
-const tagProps = href
-  ? { href, ...(disabled ? { 'aria-disabled': 'true', tabindex: -1 } : {}) }
-  : { type, disabled };
+const iconSize = size === "lg" ? 20 : 18;
+const Tag = href ? "a" : "button";
+const tagProps = href ? { href, ...(disabled ? { "aria-disabled": "true", tabindex: -1 } : {}) } : { type, disabled };
 ---
 
 <Tag class:list={classes} {...tagProps} {...rest}>

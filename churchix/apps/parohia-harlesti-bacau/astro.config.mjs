@@ -1,6 +1,6 @@
-import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
 
 // Independent static site for one parish. No shared runtime.
 //
@@ -16,15 +16,15 @@ import tailwindcss from '@tailwindcss/vite';
 const base = process.env.BASE_PATH || undefined;
 
 export default defineConfig({
-  site: 'https://parohia-harlesti.ro',
+  site: "https://parohia-harlesti.ro",
   base,
   integrations: [
     react(),
     {
-      name: 'churchix-global-styles',
+      name: "churchix-global-styles",
       hooks: {
-        'astro:config:setup': ({ injectScript }) => {
-          injectScript('page-ssr', `import '/src/styles/app.css';`);
+        "astro:config:setup": ({ injectScript }) => {
+          injectScript("page-ssr", `import '/src/styles/app.css';`);
         },
       },
     },

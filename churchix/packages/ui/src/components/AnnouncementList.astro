@@ -31,10 +31,10 @@
  *   ---
  *   <AnnouncementList items={anunturi} />
  */
-import Card from './Card.astro';
-import Badge from './Badge.astro';
-import Icon from './Icon.astro';
-import { withBase } from '../lib/base.ts';
+import Card from "./Card.astro";
+import Badge from "./Badge.astro";
+import Icon from "./Icon.astro";
+import { withBase } from "../lib/base.ts";
 
 interface AnnouncementItem {
   slug: string;
@@ -54,16 +54,16 @@ interface Props {
 
 const {
   items,
-  basePath = '/anunturi',
-  locale = 'ro-RO',
-  readMoreLabel = 'Citește mai mult',
+  basePath = "/anunturi",
+  locale = "ro-RO",
+  readMoreLabel = "Citește mai mult",
   class: className,
 } = Astro.props;
 
 const fmt = new Intl.DateTimeFormat(locale, {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
+  day: "numeric",
+  month: "long",
+  year: "numeric",
 });
 
 // Pinned-first, then date-descending (preserved ordering).
@@ -73,56 +73,42 @@ const sorted = [...items].sort((a, b) => {
 });
 ---
 
-{
-  sorted.length > 0 && (
-    <ul
-      class:list={[
-        'grid grid-cols-1 lg:grid-cols-2 gap-md list-none p-0 m-0',
-        className,
-      ]}
-    >
-      {sorted.map((a) => (
-        <Card
-          as="li"
-          href={withBase(`${basePath}/${a.slug}`)}
-          radius="lg"
-          padding="lg"
-          featured={a.pinned}
-          interactive
-          class:list={[
-            'group flex flex-col gap-xs',
-            a.pinned && 'lg:col-span-2',
-          ]}
-        >
-          {a.pinned ? (
-            <Badge tone="primary" icon="push_pin" class="self-start mb-xs">
-              Fixat
-            </Badge>
-          ) : (
-            <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
-              <Icon name="event" size={14} />
-              <time datetime={a.date.toISOString()}>{fmt.format(a.date)}</time>
-            </span>
-          )}
+{sorted.length > 0 && (
+  <ul class:list={["grid grid-cols-1 lg:grid-cols-2 gap-md list-none p-0 m-0", className]}>
+    {sorted.map((a) => (
+      <Card
+        as="li"
+        href={withBase(`${basePath}/${a.slug}`)}
+        radius="lg"
+        padding="lg"
+        featured={a.pinned}
+        interactive
+        class:list={["group flex flex-col gap-xs", a.pinned && "lg:col-span-2"]}
+      >
+        {a.pinned ? (
+          <Badge tone="primary" icon="push_pin" class="self-start mb-xs">
+            Fixat
+          </Badge>
+        ) : (
+          <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
+            <Icon name="event" size={14} />
+            <time datetime={a.date.toISOString()}>{fmt.format(a.date)}</time>
+          </span>
+        )}
 
-          <h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-balance">
-            {a.title}
-          </h2>
+        <h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-balance">
+          {a.title}
+        </h2>
 
-          {a.summary && (
-            <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
-              {a.summary}
-            </p>
-          )}
+        {a.summary && <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{a.summary}</p>}
 
-          {a.pinned && (
-            <span class="mt-xs inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
-              {readMoreLabel}
-              <Icon name="arrow_forward" size={18} />
-            </span>
-          )}
-        </Card>
-      ))}
-    </ul>
-  )
-}
+        {a.pinned && (
+          <span class="mt-xs inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+            {readMoreLabel}
+            <Icon name="arrow_forward" size={18} />
+          </span>
+        )}
+      </Card>
+    ))}
+  </ul>
+)}

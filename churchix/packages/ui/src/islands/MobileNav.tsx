@@ -1,6 +1,6 @@
-import { Dialog } from '@base-ui/react/dialog';
-import { useRef, useState } from 'react';
-import { withBase } from '../lib/base.ts';
+import { Dialog } from "@base-ui/react/dialog";
+import { useRef, useState } from "react";
+import { withBase } from "../lib/base.ts";
 
 interface NavItem {
   label: string;
@@ -22,15 +22,15 @@ interface Props {
 }
 
 const LOCALE_NAMES: Record<string, string> = {
-  ro: 'Română',
-  en: 'English',
-  it: 'Italiano',
-  es: 'Español',
-  de: 'Deutsch',
+  ro: "Română",
+  en: "English",
+  it: "Italiano",
+  es: "Español",
+  de: "Deutsch",
 };
 
 const localeHref = (loc: string, defaultLocale: string) =>
-  loc === defaultLocale ? withBase('/') : withBase(`/${loc}/`);
+  loc === defaultLocale ? withBase("/") : withBase(`/${loc}/`);
 
 /**
  * Mobile menu toggle + sheet. Hydrated `client:load`; the wrapping `md:hidden`
@@ -43,12 +43,12 @@ const localeHref = (loc: string, defaultLocale: string) =>
  */
 export default function MobileNav({
   nav,
-  activePath = '/',
-  givingHref = '/donatii',
+  activePath = "/",
+  givingHref = "/donatii",
   givingLabel,
   locales,
-  defaultLocale = 'ro',
-  localeLabel = 'Schimbă limba',
+  defaultLocale = "ro",
+  localeLabel = "Schimbă limba",
 }: Props) {
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLDivElement>(null);
@@ -59,14 +59,12 @@ export default function MobileNav({
   };
 
   const isActive = (href: string) =>
-    href === '/'
-      ? activePath === '/'
-      : activePath === href || activePath.startsWith(href + '/');
+    href === "/" ? activePath === "/" : activePath === href || activePath.startsWith(href + "/");
 
   const showLocales = (locales?.length ?? 0) > 1;
 
   const linkBase =
-    'block rounded px-3 py-2 font-label-md text-label-md uppercase no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset';
+    "block rounded px-3 py-2 font-label-md text-label-md uppercase no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
 
   return (
     <Dialog.Root
@@ -79,17 +77,10 @@ export default function MobileNav({
       <div ref={wrapper} className="relative">
         <Dialog.Trigger
           className="flex items-center justify-center p-2.5 text-primary rounded-full hover:bg-surface-container-low transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-          aria-label={open ? 'Închide meniul' : 'Deschide meniul'}
+          aria-label={open ? "Închide meniul" : "Deschide meniul"}
         >
           {/* Material Symbols `menu` / `close` glyph paths (match @churchix/ui Icon). */}
-          <svg
-            width={26}
-            height={26}
-            viewBox="0 -960 960 960"
-            fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-          >
+          <svg width={26} height={26} viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false">
             {open ? (
               <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
             ) : (
@@ -111,13 +102,13 @@ export default function MobileNav({
                 <a
                   key={item.href}
                   href={item.href}
-                  aria-current={active ? 'page' : undefined}
+                  aria-current={active ? "page" : undefined}
                   className={
                     linkBase +
-                    ' ' +
+                    " " +
                     (active
-                      ? 'text-primary font-bold border-b-2 border-secondary'
-                      : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-high')
+                      ? "text-primary font-bold border-b-2 border-secondary"
+                      : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high")
                   }
                   onClick={follow}
                 >
@@ -146,12 +137,12 @@ export default function MobileNav({
                     key={loc}
                     hrefLang={loc}
                     href={localeHref(loc, defaultLocale)}
-                    aria-current={loc === defaultLocale ? 'true' : undefined}
+                    aria-current={loc === defaultLocale ? "true" : undefined}
                     className={
-                      'block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset ' +
+                      "block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset " +
                       (loc === defaultLocale
-                        ? 'text-primary font-bold'
-                        : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-high')
+                        ? "text-primary font-bold"
+                        : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high")
                     }
                     onClick={follow}
                   >

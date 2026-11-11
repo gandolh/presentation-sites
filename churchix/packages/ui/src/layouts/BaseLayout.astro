@@ -1,10 +1,10 @@
 ---
-import '../styles/tokens.css';
-import { ClientRouter } from 'astro:transitions';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { withBase } from '../lib/base.ts';
-import type { SiteConfig } from '@churchix/schemas';
+import "../styles/tokens.css";
+import { ClientRouter } from "astro:transitions";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { withBase } from "../lib/base.ts";
+import type { SiteConfig } from "@churchix/schemas";
 
 interface Props {
   site: SiteConfig;
@@ -16,22 +16,16 @@ interface Props {
   skipToContentLabel?: string;
 }
 
-const {
-  site,
-  title,
-  description,
-  path = '/',
-  skipToContentLabel = 'Sari la conținut',
-} = Astro.props;
+const { site, title, description, path = "/", skipToContentLabel = "Sari la conținut" } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : site.name;
-const lang = site.defaultLocale ?? 'ro';
+const lang = site.defaultLocale ?? "ro";
 const b = site.brand;
 
 // "Site in lucru" (work-in-progress) banner. Off by default; enable per build by
 // setting PUBLIC_SITE_WIP (e.g. PUBLIC_SITE_WIP=1 npm run build). Any non-empty,
 // non-"false"/"0" value turns it on. Shared across all churches via the layout.
 const wipFlag = import.meta.env.PUBLIC_SITE_WIP;
-const showWip = !!wipFlag && wipFlag !== 'false' && wipFlag !== '0';
+const showWip = !!wipFlag && wipFlag !== "false" && wipFlag !== "0";
 
 // Per-church brand tokens, emitted from content (no per-church code).
 // We emit ONLY the M3 SEEDS — the derived roles (containers, on-*, variants,
@@ -60,7 +54,7 @@ const brandVars = [
   b.onPrimary && `--brand-on-primary:${b.onPrimary}`,
 ]
   .filter(Boolean)
-  .join(';');
+  .join(";");
 ---
 
 <!doctype html>
@@ -80,16 +74,14 @@ const brandVars = [
     <style set:html={`:root{${brandVars}}`}></style>
   </head>
   <body>
-    {
-      showWip && (
-        <div
-          role="status"
-          class="bg-secondary px-gutter py-2 text-center font-label-md text-label-md uppercase text-on-secondary"
-        >
-          Site în lucru
-        </div>
-      )
-    }
+    {showWip && (
+      <div
+        role="status"
+        class="bg-secondary px-gutter py-2 text-center font-label-md text-label-md uppercase text-on-secondary"
+      >
+        Site în lucru
+      </div>
+    )}
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-gutter focus:top-md focus:z-[100] focus:rounded-full focus:bg-primary focus:px-6 focus:py-3 focus:font-label-md focus:text-label-md focus:uppercase focus:text-on-primary focus:no-underline focus:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"

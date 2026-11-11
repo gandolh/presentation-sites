@@ -1,21 +1,21 @@
 ---
-import { getEntry, getCollection, render } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import Rail from '@churchix/ui/components/Rail.astro';
-import Badge from '@churchix/ui/components/Badge.astro';
-import Icon from '@churchix/ui/components/Icon.astro';
-import { withBase } from '@churchix/ui/lib/base.ts';
+import { getEntry, getCollection, render } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import Rail from "@churchix/ui/components/Rail.astro";
+import Badge from "@churchix/ui/components/Badge.astro";
+import Icon from "@churchix/ui/components/Icon.astro";
+import { withBase } from "@churchix/ui/lib/base.ts";
 
 export async function getStaticPaths() {
-  const items = await getCollection('announcements');
+  const items = await getCollection("announcements");
   return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
-const site = (await getEntry('site', 'config'))!.data;
-const locale = `${site.defaultLocale ?? 'ro'}-RO`;
+const site = (await getEntry("site", "config"))!.data;
+const locale = `${site.defaultLocale ?? "ro"}-RO`;
 const { Content } = await render(entry);
-const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+const fmt = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" });
 ---
 
 <BaseLayout site={site} title={entry.data.title} path={`/anunturi/${entry.id}`}>
@@ -25,7 +25,7 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
 
       <div class="min-w-0 flex-1 max-w-[46rem]">
         <a
-          href={withBase('/anunturi')}
+          href={withBase("/anunturi")}
           class="inline-flex items-center gap-1 font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors"
         >
           <Icon name="arrow_forward" size={18} class="rotate-180" />
@@ -39,10 +39,14 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
               <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
             </span>
             {entry.data.pinned && (
-              <Badge tone="primary" icon="push_pin">Fixat</Badge>
+              <Badge tone="primary" icon="push_pin">
+                Fixat
+              </Badge>
             )}
           </div>
-          <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance">{entry.data.title}</h1>
+          <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance">
+            {entry.data.title}
+          </h1>
           <div class="h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
         </header>
 
@@ -101,7 +105,7 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
   }
   /* Decorative gold opening-quote glyph — the brand glint, not a colored side-stripe. */
   .cx-prose :global(blockquote)::before {
-    content: '\201C';
+    content: "\201C";
     position: absolute;
     left: 0.25rem;
     top: -0.15em;

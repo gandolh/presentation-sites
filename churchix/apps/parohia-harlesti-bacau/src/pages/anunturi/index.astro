@@ -1,13 +1,13 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import PageShell from '@churchix/ui/components/PageShell.astro';
-import AnnouncementList from '@churchix/ui/components/AnnouncementList.astro';
-import EmptyState from '@churchix/ui/components/EmptyState.astro';
+import { getEntry, getCollection } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import PageShell from "@churchix/ui/components/PageShell.astro";
+import AnnouncementList from "@churchix/ui/components/AnnouncementList.astro";
+import EmptyState from "@churchix/ui/components/EmptyState.astro";
 
-const site = (await getEntry('site', 'config'))!.data;
-const locale = `${site.defaultLocale ?? 'ro'}-RO`;
-const anunturi = (await getCollection('announcements')).map((e) => ({ slug: e.id, ...e.data }));
+const site = (await getEntry("site", "config"))!.data;
+const locale = `${site.defaultLocale ?? "ro"}-RO`;
+const anunturi = (await getCollection("announcements")).map((e) => ({ slug: e.id, ...e.data }));
 ---
 
 <BaseLayout site={site} title="Anunțuri" path="/anunturi">
@@ -18,17 +18,15 @@ const anunturi = (await getCollection('announcements')).map((e) => ({ slug: e.id
     markers={6}
     wide
   >
-    {
-      anunturi.length > 0 ? (
-        <AnnouncementList items={anunturi} locale={locale} />
-      ) : (
-        <EmptyState
-          as="h2"
-          icon="campaign"
-          title="Niciun anunț momentan"
-          message="Reveniți curând pentru noutățile parohiei."
-        />
-      )
-    }
+    {anunturi.length > 0 ? (
+      <AnnouncementList items={anunturi} locale={locale} />
+    ) : (
+      <EmptyState
+        as="h2"
+        icon="campaign"
+        title="Niciun anunț momentan"
+        message="Reveniți curând pentru noutățile parohiei."
+      />
+    )}
   </PageShell>
 </BaseLayout>

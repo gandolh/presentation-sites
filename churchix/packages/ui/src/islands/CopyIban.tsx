@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface Props {
   /** The IBAN string to copy to the clipboard. */
@@ -19,7 +19,7 @@ interface Props {
  *
  * Mount with `client:visible`. React is a peerDependency of `@churchix/ui`.
  */
-export default function CopyIban({ iban, label = 'Copiază IBAN', className = '' }: Props) {
+export default function CopyIban({ iban, label = "Copiază IBAN", className = "" }: Props) {
   const [copied, setCopied] = useState(false);
 
   async function onCopy() {
@@ -27,15 +27,15 @@ export default function CopyIban({ iban, label = 'Copiază IBAN', className = ''
       await navigator.clipboard.writeText(iban);
     } catch {
       // Older browsers / insecure contexts: fall back to a hidden textarea.
-      const ta = document.createElement('textarea');
+      const ta = document.createElement("textarea");
       ta.value = iban;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'absolute';
-      ta.style.left = '-9999px';
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
       document.body.appendChild(ta);
       ta.select();
       try {
-        document.execCommand('copy');
+        document.execCommand("copy");
       } catch {
         /* give up silently */
       }
@@ -52,11 +52,11 @@ export default function CopyIban({ iban, label = 'Copiază IBAN', className = ''
       aria-label={label}
       title={label}
       className={
-        'inline-flex items-center gap-1 shrink-0 rounded-full px-3 py-2 min-h-[44px] ' +
-        'font-label-md text-caption uppercase tracking-wide text-primary ' +
-        'transition-colors duration-200 hover:bg-surface-container-high ' +
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ' +
-        'focus-visible:ring-offset-2 focus-visible:ring-offset-surface ' +
+        "inline-flex items-center gap-1 shrink-0 rounded-full px-3 py-2 min-h-[44px] " +
+        "font-label-md text-caption uppercase tracking-wide text-primary " +
+        "transition-colors duration-200 hover:bg-surface-container-high " +
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary " +
+        "focus-visible:ring-offset-2 focus-visible:ring-offset-surface " +
         className
       }
     >
@@ -72,7 +72,7 @@ export default function CopyIban({ iban, label = 'Copiază IBAN', className = ''
       >
         <path d="M300-200q-24 0-42-18t-18-42v-560q0-24 18-42t42-18h440q24 0 42 18t18 42v560q0 24-18 42t-42 18H300Zm0-60h440v-560H300v560ZM180-80q-24 0-42-18t-18-42v-620h60v620h500v60H180Zm120-180v-560 560Z" />
       </svg>
-      <span aria-live="polite">{copied ? 'Copiat!' : 'Copiază'}</span>
+      <span aria-live="polite">{copied ? "Copiat!" : "Copiază"}</span>
     </button>
   );
 }

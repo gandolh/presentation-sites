@@ -12,18 +12,18 @@
  * Everything is token-driven — no church name, color, or hex is hardcoded, so
  * the header re-skins per church by token swap alone.
  */
-import MobileNav from '../islands/MobileNav.tsx';
-import Button from './Button.astro';
-import Icon from './Icon.astro';
-import { withBase, stripBase } from '../lib/base.ts';
-import type { SiteConfig } from '@churchix/schemas';
+import MobileNav from "../islands/MobileNav.tsx";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { withBase, stripBase } from "../lib/base.ts";
+import type { SiteConfig } from "@churchix/schemas";
 
 interface Props {
   site: SiteConfig;
   path?: string;
 }
 
-const { site, path = '/' } = Astro.props;
+const { site, path = "/" } = Astro.props;
 const nav = site.nav ?? [];
 const wordmark = site.shortName ?? site.name;
 
@@ -31,43 +31,47 @@ const wordmark = site.shortName ?? site.name;
 // authored root-relative (/despre). Compare them on the same, base-stripped axis.
 const relPath = stripBase(path);
 const isActive = (href: string) =>
-  href === '/' ? relPath === '/' : relPath === href || relPath.startsWith(href + '/');
+  href === "/" ? relPath === "/" : relPath === href || relPath.startsWith(href + "/");
 
 // Language switcher only when the church actually ships more than one locale.
 const locales = site.locales ?? [];
-const defaultLocale = site.defaultLocale ?? locales[0] ?? 'ro';
+const defaultLocale = site.defaultLocale ?? locales[0] ?? "ro";
 const showLangSwitcher = locales.length > 1;
 const localeNames: Record<string, string> = {
-  ro: 'Română',
-  en: 'English',
-  it: 'Italiano',
-  es: 'Español',
-  de: 'Deutsch',
+  ro: "Română",
+  en: "English",
+  it: "Italiano",
+  es: "Español",
+  de: "Deutsch",
 };
 
 const showGiving = site.features.giving;
 
 const navLinkBase =
-  'relative font-label-md text-label-md uppercase tracking-wide transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center ' +
-  'after:absolute after:left-2 after:right-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-secondary after:transition-transform after:duration-200 after:origin-left ' +
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
+  "relative font-label-md text-label-md uppercase tracking-wide transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center " +
+  "after:absolute after:left-2 after:right-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-secondary after:transition-transform after:duration-200 after:origin-left " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 // Active = gold underline drawn (rail motif); idle = underline collapsed, grows on hover.
-const navLinkActive = 'text-primary font-bold after:scale-x-100';
-const navLinkIdle =
-  'text-on-surface-variant hover:text-primary after:scale-x-0 hover:after:scale-x-100';
+const navLinkActive = "text-primary font-bold after:scale-x-100";
+const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 hover:after:scale-x-100";
 ---
 
-<header
-  class="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant/30"
->
-  <div
-    class="flex justify-between items-center w-full max-w-container-max mx-auto px-sm md:px-gutter py-sm gap-sm md:gap-md"
-  >
+<header class="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant/30">
+  <div class="flex justify-between items-center w-full max-w-container-max mx-auto px-sm md:px-gutter py-sm gap-sm md:gap-md">
     <a
       class="flex items-center gap-xs font-display-lg text-headline-md font-bold text-primary no-underline min-w-0 md:shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-      href={withBase('/')}
+      href={withBase("/")}
     >
-      {site.brand.logo && <img src={withBase(site.brand.logo)} alt="" width="32" height="32" decoding="async" class="h-8 w-8 object-contain shrink-0" />}
+      {site.brand.logo && (
+        <img
+          src={withBase(site.brand.logo)}
+          alt=""
+          width="32"
+          height="32"
+          decoding="async"
+          class="h-8 w-8 object-contain shrink-0"
+        />
+      )}
       <span class="truncate md:overflow-visible">{wordmark}</span>
     </a>
 
@@ -75,7 +79,7 @@ const navLinkIdle =
       {nav.map((item) => (
         <a
           href={withBase(item.href)}
-          aria-current={isActive(item.href) ? 'page' : undefined}
+          aria-current={isActive(item.href) ? "page" : undefined}
           class:list={[navLinkBase, isActive(item.href) ? navLinkActive : navLinkIdle]}
         >
           {item.label}
@@ -106,11 +110,11 @@ const navLinkIdle =
                 <a
                   role="menuitem"
                   hreflang={loc}
-                  href={loc === defaultLocale ? withBase('/') : withBase(`/${loc}/`)}
-                  aria-current={loc === defaultLocale ? 'true' : undefined}
+                  href={loc === defaultLocale ? withBase("/") : withBase(`/${loc}/`)}
+                  aria-current={loc === defaultLocale ? "true" : undefined}
                   class:list={[
-                    'block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors hover:bg-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset',
-                    loc === defaultLocale ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-primary',
+                    "block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors hover:bg-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
+                    loc === defaultLocale ? "text-primary font-bold" : "text-on-surface-variant hover:text-primary",
                   ]}
                 >
                   {localeNames[loc] ?? loc.toUpperCase()}
@@ -122,7 +126,7 @@ const navLinkIdle =
       )}
 
       {showGiving && (
-        <Button variant="primary" shape="pill" size="sm" href={withBase('/donatii')} class="hidden sm:inline-flex">
+        <Button variant="primary" shape="pill" size="sm" href={withBase("/donatii")} class="hidden sm:inline-flex">
           Donează
         </Button>
       )}
@@ -132,8 +136,8 @@ const navLinkIdle =
           client:load
           nav={nav.map((item) => ({ ...item, href: withBase(item.href) }))}
           activePath={path}
-          givingHref={showGiving ? withBase('/donatii') : undefined}
-          givingLabel={showGiving ? 'Donează' : undefined}
+          givingHref={showGiving ? withBase("/donatii") : undefined}
+          givingLabel={showGiving ? "Donează" : undefined}
           locales={showLangSwitcher ? locales : undefined}
           defaultLocale={defaultLocale}
           localeLabel="Schimbă limba"
@@ -143,38 +147,36 @@ const navLinkIdle =
   </div>
 </header>
 
-{showLangSwitcher && (
-  <script is:inline>
-    (() => {
-      const root = document.querySelector('.cx-lang');
-      if (!root) return;
-      const toggle = root.querySelector('[data-cx-lang-toggle]');
-      const menu = root.querySelector('[data-cx-lang-menu]');
-      if (!toggle || !menu) return;
-      const open = () => {
-        menu.classList.remove('hidden');
-        menu.classList.add('flex');
-        toggle.setAttribute('aria-expanded', 'true');
-      };
-      const close = () => {
-        menu.classList.add('hidden');
-        menu.classList.remove('flex');
-        toggle.setAttribute('aria-expanded', 'false');
-      };
-      const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isOpen() ? close() : open();
-      });
-      document.addEventListener('click', (e) => {
-        if (isOpen() && !root.contains(e.target)) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isOpen()) {
-          close();
-          toggle.focus();
-        }
-      });
-    })();
-  </script>
-)}
+{showLangSwitcher && <script is:inline>
+  (() => {
+    const root = document.querySelector(".cx-lang");
+    if (!root) return;
+    const toggle = root.querySelector("[data-cx-lang-toggle]");
+    const menu = root.querySelector("[data-cx-lang-menu]");
+    if (!toggle || !menu) return;
+    const open = () => {
+      menu.classList.remove("hidden");
+      menu.classList.add("flex");
+      toggle.setAttribute("aria-expanded", "true");
+    };
+    const close = () => {
+      menu.classList.add("hidden");
+      menu.classList.remove("flex");
+      toggle.setAttribute("aria-expanded", "false");
+    };
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isOpen() ? close() : open();
+    });
+    document.addEventListener("click", (e) => {
+      if (isOpen() && !root.contains(e.target)) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen()) {
+        close();
+        toggle.focus();
+      }
+    });
+  })();
+</script>}

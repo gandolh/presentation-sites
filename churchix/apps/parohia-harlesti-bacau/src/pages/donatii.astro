@@ -1,16 +1,14 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
-import BaseLayout from '@churchix/ui/layouts/BaseLayout.astro';
-import PageShell from '@churchix/ui/components/PageShell.astro';
-import GivingChannels from '@churchix/ui/components/GivingChannels.astro';
+import { getEntry, getCollection } from "astro:content";
+import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
+import PageShell from "@churchix/ui/components/PageShell.astro";
+import GivingChannels from "@churchix/ui/components/GivingChannels.astro";
 
-const site = (await getEntry('site', 'config'))!.data;
+const site = (await getEntry("site", "config"))!.data;
 
 // Pick the featured project for the right column: first active campaign by `order`.
-const campaigns = (await getCollection('campaigns'))
-  .map((e) => e.data)
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-const featured = campaigns.find((c) => c.status === 'active') ?? campaigns[0];
+const campaigns = (await getCollection("campaigns")).map((e) => e.data).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const featured = campaigns.find((c) => c.status === "active") ?? campaigns[0];
 const showCampaign = site.features.campaigns && Boolean(featured);
 ---
 

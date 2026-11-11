@@ -14,22 +14,22 @@
 /** Astro's configured base. Always normalized to start and end with `/`. */
 function baseUrl(): string {
   // import.meta.env.BASE_URL is injected by Vite/Astro at build time.
-  const raw = (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
-  let b = raw.startsWith('/') ? raw : `/${raw}`;
-  if (!b.endsWith('/')) b += '/';
+  const raw = (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? "/";
+  let b = raw.startsWith("/") ? raw : `/${raw}`;
+  if (!b.endsWith("/")) b += "/";
   return b;
 }
 
 /** True for links that must NOT be base-prefixed (external / non-navigational). */
 function isExternal(href: string): boolean {
   return (
-    href.startsWith('http://') ||
-    href.startsWith('https://') ||
-    href.startsWith('//') ||
-    href.startsWith('mailto:') ||
-    href.startsWith('tel:') ||
-    href.startsWith('#') ||
-    href.startsWith('data:')
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("//") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    href.startsWith("#") ||
+    href.startsWith("data:")
   );
 }
 
@@ -43,7 +43,7 @@ function isExternal(href: string): boolean {
  */
 export function withBase(href: string | undefined | null): string {
   if (!href) return baseUrl();
-  if (isExternal(href) || !href.startsWith('/')) return href;
+  if (isExternal(href) || !href.startsWith("/")) return href;
   const b = baseUrl();
   // Strip the leading slash off href so we don't double it against base's trailing slash.
   return b + href.slice(1);
@@ -59,8 +59,8 @@ export function withBase(href: string | undefined | null): string {
  */
 export function stripBase(pathname: string): string {
   const b = baseUrl();
-  if (b === '/') return pathname || '/';
-  if (pathname === b || pathname === b.slice(0, -1)) return '/';
-  if (pathname.startsWith(b)) return '/' + pathname.slice(b.length);
-  return pathname || '/';
+  if (b === "/") return pathname || "/";
+  if (pathname === b || pathname === b.slice(0, -1)) return "/";
+  if (pathname.startsWith(b)) return "/" + pathname.slice(b.length);
+  return pathname || "/";
 }

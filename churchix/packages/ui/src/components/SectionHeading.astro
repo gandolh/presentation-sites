@@ -20,22 +20,16 @@ interface Props {
   title: string;
   kicker?: string;
   subtitle?: string;
-  as?: 'h1' | 'h2' | 'h3';
+  as?: "h1" | "h2" | "h3";
   class?: string;
 }
-const { title, kicker, subtitle, as = 'h2', class: className } = Astro.props;
+const { title, kicker, subtitle, as = "h2", class: className } = Astro.props;
 const Tag = as;
 ---
 
-<div class:list={['mb-lg', className]}>
-  {kicker && (
-    <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">{kicker}</p>
-  )}
-  <Tag class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance m-0">
-    {title}
-  </Tag>
+<div class:list={["mb-lg", className]}>
+  {kicker && <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">{kicker}</p>}
+  <Tag class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance m-0">{title}</Tag>
   <div class="mt-sm h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
-  {subtitle && (
-    <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant text-pretty">{subtitle}</p>
-  )}
+  {subtitle && <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant text-pretty">{subtitle}</p>}
 </div>

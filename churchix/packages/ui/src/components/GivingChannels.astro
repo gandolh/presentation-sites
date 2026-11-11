@@ -21,27 +21,27 @@
  * @prop {boolean} [showCampaign=true]   Gate for rendering the featured campaign block
  *        (page passes `features.campaigns && a campaign exists`).
  */
-import type { SiteConfig, campaignSchema } from '@churchix/schemas';
-import type { z } from 'zod';
-import Icon from './Icon.astro';
-import Button from './Button.astro';
-import Field from './Field.astro';
-import Badge from './Badge.astro';
-import CampaignCard from './CampaignCard.astro';
-import CopyIban from '../islands/CopyIban.tsx';
-import { withBase } from '../lib/base.ts';
+import type { SiteConfig, campaignSchema } from "@churchix/schemas";
+import type { z } from "zod";
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+import Field from "./Field.astro";
+import Badge from "./Badge.astro";
+import CampaignCard from "./CampaignCard.astro";
+import CopyIban from "../islands/CopyIban.tsx";
+import { withBase } from "../lib/base.ts";
 
 type Campaign = z.infer<typeof campaignSchema>;
 
 interface Props {
-  giving: SiteConfig['giving'];
+  giving: SiteConfig["giving"];
   campaign?: Campaign;
   showCampaign?: boolean;
 }
 
 const { giving, campaign, showCampaign = true } = Astro.props;
 
-const currency = giving?.currency || 'RON';
+const currency = giving?.currency || "RON";
 const ibans = giving?.ibans ?? [];
 
 // Amount presets (UI only) — passed to the hosted card page; never collected here.
@@ -54,7 +54,7 @@ const cardHref = (amount?: number) => {
   if (!amount) return giving.cardUrl;
   try {
     const u = new URL(giving.cardUrl);
-    u.searchParams.set('amount', String(amount));
+    u.searchParams.set("amount", String(amount));
     return u.toString();
   } catch {
     return giving.cardUrl;
@@ -72,9 +72,9 @@ const hasCampaign = Boolean(showCampaign && campaign);
 const hasRightColumn = hasCampaign || hasForm230 || hasSms;
 ---
 
-<div class:list={['grid grid-cols-1 gap-lg items-start', hasRightColumn && 'lg:grid-cols-3']}>
+<div class:list={["grid grid-cols-1 gap-lg items-start", hasRightColumn && "lg:grid-cols-3"]}>
   {/* ---------- LEFT: primary giving ---------- */}
-  <div class:list={['flex flex-col gap-lg', hasRightColumn && 'lg:col-span-2']}>
+  <div class:list={["flex flex-col gap-lg", hasRightColumn && "lg:col-span-2"]}>
     {hasCard && (
       <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md shadow-sm">
         <div class="flex items-center gap-sm">
@@ -111,7 +111,16 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
           </div>
         </div>
 
-        <Button variant="primary" block shape="rounded" href={cardHref()} target="_blank" rel="noopener" trailingIcon="arrow_forward" class="mt-sm">
+        <Button
+          variant="primary"
+          block
+          shape="rounded"
+          href={cardHref()}
+          target="_blank"
+          rel="noopener"
+          trailingIcon="arrow_forward"
+          class="mt-sm"
+        >
           Donează Online
         </Button>
       </div>
@@ -131,8 +140,8 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
           <p class="flex items-start gap-xs font-label-md text-label-md text-on-surface bg-secondary-container/40 border border-secondary/40 rounded-lg p-sm">
             <Icon name="verified_user" size={18} class="text-primary shrink-0 mt-0.5" />
             <span>
-              Înainte de a trimite, verificați că <strong class="font-bold">beneficiarul</strong> este
-              parohia noastră, exact cum apare mai jos.
+              Înainte de a trimite, verificați că <strong class="font-bold">beneficiarul</strong> este parohia noastră,
+              exact cum apare mai jos.
             </span>
           </p>
         )}
@@ -146,9 +155,7 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
                     <div class="font-caption text-caption text-on-surface-variant uppercase tracking-wide">
                       Beneficiar
                     </div>
-                    <div class="font-body-md text-body-md text-on-surface font-bold break-words">
-                      {acc.holder}
-                    </div>
+                    <div class="font-body-md text-body-md text-on-surface font-bold break-words">{acc.holder}</div>
                   </div>
                 )}
                 <div class="font-label-md text-label-md text-on-surface-variant uppercase">
@@ -166,9 +173,7 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
               <CopyIban
                 client:visible
                 iban={acc.iban}
-                label={acc.holder
-                  ? `Copiază IBAN ${acc.holder} (${acc.label})`
-                  : `Copiază IBAN ${acc.label}`}
+                label={acc.holder ? `Copiază IBAN ${acc.holder} (${acc.label})` : `Copiază IBAN ${acc.label}`}
               />
             </div>
           ))}
@@ -182,9 +187,7 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
     <div class="flex flex-col gap-lg">
       {/* Screen-reader section anchor so H3s below have a valid parent H2 in the outline. */}
       <h2 class="sr-only">Alte modalități de a sprijini parohia</h2>
-      {hasCampaign && campaign && (
-        <CampaignCard campaign={campaign} variant="project" />
-      )}
+      {hasCampaign && campaign && <CampaignCard campaign={campaign} variant="project" />}
 
       {hasForm230 && (
         <div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative overflow-hidden">
@@ -193,8 +196,8 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
           </div>
           <h3 class="font-headline-md text-headline-md text-primary relative z-10">Redirecționează 3,5%</h3>
           <p class="font-body-md text-body-md text-on-surface-variant relative z-10">
-            Puteți redirecționa până la 3,5% din impozitul pe venit către parohia noastră,
-            completând Formularul 230 — fără niciun cost suplimentar. Termen: ~25 mai.
+            Puteți redirecționa până la 3,5% din impozitul pe venit către parohia noastră, completând Formularul 230 —
+            fără niciun cost suplimentar. Termen: ~25 mai.
           </p>
           {giving?.form230Url && (
             <a
@@ -216,8 +219,12 @@ const hasRightColumn = hasCampaign || hasForm230 || hasSms;
             Trimite <span class="font-bold text-on-surface uppercase">{giving?.smsKeyword}</span>
             la numărul <span class="font-bold text-on-surface">{giving?.smsNumber}</span>
             {giving?.smsAmount && (
-              <> pentru a dona <span class="font-bold text-on-surface">{giving.smsAmount}</span></>
-            )}.
+              <>
+                {" "}
+                pentru a dona <span class="font-bold text-on-surface">{giving.smsAmount}</span>
+              </>
+            )}
+            .
           </p>
           <p class="font-caption text-caption text-on-surface-variant mt-2">
             *Suma este facturată lunar de operatorul dumneavoastră de telefonie.

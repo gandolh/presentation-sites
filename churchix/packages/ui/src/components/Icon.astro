@@ -42,7 +42,7 @@
  * Color: inherits `currentColor`. To tint (e.g. the sparing gold accent), set `color`
  * on the icon or a wrapper — do not hardcode hex here.
  */
-import { ICONS, type IconName } from './icons.ts';
+import { ICONS, type IconName } from "./icons.ts";
 
 interface Props {
   name: IconName;
@@ -54,40 +54,28 @@ interface Props {
   [key: `data-${string}`]: string | undefined;
 }
 
-const {
-  name,
-  fill = false,
-  size = '1em',
-  weight = 400,
-  label,
-  class: className,
-  ...rest
-} = Astro.props;
+const { name, fill = false, size = "1em", weight = 400, label, class: className, ...rest } = Astro.props;
 
 const glyph = ICONS[name];
 if (!glyph) {
-  throw new Error(
-    `<Icon>: unknown icon "${name}". Known icons: ${Object.keys(ICONS).join(', ')}`,
-  );
+  throw new Error(`<Icon>: unknown icon "${name}". Known icons: ${Object.keys(ICONS).join(", ")}`);
 }
 
 const d = fill ? glyph.f : glyph.o;
-const dim = typeof size === 'number' ? `${size}px` : size;
+const dim = typeof size === "number" ? `${size}px` : size;
 
 // Accessibility: labeled icons are images; unlabeled icons are decorative.
-const a11y = label
-  ? { role: 'img', 'aria-label': label }
-  : { 'aria-hidden': 'true', focusable: 'false' };
+const a11y = label ? { role: "img", "aria-label": label } : { "aria-hidden": "true", focusable: "false" };
 ---
 
 <svg
-  class:list={['cx-icon', className]}
+  class:list={["cx-icon", className]}
   width={dim}
   height={dim}
   viewBox="0 -960 960 960"
   fill="currentColor"
   data-icon={name}
-  data-fill={fill ? '' : undefined}
+  data-fill={fill ? "" : undefined}
   data-weight={weight}
   xmlns="http://www.w3.org/2000/svg"
   {...a11y}

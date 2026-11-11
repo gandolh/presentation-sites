@@ -59,7 +59,7 @@
 /* Self-hosted Cardo (headings, 400+700; headline tokens use 700) + Inter (body).
  * Source Serif 4 is kept as a fallback and valid per-church fontHeading override.
  * tokens.css is the single app-wide entry (via BaseLayout), so we wire fonts here. */
-@import './fonts.css';
+@import "./fonts.css";
 
 /* Zero specificity on purpose: the church's `:root` seed block must win (see above). */
 :where(:root) {
@@ -188,7 +188,10 @@
     text-wrap: pretty; /* Reduce orphans in prose across the whole app */
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-heading);
     line-height: 1.2;
     color: var(--primary);

@@ -29,12 +29,12 @@
  *   ---
  *   <ErrorLayout site={site} />
  */
-import BaseLayout from './BaseLayout.astro';
-import EmptyState from '../components/EmptyState.astro';
-import Button from '../components/Button.astro';
-import { withBase } from '../lib/base.ts';
-import type { IconName } from '../components/icons.ts';
-import type { SiteConfig } from '@churchix/schemas';
+import BaseLayout from "./BaseLayout.astro";
+import EmptyState from "../components/EmptyState.astro";
+import Button from "../components/Button.astro";
+import { withBase } from "../lib/base.ts";
+import type { IconName } from "../components/icons.ts";
+import type { SiteConfig } from "@churchix/schemas";
 
 interface Props {
   site: SiteConfig;
@@ -49,12 +49,12 @@ interface Props {
 
 const {
   site,
-  code = '404',
-  title = 'Pagina nu a fost găsită',
-  message = 'Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să reveniți la pagina principală a parohiei.',
-  icon = 'church',
-  homeLabel = 'Înapoi la pagina principală',
-  homeHref = '/',
+  code = "404",
+  title = "Pagina nu a fost găsită",
+  message = "Pagina pe care o căutați nu există sau a fost mutată. Vă rugăm să reveniți la pagina principală a parohiei.",
+  icon = "church",
+  homeLabel = "Înapoi la pagina principală",
+  homeHref = "/",
   path,
 } = Astro.props;
 ---
