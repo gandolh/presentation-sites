@@ -54,9 +54,12 @@ npm install                          # install all workspaces (Node >= 22, npm >
 npm run dev -w apps/<church>         # run one church site
 npm run dev:bac                      # shortcut for apps/parohia-harlesti-bacau
 npm run build --workspaces --if-present
-npm run typecheck --workspaces --if-present
-npm run test --workspaces --if-present
+npm run typecheck                    # astro check in the app, tsc in both packages
+npm run lint                         # ESLint (house-style) and the max-w guard
+npm run check                        # the whole gate: typecheck, lint, format:check, check:conventions, build
+npm run check:fast                   # typecheck what changed, lint the changed files (about 9 s)
 npm run format                       # prettier --write .
+npm run house-style:sync -- --check  # is vendor/house-style still the pinned copy?
 npm install <pkg> -w packages/ui     # add a dependency to a specific workspace
 PUBLIC_SITE_WIP=1 npm run build -w apps/<church>   # build with the "Site în lucru" banner on
 ```
