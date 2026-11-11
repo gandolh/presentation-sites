@@ -1,0 +1,24 @@
+# Markdown stays out of Prettier (decided 2026-11-10).
+*.md
+
+# The generated house-style copy.
+/vendor/house-style/
+
+# Separate npm projects with their own checks: Churchix, and the Docusaurus docs sites.
+/churchix/
+/sites/*/docs-site/
+
+# A design study: no lint and no reformat unless the owner asks (decided 2026-11-10).
+/sites/design-study/
+
+# The social-card pages screenshotted into each site's og-image.png. Subcort's is written by
+# scripts/gen-og.mjs, and a reformat of the others can't be checked without rendering the cards again.
+/sites/*/scripts/og-card.html
+
+# Lockfiles, build output, generated files and static assets.
+package-lock.json
+node_modules/
+dist/
+.astro/
+public/
+.impeccable/

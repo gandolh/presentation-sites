@@ -39,6 +39,8 @@
     "churchix": "npm --prefix churchix run",
     "churchix:install": "npm --prefix churchix install",
     "churchix:build": "npm --prefix churchix run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "house-style:sync": "node vendor/house-style/bin/sync.mjs"
   },
   "workspaces": [
