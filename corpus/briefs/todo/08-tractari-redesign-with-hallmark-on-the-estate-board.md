@@ -52,3 +52,4 @@ Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](0
 
 - Briefs 03 and 04 first. `HeroCanvas.tsx:32, 36` and `scene.ts:122, 330` carry brief 03's lint fixes.
 - The OG image, if any, follows the tokens.
+- **gsap (added 2026-11-11).** `sites/tractari/package.json` depends on `gsap`, and the README, `PRODUCT.md` and the corpus name it for the hero, but no code imports it (knip ignores it for now). This brief settles it. If the redesigned hero animates with gsap, it imports it and the knip ignore goes. If not, the dependency, the ignore and every mention go in one commit.
