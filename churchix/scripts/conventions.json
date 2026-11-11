@@ -1,0 +1,7 @@
+{
+  "$schema": "../vendor/house-style/conventions.schema.json",
+  "web": ["apps/parohia-harlesti-bacau/src", "packages/ui/src"],
+  "server": [],
+  "shared": ["packages/schemas/src"],
+  "stylesheet": "styles/app.css"
+}
