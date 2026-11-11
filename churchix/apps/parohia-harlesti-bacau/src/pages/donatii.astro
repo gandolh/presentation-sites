@@ -1,10 +1,11 @@
 ---
-import { getEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import GivingChannels from "@churchix/ui/components/GivingChannels.astro";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 
 // Pick the featured project for the right column: first active campaign by `order`.
 const campaigns = (await getCollection("campaigns")).map((e) => e.data).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));

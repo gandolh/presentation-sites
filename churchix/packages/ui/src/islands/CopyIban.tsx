@@ -48,7 +48,7 @@ export default function CopyIban({ iban, label = "Copiază IBAN", className = ""
   return (
     <button
       type="button"
-      onClick={onCopy}
+      onClick={() => void onCopy()}
       aria-label={label}
       title={label}
       className={

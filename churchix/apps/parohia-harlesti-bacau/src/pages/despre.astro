@@ -1,11 +1,12 @@
 ---
-import { getEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import Card from "@churchix/ui/components/Card.astro";
 import Icon from "@churchix/ui/components/Icon.astro";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 
 // Leadership, ordered by `staff.order`. Optional collection — empty/absent is fine.
 const staff = (await getCollection("staff")).map((e) => e.data).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));

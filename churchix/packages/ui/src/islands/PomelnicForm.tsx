@@ -128,7 +128,7 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
   }
 
   return (
-    <form className="mx-auto w-full max-w-4xl space-y-lg" onSubmit={onSubmit} noValidate>
+    <form className="mx-auto w-full max-w-4xl space-y-lg" onSubmit={(event) => void onSubmit(event)} noValidate>
       {/* ── Lists grid (bento): vii + adormiți ─────────────────────────────── */}
       <div className="grid grid-cols-1 gap-md md:grid-cols-2 md:gap-lg">
         <NameCard

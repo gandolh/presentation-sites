@@ -1,11 +1,12 @@
 ---
-import { getEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import ServiceSchedule from "@churchix/ui/components/ServiceSchedule.astro";
 import Button from "@churchix/ui/components/Button.astro";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 const schedule = (await getCollection("schedule")).map((e) => e.data);
 
 // Optional programme PDF. The shared schema carries no field for it, so we read

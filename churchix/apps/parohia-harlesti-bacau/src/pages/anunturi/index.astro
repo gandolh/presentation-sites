@@ -1,11 +1,12 @@
 ---
-import { getEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import AnnouncementList from "@churchix/ui/components/AnnouncementList.astro";
 import EmptyState from "@churchix/ui/components/EmptyState.astro";
+import { getSite } from "../../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 const locale = `${site.defaultLocale ?? "ro"}-RO`;
 const anunturi = (await getCollection("announcements")).map((e) => ({ slug: e.id, ...e.data }));
 ---

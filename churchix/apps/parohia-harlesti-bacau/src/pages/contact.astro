@@ -1,13 +1,13 @@
 ---
-import { getEntry } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import Card from "@churchix/ui/components/Card.astro";
 import Field from "@churchix/ui/components/Field.astro";
 import Button from "@churchix/ui/components/Button.astro";
 import Icon from "@churchix/ui/components/Icon.astro";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 const c = site.contact;
 
 // Static, server-light prayer-request form. With no backend, we fall back to a
@@ -146,8 +146,8 @@ const prayerMailto = c.email ? `mailto:${c.email}?subject=${encodeURIComponent("
 
       {prayerMailto && <script is:inline>
         (function () {
-          var form = document.getElementById("cx-contact-form");
-          var confirmation = document.getElementById("cx-contact-sent");
+          const form = document.getElementById("cx-contact-form");
+          const confirmation = document.getElementById("cx-contact-sent");
           if (!form || !confirmation) return;
           form.addEventListener("submit", function () {
             // mailto: opens the mail client; after a brief delay show the confirmation

@@ -1,10 +1,11 @@
 ---
-import { getEntry, getCollection, render } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import Rail from "@churchix/ui/components/Rail.astro";
 import Badge from "@churchix/ui/components/Badge.astro";
 import Icon from "@churchix/ui/components/Icon.astro";
 import { withBase } from "@churchix/ui/lib/base.ts";
+import { getSite } from "../../lib/site.ts";
 
 export async function getStaticPaths() {
   const items = await getCollection("announcements");
@@ -12,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 const locale = `${site.defaultLocale ?? "ro"}-RO`;
 const { Content } = await render(entry);
 const fmt = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" });

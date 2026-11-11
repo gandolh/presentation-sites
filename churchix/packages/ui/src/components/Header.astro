@@ -167,7 +167,8 @@ const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 
     const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
     toggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      isOpen() ? close() : open();
+      if (isOpen()) close();
+      else open();
     });
     document.addEventListener("click", (e) => {
       if (isOpen() && !root.contains(e.target)) close();

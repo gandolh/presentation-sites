@@ -61,7 +61,7 @@ export default function MobileNav({
   const isActive = (href: string) =>
     href === "/" ? activePath === "/" : activePath === href || activePath.startsWith(href + "/");
 
-  const showLocales = (locales?.length ?? 0) > 1;
+  const localeList = locales && locales.length > 1 ? locales : null;
 
   const linkBase =
     "block rounded px-3 py-2 font-label-md text-label-md uppercase no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
@@ -127,12 +127,12 @@ export default function MobileNav({
               </a>
             )}
 
-            {showLocales && (
+            {localeList && (
               <div className="mt-1 border-t border-outline-variant/30 pt-1">
                 <p className="px-3 py-1 font-caption text-caption uppercase tracking-wide text-on-surface-variant">
                   {localeLabel}
                 </p>
-                {locales!.map((loc) => (
+                {localeList.map((loc) => (
                   <a
                     key={loc}
                     hrefLang={loc}

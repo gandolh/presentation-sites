@@ -1,5 +1,5 @@
 ---
-import { getEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import Hero from "@churchix/ui/components/Hero.astro";
 import Rail from "@churchix/ui/components/Rail.astro";
@@ -7,8 +7,9 @@ import Card from "@churchix/ui/components/Card.astro";
 import Badge from "@churchix/ui/components/Badge.astro";
 import Icon from "@churchix/ui/components/Icon.astro";
 import { withBase } from "@churchix/ui/lib/base.ts";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 
 // ── Schedule → compact "this week" timeline rows for the hero ─────────────────
 const schedule = (await getCollection("schedule")).map((e) => e.data);
@@ -42,7 +43,7 @@ const weekRows = weekly.map((s) => ({
 }));
 
 // ── Hero "next service": soonest weekly service from today onward ─────────────
-const NOW_WEEKDAY = WEEK_ORDER[(new Date().getDay() + 6) % 7]!;
+const NOW_WEEKDAY = WEEK_ORDER[(new Date().getDay() + 6) % 7] ?? "mon";
 const WEEKDAY_RO: Record<string, string> = {
   mon: "Luni",
   tue: "Marți",

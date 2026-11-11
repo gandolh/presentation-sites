@@ -1,13 +1,13 @@
 ---
-import { getEntry } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
 import PageShell from "@churchix/ui/components/PageShell.astro";
 import EmptyState from "@churchix/ui/components/EmptyState.astro";
 import Button from "@churchix/ui/components/Button.astro";
 import PomelnicForm from "@churchix/ui/islands/PomelnicForm.tsx";
 import { withBase } from "@churchix/ui/lib/base.ts";
+import { getSite } from "../lib/site.ts";
 
-const site = (await getEntry("site", "config"))!.data;
+const site = await getSite();
 const endpoint = site.giving?.pomelniceEndpoint || undefined;
 const currency = site.giving?.currency ?? "RON";
 const enabled = site.features.pomelnice;
