@@ -76,7 +76,7 @@ The OG card is not a photo and is referenced directly.
 - **`TentScale.tsx`** — the scale plan on `/corturi`, a React island using
   **Motion**. See the note in that file about why the SVG geometry is written
   imperatively rather than animated through props.
-- **`MobileMenu.tsx`** — a React island using Motion, with a focus trap.
+- **`MobileMenu.tsx`** — a React island on Base UI's `Drawer` (`ui/Drawer.tsx`): a focus trap, a swipe to close, CSS motion on its state attributes.
 
 Three.js (~127 KB gz) is a dynamic import that only loads for a visitor who has
 not asked for reduced motion, has WebGL, and has the hero near the viewport.

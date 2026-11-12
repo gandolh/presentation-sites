@@ -437,57 +437,6 @@
       transition: none;
     }
   }
-
-  /* Mobile navigation overlay (MobileMenu.tsx island).
-     A warm blush panel — deliberately the deeper `surface-container-high`
-     (#fae4db), not `low` (#fff1ec): against the #fff8f6 page the latter is
-     ~1.05:1 and reads as transparent. This tone, the gold-tinted edges, and a
-     faint gold radial glow (echoing the hero accent) make it unmistakably "a
-     panel opened over the page". */
-  .mobile-menu {
-    background-color: var(--color-surface-container-high);
-    background-image: radial-gradient(120% 80% at 100% 0%, rgba(201, 169, 97, 0.16) 0%, rgba(201, 169, 97, 0) 55%);
-    /* Soft warm depth at the leading edge so it lifts off the page. */
-    box-shadow: 0 8px 40px -12px rgba(43, 31, 26, 0.28);
-    animation: mobile-menu-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  /* Each link rises and fades in, staggered by its index (--i) — the site's
-     reveal language (opacity + 8px translateY, ease-out-quint) applied to the
-     menu's own entrance. */
-  .mobile-menu__link {
-    animation: mobile-menu-link-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(80ms + var(--i, 0) * 45ms);
-  }
-
-  @keyframes mobile-menu-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes mobile-menu-link-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Reduced motion: the panel still appears (it must), but instantly — no
-     fade-up choreography. */
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-menu,
-    .mobile-menu__link {
-      animation: none;
-    }
-  }
 }
 
 @layer components {

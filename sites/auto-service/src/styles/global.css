@@ -38,6 +38,7 @@
   --color-background: oklch(13.5% 0.008 255); /* ~#07090c */
   --color-surface: oklch(13.5% 0.008 255);
   --color-surface-container-lowest: oklch(17% 0.01 255); /* default panel */
+  --color-surface-menu: oklch(12% 0.008 255); /* the phone menu: darker than the ground */
   --color-surface-container-low: oklch(20% 0.012 256);
   --color-surface-container: oklch(23.5% 0.014 256);
   --color-surface-container-high: oklch(27.5% 0.016 257);
@@ -572,42 +573,6 @@
       opacity: 1;
       transform: none;
       transition: none;
-    }
-  }
-
-  /* ---- Mobile menu overlay (MobileMenu.tsx island) ------------------------- */
-  .mobile-menu {
-    background-color: oklch(12% 0.008 255);
-    background-image: radial-gradient(130% 92% at 100% 0%, oklch(72% 0.17 58 / 0.16) 0%, oklch(72% 0.17 58 / 0) 62%);
-    box-shadow: 0 10px 54px -14px oklch(0% 0 0 / 0.85);
-    animation: mobile-menu-in 280ms var(--ease-out) both;
-  }
-  .mobile-menu__link {
-    animation: mobile-menu-link-in 400ms var(--ease-out) both;
-    animation-delay: calc(60ms + var(--i, 0) * 42ms);
-  }
-  @keyframes mobile-menu-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  @keyframes mobile-menu-link-in {
-    from {
-      opacity: 0;
-      transform: translateY(9px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-menu,
-    .mobile-menu__link {
-      animation: none;
     }
   }
 }

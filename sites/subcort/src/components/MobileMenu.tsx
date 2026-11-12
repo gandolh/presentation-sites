@@ -1,13 +1,11 @@
 // The phone menu, as the drawing set's index: each sheet with its number.
-// A React island animated with Motion — the one place a component library's
-// motion primitives earn their hydration cost, because the panel needs
-// enter/exit choreography plus a focus trap. The trap, Esc, the scroll lock
-// and focus back on the button are Base UI's Dialog; Motion keeps the
-// choreography, through the popup's `render` and AnimatePresence.
+// A React island: the panel is the drawer in ui/Drawer.tsx (the focus trap,
+// Esc, the swipe, the scroll lock and focus back on the button are Base UI's;
+// the entrance is CSS on its state attributes), and each sheet's link rises in
+// turn through `group-data-starting-style:`.
 
-import { Dialog } from "@base-ui/react/dialog";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useState } from "react";
+import { Drawer } from "./ui/Drawer";
 
 export interface MenuLink {
   href: string;
@@ -19,68 +17,65 @@ interface Props {
   current?: string;
 }
 
+// Each sheet rises and fades in after the panel, staggered by its index (--i).
+const bar =
+  "block h-[1.5px] bg-current motion-safe:[transition:translate_240ms_cubic-bezier(0.16,1,0.3,1),rotate_240ms_cubic-bezier(0.16,1,0.3,1),opacity_160ms_ease-out]";
+const rise =
+  "motion-safe:[transition:opacity_380ms_cubic-bezier(0.16,1,0.3,1)_calc(40ms+var(--i)*40ms),translate_380ms_cubic-bezier(0.16,1,0.3,1)_calc(40ms+var(--i)*40ms)] group-data-starting-style:translate-y-[7px] group-data-starting-style:opacity-0";
+
 export default function MobileMenu({ links, current = "/" }: Props) {
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  // The panel hangs under the header and is placed by it: the header's
-  // backdrop-filter makes it the panel's containing block. So it is portalled
-  // into the header, where it was rendered before Base UI.
-  const header = useRef<HTMLElement | null>(null);
-  useEffect(() => {
-    header.current = triggerRef.current?.closest("header") ?? null;
-  }, []);
-
-  const ease = [0.16, 1, 0.3, 1] as const;
+  // The panel hangs under the header and is placed by it: the header is sticky
+  // under a banner on some pages and has a backdrop-filter, which makes it the
+  // containing block of a fixed child. So the panel is mounted in the header.
+  const [header, setHeader] = useState<HTMLElement | null>(null);
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger ref={triggerRef} className="menu-btn">
-        <span className="sr-only">{open ? "Închide meniul" : "Deschide meniul"}</span>
-        <span className="menu-btn__bars" data-open={open || undefined} aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-      </Dialog.Trigger>
-
-      <AnimatePresence>
-        {open && (
-          // Kept mounted while Motion plays the exit; Base UI waits for its opacity.
-          <Dialog.Portal keepMounted container={header}>
-            <Dialog.Popup
-              className="menu-panel"
-              aria-label="Meniu"
-              render={
-                <motion.div
-                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
-                  animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                  transition={{ duration: reduced ? 0.12 : 0.32, ease }}
-                />
-              }
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      title="Meniu"
+      trigger={
+        <button
+          type="button"
+          ref={(el) => setHeader(el?.closest("header") ?? null)}
+          className="-mr-2 inline-flex h-11 w-11 items-center justify-center text-ink min-[880px]:hidden"
+        >
+          <span className="sr-only">{open ? "Închide meniul" : "Deschide meniul"}</span>
+          <span className="group grid w-[22px] gap-[5px]" data-open={open || undefined} aria-hidden="true">
+            <i className={`${bar} group-data-open:translate-y-[6.5px] group-data-open:rotate-45`} />
+            <i className={`${bar} group-data-open:opacity-0`} />
+            <i className={`${bar} group-data-open:-translate-y-[6.5px] group-data-open:-rotate-45`} />
+          </span>
+        </button>
+      }
+      container={header}
+      backdropClassName="fixed inset-x-0 top-[var(--nav-h,4.25rem)] z-54 h-dvh"
+      // Placed against the header (its containing block): its bottom edge.
+      // The clip keeps a swipe up from painting over the header, and lets the
+      // panel's shadow fall below.
+      viewportClassName="fixed inset-x-0 top-[var(--nav-h,4.25rem)] z-55 [clip-path:inset(0_0_-40px_0)]"
+      popupClassName="bg-sheet border-b-[1.5px] border-ink px-(--sheet-pad) pt-1 pb-5 shadow-[0_18px_40px_-26px_oklch(29%_0.028_234/0.5)] motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+    >
+      <nav aria-label="Navigare principală (mobil)" className="grid">
+        {links.map((l, i) => (
+          <a
+            key={l.href}
+            href={l.href}
+            className={`${rise} flex items-baseline gap-[0.9rem] border-b border-hair py-[0.9rem] text-[1.2rem] font-semibold tracking-[-0.02em] text-ink last:border-b-0 aria-[current=page]:text-signal`}
+            aria-current={current === l.href ? "page" : undefined}
+            style={{ "--i": i } as React.CSSProperties}
+          >
+            <span
+              className={`font-mono text-[0.72rem] font-medium ${current === l.href ? "text-signal" : "text-line"}`}
+              aria-hidden="true"
             >
-              <nav aria-label="Navigare principală (mobil)">
-                {links.map((l, i) => (
-                  <motion.a
-                    key={l.href}
-                    href={l.href}
-                    className="menu-panel__link"
-                    data-current={current === l.href || undefined}
-                    aria-current={current === l.href ? "page" : undefined}
-                    initial={reduced ? false : { opacity: 0, y: 7 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: reduced ? 0 : 0.38, delay: reduced ? 0 : 0.04 + i * 0.04, ease }}
-                  >
-                    <span aria-hidden="true">{l.no}</span>
-                    {l.label}
-                  </motion.a>
-                ))}
-              </nav>
-            </Dialog.Popup>
-          </Dialog.Portal>
-        )}
-      </AnimatePresence>
-    </Dialog.Root>
+              {l.no}
+            </span>
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </Drawer>
   );
 }
