@@ -39,12 +39,14 @@ brief is open; brief numbering restarted at 01 on 2026-11-02 (see
   violations.
 - **Docs site** (2026-10-21). Docusaurus at the same `/churchix/docs/` URLs
   plus `/search/` ([architecture.md](architecture.md#docs-site)).
-- **Phone menu** (2026-10-23). `MobileNav` on Base UI `Dialog`, +20.4 kB gzip
-  on the parish site ([decisions.md](decisions.md)).
+- **Phone menu** (2026-11-12). `MobileNav` on Base UI `Drawer` through `primitives/Drawer.tsx`:
+  closes on a swipe up, a tap outside, the X or Esc. The island goes from 21.2 to 31.1 kB gzip
+  ([decisions.md](decisions.md)). `check-base-ui` is strict and reports 0; Playwright spec in `e2e/`
+  (`npm run test:e2e`).
 
 ## Waiting on a deploy
 
-The docs site, the phone menu and the brand-seed fix are not known to be
+The docs site, the Drawer phone menu and the brand-seed fix are not known to be
 deployed. vps-deploy flipped the churchix docs stack to its Docusaurus asset
 check on 2026-10-21, so the docs deploy can go ahead.
 

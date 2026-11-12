@@ -83,3 +83,14 @@ One commit per step, each with `npm run check` and `npm run build` green.
 - Brief 03's `check:conventions` drops `--warn-only` for `check-base-ui` at the end of this brief.
 - Brief 05 redesigns the parish template inside its one look: no theme switch and no dark palette are added there either.
 - The white-label rule holds: `grep -rn "harlesti" packages/ui/src` still prints only the one comment in `lib/base.ts:5`.
+
+## Outcome (2026-11-12)
+
+Built on `main`, local commits `5ace88c` (wrapper and menu, step 2) and `290a893` (Playwright spec, strict `check-base-ui`), plus the closeout. Not deployed: owner step `node cli.ts churchix deploy` from the vps-deploy checkout (static client only).
+
+- **check-base-ui:** before 4 errors (rule 3 once, rule 5 three times: the `styles/` token files), after 0 and 0, and strict in `check:conventions`. The rule 5 findings are three `exceptions` entries in `scripts/conventions.json` (the token layers by design). Rules 4-7 are not counted by the checker; by hand: the sheet and links are utilities (4), tokens only (6), motion is state attributes under `motion-safe:` (7). `grep` for Base UI outside `/primitives/` prints nothing. The conventions file is `scripts/conventions.json`, where brief 03 put it.
+- **Tests:** `e2e/mobile-menu.spec.ts` (`npm run test:e2e`, its own dev server on port 4731, touch emulation; the swipe goes through CDP touch events): Esc, X, tap outside, swipe up, a link, focus back on the toggle (not after a link), no horizontal scroll at 390 shut and open. 6 passed. `npm run check` exits 0 (typecheck now includes `tsc -p e2e`), `bash corpus/lint.sh` clean.
+- **Screenshots** (kept out of git), from the dev server before and after: home at 1280 and 390 and the open menu at 390 are pixel-identical (pixelmatch, 0 pixels), `scrollWidth - innerWidth` is 0 in all three.
+- **Size** (gzip): the `MobileNav` island 21.2 to 31.1 kB.
+
+Deviations: the X is the toggle itself (as in presentation-sites 04), so a press on it while open is a press outside; the test clicks it with `force`. The sheet's links sit in a `<nav>` (`Drawer.Content`) inside the popup, which is the dialog. A fade and 8 px drift were added (the old sheet had no motion), under `motion-safe:`.

@@ -40,7 +40,8 @@ Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 
 
 - **Base UI for island dialogs.** The owner's call, to match their apps. The
   phone menu (`MobileNav`) is a Base UI `Dialog`
-  (2026-10-23), which gives the focus
+  (2026-10-23), a swipeable `Drawer` since 2026-11-12 (Q40; the wrapper is
+  `packages/ui/src/primitives/Drawer.tsx`, the checker's `ui` root), which gives the focus
   trap, Esc, the scroll lock and focus return. It is styled by the M3 tokens
   as before. *Cost, measured:* the island goes from 1.6 to 21.2 kB gzip, and
   the parish site's JS from 72.8 to 93.1 kB gzip (+20.4 kB). *Rejected:*

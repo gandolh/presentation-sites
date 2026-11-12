@@ -341,7 +341,7 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 
 - [02](briefs/done/02-pin-base-ui-exactly.md): `packages/ui` has `^1.9.0` (`packages/ui/package.json:25`); the lockfile resolves 1.9.0.
 - [03](briefs/done/03-the-house-style-and-the-quality-harness.md): the root corpus's Astro-aware harness, applied to Churchix. It has a `format` script and no Prettier, no ESLint, and no typecheck for its two packages (7 and 2 `tsc` errors when run alone). Prettier changes 40 of 42 files, about 24% of lines, at any width. `churchix/.gitignore:49` hides `.claude/`.
-- [04](briefs/todo/04-base-ui-by-the-conventions.md): the phone menu on the swipeable `Drawer` (Q40), wrappers in `packages/ui/src/primitives/`, and the Light / Dark / System switch (Q18), with a dark theme derived from the church's seeds. No Tailwind brief: Churchix is on Tailwind v4.
+- [04](briefs/done/04-base-ui-by-the-conventions.md): the phone menu on the swipeable `Drawer` (Q40), wrappers in `packages/ui/src/primitives/`, and the Light / Dark / System switch (Q18), with a dark theme derived from the church's seeds. No Tailwind brief: Churchix is on Tailwind v4.
 - [05](briefs/todo/05-parish-template-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign of the parish template, as a token set and layout, on the estate board (Q39). It links the root corpus's brief 05 for the shared steps.
 
 Churchix has no server (`services/` holds a README), so there is no server brief.
@@ -349,7 +349,7 @@ Churchix has no server (`services/` holds a README), so there is no server brief
 ## [2026-11-10] brief | Briefs 04-05: no theme switch on the parish sites
 
 The owner answered Q18 for the parish sites: the switch goes in the apps only, and each church keeps the one look
-designed for it. Brief 04 is renamed [Base UI by the conventions](briefs/todo/04-base-ui-by-the-conventions.md) and
+designed for it. Brief 04 is renamed [Base UI by the conventions](briefs/done/04-base-ui-by-the-conventions.md) and
 loses the switch, the derived dark palette, the theme script and their acceptance; the phone menu on `Drawer`
 (Q40) stays. The question about liturgical sites in dark mode is settled and removed. Brief 05 adds no switch and
 no dark palette. Brief 03 already vendors `house-style` (Q6) at width 120.
@@ -368,3 +368,12 @@ and a typecheck in both packages (the 7 and 2 `tsc` errors fixed; `schemas` uses
 `--warn-only` until brief 04. `.claude/rules/churchix.md` is committed. The built pages are unchanged apart from chunk
 names and whitespace. See [the outcome](briefs/done/03-the-house-style-and-the-quality-harness.md).
 
+
+## [2026-11-12] brief | 04 Base UI by the conventions
+
+The phone menu moved from `Dialog` to Base UI `Drawer` through `packages/ui/src/primitives/Drawer.tsx`; `conventions.json`
+names `primitives` as the `ui` root. `check-base-ui` strict: 0 errors (was rule 3 once and rule 5 three times; rule 5 is
+the three token stylesheets of `@churchix/ui`, accepted in `conventions.json` with a reason). New Playwright spec
+`e2e/mobile-menu.spec.ts` (Esc, X, tap outside, swipe up by touch events, link, no horizontal scroll): 6 passed. Home
+at 1280 and 390 and the open menu at 390 are pixel-identical before and after. See
+[the outcome](briefs/done/04-base-ui-by-the-conventions.md).
