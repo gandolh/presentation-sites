@@ -1,11 +1,13 @@
 ---
 summary: Dated snapshot (2026-11-02) of where each site stands, the recent work per area, what waits on a deploy, and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Status — 2026-11-02
 
 ## Where things stand
+
+The four phone menus are `Drawer`s through each site's `ui/Drawer.tsx` since 2026-11-12 (brief 04), `check-base-ui` is strict, and `npm run test:e2e` runs the menus' Playwright spec.
 
 Base UI is pinned exactly at 1.9.0 in every site (saloon was the last on a range; brief 02, 2026-11-10).
 
@@ -55,8 +57,9 @@ per-site docs and is *not* duplicated here.
   going to GitHub ([architecture.md](architecture.md#docs-sites)).
 - **Copy** (2026-10-19). tractari's hero lede no longer runs "sau" into the
   last county; the saloon and auto-service terms pages had the same wrap.
-- **Phone menus** (2026-10-23). The four sites' menus on Base UI `Dialog`,
-  about +20 kB gzip a site ([decisions-ui.md](decisions-ui.md)).
+- **Phone menus** (2026-11-12). The four sites' menus on Base UI `Drawer` (swipe,
+  tap outside, X, Esc), about +30 kB gzip a site over the hand-built ones
+  ([decisions-ui.md](decisions-ui.md)). Waits on a deploy of the four sites.
 - **churchix** got a corpus of its own on 2026-10-07.
 
 Not known to be deployed yet: the copy fix

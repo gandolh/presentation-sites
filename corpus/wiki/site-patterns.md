@@ -1,6 +1,6 @@
 ---
 summary: The as-built patterns several sites share, from the 2026-09-27 improvements audit fixes (2026-10-01/02) and later rounds. Social cards as screenshotted HTML, opening hours from one HOURS list, the phone menus on Base UI and how a link closes them, pausing a WebGL hero off-screen, design-study's carousel keys, the saloon bots webhook body cap, and the dependency hygiene rules (no dead Vite overrides, audit at the root and in churchix). Read before copying a fix from one site to another.
-updated: 2026-11-02
+updated: 2026-11-12
 ---
 
 # Patterns the sites share
@@ -38,21 +38,36 @@ override replaces the whole schedule. No `.astro` file holds a time.
 
 ## Phone menus
 
-Since 2026-10-23 the four `MobileMenu.tsx` islands (saloon, auto-service,
-subcort, tractari) are Base UI `Dialog`s: trigger, popup, close. Base UI does
-the focus trap, Esc, scroll lock and focus return, replacing four hand-built
-copies.
+Since 2026-11-12 the four `MobileMenu.tsx` islands (saloon, auto-service,
+subcort, tractari) are Base UI `Drawer`s through each site's own
+`src/components/ui/Drawer.tsx` (four near-identical copies: shared tooling,
+no shared UI). The wrapper holds the panel's motion; the island passes the
+panel's look as classes. Base UI does the focus trap, Esc, scroll lock, focus
+return and the swipe.
 
+- The panel closes on a swipe up, a tap outside, its X or Esc. `swipeDirection`
+  is `up` in all four: the panel hangs from the top edge. A mouse drag does
+  not swipe, only touch does; test it with touch events through the protocol
+  (`e2e/mobile-menu.spec.ts`).
+- Motion is CSS on state attributes: the popup fades in and drifts down 12 px
+  (`data-starting-style`), follows a swipe through `--drawer-swipe-movement-y`,
+  and each link rises in turn through `group-data-starting-style:` with a
+  delay from its `--i` index. All of it sits under `motion-safe:`. subcort's
+  Motion choreography is gone from the menu; `motion` stays for `TentScale`.
 - A nav link closes the menu through a `leftByLink` ref, so focus goes where
   the link went instead of back to the burger (saloon, auto-service,
   tractari).
-- saloon, auto-service and tractari portal to `<body>`, so the open menu
-  covers the whole page, demo banner and call dock included.
+- saloon, auto-service and tractari portal to `<body>`: the open menu is a
+  full-screen panel, covering the whole page, demo banner and call dock
+  included. There is no page outside it to tap.
 - subcort portals into its header: the header's `backdrop-filter` makes it the
-  panel's containing block, and the panel's `inset: var(--nav-h) …` relies on
-  that. Motion stays through `AnimatePresence` around a `keepMounted` portal
-  and a `motion.div` popup; reduced motion only fades.
-- The islands load `client:load`, about +20 kB gzip a site on every page
+  containing block of a fixed child, and the header sits under the demo banner
+  until the page scrolls, so the panel must be placed against the header, not
+  the screen. Its viewport starts at `--nav-h` and is clipped so a swipe never
+  paints over the header; a transparent `Drawer.Backdrop` below it catches the
+  tap outside. The menu button is the X: while the drawer is open the page
+  behind is inert, so a press on it is a press outside.
+- The islands load `client:load`, about +30 kB gzip a site on every page
   ([decisions-ui.md](decisions-ui.md)).
 
 ## A WebGL hero off-screen

@@ -103,3 +103,21 @@ One commit per step, each with `npm run check` and `npm run <site>:build` green.
 - Brief 03's `check:conventions` drops `--warn-only` for `check-base-ui` at the end of this brief.
 - Briefs 05-08 redesign each site inside its own look: each keeps its own palette, dark or light, with no theme switch (owner, 2026-11-10).
 - Brief 02's pin comes first, so rule 1 reports 0 from the start.
+
+## Outcome (2026-11-12)
+
+Built on `main`, local commits `8b1c0cd` (wrappers and menus, steps 2-3) and `e11c3ca` (Playwright spec, strict `check-base-ui`), plus the closeout. Not deployed: owner steps `node cli.ts auto-service deploy`, `node cli.ts saloon deploy`, `node cli.ts subcort deploy` and `node cli.ts tractari deploy`, from the vps-deploy checkout (static client only).
+
+- **check-base-ui:** before 4 errors (rule 3, one per site) and 1 warning (rule 9, saloon's icon inside `Dialog.Trigger`); after 0 and 0, and strict in `check:conventions`. Rules 4-7 are not counted by the checker (rule 6 flagged one arbitrary colour, auto-service's panel ground, now the token `--color-surface-menu`, same value). `conventions.json` needed no exception. `grep` for Base UI outside `ui/` and for the old class names prints nothing.
+- **Tests:** `e2e/mobile-menu.spec.ts` (`npm run test:e2e`, one dev server per site, touch emulation, the swipe through CDP touch events): Esc, X, swipe up, a link, focus back on the menu button, no horizontal scroll at 390 (shut and open), and a tap outside. 21 passed, 3 skipped: the three full-screen panels (auto-service, saloon, tractari) have no page outside them to tap, so that case is subcort's only. `npm run check` exits 0.
+- **Screenshots** (kept out of git), at 1280 and 390, from two `astro build` outputs (`before` at `eca821c`, `after` at HEAD), compared per pixel: home 1280 and 390, header 1280, closed menu 390 and open menu 390 are identical in all four sites, except the open menu in saloon (109 px) and auto-service (114 px), all in the X icon (x 340-355, y 30-45). Its computed colour is the same; the cause is anti-aliasing (the popup now carries a `transform` for the swipe, so it paints in its own layer); not proven.
+- **Size** (gzip, `_astro/` concatenated): JS +8 to +10 kB a site (saloon 81.4 to 91.5, auto-service 96.0 to 106.0, subcort 267.0 to 275.0, tractari 214.5 to 224.5); CSS +0.4 to +0.6 kB. Table in [decisions-ui.md](../../wiki/decisions-ui.md).
+
+Deviations and findings:
+
+- **Tap outside on the full-screen panels:** the old menus were `fixed inset-0` and the look must not change (Q19), so there is nothing outside to tap; the Acceptance case is tested for subcort only.
+- **subcort's panel stays mounted in the header** (as before), through a `container` prop on the wrapper, with a transparent `Drawer.Backdrop` below it. Without the backdrop a tap outside never closed it (it didn't before either: the old Dialog had the same gap). The viewport is clipped so a swipe doesn't paint over the header.
+- **Wrapper shape:** four copies of one file, with `container` and `backdropClassName` props that three sites don't use; subcort's has no `DrawerClose` (its menu button is the X, and a press on it while the drawer is up is a press outside).
+- **Focus on touch open:** Base UI puts it on the popup, not the X as the old Dialog did; keyboard open still lands on the X.
+- **`[var(--color-…)]` classes** were replaced only in the files this brief touches (the four `MobileMenu.tsx`); the 95, 38, 21 and 4 in the `.astro` files stay, for the Tailwind brief the owner may want.
+- **Playwright was added** (`@playwright/test` 1.63.0 at the root, `e2e/` with its own `package.json` and `tsconfig.json`, in `typecheck`). `astro dev` backgrounds itself under an agent shell: the config passes `--ignore-lock`.

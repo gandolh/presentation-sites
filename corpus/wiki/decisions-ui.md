@@ -1,6 +1,6 @@
 ---
-summary: The calls about what the sites' React islands depend on - one icon family inlined at build time (Phosphor), and Base UI's Dialog under the four phone menus, with the measured JS each costs. Split out of decisions.md on 2026-10-23.
-updated: 2026-11-02
+summary: The calls about what the sites' React islands depend on - one icon family inlined at build time (Phosphor), and Base UI under the four phone menus (Dialog, then Drawer), with the measured JS each costs. Split out of decisions.md on 2026-10-23.
+updated: 2026-11-12
 ---
 
 # Decisions: the islands' UI dependencies
@@ -38,8 +38,8 @@ sports-app, trips and others). The four phone menus (saloon, auto-service,
 subcort, tractari) are Base UI `Dialog`s
 ([site-patterns.md](site-patterns.md)). Base UI does the focus
 trap, Esc, the scroll lock and focus return, and each site keeps its Tailwind
-classes and tokens. subcort keeps its Motion choreography through the popup's
-`render`.
+classes and tokens. subcort kept its Motion choreography through the popup's
+`render` (replaced by CSS on the `Drawer`, below).
 
 *Rejected:* keeping the hand-built traps (four copies of the same focus,
 Escape and scroll-lock code), and turning `.astro` widgets (the FAQ
@@ -61,3 +61,26 @@ every page pays it. If that matters for a site, a later change can try
 
 *The rule this creates:* a dialog in an island is Base UI's, not hand-built.
 `.astro` widgets stay zero-JS.
+
+## The phone menus on Drawer (2026-11-12)
+
+The owner's call of 2026-11-10 (Q40): the four phone menus are a swipeable
+`Drawer`, closed by a swipe, a tap outside, the X or Esc, each with a title
+("Meniu", visually hidden). No theme switch (Q18): auto-service and tractari
+stay dark, saloon and subcort light. The wrappers live per site in
+`src/components/ui/Drawer.tsx` (Q5, Q15). `check-base-ui` is strict in
+`check:conventions` since this change (it reports 0).
+
+The cost, measured (the site's JS and CSS, gzip, concatenated `_astro/` files,
+before → after): Drawer is heavier than Dialog.
+
+| Site | JS before | JS after | CSS before | CSS after |
+|---|---|---|---|---|
+| saloon | 81.4 kB | 91.5 kB | 8.0 kB | 8.4 kB |
+| auto-service | 96.0 kB | 106.0 kB | 12.2 kB | 12.6 kB |
+| subcort | 267.0 kB | 275.0 kB | 6.8 kB | 7.3 kB |
+| tractari | 214.5 kB | 224.5 kB | 9.1 kB | 9.7 kB |
+
+*Left alone:* the Astro-scoped `<style>` blocks and the `global.css` rules for
+markup that isn't Base UI, and the `text-[var(--color-…)]` classes in the
+`.astro` files (a separate Tailwind brief, for the owner).

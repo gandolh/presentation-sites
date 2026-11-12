@@ -590,7 +590,7 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 
 - [02](briefs/done/02-pin-base-ui-exactly.md): saloon's `^1.9.0` becomes `1.9.0`. Three sites already pin; the lockfile resolves 1.9.0.
 - [03](briefs/done/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
-- [04](briefs/todo/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
+- [04](briefs/done/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
 - [05](briefs/todo/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/todo/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/todo/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
 
 Brief 01, the Hallmark against taste-skill bake-off, moved to `briefs/superseded/` under the same answer to Q39; its links in this log and in [status.md](wiki/status.md) now point there. `design-study` gets no redesign brief (it is a study), and the repo has no server, so no server brief. Churchix's briefs are in its own corpus.
@@ -599,7 +599,7 @@ Brief 01, the Hallmark against taste-skill bake-off, moved to `briefs/superseded
 
 The owner answered Q18 for the client sites: the Light / Dark / System switch goes in the apps only, and
 auto-service, saloon, subcort and tractari each keep the one look designed for each. Brief 04 is renamed
-[Base UI by the conventions](briefs/todo/04-base-ui-by-the-conventions.md) and loses the switch, its stopgap
+[Base UI by the conventions](briefs/done/04-base-ui-by-the-conventions.md) and loses the switch, its stopgap
 palette, its stored key, its cookie-page sentence and its acceptance; the phone menus on `Drawer` (Q40) and the
 rest stay. The owner questions about dark-first and "never dark" are settled and removed. Briefs 05-08 add no
 switch: saloon and subcort stay light, auto-service and tractari stay dark. Brief 03 already vendors
@@ -630,3 +630,15 @@ reformat's compare (esbuild over 101 files, the five sites built before and afte
 [brief's outcome](briefs/done/03-the-house-style-and-the-quality-harness.md); the decisions are on
 [decisions-house-style.md](wiki/decisions-house-style.md). Waits on a deploy of the five sites. Questions on the
 board: format design-study too, drop the unused `gsap`, turn on `exactOptionalPropertyTypes`.
+
+## [2026-11-12] brief | 04 Base UI by the conventions
+
+The four phone menus moved from `Dialog` to a swipeable `Drawer` (Q40) through a per-site `src/components/ui/Drawer.tsx`.
+The `.mobile-menu*` rules (saloon, auto-service, tractari) and subcort's `.menu-btn*` and `.menu-panel*` are gone from
+`global.css`; their motion is utilities on the parts (`data-starting-style:`, the swipe variable, `motion-safe:`),
+and `motion` left the menu. `check-base-ui` went from 4 errors (rule 3) and 1 warning (rule 9) to 0 and is strict in
+`check:conventions`. A Playwright spec (`npm run test:e2e`, 4 projects, touch emulation) covers Esc, X, tap outside,
+swipe up, a link, focus back to the button and no horizontal scroll at 390; the full-screen panels have no outside to
+tap. Before and after screenshots (1280 and 390, closed and open) match pixel for pixel except the X icon in saloon and
+auto-service (about 110 px, antialiasing). Waits on a deploy of the four sites. Details in the
+[brief's outcome](briefs/done/04-base-ui-by-the-conventions.md).

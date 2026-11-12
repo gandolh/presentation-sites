@@ -1,6 +1,6 @@
 ---
 summary: The house style, formatted and checked, with Astro (2026-11-11) - Prettier at width 120 with the Astro plugin, the vendored house-style ESLint config plus a local Astro layer, the tsconfig flags each site takes, the npm run check gate and its fast subset, what stays outside, and the exceptions with what removes each. Read before changing a lint, format or typecheck setting.
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Decisions: the house style, formatted and checked, with Astro
@@ -59,8 +59,7 @@ checked without rendering the cards again.
 - `noUncheckedIndexedAccess` is off in subcort (86 errors) and tractari (5),
   and so is `@typescript-eslint/no-unnecessary-type-assertion` there. Both come
   on with the work that fixes those errors.
-- `check-base-ui` runs `--warn-only`: the four phone menus import Base UI's
-  `Dialog` outside a `ui/` folder until brief 04 moves them.
+- `check-base-ui` is strict (no `--warn-only`) since brief 04 (2026-11-12): it reports 0.
 - The bots' `responses/replies.ts` reads one setting from `process.env`, a
   warning until it moves into `core/config.ts`.
 - knip ignores files kept on purpose with nothing importing them (two
