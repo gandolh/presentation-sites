@@ -39,13 +39,14 @@
     "churchix": "npm --prefix churchix run",
     "churchix:install": "npm --prefix churchix install",
     "churchix:build": "npm --prefix churchix run build",
-    "typecheck": "npm run typecheck -w @sites/kit -w bavauto-gorj -w ana-saloon -w subcort -w tractari -w design-study",
+    "typecheck": "tsc -p e2e && npm run typecheck -w @sites/kit -w bavauto-gorj -w ana-saloon -w subcort -w tractari -w design-study",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:conventions && npm run saloon:bots",
+    "test:e2e": "playwright test -c e2e",
     "check:fast": "node scripts/check-fast.mjs",
-    "check:conventions": "knip && depcruise sites/auto-service/src sites/saloon/src sites/subcort/src sites/tractari/src packages/site-kit/src sites/saloon/marketing/bots/src && node vendor/house-style/bin/check-base-ui.mjs --warn-only && node vendor/house-style/bin/check-structure.mjs",
+    "check:conventions": "knip && depcruise sites/auto-service/src sites/saloon/src sites/subcort/src sites/tractari/src packages/site-kit/src sites/saloon/marketing/bots/src && node vendor/house-style/bin/check-base-ui.mjs && node vendor/house-style/bin/check-structure.mjs",
     "house-style:sync": "node vendor/house-style/bin/sync.mjs"
   },
   "workspaces": [
@@ -65,6 +66,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
     "@vitest/eslint-plugin": "1.6.28",
     "dependency-cruiser": "18.7.2",
     "eslint": "10.9.1",

@@ -21,7 +21,7 @@ export default {
   // The docs sites and design-study stay outside the harness.
   ignoreWorkspaces: ["sites/*/docs-site", "sites/design-study"],
   workspaces: {
-    ".": { entry: ["scripts/*.{js,mjs,ts}"] },
+    ".": { entry: ["scripts/*.{js,mjs,ts}", "e2e/playwright.config.ts"] },
     // astro-icon reads the Phosphor set (`ph:` names) from the installed package; nothing imports it.
     "sites/saloon": { ignoreDependencies: ["@iconify-json/ph"] },
     // The docs name GSAP for the hero, but no code imports it. This goes when the redesigned hero imports it or drops it.
