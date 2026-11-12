@@ -1,0 +1,5 @@
+{
+  "extends": "../vendor/house-style/tsconfig.base.json",
+  "include": ["."],
+  "compilerOptions": { "noEmit": true, "lib": ["ES2023", "DOM"], "types": ["node"] }
+}

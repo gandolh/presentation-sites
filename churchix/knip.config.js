@@ -10,7 +10,8 @@ export default {
     // The global stylesheet is injected by a string in astro.config.mjs, which knip can't follow.
     "apps/parohia-harlesti-bacau": { entry: ["src/styles/app.css"], ignoreDependencies: ["@churchix/config"] },
     // The shared tsconfig sets `jsxImportSource: "react"`, a package reference no import shows.
-    ".": { ignoreDependencies: ["react"] },
+    // The Playwright config is read by `playwright test -c e2e`, which no import shows.
+    ".": { entry: ["e2e/playwright.config.ts"], ignoreDependencies: ["react"] },
     // The components import `z` as a type only, and the version comes with @churchix/schemas. `vite/client`
     // is `types` in the tsconfig: Vite comes with Astro in each church app.
     "packages/ui": { ignoreDependencies: ["zod"], ignoreUnresolved: ["vite/client"] },
