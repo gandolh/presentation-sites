@@ -3,5 +3,14 @@
   "web": ["apps/parohia-harlesti-bacau/src", "packages/ui/src"],
   "server": [],
   "shared": ["packages/schemas/src"],
-  "stylesheet": "styles/app.css"
+  "ui": ["primitives"],
+  "stylesheet": "styles/app.css",
+  "exceptions": [
+    {
+      "check": "base-ui",
+      "rule": 5,
+      "path": "packages/ui/src/styles",
+      "reason": "The shared UI package ships its design tokens in three layers (fonts, theme, tokens) that each church's app.css imports, so a parish site can override the safe set of seeds. They are the token layers by design, not component styles."
+    }
+  ]
 }
