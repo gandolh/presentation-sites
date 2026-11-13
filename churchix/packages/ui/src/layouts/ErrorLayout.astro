@@ -1,17 +1,17 @@
 ---
 /**
- * `<ErrorLayout>` — shared, white-label error composition (Ecclesia Digitalis).
+ * `<ErrorLayout>` — shared, white-label error composition (the porch notice, approved 2026-11-13).
  *
- * Wraps `BaseLayout` chrome (per-church Header/Footer + brand tokens) around an
- * `EmptyState` so every church degrades gracefully in *its own* brand, never
- * Churchix's. Used for 404 (and any other terminal error screen). All copy is
- * overridable per church via props; reverent Romanian defaults live here.
+ * Wraps `BaseLayout` chrome (per-church Header/Footer + brand tokens) around a `PageShell`: the slim name band
+ * carries the heading (`h1`) and the supporting copy, and a raised card over its edge holds the church glyph, the
+ * status code and the way home. Used for 404 (and any other terminal error screen). All copy is overridable per
+ * church via props; reverent Romanian defaults live here.
  *
  * No per-church value is hardcoded — branding arrives through `site` (tokens emitted
  * by BaseLayout) and the component re-skins by token swap alone.
  *
  * @prop {SiteConfig} site        Required. Church `site` content entry (drives chrome + tokens).
- * @prop {string} [code='404']    Status code shown as a quiet, gold-accented eyebrow.
+ * @prop {string} [code='404']    Status code shown in the card.
  * @prop {string} [title]         Heading (defaults to "Pagina nu a fost găsită").
  * @prop {string} [message]       Supporting copy (reverent default below).
  * @prop {IconName} [icon='church']  Illustration glyph (`church` or `diversity_1`).
@@ -30,7 +30,8 @@
  *   <ErrorLayout site={site} />
  */
 import BaseLayout from "./BaseLayout.astro";
-import EmptyState from "../components/EmptyState.astro";
+import PageShell from "../components/PageShell.astro";
+import Icon from "../components/Icon.astro";
 import Button from "../components/Button.astro";
 import { withBase } from "../lib/base.ts";
 import type { IconName } from "../components/icons.ts";
@@ -60,15 +61,18 @@ const {
 ---
 
 <BaseLayout site={site} title={title} description={message} path={path}>
-  <section class="flex items-center justify-center px-sm md:px-gutter py-xl">
-    <div class="w-full max-w-[36rem] flex flex-col items-center gap-md">
-      {code && <p class="font-label-md text-label-md uppercase text-primary">{code}</p>}
-      <EmptyState icon={icon} title={title} message={message} as="h1" class="w-full">
-        <Button slot="cta" variant="primary" href={withBase(homeHref)} icon="arrow_forward">
+  <PageShell title={title} lede={message}>
+    <div class="mx-auto grid w-full max-w-[36rem] justify-items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-6 py-10 text-center shadow-board">
+      <span class="text-primary">
+        <Icon name={icon} size={32} />
+      </span>
+      {code && <p class="m-0 font-headline-md text-[22px] font-bold leading-7 text-primary">{code}</p>}
+      <div class="mt-3">
+        <Button variant="primary" href={withBase(homeHref)} icon="arrow_forward">
           {homeLabel}
         </Button>
-      </EmptyState>
+      </div>
       <slot />
     </div>
-  </section>
+  </PageShell>
 </BaseLayout>
