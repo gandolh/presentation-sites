@@ -1,33 +1,24 @@
 ---
 /**
- * `<ServiceSchedule>` — the parish service programme (Ecclesia Digitalis).
+ * `<ServiceSchedule>` — the parish service programme (the porch notice, approved 2026-11-13).
  *
  * Two layouts, selected by `variant`:
  *
- *  - `grouped` (default) — the Program Slujbe bento: services grouped into one
- *    `<Card>` per weekday, sorted by `order` then Mon→Sun, on a 12-col grid
- *    (primary `col-span-8`). The Sunday card is emphasized (gold left bar +
- *    "Ziua Domnului" badge + `church` icon). Each row shows the time
- *    (AA-safe `text-primary`, fixed `w-16`), the label in `body-lg`, an optional
- *    muted `note`, and — for non-weekly cadences — a `calendar_month` cadence line.
- *    Services with no `weekday` (e.g. movable feasts) collect into a trailing
- *    "Sărbători și rânduieli speciale" card.
+ *  - `grouped` (default) — one white card per weekday on a two-column grid (one column below 960 px), Monday to
+ *    Sunday, over the page band's edge. Each card has a head (the day in Cardo, a hairline under it) and one
+ *    row per service: the time at 32/40 in Inter 600, the service in Cardo 24/32, an optional muted note under
+ *    it, and a cadence line for anything that is not weekly. Sunday's row sits on `surface-highlight`, its head
+ *    carries the church mark in `secondary-strong` and the "Ziua Domnului" badge. Services with no weekday
+ *    (movable feasts) collect into a wide trailing card, "Sărbători și rânduieli speciale". A long list grows
+ *    the card downward and never scrolls inside it.
  *
- *  - `table` — the legacy flat three-column table, kept for compact inline use
- *    (e.g. the home page). Same data, no grid.
+ *  - `table` — the legacy flat three-column table, kept for compact inline use. Same data, no grid.
  *
- * White-label: every color/spacing/type value is an M3 token, so the component
- * re-skins per church by token swap alone. Gold (`secondary`) appears only as a
- * decorative fill/bar — never as body text on the cream surface.
+ * White-label: every color/spacing/type value is an M3 token, so the component re-skins per church by token swap
+ * alone.
  *
  * @prop {Service[]} items                 The schedule entries (from `serviceScheduleSchema`).
  * @prop {'grouped'|'table'} [variant='grouped']  Layout. `table` = legacy compact table.
- * @prop {astroHTML.JSX.Element} [aside]   (grouped only) reserved; pass extra callouts via the
- *                                         `aside` slot to fill the optional `col-span-4` column.
- *
- * @slot aside — (grouped only) optional secondary-column callouts. When present the primary
- *               column is `lg:col-span-8` and the aside is `lg:col-span-4`; when empty the
- *               primary column widens to the full width.
  *
  * @example
  *   ---
@@ -38,7 +29,6 @@
  */
 import type { serviceScheduleSchema } from "@churchix/schemas";
 import type { z } from "zod";
-import Card from "./Card.astro";
 import Badge from "./Badge.astro";
 import Icon from "./Icon.astro";
 
@@ -82,8 +72,16 @@ const dayBuckets: { weekday: Weekday; services: Service[] }[] = WEEK_ORDER.map((
 
 const specialServices = items.filter((s) => !s.weekday).sort(byOrder);
 
-const hasAside = Boolean(Astro.slots.has && Astro.slots.has("aside"));
-const primarySpan = hasAside ? "lg:col-span-8" : "lg:col-span-12";
+const cardClass =
+  "rounded-lg border border-outline-variant bg-surface-container-lowest px-5 py-5 shadow-board min-[960px]:px-8 min-[960px]:py-7";
+const headClass = "flex items-center justify-between gap-3 border-b border-outline-variant pb-4";
+const rowClass =
+  "-mx-3 mt-3 grid min-h-16 grid-cols-[96px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 rounded px-3 py-2 min-[960px]:min-h-[72px] min-[960px]:grid-cols-[112px_minmax(0,1fr)] min-[960px]:gap-x-4";
+const timeClass =
+  "font-time text-[28px] font-semibold leading-9 tabular-nums text-primary min-[960px]:text-[32px] min-[960px]:leading-10";
+const nameClass =
+  "m-0 break-words font-heading text-[22px] font-bold leading-7 text-on-surface min-[960px]:text-headline-md min-[960px]:leading-8";
+const noteClass = "m-0 col-start-2 break-words font-body-md text-body-md text-on-surface-variant";
 
 // Sort the legacy table flat by order for stable output.
 const tableSorted = [...items].sort(byOrder);
@@ -112,81 +110,53 @@ const tableSorted = [...items].sort(byOrder);
     </tbody>
   </table>
 ) : (
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
-    <div class:list={["flex flex-col gap-md", primarySpan]}>
-      {dayBuckets.map(({ weekday, services }) => {
-        const isSunday = weekday === "sun";
-        return (
-          <Card as="section" padding="lg" featured={isSunday} class="relative">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-sm mb-md border-b border-outline-variant/30 pb-sm">
-              <h2 class="font-headline-lg text-headline-lg text-primary flex items-center gap-xs">
-                {isSunday && <Icon name="church" fill size={24} class="text-secondary" />}
-                {WEEKDAY_RO[weekday]}
-              </h2>
-              {isSunday && <Badge tone="secondary">Ziua Domnului</Badge>}
-            </div>
-            <ul class="flex flex-col -mx-sm">
+  <div class="grid gap-4 min-[960px]:gap-6">
+    {dayBuckets.length > 0 && (
+      <div class="grid grid-cols-1 items-start gap-4 min-[960px]:grid-cols-2 min-[960px]:gap-6">
+        {dayBuckets.map(({ weekday, services }) => {
+          const isSunday = weekday === "sun";
+          return (
+            <section class={cardClass}>
+              <div class={headClass}>
+                <h2 class="m-0 flex items-center gap-3 font-heading text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
+                  {isSunday && <Icon name="church" fill size={24} class="text-secondary-strong" />}
+                  {WEEKDAY_RO[weekday]}
+                </h2>
+                {isSunday && <Badge tone="secondary">Ziua Domnului</Badge>}
+              </div>
               {services.map((s) => (
-                <li class="flex items-baseline gap-md py-sm px-sm rounded-md odd:bg-surface-container-low/50">
-                  <span class="font-label-md text-label-md font-semibold text-primary w-16 shrink-0 tabular-nums">
-                    {s.time}
-                  </span>
-                  <div class="flex-grow min-w-0">
-                    <h3 class="font-headline-md text-body-lg text-on-surface break-words">{s.label}</h3>
-                    {s.note && (
-                      <p class="font-body-md text-body-md text-on-surface-variant mt-base break-words">{s.note}</p>
-                    )}
-                    {s.cadence !== "weekly" && (
-                      <p class="font-label-md text-caption text-on-surface-variant mt-base flex items-center gap-1">
-                        <Icon name="calendar_month" size={14} />
-                        {CADENCE_RO[s.cadence]}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        );
-      })}
-
-      {specialServices.length > 0 && (
-        <Card as="section" padding="lg">
-          <div class="flex items-center gap-xs mb-md border-b border-outline-variant/30 pb-sm">
-            <Icon name="calendar_month" size={22} class="text-secondary" />
-            <h2 class="font-headline-md text-headline-md text-primary">Sărbători și rânduieli speciale</h2>
-          </div>
-          <ul class="flex flex-col -mx-sm">
-            {specialServices.map((s) => (
-              <li class="flex items-baseline gap-md py-sm px-sm rounded-md odd:bg-surface-container-low/50">
-                <span class="font-label-md text-label-md font-semibold text-primary w-16 shrink-0 tabular-nums">
-                  {s.time}
-                </span>
-                <div class="flex-grow min-w-0">
-                  <h3 class="font-headline-md text-body-lg text-on-surface break-words">{s.label}</h3>
-                  {s.note && (
-                    <p class="font-body-md text-body-md text-on-surface-variant mt-base break-words">{s.note}</p>
-                  )}
-                  <p class="font-label-md text-caption text-on-surface-variant mt-base flex items-center gap-1">
-                    <Icon name="calendar_month" size={14} />
-                    {CADENCE_RO[s.cadence]}
-                  </p>
+                <div class:list={[rowClass, isSunday && "bg-surface-highlight"]}>
+                  <span class={timeClass}>{s.time}</span>
+                  <h3 class={nameClass}>{s.label}</h3>
+                  {s.note && <p class={noteClass}>{s.note}</p>}
+                  {s.cadence !== "weekly" && <p class={noteClass}>{CADENCE_RO[s.cadence]}</p>}
                 </div>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-    </div>
-
-    {hasAside && (
-      <aside class="lg:col-span-4 flex flex-col gap-lg">
-        <slot name="aside" />
-      </aside>
+              ))}
+            </section>
+          );
+        })}
+      </div>
+    )}
+    {specialServices.length > 0 && (
+      <section class={cardClass}>
+        <div class={headClass}>
+          <h2 class="m-0 font-heading text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
+            Sărbători și rânduieli speciale
+          </h2>
+          <Badge tone="secondary">{CADENCE_RO.special}</Badge>
+        </div>
+        {specialServices.map((s) => (
+          <div class={rowClass}>
+            <span class={timeClass}>{s.time}</span>
+            <h3 class={nameClass}>{s.label}</h3>
+            {s.note && <p class={noteClass}>{s.note}</p>}
+            {s.cadence !== "special" && <p class={noteClass}>{CADENCE_RO[s.cadence]}</p>}
+          </div>
+        ))}
+      </section>
     )}
   </div>
 )}
-
 <style>
   .cx-schedule {
     width: 100%;
@@ -196,7 +166,7 @@ const tableSorted = [...items].sort(byOrder);
   .cx-schedule td {
     text-align: left;
     padding: 0.8rem 0.75rem;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--outline-variant);
     vertical-align: top;
   }
   /* Alternating row tints for scanning ease (DESIGN.md §Lists). */
@@ -204,14 +174,12 @@ const tableSorted = [...items].sort(byOrder);
     background: var(--surface-container-low);
   }
   .cx-schedule th {
-    color: var(--ink-soft);
+    color: var(--on-surface-variant);
     font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
   }
   .cx-schedule__note {
     display: block;
-    color: var(--ink-soft);
+    color: var(--on-surface-variant);
     font-size: 0.9rem;
     font-weight: 400;
   }
