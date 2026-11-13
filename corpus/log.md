@@ -693,3 +693,10 @@ reopened lines are recorded as changed in `wiki/decisions-ui.md`. The hero tent'
 from the comps by 0.19-0.39% of pixels. Waits on `node cli.ts subcort deploy`. Details in the
 [brief's outcome](briefs/done/07-subcort-redesign-with-hallmark-on-the-estate-board.md).
 
+
+## [2026-11-13] approval | 08 tractari redesign, "Lines first"
+
+The owner approved the tractari redesign direction "Lines first" (runner-up "Night road, lit") on the estate redesign board,
+with every question on the board standing as proposed: the hero is type on the ground with the board of three named lines,
+the 3D scene moves to Cum funcționează as its plate, the road spine goes, the call takes near-black ink, `responseMinutes`
+stays out of the page and the page has nine `tel:` links. The build follows, one commit for the tokens and one per section.
