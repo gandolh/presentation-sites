@@ -642,3 +642,10 @@ swipe up, a link, focus back to the button and no horizontal scroll at 390; the 
 tap. Before and after screenshots (1280 and 390, closed and open) match pixel for pixel except the X icon in saloon and
 auto-service (about 110 px, antialiasing). Waits on a deploy of the four sites. Details in the
 [brief's outcome](briefs/done/04-base-ui-by-the-conventions.md).
+
+## [2026-11-13] approval | 05 auto-service redesign, "The job card"
+
+The owner approved the auto-service redesign direction "The job card" (runner-up "Bordcomputer, serviced") on the estate
+redesign board, with every question on the board standing as proposed: the quote form leaves `PRODUCT.md`, all nine
+service descriptions stay on home, and the Bordcomputer world is replaced. The build follows, one commit for the tokens
+and one per screen.
