@@ -101,7 +101,7 @@ export default function MobileNav({
         backdropClassName="fixed inset-0 z-49"
         viewportClassName="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] right-3 z-50"
         popupClassName="w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border border-outline-variant bg-surface-container-lowest p-4 shadow-board"
-        titleClassName="font-heading text-[22px] font-bold leading-7 text-primary"
+        titleClassName="font-headline-md text-[22px] font-bold leading-7 text-primary"
         closeLabel="Închide meniul"
         closeClassName="flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-primary hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         closeIcon={

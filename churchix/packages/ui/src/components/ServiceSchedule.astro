@@ -80,7 +80,7 @@ const rowClass =
 const timeClass =
   "font-time text-[28px] font-semibold leading-9 tabular-nums text-primary min-[960px]:text-[32px] min-[960px]:leading-10";
 const nameClass =
-  "m-0 break-words font-heading text-[22px] font-bold leading-7 text-on-surface min-[960px]:text-headline-md min-[960px]:leading-8";
+  "m-0 break-words font-headline-md text-[22px] font-bold leading-7 text-on-surface min-[960px]:text-headline-md min-[960px]:leading-8";
 const noteClass = "m-0 col-start-2 break-words font-body-md text-body-md text-on-surface-variant";
 
 // Sort the legacy table flat by order for stable output.
@@ -118,7 +118,7 @@ const tableSorted = [...items].sort(byOrder);
           return (
             <section class={cardClass}>
               <div class={headClass}>
-                <h2 class="m-0 flex items-center gap-3 font-heading text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
+                <h2 class="m-0 flex items-center gap-3 font-headline-md text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
                   {isSunday && <Icon name="church" fill size={24} class="text-secondary-strong" />}
                   {WEEKDAY_RO[weekday]}
                 </h2>
@@ -140,7 +140,7 @@ const tableSorted = [...items].sort(byOrder);
     {specialServices.length > 0 && (
       <section class={cardClass}>
         <div class={headClass}>
-          <h2 class="m-0 font-heading text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
+          <h2 class="m-0 font-headline-md text-2xl font-bold leading-8 text-primary min-[960px]:text-[28px] min-[960px]:leading-9">
             Sărbători și rânduieli speciale
           </h2>
           <Badge tone="secondary">{CADENCE_RO.special}</Badge>
