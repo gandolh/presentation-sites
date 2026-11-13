@@ -1,6 +1,6 @@
 # Task 07: A redesign of subcort with Hallmark, on the estate board
 
-**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
+**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
 
 **Runs before:** nothing. It needs 03 and 04, and runs in any order with 05, 06 and 08.
 
@@ -47,11 +47,11 @@ What its design docs fix today (`sites/subcort/DESIGN.md`):
 
 ## What to do
 
-Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, and one per screen in this order: `/`, `/corturi`, `/servicii`, `/zona`, `/contact`, the legal layout. Re-run `npm run subcort:og` in the last commit.
+Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, and one per screen in this order: `/`, `/corturi`, `/servicii`, `/zona`, `/contact`, the legal layout. Re-run `npm run subcort:og` in the last commit.
 
 ## Acceptance
 
-- [ ] The common acceptance in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
+- [ ] The common acceptance in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
 - [ ] The hero and the plate still read from one model: `grep -rn "from \"../lib/draft\|from '../lib/draft\|lib/draft" sites/subcort/src --include=*.astro --include=*.ts --include=*.tsx -l` lists both `HeroScene` and `ExplodedPlate` users, as it does today.
 - [ ] The WebGL hero still pauses off-screen, and under `prefers-reduced-motion` it renders one still frame (a Playwright run with the media feature on).
 - [ ] After `npm run subcort:build`, every page's built HTML links to `/subcort/contact/` (`dist/index.html` has 2 such links today).

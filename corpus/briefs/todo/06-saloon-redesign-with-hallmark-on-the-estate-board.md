@@ -1,6 +1,6 @@
 # Task 06: A redesign of saloon with Hallmark, on the estate board
 
-**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
+**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
 
 **Runs before:** nothing. It needs 03 and 04, and runs in any order with 05, 07 and 08.
 
@@ -45,11 +45,11 @@ What its design docs fix today (`sites/saloon/DESIGN.md`, `PRODUCT.md`, `docs/AD
 
 ## What to do
 
-Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, and one per screen: `/`, then the legal layout. Within `/`, the booking action stays reachable in one tap from every scroll position on a phone.
+Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, and one per screen: `/`, then the legal layout. Within `/`, the booking action stays reachable in one tap from every scroll position on a phone.
 
 ## Acceptance
 
-- [ ] The common acceptance in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
+- [ ] The common acceptance in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
 - [ ] After `npm run saloon:build`, `grep -c 'wa.me' sites/saloon/dist/index.html` prints at least 2 (it prints 11 today), and every link carries the pre-filled `text=` parameter.
 - [ ] `grep -rn "Testimonials" sites/saloon/src/pages/index.astro` still shows it commented out.
 

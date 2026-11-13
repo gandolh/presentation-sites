@@ -1,6 +1,6 @@
 # Task 08: A redesign of tractari with Hallmark, on the estate board
 
-**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
+**Depends on:** brief 03, brief 04, and the skills library's brief 24 (Hallmark vendored, taste-skill 2.5's ideas adopted) and the estate redesign board, as in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). That brief holds the steps and the acceptance every site's redesign shares ("The steps all four redesigns share"). Read it first. The owner's answer of 2026-11-10 to Q39 replaces the bake-off.
 
 **Runs before:** nothing. It needs 03 and 04, and runs in any order with 05, 06 and 07.
 
@@ -40,11 +40,11 @@ What its design docs fix today (`sites/tractari/DESIGN.md`, `PRODUCT.md`):
 
 ## What to do
 
-Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, then one per section in the order the page shows them: `Hero` with `CallDock`, `Services`, `Process`, `Coverage`, `Contact`, `Footer`.
+Steps 1 to 5 of "The steps all four redesigns share" in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md). Then one commit for the token change, then one per section in the order the page shows them: `Hero` with `CallDock`, `Services`, `Process`, `Coverage`, `Contact`, `Footer`.
 
 ## Acceptance
 
-- [ ] The common acceptance in [auto-service's brief](05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
+- [ ] The common acceptance in [auto-service's brief](../done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md) (step 6 there).
 - [ ] After `npm run tractari:build`, `grep -c 'href="tel:' sites/tractari/dist/index.html` prints at least as many as today (10).
 - [ ] A Playwright run at 390 px scrolls to the bottom and finds the `CallDock` call link visible, at 4.5:1 contrast against what is behind it, with the WebGL scene on and with `prefers-reduced-motion` on.
 - [ ] The call link is clickable before the scene has loaded (a Playwright run with the scene's chunk blocked).
