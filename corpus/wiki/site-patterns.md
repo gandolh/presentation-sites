@@ -1,6 +1,6 @@
 ---
 summary: The as-built patterns several sites share, from the 2026-09-27 improvements audit fixes (2026-10-01/02) and later rounds. Social cards as screenshotted HTML, opening hours from one HOURS list, the phone menus on Base UI and how a link closes them, pausing a WebGL hero off-screen, design-study's carousel keys, the saloon bots webhook body cap, and the dependency hygiene rules (no dead Vite overrides, audit at the root and in churchix). Read before copying a fix from one site to another.
-updated: 2026-11-12
+updated: 2026-11-13
 ---
 
 # Patterns the sites share
@@ -70,10 +70,10 @@ return and the swipe.
 - The islands load `client:load`, about +30 kB gzip a site on every page
   ([decisions-ui.md](decisions-ui.md)).
 
-## A WebGL hero off-screen
+## A WebGL scene off-screen
 
-tractari's `HeroCanvas.tsx`: the IntersectionObserver cancels the pending frame
-and zeroes it when the hero leaves view, and restarts only when it is back and
+tractari's `HeroCanvas.tsx` (the scene plate in "Cum funcționează" since 2026-11-13): the IntersectionObserver cancels the pending frame
+and zeroes it when the plate leaves view, and restarts only when it is back and
 the tab is visible. The loop itself returns without rescheduling when not
 visible or `document.hidden`, so a frame already in flight can't re-arm it.
 Measured 2026-10-01: zero frames while scrolled away. With reduced motion the

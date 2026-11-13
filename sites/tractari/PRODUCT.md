@@ -16,7 +16,7 @@ A driver who has just broken down or crashed, somewhere in Oltenia, possibly at 
 
 ## The one thing
 
-**Call.** Every decision serves making the phone number unmissable and reachable in one tap from any scroll position. The cinematic experience is enrichment that must never gate or delay that action.
+**Call.** Every decision serves making the phone number unmissable and reachable in one tap from any scroll position. The 3D scene is enrichment that must never gate or delay that action.
 
 ## Brand personality
 
@@ -26,22 +26,22 @@ Heavy · nocturnal · dependable. The feeling of headlights cutting through the 
 
 - The entire existing RO "tractari auto" market: red-or-yellow on white, stock tow-truck photo, four icon boxes, a Romania map screenshot, a Google-reviews widget. Uniformly poor.
 - Generic AI landing template: centered hero stack, equal-box card grids, eyebrow-on-every-section, `01/02/03` scaffolding, decoration over structure.
-- Editorial-typographic lane (display-serif + italic + mono labels + ruled columns). Wrong register entirely; this is a cinematic automotive scene, not a magazine.
+- Editorial-typographic lane (display-serif + italic + mono labels + ruled columns). Wrong register entirely; this is a plain, heavy road sign, not a magazine.
 
-## The one structural move (locked via /the-one-move)
+## The one structural move (reopened 2026-11-13)
 
-The whole page is **one continuous night road**. You scroll and a stylized 3D recovery truck drives down it toward you; each section is a **stop on that single drive**, not a stacked band. The phone number rides along, pinned and tappable the entire way.
+The opening screen is **type on the ground with one board of three named phone lines**: the dispatcher's number large on an orange plate, the two other owners beside it. The 3D truck and night road moved to "Cum funcționează" as a plate, with the three steps on a strip over its foot. The phone stays tappable the whole way: the header call fills and, on a phone, a bottom dock shows once the plate has left the screen.
 
 ## Strategic design principles
 
-1. **The phone is load-bearing.** Pinned, brightest, one-tap, every scroll position. Desktop: nav-right. Mobile: full-width bottom dock.
-2. **One road, not stacked bands.** Sections are stops on a continuous drive; alternate anchoring, vary rhythm. No interchangeable full-width centered blocks.
-3. **A real subject.** The stylized 3D truck + night road is the visual anchor everything composes around. Not typographic boxes with decoration.
-4. **The narrative never gates the action.** Scroll choreography is enrichment; reduced-motion / low-GPU / no-JS all deliver the full content vertically with the phone reachable.
+1. **The phone is load-bearing.** The board is the first thing after the headline; one orange call per frame; one tap from every scroll position (header on desktop, dock on a phone).
+2. **Lines, not boxes.** Named lines, rules and rows carry the structure; the board is the only raised object.
+3. **A real subject, in its place.** The stylized 3D truck and night road is the page's one picture, as the plate in "Cum funcționează".
+4. **The narrative never gates the action.** The scene is enrichment; reduced-motion / low-GPU / no-JS all deliver the full content vertically with the phone reachable.
 
 ## Accessibility
 
-Romanian (`lang="ro"`), full diacritics. Dark-first: verify warm-off-white body ≥4.5:1 on asphalt, amber large-text ≥3:1. Reduced-motion path mandatory (static road spine, no scroll-jack). Keyboard + screen-reader paths for the pinned call action and mobile menu. Touch targets ≥44px; the call dock is thumb-reachable.
+Romanian (`lang="ro"`), full diacritics. Dark only: warm-off-white body ≥4.5:1 on asphalt, near-black ink on every orange ≥4.5:1, amber only for marks. Reduced-motion path mandatory (the scene never runs, nothing loops). Keyboard + screen-reader paths for the pinned call action and mobile menu. Touch targets ≥44px; the call dock is thumb-reachable.
 
 ## Stack
 

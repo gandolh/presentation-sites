@@ -1,5 +1,5 @@
 ---
-summary: The calls about what the sites' React islands depend on (one icon family inlined at build time, Base UI under the four phone menus) and the visual world calls the owner reopened on the redesign board, starting with auto-service's move from the Bordcomputer to the job card on 2026-11-13. Split out of decisions.md on 2026-10-23.
+summary: The calls about what the sites' React islands depend on (one icon family inlined at build time, Base UI under the four phone menus) and the visual world calls the owner reopened on the redesign board, starting with auto-service's move from the Bordcomputer to the job card on 2026-11-13, and tractari's move from the night road to "Lines first" the same day. Split out of decisions.md on 2026-10-23.
 updated: 2026-11-13
 ---
 
@@ -158,3 +158,24 @@ is gone and its job moved to the `Zonă` cell (above the fold at 1280, the first
 **What this costs.** Fonts: Commissioner Variable `5.3.0` replaces IBM Plex Sans Variable. The hero's tent keeps its WebGL
 loop; its two panel tones are now the `membrane` and `membrane-shade` tokens (two tones, where the old shading had four).
 
+## tractari: the night road gives way to "Lines first" (2026-11-13)
+
+**Changed, 2026-11-13.** On the estate redesign board the owner approved the direction "Lines first" for tractari (runner-up
+"Night road, lit") and with it reopened two lines in `sites/tractari/DESIGN.md` and `PRODUCT.md` (brief 08, owner decision 1,
+"The world stays"). The site's own [DESIGN.md](../../sites/tractari/DESIGN.md) is rewritten from what shipped; the old lines
+are kept here as history.
+
+| Old line | Now |
+|---|---|
+| "Full-bleed cinematic hero: the 3D scene fills the entire opening viewport" | The hero is type on the ground with the board of three named phone lines; the scene is a plate in "Cum funcționează", with the steps strip over its foot |
+| "The whole page is one continuous night road ... each section is a stop on that single drive" (the road spine, `.road__line`, `.stop__marker`, the stop labels) | No spine; sections are plain bands, the nav follows the page order |
+| "White text on the orange call" (3.02:1) | Near-black `#1a0b05` on every orange (6.20:1); amber is no longer a text colour |
+| The phone dock was always on (below 1024 px) | One observer on the dispatcher's plate: header call outline while it shows and filled after; the dock shows at 760 px and under once the plate has left, and stays visible without script |
+
+**Kept:** dark with no switch (Q18), no photographs, Big Shoulders Display and Archivo, one orange for the call.
+
+**Also decided on the board:** `responseMinutes` stays out of the page (left in `site.ts`); nine `tel:` links in the built page
+(header 1, board 3, Servicii 1, footer 3, dock 1); no gsap (dependency and mentions removed); the dashes and `·` joins in the
+copy became commas, colons and full stops.
+
+**What this costs.** No new fonts. The scene is unchanged apart from its framing (the view is offset by a quarter of the plate).

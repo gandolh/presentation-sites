@@ -1,119 +1,117 @@
-# DESIGN.md — AXA Tractări
+# DESIGN.md: AXA Tractări
 
-Visual system for the AXA Tractări demo site. The strategic context (register,
-audience, the one structural move) lives in [PRODUCT.md](PRODUCT.md).
+Visual system for the AXA Tractări demo site, as it shipped in the 2026-11-13
+redesign ("Lines first"). The strategic context (register, audience, the one
+structural move) lives in [PRODUCT.md](PRODUCT.md).
 
 ## North star
 
-"Headlights on a wet road at 3am." Dark by default — asphalt at night, not a
-white brochure. Light comes from the things that rescue you: the truck's
-headlights, the rotating amber beacon, the lit lane markings. The site is
-minimalist; the **3D scene is the main accent**. One service (tractări auto pe
-platformă), one job (call), three owner numbers.
+A driver on the shoulder at 3am needs a number, not a film. The page is type on
+cold asphalt, one raised **board of three named phone lines**, and a 3D scene
+that sits further down as a plate. Dark with no theme switch, no photographs.
+One service (tractări auto pe platformă), one job (call), three owner numbers.
 
-Deliberately steps off the entire RO "tractari auto" market (red-on-white
-template, stock photo, four icon boxes) and off the generic AI landing template
-(centered hero stack, equal-box grids, eyebrow-on-every-section).
+It still steps off the RO "tractari auto" market (red-on-white, stock photo,
+four icon boxes) and off the generic AI landing template (centred hero stack,
+equal-box grids, an eyebrow on every section).
 
 ## Theme
 
-Dark-first. The base surface tokens ARE the dark asphalt; the rare light panel
-uses the inverse tokens. Color strategy: **Committed** — amber carries the
-identity across a dark field; one hotter safety-orange is reserved for the call
-action.
+One dark look, with no switch. Colour strategy: **committed**. Safety orange is
+the call and nothing else; amber marks things and is never text; ink is warm
+off-white. Near-black ink (`on-accent`) sits on every orange: the plate, the
+header call when filled, the dock.
 
-## Color (OKLCH; full token set in `src/styles/global.css`)
+## Colour (OKLCH, the full set in `src/styles/global.css`)
 
-| Role | Token | Value | Notes |
+| Role | Token | Hex | Notes |
 | --- | --- | --- | --- |
-| Page background | `--color-background` | `oklch(16% 0.012 250)` | cold asphalt, never pure black |
-| Surface container | `--color-surface-container` | `oklch(22% 0.015 250)` | cards, panels |
-| Body text | `--color-on-surface` | `oklch(95% 0.008 90)` | warm off-white, ≥4.5:1 on bg |
-| Secondary text | `--color-on-surface-variant` | `oklch(72% 0.012 250)` | ≥4.5:1 |
-| **Primary — amber beacon** | `--color-primary` | `oklch(80% 0.16 80)` | identity: wordmark mark, kicker, glow, 24/7 badge. Dark ink rides on it |
-| **Accent — safety orange** | `--color-accent` | `oklch(68% 0.2 45)` | the ONE call CTA; white text on it |
-| Headlight | `--color-headlight` | `oklch(95% 0.03 230)` | cold xenon white-blue, hero highlights |
+| Ground | `background`, `surface` | `#090e12` | cold asphalt |
+| Raised | `surface-container` | `#181f25` | header, board, tiles, panel, strip |
+| Raised, higher | `surface-container-high` | `#252c34` | line cells, pictogram wells, menu button |
+| Ink | `on-surface` | `#f0eee9` | body and heads |
+| Ink, muted | `on-surface-variant` | `#a8afb5` | lede, nav, copy |
+| Edge, strong | `outline` | `#636a71` | outline calls |
+| Edge | `outline-variant` | `#30363c` | panel edges, rules |
+| Amber | `primary` | `#f3b01d` | marks: beacon, lane start, map hub, step nodes, focus ring |
+| Orange | `accent` | `#f76400` | the call; hover `#fc7a14` |
+| Ink on orange | `on-accent` | `#1a0b05` | 6.20:1 on the orange (white was 3.02) |
 
-No red (every competitor uses red). Amber is the actual colour of a tow truck's
-warning light and is distinctive in the category.
+`-low`, `-lowest`, `-highest`, `primary-hover` and `primary-bright` stay as
+aliases. The scene plate has its own tokens (`plate-*`, `scrim`) and the steps
+strip's lane fade has `mask-on` and `mask-half`; `shadow-board` is the only
+shadow. No red anywhere.
 
 ## Typography
 
-Two families, paired on a contrast axis (industrial condensed display vs. neutral
-grotesque body). Self-hosted via `@fontsource` (no Google CDN — GDPR).
+Self-hosted from `@fontsource-variable/big-shoulders-display` 5.2.5 and
+`@fontsource-variable/archivo` 5.3.0 (no Google CDN).
 
-- **Display** `--font-display`: **Big Shoulders Display** (variable). Drawn from
-  American highway/industrial signage — flat terminals, heavy weights. Used
-  uppercase for headings + wordmark. The "signage / heavy-duty / urgent" register.
-- **Body** `--font-body`: **Archivo** (variable). A grotesque with real
-  character and full RO diacritics. (Inter was rejected — it is on impeccable's
-  reflex-reject list.)
+- **Display** Big Shoulders Display, weight 800, **sentence case**; the
+  wordmark alone keeps its capitals.
+- **Body** Archivo.
+- Scale as tokens `--text-display` 80, `--text-h2` 48, `--text-h3` 28, `--text-lede`
+  20, `--text-body` 16, `--text-label` 14 (600). At 760 px and under the heads
+  step down to 44, 32, 24 and the lede to 17.
+- Every phone number is tabular and `white-space: nowrap`. The plate's number
+  never drops below 32 px on a phone and 48 px above it.
 
-Headings: `clamp()` fluid, line-height ~0.9, uppercase, `text-wrap: balance`.
-Numbers use `font-variant-numeric: tabular-nums` (`.tnum`) so phone numbers don't
-jitter. Hero title ceiling ≤ 6rem.
+## Layout and components
 
-## Layout & components
+- **Fixed banner and header** (36 + 65 px, 113 px with a wrapped banner on a
+  phone). Anchors take `scroll-margin-top` 101 px (113 px at 760 and under).
+  Nav follows the page: Servicii, Acoperire, Cum funcționează, Contact; the
+  same in the Drawer.
+- **Hero**: a plain status line (`Non-stop 24/7, Oltenia`), the h1, the lede
+  with `Ce facem` as a text link (inline at the end of the lede on a phone, a
+  44 px target), a lit lane, then the **board**.
+- **The board** (`Contact.astro`, `id="contact"`): the only raised object.
+  The dispatcher's line is the orange plate (48 px number, disc with the phone);
+  Andrei and Vasile are two cells beside it. At 1000 px and under the plate
+  takes the full row and the cells sit 6 + 6 under it; on a phone every line is
+  a full-width row.
+- **One observer** on the plate (`.line--main`) sets `data-plate="in|out"` on
+  the page. While in: the header call is an outline, the dock is hidden. Once
+  out: the header call fills (`accent`, `on-accent`) and, at 760 px and under,
+  the dock shows. The dock is visible by default, so no-JS visitors keep it.
+  Exactly one orange call per frame; the Servicii call is an outline at every
+  width.
+- **Servicii**: a full-width lead row with a 64 px pictogram over four tiles,
+  each with its own pictogram (orange, in a raised well).
+- **Acoperire**: one raised panel, copy and counties left, the map right with no
+  frame (static SVG, no animation).
+- **Cum funcționează**: the 3D scene is a 440 px plate (300 px on a phone) over
+  its CSS backdrop; the h2 sits at the plate's lower left, 24 px above the steps
+  strip, which overlaps the plate's foot. The plate's gradient and scrim end on
+  `background`.
+- **Call dock** (`CallDock.tsx`, phone only): an orange band, the dispatcher's
+  call and a toggle that opens the other two lines (each with a 20 px phone
+  glyph). Its focus ring is the dark ink, since amber vanishes on orange.
+- **Footer**: rules and rows; the counties and legal ids are separate spans.
 
-- Asphalt-dark sections; one quiet lighter band (Coverage). Radius is hard /
-  industrial (`--radius` ~0.3rem).
-- **The road spine (`.road` / `.road__line` / `.stop`)** — the one structural
-  move made literal. Below the hero, a single dashed, two-tone (amber→orange)
-  lane line runs down the page in a left gutter, with a travelling amber glow
-  (off under reduced motion). Every section is a `.stop` pinned to it by a
-  glowing `.stop__marker` node; Contact gets the larger safety-orange
-  `--end` destination node. The "stops on one drive" idea is now the page's
-  actual backbone, not just prose in the docs.
-- **Full-bleed cinematic hero**: the 3D scene fills the entire opening viewport
-  as the background plate; copy is overlaid lower-left (film-title framing) over
-  a bottom-left legibility scrim + edge vignette (`.hero-scrim`). No boxed panel.
-- **Sticky demo banner** fixed at the very top; the fixed nav sits directly
-  beneath it (offset by `--banner-h`). The phone is load-bearing: a `btn-call`
-  in the nav (desktop) and a persistent full-width `.call-dock` at the bottom
-  (mobile).
-- **Servicii** (`.svc-grid`): asymmetric capability tiles — the real job
-  (tractări pe platformă) is the wide amber-edged `--lead` tile, the rest
-  support it. Not an equal-box icon grid.
-- **Cum funcționează**: the 3-step `.timeline` (vertical on mobile, a horizontal
-  road on lg+). One call → we drive → safe transport.
-- **Coverage**: asymmetric copy-left / animated-SVG-map-right (the 5 Oltenia
-  counties radiating from the Târgu-Jiu hub). Pure SVG + CSS, works without JS.
-- **Contact**: the destination. The primary owner number dominates (large,
-  safety-orange); the other two sit beneath, asymmetric — not a 3-card grid.
-- A single quiet `.stop-label` (small amber tracked label) opens each stop.
-  One deliberate cadence, not an eyebrow on every section.
+## The 3D scene (`src/components/hero/`)
 
-## The 3D hero scene (`src/components/hero/`)
+A flatbed tow truck (RO plate "GJ 01 AAV") on a winding night road, seen from a
+chase camera, built from Three.js primitives. `scene.ts` is the framework-free
+builder; `HeroCanvas.tsx` is the `client:only` island that imports Three.js
+dynamically, runs only when WebGL is available and reduced motion is off, caps
+the pixel ratio and pauses off-screen. The camera view is offset by a quarter of
+the plate's height so the truck clears the head and the strip.
 
-A flatbed tow truck (empty platform, RO plate "GJ 01 AAV") driving a winding
-night road, seen from a **chase camera behind it**. The truck keeps the **right
-lane**, steers and banks into the curves; headlights, tail lights and a rotating
-amber beacon light the scene; dashed centre-line and reflector posts stream past
-for speed. Built entirely from Three.js primitives — no external model, no
-textures, tiny on disk, fully on-brand.
+## Motion and accessibility
 
-- `scene.ts` — pure, framework-agnostic scene builder; returns `{ render, resize,
-  dispose }`. The road ribbon + furniture + truck all sample one `roadX(z)` curve
-  so they stay locked to the same lane; everything flows toward the camera as the
-  truck drives forward.
-- `HeroCanvas.tsx` — React island (`client:only`). Dynamically imports Three.js
-  (so it never touches the initial bundle), runs only when WebGL is available and
-  `prefers-reduced-motion` is not set, caps pixel-ratio, and pauses the loop when
-  off-screen or the tab is hidden.
-
-## Motion & accessibility
-
-- Reduced motion: the 3D scene does not run; the `.hero-stage` CSS night-road
-  backdrop carries the visual. Beacon pulse, scroll cue, and SVG map animations
-  all have `prefers-reduced-motion: reduce` off-switches.
-- No-JS / crawler: all copy and all three `tel:` links are in the static HTML;
-  the 3D scene and call-dock expansion are pure enrichment.
-- Dark theme contrast verified (warm off-white body ≥4.5:1 on asphalt; amber
-  large text ≥3:1). Focus-visible rings, ≥44px touch targets, keyboard-trapped
-  mobile menu, skip link.
+- Reduced motion: the scene never draws; the plate's CSS backdrop stands in.
+  Nothing else loops: the beacon pulse, scroll cue, map animations, the lane's
+  travelling glow and the scroll reveal are gone.
+- No-JS and crawlers: all copy and all nine `tel:` links are in the static HTML
+  (header 1, board 3, Servicii 1, footer 3, dock 1; the dock's two backup lines
+  appear when it opens).
+- Contrast: lowest text 6.20:1, lowest icon 4.55:1 (scripted, both widths).
+  Focus ring 2 px amber, ink on the dock; touch targets at least 44 px; the
+  Drawer traps focus; a skip link.
 
 ## Performance
 
-Astro static shell + lazy islands. Three.js ships in its own chunk fetched only
-when `HeroCanvas` mounts; the initial HTML/CSS carries no 3D. Served under
-sub-path `/tractari` (`PUBLIC_BASE`, `withBase()`), pinned exact dep versions.
+Astro static shell and lazy islands. Three.js ships in its own chunk fetched
+only when `HeroCanvas` mounts, and only the plate waits on it. Served under
+`/tractari` (`PUBLIC_BASE`, `withBase()`), exact dependency pins.
