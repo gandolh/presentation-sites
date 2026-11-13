@@ -1,6 +1,6 @@
 ---
-summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs, Cardo headings for the parish) and the owner questions still open (Q4, Q6 to Q10).
-updated: 2026-11-11
+summary: Settled product and architecture decisions (independent deployments, Orthodox first, static-per-build, Churchix never holds funds, Base UI under island dialogs, Cardo headings for the parish, the porch notice redesign of 2026-11-13) and the owner questions still open (Q4, Q6 to Q10).
+updated: 2026-11-13
 ---
 # Open Questions — decisions needed from the product owner
 
@@ -71,3 +71,25 @@ Q4 (default rail per church), Q6 (pomelnice depth — basic form included in v1 
 - **Markdown, the churches' content and the design source stay out of Prettier.**
 - **`.claude/rules/` is committed**: the `.claude/` ignore line became `.claude/settings.local.json`.
 - **`exactOptionalPropertyTypes` stays off** (1 error in ui, 5 in the app); the owner decides when it goes on.
+
+## Changed (2026-11-13, brief 05: the porch notice)
+
+The owner approved the redesign "The porch notice" on the estate redesign board, with every question standing as proposed.
+Two recorded decisions changed; the old lines stay as history.
+
+- **The phone menu (2026-10-23, Q40, above).** *Old:* "The phone menu (`MobileNav`) is a Base UI `Dialog` (2026-10-23), a
+  swipeable `Drawer` since 2026-11-12." *Changed 2026-11-13:* the Drawer stays, behind `Meniu`, and a fixed 64 px bottom bar
+  of five places (Acasă, Program, Pomelnice, Donează, Meniu, plus the safe-area inset) joins it as `BottomBar`, beside
+  `MobileNav`. The page pads by the bar's height. The header holds the wordmark only on phones. Pomelnice and Donează in the
+  bar follow `features.pomelnice` and `features.giving`.
+- **The 2026-06-18 redesign ([design-system](design-system.md)).** *Old:* the Hero was "an asymmetric split" with a framed
+  image above the week timeline, the liturgical Rail ran beside the content, Home ended on "a quiet burgundy despre band", and
+  `PageShell` opened inner pages with an overline kicker. *Changed 2026-11-13:* the name and the arched picture sit in a
+  full-width burgundy band, the program and the giving card rise out of its edge, the Rail is retired, Despre is plain text
+  beside a facts card, and inner pages open on a slim band with the title and lede. The kickers are dropped on every page.
+- **Kept:** the seed contract (four seeds, no new seed), Cardo headings and Inter body (2026-11-04), one look per parish (no
+  theme switch, no dark palette; owner, 2026-11-10, Q18), the formal tone, the IBAN, Form 230, SMS and endpoint logic.
+- **Owner's rulings on the build (2026-11-13):** the footer's `Termeni și Condiții` and `Politică de Confidențialitate` links
+  stay as they are (they 404 today; adding the pages is content work, outside this brief). The Home giving card hides its
+  account lines while the IBAN fails the mod-97 check, a display condition in `packages/ui` with no schema change; the
+  footer and /donatii print the IBAN as before.

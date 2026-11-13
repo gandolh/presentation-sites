@@ -1,9 +1,11 @@
 ---
-summary: The Ecclesia Digitalis design system. Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, and how a church re-skins by tokens alone. Covers the 2026-06-18 liturgical-rail redesign (Rail, PageShell, asymmetric hero) and the max-w guard.
-updated: 2026-11-04
+summary: The parish template's design system, "The porch notice" since 2026-11-13 (before it Ecclesia Digitalis). Tailwind v4 with Material-3 tokens, the seed-versus-derived token contract, how a church re-skins by tokens alone, what the 2026-11-13 redesign shipped (name band, board, bottom bar) and the max-w guard.
+updated: 2026-11-13
 ---
 
-# Design system — "Ecclesia Digitalis"
+# Design system — "The porch notice" (before 2026-11-13: "Ecclesia Digitalis")
+
+The look that ships is described in [DESIGN.md](../../DESIGN.md). This page keeps the token contract and the decisions behind it. The redesign of 2026-11-13 (brief 05) is the section just below; the 2026-06-18 "liturgical rail" section after it is history.
 
 The visual layer of every church site. It lives in `@churchix/ui` and re-skins per church by **token swap only** — components never fork. The design is **reverent, formal, architectural** — a "Digital Iconostasis" that frames sacred content with restraint (tonal layers + 1px outlines over heavy shadows; gold as a sparing accent).
 
@@ -49,21 +51,54 @@ Fixed (not seed-driven): the **tertiary** neutral family + `--inverse-surface`/`
 
 **AA contrast (default Orthodox palette, verified):** primary `#4e0816` on cream `#fcf9f4` = 14.6:1; `primary-container #6b1f2a` = 10.8:1; `on-surface` = 16.3:1; `on-surface-variant` = 8.9:1; white-on-primary = 15.3:1; error = 6.2:1 — all pass AA text. **Gold flag:** the church gold seed (`#c8a24b`, the `--secondary` default in `tokens.css`) is only **2.2:1** on cream — it MUST stay decorative (dividers, ≥3px borders, fills behind `on-secondary`), never body text on light. The DESIGN.md token gold `#785a02` passes (6.1) but is darker than the `#c8a24b` seed the audit adopted on 2026-05-30.
 
-## The 2026-06-18 redesign ("liturgical rail")
+## The 2026-11-13 redesign ("The porch notice")
 
-Commit `70999ff` rebuilt the visual identity on the same token contract. The one move is the liturgical week as a vertical spine.
+Brief 05, approved by the owner on the estate redesign board the same day, with every question on the board standing as
+proposed. It replaced the liturgical rail on the same four-seed contract (see [decisions](decisions.md)). What shipped:
 
-- **[Rail](../../packages/ui/src/components/Rail.astro)** — a thin gold vertical rule with day/feast diamond markers down the left margin of a content column. Decorative (`aria-hidden`), built only from `--secondary` and `--outline-variant`, so it adds structure and no palette. Collapses to a hairline on mobile.
-- **[PageShell](../../packages/ui/src/components/PageShell.astro)** — the inner-page frame: overline kicker, display title, lede and a gold rule, left-aligned, with the Rail beside the body and an optional `actions` slot. It wraps `max-w-container-max mx-auto px-sm md:px-gutter` and is used by every inner page except the 404 (`ErrorLayout`) and the announcement detail page, which sets the same container itself. The home page also sets its own sections.
-- **[Hero](../../packages/ui/src/components/Hero.astro)** — an asymmetric split. Left is the identity (overline, church name in `display-xl`, the live "next service", CTAs). Right is a framed image above a quiet "this week" timeline built from the schedule. It degrades with no image (tonal burgundy panel and glyph), no schedule or no next service.
-- **Type tokens** in [theme.css](../../packages/ui/src/styles/theme.css): `display-xl` (clamped 2.75 to 4.5rem, the hero name) and `overline` (11px, 0.22em tracking, the formal micro-label used by PageShell, SectionHeading and Footer).
-- Header's active nav uses an animated gold underline. SectionHeading gained an optional kicker and a gold rule. Light-surface eyebrows use `on-secondary-container` (AA-safe), not the pale `secondary-fixed`, which only clears contrast on the dark burgundy band.
+- **Hero.** A full-width `primary` band holds the name (Cardo 52/60 from 960 px, 32/40 from 600, 28/34 below: it wraps and
+  is never cut) and the picture in an arch (246 x 298; 210 x 252 on screens 780 px tall or less; 96 x 116 on phones; a photo
+  fills it with `cover`, with none it is the `primary-strong` fill with the church glyph in light gold). The program
+  board (next service, then the week, one route to /program) and the giving card rise 64 px out of the band's edge. The
+  card hides its account lines while the IBAN fails the mod-97 check (`lib/iban.ts`), and keeps its route to /donatii.
+- **PageShell.** A slim band with the title and lede; the first cards rise 56 px over its edge. The `kicker` prop and the
+  Rail are gone (Floor 9: no eyebrows). The kickers `Rânduiala liturgică`, `Pomenire la Sfânta Liturghie` (and
+  `Pomenire`), `Dania ta`, `Istoric și hram`, `Vino la biserică` and `Din viața parohiei` went with it. `hram` is still on
+  /despre (the `Hramul` heading and the history).
+- **Navigation.** The header is a solid white band with the six places from 960 px; below it the header holds the
+  wordmark only and a fixed **BottomBar** (Acasă, Program, Pomelnice, Donează, Meniu; 64 px plus the gesture inset) takes
+  over. `Meniu` is the `MobileNav` island and its Drawer (now rising from the bar, `swipeDirection="down"`).
+- **Home, below the band.** Despre is plain text beside a facts card. The news tray is tinted with white cards and the
+  pinned lead first; the gold stripe, the radial washes and the tracked capitals are gone.
+- **Pages.** Program: one card per day, Sunday on `surface-highlight`. Donații: the transfer card beside the project card,
+  the beneficiary callout inside it, `Copiază` the one filled action, Form 230 a wide card. Pomelnice: today's note first
+  as the first card, then the name cards with tinted heads; no submit while no endpoint is set.
+- **Tokens.** New: `primary-strong`, `secondary-strong`, `on-primary-variant`, `surface-highlight`, `--shadow-sm`,
+  `--shadow-board`, `--text-display-md`, `--text-display-sm`, `--text-time(-mobile)`, `--text-wordmark(-mobile)`.
+  Re-derived: `on-surface`, `on-surface-variant`, `surface-container`, `secondary-container`; `label-md` has no tracking
+  and weight 600. Dropped (nothing used them): `--text-overline`, `--text-display-xl`, `--text-display-lg` and the legacy
+  aliases `--brand-*`, `--ink`, `--ink-soft`, `--line`, `--bg`, `--space` (BaseLayout stopped emitting `--brand-*`). The M3
+  roles no screen reads (`*-fixed`, `surface-tint`, `inverse-primary`, `surface-dim`, the tertiary set and so on) stay in
+  the contract.
+- **Checks.** `churchix/e2e/` holds the Floor checks (contrast over the built pages for both seed sets, focus ring,
+  reduced motion, 390 overflow), a layout spec (text inside its card and every clipping ancestor at 1280, 1024, 960, 768,
+  390 and 360), the giving specs and the shots spec (`SHOTS_DIR=<folder> npx playwright test -c e2e shots`).
+
+## The 2026-06-18 redesign ("liturgical rail"), retired on 2026-11-13
+
+Commit `70999ff` rebuilt the visual identity on the same token contract. The one move was the liturgical week as a vertical
+spine; the 2026-11-13 redesign replaced all of it, and the lines below are history.
+
+- **Rail** — a thin gold vertical rule with day/feast diamond markers down the left margin of a content column. Deleted.
+- **PageShell** — the inner-page frame: overline kicker, display title, lede and a gold rule, with the Rail beside the body.
+- **Hero** — "an asymmetric split": the identity left, a framed image above a quiet "this week" timeline right. Home ended on a quiet burgundy despre band.
+- **Type tokens** `display-xl` and `overline` (11px, 0.22em tracking). Deleted.
 
 ## Component & page inventory
 
-Global chrome (Header with language switcher and Donează CTA, Footer, SectionHeading, Divider, Rail, PageShell), primitives (Button, Card, Badge, Field, Alert, EmptyState, Icon), feature components (Hero, ServiceSchedule, AnnouncementList, CampaignCard, GivingChannels) and the 10 pages of `apps/parohia-harlesti-bacau`: home, program, anunturi list and detail, donatii, pomelnice, contact, despre, 404.
+Global chrome (Header with language switcher and Donează CTA, BottomBar, Footer, SectionHeading, Divider, PageShell), primitives (Button, Card, Badge, Field, Alert, EmptyState, Icon), feature components (Hero, ServiceSchedule, AnnouncementList, CampaignCard, GivingChannels) and the 10 pages of `apps/parohia-harlesti-bacau`: home, program, anunturi list and detail, donatii, pomelnice, contact, despre, 404.
 
-**Home** ([index.astro](../../apps/parohia-harlesti-bacau/src/pages/index.astro)) is now the asymmetric Hero, then an announcements section on the Rail (a wide lead card plus up to three stacked smaller cards, pinned first), then a quiet burgundy "despre" band with a quick-facts list (hram, eparhie, Sfânta Liturghie). It is no longer hero, announcements strip and Program + About bento (brief 07, superseded). The original inventory is in [ADR-0001 §3](../../docs/adr/0001-design-system-foundation.md); the build breakdown is in [status](status.md).
+**Home** ([index.astro](../../apps/parohia-harlesti-bacau/src/pages/index.astro)) is the name band and its two cards, then the news tray (a pinned lead card plus up to three smaller cards), then Despre as plain text beside a facts card (hram, eparhie, Sfânta Liturghie), since 2026-11-13. The original inventory is in [ADR-0001 §3](../../docs/adr/0001-design-system-foundation.md); the build breakdown is in [status](status.md).
 
 ## Tailwind `max-w-*` guard
 
@@ -91,7 +126,7 @@ const items = (await getCollection('announcements')).map((e) => e.data);
 
 Guidance: pick a list-appropriate `icon` (`push_pin`/announcements, `campaign`/campaigns, `schedule`/program, `event`/events), keep the `title` reverent and Romanian, and only attach a `cta` slot when there's a genuinely useful next step. The CTA uses the **secondary** Button variant inside lists (the page already has its primary action elsewhere); list pages own the empty-vs-populated branch, the primitive owns the visuals.
 
-**Error pages reuse the same primitive.** The shared **`ErrorLayout`** (`@churchix/ui/layouts/ErrorLayout.astro`) composes `BaseLayout` chrome (per-church Header/Footer + brand tokens) around an `EmptyState` with a `church`/`diversity_1` illustration, a quiet gold status-code eyebrow, and a primary "Înapoi la pagina principală" Button. Each app's `src/pages/404.astro` loads its `site` config and renders `<ErrorLayout site={site} />`; reverent Romanian defaults ("Pagina nu a fost găsită") live in the component and are overridable via `title`/`message`/`code`/`icon` props. Astro emits it as a static `404.html` that the CDN/host serves on unknown paths.
+**Error pages reuse the same primitive.** The shared **`ErrorLayout`** (`@churchix/ui/layouts/ErrorLayout.astro`) composes `BaseLayout` chrome (per-church Header/Footer + brand tokens) around an `EmptyState` with a `church`/`diversity_1` illustration, the status code, and a primary "Înapoi la pagina principală" Button (since 2026-11-13 on the slim `PageShell` band, the card raised over its edge). Each app's `src/pages/404.astro` loads its `site` config and renders `<ErrorLayout site={site} />`; reverent Romanian defaults ("Pagina nu a fost găsită") live in the component and are overridable via `title`/`message`/`code`/`icon` props. Astro emits it as a static `404.html` that the CDN/host serves on unknown paths.
 
 **Generic 500 / server-error page is N/A for static SSG.** With the static-per-build deploy target (no Astro adapter), there is no server route to render a `500.astro`; runtime 5xx is handled by the host/CDN, not our code. If a church later adopts an on-demand adapter (the optional escape hatch), it can add a `500.astro` that reuses `ErrorLayout` with `code="500"` and an error-tone message — the composition already supports it.
 
@@ -134,7 +169,7 @@ The system holds **WCAG 2.1 AA** across the realistic brand range. Verified with
 
 **Keyboard/focus:** a token-driven **skip-to-content** link (`#main`) leads the tab order; every interactive element (nav, language switcher, MobileNav sheet + its focus trap/Esc-restore, CopyIban, donate presets, PomelnicForm, all CTAs, footer links) is reachable with a visible **burgundy `focus-visible:ring-primary`** ring on light surfaces (~14.6:1); gold rings (`ring-secondary`) are used only on the dark burgundy hero where the offset gives ~6.4:1.
 
-**Phone menu** (Base UI `Drawer` since 2026-11-12, `Dialog` from 2026-10-23): `packages/ui/src/islands/MobileNav.tsx` is built on the wrapper `packages/ui/src/primitives/Drawer.tsx` over `@base-ui/react/drawer` (`swipeDirection="up"`), the only file that imports Base UI. The toggle is the trigger and keeps its changing `aria-label`; the sheet is the popup with a hidden title "Meniu", its links in a `<nav>` (`Drawer.Content`). The popup sits in a viewport that is `absolute` in the island's own `relative` wrapper (the portal container), so it still hangs under the toggle. The header has a `backdrop-filter`, which makes it the containing block of a fixed child, so the invisible `Drawer.Backdrop` starts at the header's bottom edge (`top-full`) and catches a tap outside. A swipe up, a tap outside, the toggle (an X when open; the page behind a modal drawer is inert, so a press on it is a press outside), Esc close it, with a short fade and drift under `motion-safe:`. Nav and locale links close it through a `leftByLink` ref, so focus goes where the link went instead of back to the toggle. Base UI also locks the page's scroll, which the hand-built menu never did. The look is pixel-identical to the `Dialog` sheet.
+**Phone menu** (Base UI `Drawer` since 2026-11-12, `Dialog` from 2026-10-23; since 2026-11-13 it is the `Meniu` place of the `BottomBar`, the sheet rises from the bar and closes on a swipe down; the rest of this paragraph describes the 2026-11-12 build, which hung from the header): `packages/ui/src/islands/MobileNav.tsx` is built on the wrapper `packages/ui/src/primitives/Drawer.tsx` over `@base-ui/react/drawer` (`swipeDirection="up"`), the only file that imports Base UI. The toggle is the trigger and keeps its changing `aria-label`; the sheet is the popup with a hidden title "Meniu", its links in a `<nav>` (`Drawer.Content`). The popup sits in a viewport that is `absolute` in the island's own `relative` wrapper (the portal container), so it still hangs under the toggle. The header has a `backdrop-filter`, which makes it the containing block of a fixed child, so the invisible `Drawer.Backdrop` starts at the header's bottom edge (`top-full`) and catches a tap outside. A swipe up, a tap outside, the toggle (an X when open; the page behind a modal drawer is inert, so a press on it is a press outside), Esc close it, with a short fade and drift under `motion-safe:`. Nav and locale links close it through a `leftByLink` ref, so focus goes where the link went instead of back to the toggle. Base UI also locks the page's scroll, which the hand-built menu never did. The look is pixel-identical to the `Dialog` sheet.
 
 **i18n externalization points:** chrome strings live in `.astro`/island props with RO defaults (nav labels from `site.nav`, `Donează`/locale names/`skipToContentLabel`/`localeLabel` as overridable props); page/content strings come from content collections; money renders via `Intl.NumberFormat` with an **explicit currency** from integer minor units, dates via `Intl.DateTimeFormat`. Liturgical RO terms staying RO inside EN pages is intended, not a defect.
 

@@ -109,6 +109,10 @@ spacing:
   container-max: 1200px
 ---
 
+> **Superseded on 2026-11-13.** This is the original Stitch token spec of "Ecclesia Digitalis", kept as the archive. The
+> system that shipped (brief 05, "The porch notice") is in [DESIGN.md](../../DESIGN.md) and the wiki's
+> [design-system](../../corpus/wiki/design-system.md) page.
+
 ## Brand & Style
 
 The design system is engineered for the Romanian Orthodox liturgical context, balancing ancient tradition with modern digital accessibility. The brand personality is **reverent, formal, and architectural**. It avoids decorative excess in favor of a "Digital Iconostasis" approach—where the interface serves as a quiet, respectful frame for sacred content.

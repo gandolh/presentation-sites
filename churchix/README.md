@@ -41,7 +41,7 @@ Decisions are recorded as ADRs in [docs/adr/](docs/adr/). Work is specced as num
 
 ## Status
 
-Early. The shared packages (`@churchix/ui`, `@churchix/schemas`, `@churchix/config`) and one reference church app (`apps/parohia-harlesti-bacau`) exist and build. The [Ecclesia Digitalis design system](docs/design/DESIGN.md) is integrated; the audit follow-ups are still open. See [status](corpus/wiki/status.md).
+Early. The shared packages (`@churchix/ui`, `@churchix/schemas`, `@churchix/config`) and one reference church app (`apps/parohia-harlesti-bacau`) exist and build. The design system ("The porch notice", since 2026-11-13; [DESIGN.md](DESIGN.md)) is integrated; the audit follow-ups are still open. See [status](corpus/wiki/status.md).
 
 ## Getting started
 

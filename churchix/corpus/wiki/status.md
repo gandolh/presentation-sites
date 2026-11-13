@@ -1,8 +1,14 @@
 ---
-summary: Dated snapshot of churchix as of 2026-11-04, per area. The one church app and its build, the Ecclesia Digitalis design system (integrated 2026-05-29, liturgical-rail redesign 2026-06-18), the docs site on Docusaurus, the phone menu on Base UI, the brand seeds winning over the token defaults, what waits on a deploy, and what is still open. Start here after a break.
-updated: 2026-11-11
+summary: Dated snapshot of churchix as of 2026-11-13, per area. The one church app and its build, the design system (Ecclesia Digitalis integrated 2026-05-29, replaced by the porch notice redesign on 2026-11-13), the docs site on Docusaurus, the phone menu on Base UI, the brand seeds winning over the token defaults, what waits on a deploy, and what is still open. Start here after a break.
+updated: 2026-11-13
 ---
-# Status (2026-11-04)
+# Status (2026-11-13)
+
+The parish template was redesigned on 2026-11-13 (brief 05, "The porch notice", approved by the owner on the estate
+redesign board): the name band with its arch, the program board and giving card rising out of its edge, the Rail retired,
+a fixed bottom bar of five places on phones beside the Drawer, and every inner page on a slim band. Built locally, not
+pushed; the owner deploys (`node cli.ts churchix deploy`). See [design-system](design-system.md) and
+[decisions](decisions.md).
 
 Base UI is pinned exactly at 1.9.0 in `@churchix/ui` (brief 02, 2026-11-10).
 
@@ -31,7 +37,7 @@ brief is open; brief numbering restarted at 01 on 2026-11-02 (see
   `:where(:root)`, so a church's `site.json` seeds win and it re-skins by
   token swap alone. The parish now renders its own `#6b1f2a`, and keeps the
   system's Cardo headings ([design-system.md](design-system.md)).
-- **Home and inner pages** (2026-06-18). The liturgical-rail redesign
+- **Home and inner pages** (2026-06-18, replaced 2026-11-13: see the note at the top). The liturgical-rail redesign
   (`70999ff`) rebuilt the hero, the home page and the inner-page headers
   around `Rail.astro` and `PageShell.astro`.
 - **Accessibility and i18n** (2026-05-29). Skip link, AA contrast across the
