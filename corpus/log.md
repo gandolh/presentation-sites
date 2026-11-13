@@ -658,3 +658,10 @@ overflow, taking the site from the Playwright project, for saloon, subcort, trac
 `DESIGN.md` is rewritten from what shipped, the Bordcomputer calls are recorded as changed in `wiki/decisions-ui.md`, and
 `PRODUCT.md` drops the quote form. At 1280 the pages differ from the comps by 0.07-0.08% of pixels. Waits on `node cli.ts
 auto-service deploy`. Details in the [brief's outcome](briefs/done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md).
+
+## [2026-11-13] approval | 06 saloon redesign, "Menu beside the work"
+
+The owner approved the saloon redesign direction "Menu beside the work" (runner-up "Daylight studio") on the estate
+redesign board, with every question on the board standing as proposed: the phone booking bar is docked from the first
+paint with a round call button, the direction is B, and the facts pair (`3+ ani de experiență`, `1 la 1`) stays hidden
+until the real number is set. The build follows, one commit for the tokens and one per screen.
