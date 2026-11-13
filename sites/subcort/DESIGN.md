@@ -1,299 +1,267 @@
 ---
 name: Subcort
-description: Event-tent rental & setup in Gorj/Oltenia — the site as a drawing set. Every page is a numbered sheet, every graphic is a projection of one shared marquee model, and the object is drawn in ink while every annotation is orange.
+description: Event-tent rental & setup in Gorj/Oltenia. "On your ground": the tent stands on a measured sage plot, and the facts lie on it as cards and panels. Every graphic is a projection of one shared marquee model; the object is drawn in ink and every annotation is orange.
 colors:
-  ink: "oklch(29% 0.028 234)"
-  ink-2: "oklch(48% 0.024 233)"
-  line: "oklch(52% 0.026 234)"
-  line-soft: "oklch(76% 0.017 233)"
-  hair: "oklch(90.5% 0.006 230)"
-  signal: "oklch(52.5% 0.152 40)"
-  signal-hover: "oklch(47% 0.145 39)"
-  signal-soft: "oklch(95% 0.022 45)"
-  on-signal-soft: "oklch(44% 0.14 39)"
-  sheet: "oklch(98.6% 0.002 90)"
-  paper: "oklch(100% 0 0)"
-  fill: "oklch(94.5% 0.004 233)"
-  fill-2: "oklch(96.6% 0.003 233)"
+  ink: "#1d2e37"
+  ink-2: "#516069"
+  line: "#5b6c76"
+  line-soft: "#a7b3ba"
+  hair: "#dde1dd"
+  signal: "#af4316"
+  signal-hover: "#9a3409"
+  signal-soft: "#fceae3"
+  on-signal-soft: "#8f2d01"
+  sheet: "#f0f4f0"
+  field: "#dfe8de"
+  grid: "#d4ded3"
+  paper: "#fcfdfc"
+  fill-2: "#eef1ee"
+  edge: "#b5bdb5"
+  deck: "#eceff1"
+  membrane: "#fafaf8"
+  membrane-shade: "#eeeeec"
   success: "oklch(52% 0.1 155)"
   error: "oklch(52% 0.17 28)"
 typography:
   display:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "clamp(2.35rem, 5.2vw, 3.9rem)"
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: "-0.034em"
-  headline:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)"
-    fontWeight: 600
-    lineHeight: 1.05
-    letterSpacing: "-0.028em"
-  title:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "clamp(1.05rem, 1.7vw, 1.2rem)"
-    fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: "-0.014em"
-  contact:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "clamp(1.12rem, 2vw, 1.45rem)"
-    fontWeight: 600
-    lineHeight: 1.25
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "clamp(2.125rem, 1.63rem + 2.02vw, 3.25rem)"
+    fontWeight: 650
+    lineHeight: "56px at 1280, 38px at 390"
     letterSpacing: "-0.02em"
-  lede:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "clamp(1.02rem, 1.4vw, 1.12rem)"
-    fontWeight: 400
-    lineHeight: 1.62
-    letterSpacing: "normal"
-  body:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "normal"
-  body-sm:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "0.93rem"
-    fontWeight: 400
-    lineHeight: 1.55
-    letterSpacing: "normal"
-  small:
-    fontFamily: "IBM Plex Sans Variable, system-ui, sans-serif"
-    fontSize: "0.87rem"
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: "normal"
-  plate-no:
-    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "0.78rem"
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: "0.09em"
-  datum-key:
-    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "0.7rem"
-    fontWeight: 500
-    lineHeight: 1.2
-    letterSpacing: "0.1em"
-  dimension:
-    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "1.05rem"
+  h2:
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem)"
+    fontWeight: 650
+    lineHeight: "40px at 1280, 32px at 390"
+    letterSpacing: "-0.01em"
+  title:
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.3
-    letterSpacing: "normal"
+  lede:
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "1.125rem (1.0625rem on a phone)"
+    fontWeight: 400
+    lineHeight: "28px (26px on a phone)"
+  body:
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.625
+  label:
+    fontFamily: "Commissioner Variable, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+    lineHeight: 1.43
+    note: "Sentence case, untracked."
+  figure:
+    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
+    fontSize: "1.0625rem"
+    fontWeight: 600
+    lineHeight: 1.41
+    note: "Figures, ranges with units and sheet numbers only."
 rounded:
   sm: "0px"
   md: "2px"
-  pill: "999px"
+  full: "9999px"
 components:
-  plate-head:
-    display: "grid"
-    columns: "11rem minmax(0, 1fr) ≥900px"
-    borderTop: "1.5px solid {colors.ink}"
-    note: "Plate number left, content right. The page spine; nothing is centred."
-  titleblock:
-    borderTop: "1.5px solid {colors.ink}"
-    backgroundColor: "{colors.fill-2}"
-    note: "The band of key dimensions along the foot of a drawing."
-  callout-no:
-    size: "1.65rem"
-    border: "1.5px solid {colors.signal}"
-    rounded: "{rounded.pill}"
-    note: "The numbered circle. The one round thing in the system, because a drawing callout is round."
-  dimbar:
-    note: "A dimension line with tick terminators, sized to the value. Replaces the progress bar."
+  field:
+    backgroundColor: "{colors.field}"
+    note: "The plot behind the hero and every page head: a 32 px grid of two linear-gradients in {colors.grid}, a 1 px {colors.edge} rule below."
+  card:
+    backgroundColor: "{colors.paper}"
+    border: "1px solid {colors.edge}, 1.5px {colors.ink} on top"
+    note: "Lies on the field. No shadow; it reads by tone, an edge and its top rule."
   panel:
     backgroundColor: "{colors.paper}"
-    border: "1px solid {colors.hair}"
-    note: "Flat. A drawing has no shadows — depth is line weight."
-  chip-included:
-    textColor: "{colors.ink-2}"
-    border: "1px solid currentColor"
-    rounded: "{rounded.sm}"
-  chip-optional:
-    backgroundColor: "{colors.signal-soft}"
-    textColor: "{colors.on-signal-soft}"
-    rounded: "{rounded.sm}"
-  btn-outline:
-    border: "1px solid {colors.line}"
-    rounded: "{rounded.sm}"
-    padding: "0.7rem 1.1rem"
-    note: "Neutral utility links only — never a conversion CTA."
+    border: "1px solid {colors.edge}"
+    note: "Lies on the ground with a 24 px side gutter (12 px on a phone) and a head band."
+  band:
+    backgroundColor: "{colors.fill-2}"
+    note: "A 48 px head band across a panel or page head: number (mono, signal), name, scale."
+  dot:
+    size: "32px"
+    border: "1.5px solid {colors.signal}"
+    rounded: "{rounded.full}"
+    note: "The numbered callout in a key list."
+  link-btn:
+    border: "1px solid {colors.ink}"
+    rounded: "{rounded.md}"
+    minHeight: "48px"
+    note: "Neutral. Never a filled call."
+  size-picker:
+    note: "2 x 2 targets of 48 px; the selected one is ink-filled with paper text."
 ---
 
 # Design System: Subcort
 
 ## 1. Overview
 
-**Creative North Star: "Montaj" — the site is a drawing set.**
+**Creative North Star: "On your ground".**
 
-Subcort's product is not a tent; it is an *erection*. Somebody arrives with a
-structure, puts it up on your ground exactly to plan, and takes it away again.
-The artifact that already exists between a crew and a client for that work is a
-**drawing**: an exploded axonometric showing what the thing is made of, with
-numbered callouts, dimension lines and a title block.
+The visitor's question is whether the crew can bring a proper covered space to
+*their* ground and set it up to plan. So the first screen is a measured plot:
+a sage field with a quiet 32 px grid, the marquee standing on it large, and the
+facts laid on that plot as white cards, the way a drawing's title block sits in
+its corner. Below, each part of the story is a panel with a head band that
+names its number, its name and its scale.
 
-So the site is that drawing set. Every page is a numbered sheet. Every graphic
-is a projection of one shared model — the marquee Subcort actually rents — and
-that model lives in exactly one place, [`src/lib/draft.ts`](src/lib/draft.ts).
-The hero renders it in WebGL; the exploded plate, the scale plan and the OG card
-render it as deterministic SVG at build time.
+The idea underneath is unchanged: the site is a drawing set, and every graphic
+is a projection of one shared model, the marquee Subcort rents, in
+[`src/lib/draft.ts`](src/lib/draft.ts). The hero renders it in WebGL (a still
+SVG in the HTML first); the exploded plate, the scale plan and the OG card
+render it as SVG at build time.
 
 **Key characteristics:**
-- One model, drawn many ways. The 3D hero and the SVG plate are the *same
-  object* rendered twice, and they must always agree.
-- **The object is ink; every annotation is orange.** No exceptions — see the
-  Annotation Rule below.
-- Light throughout: a near-white sheet, no dark surfaces anywhere.
-- **IBM Plex Sans** for language, **IBM Plex Mono** for every measurement.
-- Flat. A drawing has no shadows; depth is line weight.
-- Square corners everywhere except the callout circle.
-- **No calls-to-action anywhere.** The site informs and steps back.
+- One model, drawn many ways. The 3D hero and the SVG plate are the same object
+  and must always agree. `draft.ts` changes colour only, through tokens.
+- **The object is ink; every annotation is orange.** See the Annotation Rule.
+- One light look, no theme switch: a pale sage ground, a darker sage field with
+  a grid for the hero and page heads, near-white cards and panels.
+- **Commissioner** for language, **IBM Plex Mono** for figures and sheet numbers.
+- No shadow. A card reads by tone, a 1 px edge and a 1.5 px ink top rule.
+- No photography.
+- No calls to action. The hero's `Vezi dimensiunile și dotările` is a neutral
+  link-button, never a filled call.
 
 ## 2. Colors
 
-### Ink — the object
-- **Ink** `oklch(29% 0.028 234)` — body copy, headings, and the structural
-  members of the frame, which are drawn heaviest because they *are* the object.
-- **Line** `oklch(52% 0.026 234)` — envelope outlines and panel edges.
-- **Line-soft** `oklch(76% 0.017 233)` — extension lines, deck boards, the
-  bare track of a dimension bar.
-- **Hair** `oklch(90.5% 0.006 230)` — table rules and cell borders.
+### Ink: the object
+- **Ink** `#1d2e37`: text, the frame (drawn heaviest, because it is the
+  object), rules, the selected size.
+- **Ink-2** `#516069`: secondary text.
+- **Line** `#5b6c76`: envelope outlines, the picker border.
+- **Line-soft** `#a7b3ba`: extension lines, deck boards, the track of a
+  dimension bar, link underlines.
+- **Hair** `#dde1dd`: rules inside a card or panel.
 
 ### The annotation layer
-- **Signal** `oklch(52.5% 0.152 40)` — callout circles and leaders, dimension
-  values, plate numbers, step numbers, the ridge line, the current nav item, the
-  active format, the focus ring. Darkened from the comp's brighter orange so it
-  clears AA as text at 0.7rem; a deeper burnt orange is closer to real drafting
-  red anyway.
+- **Signal** `#af4316`: the callout circles and leaders, dimension values, sheet
+  and step numbers, the ridge line, the current place in the nav, the focus
+  ring. **Signal-hover** `#9a3409` for link hover. **Signal-soft** `#fceae3`
+  with **on-signal-soft** `#8f2d01` for the note banner and the `Opționale`
+  band (7.08:1).
 
-### The sheet
-- **Sheet** `oklch(98.6% 0.002 90)` — the paper.
-- **Paper** `#fff` — plan panels and cards, lifting off the sheet.
-- **Fill / Fill-2** — panel washes and the title-block band.
+### Ground, field, surfaces
+- **Sheet** `#f0f4f0`: the page ground.
+- **Field** `#dfe8de` with **grid** `#d4ded3` (1.10:1 on the field, half
+  today's step): the plot behind the hero and the page heads, and the small
+  plate under the tent on a phone.
+- **Paper** `#fcfdfc`: header, cards, panels. **Fill-2** `#eef1ee`: the head
+  band and the footer. **Edge** `#b5bdb5`: the 1 px edge of a card, panel,
+  menu button or social button.
+- **Deck, membrane, membrane-shade** `#eceff1`, `#fafaf8`, `#eeeeec`: the
+  drawing's deck and its lit and shaded panels. Two tones are enough; the
+  drawing reads by line.
 
 ### Named rules
 
-**The Annotation Rule.** Everything that *is the object* is drawn in ink and
-line. Everything the draughtsman *added on top* — callouts, leaders, dimensions,
-the ridge highlight, state — is orange. This is the whole colour system, and it
-is a semantic rule, not a palette preference. Never fill a surface with orange,
-and never draw a structural member in it.
+**The Annotation Rule.** Everything that is the object is ink and line.
+Everything the draughtsman added on top (callouts, leaders, dimensions, the
+ridge, the current place) is orange. Never fill a surface with orange, and never
+draw a structural member in it. The selected size in the Corturi picker is
+ink-filled for this reason.
 
-**The Light-Sheet Rule.** The sheet is near-white and stays that way, from the
-masthead to the ANPC line. There are no dark surfaces in this system.
+**The Plot Rule.** Cards lie on the field; panels lie on the ground. A card
+carries a 1.5 px ink top rule, a panel a head band. Nothing is both.
 
-**The One-Model Rule.** Every drawing on the site comes from `marquee()` in
-`draft.ts`. If the hero and the plate ever disagree about the tent, the bug is
-that something drew its own geometry.
+**The One-Model Rule.** Every drawing comes from `marquee()` in `draft.ts`. If
+the hero and the plate ever disagree about the tent, something drew its own
+geometry.
 
 ## 3. Typography
 
-**IBM Plex Sans** (variable) and **IBM Plex Mono**, self-hosted via fontsource —
-no Google Fonts CDN, so no visitor IPs leave for Google. Plex draws the Romanian
-comma-below diacritics (ș ț) correctly, which many grotesques do not.
+**Commissioner Variable** (`@fontsource-variable/commissioner` 5.3.0) for
+language and **IBM Plex Mono** (`@fontsource/ibm-plex-mono` 5.3.0) for figures,
+both self-hosted: no Google Fonts CDN, so no visitor IPs leave for Google.
+Commissioner's latin-ext file maps ș and ț to the comma-below glyphs Romanian
+needs.
 
-The mono face is not a costume for "technical": it is used **only for
-measurement and register** — dimensions, capacities, areas, plate numbers,
-sheet codes, datum keys. Prose is never set in it.
+The ladder is the `--text-*` tokens: `display` 52/56 650 (34/38 on a phone),
+`h2` 36/40 650 (28/32), `title` 20/26 600, `lede` 18/28 (17/26), `body` 16/26,
+`label` 14/20 500 in sentence case, `figure` Plex Mono 17/24 600. Labels are
+never uppercase or tracked.
 
-The ramp, and nothing off it: **3.9/2.35 → 2.6/1.8 → 1.45 → 1.2 → 1.12 → 1 →
-0.93 → 0.87 → 0.78 → 0.7 rem.**
-
-### Named rule
-**The Measurement-in-Mono Rule.** If it is a number with a unit, or a code that
-identifies a sheet, it is set in Plex Mono with tabular figures so it aligns
-down a column. If it is language, it is set in Plex Sans.
+**The Measurement-in-Mono Rule.** A number with a unit, a range, or a sheet
+code is set in Plex Mono with tabular figures. Language is Commissioner.
+Ranges use the figure dash U+2012 with no spaces (`8‒20 m`), a separator only,
+never a figure; inside a sentence the range alone is mono (`.rg`).
 
 ## 4. Layout
 
-### The sheet
-`.sheet` is the page container: 84rem max, padded by `--sheet-pad`.
-
-### The plate
-Every section is a `.plate` opened by a `.plate-head`: a 1.5px ink rule, the
-plate number and note in an 11rem left column, the content in the right. One
-asymmetric rule, applied everywhere, stacking on phones.
-
-### Named rules
-**The Numbered-Register Rule.** Section numbers are legitimate here and nowhere
-else on any sibling site: a drawing set *is* a numbered register, and the reader
-navigates it by number. `01 · Alcătuire`, `02 · Execuție`, `01.1 · Plan`. The
-navigation, the mobile menu and the footer all carry the same numbers.
-
-**The Uncentred Rule.** Nothing on this site is centre-aligned. The plate-head
-grid is the spine.
+- `.sheet`: the container, 75rem wide, side padding 24 px (12 px on a phone).
+- **The field** (`.field`): hero and page heads. The hero is a 5/7 grid, the
+  copy card left, the tent and the title block right. A page head is one card
+  spanning the container: its band, then the title in 5 columns and the lede in
+  7; on Contact it sits beside the data card.
+- **Panels** (`.panel`): a head band (`.band`: number, name, scale, in sentence
+  case), then the body at 32 px. The numbered register stays: `01`, `02`,
+  `01.1`.
+- **The title block** (`.tb`): five cells on a card. At 1024 it is six columns
+  (2+2+2, then 3+3), split by hairlines. On a phone the drawing sits on its own
+  gridded plate at the head of the spec card and the `Zonă` row leads the list.
+- **The key** (home plate 01): the exploded drawing beside its parts list, with
+  numbered circles on the drawing at every width, and no text labels on it.
+- **Corturi:** the plan on the field, a 2 x 2 size picker of 48 px targets, the
+  table folded per format on phones, each note 4 px under its label, `Opționale`
+  on signal-soft. Plan labels stay at 12 px or more for dimensions and 11 px or
+  more for the car at 390 and 360.
+- **Footer:** facts are separate parts, never joined with a middle dot; links are
+  underlined.
 
 ## 5. Elevation
 
-Flat. Surfaces at rest have a 1px hairline and a tonal fill, never a resting
-shadow — a drawing has no shadows, and depth is carried by line weight (frame
-1.6px ink, envelope 1.1px line, extension 0.7px line-soft). The single shadow in
-the system belongs to the open mobile menu, bound to a state.
+None. No resting shadow, no raised shadow. A card is 1.25:1 against the field,
+with a 1 px edge and its ink top rule; a panel head is a band, 1.14:1 on paper.
+Depth in the drawings is line weight (frame 1.6 px ink, envelope 1.1 px line,
+extension 0.7 px line-soft).
 
 ## 6. Motion
 
-**One authored moment per page.**
-
-- **The hero assembly** (home): the layers start separated in the vertical,
-  exactly as the plate draws them, and settle into the finished structure —
-  which is literally the service. anime.js drives a plain state object; the
-  Three.js scene maps it onto geometry. The rAF loop stops when the hero leaves
-  the viewport.
+- **The hero assembly** (home): the layers start separated and settle into the
+  finished structure. anime.js drives a plain state object; the Three.js scene
+  maps it onto geometry. The rAF loop stops when the hero leaves the viewport.
+  The comps show its resting frame; the motion is unchanged.
 - **The scale plan** (`/corturi`): one spring carries the format index and a
-  subscriber writes the SVG geometry attributes directly. *Motion reads `x`/`y`
-  as transform shorthands, so animating SVG geometry through props silently does
-  nothing* — hence the imperative write.
+  subscriber writes the SVG geometry directly (Motion reads `x`/`y` as
+  transform shorthands, so animating geometry through props does nothing).
+  Until the island runs, the picker rests disabled and the table gives every
+  figure.
 - **Scroll reveal**: visible by default; JS opts into the hidden start, with a
-  2.5s failsafe so nothing ships blank to a crawler.
+  2.5 s failsafe.
 
-`prefers-reduced-motion` is honoured throughout, and it also means **Three.js is
-never downloaded** — the visitor keeps the isometric still, which is real markup
-in the HTML. The same is true with no JS or no WebGL.
+`prefers-reduced-motion`: Three.js is never downloaded and the visitor keeps
+the isometric still, which is real markup in the HTML. The same holds with no
+JS or no WebGL.
 
 ## 7. The drawing engine
 
 [`src/lib/draft.ts`](src/lib/draft.ts) owns the model and the annotation
-primitives:
-
-- `marquee(spec)` — the structural members and envelope panels of a gable
-  marquee, in metres. One source of truth.
-- `isometric()` — true isometric projection (no perspective), the projection a
-  real assembly drawing uses.
-- `tone(quad)` — flat tonal shading from a fixed high-left sun, used by *both*
-  the SVG plate and the WebGL hero so they match.
-- `dimension(from, to, label)` — a dimension line with 45° tick terminators and
-  the value sitting on the line.
-- `callout(n, anchor, at, label)` — the numbered circle on a dashed leader.
-
-**To add a drawing:** project `marquee()` through `isometric()`. Do not
-hand-author geometry.
+primitives: `marquee(spec)`, `isometric()`, `tone(quad)` (hex, for the WebGL
+scene and the OG card) and `toneVar(quad)` (a `var(--color-membrane)` or
+`var(--color-membrane-shade)` fill for the SVG drawings), and `dimension()`.
+Its colour constants are the site's tokens as hex, for the places that cannot
+read a CSS variable. To add a drawing, project `marquee()` through
+`isometric()`; do not hand-author geometry.
 
 ## 8. Do's and Don'ts
 
 ### Do
 - **Do** keep the object in ink and every annotation in orange.
-- **Do** derive every drawing from `marquee()` in `draft.ts`.
-- **Do** set measurements in Plex Mono and language in Plex Sans.
-- **Do** number the plates, and keep the numbers in a drawing's key identical to
-  the callout numbers on the drawing itself.
-- **Do** compute a drawing's viewBox from its geometry, so it can never grow out
-  of its box (see `ExplodedPlate.astro`).
-- **Do** keep surfaces flat; carry depth in line weight.
-- **Do** hold WCAG 2.2 AA, and give interactive targets a real box
-  (`padding-block` does not lay out on an inline element).
+- **Do** derive every drawing from `marquee()`, and colour it through tokens.
+- **Do** set figures in Plex Mono and language in Commissioner, in sentence case.
+- **Do** keep the numbers in a drawing's key identical to the circles on it.
+- **Do** compute a drawing's viewBox from its geometry.
+- **Do** hold WCAG 2.2 AA, and give interactive targets a real box of 44 px or more.
 
 ### Don't
-- **Don't** add calls-to-action: no quote form, no booking widget, no sticky
-  call bar. The site informs and steps back.
-- **Don't** introduce a dark surface anywhere.
-- **Don't** fill a surface with the signal orange, or draw structure in it.
-- **Don't** set prose in the mono face.
-- **Don't** put an uppercase tracked-out eyebrow above a heading — the plate
-  number is a sibling in the left column, not a hat.
-- **Don't** centre a section.
-- **Don't** add a resting shadow to a flat surface.
-- **Don't** animate SVG geometry through Motion props (see §6).
+- **Don't** add calls to action: no quote form, no booking widget, no sticky call bar.
+- **Don't** add a dark surface or a theme switch.
+- **Don't** fill a surface with orange, or draw structure in it.
+- **Don't** set prose in the mono face, or a label in capitals.
+- **Don't** add a shadow.
+- **Don't** add photography.
+- **Don't** name a site class like a Tailwind theme utility (`text-lede` while a
+  `--text-lede` token exists): the utility layer wins.

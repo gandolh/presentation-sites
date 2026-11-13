@@ -131,3 +131,30 @@ WhatsApp green on every booking action.
 **Also decided on the board:** the Services menu moved into the hero beside the photograph (the real-element exception),
 each row with its own pre-filled Programează; Vezi serviciile is gone; the facts pair (`3+ ani de experiență`, `1 la 1`)
 stays hidden until Ana's number is real; the contact label reads `Telefon și WhatsApp`.
+
+## subcort: "Montaj" gives way to "On your ground" (2026-11-13)
+
+**Changed, 2026-11-13.** On the estate redesign board the owner approved the direction "On your ground" for subcort (runner-up
+"Montaj, mounted") and with it reopened four lines in `sites/subcort/DESIGN.md` and one in `PRODUCT.md` (brief 07, owner
+decision 1, "Montaj stays the world"). The site's own [DESIGN.md](../../sites/subcort/DESIGN.md) is rewritten from what
+shipped; the old lines are kept here as history.
+
+| Old line | Now |
+|---|---|
+| The Light-Sheet Rule (`DESIGN.md` section 2): "The sheet is near-white and stays that way"; `PRODUCT.md` principle 5, "A near-white sheet" | A pale sage ground `#f0f4f0`; the hero and every page head sit on a darker sage field `#dfe8de` with a quiet 32 px grid; cards and panels stay near-white `#fcfdfc`. Still light, with no switch |
+| Section 3: IBM Plex Sans for language | Commissioner Variable (its latin-ext file maps ș and ț to the comma-below glyphs); IBM Plex Mono stays for figures and sheet numbers |
+| Section 4: the plate-head spine, an 11rem column for the number and note and one asymmetric rule | A head band across each panel (number, name, scale, in sentence case) and cards on a plot; the numbered register stays (`01`, `02`, `01.1`) |
+| Section 2 and the Don'ts: the orange selected size (`scale__btn[data-on]` filled with signal) | The selected size is ink-filled with paper text; orange stays on numbers, leaders and the current place |
+| Uppercase tracked labels (`.datum-key`, `.plate-no`, the title block's `dt`) | Sentence-case labels at 14/20 500, untracked |
+
+**Kept:** one model in `src/lib/draft.ts` for the hero, the plate, the scale plan and the OG card; the Annotation Rule; no
+photography; light with no theme switch (Q18); no calls to action (`PRODUCT.md` principle 3); the hero tent's motion, its
+IntersectionObserver pause and its reduced-motion still.
+
+**Also decided on the board:** the hero keeps `Vezi dimensiunile și dotările` as a neutral link-button; both lede sentences
+stay word for word; ranges take the figure dash U+2012 with no spaces; the `·` joins became separate parts; the hero eyebrow
+is gone and its job moved to the `Zonă` cell (above the fold at 1280, the first row on a phone).
+
+**What this costs.** Fonts: Commissioner Variable `5.3.0` replaces IBM Plex Sans Variable. The hero's tent keeps its WebGL
+loop; its two panel tones are now the `membrane` and `membrane-shade` tokens (two tones, where the old shading had four).
+

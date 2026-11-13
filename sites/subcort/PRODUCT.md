@@ -85,10 +85,12 @@ proper space and set it up right, and I don't have to worry about the logistics.
    is the drawing set for that work — numbered sheets, one shared model of the
    marquee projected many ways, exploded views, dimension lines and numbered
    callouts. Precision is the trust signal; nothing is decorative.
-5. **Light throughout, ink and one annotation colour.** A near-white sheet from
-   the masthead to the last line. The object is drawn in ink; everything added
-   on top of it — callouts, leaders, dimensions, state — is a single orange.
-   Depth comes from line weight, never from shadow.
+5. **Light throughout, a sage ground, ink and one annotation colour.** A pale
+   sage ground from the masthead to the last line, with a darker sage field and
+   a quiet grid behind the hero and the page heads, and near-white cards on it.
+   The object is drawn in ink; everything added on top of it (callouts,
+   leaders, dimensions, state) is a single orange. Depth comes from line weight
+   and tone, never from shadow.
 
 ## Accessibility & Inclusion
 
