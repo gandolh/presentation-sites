@@ -2,48 +2,94 @@
 import PhoneIcon from "./PhoneIcon.astro";
 import { primaryPhone, telLink } from "../content/site";
 
-// STOP 1 — Servicii. What we actually do. The one job (tractări pe platformă)
-// is the LEAD tile, wide and amber-edged; the rest are supporting capabilities.
-// Asymmetric on purpose — not an equal-box icon grid (the RO-template reflex).
+// Servicii: what we actually do. The one job (tractări pe platformă) is a
+// full-width lead row with a large pictogram; four tiles sit under it, each
+// with its own pictogram. Not an equal-box grid of one repeated icon.
 const lead = {
   title: "Tractări pe platformă",
-  body: "Platformă omologată pentru orice autoturism — defect, accidentat sau fără roți. Ridicăm și transportăm fără să atingem asfaltul.",
+  body: "Platformă omologată pentru orice autoturism: defect, accidentat sau fără roți. Ridicăm și transportăm fără să atingem asfaltul.",
+  icon: [
+    "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2",
+    "M15 18H9",
+    "M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14",
+  ],
 };
 const tiles = [
-  { title: "Intervenții rapide", body: "Pornim din Târgu-Jiu spre tine în câteva minute, ziua sau noaptea." },
+  {
+    title: "Intervenții rapide",
+    body: "Pornim din Târgu-Jiu spre tine în câteva minute, ziua sau noaptea.",
+    icon: ["M10 2h4", "M12 14l3-3"],
+    circle: { cx: 12, cy: 14, r: 8 },
+  },
   {
     title: "Asistență la fața locului",
-    body: "Pană, baterie descărcată, ai rămas fără combustibil — uneori te punem pe drum pe loc.",
+    body: "Pană, baterie descărcată, ai rămas fără combustibil. Uneori te punem pe drum pe loc.",
+    icon: [
+      "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
+    ],
   },
-  { title: "Transport în siguranță", body: "Ancorare corectă, mașina ajunge la service exact cum a plecat." },
-  { title: "Prețuri transparente", body: "Îți spunem costul la telefon, înainte să pornim. Fără surprize." },
+  {
+    title: "Transport în siguranță",
+    body: "Ancorare corectă, mașina ajunge la service exact cum a plecat.",
+    icon: [
+      "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      "m9 12 2 2 4-4",
+    ],
+  },
+  {
+    title: "Prețuri transparente",
+    body: "Îți spunem costul la telefon, înainte să pornim. Fără surprize.",
+    icon: [
+      "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z",
+      "M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8",
+      "M12 17.5v-11",
+    ],
+  },
 ];
 ---
 
-<section id="servicii" class="stop section relative">
-  <span class="stop__marker" aria-hidden="true"></span>
-  <div class="container-page relative z-[2]">
-    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-      <div class="reveal max-w-2xl">
-        <span class="stop-label">Ce facem</span>
-        <h2 class="heading-lg mt-4">
-          Un singur lucru, <span class="glow-word">făcut bine.</span>
-        </h2>
-        <p class="mt-5 max-w-md text-lg text-[var(--color-on-surface-variant)]">
-          Tractări auto pe platformă, non-stop. Restul sunt lucrurile care fac intervenția rapidă și fără bătăi de cap.
-        </p>
-      </div>
-      <a href={telLink(primaryPhone.e164)} class="btn btn-call shrink-0 reveal">
-        <PhoneIcon class="w-5 h-5" />
+<section id="servicii" class="band container-page" aria-labelledby="servicii-h">
+  <div class="sec-head">
+    <h2 id="servicii-h" class="heading-lg">
+      Un singur lucru, făcut bine.
+    </h2>
+    <div class="sec-side">
+      <p>
+        Tractări auto pe platformă, non-stop. Restul sunt lucrurile care fac intervenția rapidă și fără bătăi de cap.
+      </p>
+      <a href={telLink(primaryPhone.e164)} class="btn btn-outline">
+        <PhoneIcon class="icon" />
         <span class="tnum">{primaryPhone.display}</span>
       </a>
     </div>
+  </div>
 
-    <div class="svc-grid mt-10 reveal">
-      <article class="svc-tile svc-tile--lead svc-grid__lead">
-        <span class="svc-tile__icon" aria-hidden="true">
+  <div class="lead">
+    <span class="well well--lead" aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        {lead.icon.map((d) => (
+          <path d={d} />
+        ))}
+        <circle cx="17" cy="18" r="2" />
+        <circle cx="7" cy="18" r="2" />
+      </svg>
+    </span>
+    <h3 class="heading-md">{lead.title}</h3>
+    <p>{lead.body}</p>
+  </div>
+
+  <div class="tiles">
+    {tiles.map((t) => (
+      <article class="tile">
+        <span class="well" aria-hidden="true">
           <svg
-            class="w-6 h-6"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -51,36 +97,140 @@ const tiles = [
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M3 7h11v8H3z" />
-            <path d="M14 10h4l3 3v2h-7z" />
-            <circle cx="7" cy="18" r="2" />
-            <circle cx="17" cy="18" r="2" />
+            {t.icon.map((d) => (
+              <path d={d} />
+            ))}
+            {t.circle && <circle cx={t.circle.cx} cy={t.circle.cy} r={t.circle.r} />}
           </svg>
         </span>
-        <h3 class="svc-tile__title">{lead.title}</h3>
-        <p class="svc-tile__body max-w-md">{lead.body}</p>
+        <h3 class="heading-md">{t.title}</h3>
+        <p>{t.body}</p>
       </article>
-
-      {tiles.map((t) => (
-        <article class="svc-tile">
-          <span class="svc-tile__icon" aria-hidden="true">
-            <svg
-              class="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="M12 5l7 7-7 7" />
-            </svg>
-          </span>
-          <h3 class="svc-tile__title">{t.title}</h3>
-          <p class="svc-tile__body">{t.body}</p>
-        </article>
-      ))}
-    </div>
+    ))}
   </div>
 </section>
+
+<style>
+  .band {
+    padding-top: 7rem;
+  }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: end;
+  }
+  .sec-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .sec-side p {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--color-on-surface-variant);
+  }
+  .sec-side :global(.icon) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .lead {
+    display: grid;
+    grid-template-columns: 4rem 1fr 1.3fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 1.75rem 2rem;
+    background: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-xl);
+  }
+  .lead p,
+  .tile p {
+    margin: 0;
+    color: var(--color-on-surface-variant);
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-xl);
+  }
+  /* The pictograms stay orange: they are the page's only icons. */
+  .well {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-container-high);
+    color: var(--color-accent);
+  }
+  .well svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .well--lead {
+    width: 4rem;
+    height: 4rem;
+  }
+  .well--lead svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  @media (max-width: 1000px) {
+    .tiles {
+      grid-template-columns: 1fr 1fr;
+    }
+    .lead {
+      grid-template-columns: 4rem 1fr;
+    }
+    .lead p {
+      grid-column: 2;
+    }
+  }
+  @media (max-width: 760px) {
+    .band {
+      padding-top: 4.5rem;
+    }
+    .sec-head {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .lead {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .lead p {
+      grid-column: 1;
+    }
+    .well--lead {
+      width: 3rem;
+      height: 3rem;
+    }
+    .well--lead svg {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+    .tiles {
+      grid-template-columns: 1fr;
+    }
+    .tile {
+      padding: 1.25rem;
+    }
+  }
+</style>
