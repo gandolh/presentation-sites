@@ -1,112 +1,104 @@
 @import "tailwindcss";
 
 /*
-  BavAuto Gorj — design tokens. WORLD: "Bordcomputer".
+  BavAuto Gorj: design tokens. WORLD: "The job card".
 
-  The page is the instrument binnacle of a BMW at night, key at position II.
-  A deep, near-black graphite ground (the bezel), steel wells stepping up out
-  of it, printed silver-white legends, and ONE amber illumination that lights
-  only what is live right now. The BMW-M tri-color survives as colour-coded
-  segments (the service-interval LED bands) and the needle red; it is never
-  decoration and never reordered.
+  A workshop job card on warm graphite. The page is one dark look with no theme
+  switch. The one light material is the job card (the call, WhatsApp and the
+  symptom rows); it is pinned at the right of a wide screen and sits under the
+  lede on a phone. The call is the page's only red button and sits on the card or
+  on the ground, never on a panel. Encode Sans is the one face, in sentence case;
+  nothing is set in mono.
 
-  This is an INDEPENDENT specialist: instrument language, no BMW roundel.
+  Rules the system rests on:
 
-  Named rules that the whole system rests on:
+  - THE ONE-CARD RULE. The job card is the page's one light material. Two light
+    surfaces on a page is one too many; the legal pages read on the card too.
+  - THE ONE-RED RULE. M red fills the call and nothing else. Links and focus use
+    ink; the focus ring is a pale red tint on dark, card ink on the card.
+  - THE ONE-AMBER RULE. Amber lights the hours in the readout window and nowhere
+    else, with no glow.
+  - THE ONE-SET RULE. One closed pictogram set, drawn at a single 1.75px stroke on
+    a 24px box, is the only iconography on this site.
 
-  - THE LIVE-AMBER RULE. Amber marks what is live in this moment — the primary
-    call, the focused field, the active step, the hovered symbol, a lit warning.
-    It is never a background wash, never a decorative accent, never a gradient.
-    Break this and the page becomes a tuning shop.
-  - THE ONE-SET RULE. One closed pictogram set, drawn at a single 1.75px stroke
-    on a 24px box, is the only iconography on this site. A service without a
-    symbol gets one drawn into the set — never borrowed from a library, never
-    an emoji.
-  - THE BEZEL RULE. Empty space is proportioned as bezel around an instrument,
-    not left over as padding. Quiet regions are composed.
-  - THE PRINTED-LEGEND RULE. Numbers, codes, readings, hours and part numbers
-    are set in the mono face because they ARE measurements. Running prose never
-    is.
-
-  Colours authored in OKLCH.
+  Colours are hex values from the board's token sheet.
 */
 
 @theme {
-  /* ---- The binnacle: ground and steel wells ------------------------------
-     Near-black graphite carrying the faintest cool cast. Panels step UP in
-     lightness out of the ground the way a well is machined into a bezel. */
-  --color-background: oklch(13.5% 0.008 255); /* ~#07090c */
-  --color-surface: oklch(13.5% 0.008 255);
-  --color-surface-container-lowest: oklch(17% 0.01 255); /* default panel */
-  --color-surface-menu: oklch(12% 0.008 255); /* the phone menu: darker than the ground */
-  --color-surface-container-low: oklch(20% 0.012 256);
-  --color-surface-container: oklch(23.5% 0.014 256);
-  --color-surface-container-high: oklch(27.5% 0.016 257);
-  --color-surface-container-highest: oklch(31.5% 0.018 257);
+  /* ---- Ground and panels ---------------------------------------------------- */
+  --color-background: #161310; /* the page, the phone call bar */
+  --color-surface: #161310; /* kept equal to background */
+  --color-surface-container-lowest: #24211e; /* the default panel: header, tables, indexes, footer */
+  --color-surface-container-low: #24211e; /* same step as the default panel */
+  --color-surface-container: #312d29; /* wells, steel buttons, the map placeholder */
+  --color-surface-container-high: #312d29; /* same step as surface-container */
+  --color-surface-container-highest: #312d29; /* same step as surface-container */
+  --color-surface-window: #0f0d0b; /* the readout window in the card */
 
-  /* ---- Printed legends (ink on the dial face) ---------------------------- */
-  --color-on-surface: oklch(96% 0.004 250); /* silver-white legends */
-  --color-on-surface-variant: oklch(76% 0.01 255); /* secondary print */
-  --color-outline: oklch(48% 0.014 256);
-  --color-outline-variant: oklch(29% 0.014 256); /* hairline / bezel edge */
+  /* ---- Ink ------------------------------------------------------------------- */
+  --color-on-surface: #f2f0ec;
+  --color-on-surface-variant: #bbb7b0; /* secondary text */
+  --color-outline: #736e67; /* control edges */
+  --color-outline-variant: #413c38; /* panel edges, row hairlines */
+  --color-outline-window: #201c18; /* the readout window's 1px edge */
+  --color-lit-window: #fcb368; /* the hours in the readout window, the one amber */
 
-  /* ---- Inverse: the brushed-aluminium console trim -----------------------
-     THE TRIM RULE. The one light material in this world is the anodised
-     aluminium strip across a BMW dashboard — not paper, not white. It carries
-     the conversion moment and the long-read legal pages, and it is always
-     brushed (a fine horizontal grain), never a flat sheet. Two of these on a
-     page is one too many. */
-  --color-inverse-surface: oklch(87% 0.005 250);
-  --color-inverse-surface-2: oklch(93% 0.004 250);
-  --color-inverse-on-surface: oklch(20% 0.012 256);
-  --color-inverse-on-surface-variant: oklch(40% 0.014 256);
-  --color-link-on-trim: oklch(42% 0.14 45); /* the one link colour ON the trim */
+  /* ---- Inverse: the job card, the one light material --------------------------- */
+  --color-inverse-surface: #ece9e4;
+  --color-inverse-on-surface: #201c18;
+  --color-inverse-on-surface-variant: #5a544e;
+  --color-inverse-outline-variant: #cbc7c0; /* hairlines inside the card */
+  --color-inverse-surface-container: #dddad5; /* hover on the card only */
 
-  /* ---- PRIMARY: the illumination -----------------------------------------
-     BMW's night-cluster amber. This is the only accent hue the system owns,
-     and it appears only on what is live. Near-black label on the fill clears
-     AA comfortably (~9:1); the brighter tint is the one used AS TEXT on the
-     ground (~11:1). */
-  --color-primary: oklch(72% 0.17 58); /* ~#ff8a1e lit control */
-  --color-primary-hover: oklch(78% 0.155 62); /* filament brightens */
-  --color-on-primary: oklch(17% 0.04 55); /* dark bulb-glass ink */
-  --color-primary-container: oklch(26% 0.055 58); /* dim amber well */
-  --color-on-primary-container: oklch(88% 0.08 62);
-  --color-primary-bright: oklch(82% 0.125 65); /* amber AS TEXT on dark */
-  --color-primary-edge: oklch(46% 0.06 58); /* amber-tinted hover border */
+  /* ---- Primary: the call ---------------------------------------------------------- */
+  --color-primary: #c52525; /* the call fill, on the card or the ground only */
+  --color-primary-hover: #ae1c1d;
+  --color-on-primary: #fdfcf9;
+  --color-primary-bright: #fdc9c2; /* the focus ring on dark */
 
-  /* ---- M motorsport tri-color: the LED segment coding --------------------
-     Canonical order, never reordered: light blue -> indigo -> red. */
-  --color-m-blue: oklch(68% 0.15 242);
-  --color-m-indigo: oklch(52% 0.17 285);
-  --color-m-red: oklch(60% 0.22 27); /* also the needle */
+  /* ---- M motorsport tri-colour: the stripe, canonical order, never reordered --- */
+  --color-m-blue: #2fa7f3;
+  --color-m-indigo: #7e74e1;
+  --color-m-red: #ed413b;
 
-  /* ---- Status ------------------------------------------------------------ */
-  --color-success: oklch(72% 0.16 150); /* "deschis acum" */
-  --color-warning: oklch(80% 0.15 82); /* check-control amber */
-  --color-error: oklch(64% 0.22 27);
-  --color-on-error: oklch(99% 0 0);
+  /* ---- Status and vendor identity ---------------------------------------------- */
+  --color-success: #4fc47f; /* the open-now dot */
+  --color-error: #e97ab2; /* always with an icon and words */
+  --color-whatsapp: #42b970; /* the mark on dark */
+  --color-whatsapp-on-inverse: #00773d; /* the mark on the card, never text */
 
-  /* ---- WhatsApp (vendor identity, exempt from the one-accent rule) ------- */
-  --color-whatsapp: oklch(62% 0.15 153);
-  --color-whatsapp-hover: oklch(68% 0.14 153);
+  /* ---- Type: one face, Encode Sans Variable (wght 100-900, wdth 75-125) -------- */
+  --font-display: "Encode Sans Variable", system-ui, sans-serif;
+  --font-body: "Encode Sans Variable", system-ui, sans-serif;
 
-  /* ---- Typography ---------------------------------------------------------
-     Display: Archivo on its WIDTH axis, set wide and heavy — stamped dial
-     legends, not a UI sans. Body: Hanken Grotesk, the calm voice that explains
-     the estimate. Mono: Azeret Mono, squarish and technical, for measurements
-     only. All self-hosted, latin-ext for ă â î ș ț. */
-  --font-display: "Archivo Variable", "Arial Narrow", system-ui, sans-serif;
-  --font-body: "Hanken Grotesk Variable", system-ui, sans-serif;
-  --font-mono: "Azeret Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+  --text-display: 4rem;
+  --text-display--line-height: 4.125rem;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.02em;
+  --text-heading: 2.5rem;
+  --text-heading--line-height: 2.75rem;
+  --text-heading--font-weight: 800;
+  --text-heading--letter-spacing: -0.015em;
+  --text-number: 1.5rem; /* the card's number */
+  --text-number--line-height: 1.75rem;
+  --text-number--font-weight: 700;
+  --text-title: 1.125rem; /* lede and titles */
+  --text-title--line-height: 1.625rem;
+  --text-title--font-weight: 700;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625rem;
+  --text-body--font-weight: 400;
+  --text-label: 0.875rem; /* sentence case, never tracked */
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 600;
 
-  /* ---- Radius: machined, tight -------------------------------------------- */
-  --radius-sm: 0.125rem;
-  --radius: 0.1875rem;
-  --radius-md: 0.25rem;
-  --radius-lg: 0.375rem;
-  --radius-xl: 0.625rem;
-  --radius-full: 9999px;
+  /* ---- Radius: three steps plus full ------------------------------------------- */
+  --radius-md: 0.25rem; /* controls */
+  --radius-lg: 0.5rem; /* the card and the panels */
+  --radius-full: 9999px; /* dots */
+
+  /* ---- Shadow: the job card alone ----------------------------------------------- */
+  --shadow-card: 0 16px 40px -16px rgb(0 0 0 / 0.6);
 
   --container-max-width: 1240px;
 
@@ -117,6 +109,21 @@
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Transitional: the old components still read these until their screens move over */
+  --color-surface-menu: #161310;
+  --color-inverse-surface-2: #dddad5;
+  --color-link-on-trim: #201c18;
+  --color-primary-container: #312d29;
+  --color-on-primary-container: #f2f0ec;
+  --color-primary-edge: #736e67;
+  --color-warning: #fcb368;
+  --color-on-error: #161310;
+  --color-whatsapp-hover: #42b970;
+  --font-mono: "Encode Sans Variable", system-ui, sans-serif;
+  --radius-sm: 0.125rem;
+  --radius: 0.1875rem;
+  --radius-xl: 0.625rem;
 }
 
 @layer base {
@@ -124,11 +131,9 @@
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 5.5rem;
     background-color: var(--color-background);
-    /* Browser surfaces belong to the design too. */
     scrollbar-color: var(--color-surface-container-high) var(--color-background);
     scrollbar-width: thin;
     accent-color: var(--color-primary);
-    caret-color: var(--color-primary-bright);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -141,11 +146,10 @@
     font-family: var(--font-body);
     color: var(--color-on-surface);
     background-color: var(--color-background);
-    font-size: 16px;
-    line-height: 1.62;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Tabular figures everywhere: this site is full of readings. */
     font-variant-numeric: tabular-nums;
   }
 
@@ -154,12 +158,8 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-variation-settings:
-      "wdth" 112,
-      "wght" 800;
     font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.026em;
+    line-height: 1.1;
     text-wrap: balance;
   }
 
@@ -173,25 +173,14 @@
   }
 
   ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
+    background-color: var(--color-on-surface);
+    color: var(--color-background);
   }
 
   :focus-visible {
     outline: 2px solid var(--color-primary-bright);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
-  }
-
-  /* The bezel is a material, not a flat fill: a fine machined grain plus the
-     faint amber bloom of the backlight bleeding out of the instrument. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: repeating-linear-gradient(0deg, oklch(100% 0 0 / 0.014) 0 1px, transparent 1px 3px);
   }
 }
 

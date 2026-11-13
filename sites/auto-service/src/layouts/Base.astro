@@ -1,13 +1,10 @@
 ---
-// Self-hosted fonts (no Google Fonts CDN — GDPR: avoids transmitting visitor
-// IPs to Google; see docs/LEGAL.md). Archivo is imported on its `wdth` axis:
-// this world sets the display face WIDE, like a stamped dial legend, so the
-// width axis is load-bearing and not a nicety. Each axis file bundles the
-// latin + latin-ext subsets (latin-ext carries ă â î ș ț) as separate
-// @font-face blocks gated by unicode-range, so one import per family is enough.
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource-variable/hanken-grotesk/wght.css";
-import "@fontsource-variable/azeret-mono/wght.css";
+// Self-hosted fonts (no Google Fonts CDN: GDPR, it avoids transmitting visitor
+// IPs to Google; see docs/LEGAL.md). Encode Sans is imported on its `wdth` axis
+// file, which carries wght too: the wordmark is set at width 125. The file
+// bundles the latin and latin-ext subsets (latin-ext carries ă â î ș ț) as
+// separate @font-face blocks gated by unicode-range.
+import "@fontsource-variable/encode-sans/wdth.css";
 import "../styles/global.css";
 import { openingHoursSpecification, site } from "../content/site";
 import { absoluteUrl, pagePath, withBase } from "@sites/kit";
