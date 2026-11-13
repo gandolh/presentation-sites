@@ -19,42 +19,51 @@ import { steps, coverage } from "../content/zone";
 
   <main id="main">
     <PageHeader
-      plate="03 · Zonă"
+      no="Planșa 03"
+      name="Zonă"
       scale="Acoperire"
       title={`Acoperim ${coverage.primary} și ${coverage.region}`}
       lead="Aducem cortul la adresa ta, îl montăm complet și revenim să-l demontăm după eveniment. De partea logistică te scutim cu totul."
     />
 
     {/* The sequence. The numbers earn their place: the order is the content. */}
-    <Plate no="03.1 · Proces" note="Succesiunea lucrărilor" title="De la prima discuție la demontare" tight>
+    <Plate no="03.1" name="Proces" scale="Succesiunea lucrărilor" labelledby="z1">
+      <h2 id="z1" class="h-section">
+        De la prima discuție la demontare
+      </h2>
       <ol class="process">
         {steps.map((s) => (
           <li class="reveal process__step">
-            <span class="process__no dim" aria-hidden="true">
+            <span class="process__no" aria-hidden="true">
               {s.n}
             </span>
             <div>
-              <h3 class="heading-md">{s.title}</h3>
-              <p class="mt-2 prose-measure leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
+              <h3 class="h-title">{s.title}</h3>
+              <p>{s.description}</p>
             </div>
           </li>
         ))}
       </ol>
     </Plate>
 
-    <Plate no="03.2 · Acoperire" note="Localități" title={`Județul ${coverage.primary}, plus toată ${coverage.region}`}>
-      <p class="lede mt-5">{coverage.note}</p>
+    <Plate no="03.2" name="Acoperire" scale="Localități" labelledby="z2">
+      <div class="intro">
+        <h2 id="z2" class="h-section">
+          Județul {coverage.primary}, plus toată {coverage.region}
+        </h2>
+        <p>{coverage.note}</p>
+      </div>
 
       <ul class="localities">
         {coverage.localities.map((loc) => (
-          <li class="locality">
+          <li>
             <span class="locality__tick" aria-hidden="true"></span>
             {loc}
           </li>
         ))}
       </ul>
 
-      <p class="mt-7 prose-measure text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">
+      <p class="localities__note">
         Lista de mai sus e orientativă — ne deplasăm și în afara ei, în toată {site.region}.
       </p>
     </Plate>
@@ -65,52 +74,67 @@ import { steps, coverage } from "../content/zone";
 
 <style>
   .process {
-    margin-top: 2.25rem;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-hair);
   }
   .process__step {
     display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: 0 1.25rem;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--color-hair);
-  }
-  .process__step:first-child {
-    border-top: 1.5px solid var(--color-ink);
-  }
-  .process__step:last-child {
+    grid-template-columns: 5rem 1fr;
+    gap: 0 24px;
+    padding: 20px 0;
     border-bottom: 1px solid var(--color-hair);
   }
-  @media (min-width: 700px) {
-    .process__step {
-      grid-template-columns: 5rem 1fr;
-      gap: 0 2.5rem;
-    }
+  .process__step p {
+    max-width: 68ch;
+    margin-top: 4px;
+    color: var(--color-ink-2);
   }
   .process__no {
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.73;
     color: var(--color-signal);
-    letter-spacing: 0.06em;
   }
 
   .localities {
-    margin-top: 2rem;
     display: grid;
-    gap: 0.8rem 2rem;
     grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 12px 32px;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
   }
-  .locality {
+  .localities li {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    font-size: 0.97rem;
+    gap: 12px;
+    min-height: 32px;
   }
   /* a survey mark, not a bullet */
   .locality__tick {
+    flex: none;
     width: 9px;
     height: 9px;
-    flex: 0 0 auto;
     border: 1.5px solid var(--color-signal);
     transform: rotate(45deg);
+  }
+  .localities__note {
+    max-width: 68ch;
+    margin-top: 24px;
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 800px) {
+    .process__step {
+      grid-template-columns: 2.5rem 1fr;
+      gap: 0 12px;
+      padding: 16px 0;
+    }
+    .localities {
+      margin-top: 24px;
+    }
   }
 </style>
