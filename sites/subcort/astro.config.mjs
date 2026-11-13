@@ -14,6 +14,8 @@ export default defineConfig({
   // PUBLIC_SITE=https://<domain> PUBLIC_BASE=/.
   site: process.env.PUBLIC_SITE ?? "https://gandolh.ro",
   integrations: [react()],
+  // The dev toolbar is a keyboard tab stop after the footer, which the Floor focus check would report.
+  devToolbar: { enabled: false },
 
   vite: {
     plugins: [tailwindcss()],

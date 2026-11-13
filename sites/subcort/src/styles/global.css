@@ -571,6 +571,7 @@
   }
   .data dd.fig {
     font-size: 1.25rem;
+    line-height: 1.2;
   }
   .note {
     max-width: 42ch;
