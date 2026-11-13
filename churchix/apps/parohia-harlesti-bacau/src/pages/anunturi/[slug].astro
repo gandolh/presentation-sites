@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@churchix/ui/layouts/BaseLayout.astro";
-import Rail from "@churchix/ui/components/Rail.astro";
+import PageShell from "@churchix/ui/components/PageShell.astro";
+import Card from "@churchix/ui/components/Card.astro";
 import Badge from "@churchix/ui/components/Badge.astro";
 import Icon from "@churchix/ui/components/Icon.astro";
 import { withBase } from "@churchix/ui/lib/base.ts";
@@ -20,45 +21,34 @@ const fmt = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", yea
 ---
 
 <BaseLayout site={site} title={entry.data.title} path={`/anunturi/${entry.id}`}>
-  <section class="w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
-    <div class="flex gap-sm md:gap-lg">
-      <Rail markers={5} class="hidden sm:block" />
-
-      <div class="min-w-0 flex-1 max-w-[46rem]">
+  <PageShell title={entry.data.title}>
+    <Card as="article" padding="none" radius="lg" elevation="board" class="px-5 py-6 min-[960px]:px-8 min-[960px]:py-8">
+      <div class="max-w-[46rem]">
+        <div class="mb-5 flex flex-wrap items-center gap-3">
+          <span class="inline-flex items-center gap-2 font-label-md text-label-md font-normal text-on-surface-variant">
+            <Icon name="event" size={16} />
+            <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
+          </span>
+          {entry.data.pinned && (
+            <Badge tone="secondary" icon="push_pin">
+              Fixat
+            </Badge>
+          )}
+        </div>
+        <div class="cx-prose font-body-lg text-body-lg text-on-surface">
+          <Content />
+        </div>
         <a
           href={withBase("/anunturi")}
-          class="inline-flex items-center gap-1 font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors"
+          class="mt-6 inline-flex min-h-11 items-center gap-2 rounded font-body-md text-body-md font-semibold text-primary underline decoration-1 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
         >
           <Icon name="arrow_forward" size={18} class="rotate-180" />
           Înapoi la anunțuri
         </a>
-
-        <header class="mt-md mb-lg flex flex-col gap-sm">
-          <div class="flex flex-wrap items-center gap-sm">
-            <span class="inline-flex items-center gap-1 font-overline text-overline uppercase text-on-surface-variant">
-              <Icon name="event" size={14} />
-              <time datetime={entry.data.date.toISOString()}>{fmt.format(entry.data.date)}</time>
-            </span>
-            {entry.data.pinned && (
-              <Badge tone="primary" icon="push_pin">
-                Fixat
-              </Badge>
-            )}
-          </div>
-          <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-primary text-balance">
-            {entry.data.title}
-          </h1>
-          <div class="h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
-        </header>
-
-        <article class="cx-prose font-body-lg text-body-lg text-on-surface">
-          <Content />
-        </article>
       </div>
-    </div>
-  </section>
+    </Card>
+  </PageShell>
 </BaseLayout>
-
 <style>
   /* Readable, diacritic-safe prose using body tokens. Generous line-height keeps
      stacked diacritics (ă â î ș ț) legible; spacing comes from the rhythm tokens. */
@@ -113,7 +103,7 @@ const fmt = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", yea
     font-family: var(--font-heading);
     font-size: 1.6em;
     line-height: 1;
-    color: var(--secondary);
+    color: var(--secondary-strong);
   }
   .cx-prose :global(img) {
     max-width: 100%;
