@@ -591,7 +591,7 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 - [02](briefs/done/02-pin-base-ui-exactly.md): saloon's `^1.9.0` becomes `1.9.0`. Three sites already pin; the lockfile resolves 1.9.0.
 - [03](briefs/done/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
 - [04](briefs/done/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
-- [05](briefs/done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/done/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
+- [05](briefs/done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/done/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/done/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
 
 Brief 01, the Hallmark against taste-skill bake-off, moved to `briefs/superseded/` under the same answer to Q39; its links in this log and in [status.md](wiki/status.md) now point there. `design-study` gets no redesign brief (it is a study), and the repo has no server, so no server brief. Churchix's briefs are in its own corpus.
 
@@ -700,3 +700,14 @@ The owner approved the tractari redesign direction "Lines first" (runner-up "Nig
 with every question on the board standing as proposed: the hero is type on the ground with the board of three named lines,
 the 3D scene moves to Cum funcționează as its plate, the road spine goes, the call takes near-black ink, `responseMinutes`
 stays out of the page and the page has nine `tel:` links. The build follows, one commit for the tokens and one per section.
+
+## [2026-11-13] brief | 08 tractari redesign, "Lines first"
+
+Built from the approved board: tokens, then hero with the board and the call dock (one observer on the dispatcher's plate
+drives the header call and the dock), servicii, acoperire, cum funcționează (the 3D scene as a plate) and the footer, one
+commit each; `gsap` and the road spine are gone, near-black ink sits on every orange. `e2e/tractari.spec.ts` (first screens,
+one orange call per frame, the dock with and without script, the plate's call with the scene blocked, the scene's pause,
+no phone number wraps, clip and gap checks) runs beside the shared Floor checks. `DESIGN.md` is rewritten from what shipped,
+`PRODUCT.md`'s structural move changed and the reopened lines are recorded as changed in `wiki/decisions-ui.md`. At 1280 the
+page differs from the twin by 0.47% of pixels. Waits on `node cli.ts tractari deploy`. Details in the
+[brief's outcome](briefs/done/08-tractari-redesign-with-hallmark-on-the-estate-board.md).
