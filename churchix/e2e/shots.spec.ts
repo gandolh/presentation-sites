@@ -43,3 +43,50 @@ test.describe("screenshots", () => {
     }
   }
 });
+
+// The states the pages have besides their resting look: the open phone menu, Pomelnice's error and sent states
+// (the dev server's demo path), and the IBAN after Copiază.
+test.describe("state screenshots", () => {
+  test.skip(!dir, "set SHOTS_DIR to write screenshots");
+  test.use({ hasTouch: false, isMobile: false });
+
+  for (const { w, h } of [
+    { w: 1280, h: 800 },
+    { w: 390, h: 844 },
+  ]) {
+    test(`pomelnice error and sent at ${w}`, async ({ browser }) => {
+      const context = await browser.newContext({ viewport: { width: w, height: h } });
+      const page = await context.newPage();
+      await page.goto("/pomelnice");
+      await page.waitForLoadState("networkidle");
+      await page.locator("form").evaluate((f) => (f as HTMLFormElement).requestSubmit());
+      await page.screenshot({ path: join(dir as string, `pomelnice-error-parish-${w}.png`), fullPage: true });
+      await page.getByRole("textbox", { name: /Scrieți numele de botez ale celor vii/ }).fill("Ioan, Maria");
+      await page.getByRole("button", { name: "Trimite Pomelnicul" }).click();
+      await page.screenshot({ path: join(dir as string, `pomelnice-sent-parish-${w}.png`), fullPage: true });
+      await context.close();
+    });
+  }
+
+  test("phone menu open and the IBAN copied", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const page = await context.newPage();
+    await page.goto("/");
+    await page.waitForFunction(() => document.querySelector('astro-island[component-url*="MobileNav"][ssr]') === null);
+    await page.getByRole("button", { name: "Deschide meniul" }).click();
+    await page.getByRole("dialog", { name: "Meniu" }).waitFor();
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: join(dir as string, "menu-open-parish-390.png") });
+    await page.keyboard.press("Escape");
+    await page.goto("/donatii");
+    await page.waitForLoadState("networkidle");
+    await page
+      .getByRole("button", { name: /^Copiază IBAN/ })
+      .first()
+      .click();
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: join(dir as string, "donatii-copied-parish-390.png") });
+    await context.close();
+  });
+});

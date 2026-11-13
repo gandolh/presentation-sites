@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { pagesOf } from "./floor.js";
+import { open, pagesOf } from "./floor.js";
 
 // Floor: with prefers-reduced-motion on, nothing loops and nothing large moves.
 test.use({ reducedMotion: "reduce" });
 
 test("reduced motion leaves no looping animation and no smooth scrolling", async ({ page }) => {
   for (const path of await pagesOf(page)) {
-    await page.goto(path);
+    await open(page, path);
     await page.waitForTimeout(500);
     const running = await page.evaluate(() =>
       document

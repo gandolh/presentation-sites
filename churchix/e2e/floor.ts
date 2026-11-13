@@ -7,9 +7,20 @@ export function isPhone(info: TestInfo): boolean {
   return info.project.metadata["device"] === "phone";
 }
 
+/** `page.goto`, once more if a cold dev server cut the first load off while Vite re-optimized its dependencies. */
+export async function open(page: Page, path: string): Promise<void> {
+  await page.goto(path).catch(async () => {
+    await page.waitForTimeout(2000);
+    await page.goto(path);
+  });
+  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(300); // a Vite re-optimization reloads the page once more, right after the first load
+  await page.waitForLoadState("networkidle");
+}
+
 /** The home page plus every same-site page its links reach, with no fragment, at most `limit` of them. */
 export async function pagesOf(page: Page, limit = 12): Promise<string[]> {
-  await page.goto("/");
+  await open(page, "/");
   const origin = new URL(page.url()).origin;
   const hrefs = await page.evaluate((o) => {
     const found = new Set<string>();
