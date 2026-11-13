@@ -7,6 +7,8 @@ updated: 2026-11-13
 
 ## Where things stand
 
+saloon is redesigned as "Menu beside the work" (brief 06, 2026-11-13): a blush-cream ground with raised cards and bands, the Services menu card beside the photo on the first screen, a phone booking bar docked from the first paint (WhatsApp and call), a gold-ink focus ring; Fraunces and Manrope pinned at 5.3.0; saloon's own Playwright spec is `e2e/saloon.spec.ts`. Waits on a deploy.
+
 auto-service is redesigned as "The job card" (brief 05, 2026-11-13): warm graphite, one pinned light card with the call, Encode Sans, no Bordcomputer; the root `e2e/` now holds the shared Floor checks (contrast over the built pages, focus ring, reduced motion, 390 overflow) that saloon, subcort, tractari and churchix reuse. Waits on a deploy.
 
 The four phone menus are `Drawer`s through each site's `ui/Drawer.tsx` since 2026-11-12 (brief 04), `check-base-ui` is strict, and `npm run test:e2e` runs the menus' Playwright spec.
@@ -35,7 +37,7 @@ per-site docs and is *not* duplicated here.
 
 | Site | State | Its own docs |
 |---|---|---|
-| `saloon` | Code-complete and through a design + accessibility pass (2026-08-23). Blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
+| `saloon` | Code-complete; redesigned 2026-11-13 as *Menu beside the work* (see [decisions-ui.md](decisions-ui.md)). Blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
 | `auto-service` | Code-complete, redesigned 2026-11-13 as *The job card* (a pinned light card carrying the call on warm graphite; the 2026-08-23 *Bordcomputer* world is retired, see [decisions-ui.md](decisions-ui.md)). Full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. **No photography by decision** — the workshop is drawn and the gallery was removed. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
 | `subcort` | Demo, complete. Reworked twice on 2026-08-23: first onto a *scoarța* (Oltenian rug) system, then — the owner found that too traditional — onto **Montaj**, the site as a drawing set. One marquee model in `src/lib/draft.ts` drives every graphic (WebGL hero, exploded plate, scale plan, OG card); ink for the object, one orange for annotation; no photography. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |

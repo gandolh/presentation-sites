@@ -665,3 +665,13 @@ The owner approved the saloon redesign direction "Menu beside the work" (runner-
 redesign board, with every question on the board standing as proposed: the phone booking bar is docked from the first
 paint with a round call button, the direction is B, and the facts pair (`3+ ani de experiență`, `1 la 1`) stays hidden
 until the real number is set. The build follows, one commit for the tokens and one per screen.
+
+## [2026-11-13] brief | 06 saloon redesign, "Menu beside the work"
+
+Built from the approved board: tokens (the one light `@theme`, Fraunces and Manrope pinned at 5.3.0), then the home page
+(the Services menu card moved into the hero, the docked phone bar, bands and raised cards, the notice in flow) and the
+legal layout, one commit each, plus `e2e/saloon.spec.ts` (first screens, dock, clip check) and the shared Floor checks
+from the root `e2e/` (whose focus spec now reads the outermost 2 px shadow and skips iframes). `DESIGN.md` and
+`docs/tokens.md` are rewritten from what shipped, and the four reopened lines are recorded as changed in
+`wiki/decisions-ui.md`. Waits on `node cli.ts saloon deploy`. Details in the
+[brief's outcome](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md).

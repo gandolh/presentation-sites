@@ -110,3 +110,24 @@ on home; ranges take the figure dash U+2012 with no spaces and em dashes leave t
 ignition sweep is gone. Two small inline scripts in `Base.astro` (the open-now dot, the phone call bar) replace the
 reveal-on-scroll script, and nothing animates under `prefers-reduced-motion` beyond the drawer.
 
+
+## saloon: the booking bar, type and focus ring reopened (2026-11-13)
+
+**Changed, 2026-11-13.** On the estate redesign board the owner approved the direction "Menu beside the work" for saloon
+and with it reopened four lines in `sites/saloon/DESIGN.md` (brief 06). The site's own
+[DESIGN.md](../../sites/saloon/DESIGN.md) and [tokens.md](../../sites/saloon/docs/tokens.md) are rewritten from what
+shipped; the old lines are kept here as history.
+
+| Old line | Now |
+|---|---|
+| `MobileBookingBar`: a sticky bottom WhatsApp CTA that slides in once the user scrolls past the hero; it hides while Booking, Contact or the menu is on screen | Docked from the first paint at 760 px and under: the WhatsApp pill and a round `tel:` call button, and no in-hero button on phones. It hides only while the Booking card's or Contact's own button, or the menu, is on screen; the no-JS default stays visible. From 761 px the header's Programează-te pill shows |
+| `.btn` pill, uppercase, `letter-spacing: 0.05em`; `.label-md` uppercase; a glued `→` | Sentence case, untracked; the arrow is an icon 6 px after the words |
+| Focus ring `2px solid var(--color-gold)` at 3 px | `gold-ink`, 2 px at a 3 px offset (4.9:1 on the ground; gold was 2.14:1) |
+| Texture: `.page-grain`, the banner dot, the hero's gold disc, `.loyalty-gold-motif` | All gone. The notice band is in flow, pale gold, no dot, and the header is sticky |
+
+**Kept:** the one light look with no theme switch (Q18); Ana's photographs; Testimonials parked; Fraunces and Manrope;
+WhatsApp green on every booking action.
+
+**Also decided on the board:** the Services menu moved into the hero beside the photograph (the real-element exception),
+each row with its own pre-filled Programează; Vezi serviciile is gone; the facts pair (`3+ ani de experiență`, `1 la 1`)
+stays hidden until Ana's number is real; the contact label reads `Telefon și WhatsApp`.
