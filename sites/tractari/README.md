@@ -4,11 +4,12 @@
 covering Oltenia (Gorj, Dolj, Vâlcea, Olt, Mehedinți). Romanian, static.
 
 One job, per [`PRODUCT.md`](PRODUCT.md): make a stranded driver **call
-instantly**, from any scroll position, at any hour. The cinematic hero is
-enrichment that must never gate that.
+instantly**, from any scroll position, at any hour. The opening screen is type
+and the board of three named phone lines; the 3D scene is enrichment further
+down and never gates that.
 
-Astro 7 · React 19 islands · Tailwind v4 · **Three.js + GSAP** for the night-road
-hero scene · deployed under the sub-path `/tractari`.
+Astro 7 · React 19 islands · Tailwind v4 · **Three.js** for the night-road scene
+in "Cum funcționează" · deployed under the sub-path `/tractari`.
 
 ## Run it
 

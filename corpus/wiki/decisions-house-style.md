@@ -1,6 +1,6 @@
 ---
 summary: The house style, formatted and checked, with Astro (2026-11-11) - Prettier at width 120 with the Astro plugin, the vendored house-style ESLint config plus a local Astro layer, the tsconfig flags each site takes, the npm run check gate and its fast subset, what stays outside, and the exceptions with what removes each. Read before changing a lint, format or typecheck setting.
-updated: 2026-11-12
+updated: 2026-11-13
 ---
 
 # Decisions: the house style, formatted and checked, with Astro
@@ -65,4 +65,5 @@ checked without rendering the cards again.
 - knip ignores files kept on purpose with nothing importing them (two
   dormant `images.ts`, the parked saloon testimonials, the `site.local`
   templates) and two dependencies it can't see used (`@iconify-json/ph`,
-  read by `astro-icon`; `gsap`, which nothing imports: an open question).
+  read by `astro-icon`). tractari's unused `gsap` was removed with its redesign
+  (2026-11-13).

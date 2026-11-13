@@ -24,8 +24,6 @@ export default {
     ".": { entry: ["scripts/*.{js,mjs,ts}", "e2e/playwright.config.ts"] },
     // astro-icon reads the Phosphor set (`ph:` names) from the installed package; nothing imports it.
     "sites/saloon": { ignoreDependencies: ["@iconify-json/ph"] },
-    // The docs name GSAP for the hero, but no code imports it. This goes when the redesigned hero imports it or drops it.
-    "sites/tractari": { ignoreDependencies: ["gsap"] },
     // `types: ["vite/client"]` in its tsconfig: Vite comes with Astro in each site that builds the kit.
     "packages/site-kit": { ignoreUnresolved: ["vite/client"] },
   },
