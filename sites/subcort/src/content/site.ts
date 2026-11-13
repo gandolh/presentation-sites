@@ -55,8 +55,8 @@ const defaults = {
 
   // Hours (placeholder — shown on the Contact page).
   hours: [
-    { day: "Luni – Vineri", value: "09:00 – 18:00" },
-    { day: "Sâmbătă", value: "09:00 – 14:00" },
+    { day: "Luni‒Vineri", value: "09:00‒18:00" },
+    { day: "Sâmbătă", value: "09:00‒14:00" },
     { day: "Duminică", value: "Doar pe bază de programare" },
   ],
 

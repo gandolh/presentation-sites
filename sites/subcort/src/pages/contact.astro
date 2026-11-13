@@ -17,56 +17,62 @@ import { site, telLink } from "../content/site";
   <Nav current="/contact/" />
 
   <main id="main">
+    {/* Display only. No form, no booking widget, no call button, by design:
+        the site informs and steps back. */}
     <PageHeader
-      plate="04 · Contact"
+      no="Planșa 04"
+      name="Contact"
       scale="Date de identificare"
       title="Unde ne găsești"
-      lead="Spune-ne data, locul și numărul de invitați, iar noi te ajutăm cu spațiul. Mai jos sunt datele noastre — ne poți scrie sau suna când îți convine."
-    />
-
-    {/* Display only. No form, no booking widget, no call button — by design;
-        the site informs and steps back. */}
-    <Plate no="04.1 · Date" note="Contact direct" tight>
-      <div class="contact-grid">
-        <dl class="contact-list">
-          <div class="contact-row">
-            <dt class="datum-key">Telefon</dt>
+      lead="Spune-ne data, locul și numărul de invitați, iar noi te ajutăm cu spațiul. Mai jos sunt datele noastre, ne poți scrie sau suna când îți convine."
+    >
+      <div class="card data-card">
+        <div class="band">
+          <span class="band__no">04.1</span>
+          <span class="band__name">Date</span>
+          <span class="band__scale">Contact direct</span>
+        </div>
+        <dl class="rows">
+          <div class="crow">
+            <dt>Telefon</dt>
             <dd>
-              <a href={telLink()} class="contact-big link-quiet dim">
+              <a href={telLink()} class="big fig">
                 {site.phone}
               </a>
             </dd>
           </div>
-          <div class="contact-row">
-            <dt class="datum-key">Email</dt>
+          <div class="crow">
+            <dt>Email</dt>
             <dd>
-              <a href={`mailto:${site.email}`} class="contact-big link-quiet">
+              <a href={`mailto:${site.email}`} class="big">
                 {site.email}
               </a>
             </dd>
           </div>
-          <div class="contact-row">
-            <dt class="datum-key">Adresă</dt>
-            <dd class="contact-big">
+          <div class="crow">
+            <dt>Adresă</dt>
+            <dd class="big">
               {site.address}, {site.city}, jud. {site.county}
             </dd>
           </div>
         </dl>
+      </div>
+    </PageHeader>
 
-        <aside class="hours">
-          <h2 class="heading-md">Program</h2>
-          <dl class="mt-4">
-            {site.hours.map((h) => (
-              <div class="hours__row">
-                <dt class="text-[0.9rem] text-[var(--color-ink-2)]">{h.day}</dt>
-                <dd class="text-[0.9rem] font-semibold text-right dim">{h.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <p class="mt-5 text-[0.87rem] leading-relaxed text-[var(--color-ink-2)]">
-            Pentru montaje în zone mai îndepărtate din {site.region}, stabilim programul în funcție de distanță.
-          </p>
-        </aside>
+    <Plate no="04.2" name="Program" labelledby="hours" tight>
+      <h2 id="hours" class="sr-only">
+        Program
+      </h2>
+      <div class="hrs">
+        <ul>
+          {site.hours.map((h) => (
+            <li>
+              <span>{h.day}</span>
+              <b>{h.value}</b>
+            </li>
+          ))}
+        </ul>
+        <p>Pentru montaje în zone mai îndepărtate din {site.region}, stabilim programul în funcție de distanță.</p>
       </div>
     </Plate>
   </main>
@@ -75,52 +81,105 @@ import { site, telLink } from "../content/site";
 </Base>
 
 <style>
-  .contact-grid {
-    display: grid;
-    gap: 2.5rem;
-    margin-top: 0.5rem;
+  .data-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
-  @media (min-width: 860px) {
-    .contact-grid {
-      grid-template-columns: 1.35fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
+  .rows {
+    margin: 0;
+    padding: 0 32px 8px;
   }
-
-  .contact-row {
-    padding: 1.25rem 0;
+  .crow {
+    padding: 16px 0;
     border-top: 1px solid var(--color-hair);
   }
-  .contact-row:first-child {
-    border-top: 1.5px solid var(--color-ink);
+  .crow:first-child {
+    border-top: 0;
   }
-  .contact-row:last-child {
-    border-bottom: 1px solid var(--color-hair);
-  }
-  .contact-big {
+  .big {
     display: inline-block;
-    margin-top: 0.45rem;
-    font-size: clamp(1.12rem, 2vw, 1.45rem);
+    margin-top: 4px;
+    font-size: 1.5rem;
+    line-height: 1.33;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     overflow-wrap: anywhere;
   }
-
-  .hours {
-    background: var(--color-fill-2);
-    border: 1px solid var(--color-hair);
-    padding: 1.5rem;
+  a.big {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-soft);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 5px;
   }
-  .hours__row {
+  a.big:hover {
+    color: var(--color-signal-hover);
+    text-decoration-color: var(--color-signal-hover);
+  }
+  .big.fig {
+    font-size: 1.5rem;
+  }
+
+  .hrs {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .hrs ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hrs li {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid var(--color-hair);
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-hair);
   }
-  .hours__row:last-child {
-    border-bottom: 0;
+  .hrs li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .hrs li span {
+    color: var(--color-ink-2);
+  }
+  .hrs li b {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-align: right;
+  }
+  .hrs p {
+    font-size: var(--text-lede);
+    line-height: var(--text-lede--line-height);
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 800px) {
+    .rows {
+      padding: 0 16px 4px;
+    }
+    .big,
+    .big.fig {
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+    .hrs {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hrs li {
+      flex-wrap: wrap;
+    }
+    .hrs li:last-child b {
+      flex-basis: 100%;
+      margin-top: 2px;
+      text-align: start;
+    }
   }
 </style>
