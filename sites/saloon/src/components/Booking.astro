@@ -42,14 +42,16 @@ import { withBase } from "@sites/kit";
         class="btn-whatsapp group flex items-center gap-4 rounded-[1.25rem] px-6 py-5 no-underline"
       >
         <span
-          class="flex-shrink-0 w-12 h-12 rounded-full bg-white/15 flex items-center justify-center"
+          class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--color-on-whatsapp-wash)] flex items-center justify-center"
           aria-hidden="true"
         >
           <Icon name="ph:whatsapp-logo" size={24} aria-hidden="true" />
         </span>
         <span class="flex-1">
           <span class="block text-base font-bold leading-tight">Scrie-mi pe WhatsApp</span>
-          <span class="block mt-0.5 text-sm text-white">Răspund cel mai repede aici · {site.phone}</span>
+          <span class="block mt-0.5 text-sm text-[var(--color-on-whatsapp)]">
+            Răspund cel mai repede aici · {site.phone}
+          </span>
         </span>
         <Icon name="ph:arrow-right" size={20} class="flex-shrink-0" aria-hidden="true" />
       </a>

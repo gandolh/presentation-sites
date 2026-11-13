@@ -46,7 +46,7 @@ const ogImage = absoluteUrl("/images/og-image.png");
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#fff8f6" />
+    <meta name="theme-color" content="#f5e8e2" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonical} />
 
@@ -103,12 +103,11 @@ const ogImage = absoluteUrl("/images/og-image.png");
   <body>
     <a
       href="#acasa"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-[calc(var(--wip-banner-h,0px)+1rem)] focus:left-4 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded-full focus:shadow-lg"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-[calc(var(--wip-banner-h,0px)+1rem)] focus:left-4 focus:z-50 focus:bg-surface-container-lowest focus:px-4 focus:py-2 focus:rounded-full focus:shadow-lg"
     >
       Sari la conținut
     </a>
     <slot />
-    <div class="page-grain" aria-hidden="true"></div>
 
     <script is:inline>
       // Scroll-triggered fade-in. Only hide-then-reveal when JS + observer are

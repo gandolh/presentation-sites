@@ -1,33 +1,34 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors — from DESIGN.md (Material You tokens) */
-  --color-surface: #fff8f6;
-  --color-surface-dim: #ebd6cd;
-  --color-surface-bright: #fff8f6;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #fff1ec;
-  --color-surface-container: #ffe9e2;
-  --color-surface-container-high: #fae4db;
-  --color-surface-container-highest: #f4ded6;
+  /* Surfaces: ground, band, card, well */
+  --color-surface: #f5e8e2;
+  --color-surface-dim: #e3cdc4;
+  --color-surface-bright: #f5e8e2;
+  --color-surface-container-lowest: #fffcfb; /* card: always with an edge and --shadow-card */
+  --color-surface-container-low: #efdcd4; /* band */
+  --color-surface-container: #f1dfd8;
+  --color-surface-container-high: #f3ddd5; /* picture well */
+  --color-surface-container-highest: #ead3ca;
   --color-on-surface: #241914;
   --color-on-surface-variant: #4f4442;
-  --color-inverse-surface: #3b2e28;
+  --color-inverse-surface: #3b2e28; /* footer */
   --color-inverse-on-surface: #ffede7;
-  --color-outline: #817472;
-  --color-outline-variant: #d3c3c0;
+  --color-inverse-on-surface-variant: #dccbc4; /* footer secondary text, replaces opacity-70 and opacity-80 */
+  --color-outline: #86726e;
+  --color-outline-variant: #dcc3ba;
   --color-surface-tint: #705955;
 
   --color-primary: #705955;
-  --color-on-primary: #ffffff;
+  --color-on-primary: #fffcfb;
   --color-primary-container: #f4d6d0;
-  --color-on-primary-container: #725c57;
+  --color-on-primary-container: #5f4743;
   --color-inverse-primary: #ddc0ba;
 
-  --color-secondary: #745b1b;
+  --color-secondary: #6f561a;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #ffdc8e;
-  --color-on-secondary-container: #795f1f;
+  --color-secondary-container: #f6e4bd; /* notice band */
+  --color-on-secondary-container: #5a4512;
 
   --color-tertiary: #605e5b;
   --color-on-tertiary: #ffffff;
@@ -39,37 +40,55 @@
   --color-error-container: #ffdad6;
   --color-on-error-container: #93000a;
 
-  --color-background: #fff8f6;
+  --color-background: #f5e8e2;
   --color-on-background: #241914;
   --color-surface-variant: #f4ded6;
 
-  /* Brand-specific aliases for clarity */
+  /* Brand */
   --color-blush: #f4d6d0;
   --color-blush-deep: #e8a6a0;
-  --color-gold: #c9a961;
-  /* Darker gold for TEXT use. The accent --color-gold (#c9a961) only hits
-     ~2.25:1 on light surfaces and fails WCAG AA as text; this deepened shade
-     clears 4.5:1 on the cream/white surfaces while reading as the same gold.
-     Use --color-gold for non-text accents (dividers, icons, focus rings). */
-  --color-gold-ink: #806619;
+  --color-gold: #c9a961; /* the rule, the notice foot, the signature underline; never text */
+  --color-gold-ink: #7a6118; /* prices, numerals and the focus ring; on card or ground only */
   --color-cream: #fbf7f2;
-  /* WhatsApp brand green — the recognizable "message me" cue on the primary
-     booking CTA. Deepened from the iconic #25D366 so WHITE text/icon clears
-     WCAG AA: white on #118040 = 5.02:1, on the #0e7a37 hover = 5.44:1. */
   --color-whatsapp: #118040;
   --color-whatsapp-deep: #0e7a37;
+  --color-on-whatsapp: #fffcfb;
+  --color-on-whatsapp-wash: rgb(255 252 251 / 0.16); /* the glyph disc on the booking card */
+  --color-inverse-wash: rgb(255 252 251 / 0.1); /* footer hover and chip fill */
+  --color-inverse-line: rgb(255 252 251 / 0.16); /* footer hairline */
 
   /* Typography */
   --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-body: "Manrope", system-ui, sans-serif;
+  --text-display: 4rem; /* h1, 64/68; phone 40/44, sized to the width */
+  --text-display--line-height: 1.0625;
+  --text-display--font-weight: 440;
+  --text-heading: 2rem; /* h2, 32/38; phone 28/34 */
+  --text-heading--line-height: 1.1875;
+  --text-heading--font-weight: 440;
+  --text-title: 1.5rem; /* titles, prices, steps, signature, 24/30 */
+  --text-title--line-height: 1.25;
+  --text-title--font-weight: 500;
+  --text-lead: 1.125rem; /* 18/28; phone 16/24 */
+  --text-lead--line-height: 1.5556;
+  --text-label: 0.875rem; /* 14/20: subtitles, notice, foot, legal */
+  --text-label--line-height: 1.4286;
 
-  /* Border radius */
+  /* Radii: 8, 16, 24 and full */
   --radius-sm: 0.25rem;
   --radius: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgb(36 25 20 / 0.06), 0 12px 32px -16px rgb(36 25 20 / 0.22);
+  --shadow-glow: 0 8px 20px -8px rgb(17 128 64 / 0.55); /* the booking button */
+
+  /* Named layers (the base-ui skill, rule 5) */
+  --z-index-header: 20;
+  --z-index-dock: 30; /* phone booking bar, above the header */
 
   /* Container */
   --container-max-width: 1200px;
@@ -145,7 +164,7 @@
      component can still override it, and `:focus-visible` means a mouse click
      never paints a ring. Never replace this with `outline: none`. */
   :where(a, button, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-gold-ink);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
@@ -218,8 +237,6 @@
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
     text-decoration: none;
     /* One motion curve site-wide: the same ease-out-quint the scroll reveals
        use. Plain `ease-out` read as a different, flatter language. */
@@ -283,8 +300,8 @@
      fill + shadow + the recognizable green. Reused by the mobile sticky FAB. */
   .btn-whatsapp {
     background-color: var(--color-whatsapp);
-    color: #ffffff;
-    box-shadow: 0 6px 20px -8px rgba(17, 128, 64, 0.5);
+    color: var(--color-on-whatsapp);
+    box-shadow: var(--shadow-glow);
   }
 
   .btn-whatsapp:hover {
@@ -335,7 +352,6 @@
     font-weight: 600;
     font-size: 0.875rem;
     line-height: 1.25;
-    letter-spacing: 0.05em;
   }
 
   /* Card */
@@ -435,31 +451,6 @@
       opacity: 1;
       transform: none;
       transition: none;
-    }
-  }
-}
-
-@layer components {
-  /* Film grain, Editorial-Luxury archetype. Fixed and pointer-events-none so
-     it is composited once and never repaints on scroll (never attach grain to
-     a scrolling container). Sits above the page, below the nav (z-40) and the
-     mobile menu, so it tints content without touching interactive layers. */
-  .page-grain {
-    position: fixed;
-    inset: 0;
-    z-index: 30;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 160px 160px;
-  }
-
-  /* Grain is texture, not information. Anyone who has asked for less motion or
-     higher contrast is better served without it. */
-  @media (prefers-reduced-motion: reduce), (prefers-contrast: more) {
-    .page-grain {
-      display: none;
     }
   }
 }
