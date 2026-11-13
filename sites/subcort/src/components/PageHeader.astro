@@ -1,29 +1,80 @@
 ---
-// A sheet header: the plate number and scale on the left, the title on the
-// right. Every subpage opens with one, so the set reads as a set.
+// A page head: a card on the plot, its band carrying the plate number, the
+// name and the scale, then the title (5 columns) and the lede (7). A second
+// card can sit beside it through the slot (Contact's data).
 interface Props {
+  no: string;
+  name: string;
+  scale?: string;
   title: string;
   lead?: string;
-  plate: string;
-  scale?: string;
 }
-const { title, lead, plate, scale } = Astro.props;
+const { no, name, scale, title, lead } = Astro.props;
+const side = Astro.slots.has("default");
 ---
 
-<header class="sheet plate--tight">
-  <div class="plate-head">
-    <p class="plate-no">
-      Planșa {plate}
-      {scale && (
-        <>
-          <br />
-          {scale}
-        </>
-      )}
-    </p>
-    <div>
-      <h1 class="heading-xl max-w-[17ch]">{title}</h1>
-      {lead && <p class="lede mt-6">{lead}</p>}
+<section class:list={["field", "field--page", side && "field--side"]}>
+  <div class="sheet">
+    <div class="card page-card">
+      <div class="band">
+        <span class="band__no">{no}</span>
+        <span class="band__name">{name}</span>
+        {scale && <span class="band__scale">{scale}</span>}
+      </div>
+      <div class="page-card__body">
+        <h1 class="h-display">{title}</h1>
+        {lead && <p class="lede">{lead}</p>}
+      </div>
     </div>
+    <slot />
   </div>
-</header>
+</section>
+
+<style is:global>
+  .field--page > .sheet {
+    grid-template-columns: 1fr;
+    padding-block: 24px;
+  }
+  .field--page + .panel {
+    margin-top: 24px;
+  }
+  .field--page.field--side > .sheet {
+    grid-template-columns: 5fr 7fr;
+  }
+  .page-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .page-card__body {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 32px;
+    align-items: start;
+    padding: 28px 32px;
+  }
+  .page-card__body .lede {
+    margin-top: 6px;
+    max-width: 60ch;
+  }
+  .field--side .page-card__body {
+    display: block;
+  }
+  .field--side .page-card__body .lede {
+    margin-top: 16px;
+  }
+  @media (max-width: 800px) {
+    .field--page > .sheet,
+    .field--page.field--side > .sheet {
+      grid-template-columns: 1fr;
+      padding-block: 12px;
+    }
+    .page-card__body {
+      display: block;
+      padding: 20px 16px 24px;
+    }
+    .page-card__body .lede,
+    .field--side .page-card__body .lede {
+      margin-top: 14px;
+    }
+  }
+</style>

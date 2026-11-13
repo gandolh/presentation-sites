@@ -53,8 +53,8 @@
   --text-title: 1.25rem; /* 20/26, 600 */
   --text-title--line-height: 1.3;
   --text-title--font-weight: 600;
-  --text-lede: clamp(1.0625rem, 1.03rem + 0.1vw, 1.125rem); /* 17/26 to 18/28 */
-  --text-lede--line-height: 1.55;
+  --text-lede: 1.125rem; /* 18/28; 17/26 on a phone (see :root below) */
+  --text-lede--line-height: 1.5556;
   --text-body: 1rem; /* 16/26 */
   --text-body--line-height: 1.625;
   --text-label: 0.875rem; /* 14/20, 500, sentence case, untracked */
@@ -76,10 +76,26 @@
    Base
    ========================================================================== */
 
+:root {
+  --nav-h: 4rem;
+}
+@media (max-width: 800px) {
+  :root {
+    --nav-h: 3.5rem;
+    --sheet-pad: 0.75rem;
+    /* The phone sizes of the type ladder: line heights of 38, 32 and 26 px. */
+    --text-lede: 1.0625rem;
+    --text-lede--line-height: 1.5294;
+    --text-display--line-height: 1.1176;
+    --text-h2--line-height: 1.1429;
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--nav-h, 4.25rem) + 1.5rem);
+    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+    overflow-x: clip;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -99,6 +115,8 @@
     background: var(--color-sheet);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -127,6 +145,7 @@
   h1,
   h2,
   h3 {
+    margin: 0;
     text-wrap: balance;
   }
   p,
@@ -136,218 +155,213 @@
 }
 
 /* ==========================================================================
-   The sheet
+   Type, the sheet, surfaces
    ========================================================================== */
 
 @layer components {
   .sheet {
     width: 100%;
-    max-width: 84rem;
+    max-width: 75rem;
     margin-inline: auto;
     padding-inline: var(--sheet-pad);
   }
 
-  .plate {
-    padding-block: clamp(3rem, 6vw, 5.5rem);
+  /* ---- type ladder: the --text-* tokens ------------------------------- */
+  .h-display {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    font-weight: var(--text-display--font-weight);
+    letter-spacing: var(--text-display--letter-spacing);
   }
-  .plate--tight {
-    padding-block: clamp(2rem, 4vw, 3.25rem);
+  .h-section {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--text-h2--font-weight);
+    letter-spacing: var(--text-h2--letter-spacing);
   }
-
-  .rule {
-    border-top: 1px solid var(--color-hair);
-  }
-  .rule--heavy {
-    border-top: 1.5px solid var(--color-ink);
-  }
-
-  /* ---- the plate header ------------------------------------------------
-     Numbering is earned here: a drawing set is a numbered register, and the
-     reader navigates it by number. */
-  .plate-head {
-    display: grid;
-    gap: 0.75rem 2.5rem;
-    align-items: baseline;
-    padding-top: 1.15rem;
-    border-top: 1.5px solid var(--color-ink);
-  }
-  @media (min-width: 900px) {
-    .plate-head {
-      grid-template-columns: 11rem minmax(0, 1fr);
-    }
-  }
-  .plate-head > * {
-    min-width: 0;
-  }
-  .plate-no {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--color-signal);
-  }
-
-  /* ---- type scale ------------------------------------------------------ */
-  .heading-xl {
-    font-weight: 600;
-    font-size: clamp(2.35rem, 5.2vw, 3.9rem);
-    line-height: 1;
-    letter-spacing: -0.034em;
-  }
-  .heading-lg {
-    font-weight: 600;
-    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-    line-height: 1.05;
-    letter-spacing: -0.028em;
-  }
-  .heading-md {
-    font-weight: 600;
-    font-size: clamp(1.05rem, 1.7vw, 1.2rem);
-    line-height: 1.25;
-    letter-spacing: -0.014em;
+  .h-title {
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    font-weight: var(--text-title--font-weight);
   }
   .lede {
-    font-size: clamp(1.02rem, 1.4vw, 1.12rem);
-    line-height: 1.62;
-    color: var(--color-ink-2);
-    max-width: 54ch;
-  }
-  .prose-measure {
-    max-width: 68ch;
-  }
-
-  /* ---- annotation ------------------------------------------------------ */
-  .callout-no {
-    display: inline-grid;
-    place-items: center;
-    width: 1.65rem;
-    height: 1.65rem;
-    flex: 0 0 auto;
-    border: 1.5px solid var(--color-signal);
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--color-signal);
-  }
-
-  .datum-key {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: var(--text-lede);
+    line-height: var(--text-lede--line-height);
     color: var(--color-ink-2);
   }
-  .datum-value {
-    font-weight: 600;
-    letter-spacing: -0.018em;
+  .body-2 {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    color: var(--color-ink-2);
+  }
+  .label {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+    color: var(--color-ink-2);
+  }
+  /* Measurements and sheet numbers are set in the mono face: the numerals
+     have to align down a column. */
+  .fig {
+    font-family: var(--font-mono);
+    font-size: var(--text-figure);
+    line-height: var(--text-figure--line-height);
+    font-weight: var(--text-figure--font-weight);
     font-variant-numeric: tabular-nums;
   }
-  /* Measurements are set in the mono face — this is a drawing, and the
-     numerals have to align down a column. */
-  .dim {
+  /* A range inside a sentence: the separator is the figure dash. */
+  .rg {
     font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 0.94em;
+    color: var(--color-ink);
   }
 
-  /* ---- the title-block strip ------------------------------------------ */
-  .titleblock {
+  /* ---- the field: the plot behind the hero and the page heads --------- */
+  .field {
+    background-color: var(--color-field);
+    background-image:
+      linear-gradient(var(--color-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+    border-bottom: 1px solid var(--color-edge);
+  }
+  .field > .sheet {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
-    border-top: 1.5px solid var(--color-ink);
-    border-bottom: 1px solid var(--color-hair);
-    background: var(--color-fill-2);
+    grid-template-columns: 5fr 7fr;
+    gap: 24px;
+    padding-block: 32px;
+    align-items: stretch;
   }
-  .titleblock > div {
-    padding: 0.85rem 1.15rem;
-    border-right: 1px solid var(--color-hair);
-  }
-  .titleblock > div:last-child {
-    border-right: 0;
-  }
-  .titleblock dt {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--color-ink-2);
-  }
-  .titleblock dd {
-    margin-top: 0.3rem;
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    font-variant-numeric: tabular-nums;
+  @media (max-width: 800px) {
+    .field > .sheet {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding-block: 12px;
+    }
   }
 
-  /* ---- surfaces — flat; a drawing has no shadows, depth is line weight -- */
-  .panel {
+  /* ---- a card lies on the plot: tone, a 1 px edge, a 1.5 px ink top rule - */
+  .card {
     background: var(--color-paper);
-    border: 1px solid var(--color-hair);
-  }
-  .panel--fill {
-    background: var(--color-fill-2);
+    border: 1px solid var(--color-edge);
+    border-top: 1.5px solid var(--color-ink);
   }
 
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.2rem 0.55rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid currentColor;
+  /* ---- a panel lies on the ground, with a head band: number, name, scale -- */
+  .panel {
+    position: relative;
+    width: calc(100% - 48px);
+    max-width: 72rem;
+    margin: 32px auto 0;
+    background: var(--color-paper);
+    border: 1px solid var(--color-edge);
   }
-  .chip-included {
+  .band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    min-height: 48px;
+    padding: 8px 32px;
+    background: var(--color-fill-2);
+    border-bottom: 1px solid var(--color-hair);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+  }
+  .band__no {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-signal);
+  }
+  .band__name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .band__scale {
     color: var(--color-ink-2);
   }
-  .chip-optional {
-    color: var(--color-on-signal-soft);
-    background: var(--color-signal-soft);
-    border-color: transparent;
+  .panel__body {
+    padding: 40px 32px 32px;
+  }
+  .panel__body--tight {
+    padding-top: 32px;
+  }
+  .intro {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .intro p {
+    font-size: var(--text-lede);
+    line-height: var(--text-lede--line-height);
+    color: var(--color-ink-2);
+  }
+  @media (max-width: 800px) {
+    .panel {
+      width: calc(100% - 24px);
+      margin-top: 12px;
+    }
+    .band {
+      padding: 10px 16px;
+    }
+    .panel__body,
+    .panel__body--tight {
+      padding: 24px 16px 20px;
+    }
+    .panel__body--tight {
+      padding-top: 32px;
+    }
+    .intro {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
   }
 
-  /* ---- links ----------------------------------------------------------- */
-  .link-quiet {
-    display: inline-block;
-    padding-block: 0.2rem;
-    color: var(--color-ink);
-    text-decoration: underline;
-    text-decoration-color: var(--color-line-soft);
-    transition:
-      color 160ms ease-out,
-      text-decoration-color 160ms ease-out;
-  }
-  .link-quiet:hover {
-    color: var(--color-signal);
-    text-decoration-color: currentColor;
-  }
-
-  .btn-outline {
+  /* ---- annotation: a numbered circle ---------------------------------- */
+  .dot {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    padding: 0.7rem 1.1rem;
+    justify-content: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid var(--color-signal);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
     font-weight: 600;
-    font-size: 0.92rem;
-    border: 1px solid var(--color-line);
+    font-size: 0.875rem;
+    line-height: 1;
+    color: var(--color-signal);
+  }
+
+  /* ---- a neutral link-button: never a filled call --------------------- */
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
     color: var(--color-ink);
+    font-weight: 600;
+    text-decoration: none;
     transition:
       border-color 160ms ease-out,
-      color 160ms ease-out,
-      background 160ms ease-out;
+      color 160ms ease-out;
   }
-  .btn-outline:hover {
-    border-color: var(--color-signal);
-    color: var(--color-signal);
-    background: var(--color-signal-soft);
+  .link-btn:hover {
+    border-color: var(--color-signal-hover);
+    color: var(--color-signal-hover);
   }
-  .btn-outline:active {
-    transform: translateY(1px);
+  .link-btn:active {
+    background: var(--color-fill-2);
   }
 }
 
@@ -377,10 +391,6 @@
     }
   }
 
-  .tnum {
-    font-variant-numeric: tabular-nums;
-  }
-
   .sr-only {
     position: absolute;
     width: 1px;
@@ -403,140 +413,188 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in oklab, var(--color-sheet) 90%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 200ms ease-out;
-  }
-  .nav[data-stuck] {
-    border-bottom-color: var(--color-hair);
+    background: var(--color-paper);
+    border-bottom: 1.5px solid var(--color-ink);
+    /* The phone menu's panel is fixed inside the header and is placed by it. */
+    contain: layout;
   }
   .nav__inner {
-    height: var(--nav-h, 4.25rem);
+    height: var(--nav-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
   }
   .nav__word {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: -0.005em;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    text-decoration: none;
     color: var(--color-ink);
   }
   .nav__links {
     display: none;
-    gap: 1.85rem;
+    gap: 8px;
   }
-  @media (min-width: 880px) {
+  @media (min-width: 801px) {
     .nav__links {
       display: flex;
     }
   }
   .nav__link {
-    position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 2.75rem;
-    font-size: 0.95rem;
-    font-weight: 450;
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 0.9375rem;
+    font-weight: 500;
     color: var(--color-ink-2);
+    text-decoration: none;
     transition: color 160ms ease-out;
   }
   .nav__link:hover {
     color: var(--color-ink);
   }
+  .nav__link span {
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+  }
   .nav__link.is-current {
     color: var(--color-ink);
     font-weight: 600;
   }
-  .nav__link.is-current::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(50% - 0.95rem);
-    height: 2px;
-    background: var(--color-signal);
+  .nav__link.is-current span {
+    border-bottom-color: var(--color-signal);
   }
 }
 
 /* ==========================================================================
-   The scale plan (React island)
+   Definition lists, and the scale plan (React island)
    ========================================================================== */
 
 @layer components {
-  .scale {
-    display: grid;
-    gap: 1.75rem;
-    align-items: start;
+  dt {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+    color: var(--color-ink-2);
   }
-  @media (min-width: 900px) {
-    .scale {
-      grid-template-columns: 1.5fr 1fr;
-      gap: 3rem;
-    }
+  dd {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.33;
+    font-weight: 600;
   }
 
-  .scale__plan {
-    background: var(--color-paper);
-    border: 1px solid var(--color-hair);
-    padding: 0.6rem;
+  .plan {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 32px;
+    margin-top: 32px;
+    align-items: start;
   }
-  .scale__svg {
+  .plan__box {
+    padding: 12px;
+    background: var(--color-field);
+    border: 1px solid var(--color-edge);
+  }
+  .plan__svg {
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  .scale__pick {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .scale__btn {
-    padding: 0.55rem 0.85rem;
-    margin: 0 -1px -1px 0;
-    font-family: var(--font-mono);
-    font-size: 0.84rem;
-    font-weight: 500;
-    color: var(--color-ink-2);
-    border: 1px solid var(--color-line-soft);
     background: var(--color-paper);
-    transition:
-      color 160ms ease-out,
-      border-color 160ms ease-out,
-      background 160ms ease-out;
   }
-  .scale__btn:hover {
-    color: var(--color-ink);
-    border-color: var(--color-line);
-  }
-  .scale__btn[data-on] {
-    color: #fff;
-    background: var(--color-signal);
-    border-color: var(--color-signal);
+  .plan__dim,
+  .plan__car {
+    font-family: var(--font-mono);
   }
 
-  .scale__data {
-    margin-top: 1.5rem;
+  /* The sizes: four 48 px targets. The selected one is ink-filled, never orange. */
+  .pick {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .pick button {
+    min-height: 48px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    color: var(--color-ink-2);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .pick button:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+  .pick button:active {
+    background: var(--color-fill-2);
+  }
+  .pick button[aria-pressed="true"] {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-weight: 600;
+  }
+  .pick button:disabled {
+    border-style: dashed;
+    background: var(--color-fill-2);
+    color: var(--color-ink-2);
+    cursor: default;
+  }
+
+  .data {
+    margin: 20px 0 0;
     border-top: 1.5px solid var(--color-ink);
   }
-  .scale__data > div {
-    padding: 0.8rem 0;
-    border-bottom: 1px solid var(--color-hair);
+  .data > div {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-hair);
   }
-  .scale__data .datum-value {
-    font-size: 1.12rem;
+  .data dd {
+    margin: 0;
+    text-align: right;
+    font-size: 1.0625rem;
+    line-height: 1.41;
   }
-  .scale__note {
-    margin-top: 1.25rem;
-    font-size: 0.92rem;
+  .data dd.fig {
+    font-size: 1.25rem;
+  }
+  .note {
+    max-width: 42ch;
+    margin: 16px 0 0;
+    font-size: 0.9375rem;
     line-height: 1.6;
     color: var(--color-ink-2);
-    max-width: 42ch;
+  }
+
+  @media (max-width: 800px) {
+    .plan {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .plan__box {
+      padding: 4px;
+    }
+    /* Labels stay readable at 390 and 360: 12 px or more for dimensions, 11 px or more for the car. */
+    .plan__dim {
+      font-size: 1.4px;
+    }
+    .plan__car {
+      font-size: 1.25px;
+    }
   }
 }

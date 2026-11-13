@@ -45,117 +45,121 @@ const KEY = [
   <Nav current="/" />
 
   <main id="main">
-    {/* ===================== THE HERO SHEET =====================
+    {/* ===================== THE FIELD =====================
         The structure assembles itself out of the same layers the exploded
-        plate draws further down. Type and drawing share one plane. */}
-    <section class="sheet hero" aria-label="Subcort — corturi pentru evenimente">
-      <div class="hero__grid">
-        <div class="hero__copy">
-          <p class="plate-no">
-            Subcort · {site.county} — {site.region}
-          </p>
-          <h1 class="heading-xl mt-5">Un spațiu pregătit, oriunde ai nevoie de el.</h1>
-          <p class="lede mt-7">
-            Aducem structura la tine, o ridicăm pe terenul tău și o pregătim complet — pardoseală, pereți, iluminat și
+        plate draws further down. The copy card and the title block lie on the plot. */}
+    <section class="field" aria-label="Subcort — corturi pentru evenimente">
+      <div class="sheet">
+        <div class="card hero-copy">
+          <h1 class="h-display">Un spațiu pregătit, oriunde ai nevoie de el.</h1>
+          <p class="lede">
+            Aducem structura la tine, o ridicăm pe terenul tău și o pregătim complet: pardoseală, pereți, iluminat și
             climatizare. Tu te ocupi de eveniment, noi de spațiul în care are loc.
           </p>
+          <a href={withBase("/corturi/")} class="link-btn">
+            Vezi dimensiunile și dotările
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
         </div>
-        <div class="hero__art">
-          <HeroScene />
+
+        <div class="hero-right">
+          <div class="hero-plate">
+            <HeroScene />
+          </div>
+          {/* The title block: the key dimensions, with the place first on a phone. */}
+          <div class="card tb">
+            <dl>
+              <div>
+                <dt>Deschidere</dt>
+                <dd class="fig">8‒20 m</dd>
+              </div>
+              <div>
+                <dt>Suprafață</dt>
+                <dd class="fig">64‒300 m²</dd>
+              </div>
+              <div>
+                <dt>Capacitate</dt>
+                <dd class="fig">40‒320</dd>
+              </div>
+              <div>
+                <dt>Montaj</dt>
+                <dd>La tine acasă</dd>
+              </div>
+              <div>
+                <dt>Zonă</dt>
+                <dd>
+                  {site.county}, {site.region}
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </div>
     </section>
 
-    {/* The title-block strip: the key dimensions along the foot of the sheet. */}
-    <div class="sheet">
-      <dl class="titleblock">
-        <div>
-          <dt>Deschidere</dt>
-          <dd class="dim">8 – 20 m</dd>
-        </div>
-        <div>
-          <dt>Suprafață</dt>
-          <dd class="dim">64 – 300 m²</dd>
-        </div>
-        <div>
-          <dt>Capacitate</dt>
-          <dd class="dim">40 – 320</dd>
-        </div>
-        <div>
-          <dt>Montaj</dt>
-          <dd>La tine acasă</dd>
-        </div>
-        <div>
-          <dt>Zonă</dt>
-          <dd>
-            {site.county} · {site.region}
-          </dd>
-        </div>
-      </dl>
-    </div>
-
-    {/* ===================== PLATE 01 — the exploded view ===================== */}
-    <Plate no="01 · Alcătuire" note="Axonometrie 1:100" title="Ce vine odată cu cortul">
-      <p class="lede mt-5">
-        Venim cu structura, o ridicăm pe terenul tău și o pregătim complet. Lăsăm un spațiu gata de folosit, potrivit
-        oricărei ocazii, și revenim după eveniment ca să demontăm.
-      </p>
-
-      <div class="mt-10">
-        <ExplodedPlate />
+    {/* ===================== PANEL 01: the exploded view ===================== */}
+    <Plate no="01" name="Alcătuire" scale="Axonometrie 1:100" labelledby="p1">
+      <div class="intro">
+        <h2 id="p1" class="h-section">
+          Ce vine odată cu cortul
+        </h2>
+        <p>
+          Venim cu structura, o ridicăm pe terenul tău și o pregătim complet. Lăsăm un spațiu gata de folosit, potrivit
+          oricărei ocazii, și revenim după eveniment ca să demontăm.
+        </p>
       </div>
 
-      {/* This list is the drawing's key: the numbers here are the callout
-          numbers on the plate above, in the same order. */}
-      <ul class="parts">
-        {KEY.map((k) => (
-          <li class="reveal part">
-            <span class="callout-no" aria-hidden="true">
-              {k.n}
-            </span>
-            <div>
-              <h3 class="heading-md">{k.title}</h3>
-              <p class="mt-2 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{k.description}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <p class="mt-9">
-        <a href={withBase("/corturi/")} class="btn-outline">
-          Vezi dimensiunile și dotările
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </a>
-      </p>
+      <div class="draw">
+        <ExplodedPlate />
+        {/* This list is the drawing's key: the numbers here are the numbers on the plate beside it. */}
+        <ol class="parts">
+          {KEY.map((k) => (
+            <li class="reveal">
+              <span class="dot" aria-hidden="true">
+                {k.n}
+              </span>
+              <div>
+                <h3 class="h-title">{k.title}</h3>
+                <p>{k.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </Plate>
 
-    {/* ===================== PLATE 02 — the sequence =====================
+    {/* ===================== PANEL 02: the sequence =====================
         The numbers carry information here: the order is the content. */}
-    <Plate no="02 · Execuție" note="Succesiunea lucrărilor" title="Cum funcționează">
-      <p class="lede mt-5">
-        Patru etape, de la prima discuție până la demontare. De logistică ne ocupăm noi, cap-coadă.
-      </p>
+    <Plate no="02" name="Execuție" scale="Succesiunea lucrărilor" labelledby="p2">
+      <div class="intro">
+        <h2 id="p2" class="h-section">
+          Cum funcționează
+        </h2>
+        <p>Patru etape, de la prima discuție până la demontare. De logistică ne ocupăm noi, cap-coadă.</p>
+      </div>
 
       <ol class="steps">
         {steps.map((s) => (
           <li class="reveal step">
-            <span class="step__no dim" aria-hidden="true">
-              {s.n}
-            </span>
-            <h3 class="heading-md mt-3">{s.title}</h3>
-            <p class="mt-2.5 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
+            <div class="step__head">
+              <span class="step__no" aria-hidden="true">
+                {s.n}
+              </span>
+              <h3 class="h-title">{s.title}</h3>
+            </div>
+            <p>{s.description}</p>
           </li>
         ))}
       </ol>
@@ -166,72 +170,220 @@ const KEY = [
 </Base>
 
 <style>
-  .hero {
-    padding-block: clamp(1.5rem, 3vw, 2.75rem) clamp(2rem, 4vw, 3.25rem);
-  }
-  .hero__grid {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  @media (min-width: 900px) {
-    .hero__grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      gap: 3rem;
-    }
-    .hero__copy {
-      max-width: 34rem;
-    }
-  }
-  .hero__copy h1 {
-    max-width: 15ch;
-  }
-
-  /* The callout list mirrors the numbers on the drawing above it. */
-  .parts {
-    margin-top: 3rem;
-    display: grid;
-    gap: 1.75rem 3rem;
-  }
-  @media (min-width: 700px) {
-    .parts {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 1150px) {
-    .parts {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  .part {
+  /* ---- the hero ------------------------------------------------------- */
+  .hero-copy {
     display: flex;
-    gap: 0.9rem;
+    flex-direction: column;
     align-items: flex-start;
+    padding: 32px;
+  }
+  .hero-copy .lede {
+    margin-top: 20px;
+  }
+  .hero-copy .link-btn {
+    margin-top: 24px;
+  }
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .hero-plate {
+    display: contents;
+  }
+  .tb {
+    width: 100%;
+  }
+  .tb dl {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    margin: 0;
+  }
+  .tb dl > div {
+    min-width: 0;
+    padding: 14px 16px;
+    border-left: 1px solid var(--color-hair);
+  }
+  .tb dl > div:first-child {
+    border-left: 0;
+  }
+  .tb dd {
+    white-space: nowrap;
+  }
+  .tb dd.fig {
+    font-size: var(--text-figure);
   }
 
-  .steps {
-    margin-top: 2.75rem;
+  /* ---- the key beside the drawing --------------------------------------- */
+  .draw {
     display: grid;
-    gap: 2rem 2.5rem;
+    grid-template-columns: 7fr 5fr;
+    gap: 32px;
+    margin-top: 32px;
+    align-items: start;
   }
-  @media (min-width: 640px) {
-    .steps {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .parts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  @media (min-width: 1050px) {
-    .steps {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .parts li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-top: 1px solid var(--color-hair);
+  }
+  .parts li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .parts p {
+    margin-top: 4px;
+    color: var(--color-ink-2);
+  }
+
+  /* ---- the sequence ----------------------------------------------------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-hair);
   }
   .step {
-    border-top: 1.5px solid var(--color-ink);
-    padding-top: 1rem;
+    padding: 24px 24px 8px 0;
+  }
+  .step + .step {
+    padding-left: 24px;
+    border-left: 1px solid var(--color-hair);
+  }
+  .step__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
   }
   .step__no {
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.33;
     color: var(--color-signal);
-    letter-spacing: 0.08em;
+  }
+  .step p {
+    margin-top: 12px;
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 1099px) {
+    .tb dl {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .tb dl > div {
+      grid-column: span 2;
+    }
+    .tb dl > div:nth-child(n + 4) {
+      grid-column: span 3;
+      border-top: 1px solid var(--color-hair);
+    }
+    .tb dl > div:nth-child(4) {
+      border-left: 0;
+    }
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .step:nth-child(3) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .step:nth-child(n + 3) {
+      border-top: 1px solid var(--color-hair);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .hero-copy {
+      padding: 20px 16px;
+    }
+    .hero-copy .lede {
+      margin-top: 14px;
+    }
+    .hero-copy .link-btn {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-top: 18px;
+    }
+    .hero-right {
+      display: block;
+      background: var(--color-paper);
+      border: 1px solid var(--color-edge);
+      border-top: 1.5px solid var(--color-ink);
+    }
+    /* The drawing sits on its own gridded plate at the head of the spec card. */
+    .hero-plate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background-color: var(--color-field);
+      background-image:
+        linear-gradient(var(--color-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-position: -1px -1px;
+      border-bottom: 1px solid var(--color-hair);
+    }
+    .tb {
+      border: 0;
+      background: transparent;
+    }
+    .tb dl {
+      display: flex;
+      flex-direction: column;
+    }
+    .tb dl > div,
+    .tb dl > div:nth-child(n + 4) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      padding: 0 16px;
+      border-left: 0;
+      border-top: 1px solid var(--color-hair);
+    }
+    /* The place leads the list, so it is on the first screen. */
+    .tb dl > div:last-child {
+      order: -1;
+      border-top: 0;
+    }
+    .tb dd {
+      margin: 0;
+      text-align: right;
+    }
+    .draw {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .parts li {
+      padding: 16px 0;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+      margin-top: 24px;
+    }
+    .step,
+    .step + .step {
+      padding: 20px 0 8px;
+      border-left: 0;
+    }
+    .step + .step {
+      border-top: 1px solid var(--color-hair);
+    }
   }
 </style>

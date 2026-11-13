@@ -1,7 +1,7 @@
 ---
-// The title block — the panel in the corner of every drawing that says who
-// drew it, what it is, and when. Here it carries navigation and the legal
-// identification the site is required to publish.
+// The title block of the set: who drew it, what it is, and when. Here it
+// carries navigation and the legal identification the site is required to
+// publish. Facts are separate parts, not joined with a middle dot.
 import { site } from "../content/site";
 import { withBase } from "@sites/kit";
 
@@ -21,22 +21,22 @@ const legal = [
 const L = site.legal;
 ---
 
-<footer class="titleblock-foot">
+<footer class="foot">
   <div class="sheet">
-    <div class="tb-grid">
-      <div class="tb-cell tb-cell--brand">
-        <p class="datum-key">Beneficiar / Executant</p>
-        <p class="tb-word">SUBCORT</p>
-        <p class="tb-sub">{site.tagline}</p>
+    <div class="foot__grid">
+      <div class="foot__cell">
+        <p class="label">Beneficiar / Executant</p>
+        <p class="foot__word">SUBCORT</p>
+        <p class="foot__sub">{site.tagline}</p>
       </div>
 
-      <nav class="tb-cell" aria-label="Navigare subsol">
-        <p class="datum-key">Planșe</p>
-        <ul class="tb-list">
+      <nav class="foot__cell" aria-label="Navigare subsol">
+        <p class="label">Planșe</p>
+        <ul>
           {nav.map((l) => (
             <li>
-              <a href={withBase(l.href)} class="link-quiet text-[0.92rem]">
-                <span class="dim tb-no">{l.no}</span>
+              <a href={withBase(l.href)}>
+                <i>{l.no}</i>
                 {l.label}
               </a>
             </li>
@@ -44,58 +44,56 @@ const L = site.legal;
         </ul>
       </nav>
 
-      <nav class="tb-cell" aria-label="Documente legale">
-        <p class="datum-key">Documente</p>
-        <ul class="tb-list">
+      <nav class="foot__cell" aria-label="Documente legale">
+        <p class="label">Documente</p>
+        <ul>
           {legal.map((l) => (
             <li>
-              <a href={withBase(l.href)} class="link-quiet text-[0.92rem]">
-                {l.label}
-              </a>
+              <a href={withBase(l.href)}>{l.label}</a>
             </li>
           ))}
         </ul>
       </nav>
 
-      <div class="tb-cell">
-        <p class="datum-key">Contact</p>
-        <ul class="tb-list">
+      <div class="foot__cell">
+        <p class="label">Contact</p>
+        <ul>
           <li>
-            <a href={`tel:+${site.phoneE164}`} class="link-quiet text-[0.92rem] dim">
-              {site.phone}
-            </a>
+            <a href={`tel:+${site.phoneE164}`}>{site.phone}</a>
           </li>
           <li>
-            <a href={`mailto:${site.email}`} class="link-quiet text-[0.92rem]">
-              {site.email}
-            </a>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
           </li>
-          <li class="text-[0.92rem] text-[var(--color-ink-2)] pt-1">
+          <li class="foot__addr">
             {site.address}, {site.city}
           </li>
         </ul>
-        <div class="mt-4 flex gap-2">
-          <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="tb-icon">
+        <div class="foot__social">
+          <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook">
             <svg
-              width="17"
-              height="17"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               aria-hidden="true"
             >
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
             </svg>
           </a>
-          <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="tb-icon">
+          <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram">
             <svg
-              width="17"
-              height="17"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               aria-hidden="true"
             >
               <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -107,117 +105,169 @@ const L = site.legal;
       </div>
     </div>
 
-    <div class="tb-rev">
+    <div class="foot__rev">
+      <div class="foot__legal">
+        <span>{L.legalName}</span>
+        <span>CUI: {L.cui}</span>
+        <span>Reg. Com.: {L.regNumber}</span>
+        <span>Capital social: {L.shareCapital}</span>
+      </div>
       <p>
-        {L.legalName} · CUI: {L.cui} · Reg. Com.: {L.regNumber} · Capital social: {L.shareCapital} · {site.address},{" "}
-        {site.city}, jud. {site.county}
+        {site.address}, {site.city}, jud. {site.county}
       </p>
-      {site.demo.show && <p class="mt-1">{site.demo.text}</p>}
-      <div class="tb-rev__row">
+      {site.demo.show && <p>{site.demo.text}</p>}
+      <div class="foot__row">
         <span>
           © {year} {site.name}
         </span>
-        <span>
-          <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener" class="link-quiet">
-            ANPC · Soluționarea Alternativă a Litigiilor
-          </a>
-        </span>
+        <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">
+          ANPC, Soluționarea Alternativă a Litigiilor
+        </a>
       </div>
     </div>
   </div>
 </footer>
 
 <style>
-  .titleblock-foot {
-    border-top: 1.5px solid var(--color-ink);
+  .foot {
+    margin-top: 48px;
     background: var(--color-fill-2);
+    border-top: 1.5px solid var(--color-ink);
   }
-  .tb-grid {
+  .foot__grid {
     display: grid;
-    gap: 0;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr;
   }
-  @media (min-width: 720px) {
-    .tb-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .foot__cell {
+    padding: 28px 24px 24px 0;
+    border-right: 1px solid var(--color-hair);
   }
-  @media (min-width: 1080px) {
-    .tb-grid {
-      grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr;
-    }
+  .foot__cell + .foot__cell {
+    padding-left: 24px;
   }
-
-  .tb-cell {
-    padding: 1.5rem 1.5rem 1.5rem 0;
-    border-bottom: 1px solid var(--color-hair);
+  .foot__cell:last-child {
+    border-right: 0;
   }
-  @media (min-width: 1080px) {
-    .tb-cell {
-      border-bottom: 0;
-      border-right: 1px solid var(--color-hair);
-      padding-left: 1.5rem;
-    }
-    .tb-cell:first-child {
-      padding-left: 0;
-    }
-    .tb-cell:last-child {
-      border-right: 0;
-    }
-  }
-
-  .tb-word {
-    margin-top: 0.65rem;
-    font-size: 1.2rem;
+  .foot__word {
+    margin-top: 8px;
+    font-size: 1.25rem;
+    line-height: 1.2;
     font-weight: 700;
-    letter-spacing: -0.005em;
   }
-  .tb-sub {
-    margin-top: 0.5rem;
+  .foot__sub {
+    margin-top: 8px;
     max-width: 30ch;
-    font-size: 0.88rem;
-    line-height: 1.55;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     color: var(--color-ink-2);
   }
-  .tb-list {
-    margin-top: 0.7rem;
-    display: grid;
-    gap: 0.1rem;
+  .foot__cell ul {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
   }
-  .tb-no {
-    color: var(--color-line);
-    font-size: 0.72rem;
-    margin-right: 0.6rem;
+  .foot__cell ul a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    font-size: 0.9375rem;
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-soft);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
   }
-  .tb-icon {
+  .foot__cell ul a:hover,
+  .foot__rev a:hover {
+    color: var(--color-signal-hover);
+    text-decoration-color: var(--color-signal-hover);
+  }
+  .foot__cell ul a i {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-ink-2);
+  }
+  .foot__addr {
+    padding-top: 4px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+  }
+  .foot__social {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .foot__social a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.35rem;
-    height: 2.35rem;
-    border: 1px solid var(--color-hair);
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-edge);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
     color: var(--color-ink-2);
-    transition:
-      border-color 160ms ease-out,
-      color 160ms ease-out;
   }
-  .tb-icon:hover {
-    border-color: var(--color-signal);
-    color: var(--color-signal);
+  .foot__social a:hover {
+    border-color: var(--color-signal-hover);
+    color: var(--color-signal-hover);
   }
-
-  .tb-rev {
+  .foot__social a:active {
+    background: var(--color-fill-2);
+  }
+  .foot__rev {
+    padding: 20px 0 32px;
     border-top: 1px solid var(--color-hair);
-    padding: 1.1rem 0 1.75rem;
-    font-size: 0.76rem;
-    line-height: 1.65;
+    font-size: var(--text-label);
+    line-height: 1.57;
     color: var(--color-ink-2);
   }
-  .tb-rev__row {
-    margin-top: 0.9rem;
+  .foot__legal {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem 1.5rem;
+    gap: 0 24px;
+  }
+  .foot__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
     justify-content: space-between;
+    margin-top: 12px;
+  }
+  .foot__rev a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-decoration-color: var(--color-line-soft);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 1099px) {
+    .foot__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .foot__cell {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-hair);
+      padding-left: 0 !important;
+    }
+  }
+  @media (max-width: 800px) {
+    .foot {
+      margin-top: 32px;
+    }
+    .foot__grid {
+      grid-template-columns: 1fr;
+    }
+    .foot__cell {
+      padding: 20px 0;
+    }
+    .foot__row {
+      justify-content: flex-start;
+    }
   }
 </style>

@@ -1,15 +1,16 @@
 ---
-// The exploded axonometric — the plate this whole direction is named for.
+// The exploded axonometric.
 //
 // Membrane, walls, structure and deck separated in the vertical, on a true
-// isometric, with numbered callouts on dashed leaders. Rendered to SVG at
+// isometric, with numbered circles on dashed leaders; the list beside the
+// drawing names what each number is. Rendered to SVG at
 // build time: it is the site's central explanation, so it must be present in
 // the HTML with no JavaScript, no WebGL and no waiting.
 //
 // The viewBox is computed from the geometry rather than hand-set, so the
 // drawing can never grow out of its box when the spread or scale changes.
 
-import { marquee, isometric, pts, tone, callout, INK, LINE, LINE_SOFT, FILL, type P3 } from "../lib/draft";
+import { marquee, isometric, pts, toneVar, type P3 } from "../lib/draft";
 
 interface Props {
   /** Vertical separation between layers, in metres. */
@@ -46,57 +47,68 @@ const minX = Math.min(...xs),
 const minY = Math.min(...ys),
   maxY = Math.max(...ys);
 
-// Room on each side for the callout labels, which sit outside the object.
+// Room on each side for the numbered circles, which sit outside the object.
 const PAD_X = 285;
 const PAD_Y = 34;
 const VB_W = maxX - minX + PAD_X * 2;
 const VB_H = maxY - minY + PAD_Y * 2;
 const P = isometric({ scale: SCALE, cx: -minX + PAD_X, cy: -minY + PAD_Y });
 
+const R = 12.5; // the circle's radius
+const RIGHT = VB_W - PAD_X + 70;
+const LEFT = PAD_X - 70;
+// The box ends just outside the circles (a circle at 3 px of the edge, 1.7 times larger on a phone).
+const BOX = { x: LEFT - 31, y: PAD_Y - 12, w: RIGHT + 22.6 - (LEFT - 31), h: VB_H - 24 - (PAD_Y - 12) };
+
+const line = (a: readonly number[], b: readonly number[], width: number, color: string, extra = "") =>
+  `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke-width="${width}"${extra} style="stroke:var(--color-${color})"/>`;
+
 let g = "";
 
 // ---- deck, at the bottom --------------------------------------------------
-g += `<polygon points="${pts(deckLifted, P)}" fill="${FILL}" stroke="${LINE}" stroke-width="1.2"/>`;
+g += `<polygon points="${pts(deckLifted, P)}" stroke-width="1.2" style="fill:var(--color-deck);stroke:var(--color-line)"/>`;
 for (let i = 1; i < 6; i++) {
   const t = i / 6;
   const a: P3 = [-M.hw, deckY, -M.hd + t * M.spec.d];
   const b: P3 = [M.hw, deckY, -M.hd + t * M.spec.d];
-  const [x1, y1] = P(a);
-  const [x2, y2] = P(b);
-  g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${LINE_SOFT}" stroke-width=".7"/>`;
+  g += line(P(a), P(b), 0.7, "line-soft");
 }
 
 // ---- the frame: drawn heaviest, because it is the object ------------------
 for (const [a, b] of M.members) {
-  const [x1, y1] = P(a);
-  const [x2, y2] = P(b);
-  g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/>`;
+  g += line(P(a), P(b), 1.6, "ink", ' stroke-linecap="round"');
 }
 
 // ---- lifted envelope layers ----------------------------------------------
 for (const layer of LAYERS) {
   for (const p of layer.panels) {
-    g += `<polygon points="${pts(lift(p.quad, layer.dy), P)}" fill="${tone(p.quad)}" fill-opacity="0.94" stroke="${LINE}" stroke-width="1.1" stroke-linejoin="round"/>`;
+    g += `<polygon points="${pts(lift(p.quad, layer.dy), P)}" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:${toneVar(p.quad)};stroke:var(--color-line)"/>`;
   }
 }
 
-// ---- callouts — these numbers are the key printed beneath the drawing -----
+// ---- numbered circles: these numbers are the list beside the drawing -----
 const a1 = P([-M.hw / 2, (M.spec.eave + M.spec.ridge) / 2 + spread * 2, -M.hd / 2]);
 const a2 = P([M.hw, M.spec.eave / 2 + spread, M.hd / 3]);
 const a3 = P([-M.hw, M.spec.eave / 2, M.hd]);
 const a4 = P([0, deckY, M.hd / 2]);
 
-const RIGHT = VB_W - PAD_X + 70;
-const LEFT = PAD_X - 70;
+const circle = (n: number, anchor: readonly number[], to: readonly number[]) =>
+  `<g>${line(anchor, to, 1, "signal", ' stroke-dasharray="3 3"')}<circle cx="${anchor[0].toFixed(1)}" cy="${anchor[1].toFixed(1)}" r="2.4" style="fill:var(--color-signal)"/>` +
+  `<g class="badge"><circle cx="${to[0].toFixed(1)}" cy="${to[1].toFixed(1)}" r="${R}" stroke-width="1.5" style="fill:var(--color-paper);stroke:var(--color-signal)"/>` +
+  `<text class="num" x="${to[0].toFixed(1)}" y="${(to[1] + 4.4).toFixed(1)}" text-anchor="middle" font-size="12.5" font-weight="600" style="fill:var(--color-signal)">${n}</text></g></g>`;
 
-g += callout(1, [a1[0], a1[1]], [RIGHT, PAD_Y + 40], "Membrană & acoperiș");
-g += callout(2, [a2[0], a2[1]], [RIGHT, PAD_Y + (maxY - minY) * 0.45], "Pereți laterali");
-g += callout(3, [a3[0], a3[1]], [LEFT, PAD_Y + (maxY - minY) * 0.62], "Structură portantă", { align: "end" });
-g += callout(4, [a4[0], a4[1]], [LEFT, VB_H - PAD_Y - 24], "Pardoseală modulară", { align: "end" });
+g += circle(1, [a1[0], a1[1]], [RIGHT, PAD_Y + 40]);
+g += circle(2, [a2[0], a2[1]], [RIGHT, PAD_Y + (maxY - minY) * 0.45]);
+g += circle(3, [a3[0], a3[1]], [LEFT, PAD_Y + (maxY - minY) * 0.62]);
+g += circle(4, [a4[0], a4[1]], [LEFT, VB_H - PAD_Y - 24]);
 ---
 
 <figure class="plate-drawing">
-  <svg viewBox={`0 0 ${VB_W.toFixed(0)} ${VB_H.toFixed(0)}`} role="img" aria-labelledby="ex-t ex-d">
+  <svg
+    viewBox={`${BOX.x.toFixed(0)} ${BOX.y.toFixed(0)} ${BOX.w.toFixed(0)} ${BOX.h.toFixed(0)}`}
+    role="img"
+    aria-labelledby="ex-t ex-d"
+  >
     <title id="ex-t">Vedere explodată a cortului</title>
     <desc id="ex-d">
       Desen axonometric al unui cort de 15 × 10 m, cu straturile separate pe verticală: 1 membrana și acoperișul, 2
@@ -104,7 +116,7 @@ g += callout(4, [a4[0], a4[1]], [LEFT, VB_H - PAD_Y - 24], "Pardoseală modular�
     </desc>
     <g set:html={g} />
   </svg>
-  <figcaption class="dim">Fig. 1 — Cort 15 × 10 m, vedere explodată. Axonometrie, scara 1:100.</figcaption>
+  <figcaption>Fig. 1. Cort 15 × 10 m, vedere explodată. Axonometrie, scara 1:100.</figcaption>
 </figure>
 
 <style>
@@ -114,13 +126,27 @@ g += callout(4, [a4[0], a4[1]], [LEFT, VB_H - PAD_Y - 24], "Pardoseală modular�
   .plate-drawing svg {
     display: block;
     width: 100%;
+    max-height: 540px;
     height: auto;
+    margin: 0 auto;
+  }
+  .plate-drawing :global(.badge) {
+    transform-box: fill-box;
+    transform-origin: center;
   }
   figcaption {
-    margin-top: 1.15rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
+    margin-top: 12px;
+    font-size: var(--text-label);
+    line-height: 1.43;
+    font-weight: 500;
     color: var(--color-ink-2);
-    text-transform: uppercase;
+  }
+  @media (max-width: 800px) {
+    .plate-drawing svg {
+      max-height: none;
+    }
+    .plate-drawing :global(.badge) {
+      transform: scale(1.7);
+    }
   }
 </style>

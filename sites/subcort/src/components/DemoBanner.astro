@@ -8,7 +8,7 @@ import { site } from "../content/site";
   <div class="demo-note">
     <div class="sheet">
       <p>
-        <span class="dim">NOTĂ</span>
+        <b>Notă</b>
         {site.demo.text}
       </p>
     </div>
@@ -18,19 +18,16 @@ import { site } from "../content/site";
 <style>
   .demo-note {
     background: var(--color-signal-soft);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-signal) 25%, transparent);
     color: var(--color-on-signal-soft);
   }
   .demo-note p {
-    padding-block: 0.45rem;
-    font-size: 0.76rem;
-    line-height: 1.5;
-    text-align: center;
+    padding-block: 8px;
+    font-size: var(--text-label);
+    line-height: 1.43;
+    font-weight: 500;
   }
-  .demo-note span {
-    font-size: 0.7rem;
-    letter-spacing: 0.13em;
-    margin-right: 0.7rem;
-    opacity: 0.75;
+  .demo-note b {
+    margin-right: 8px;
+    font-weight: 700;
   }
 </style>

@@ -1,30 +1,26 @@
 ---
-// One numbered plate in the set: a rule, the number and title in the left
-// column, the content in the right. This is the page spine — nothing on the
-// site is centred.
+// One numbered panel in the set: a head band with its number, name and scale,
+// then the content. Panels lie on the ground with a 24 px gutter.
 interface Props {
   no: string;
-  title?: string;
-  note?: string;
+  name: string;
+  scale?: string;
+  /** The id of the heading inside the body, when it has one. */
+  labelledby?: string;
+  label?: string;
+  /** Less air above the content, for a panel with no heading in view. */
   tight?: boolean;
 }
-const { no, title, note, tight = false } = Astro.props;
+const { no, name, scale, labelledby, label, tight = false } = Astro.props;
 ---
 
-<section class:list={["sheet", tight ? "plate--tight" : "plate"]}>
-  <div class="plate-head">
-    <p class="plate-no">
-      {no}
-      {note && (
-        <>
-          <br />
-          {note}
-        </>
-      )}
-    </p>
-    <div>
-      {title && <h2 class="heading-lg max-w-[20ch]">{title}</h2>}
-      <slot />
-    </div>
+<section class="panel" aria-labelledby={labelledby} aria-label={labelledby ? undefined : (label ?? name)}>
+  <div class="band">
+    <span class="band__no">{no}</span>
+    <span class="band__name">{name}</span>
+    {scale && <span class="band__scale">{scale}</span>}
+  </div>
+  <div class:list={["panel__body", tight && "panel__body--tight"]}>
+    <slot />
   </div>
 </section>

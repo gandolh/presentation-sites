@@ -8,21 +8,20 @@ interface Props {
 }
 const { current = "/" } = Astro.props;
 
-// The sheet register. Numbering is real here — this is a drawing set, and the
-// plates are numbered the way a drawing set numbers them.
 const links = [
-  { href: "/", label: "Acasă", no: "00" },
-  { href: "/corturi/", label: "Corturi", no: "01" },
-  { href: "/servicii/", label: "Servicii", no: "02" },
-  { href: "/zona/", label: "Zonă", no: "03" },
-  { href: "/contact/", label: "Contact", no: "04" },
+  { href: "/", label: "Acasă" },
+  { href: "/corturi/", label: "Corturi" },
+  { href: "/servicii/", label: "Servicii" },
+  { href: "/zona/", label: "Zonă" },
+  { href: "/contact/", label: "Contact" },
 ];
 ---
 
 <header class="nav" data-nav>
   <div class="sheet nav__inner">
     <a href={withBase("/")} class="nav__word" aria-label={`${site.name} — acasă`}>
-      SUBCORT
+      {" "}
+      SUBCORT{" "}
     </a>
     <nav class="nav__links" aria-label="Navigare principală">
       {links.map((l) => (
@@ -31,19 +30,10 @@ const links = [
           class:list={["nav__link", current === l.href && "is-current"]}
           aria-current={current === l.href ? "page" : undefined}
         >
-          {l.label}
+          <span>{l.label}</span>
         </a>
       ))}
     </nav>
     <MobileMenu client:load links={links.map((l) => ({ ...l, href: withBase(l.href) }))} current={current} />
   </div>
 </header>
-
-<script>
-  const nav = document.querySelector<HTMLElement>("[data-nav]");
-  if (nav) {
-    const sync = () => nav.toggleAttribute("data-stuck", window.scrollY > 8);
-    sync();
-    addEventListener("scroll", sync, { passive: true });
-  }
-</script>
