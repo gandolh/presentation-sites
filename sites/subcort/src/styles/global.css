@@ -1,45 +1,75 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   SUBCORT — Montaj
-   The site is a drawing set. Every page is a sheet: a header carrying the
-   plate number and scale, a drawing or a table, and a title block at the foot.
-   The object is drawn in ink; everything the draughtsman added — callouts,
-   leaders, dimensions, the active state — is orange. See DESIGN.md.
+   SUBCORT — On your ground
+   The tent stands on a measured plot: a sage field with a 32 px grid, and the
+   facts laid on it as cards and panels. The object is drawn in ink; everything
+   the draughtsman added (callouts, leaders, dimensions, the current place) is
+   orange. See DESIGN.md.
    ========================================================================== */
 
 @theme {
-  /* ---- ink ------------------------------------------------------------- */
-  --color-ink: oklch(29% 0.028 234); /* #22303A                 */
-  --color-ink-2: oklch(48% 0.024 233); /* secondary text          */
-  --color-line: oklch(52% 0.026 234); /* #5E7180 — object lines  */
-  --color-line-soft: oklch(76% 0.017 233); /* #A7B4BE — extension     */
-  --color-hair: oklch(90.5% 0.006 230); /* rules and cell borders  */
+  /* ---- ink ---- */
+  --color-ink: #1d2e37;
+  --color-ink-2: #516069;
+  --color-line: #5b6c76;
+  --color-line-soft: #a7b3ba;
+  --color-hair: #dde1dd;
 
-  /* ---- the annotation layer -------------------------------------------- */
-  --color-signal: oklch(52.5% 0.152 40); /* #C2481E — clears AA as text */
-  --color-signal-hover: oklch(47% 0.145 39);
-  --color-signal-soft: oklch(95% 0.022 45);
-  --color-on-signal-soft: oklch(44% 0.14 39);
+  /* ---- the annotation layer ---- */
+  --color-signal: #af4316;
+  --color-signal-hover: #9a3409;
+  --color-signal-soft: #fceae3;
+  --color-on-signal-soft: #8f2d01;
 
-  /* ---- sheet ----------------------------------------------------------- */
-  --color-sheet: oklch(98.6% 0.002 90); /* #FBFBFA — the paper     */
-  --color-paper: oklch(100% 0 0);
-  --color-fill: oklch(94.5% 0.004 233);
-  --color-fill-2: oklch(96.6% 0.003 233);
+  /* ---- ground, field, surfaces ---- */
+  --color-sheet: #f0f4f0; /* the page ground */
+  --color-field: #dfe8de; /* the plot behind the hero and the page heads */
+  --color-grid: #d4ded3; /* the plot's 32 px grid lines, 1.10:1 on the field */
+  --color-paper: #fcfdfc;
+  --color-fill-2: #eef1ee;
+  --color-edge: #b5bdb5; /* the 1 px edge of a card, panel or button */
 
-  --color-success: oklch(52% 0.1 155);
-  --color-error: oklch(52% 0.17 28);
+  /* ---- the marquee drawing ---- (HeroScene and ExplodedPlate) */
+  --color-deck: #eceff1;
+  --color-membrane: #fafaf8;
+  --color-membrane-shade: #eeeeec;
 
-  /* ---- type ------------------------------------------------------------ */
-  --font-sans: "IBM Plex Sans Variable", system-ui, -apple-system, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-success: oklch(52% 0.1 155); /* kept, unused: the site has no form */
+  --color-error: oklch(52% 0.17 28); /* kept, unused: the site has no form */
 
-  /* A drawing has no rounded corners. */
-  --radius-sm: 0px;
-  --radius-md: 2px;
+  /* ---- type ---- */
+  --font-sans: "Commissioner Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; /* figures and sheet numbers only */
+  /* Size with its line height and weight, in the Tailwind 4 pattern. */
+  --text-display: clamp(2.125rem, 1.63rem + 2.02vw, 3.25rem); /* 34/38 at 390, 52/56 at 1280, 650, -0.02em */
+  --text-display--line-height: 1.08;
+  --text-display--font-weight: 650;
+  --text-display--letter-spacing: -0.02em;
+  --text-h2: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem); /* 28/32 to 36/40, 650, -0.01em */
+  --text-h2--line-height: 1.11;
+  --text-h2--font-weight: 650;
+  --text-h2--letter-spacing: -0.01em;
+  --text-title: 1.25rem; /* 20/26, 600 */
+  --text-title--line-height: 1.3;
+  --text-title--font-weight: 600;
+  --text-lede: clamp(1.0625rem, 1.03rem + 0.1vw, 1.125rem); /* 17/26 to 18/28 */
+  --text-lede--line-height: 1.55;
+  --text-body: 1rem; /* 16/26 */
+  --text-body--line-height: 1.625;
+  --text-label: 0.875rem; /* 14/20, 500, sentence case, untracked */
+  --text-label--line-height: 1.43;
+  --text-label--font-weight: 500;
+  --text-figure: 1.0625rem; /* 17/24, Plex Mono 600 */
+  --text-figure--line-height: 1.41;
+  --text-figure--font-weight: 600;
 
-  --sheet-pad: clamp(1.15rem, 4vw, 3.75rem);
+  /* ---- shape ---- */
+  --radius-sm: 0px; /* cards, panels, bands */
+  --radius-md: 2px; /* link button, menu button, size picker */
+  --radius-full: 9999px; /* the numbered callout circles */
+
+  --sheet-pad: clamp(0.75rem, 4vw, 1.5rem);
 }
 
 /* ==========================================================================

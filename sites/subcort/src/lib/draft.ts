@@ -16,12 +16,14 @@
 // The object is drawn in ink. Everything the draughtsman *added* — callouts,
 // leaders, dimensions, the active state — is orange. See DESIGN.md, the
 // Annotation Rule.
-export const INK = "#22303A";
-export const LINE = "#5E7180";
-export const LINE_SOFT = "#A7B4BE";
-export const SIGNAL = "#C2481E";
-export const SHEET = "#FBFBFA";
-export const FILL = "#EDEFF1";
+// These are the site's tokens (src/styles/global.css) as hex, for the places that cannot read a CSS variable:
+// the WebGL scene, and the OG card.
+export const INK = "#1d2e37";
+export const LINE = "#5b6c76";
+export const LINE_SOFT = "#a7b3ba";
+export const SIGNAL = "#af4316";
+export const SHEET = "#fcfdfc"; // the paper the drawings sit on, behind a label
+export const FILL = "#eceff1"; // the deck
 
 // ---------------------------------------------------------------------------
 // The model — a gable marquee, in metres
@@ -220,8 +222,11 @@ export function sortByDepth(panels: Panel[], project: Projector): Panel[] {
   });
 }
 
-/** Flat tonal shading from a fixed high-left sun; keeps the drawing readable. */
-export function tone(quad: readonly P3[], base = 252): string {
+export const MEMBRANE = "#fafaf8";
+export const MEMBRANE_SHADE = "#eeeeec";
+
+/** Whether a panel faces the fixed high-left sun. Two tones are enough: the drawing reads by line, not by shading. */
+function lit(quad: readonly P3[]): boolean {
   const [a, b, c] = quad;
   const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
   const v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
@@ -229,9 +234,17 @@ export function tone(quad: readonly P3[], base = 252): string {
   const len = Math.hypot(n[0], n[1], n[2]) || 1;
   const L = [-0.42, 0.84, 0.34];
   const d = Math.abs((n[0] * L[0] + n[1] * L[1] + n[2] * L[2]) / len);
-  const k = 0.9 + 0.1 * d;
-  const v255 = Math.round(base * k);
-  return `rgb(${v255},${Math.round(v255 * 0.998)},${Math.round(v255 * 0.99)})`;
+  return 252 * (0.9 + 0.1 * d) >= 245;
+}
+
+/** A panel's tone as hex, for the WebGL scene and the OG card (they cannot read a CSS variable). */
+export function tone(quad: readonly P3[]): string {
+  return lit(quad) ? MEMBRANE : MEMBRANE_SHADE;
+}
+
+/** A panel's tone as a site token, for the SVG drawings: put it in a `style` fill. */
+export function toneVar(quad: readonly P3[]): string {
+  return lit(quad) ? "var(--color-membrane)" : "var(--color-membrane-shade)";
 }
 
 // ---------------------------------------------------------------------------

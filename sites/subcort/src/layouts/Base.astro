@@ -1,10 +1,10 @@
 ---
-// IBM Plex, self-hosted (no Google Fonts CDN — GDPR: avoids transmitting
-// visitor IPs to Google). Sans for everything, Mono for measurements: this is
-// a drawing set, and the numerals have to align down a column. Plex draws the
-// Romanian comma-below diacritics (ș ț) correctly. `wght.css` bundles latin +
-// latin-ext as @font-face blocks gated by unicode-range.
-import "@fontsource-variable/ibm-plex-sans/wght.css";
+// Commissioner for language, IBM Plex Mono for figures, both self-hosted (no
+// Google Fonts CDN — GDPR: avoids transmitting visitor IPs to Google). The
+// numerals have to align down a column, so measurements are mono. Commissioner's
+// latin-ext file maps ș and ț to the comma-below glyphs Romanian needs. `wght.css`
+// bundles latin + latin-ext as @font-face blocks gated by unicode-range.
+import "@fontsource-variable/commissioner/wght.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "@fontsource/ibm-plex-mono/600.css";
@@ -37,7 +37,7 @@ const ogImage = absoluteUrl("/images/og-image.png");
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#FBFBFA" />
+    <meta name="theme-color" content="#f0f4f0" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonical} />
 
