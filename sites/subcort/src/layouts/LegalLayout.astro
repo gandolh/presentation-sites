@@ -14,51 +14,62 @@ const { title, description = `${title} · ${site.name}`, updated = site.legal.do
 ---
 
 <Base title={`${title} · ${site.name}`} description={description}>
-  <header class="border-b border-[var(--color-hair)]">
-    <div class="sheet flex items-center justify-between gap-4 py-5">
-      <a href={withBase("/")} class="text-[1.2rem] font-bold tracking-[-0.005em]">
+  <header class="nav">
+    <div class="sheet nav__inner">
+      <a href={withBase("/")} class="nav__word">
         SUBCORT
       </a>
-      <a href={withBase("/")} class="btn-outline !py-2 !px-3.5 !text-[0.86rem]">
+      <a href={withBase("/")} class="link-btn">
         ← Înapoi la site
       </a>
     </div>
   </header>
 
-  <main id="main" class="sheet max-w-3xl py-12 md:py-20">
-    <h1 class="heading-lg">{title}</h1>
-    <p class="mt-4 text-sm text-[var(--color-ink-2)] dim">Ultima actualizare: {updated}</p>
-
-    <article class="legal-prose mt-10">
-      <slot />
-    </article>
+  <main id="main">
+    <section class="panel legal-panel" aria-labelledby="legal-title">
+      <div class="band">
+        <span class="band__scale">Ultima actualizare: {updated}</span>
+      </div>
+      <div class="panel__body">
+        <h1 id="legal-title" class="h-section">
+          {title}
+        </h1>
+        <article class="legal-prose">
+          <slot />
+        </article>
+      </div>
+    </section>
   </main>
 
   <Footer />
 </Base>
 
 <style is:global>
+  .legal-panel {
+    max-width: 56rem;
+    margin-top: 32px;
+  }
   .legal-prose {
+    max-width: 70ch;
+    margin-top: 24px;
     color: var(--color-ink-2);
     line-height: 1.72;
-    font-size: 1rem;
-    max-width: 70ch;
+    font-size: var(--text-body);
   }
   .legal-prose h2 {
-    font-weight: 800;
-    font-size: clamp(1.2rem, 2.6vw, 1.45rem);
-    letter-spacing: -0.026em;
+    margin-top: 40px;
+    margin-bottom: 12px;
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    font-weight: 650;
     color: var(--color-ink);
-    margin-top: 2.75rem;
-    margin-bottom: 0.75rem;
   }
   .legal-prose h3 {
-    font-weight: 700;
+    margin-top: 28px;
+    margin-bottom: 8px;
     font-size: 1rem;
-    letter-spacing: -0.015em;
+    font-weight: 600;
     color: var(--color-ink);
-    margin-top: 1.75rem;
-    margin-bottom: 0.5rem;
   }
   .legal-prose p {
     margin-bottom: 1rem;
@@ -86,12 +97,14 @@ const { title, description = `${title} · ${site.name}`, updated = site.legal.do
     color: var(--color-ink);
     text-decoration: underline;
     text-decoration-color: var(--color-line-soft);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
     transition:
       color 160ms ease-out,
       text-decoration-color 160ms ease-out;
   }
   .legal-prose a:hover {
-    color: var(--color-signal);
+    color: var(--color-signal-hover);
     text-decoration-color: currentColor;
   }
   .legal-prose table {
@@ -111,5 +124,10 @@ const { title, description = `${title} · ${site.name}`, updated = site.legal.do
     color: var(--color-ink);
     font-weight: 700;
     border-bottom-color: var(--color-ink);
+  }
+  @media (max-width: 800px) {
+    .legal-panel {
+      margin-top: 12px;
+    }
   }
 </style>

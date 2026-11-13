@@ -256,7 +256,7 @@ export function dimension(
   from: [number, number],
   to: [number, number],
   label: string,
-  { offset = 0, flip = false }: { offset?: number; flip?: boolean } = {},
+  { offset = 0, flip = false, bg = SHEET }: { offset?: number; flip?: boolean; bg?: string } = {},
 ): string {
   const [x1, y1] = from;
   const [x2, y2] = to;
@@ -279,7 +279,7 @@ export function dimension(
     <line x1="${x2}" y1="${y2}" x2="${bx}" y2="${by}" stroke="${LINE_SOFT}" stroke-width=".8"/>
     <line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" stroke="${INK}" stroke-width="1"/>
     ${tick(ax, ay)}${tick(bx, by)}
-    <rect x="${mx - 26}" y="${my - (flip ? 20 : 9)}" width="52" height="17" fill="${SHEET}"/>
+    <rect x="${mx - 26}" y="${my - (flip ? 20 : 9)}" width="52" height="17" fill="${bg}"/>
     <text x="${mx}" y="${my + (flip ? -8 : 4)}" text-anchor="middle"
       font-family="'IBM Plex Mono',monospace" font-size="11.5" font-weight="500" fill="${INK}">${label}</text>
   </g>`;
