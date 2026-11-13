@@ -10,6 +10,8 @@ import { applyVariant, ROUTES, type Variant } from "./shapes.js";
 //
 // Without SHOTS_DIR the spec skips. The dev server has no real endpoint for Pomelnice, so its form runs the demo path.
 const dir = process.env["SHOTS_DIR"];
+// The dev server draws Astro's toolbar over the page; a screenshot has no use for it.
+const hideToolbar = { content: "astro-dev-toolbar{display:none!important}" };
 const sizes = [
   { w: 1280, h: 800 },
   { w: 1366, h: 768 },
@@ -31,6 +33,7 @@ test.describe("screenshots", () => {
           const page = await context.newPage();
           await page.goto(path);
           await page.waitForLoadState("networkidle");
+          await page.addStyleTag(hideToolbar);
           await applyVariant(page, variant);
           const base = join(dir as string, `${screen}-${variant}-${w}`);
           mkdirSync(dir as string, { recursive: true });
@@ -60,6 +63,7 @@ test.describe("state screenshots", () => {
       await page.goto("/pomelnice");
       await page.waitForLoadState("networkidle");
       await page.locator("form").evaluate((f) => (f as HTMLFormElement).requestSubmit());
+      await page.addStyleTag(hideToolbar);
       await page.screenshot({ path: join(dir as string, `pomelnice-error-parish-${w}.png`), fullPage: true });
       await page.getByRole("textbox", { name: /Scrieți numele de botez ale celor vii/ }).fill("Ioan, Maria");
       await page.getByRole("button", { name: "Trimite Pomelnicul" }).click();
@@ -77,6 +81,7 @@ test.describe("state screenshots", () => {
     await page.getByRole("button", { name: "Deschide meniul" }).click();
     await page.getByRole("dialog", { name: "Meniu" }).waitFor();
     await page.waitForTimeout(400);
+    await page.addStyleTag(hideToolbar);
     await page.screenshot({ path: join(dir as string, "menu-open-parish-390.png") });
     await page.keyboard.press("Escape");
     await page.goto("/donatii");
@@ -86,6 +91,7 @@ test.describe("state screenshots", () => {
       .first()
       .click();
     await page.waitForTimeout(300);
+    await page.addStyleTag(hideToolbar);
     await page.screenshot({ path: join(dir as string, "donatii-copied-parish-390.png") });
     await context.close();
   });

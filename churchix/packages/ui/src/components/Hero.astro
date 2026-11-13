@@ -196,6 +196,7 @@ const lnk =
             class:list={[
               "flex flex-col rounded-lg border border-outline-variant bg-surface-container-lowest p-5 shadow-board min-[960px]:p-8 max-[380px]:p-4",
               !hasBoard && "min-[960px]:col-span-2",
+              !showAccount && "self-start",
             ]}
           >
             <h2 class="m-0 flex items-center gap-3 font-body-md text-body-md font-semibold text-on-surface">
@@ -212,7 +213,7 @@ const lnk =
                 </p>
               </>
             )}
-            <div class="mt-3 flex flex-wrap gap-3 min-[960px]:mt-auto min-[960px]:pt-4">
+            <div class:list={["mt-3 flex flex-wrap gap-3", showAccount && "min-[960px]:mt-auto min-[960px]:pt-4"]}>
               {showAccount && account && (
                 <CopyIban
                   client:visible
