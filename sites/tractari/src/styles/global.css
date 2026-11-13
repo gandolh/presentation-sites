@@ -1,73 +1,58 @@
 @import "tailwindcss";
 
 /*
-  AXA Tractări — design tokens.
+  AXA Tractări: design tokens.
 
-  Creative North Star: "Headlights on a wet road at 3am." The site is DARK by
-  default — asphalt at night, not a white brochure. Light comes from the things
-  that rescue you: the truck's headlights, the rotating amber beacon, the road
-  markings. The whole RO towing market is red-on-white template factory; AXA
-  steps off red entirely and commits to amber — the actual colour of a tow
-  truck's warning light, and far more distinctive in the category.
+  Direction "Lines first". The site stays dark with no theme switch: cold
+  asphalt, one safety orange for the call, amber for marks only (never text),
+  near-black ink on every orange. Big Shoulders Display in sentence case over
+  Archivo. The page is type on the ground, one raised board of three named
+  phone lines, and a 3D scene plate in "Cum funcționează".
 
-  Two accents do all the work: AMBER (beacon / signage / identity) and SAFETY
-  ORANGE (urgency / the one CTA that matters — the phone). Everything else is
-  asphalt and warm off-white.
-
-  Colours authored in OKLCH. Token names mirror the sibling projects
-  (Material-ish roles) so components read the same way across the monorepo.
-  Note: this project is DARK-FIRST — the base "surface" tokens ARE the dark
-  asphalt, and the "inverse" tokens are the rare light panels.
+  Colours are authored in OKLCH (the hex of each is in the comment). Token
+  names mirror the sibling projects (Material-ish roles).
 */
 
 @theme {
-  /* ---- Surfaces (asphalt at night — the default state) -------------------
-     Near-black with a cold blue-grey cast, never pure #000 which reads flat. */
-  --color-background: oklch(16% 0.012 250); /* page bg, cold asphalt */
-  --color-surface: oklch(16% 0.012 250);
-  --color-surface-container-lowest: oklch(14% 0.011 250);
-  --color-surface-container-low: oklch(19% 0.013 250);
-  --color-surface-container: oklch(22% 0.015 250); /* cards, panels */
-  --color-surface-container-high: oklch(26% 0.016 250);
-  --color-surface-container-highest: oklch(30% 0.017 250);
+  /* ---- Surfaces: cold asphalt, the raised board lighter than the ground -- */
+  --color-background: oklch(16% 0.012 242); /* #090e12, page ground */
+  --color-surface: oklch(16% 0.012 242);
+  --color-surface-container-lowest: oklch(16% 0.012 242);
+  --color-surface-container-low: oklch(23.5% 0.015 244); /* alias of the raised surface */
+  --color-surface-container: oklch(23.5% 0.015 244); /* #181f25: header, board, tiles, panel, steps strip */
+  --color-surface-container-high: oklch(29% 0.018 252); /* #252c34: line cells, pictogram wells, menu button */
+  --color-surface-container-highest: oklch(29% 0.018 252);
 
-  /* ---- Ink (warm off-white on asphalt) ------------------------------------
-     Warm near-white, NOT clinical pure white. Body clears AA comfortably. */
-  --color-on-surface: oklch(95% 0.008 90); /* body + headings */
-  --color-on-surface-variant: oklch(72% 0.012 250); /* secondary, ≥4.5:1 */
-  --color-outline: oklch(45% 0.014 250);
-  --color-outline-variant: oklch(30% 0.014 250); /* hairlines on dark */
+  /* ---- Ink ---------------------------------------------------------------- */
+  --color-on-surface: oklch(94.9% 0.007 89); /* #f0eee9 */
+  --color-on-surface-variant: oklch(75% 0.012 244); /* #a8afb5: lede, nav, copy, footer text */
+  --color-outline: oklch(52.1% 0.014 248); /* #636a71: outline controls */
+  --color-outline-variant: oklch(33% 0.013 248); /* #30363c: a panel's edge, rules inside panels */
 
-  /* ---- Inverse (the RARE light panel — e.g. a callout) --------------------
-     When something must read as "paper" against the dark, it uses these. */
-  --color-inverse-surface: oklch(95% 0.008 90); /* warm off-white panel */
+  /* ---- Inverse (kept; nothing draws a light panel any more) -------------- */
+  --color-inverse-surface: oklch(95% 0.008 90);
   --color-inverse-surface-2: oklch(90% 0.01 90);
-  --color-inverse-on-surface: oklch(20% 0.012 250); /* dark ink on light */
+  --color-inverse-on-surface: oklch(20% 0.012 250);
   --color-inverse-on-surface-variant: oklch(40% 0.014 250);
 
-  /* ---- Primary: AMBER beacon (the committed identity) --------------------
-     The seed (hue ~75). Bright enough to glow on asphalt. Used for the
-     wordmark mark, eyebrows, the 24/7 badge, signature lines, headlight glow.
-     DARK ink rides on the filled amber (amber is a light colour) → AA. */
-  --color-primary: oklch(80% 0.16 80); /* amber #F5A623-ish */
-  --color-primary-hover: oklch(74% 0.155 78);
-  --color-on-primary: oklch(18% 0.02 80); /* near-black on amber */
-  --color-primary-container: oklch(30% 0.05 80); /* amber-tinted dark chip */
-  --color-on-primary-container: oklch(86% 0.13 82);
-  /* Softer amber used for large text / glows where full chroma is too loud. */
-  --color-primary-bright: oklch(84% 0.15 82);
+  /* ---- Primary: the amber beacon. Marks only: the beacon, the lane start,
+     the map hub, the step nodes, the focus ring. Never text. -------------- */
+  --color-primary: oklch(80% 0.16 80); /* #f3b01d */
+  --color-primary-hover: oklch(80% 0.16 80);
+  --color-on-primary: oklch(18.1% 0.021 85); /* #161107 */
+  --color-primary-container: oklch(30.1% 0.05 80); /* #3b2b0d: the demo banner */
+  --color-on-primary-container: oklch(85.9% 0.13 82); /* #fbc865 */
+  --color-primary-bright: oklch(80% 0.16 80);
 
-  /* ---- Accent: SAFETY ORANGE (urgency — the phone CTA) -------------------
-     The one colour reserved for "call now". Hotter and redder than amber so
-     it pops off the amber identity. White text on it clears AA. */
-  --color-accent: oklch(68% 0.2 45); /* safety orange #FF6B2B-ish */
-  --color-accent-hover: oklch(63% 0.205 42);
-  --color-on-accent: oklch(99% 0.004 90); /* white on orange */
-  --color-accent-soft: oklch(32% 0.08 45); /* orange-tinted dark wash */
+  /* ---- Accent: safety orange, the one call. Near-black ink on it, never
+     white (white was 3.02:1; this is 6.20:1). ------------------------------ */
+  --color-accent: oklch(68.1% 0.198 44); /* #f76400 */
+  --color-accent-hover: oklch(71.9% 0.185 50); /* #fc7a14 */
+  --color-on-accent: oklch(17% 0.03 45); /* #1a0b05 */
+  --color-accent-soft: oklch(32% 0.08 45);
   --color-on-accent-soft: oklch(82% 0.14 50);
   --color-accent-bright: oklch(74% 0.19 48);
 
-  /* ---- Headlight (cold xenon white-blue) — hero highlights only ---------- */
   --color-headlight: oklch(95% 0.03 230);
 
   /* ---- Status ------------------------------------------------------------- */
@@ -75,22 +60,48 @@
   --color-error: oklch(64% 0.21 27);
   --color-on-error: oklch(99% 0 0);
 
-  /* ---- Typography ---------------------------------------------------------
-     Contrast pairing: an industrial CONDENSED display (Big Shoulders Display —
-     drawn from American highway/industrial signage, flat terminals, heavy
-     weights) against a neutral grotesque body (Inter). The condensed caps read
-     "signage, heavy-duty, urgent" — exactly the towing register — and avoid the
-     generic-SaaS and the corporate-blue traps alike. */
+  /* ---- The scene plate in "Cum funcționează" (also the backdrop when the
+     scene is off). Its gradient and scrim end on the background. ----------- */
+  --color-plate-top: oklch(10% 0.012 255);
+  --color-plate-mid: oklch(15% 0.013 250);
+  --color-plate-beacon: oklch(80% 0.16 80 / 0.2);
+  --color-plate-moon: oklch(95% 0.03 230 / 0.12);
+  --color-plate-road: oklch(45% 0.014 250 / 0.3);
+  --color-scrim: oklch(11% 0.012 255);
+  /* The lane's fade mask in the steps strip. */
+  --color-mask-on: #000;
+  --color-mask-half: rgb(0 0 0 / 0.45);
+
+  /* ---- Typography: a condensed display over a neutral grotesque ---------- */
   --font-display: "Big Shoulders Display Variable", "Arial Narrow", system-ui, sans-serif;
   --font-body: "Archivo Variable", system-ui, sans-serif;
+  --text-display: 5rem; /* h1 */
+  --text-display--line-height: 1;
+  --text-display--font-weight: 800;
+  --text-h2: 3rem; /* section heads, the board head, the plate number */
+  --text-h2--line-height: 1;
+  --text-h2--font-weight: 800;
+  --text-h3: 1.75rem; /* line numbers, tile and step titles */
+  --text-h3--line-height: 1.0715;
+  --text-h3--font-weight: 800;
+  --text-lede: 1.25rem;
+  --text-lede--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.625;
+  --text-label: 0.875rem; /* status, line names, legal */
+  --text-label--line-height: 1.4286;
+  --text-label--font-weight: 600;
 
-  /* ---- Radius (hard, industrial — barely-rounded) ------------------------ */
+  /* ---- Radius: controls 4, wells 8, panels 12 ----------------------------- */
   --radius-sm: 0.1875rem;
   --radius: 0.3125rem;
-  --radius-md: 0.4375rem;
-  --radius-lg: 0.625rem;
-  --radius-xl: 0.9375rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
   --radius-full: 9999px;
+
+  /* ---- Elevation: the board alone ---------------------------------------- */
+  --shadow-board: 0 24px 48px -24px rgb(0 0 0 / 0.7);
 
   /* ---- Container ---------------------------------------------------------- */
   --container-max-width: 1200px;
@@ -100,6 +111,20 @@
   --z-sticky: 100;
   --z-nav: 200;
   --z-overlay: 300;
+}
+
+/* Phone: the heads step down. `@theme` cannot hold a media query. */
+@media (max-width: 760px) {
+  :root {
+    --text-display: 2.75rem;
+    --text-display--line-height: 1.0455;
+    --text-h2: 2rem;
+    --text-h2--line-height: 1.0625;
+    --text-h3: 1.5rem;
+    --text-h3--line-height: 1.0833;
+    --text-lede: 1.0625rem;
+    --text-lede--line-height: 1.47;
+  }
 }
 
 @layer base {
@@ -120,7 +145,7 @@
     color: var(--color-on-surface);
     background-color: var(--color-background);
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.625;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -132,7 +157,7 @@
     font-family: var(--font-display);
     font-weight: 700;
     line-height: 1;
-    letter-spacing: 0.005em; /* condensed caps breathe a touch */
+    letter-spacing: 0;
     text-wrap: balance;
   }
 
