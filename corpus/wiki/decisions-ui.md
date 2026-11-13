@@ -1,6 +1,6 @@
 ---
-summary: The calls about what the sites' React islands depend on - one icon family inlined at build time (Phosphor), and Base UI under the four phone menus (Dialog, then Drawer), with the measured JS each costs. Split out of decisions.md on 2026-10-23.
-updated: 2026-11-12
+summary: The calls about what the sites' React islands depend on (one icon family inlined at build time, Base UI under the four phone menus) and the visual world calls the owner reopened on the redesign board, starting with auto-service's move from the Bordcomputer to the job card on 2026-11-13. Split out of decisions.md on 2026-10-23.
+updated: 2026-11-13
 ---
 
 # Decisions: the islands' UI dependencies
@@ -84,3 +84,29 @@ before → after): Drawer is heavier than Dialog.
 *Left alone:* the Astro-scoped `<style>` blocks and the `global.css` rules for
 markup that isn't Base UI, and the `text-[var(--color-…)]` classes in the
 `.astro` files (a separate Tailwind brief, for the owner).
+
+## auto-service: the Bordcomputer world gives way to the job card (2026-11-13)
+
+**Changed, 2026-11-13.** On the estate redesign board the owner approved the direction "The job card" for auto-service and
+with it reopened the world calls recorded in `sites/auto-service/DESIGN.md` (brief 05, owner decision 4). The site's own
+[DESIGN.md](../../sites/auto-service/DESIGN.md) is rewritten from what shipped; the old lines are kept here as history.
+
+| Old line (2026-08-23) | Now |
+|---|---|
+| North Star "The Bordcomputer": the page is the instrument binnacle of a BMW at night | "The job card": a workshop job card on warm graphite |
+| The Trim Rule: brushed anodised console trim is the one light material and carries the conversion moment and the legal pages | The One-Card Rule: the light job card is the one light material (call, WhatsApp, symptoms, readout window); the legal pages read on it too |
+| The Live-Amber Rule: one amber lights what is live (the call, the focused field, the active step) | The One-Red Rule (M red fills the call only, on the card or the ground) and the One-Amber Rule (amber only for the hours in the readout window, no glow); "Deschis acum" is a green dot, not amber |
+| The Printed-Legend Rule: Azeret Mono for measurements and tracked capitals for legends | One face, Encode Sans Variable, in sentence case; no mono |
+| The Segment-Coding Rule: M tri-colour as LED segments; Archivo's width axis; the gauge, the LED band and the "rail" | The M tri-colour is a 4px stripe only; the width axis is used once, for the wordmark; the gauge and the LED band are gone. The reopened sticky's "only the LED band survives, as the rail" is dropped: the one cue is the readout window from the old gauge |
+
+**Kept:** no photography (the workshop drawing stays, in ink and line, its amber lamp gone); no roundel and the independence
+disclaimer; one dark look with no theme switch (Q18); the services as hairline index rows, never a card grid; the closed
+pictogram set.
+
+**Also decided on the board:** the quote form leaves `PRODUCT.md` and no form is built; all nine service descriptions stay
+on home; ranges take the figure dash U+2012 with no spaces and em dashes leave the copy.
+
+**What this costs.** Fonts: Encode Sans Variable replaces three families. `animejs` leaves the site, because the gauge's
+ignition sweep is gone. Two small inline scripts in `Base.astro` (the open-now dot, the phone call bar) replace the
+reveal-on-scroll script, and nothing animates under `prefers-reduced-motion` beyond the drawer.
+

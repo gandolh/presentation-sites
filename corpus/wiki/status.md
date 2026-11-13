@@ -1,11 +1,13 @@
 ---
 summary: Dated snapshot (2026-11-02) of where each site stands, the recent work per area, what waits on a deploy, and what this root corpus does versus the per-site docs. The living dashboard — start here after a break.
-updated: 2026-11-12
+updated: 2026-11-13
 ---
 
 # Status — 2026-11-02
 
 ## Where things stand
+
+auto-service is redesigned as "The job card" (brief 05, 2026-11-13): warm graphite, one pinned light card with the call, Encode Sans, no Bordcomputer; the root `e2e/` now holds the shared Floor checks (contrast over the built pages, focus ring, reduced motion, 390 overflow) that saloon, subcort, tractari and churchix reuse. Waits on a deploy.
 
 The four phone menus are `Drawer`s through each site's `ui/Drawer.tsx` since 2026-11-12 (brief 04), `check-base-ui` is strict, and `npm run test:e2e` runs the menus' Playwright spec.
 
@@ -34,7 +36,7 @@ per-site docs and is *not* duplicated here.
 | Site | State | Its own docs |
 |---|---|---|
 | `saloon` | Code-complete and through a design + accessibility pass (2026-08-23). Blocked on real data + human actions (accounts, credentials). The `marketing/bots/` service runs fully in mock mode; live wiring pending. | [`sites/saloon/docs/STATUS.md`](../../sites/saloon/docs/STATUS.md), [`docs/ADR.md`](../../sites/saloon/docs/ADR.md) |
-| `auto-service` | Code-complete, reworked 2026-08-23 into the *Bordcomputer* world (the page as the car's instrument cluster). Full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. **No photography by decision** — the workshop is drawn and the gallery was removed. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
+| `auto-service` | Code-complete, redesigned 2026-11-13 as *The job card* (a pinned light card carrying the call on warm graphite; the 2026-08-23 *Bordcomputer* world is retired, see [decisions-ui.md](decisions-ui.md)). Full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. **No photography by decision** — the workshop is drawn and the gallery was removed. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
 | `subcort` | Demo, complete. Reworked twice on 2026-08-23: first onto a *scoarța* (Oltenian rug) system, then — the owner found that too traditional — onto **Montaj**, the site as a drawing set. One marquee model in `src/lib/draft.ts` drives every graphic (WebGL hero, exploded plate, scale plan, OG card); ink for the object, one orange for annotation; no photography. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete. Three.js night-road hero. | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |
 | `design-study` | **New, 2026-08-23.** Not a marketing site — a UI/UX study. One fictional blog (*Ratio*, 12 posts, 18 shared placeholders) rendered in 14 design languages, content held constant so only design varies. 183 static pages; each theme owns its markup, layout and CSS, and loads only its own fonts. No Tailwind. The written half is 14 per-style dossiers carrying image-treatment recipes and prompt descriptors — see [`design-styles.md`](design-styles.md). | [`design-study/PRODUCT.md`](../../sites/design-study/PRODUCT.md), [`DESIGN.md`](../../sites/design-study/DESIGN.md) |

@@ -1,6 +1,6 @@
 # STATUS — BavAuto Gorj
 
-_Actualizat: 23 august 2026_
+_Actualizat: 13 noiembrie 2026_
 
 ## Făcut
 - [x] Scaffold Astro + React + Tailwind v4 (mirror după `saloon`).
@@ -26,7 +26,9 @@ Dependențe fixate exact (fără `^`). `vite` fixat la `7.3.3` (+ `overrides`): 
 Date reale firmă + RAR în `site.local.ts`, foto reale în `public/images/real/`,
 endpoint Formspree + DPA.
 
-## Rebrand „Bordcomputer" (23 august 2026)
+## Rebrand „Bordcomputer" (23 august 2026), înlocuit pe 13 noiembrie 2026 de „Fișa de lucru"
+
+_Secțiunea de mai jos e istorie: lumea „Bordcomputer", fonturile ei, banda de aluminiu, chihlimbarul și ceasul nu mai există. Starea curentă e în secțiunea următoare și în `DESIGN.md`._
 
 Rework total de UI/UX, cu ideea de business neschimbată. Lumea vizuală veche
 („Pit Wall / Garage Floor" — albastru + dunga M pe gri-grafit) a fost
@@ -54,3 +56,14 @@ Rework total de UI/UX, cu ideea de business neschimbată. Lumea vizuală veche
   (`node scripts/gen-placeholders.mjs`); placeholderele hero/galerie, șterse.
 - Verificat: build mock + `PUBLIC_BASE=/auto-service`, `astro check` curat,
   zero overflow orizontal la 390px, fără cereri Google până la consimțământ.
+
+## Regândire „Fișa de lucru" (13 noiembrie 2026)
+
+Proprietarul a aprobat direcția pe tabla de redesign a proiectelor.
+
+- **Lumea:** o fișă de lucru de atelier pe grafit cald. Un singur aspect întunecat, fără comutator de temă. Singura suprafață deschisă e **cardul**: apelul, WhatsApp, cele trei simptome și fereastra de citire, fixat în dreapta de la hero până la sfârșitul serviciilor (sticky, 88px), sub lede pe telefon. Paginile legale se citesc pe același card.
+- **Apelul** e singurul buton roșu (roșu M) din pagină, pe card sau pe fond. **Chihlimbarul** apare doar la orele din fereastra de citire. Tricolorul M rămâne doar ca dungă de 4px.
+- **Fonturi:** Encode Sans Variable (`@fontsource-variable/encode-sans` 5.3.0), un singur corp, fără mono. Archivo, Hanken Grotesk, Azeret Mono și `animejs` au plecat.
+- **Fereastra de citire** arată punctul verde și „Deschis acum" doar în program (fusul Europe/Bucharest, orele din `site.ts`); fără JavaScript sau în afara programului rămâne orașul. Bara de apel de pe telefon apare după ce apelul din card iese din ecran și dispare cât timp blocul de contact e vizibil.
+- **Copy:** intervalele au linia de cifre (U+2012) fără spații, fără linii lungi în text. Formularul de ofertă a ieșit din `PRODUCT.md` (nu a existat în cod).
+- **Verificări:** `npx playwright test -c e2e` cu `SITES=auto-service` (contrast pe pagina construită, inel de focus, mișcare redusă, 390px, meniul, fișa de lucru).

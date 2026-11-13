@@ -25,8 +25,8 @@ disclaimer.
 
 Its job is to convert a visitor into **a phone call** — the primary, measured
 outcome. A click-to-call is the #1 conversion; WhatsApp (send a photo of the
-warning light + model) and the quote form are strong secondaries for visitors
-who'd rather not talk. Success looks like: an owner lands, feels in the first
+warning light + model) is the strong secondary for visitors who'd rather not
+talk. There is no quote form, by the owner's decision of 2026-11-13. Success looks like: an owner lands, feels in the first
 seconds that these are people who genuinely know and love BMWs, and taps "Sună
 acum" (or WhatsApp). The site also carries Romanian legal compliance pages (GDPR,
 cookie, terms, ANPC).
@@ -79,7 +79,8 @@ as much as I do, and won't take me for a ride."
    timid; the passion is allowed to show.
 5. **Phone-first, friction-last.** Mobile is the primary surface (visitors arrive
    on a phone, often stressed). Click-to-call and WhatsApp must always be one tap
-   away; the quote form is the fallback for the call-averse.
+   away; WhatsApp, with a photo of the warning light, is the fallback for the
+   call-averse.
 
 ## Accessibility & Inclusion
 
