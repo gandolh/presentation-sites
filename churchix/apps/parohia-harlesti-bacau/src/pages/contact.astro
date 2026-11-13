@@ -18,97 +18,93 @@ const prayerMailto = c.email ? `mailto:${c.email}?subject=${encodeURIComponent("
 
 <BaseLayout site={site} title="Contact" path="/contact">
   <PageShell title="Contact" lede="Vă așteptăm la biserică și vă stăm la dispoziție pentru orice întrebare.">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+    <div class="grid grid-cols-1 items-stretch gap-4 min-[960px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] min-[960px]:gap-6">
       <!-- Coordonate parohie -->
-      <div class="lg:col-span-5 flex flex-col gap-lg">
-        <Card padding="lg" radius="lg">
-          <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Coordonate</p>
-          <h2 class="font-headline-md text-headline-md text-primary mb-md">Datele parohiei</h2>
-          <dl class="flex flex-col gap-md font-body-md text-body-md text-on-surface">
-            <div class="flex items-start gap-sm">
-              <Icon name="church" size={20} class="mt-0.5 text-secondary shrink-0" />
+      <Card padding="none" radius="lg" elevation="board" class="p-5 min-[960px]:px-8 min-[960px]:py-7">
+        <h2 class="m-0 mb-5 font-headline-md text-headline-md text-primary">Datele parohiei</h2>
+        <dl class="m-0 flex flex-col gap-5 font-body-md text-body-md text-on-surface">
+          <div class="flex items-start gap-4">
+            <Icon name="church" size={22} class="mt-0.5 shrink-0 text-secondary-strong" />
+            <div>
+              <dt class="font-label-md text-label-md text-on-surface-variant">Adresă</dt>
+              <dd class="m-0">
+                {c.address}
+                <br />
+                {c.city}, {c.country}
+              </dd>
+            </div>
+          </div>
+          {c.phone && (
+            <div class="flex items-start gap-4">
+              <Icon name="sms" size={22} class="mt-0.5 shrink-0 text-secondary-strong" />
               <div>
-                <dt class="font-overline text-overline uppercase text-on-surface-variant">Adresă</dt>
-                <dd class="mt-1">
-                  {c.address}
-                  <br />
-                  {c.city}, {c.country}
+                <dt class="font-label-md text-label-md text-on-surface-variant">Telefon</dt>
+                <dd class="m-0">
+                  <a
+                    class="inline-flex min-h-11 items-center rounded font-semibold text-primary underline decoration-1 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
+                    href={`tel:${c.phone.replace(/\s+/g, "")}`}
+                  >
+                    {c.phone}
+                  </a>
                 </dd>
               </div>
             </div>
-            {c.phone && (
-              <div class="flex items-start gap-sm">
-                <Icon name="sms" size={20} class="mt-0.5 text-secondary shrink-0" />
-                <div>
-                  <dt class="font-overline text-overline uppercase text-on-surface-variant">Telefon</dt>
-                  <dd class="mt-1">
-                    <a
-                      class="text-primary hover:underline underline-offset-2"
-                      href={`tel:${c.phone.replace(/\s+/g, "")}`}
-                    >
-                      {c.phone}
-                    </a>
-                  </dd>
-                </div>
+          )}
+          {c.email && (
+            <div class="flex items-start gap-4">
+              <Icon name="send" size={22} class="mt-0.5 shrink-0 text-secondary-strong" />
+              <div>
+                <dt class="font-label-md text-label-md text-on-surface-variant">Email</dt>
+                <dd class="m-0">
+                  <a
+                    class="inline-flex min-h-11 items-center break-all rounded font-semibold text-primary underline decoration-1 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
+                    href={`mailto:${c.email}`}
+                  >
+                    {c.email}
+                  </a>
+                </dd>
               </div>
-            )}
-            {c.email && (
-              <div class="flex items-start gap-sm">
-                <Icon name="send" size={20} class="mt-0.5 text-secondary shrink-0" />
-                <div>
-                  <dt class="font-overline text-overline uppercase text-on-surface-variant">Email</dt>
-                  <dd class="mt-1">
-                    <a class="text-primary hover:underline underline-offset-2 break-all" href={`mailto:${c.email}`}>
-                      {c.email}
-                    </a>
-                  </dd>
-                </div>
-              </div>
-            )}
-          </dl>
-        </Card>
-      </div>
+            </div>
+          )}
+        </dl>
+      </Card>
 
       <!-- Hartă -->
       {c.mapEmbedUrl && (
-        <div class="lg:col-span-7">
-          <Card padding="none" radius="lg" class="h-full">
-            <iframe
-              class="w-full h-[320px] lg:h-full min-h-[320px] block border-0"
-              src={c.mapEmbedUrl}
-              title={`Hartă — ${site.name}`}
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </Card>
-        </div>
+        <Card padding="none" radius="lg" elevation="board" class="min-h-[320px]">
+          <iframe
+            class="block h-[320px] min-h-[320px] w-full border-0 min-[960px]:h-full"
+            src={c.mapEmbedUrl}
+            title={`Hartă — ${site.name}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </Card>
       )}
     </div>
 
     <!-- Cerere de rugăciune -->
-    <div class="mt-xl max-w-2xl">
-      <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Scrie-ne</p>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-md flex items-center gap-sm">
-        <Icon name="candle" class="text-secondary" size={26} />
+    <div class="mt-10 max-w-2xl min-[960px]:mt-12">
+      <h2 class="m-0 mb-2 flex items-center gap-3 font-headline-md text-[28px] font-bold leading-9 text-primary">
+        <Icon name="candle" class="text-secondary-strong" size={26} />
         Cerere de rugăciune
       </h2>
-      <p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+      <p class="m-0 mb-5 font-body-md text-body-md text-on-surface-variant">
         Ne puteți trimite o cerere de rugăciune sau un mesaj. Vom reveni cu un răspuns cât mai curând.
       </p>
-
-      <Card padding="lg" radius="lg">
+      <Card padding="none" radius="lg" elevation="board" class="p-5 min-[960px]:p-8">
         {prayerMailto && (
-          <p class="mb-md font-body-md text-body-md text-on-surface-variant">
+          <p class="m-0 mb-5 font-body-md text-body-md text-on-surface-variant">
             Apăsând „Trimite mesajul" se va deschide aplicația dvs. de email cu mesajul completat, gata de trimis.
           </p>
         )}
         <form
           id="cx-contact-form"
-          class="flex flex-col gap-md"
+          class="flex flex-col gap-4"
           action={prayerMailto}
           method={prayerMailto ? undefined : "post"}
         >
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Nume" name="nume" autocomplete="name" required />
             <Field label="Email" name="email" type="email" autocomplete="email" />
           </div>
@@ -129,7 +125,7 @@ const prayerMailto = c.email ? `mailto:${c.email}?subject=${encodeURIComponent("
         <div
           id="cx-contact-sent"
           tabindex="-1"
-          class="hidden mt-md rounded-lg border border-secondary/30 bg-secondary-container/30 p-md font-body-md text-body-md text-on-secondary-container"
+          class="mt-5 hidden rounded bg-secondary-container p-4 font-body-md text-body-md text-on-secondary-container"
           role="status"
           aria-live="polite"
         >
@@ -137,7 +133,6 @@ const prayerMailto = c.email ? `mailto:${c.email}?subject=${encodeURIComponent("
           finaliza trimiterea. Mulțumim!
         </div>
       </Card>
-
       {prayerMailto && <script is:inline>
         (function () {
           const form = document.getElementById("cx-contact-form");
