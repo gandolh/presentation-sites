@@ -2,9 +2,9 @@
 /**
  * `<AnnouncementList>` — the parish announcements grid (Ecclesia Digitalis).
  *
- * Renders announcements as the design's "Anunțuri Recente" cards:
- *  - **Pinned** items get the gold bottom-border (`Card featured`) + a "Fixat"
- *    `Badge` (`tone="primary"` `icon="push_pin"`) and span 2 columns on desktop
+ * Renders announcements as white cards with a full-strength edge and `shadow-sm`, over the page band's edge:
+ *  - **Pinned** items get the gold bottom edge (`Card featured`) + a "Fixat"
+ *    `Badge` (`tone="secondary"` `icon="push_pin"`) and span 2 columns from 960 px
  *    so they read as the lead item.
  *  - **Regular** items show a dated `event` chip, the title, and a `line-clamp-2`
  *    summary. The whole card links to the detail page.
@@ -74,38 +74,35 @@ const sorted = [...items].sort((a, b) => {
 ---
 
 {sorted.length > 0 && (
-  <ul class:list={["grid grid-cols-1 lg:grid-cols-2 gap-md list-none p-0 m-0", className]}>
+  <ul class:list={["m-0 grid list-none grid-cols-1 gap-4 p-0 min-[960px]:grid-cols-2 min-[960px]:gap-6", className]}>
     {sorted.map((a) => (
       <Card
         as="li"
         href={withBase(`${basePath}/${a.slug}`)}
         radius="lg"
-        padding="lg"
+        padding="none"
+        elevation="sm"
         featured={a.pinned}
         interactive
-        class:list={["group flex flex-col gap-xs", a.pinned && "lg:col-span-2"]}
+        class:list={["group flex flex-col p-5 min-[960px]:p-7", a.pinned && "min-[960px]:col-span-2"]}
       >
         {a.pinned ? (
-          <Badge tone="primary" icon="push_pin" class="self-start mb-xs">
+          <Badge tone="secondary" icon="push_pin" class="mb-2 self-start">
             Fixat
           </Badge>
         ) : (
-          <span class="inline-flex items-center gap-1 font-caption text-caption text-on-surface-variant">
-            <Icon name="event" size={14} />
+          <span class="mb-2 inline-flex items-center gap-2 font-label-md text-label-md font-normal text-on-surface-variant">
+            <Icon name="event" size={16} />
             <time datetime={a.date.toISOString()}>{fmt.format(a.date)}</time>
           </span>
         )}
-
-        <h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-balance">
+        <h2 class="m-0 mb-2 text-balance font-headline-md text-[22px] font-bold leading-7 text-on-surface min-[960px]:text-headline-md min-[960px]:leading-8">
           {a.title}
         </h2>
-
-        {a.summary && <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{a.summary}</p>}
-
+        {a.summary && <p class="m-0 line-clamp-2 font-body-md text-body-md text-on-surface-variant">{a.summary}</p>}
         {a.pinned && (
-          <span class="mt-xs inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+          <span class="mt-3 inline-flex min-h-11 items-center self-start font-body-md text-body-md font-semibold text-primary underline decoration-1 underline-offset-4">
             {readMoreLabel}
-            <Icon name="arrow_forward" size={18} />
           </span>
         )}
       </Card>
