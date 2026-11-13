@@ -16,10 +16,7 @@ const showCampaign = site.features.campaigns && Boolean(featured);
 <BaseLayout site={site} title="Donează" path="/donatii">
   <PageShell
     title="Sprijină parohia"
-    kicker="Dania ta"
     lede="Orice dar, mic sau mare, ne ajută în lucrarea liturgică și social-filantropică."
-    markers={6}
-    wide
   >
     <GivingChannels giving={site.giving} campaign={featured} showCampaign={showCampaign} />
   </PageShell>

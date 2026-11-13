@@ -20,17 +20,14 @@ const enabled = site.features.pomelnice;
       <div class="relative">
         <PageShell
           title="Trimite un pomelnic"
-          kicker="Pomenire la Sfânta Liturghie"
           lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
-          markers={7}
-          wide
         >
           <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
         </PageShell>
       </div>
     </div>
   ) : (
-    <PageShell title="Pomelnice" kicker="Pomenire" markers={6}>
+    <PageShell title="Pomelnice">
       <EmptyState
         as="h2"
         icon="candle"

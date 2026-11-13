@@ -2,9 +2,10 @@
 /**
  * `<Field>` — labeled form control wrapper for input / textarea / select.
  *
- * Light `outline-variant/50` border, transparent bg; on focus the border + ring
- * transition to `secondary` (HARD spec requirement). Label is associated to the
- * control via `for`/`id`. Re-skins via tokens.
+ * A white 48 px control with a 1 px `outline` edge (3:1) and an 8 px radius; on focus a 2 px `primary` ring with
+ * a 2 px offset. The label is 14/20 at weight 600, sentence case. An error turns the edge to a 2 px `error` line
+ * and puts the message, in `on-error-container`, under the control. Label is associated to the control via
+ * `for`/`id`. Re-skins via tokens.
  *
  * @prop {'input'|'textarea'|'select'} [as='input']  Which control to render.
  * @prop {string} label          Visible label (`text-label-md`). Required for a11y.
@@ -16,7 +17,7 @@
  * @prop {string|number} [value] Initial value.
  * @prop {number} [rows=4]       Textarea rows.
  * @prop {string} [hint]         Helper text below the control (`text-caption`).
- * @prop {string} [error]        Error message; turns border/ring/error text red and sets `aria-invalid`.
+ * @prop {string} [error]        Error message; turns the edge to `error` and sets `aria-invalid`.
  * @prop {boolean} [labelHidden=false]  Visually hide the label (still read by AT).
  * @prop {string} [class]        Extra classes on the control.
  * @prop {...} ...rest           Passthrough to the control (autocomplete, min, max, pattern, step...).
@@ -94,7 +95,7 @@ const commonProps = {
 };
 ---
 
-<div class="flex flex-col gap-1">
+<div class="flex flex-col gap-2">
   <label for={fieldId} class:list={["font-label-md text-label-md text-on-surface", labelHidden && "sr-only"]}>
     {label}
     {required && (
@@ -122,12 +123,12 @@ const commonProps = {
   )}
 
   {hint && !error && (
-    <p id={hintId} class="font-caption text-caption text-on-surface-variant">
+    <p id={hintId} class="m-0 font-label-md text-label-md font-normal text-on-surface-variant">
       {hint}
     </p>
   )}
   {error && (
-    <p id={errorId} class="font-caption text-caption text-error">
+    <p id={errorId} class="m-0 font-label-md text-label-md font-normal text-on-error-container">
       {error}
     </p>
   )}

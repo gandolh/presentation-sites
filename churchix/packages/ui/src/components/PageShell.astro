@@ -1,72 +1,55 @@
 ---
 /**
- * `<PageShell>` — the inner-page frame that carries the redesign signature.
+ * `<PageShell>` — the inner-page frame (the porch notice, approved 2026-11-13).
  *
- * Every non-home page composes this. It provides:
- *   1. A consistent PAGE HEADER band — a liturgical overline kicker, the page
- *      title in the display serif, and an optional lede — left-aligned (never the
- *      old centered stack), so the eye always enters top-left.
- *   2. The LITURGICAL RAIL down the left margin of the content column (the
- *      cross-page through-line). It collapses to a hairline edge on mobile.
- *   3. A slotted `actions` area (e.g. a PDF download, a back link) that sits with
- *      the title block.
- *
- * The rail is decorative; the real content sits in the default slot to its right.
- * All spacing/type/color via M3 tokens — re-skins per church by token swap alone.
+ * Every non-home page composes this. A slim `primary` band opens the page with its title (`h1`, Cardo 40/48 from
+ * 960 px, 28/34 below) and its lede in `on-primary-variant`; the page's first cards rise out of the band's lower
+ * edge (a negative margin of 56 px, 28 on phones), so the slotted body starts over the band. There is no kicker
+ * and no rail: the title says where you are.
  *
  * @prop {string}  title              Page title → the `as` heading.
- * @prop {string}  [kicker]           Overline label above the title (e.g. "Liturgic").
- * @prop {string}  [lede]             Optional lead paragraph under the title.
+ * @prop {string}  [lede]             Optional sentence under the title.
  * @prop {'h1'|'h2'} [as='h1']        Heading level for the title.
- * @prop {number}  [markers=6]        Rail marker count.
- * @prop {boolean} [wide=false]       Use the full container width (default is a roomy reading column).
  * @prop {string}  [class]
  *
- * @slot default — page body (sits right of the rail).
- * @slot actions — optional controls rendered in the header block (right-aligned on desktop).
+ * @slot default — page body; its first block is drawn over the band's edge.
+ * @slot actions — optional controls in the band, right-aligned on desktop (e.g. a PDF download).
  */
-import Rail from "./Rail.astro";
-
 interface Props {
   title: string;
-  kicker?: string;
   lede?: string;
   as?: "h1" | "h2";
-  markers?: number;
-  wide?: boolean;
   class?: string;
 }
 
-const { title, kicker, lede, as = "h1", markers = 6, wide = false, class: className } = Astro.props;
+const { title, lede, as = "h1", class: className } = Astro.props;
 const Tag = as;
 const hasActions = Astro.slots.has && Astro.slots.has("actions");
 ---
 
-<div class:list={["w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl", className]}>
-  <div class="flex gap-sm md:gap-lg">
-    <Rail markers={markers} class="hidden sm:block" />
-
-    <div class:list={["min-w-0 flex-1", wide ? "" : "max-w-4xl"]}>
-      <!-- Page header band: overline kicker → display title → lede, left-aligned. -->
-      <header class="mb-xl">
-        <div class="flex flex-col gap-sm sm:flex-row sm:items-end sm:justify-between">
-          <div class="min-w-0">
-            {kicker && <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">{kicker}</p>}
-            <Tag class="font-display-lg text-headline-lg-mobile sm:text-display-lg text-primary text-balance m-0">
-              {title}
-            </Tag>
-          </div>
-          {hasActions && (
-            <div class="shrink-0 flex items-center gap-sm">
-              <slot name="actions" />
-            </div>
-          )}
+<div class:list={[className]}>
+  <header class="bg-primary pb-14 pt-6 text-on-primary min-[960px]:pb-[88px] min-[960px]:pt-10">
+    <div class="mx-auto flex w-full max-w-container-max flex-col gap-4 px-4 min-[960px]:flex-row min-[960px]:items-end min-[960px]:justify-between min-[960px]:px-6">
+      <div class="min-w-0">
+        <Tag class="m-0 text-balance break-words font-heading text-[28px] font-bold leading-[34px] text-on-primary min-[960px]:text-[40px] min-[960px]:leading-[48px]">
+          {title}
+        </Tag>
+        {lede && (
+          <p class="mt-2 max-w-2xl text-pretty font-body-md text-body-md text-on-primary-variant min-[960px]:text-body-lg">
+            {lede}
+          </p>
+        )}
+      </div>
+      {hasActions && (
+        <div class="flex shrink-0 items-center gap-4">
+          <slot name="actions" />
         </div>
-        {lede && <p class="mt-md max-w-2xl font-body-lg text-body-lg text-on-surface-variant text-pretty">{lede}</p>}
-        <!-- Hairline gold rule closing the header band — echoes the rail. -->
-        <div class="mt-lg h-px w-full bg-gradient-to-r from-secondary/50 via-outline-variant/40 to-transparent"></div>
-      </header>
+      )}
+    </div>
+  </header>
 
+  <div class="relative -mt-7 min-[960px]:-mt-14">
+    <div class="mx-auto w-full max-w-container-max px-4 pb-12 min-[960px]:px-6 min-[960px]:pb-16">
       <slot />
     </div>
   </div>

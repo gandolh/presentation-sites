@@ -12,13 +12,7 @@ const anunturi = (await getCollection("announcements")).map((e) => ({ slug: e.id
 ---
 
 <BaseLayout site={site} title="Anunțuri" path="/anunturi">
-  <PageShell
-    title="Anunțuri"
-    kicker="Din viața parohiei"
-    lede="Noutăți, rânduieli și evenimente din comunitatea noastră."
-    markers={6}
-    wide
-  >
+  <PageShell title="Anunțuri" lede="Noutăți, rânduieli și evenimente din comunitatea noastră.">
     {anunturi.length > 0 ? (
       <AnnouncementList items={anunturi} locale={locale} />
     ) : (
