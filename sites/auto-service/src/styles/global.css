@@ -109,21 +109,6 @@
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* ---- Transitional: the old components still read these until their screens move over */
-  --color-surface-menu: #161310;
-  --color-inverse-surface-2: #dddad5;
-  --color-link-on-trim: #201c18;
-  --color-primary-container: #312d29;
-  --color-on-primary-container: #f2f0ec;
-  --color-primary-edge: #736e67;
-  --color-warning: #fcb368;
-  --color-on-error: #161310;
-  --color-whatsapp-hover: #42b970;
-  --font-mono: "Encode Sans Variable", system-ui, sans-serif;
-  --radius-sm: 0.125rem;
-  --radius: 0.1875rem;
-  --radius-xl: 0.625rem;
 }
 
 @layer base {
@@ -180,7 +165,6 @@
   :focus-visible {
     outline: 2px solid var(--color-primary-bright);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
   }
 }
 
@@ -1173,6 +1157,9 @@
       align-self: center;
     }
   }
+  .bar {
+    display: none;
+  }
   @media (max-width: 959px) {
     .bar {
       display: flex;
@@ -1417,9 +1404,6 @@
     }
   }
 
-  .bar {
-    display: none;
-  }
   .bar .call {
     flex: 1;
     min-height: 48px;
