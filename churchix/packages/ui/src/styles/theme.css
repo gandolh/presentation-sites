@@ -58,6 +58,8 @@
   --color-primary: var(--primary);
   --color-on-primary: var(--on-primary);
   --color-primary-container: var(--primary-container);
+  --color-primary-strong: var(--primary-strong);
+  --color-on-primary-variant: var(--on-primary-variant);
   --color-on-primary-container: var(--on-primary-container);
   --color-inverse-primary: var(--inverse-primary);
   --color-primary-fixed: var(--primary-fixed);
@@ -67,6 +69,8 @@
 
   --color-secondary: var(--secondary);
   --color-on-secondary: var(--on-secondary);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-surface-highlight: var(--surface-highlight);
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
   --color-secondary-fixed: var(--secondary-fixed);
@@ -95,6 +99,10 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
+
+  /* Elevation: two levels. Every card also keeps its 1 px outline-variant edge. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--on-surface) 6%, transparent);
+  --shadow-board: 0 4px 12px color-mix(in srgb, var(--on-surface) 10%, transparent);
 
   /* NOTE — `max-w-{sm,md,lg,xl}` are UNSAFE in this theme.
    * Tailwind v4 resolves `max-w-<key>` against a namespace where the SPACING
@@ -177,11 +185,36 @@
 
   --text-label-md: 14px;
   --text-label-md--line-height: 20px;
-  /* 0.05em: label-md is almost exclusively used uppercase in this system;
-   * 0.05em is the minimum comfortable tracking for all-caps at 14px. */
-  --text-label-md--letter-spacing: 0.05em;
-  --text-label-md--font-weight: 500;
+  /* Labels are sentence case at weight 600, with no tracking (the porch notice, 2026-11-13). */
+  --text-label-md--letter-spacing: 0;
+  --text-label-md--font-weight: 600;
 
+  /* The porch notice: the parish name on the Home band from 960 px (page heads use headline-lg + 8, 40/48). */
+  --font-display-md: var(--font-heading);
+  --text-display-md: 52px;
+  --text-display-md--line-height: 60px;
+  --text-display-md--font-weight: 700;
+  /* The next service's name. */
+  --font-display-sm: var(--font-heading);
+  --text-display-sm: 36px;
+  --text-display-sm--line-height: 44px;
+  --text-display-sm--font-weight: 700;
+  /* 17:00, the loudest fact after the name. */
+  --font-time: var(--font-body);
+  --text-time: 48px;
+  --text-time--line-height: 52px;
+  --text-time--font-weight: 600;
+  --text-time-mobile: 40px;
+  --text-time-mobile--line-height: 44px;
+  --text-time-mobile--font-weight: 600;
+  /* The Header and Footer wordmark. */
+  --font-wordmark: var(--font-heading);
+  --text-wordmark: 22px;
+  --text-wordmark--line-height: 28px;
+  --text-wordmark--font-weight: 700;
+  --text-wordmark-mobile: 20px;
+  --text-wordmark-mobile--line-height: 24px;
+  --text-wordmark-mobile--font-weight: 700;
   --text-caption: 12px;
   --text-caption--line-height: 16px;
   --text-caption--font-weight: 400;

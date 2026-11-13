@@ -76,6 +76,10 @@
 
   /* ───────────── DERIVED — Primary family (from --primary) ───────────── */
   --primary-container: color-mix(in srgb, var(--primary) 80%, #ffffff);
+  /* Hover, pressed and the arch fill: darker than the primary. */
+  --primary-strong: color-mix(in srgb, var(--primary) 80%, #000000);
+  /* The lede on the primary name band. */
+  --on-primary-variant: color-mix(in srgb, var(--on-primary) 80%, var(--primary));
   /* DARK "on" tone for the primary-container tonal tint (M3 semantics: on-*-container
    * is the dark readable color over a light container). The previous value was a
    * LIGHT primary tint (35% primary) which gave ~1.2:1 on the /30 Alert tint and
@@ -91,13 +95,20 @@
 
   /* ───────────── DERIVED — Secondary family (from --secondary) ───────────── */
   --on-secondary: #ffffff;
-  --secondary-container: color-mix(in srgb, var(--secondary) 35%, #ffffff);
+  /* 30 % (not 35): the badge text keeps its 10:1 on every seed set. */
+  --secondary-container: color-mix(in srgb, var(--secondary) 30%, #ffffff);
   /* Dark warm-neutral "on" tone for the pale gold container. Must be a DARK
    * tone (not the gold seed itself): gold-on-gold is ~2:1 and fails AA. Mixing
    * the seed 30% into black keeps a faint warm hue while reaching ~9.5:1 on
    * `secondary-container` (and on the /30–/40 tonal tints used by Badge/Alert/
    * PomelnicForm). Fixed at the derived-token level so every gold chip passes. */
   --on-secondary-container: color-mix(in srgb, var(--secondary) 30%, #000000);
+  /* Icons and marks on light surfaces (bank, church, download, the current-place underline): secondary 55 %
+   * with primary, at least 3:1 on white and on the Sunday row for both seed sets. Pure --secondary stays for
+   * rules, the arch line and the logo cross on the primary, never an icon on light. */
+  --secondary-strong: color-mix(in srgb, var(--secondary) 55%, var(--primary));
+  /* The Sunday row. */
+  --surface-highlight: color-mix(in srgb, var(--secondary-strong) 18%, #ffffff);
   --secondary-fixed: color-mix(in srgb, var(--secondary) 25%, #ffffff);
   --secondary-fixed-dim: color-mix(in srgb, var(--secondary) 55%, #ffffff);
   --on-secondary-fixed: color-mix(in srgb, var(--secondary) 85%, #000000);
@@ -105,15 +116,17 @@
 
   /* ───────────── DERIVED — Surface / neutral family (from --surface) ───────────── */
   --background: var(--surface);
-  --on-background: #1c1c19;
-  --on-surface: #1c1c19;
-  --on-surface-variant: #544243;
+  /* Text is derived from the primary, so a blue parish gets blue-black text. */
+  --on-background: var(--on-surface);
+  --on-surface: color-mix(in srgb, var(--primary) 12%, #161412);
+  --on-surface-variant: color-mix(in srgb, var(--primary) 22%, #5b5552);
   --surface-dim: color-mix(in srgb, var(--surface) 86%, #000000);
   --surface-bright: var(--surface);
   --surface-variant: color-mix(in srgb, var(--surface) 90%, #000000);
   --surface-container-lowest: #ffffff;
   --surface-container-low: color-mix(in srgb, var(--surface) 96%, #000000);
-  --surface-container: color-mix(in srgb, var(--surface) 93%, #000000);
+  /* The news tray and the Pomelnice name-card heads: tinted by the primary, not darkened. */
+  --surface-container: color-mix(in srgb, var(--primary) 7%, var(--surface));
   --surface-container-high: color-mix(in srgb, var(--surface) 90%, #000000);
   --surface-container-highest: color-mix(in srgb, var(--surface) 87%, #000000);
   --inverse-surface: #31302d;
