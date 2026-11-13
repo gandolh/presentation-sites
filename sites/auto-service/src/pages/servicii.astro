@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import WipBanner from "../components/WipBanner.astro";
 import Nav from "../components/Nav.astro";
 import PageHeader from "../components/PageHeader.astro";
+import JobCard from "../components/JobCard.astro";
 import Services from "../components/Services.astro";
 import Process from "../components/Process.astro";
 import Faq from "../components/Faq.astro";
@@ -20,19 +21,29 @@ import { services } from "../content/services";
   <WipBanner />
   <Nav current="/servicii/" />
   <main id="main">
-    <PageHeader
-      title="Ce facem pe BMW"
-      lead="De la revizia de rutină la lucrările pe care nu le face oricine. Fiecare intrare de aici pleacă de la o diagnoză, nu de la o presupunere."
-      readout={[`${services.length} lucrări`, "deviz în avans", "garanție 12 luni"]}
-    />
-    <Services
-      title="Nouă lucrări, toate pe BMW"
-      lede="Fiecare intrare de aici are un simbol în bord și o cauză de găsit. Dacă lucrarea ta nu e în listă, sună-ne, probabil o rezolvăm."
-      id="lista"
-    />
-    <Process />
-    <Faq />
-    <Contact />
+    <!-- The card is pinned beside the header and the index at 1280; on a phone the call bar carries the call. -->
+    <div class="wrap">
+      <PageHeader
+        title="Ce facem pe BMW"
+        lead="De la revizia de rutină la lucrările pe care nu le face oricine. Fiecare intrare de aici pleacă de la o diagnoză, nu de la o presupunere."
+        readout={[`${services.length} lucrări`, "deviz în avans", "garanție 12 luni"]}
+      />
+      <div class="cardcol onlydesk">
+        <JobCard />
+      </div>
+      <div class="rest">
+        <Services
+          title="Nouă lucrări, toate pe BMW"
+          lede="Fiecare intrare de aici are un simbol în bord și o cauză de găsit. Dacă lucrarea ta nu e în listă, sună-ne, probabil o rezolvăm."
+          id="lista"
+        />
+      </div>
+    </div>
+    <div class="full">
+      <Process />
+      <Faq />
+      <Contact />
+    </div>
   </main>
   <Footer />
   <MobileCallBar />
