@@ -239,7 +239,7 @@
     font-weight: var(--text-title--font-weight);
   }
 
-  .text-lead {
+  .copy-lead {
     font-size: var(--text-lead);
     line-height: var(--text-lead--line-height);
     color: var(--color-on-surface-variant);
@@ -276,7 +276,7 @@
       line-height: 2.125rem;
     }
 
-    .text-lead {
+    .copy-lead {
       font-size: 1rem;
       line-height: 1.5rem;
     }

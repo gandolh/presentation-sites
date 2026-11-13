@@ -54,7 +54,7 @@ self-hosted. Sentence case everywhere: no uppercase, no tracked capitals.
 | Display | `.heading-xl` (h1) | 64/68, weight 440 | phone `min(40px, 10vw)`; from 901 px `opsz` 96; runs on one line at 1280 |
 | Heading | `.heading-lg` (h2) | 32/38, weight 440 | phone 28/34 |
 | Title | `.heading-md` (h3), prices, steps, signature | 24/30, weight 500 | |
-| Lead | `.text-lead` | 18/28 | phone 16/24 |
+| Lead | `.copy-lead` | 18/28 | phone 16/24 |
 | Body | | 16/24 | |
 | Label | `.label-md` | 14/20, weight 600 | subtitles, notice, foot, legal |
 
