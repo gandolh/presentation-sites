@@ -377,3 +377,10 @@ the three token stylesheets of `@churchix/ui`, accepted in `conventions.json` wi
 `e2e/mobile-menu.spec.ts` (Esc, X, tap outside, swipe up by touch events, link, no horizontal scroll): 6 passed. Home
 at 1280 and 390 and the open menu at 390 are pixel-identical before and after. See
 [the outcome](briefs/done/04-base-ui-by-the-conventions.md).
+
+## [2026-11-13] decision | The owner approved the parish template redesign, "The porch notice"
+
+The owner approved the redesign direction "The porch notice" (runner-up: "Iconostasis, restored") on the estate redesign
+board, with every question on the board standing as proposed: the bottom bar of five places beside the Drawer, Pomelnice
+as built, and the footer's two legal links kept as they are. Brief 05 builds it, one commit for the tokens and one per
+screen.
