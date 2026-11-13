@@ -342,7 +342,7 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 - [02](briefs/done/02-pin-base-ui-exactly.md): `packages/ui` has `^1.9.0` (`packages/ui/package.json:25`); the lockfile resolves 1.9.0.
 - [03](briefs/done/03-the-house-style-and-the-quality-harness.md): the root corpus's Astro-aware harness, applied to Churchix. It has a `format` script and no Prettier, no ESLint, and no typecheck for its two packages (7 and 2 `tsc` errors when run alone). Prettier changes 40 of 42 files, about 24% of lines, at any width. `churchix/.gitignore:49` hides `.claude/`.
 - [04](briefs/done/04-base-ui-by-the-conventions.md): the phone menu on the swipeable `Drawer` (Q40), wrappers in `packages/ui/src/primitives/`, and the Light / Dark / System switch (Q18), with a dark theme derived from the church's seeds. No Tailwind brief: Churchix is on Tailwind v4.
-- [05](briefs/todo/05-parish-template-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign of the parish template, as a token set and layout, on the estate board (Q39). It links the root corpus's brief 05 for the shared steps.
+- [05](briefs/done/05-parish-template-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign of the parish template, as a token set and layout, on the estate board (Q39). It links the root corpus's brief 05 for the shared steps.
 
 Churchix has no server (`services/` holds a README), so there is no server brief.
 
@@ -384,3 +384,12 @@ The owner approved the redesign direction "The porch notice" (runner-up: "Iconos
 board, with every question on the board standing as proposed: the bottom bar of five places beside the Drawer, Pomelnice
 as built, and the footer's two legal links kept as they are. Brief 05 builds it, one commit for the tokens and one per
 screen.
+
+## [2026-11-13] brief | 05 The parish template redesign, "The porch notice"
+
+Built "The porch notice" on the same four-seed contract: the name band with its arch, the program board and the giving card
+rising out of its edge, the news tray, a fixed bottom bar of five places beside the Drawer, and every inner page on a slim
+band. The Rail, the kickers and the tracked capitals are gone; the fonts are pinned at 5.3.0; `DESIGN.md`, the design-system
+page and the two reopened decisions are rewritten. New Playwright specs cover the Floor checks for both seed sets, the layout
+at six widths, and the giving and Pomelnice flows. Not deployed: the owner runs `node cli.ts churchix deploy`. See
+[the outcome](briefs/done/05-parish-template-redesign-with-hallmark-on-the-estate-board.md).
