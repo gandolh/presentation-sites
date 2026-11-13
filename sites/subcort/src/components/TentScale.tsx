@@ -1,4 +1,4 @@
-// The scale plan — the site's one real instrument.
+// The scale plan: the site's one real instrument.
 //
 // A visitor's actual question is "how big is that on my ground?", and no table
 // of square metres answers it. This draws each format's footprint to scale on a
@@ -13,7 +13,7 @@
 // carries the format index and a subscriber writes the real attributes — one
 // motion value, no per-frame React render, and the geometry is always correct.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   animate,
   motion,
@@ -61,8 +61,26 @@ const PAD = 3.5;
 const CAR_L = 4.5;
 const CAR_W = 1.8;
 
+/** "90‒110 persoane" → the range in the figure face, then the rest. */
+function Seated({ value }: { value: string }) {
+  const at = value.indexOf(" ");
+  if (at < 0) return <>{value}</>;
+  return (
+    <>
+      <span className="rg">{value.slice(0, at)}</span>
+      {value.slice(at)}
+    </>
+  );
+}
+
 export default function TentScale({ formats, initial = 1 }: Props) {
   const [i, setI] = useState(Math.min(initial, formats.length - 1));
+  // Until the island runs, the picker rests disabled: the table below gives every figure.
+  const ready = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const reduced = useReducedMotion();
   const f = formats[i];
 
@@ -144,21 +162,21 @@ export default function TentScale({ formats, initial = 1 }: Props) {
   const fShort = short(f);
 
   return (
-    <div className="scale">
-      <div className="scale__plan">
+    <div className="plan">
+      <div className="plan__box">
         <svg
           viewBox={`0 0 ${VB_W} ${VB_H}`}
-          className="scale__svg"
+          className="plan__svg"
           role="img"
           aria-label={`Plan la scară: cort de ${f.label}, ${f.area} metri pătrați, comparat cu o mașină de 4,5 metri`}
         >
           <defs>
             {/* the one-metre grid: warp and weft */}
             <pattern id="ts-m" width="1" height="1" patternUnits="userSpaceOnUse">
-              <path d="M1 0V1M0 1H1" stroke="#DCE1E5" strokeWidth="0.05" fill="none" />
+              <path d="M1 0V1M0 1H1" strokeWidth="0.05" fill="none" style={{ stroke: "var(--color-hair)" }} />
             </pattern>
             <pattern id="ts-m5" width="5" height="5" patternUnits="userSpaceOnUse">
-              <path d="M5 0V5M0 5H5" stroke="#BFC8CF" strokeWidth="0.09" fill="none" />
+              <path d="M5 0V5M0 5H5" strokeWidth="0.09" fill="none" style={{ stroke: "var(--color-line-soft)" }} />
             </pattern>
           </defs>
 
@@ -166,44 +184,56 @@ export default function TentScale({ formats, initial = 1 }: Props) {
           <rect width={VB_W} height={VB_H} fill="url(#ts-m5)" />
 
           {/* the footprint */}
-          <rect ref={rect} fill="#22303A" fillOpacity={0.06} stroke="#22303A" strokeWidth={0.18} />
-          <line ref={ridge} stroke="#C2481E" strokeWidth={0.13} strokeDasharray="0.8 0.55" />
+          <rect
+            ref={rect}
+            fillOpacity={0.06}
+            strokeWidth={0.18}
+            style={{ fill: "var(--color-ink)", stroke: "var(--color-ink)" }}
+          />
+          <line ref={ridge} strokeWidth={0.13} strokeDasharray="0.8 0.55" style={{ stroke: "var(--color-signal)" }} />
 
           {/* dimensions */}
-          <line ref={dimW} stroke="#22303A" strokeWidth={0.07} />
+          <line ref={dimW} strokeWidth={0.07} style={{ stroke: "var(--color-ink)" }} />
           <text
             ref={dimWText}
+            className="plan__dim"
             fontSize="1.15"
             fontWeight="600"
-            fontFamily="IBM Plex Mono, monospace"
-            fill="#22303A"
             textAnchor="middle"
+            style={{ fill: "var(--color-ink)" }}
           >
             {fLong} m
           </text>
-          <line ref={dimD} stroke="#22303A" strokeWidth={0.07} />
+          <line ref={dimD} strokeWidth={0.07} style={{ stroke: "var(--color-ink)" }} />
           <text
             ref={dimDText}
+            className="plan__dim"
             fontSize="1.15"
             fontWeight="600"
-            fontFamily="IBM Plex Mono, monospace"
-            fill="#22303A"
             dominantBaseline="middle"
+            style={{ fill: "var(--color-ink)" }}
           >
             {fShort} m
           </text>
 
-          {/* the car, for scale — the thing everyone can judge */}
+          {/* the car, for scale: the thing everyone can judge */}
           <g>
-            <rect x={PAD} y={VB_H - CAR_W - 0.6} width={CAR_L} height={CAR_W} rx={0.35} fill="#C6CDD3" />
+            <rect
+              x={PAD}
+              y={VB_H - CAR_W - 0.6}
+              width={CAR_L}
+              height={CAR_W}
+              rx={0.35}
+              style={{ fill: "var(--color-line-soft)" }}
+            />
             <text
+              className="plan__car"
               x={PAD + CAR_L + 0.8}
               y={VB_H - CAR_W / 2 - 0.6}
               fontSize="0.95"
-              fill="#5E7180"
               fontWeight="500"
-              fontFamily="IBM Plex Mono, monospace"
               dominantBaseline="middle"
+              style={{ fill: "var(--color-ink-2)" }}
             >
               mașină · 4,5 m
             </text>
@@ -211,40 +241,35 @@ export default function TentScale({ formats, initial = 1 }: Props) {
         </svg>
       </div>
 
-      <div className="scale__side">
-        <div className="scale__pick" role="group" aria-label="Alege formatul cortului">
+      <div className="plan__side">
+        <div className="pick" role="group" aria-label="Alege formatul cortului">
           {formats.map((x, n) => (
-            <button
-              key={x.label}
-              type="button"
-              className="scale__btn"
-              data-on={n === i || undefined}
-              aria-pressed={n === i}
-              onClick={() => setI(n)}
-            >
+            <button key={x.label} type="button" disabled={!ready} aria-pressed={n === i} onClick={() => setI(n)}>
               {x.label}
             </button>
           ))}
         </div>
 
-        <dl className="scale__data">
+        <dl className="data">
           <div>
-            <dt className="datum-key">Suprafață</dt>
-            <dd className="datum-value dim">
+            <dt>Suprafață</dt>
+            <dd className="fig">
               <Rolling value={f.area} suffix=" m²" />
             </dd>
           </div>
           <div>
-            <dt className="datum-key">Cu mese</dt>
-            <dd className="datum-value">{f.seated}</dd>
+            <dt>Cu mese</dt>
+            <dd>
+              <Seated value={f.seated} />
+            </dd>
           </div>
           <div>
-            <dt className="datum-key">În picioare</dt>
-            <dd className="datum-value">{f.standing}</dd>
+            <dt>În picioare</dt>
+            <dd>{f.standing}</dd>
           </div>
         </dl>
 
-        <p className="scale__note">{f.note}</p>
+        <p className="note">{f.note}</p>
       </div>
     </div>
   );

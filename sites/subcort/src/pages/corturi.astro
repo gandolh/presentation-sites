@@ -20,6 +20,12 @@ const parsed = tents.map((t) => {
 });
 const maxArea = Math.max(...parsed.map((p) => p.areaNum));
 
+// "90‒110 persoane": the range in the figure face, the unit as text.
+const seatedParts = (v: string) => {
+  const at = v.indexOf(" ");
+  return at < 0 ? { range: "", rest: v } : { range: v.slice(0, at), rest: v.slice(at) };
+};
+
 const formats = parsed.map((p) => ({
   w: p.w,
   d: p.d,
@@ -41,22 +47,27 @@ const formats = parsed.map((p) => ({
 
   <main id="main">
     <PageHeader
-      plate="01 · Corturi"
+      no="Planșa 01"
+      name="Corturi"
       scale="Scara 1:100"
       title="Dimensiuni și capacități"
       lead="Patru formate care acoperă de la o reuniune restrânsă în curte până la un eveniment cu peste trei sute de invitați. Capacitatea depinde de aranjarea meselor, pe care o stabilim împreună."
     />
 
     {/* The plan: the one instrument on the site. A table of square metres does
-        not answer "how big is that on my ground?" — a footprint drawn to scale
+        not answer "how big is that on my ground?": a footprint drawn to scale
         against a parked car does. */}
-    <Plate no="01.1 · Plan" note="Caroiaj 1 m" title="Cât ocupă, de fapt, pe teren" tight>
-      <div class="mt-8">
-        <TentScale client:visible formats={formats} initial={1} />
-      </div>
+    <Plate no="01.1" name="Plan" scale="Caroiaj 1 m" labelledby="c1">
+      <h2 id="c1" class="h-section plan-title">
+        Cât ocupă, de fapt, pe teren
+      </h2>
+      <TentScale client:visible formats={formats} initial={1} />
     </Plate>
 
-    <Plate no="01.2 · Tabel" note="Formate & capacități" title="Toate patru, alături">
+    <Plate no="01.2" name="Tabel" scale="Formate & capacități" labelledby="c2">
+      <h2 id="c2" class="h-section">
+        Toate patru, alături
+      </h2>
       <div class="tbl-wrap">
         <table class="tbl">
           <thead>
@@ -65,7 +76,7 @@ const formats = parsed.map((p) => ({
               <th scope="col">Suprafață</th>
               <th scope="col">Cu mese</th>
               <th scope="col">În picioare</th>
-              <th scope="col" class="tbl__bar">
+              <th scope="col" class="bar">
                 Scară relativă
               </th>
             </tr>
@@ -73,13 +84,16 @@ const formats = parsed.map((p) => ({
           <tbody>
             {parsed.map((t) => (
               <tr>
-                <th scope="row" class="tbl__size dim">
-                  {t.size}
-                </th>
-                <td class="dim">{t.area}</td>
-                <td>{t.seated}</td>
-                <td>{t.standing}</td>
-                <td class="tbl__bar">
+                <th scope="row">{t.size}</th>
+                <td class="ar" data-l="Suprafață">
+                  {t.area}
+                </td>
+                <td data-l="Cu mese">
+                  <span class="rg">{seatedParts(t.seated).range}</span>
+                  {seatedParts(t.seated).rest}
+                </td>
+                <td data-l="În picioare">{t.standing}</td>
+                <td class="bar">
                   {/* A dimension bar, not a progress bar: a rule with tick
                       terminators, sized to the footprint. */}
                   <span class="dimbar" style={`--f:${(t.areaNum / maxArea) * 100}%`} aria-hidden="true">
@@ -92,7 +106,7 @@ const formats = parsed.map((p) => ({
         </table>
       </div>
 
-      <p class="mt-7 prose-measure text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">
+      <p class="prose">
         Capacitățile sunt orientative și se schimbă în funcție de plan: mese rotunde, mese lungi, bufet sau scaune în
         rânduri. Pentru un teren cu formă neregulată, găsim împreună varianta care se potrivește.
       </p>
@@ -100,51 +114,50 @@ const formats = parsed.map((p) => ({
       <ul class="notes">
         {parsed.map((t) => (
           <li>
-            <b class="dim">{t.size}</b>
+            <b>{t.size}</b>
             <span>{t.note}</span>
           </li>
         ))}
       </ul>
     </Plate>
 
-    <Plate no="01.3 · Dotări" note="Incluse & opționale" title="Dotări">
-      <p class="lede mt-5">Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de cum vrei spațiul.</p>
+    <Plate no="01.3" name="Dotări" scale="Incluse & opționale" labelledby="c3">
+      <h2 id="c3" class="h-section">
+        Dotări
+      </h2>
+      <p class="lede amenities-lede">
+        Ce vine odată cu cortul și ce se adaugă în funcție de sezon și de cum vrei spațiul.
+      </p>
 
-      <div class="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
-        <div>
-          <p class="flex items-center gap-3">
-            <span class="chip chip-included">Incluse</span>
-            <span class="h-px flex-1 bg-[var(--color-hair)]"></span>
-          </p>
-          <ul class="mt-6 grid gap-5">
+      <div class="ams">
+        <div class="amcol">
+          <p class="ch">Incluse</p>
+          <ul>
             {included.map((a, i) => (
-              <li class="reveal flex gap-4">
-                <span class="callout-no" aria-hidden="true">
+              <li class="reveal am">
+                <span class="dot" aria-hidden="true">
                   {i + 1}
                 </span>
                 <div>
-                  <h3 class="heading-md">{a.title}</h3>
-                  <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
+                  <h3 class="h-title">{a.title}</h3>
+                  <p>{a.description}</p>
                 </div>
               </li>
             ))}
           </ul>
         </div>
 
-        <div>
-          <p class="flex items-center gap-3">
-            <span class="chip chip-optional">Opționale</span>
-            <span class="h-px flex-1 bg-[var(--color-hair)]"></span>
-          </p>
-          <ul class="mt-6 grid gap-5">
+        <div class="amcol">
+          <p class="ch opt">Opționale</p>
+          <ul>
             {optional.map((a, i) => (
-              <li class="reveal flex gap-4">
-                <span class="callout-no" aria-hidden="true">
-                  {i + 4}
+              <li class="reveal am">
+                <span class="dot" aria-hidden="true">
+                  {i + included.length + 1}
                 </span>
                 <div>
-                  <h3 class="heading-md">{a.title}</h3>
-                  <p class="mt-1.5 text-[0.92rem] leading-relaxed text-[var(--color-ink-2)]">{a.description}</p>
+                  <h3 class="h-title">{a.title}</h3>
+                  <p>{a.description}</p>
                 </div>
               </li>
             ))}
@@ -158,44 +171,54 @@ const formats = parsed.map((p) => ({
 </Base>
 
 <style>
+  .plan-title {
+    max-width: 20ch;
+  }
+
+  /* ---- the table: four formats side by side ----------------------------- */
   .tbl-wrap {
-    margin-top: 2rem;
-    overflow-x: auto;
+    margin-top: 32px;
   }
   .tbl {
     width: 100%;
     border-collapse: collapse;
-    min-width: 42rem;
   }
   .tbl th[scope="col"] {
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-ink-2);
-    padding: 0 1.25rem 0.7rem 0;
+    padding: 12px 20px 12px 16px;
+    background: var(--color-fill-2);
     border-bottom: 1.5px solid var(--color-ink);
+    text-align: left;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+    color: var(--color-ink-2);
     white-space: nowrap;
   }
   .tbl td,
   .tbl th[scope="row"] {
-    padding: 1.05rem 1.25rem 1.05rem 0;
+    padding: 16px 20px 16px 16px;
     border-bottom: 1px solid var(--color-hair);
-    vertical-align: middle;
     text-align: left;
-    font-size: 0.95rem;
+    vertical-align: middle;
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--color-ink-2);
   }
-  .tbl__size {
-    font-size: 1.2rem !important;
-    font-weight: 600;
-    color: var(--color-ink) !important;
+  .tbl th[scope="row"] {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
     white-space: nowrap;
   }
-  .tbl__bar {
-    width: 32%;
+  .tbl td.ar {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .tbl .bar {
+    width: 30%;
   }
 
   /* A dimension bar: extension ticks at each end, the measured run between. */
@@ -210,7 +233,7 @@ const formats = parsed.map((p) => ({
     left: 0;
     right: 0;
     top: 50%;
-    border-top: 1px dashed var(--color-hair);
+    border-top: 1px dashed var(--color-line-soft);
   }
   .dimbar i {
     position: absolute;
@@ -234,27 +257,161 @@ const formats = parsed.map((p) => ({
     right: 0;
   }
 
-  .notes {
-    margin-top: 2rem;
-    display: grid;
-    gap: 0.7rem;
+  .prose {
+    max-width: 68ch;
+    margin-top: 24px;
+    color: var(--color-ink-2);
   }
-  @media (min-width: 760px) {
-    .notes {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.7rem 2.5rem;
-    }
+  .notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 40px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
   }
   .notes li {
     display: flex;
-    gap: 0.9rem;
-    font-size: 0.9rem;
-    line-height: 1.55;
+    gap: 16px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     color: var(--color-ink-2);
   }
   .notes b {
-    flex: 0 0 5.5rem;
-    color: var(--color-ink);
+    flex: 0 0 88px;
+    font-family: var(--font-mono);
     font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  /* ---- the amenities: two columns, the optional band on signal-soft ---- */
+  .amenities-lede {
+    max-width: 60ch;
+    margin-top: 16px;
+  }
+  .ams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .amcol {
+    border: 1px solid var(--color-edge);
+    border-top: 1.5px solid var(--color-ink);
+  }
+  .amcol .ch {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    margin: 0;
+    padding: 8px 24px;
+    background: var(--color-fill-2);
+    border-bottom: 1px solid var(--color-hair);
+    font-weight: 600;
+  }
+  .amcol .ch.opt {
+    background: var(--color-signal-soft);
+    border-bottom-color: var(--color-signal-soft);
+    color: var(--color-on-signal-soft);
+  }
+  .amcol ul {
+    margin: 0;
+    padding: 8px 24px;
+    list-style: none;
+  }
+  .am {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--color-hair);
+  }
+  .am:first-child {
+    border-top: 0;
+  }
+  .am p {
+    margin-top: 4px;
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 800px) {
+    .ams {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .amcol .ch {
+      padding: 8px 16px;
+    }
+    .amcol ul {
+      padding: 4px 16px;
+    }
+    .notes {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .notes li {
+      flex-direction: column;
+      gap: 4px;
+      padding: 16px 0;
+      border-top: 1px solid var(--color-hair);
+    }
+    .notes li:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .notes b {
+      flex: none;
+    }
+
+    /* The table folds per format: the size, then its figures in pairs, then the bar. */
+    .tbl-wrap {
+      margin-top: 20px;
+    }
+    .tbl thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .tbl,
+    .tbl tbody,
+    .tbl tr,
+    .tbl td,
+    .tbl th {
+      display: block;
+    }
+    .tbl tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--color-hair);
+    }
+    .tbl tr:first-child {
+      padding-top: 0;
+    }
+    .tbl td,
+    .tbl th[scope="row"] {
+      padding: 0;
+      border: 0;
+    }
+    .tbl th[scope="row"] {
+      grid-column: 1 / -1;
+    }
+    .tbl td[data-l]::before {
+      content: attr(data-l);
+      display: block;
+      font-size: var(--text-label);
+      line-height: var(--text-label--line-height);
+      font-weight: var(--text-label--font-weight);
+      color: var(--color-ink-2);
+      font-family: var(--font-sans);
+    }
+    .tbl td.bar {
+      grid-column: 1 / -1;
+      width: auto;
+      padding-top: 8px;
+    }
   }
 </style>
