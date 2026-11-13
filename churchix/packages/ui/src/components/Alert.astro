@@ -40,15 +40,15 @@ const { tone = "info", title, icon, role, class: className, ...rest } = Astro.pr
 
 const tones = {
   info: {
-    surface: "bg-primary-container/30 text-on-primary-container border border-primary/20",
+    surface: "bg-surface-container text-on-surface",
     icon: "description" as IconName,
   },
   success: {
-    surface: "bg-secondary-container/30 text-on-secondary-container border border-secondary/30",
+    surface: "bg-secondary-container text-on-secondary-container",
     icon: "diversity_1" as IconName,
   },
   error: {
-    surface: "bg-error-container text-on-error-container border border-error/30",
+    surface: "bg-error-container text-on-error-container",
     icon: "campaign" as IconName,
   },
 } as const;
@@ -57,13 +57,13 @@ const conf = tones[tone];
 const resolvedIcon = icon ?? conf.icon;
 const resolvedRole = role ?? (tone === "error" ? "alert" : "status");
 
-const classes = ["flex items-start gap-sm p-md rounded-lg font-body-md text-body-md", conf.surface, className];
+const classes = ["flex items-start gap-3 rounded px-5 py-4 font-body-md text-body-md", conf.surface, className];
 ---
 
 <div class:list={classes} role={resolvedRole} {...rest}>
   <Icon name={resolvedIcon} size={20} class="mt-0.5" />
   <div class="min-w-0">
-    {title && <p class="font-label-md text-label-md font-semibold">{title}</p>}
+    {title && <p class="m-0 font-label-md text-label-md font-semibold">{title}</p>}
     <div class="min-w-0">
       <slot />
     </div>

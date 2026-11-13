@@ -75,13 +75,11 @@ const errorId = error ? `${fieldId}-error` : undefined;
 const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
 const controlBase =
-  "w-full px-3 py-3 rounded bg-transparent font-body-md text-body-md text-on-surface " +
-  "placeholder:text-on-surface-variant/75 transition-colors duration-200 " +
-  "focus:outline-none focus:ring-2 focus:ring-primary focus:border-secondary";
+  "min-h-12 w-full rounded bg-surface-container-lowest px-4 py-3 font-body-md text-body-md text-on-surface " +
+  "placeholder:text-on-surface-variant transition-colors duration-200 " +
+  "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-lowest";
 
-const borderClass = error
-  ? "border border-error focus:ring-error focus:border-error"
-  : "border border-outline-variant/50";
+const borderClass = error ? "border-2 border-error" : "border border-outline";
 
 const controlClasses = [controlBase, borderClass, className];
 

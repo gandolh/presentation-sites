@@ -155,21 +155,6 @@
 
   /* ───────────── Shape (church may override --radius) ───────────── */
   --radius: 0.5rem;
-
-  /* ───────────── Legacy compatibility aliases ─────────────
-   * Pre-M3 components/app pages (tier B+, outside the token contract) still read these.
-   * They are thin aliases onto the M3 contract so the old class set keeps rendering
-   * with the new tokens; remove when those components migrate to M3 utilities.
-   * BaseLayout also continues to emit --brand-* from seeds for the same reason. */
-  --brand-primary: var(--primary);
-  --brand-accent: var(--secondary);
-  --brand-surface: var(--surface);
-  --brand-on-primary: var(--on-primary);
-  --ink: var(--on-surface);
-  --ink-soft: var(--on-surface-variant);
-  --line: var(--outline-variant);
-  --bg: var(--surface-container-lowest);
-  --space: 1rem;
 }
 
 /* ───────────────────── Minimal element baseline ─────────────────────

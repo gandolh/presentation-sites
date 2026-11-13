@@ -27,7 +27,7 @@ export async function applyVariant(page: Page, variant: Variant): Promise<void> 
   if (variant === "seed2") {
     const s = SEED2;
     await page.addStyleTag({
-      content: `:root{--primary:${s.primary};--secondary:${s.secondary};--surface:${s.surface};--on-primary:${s.onPrimary};--brand-primary:${s.primary};--brand-accent:${s.secondary};--brand-surface:${s.surface};--brand-on-primary:${s.onPrimary}}`,
+      content: `:root{--primary:${s.primary};--secondary:${s.secondary};--surface:${s.surface};--on-primary:${s.onPrimary}}`,
     });
   }
   if (variant === "long") {
