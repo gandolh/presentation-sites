@@ -19,36 +19,41 @@ import { services } from "../content/services";
 
   <main id="main">
     <PageHeader
-      plate="02 · Servicii"
+      no="Planșa 02"
+      name="Servicii"
       scale="Anexă"
       title="Mai mult decât cortul, prin parteneri"
       lead="Dacă vrei, ne ocupăm și de ce se întâmplă sub cort. Coordonăm catering, muzică și decor prin firme locale, la cerere și contra cost. Cortul rămâne baza neutră peste care se construiește restul."
     />
 
-    <Plate no="02.1 · Anexe" note="Prin parteneri locali" tight>
-      <ul class="services">
+    <Plate no="02.1" name="Anexe" scale="Prin parteneri locali" labelledby="s1">
+      <h2 id="s1" class="sr-only">
+        Anexe
+      </h2>
+      <ul class="svcs">
         {services.map((s, i) => (
-          <li class="reveal service">
-            <span class="callout-no" aria-hidden="true">
+          <li class="reveal svc">
+            <span class="dot" aria-hidden="true">
               {i + 1}
             </span>
-            <h3 class="heading-md mt-4">{s.title}</h3>
-            <p class="mt-3 text-[0.93rem] leading-relaxed text-[var(--color-ink-2)]">{s.description}</p>
+            <h3 class="h-title">{s.title}</h3>
+            <p>{s.description}</p>
           </li>
         ))}
       </ul>
     </Plate>
 
-    {/* The "prin parteneri" framing, stated once — not repeated per item. */}
-    <Plate no="02.2 · Notă" note="Condiții" title="Toate, prin parteneri locali">
-      <div class="mt-7 grid gap-5 md:grid-cols-2 md:gap-10">
-        <p class="prose-measure leading-relaxed text-[var(--color-ink-2)]">
+    {/* The "prin parteneri" framing, stated once: not repeated per item. */}
+    <Plate no="02.2" name="Notă" scale="Condiții" labelledby="s2">
+      <h2 id="s2" class="h-section">
+        Toate, prin parteneri locali
+      </h2>
+      <div class="two">
+        <p>
           Aceste servicii sunt asigurate de furnizori din zonă, cu care lucrăm. Le coordonăm pentru tine ca să fie la
           locul lor înainte de eveniment, dar alegerea îți aparține și costul lor se adaugă separat de cort.
         </p>
-        <p class="prose-measure leading-relaxed text-[var(--color-ink-2)]">
-          Nu impunem un pachet fix. Poți lua doar cortul, sau cortul plus oricare dintre cele de mai sus.
-        </p>
+        <p>Nu impunem un pachet fix. Poți lua doar cortul, sau cortul plus oricare dintre cele de mai sus.</p>
       </div>
     </Plate>
   </main>
@@ -57,17 +62,54 @@ import { services } from "../content/services";
 </Base>
 
 <style>
-  .services {
+  .svcs {
     display: grid;
-    gap: 2.25rem 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  @media (min-width: 760px) {
-    .services {
-      grid-template-columns: repeat(3, 1fr);
+  .svc {
+    padding: 24px;
+    border: 1px solid var(--color-edge);
+    border-top: 1.5px solid var(--color-ink);
+  }
+  .svc h3 {
+    margin-top: 16px;
+  }
+  .svc p {
+    margin-top: 4px;
+    color: var(--color-ink-2);
+  }
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .two p {
+    max-width: 60ch;
+    font-size: var(--text-lede);
+    line-height: var(--text-lede--line-height);
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 1099px) {
+    .svcs {
+      grid-template-columns: 1fr;
     }
   }
-  .service {
-    border-top: 1.5px solid var(--color-ink);
-    padding-top: 1.25rem;
+  @media (max-width: 800px) {
+    .svcs {
+      gap: 12px;
+    }
+    .svc {
+      padding: 20px 16px;
+    }
+    .two {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
   }
 </style>
