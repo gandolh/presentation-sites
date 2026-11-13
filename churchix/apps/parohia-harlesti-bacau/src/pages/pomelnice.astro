@@ -15,17 +15,12 @@ const enabled = site.features.pomelnice;
 
 <BaseLayout site={site} title="Pomelnice" path="/pomelnice">
   {enabled ? (
-    <div class="relative">
-      <div class="cx-pomelnice-pattern" aria-hidden="true"></div>
-      <div class="relative">
-        <PageShell
-          title="Trimite un pomelnic"
-          lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
-        >
-          <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
-        </PageShell>
-      </div>
-    </div>
+    <PageShell
+      title="Trimite un pomelnic"
+      lede="Numele pentru cei vii și pentru cei adormiți vor fi pomenite la Sfânta Liturghie."
+    >
+      <PomelnicForm client:visible endpoint={endpoint} currency={currency} />
+    </PageShell>
   ) : (
     <PageShell title="Pomelnice">
       <EmptyState
@@ -33,6 +28,7 @@ const enabled = site.features.pomelnice;
         icon="candle"
         title="Pomelnice indisponibile"
         message="Trimiterea pomelnicelor online nu este activată pentru această parohie."
+        class="shadow-board"
       >
         <Button slot="cta" href={withBase("/contact")} variant="secondary" shape="rounded">
           Contactați parohia
@@ -41,22 +37,3 @@ const enabled = site.features.pomelnice;
     </PageShell>
   )}
 </BaseLayout>
-
-<style>
-  /* Parchment texture behind the form — token-driven radial dots (no raw hex).
-     Colors come from the M3 CSS variables emitted by BaseLayout, so it re-skins
-     per church by token swap alone. */
-  .cx-pomelnice-pattern {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-color: var(--surface);
-    background-image: radial-gradient(
-      color-mix(in srgb, var(--outline-variant) 55%, transparent) 0.5px,
-      transparent 0.5px
-    );
-    background-size: 16px 16px;
-    opacity: 0.4;
-  }
-</style>

@@ -51,23 +51,22 @@ const {
 } = Astro.props;
 
 const classes = [
-  "flex flex-col items-center text-center gap-sm p-lg rounded-xl " +
-    "border border-dashed border-outline-variant/50 bg-surface-container-low/40",
+  "grid justify-items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-6 py-10 text-center",
   className,
 ];
 ---
 
 <div class:list={classes} {...rest}>
-  <span class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high text-on-surface-variant">
-    <Icon name={icon} fill={iconFill} size={24} />
+  <span class="text-primary">
+    <Icon name={icon} fill={iconFill} size={32} />
   </span>
-  <HeadingTag class="font-headline-md text-headline-md text-primary">{title}</HeadingTag>
+  <HeadingTag class="m-0 font-heading text-[22px] font-bold leading-7 text-primary">{title}</HeadingTag>
   {Astro.slots.has("default") ? (
-    <div class="font-body-md text-body-md text-on-surface-variant max-w-[28rem]">
+    <div class="max-w-[28rem] font-body-md text-body-md text-on-surface-variant">
       <slot />
     </div>
   ) : (
-    message && <p class="font-body-md text-body-md text-on-surface-variant max-w-[28rem]">{message}</p>
+    message && <p class="m-0 max-w-[28rem] font-body-md text-body-md text-on-surface-variant">{message}</p>
   )}
   {Astro.slots.has("cta") && (
     <div class="mt-xs">

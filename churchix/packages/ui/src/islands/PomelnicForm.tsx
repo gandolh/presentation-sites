@@ -26,9 +26,12 @@ const PRESETS = [20, 50, 100] as const;
  * The form is valid as long as there is at least one name in EITHER list. The offering
  * is entirely optional. Money is carried as integer minor units + an explicit currency.
  *
- * Look mirrors the item-05 .astro primitives (Card / Field / Button) using the same M3
- * Tailwind utilities — those primitives are .astro and cannot be imported into a React
- * island, so their class patterns are replicated here.
+ * Look (the porch notice, approved 2026-11-13): raised white cards over the page band's edge. With no endpoint set
+ * the page opens on a note, word for word, that sending is off, and there is no submit button (in the dev server the
+ * demo path keeps its submit, so the errors and the sent state can be seen). The two name cards have tinted heads
+ * (`surface-container`, and `surface-highlight` for the departed), then the offering chips beside the optional
+ * contact card. The primitives (Card / Field / Button) are .astro and cannot be imported into a React island, so
+ * their class patterns are replicated here.
  */
 export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
   const [numeVii, setNumeVii] = useState("");
@@ -101,24 +104,25 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
     }
   }
 
+  const card = "rounded-lg border border-outline-variant bg-surface-container-lowest shadow-board";
+  const noEndpoint = !endpoint;
+  const showSubmit = !noEndpoint || import.meta.env.DEV;
+
   if (status === "done") {
     return (
-      <div
-        className="mx-auto w-full max-w-2xl rounded-lg border border-outline-variant/30 bg-surface-container-lowest p-md shadow-sm md:p-lg"
-        role="status"
-      >
-        <div className="flex items-start gap-sm rounded-lg border border-secondary/30 bg-secondary-container/30 p-md font-body-md text-body-md text-on-secondary-container">
-          <Glyph d={ICON.diversity_1} className="mt-0.5 text-secondary" size={22} />
+      <div className={`${card} mx-auto w-full max-w-2xl p-5 min-[960px]:p-8`} role="status">
+        <div className="flex items-start gap-3 rounded bg-secondary-container p-4 font-body-md text-body-md text-on-secondary-container">
+          <Stroke d={STROKE.check} size={20} className="mt-0.5 shrink-0" strokeWidth={2} />
           <div>
-            <p className="font-label-md text-label-md font-semibold">Pomelnicul a fost trimis</p>
-            <p>Numele vor fi pomenite la Sfânta Liturghie. Dumnezeu să vă ajute!</p>
+            <p className="m-0 font-semibold">Pomelnicul a fost trimis</p>
+            <p className="m-0">Numele vor fi pomenite la Sfânta Liturghie. Dumnezeu să vă ajute!</p>
           </div>
         </div>
-        <div className="mt-md flex justify-center">
+        <div className="mt-4 flex justify-center">
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center justify-center gap-xs rounded-full border border-secondary bg-transparent px-6 py-3 font-label-md text-label-md uppercase text-primary transition-[color,background-color,box-shadow,transform,border-color] duration-200 hover:bg-secondary-container/20 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface active:scale-[0.98]"
+            className="inline-flex min-h-12 items-center justify-center rounded border border-outline bg-transparent px-5 font-body-md text-body-md font-semibold text-primary transition-colors hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
           >
             Trimite alt pomelnic
           </button>
@@ -127,10 +131,27 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
     );
   }
 
+  const input =
+    "w-full min-h-12 rounded border border-outline bg-surface-container-lowest px-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-lowest";
+
   return (
-    <form className="mx-auto w-full max-w-4xl space-y-lg" onSubmit={(event) => void onSubmit(event)} noValidate>
-      {/* ── Lists grid (bento): vii + adormiți ─────────────────────────────── */}
-      <div className="grid grid-cols-1 gap-md md:grid-cols-2 md:gap-lg">
+    <form className="grid w-full gap-4 min-[960px]:gap-6" onSubmit={(event) => void onSubmit(event)} noValidate>
+      {/* ── The note: online sending is off. It comes first, before anyone types a name. ─────────── */}
+      {noEndpoint && (
+        <div
+          className={`${card} flex items-start gap-3 px-5 py-4 font-body-md text-body-md text-on-surface min-[960px]:px-7 min-[960px]:py-5`}
+          role="note"
+        >
+          <Stroke d={STROKE.info} size={22} className="mt-0.5 text-primary" />
+          <p className="m-0">
+            Trimiterea pomelnicului online nu este încă disponibilă pe acest site. Vă rugăm să aduceți pomelnicul la
+            biserică sau să sunați la parohie, iar numele vor fi pomenite la Sfânta Liturghie.
+          </p>
+        </div>
+      )}
+
+      {/* ── Lists: vii + adormiți ─────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-4 min-[960px]:grid-cols-2 min-[960px]:gap-6">
         <NameCard
           tone="vii"
           icon={ICON.person}
@@ -141,6 +162,7 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
           name="nume_vii"
           value={numeVii}
           onChange={setNumeVii}
+          card={card}
         />
         <NameCard
           tone="adormiti"
@@ -151,81 +173,72 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
           name="nume_adormiti"
           value={numeAdormiti}
           onChange={setNumeAdormiti}
+          card={card}
         />
       </div>
 
-      {/* ── Ofrandă (Donație) ──────────────────────────────────────────────── */}
-      <div className="rounded-lg border border-outline-variant/30 bg-surface-container-lowest p-md shadow-sm md:p-lg">
-        <div className="mb-md flex items-center gap-3">
-          <Glyph d={ICON.payments} className="text-secondary" size={28} />
-          <h2 className="font-headline-lg text-headline-lg-mobile text-on-surface md:text-headline-lg">
-            Ofrandă (Donație)
-          </h2>
-        </div>
-        <p className="mb-6 max-w-2xl font-body-md text-body-md text-on-surface-variant">
-          Ofranda dumneavoastră este opțională și susține lucrarea pastorală și social-filantropică a parohiei, precum
-          și întreținerea lăcașului de cult.
-        </p>
+      {/* ── Ofrandă + contact ──────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-4 min-[960px]:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] min-[960px]:gap-6">
+        <section className={`${card} p-5 min-[960px]:px-8 min-[960px]:py-7`}>
+          <h2 className="m-0 font-headline-md text-headline-md text-primary">Ofrandă (Donație)</h2>
+          <p className="m-0 mt-2 max-w-[62ch] font-body-md text-body-md text-on-surface-variant">
+            Ofranda dumneavoastră este opțională și susține lucrarea pastorală și social-filantropică a parohiei, precum
+            și întreținerea lăcașului de cult.
+          </p>
+          <fieldset className="m-0 mt-5 min-w-0 border-0 p-0">
+            <legend className="p-0 font-label-md text-label-md text-on-surface">Sumă ofrandă</legend>
+            <div className="mt-3 flex flex-wrap gap-2 min-[960px]:gap-3">
+              {PRESETS.map((amount) => {
+                const active = preset === amount;
+                return (
+                  <label key={amount} className="relative cursor-pointer">
+                    <input
+                      type="radio"
+                      name="suma_ofranda"
+                      className="peer sr-only"
+                      checked={active}
+                      onChange={() => {
+                        setPreset(amount);
+                        setCustomAmount("");
+                      }}
+                    />
+                    <span
+                      className={
+                        "inline-flex min-h-12 items-center justify-center rounded border px-4 font-body-md text-body-md font-semibold tabular-nums transition-colors min-[960px]:px-5 " +
+                        "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface-container-lowest " +
+                        (active
+                          ? "border-primary bg-primary text-on-primary"
+                          : "border-outline bg-surface-container-lowest text-on-surface hover:bg-surface-container")
+                      }
+                    >
+                      {money.format(amount)}
+                    </span>
+                  </label>
+                );
+              })}
+              <input
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="0.01"
+                name="suma_custom"
+                aria-label={`Altă sumă (${currency})`}
+                placeholder="Altă sumă"
+                value={customAmount}
+                onFocus={() => setPreset("custom")}
+                onChange={(e) => {
+                  setCustomAmount(e.target.value);
+                  setPreset("custom");
+                }}
+                className={`${input} min-w-[160px] flex-1 max-[959px]:basis-full min-[960px]:flex-none min-[960px]:basis-40`}
+              />
+            </div>
+          </fieldset>
+        </section>
 
-        <fieldset className="mb-md grid grid-cols-2 gap-4 md:grid-cols-4">
-          <legend className="sr-only">Sumă ofrandă</legend>
-          {PRESETS.map((amount) => {
-            const active = preset === amount;
-            return (
-              <label key={amount} className="relative cursor-pointer">
-                <input
-                  type="radio"
-                  name="suma_ofranda"
-                  className="peer sr-only"
-                  checked={active}
-                  onChange={() => {
-                    setPreset(amount);
-                    setCustomAmount("");
-                  }}
-                />
-                <span
-                  className={
-                    "block w-full rounded border px-4 py-3 text-center font-label-md text-label-md transition-[color,background-color,box-shadow,border-color] " +
-                    "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-primary " +
-                    (active
-                      ? "border-secondary bg-secondary-container/20 font-bold text-primary"
-                      : "border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:bg-surface-container")
-                  }
-                >
-                  {money.format(amount)}
-                </span>
-              </label>
-            );
-          })}
-
-          {/* Custom amount */}
-          <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 font-body-md text-body-md text-on-surface-variant">
-              {currency}
-            </span>
-            <input
-              type="number"
-              inputMode="decimal"
-              min="0"
-              step="0.01"
-              name="suma_custom"
-              aria-label={`Altă sumă (${currency})`}
-              placeholder="Altă sumă"
-              value={customAmount}
-              onFocus={() => setPreset("custom")}
-              onChange={(e) => {
-                setCustomAmount(e.target.value);
-                setPreset("custom");
-              }}
-              className="w-full rounded border border-outline-variant/50 bg-transparent py-3 pl-14 pr-4 font-body-md text-body-md text-on-surface transition-[color,box-shadow,border-color] focus:border-secondary focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-        </fieldset>
-
-        {/* ── Contact details (optional, for receipts) ─────────────────────── */}
-        <div className="rounded-lg border border-outline-variant/30 bg-surface-container-low/40 p-md">
-          <h3 className="mb-4 font-headline-md text-headline-md text-on-surface">Date de contact (opțional)</h3>
-          <div className="grid grid-cols-1 gap-md md:grid-cols-2">
+        <section className={`${card} p-5 min-[960px]:px-8 min-[960px]:py-7`}>
+          <h2 className="m-0 font-headline-md text-headline-md text-primary">Date de contact (opțional)</h2>
+          <div className="mt-4 grid gap-4">
             <TextField
               id="pf-nume-solicitant"
               label="Nume și prenume"
@@ -233,6 +246,7 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
               autoComplete="name"
               value={contactName}
               onChange={setContactName}
+              inputClass={input}
             />
             <TextField
               id="pf-email-solicitant"
@@ -243,73 +257,55 @@ export default function PomelnicForm({ endpoint, currency = "RON" }: Props) {
               hint="Pentru a primi o confirmare."
               value={contactEmail}
               onChange={setContactEmail}
+              inputClass={input}
             />
           </div>
-        </div>
+        </section>
       </div>
 
       {/* ── Errors ─────────────────────────────────────────────────────────── */}
-      <div aria-live="assertive">
-        {validationError && (
-          <div
-            role="alert"
-            className="flex items-start gap-sm rounded-lg border border-error/30 bg-error-container p-md font-body-md text-body-md text-on-error-container"
-          >
-            <Glyph d={ICON.campaign} className="mt-0.5" size={20} />
-            <p>{validationError}</p>
-          </div>
-        )}
-        {status === "error" && (
-          <div
-            role="alert"
-            className="flex items-start gap-sm rounded-lg border border-error/30 bg-error-container p-md font-body-md text-body-md text-on-error-container"
-          >
-            <Glyph d={ICON.campaign} className="mt-0.5" size={20} />
-            <p>A apărut o eroare la trimitere. Vă rugăm încercați din nou.</p>
-          </div>
-        )}
+      <div aria-live="assertive" className="grid gap-4 empty:hidden">
+        {validationError && <ErrorAlert>{validationError}</ErrorAlert>}
+        {status === "error" && <ErrorAlert>A apărut o eroare la trimitere. Vă rugăm încercați din nou.</ErrorAlert>}
       </div>
 
-      {/* ── Submit ─────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col items-center gap-sm pt-md">
-        {/* When online submission isn't set up, don't show a button that does nothing.
-            Show a calm, plain-Romanian way to deliver the pomelnic in person / by phone —
-            the audience skews older and a silent no-op would read as broken. */}
-        {!endpoint && !import.meta.env.DEV ? (
-          <div
-            className="mx-auto w-full max-w-2xl rounded-lg border border-outline-variant/30 bg-surface-container-low p-md text-center font-body-md text-body-md text-on-surface"
-            role="note"
+      {/* ── Submit: only with an endpoint (or the dev server's demo path) ───── */}
+      {showSubmit && (
+        <div className="flex flex-col items-center gap-3">
+          <button
+            type="submit"
+            disabled={!hasName || status === "sending"}
+            aria-describedby={!hasName ? "pf-submit-hint" : undefined}
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded border border-transparent bg-primary px-8 font-body-md text-body-md font-semibold text-on-primary transition-colors hover:bg-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:border-surface-container-high disabled:bg-surface-container-high disabled:text-on-surface-variant"
           >
-            <p>
-              Trimiterea pomelnicului online nu este încă disponibilă pe acest site. Vă rugăm să aduceți pomelnicul la
-              biserică sau să sunați la parohie, iar numele vor fi pomenite la Sfânta Liturghie.
+            <Glyph d={ICON.send} size={20} />
+            {status === "sending" ? "Se trimite…" : "Trimite Pomelnicul"}
+          </button>
+          {!hasName && (
+            <p id="pf-submit-hint" className="m-0 text-center font-body-md text-body-md text-on-surface-variant">
+              Adăugați cel puțin un nume pentru a putea trimite pomelnicul.
             </p>
-          </div>
-        ) : (
-          <>
-            <button
-              type="submit"
-              disabled={!hasName || status === "sending"}
-              aria-describedby={!hasName ? "pf-submit-hint" : undefined}
-              className="inline-flex items-center justify-center gap-xs rounded-full bg-primary px-8 py-4 font-label-md text-body-md uppercase tracking-wide text-on-primary transition-[color,background-color,box-shadow,transform,border-color] duration-200 hover:bg-primary-container hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50"
-            >
-              <Glyph d={ICON.send} size={20} />
-              {status === "sending" ? "Se trimite…" : "Trimite Pomelnicul"}
-            </button>
-            {!hasName && (
-              <p id="pf-submit-hint" className="font-body-md text-body-md text-on-surface-variant text-center">
-                Adăugați cel puțin un nume pentru a putea trimite pomelnicul.
-              </p>
-            )}
-          </>
-        )}
-        {!endpoint && import.meta.env.DEV && (
-          <p className="font-caption text-caption text-on-surface-variant">
-            (Doar dezvoltare) Niciun endpoint configurat — setați <code>giving.pomelniceEndpoint</code> în site.json.
-          </p>
-        )}
-      </div>
+          )}
+          {noEndpoint && (
+            <p className="m-0 font-label-md text-label-md font-normal text-on-surface-variant">
+              (Doar dezvoltare) Niciun endpoint configurat — setați <code>giving.pomelniceEndpoint</code> în site.json.
+            </p>
+          )}
+        </div>
+      )}
     </form>
+  );
+}
+
+function ErrorAlert({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      role="alert"
+      className="flex items-start gap-3 rounded bg-error-container px-5 py-4 font-body-md text-body-md text-on-error-container"
+    >
+      <Stroke d={STROKE.alert} size={20} className="mt-0.5 shrink-0" strokeWidth={2} />
+      <p className="m-0">{children}</p>
+    </div>
   );
 }
 
@@ -325,30 +321,35 @@ interface NameCardProps {
   name: string;
   value: string;
   onChange: (v: string) => void;
+  card: string;
 }
 
-/** One bento name card: tinted header (primary for vii, tertiary for adormiți) + textarea. */
-function NameCard({ tone, icon, iconFilled, title, description, placeholder, name, value, onChange }: NameCardProps) {
+/** One name card: a tinted head (`surface-container`; `surface-highlight` for the departed) over its textarea. */
+function NameCard({
+  tone,
+  icon,
+  iconFilled,
+  title,
+  description,
+  placeholder,
+  name,
+  value,
+  onChange,
+  card,
+}: NameCardProps) {
   const textareaId = `pf-${name}`;
-  // Header tint per tone. AA: header text uses on-* roles, never gold on cream.
-  const header =
-    tone === "vii"
-      ? { bar: "bg-surface-container", dot: "bg-primary/10 text-primary", title: "text-primary" }
-      : {
-          bar: "bg-tertiary-fixed",
-          dot: "bg-on-tertiary-fixed/10 text-on-tertiary-fixed",
-          title: "text-on-tertiary-fixed",
-        };
   return (
-    <div className="group flex flex-col overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container-lowest shadow-sm transition-colors duration-300 focus-within:border-secondary">
-      <div className={`flex items-center gap-3 border-b border-outline-variant/20 px-md py-sm ${header.bar}`}>
-        <span className={`flex h-8 w-8 items-center justify-center rounded-full ${header.dot}`}>
-          <Glyph d={icon} filled={iconFilled} size={20} />
+    <div className={`${card} flex flex-col overflow-hidden`}>
+      <div
+        className={`flex items-center gap-3 border-b border-outline-variant px-5 py-4 min-[960px]:px-7 min-[960px]:py-5 ${tone === "vii" ? "bg-surface-container" : "bg-surface-highlight"}`}
+      >
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-lowest text-primary">
+          <Glyph d={icon} filled={iconFilled} size={22} />
         </span>
-        <h2 className={`font-headline-md text-headline-md ${header.title}`}>{title}</h2>
+        <h2 className="m-0 font-headline-md text-headline-md text-on-surface">{title}</h2>
       </div>
-      <div className="flex flex-grow flex-col p-md">
-        <label htmlFor={textareaId} className="mb-2 font-body-md text-sm text-on-surface-variant">
+      <div className="flex flex-grow flex-col px-5 pb-5 pt-4 min-[960px]:px-7 min-[960px]:pb-7 min-[960px]:pt-5">
+        <label htmlFor={textareaId} className="font-body-md text-body-md text-on-surface-variant">
           {description}
         </label>
         <textarea
@@ -358,7 +359,7 @@ function NameCard({ tone, icon, iconFilled, title, description, placeholder, nam
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="min-h-[200px] w-full flex-grow resize-y rounded border border-outline-variant/50 bg-transparent px-3 py-3 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/75 transition-[color,background-color,box-shadow,transform,border-color] duration-200 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+          className="mt-5 min-h-[200px] w-full flex-grow resize-y rounded border border-outline bg-surface-container-lowest px-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-lowest"
         />
       </div>
     </div>
@@ -374,13 +375,24 @@ interface TextFieldProps {
   hint?: string;
   autoComplete?: string;
   onChange: (v: string) => void;
+  inputClass: string;
 }
 
-/** Labeled input mirroring the .astro `<Field>` look (focus → secondary). */
-function TextField({ id, label, name, type = "text", value, hint, autoComplete, onChange }: TextFieldProps) {
+/** Labeled input mirroring the .astro `<Field>` look. */
+function TextField({
+  id,
+  label,
+  name,
+  type = "text",
+  value,
+  hint,
+  autoComplete,
+  onChange,
+  inputClass,
+}: TextFieldProps) {
   const hintId = hint ? `${id}-hint` : undefined;
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <label htmlFor={id} className="font-label-md text-label-md text-on-surface">
         {label}
       </label>
@@ -392,14 +404,52 @@ function TextField({ id, label, name, type = "text", value, hint, autoComplete, 
         autoComplete={autoComplete}
         aria-describedby={hintId}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded border border-outline-variant/50 bg-transparent px-3 py-3 font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/75 transition-[color,background-color,box-shadow,transform,border-color] duration-200 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+        className={inputClass}
       />
       {hint && (
-        <p id={hintId} className="font-caption text-caption text-on-surface-variant">
+        <p id={hintId} className="m-0 font-label-md text-label-md font-normal text-on-surface-variant">
           {hint}
         </p>
       )}
     </div>
+  );
+}
+
+/** The stroke glyphs of the porch notice (info, alert, check), drawn on a 24 px grid. */
+const STROKE = {
+  info: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v6M12 7.5v.01",
+  alert: "M12 3l10 18H2zM12 10v5M12 18v.01",
+  check: "M5 12.5l4.5 4.5L19 7.5",
+} as const;
+
+function Stroke({
+  d,
+  size = 20,
+  className,
+  strokeWidth = 1.75,
+}: {
+  d: string;
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+      style={{ flexShrink: 0 }}
+    >
+      <path d={d} />
+    </svg>
   );
 }
 
@@ -417,21 +467,9 @@ const ICON = {
     o: "M401.5-672.5Q370-705 370-751q0-54 34.5-94t75.5-75q37 38 73.5 77t36.5 92q0 46-32.5 78.5T479-640q-46 0-77.5-32.5ZM419-280h121v-260H419v260ZM240-140h480q25.5 0 42.75-17.25T780-200v-20H180v19q0 25.93 17.25 43.46Q214.5-140 240-140Zm480 60H240q-50 0-85-35t-35-86v-79h239v-260q0-24.75 17.63-42.38Q394.25-600 419-600h121q24.75 0 42.38 17.62Q600-564.75 600-540v260h239v79q0 51-35 86t-85 35Z",
     f: "M401.5-672.5Q370-705 370-751q0-54 34.5-94t75.5-75q37 38 73.5 77t36.5 92q0 46-32.5 78.5T479-640q-46 0-77.5-32.5ZM720-80H240q-50 0-85-35t-35-86v-79h239v-260q0-25 17.5-42.5T419-600h121q25 0 42.5 17.5T600-540v260h239v79q0 51-35 86t-85 35Z",
   },
-  payments: {
-    o: "M540-420q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM220-280q-24.75 0-42.37-17.63Q160-315.25 160-340v-400q0-24.75 17.63-42.38Q195.25-800 220-800h640q24.75 0 42.38 17.62Q920-764.75 920-740v400q0 24.75-17.62 42.37Q884.75-280 860-280H220Zm480 180H100q-24.75 0-42.37-17.63Q40-195.25 40-220v-460h60v460h700v60Z",
-    f: "M100-160q-24.75 0-42.37-17.63Q40-195.25 40-220v-460h60v460h700v60H100Zm120-120q-24.75 0-42.37-17.63Q160-315.25 160-340v-400q0-24.75 17.63-42.38Q195.25-800 220-800h640q24.75 0 42.38 17.62Q920-764.75 920-740v400q0 24.75-17.62 42.37Q884.75-280 860-280H220Zm320-140q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z",
-  },
   send: {
     o: "M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Z",
     f: "M120-160v-245l302-75-302-77v-243l760 320-760 320Z",
-  },
-  diversity_1: {
-    o: "M480-560q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM200-200q-33 0-56.5-23.5T120-280q0-33 23.5-56.5T200-360q33 0 56.5 23.5T280-280q0 33-23.5 56.5T200-200Zm560 0q-33 0-56.5-23.5T680-280q0-33 23.5-56.5T760-360q33 0 56.5 23.5T840-280q0 33-23.5 56.5T760-200Z",
-    f: "M480-560q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM200-200q-33 0-56.5-23.5T120-280q0-33 23.5-56.5T200-360q33 0 56.5 23.5T280-280q0 33-23.5 56.5T200-200Zm560 0q-33 0-56.5-23.5T680-280q0-33 23.5-56.5T760-360q33 0 56.5 23.5T840-280q0 33-23.5 56.5T760-200Z",
-  },
-  campaign: {
-    o: "M720-440v-80h160v80H720Zm48 280-128-96 48-64 128 96-48 64Zm-80-480-48-64 128-96 48 64-128 96ZM200-200v-160h-40q-33 0-56.5-23.5T80-440v-80q0-33 23.5-56.5T160-600h160l200-120v480L320-360h-40v160h-80Zm240-182v-196l-98 58H160v80h182l98 58Z",
-    f: "M720-440v-80h160v80H720Zm48 280-128-96 48-64 128 96-48 64Zm-80-480-48-64 128-96 48 64-128 96ZM200-200v-160h-40q-33 0-56.5-23.5T80-440v-80q0-33 23.5-56.5T160-600h160l200-120v480L320-360h-40v160h-80Z",
   },
 } as const;
 
