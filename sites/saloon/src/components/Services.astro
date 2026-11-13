@@ -1,63 +1,209 @@
 ---
+import { Icon } from "astro-icon/components";
 import { services } from "../content/services";
 import { waLink } from "../content/site";
 ---
 
 {/*
-  A salon menu, not a feature grid. Three equal cards with a circular icon
-  badge each is the most generic layout there is, and it fits software
-  features rather than a price list — the thing a client actually scans here
-  is "what does it cost", which wants a column of rows with the price on the
-  right, the way a printed salon menu reads.
+  A salon menu, not a feature grid: a raised card with a blush head band and
+  ruled rows, the price right beside its name, the way a printed salon menu
+  reads. It sits in the hero beside the photograph, so /#servicii lands on it.
 */}
-<section id="servicii" class="section">
-  <div class="container-page">
-    <div class="reveal">
-      <h2 class="heading-lg">Servicii & prețuri</h2>
-      <p class="mt-4 max-w-[55ch] text-[var(--color-on-surface-variant)]">
-        Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe WhatsApp.
-      </p>
-    </div>
+<section id="servicii" class="card menu" aria-labelledby="h-servicii">
+  <header class="menu__head">
+    <h2 class="heading-lg" id="h-servicii">
+      Servicii & prețuri
+    </h2>
+    <p class="label-md muted">Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe WhatsApp.</p>
+  </header>
 
-    <ul class="mt-10 md:mt-14">
-      {services.map((s, i) => (
-        <li class="reveal border-t border-[var(--color-outline-variant)] last:border-b" style={`--i: ${i}`}>
-          <div class="py-7 md:py-9 grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline">
-            <div>
-              <h3 class="heading-md">{s.title}</h3>
-              <p class="label-md uppercase mt-1.5 text-[var(--color-secondary)]">{s.subtitle}</p>
-              <p class="mt-3 max-w-prose text-[var(--color-on-surface-variant)] leading-relaxed">{s.description}</p>
-            </div>
+  <ul class="menu__rows">
+    {services.map((s) => (
+      <li class="menu__row">
+        <div class="menu__top">
+          <h3 class="heading-md">{s.title}</h3>
+          <b class="menu__price">
+            {s.price.split(" / ").map((part, i) => (
+              <>
+                {i > 0 && " "}
+                <span>{i > 0 ? `/ ${part}` : part}</span>
+              </>
+            ))}
+          </b>
+        </div>
+        <div class="menu__mid">
+          <p class="menu__sub">{s.subtitle}</p>
+          <a
+            href={waLink(`Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`)}
+            target="_blank"
+            rel="noopener"
+            class="link"
+            aria-label={`Programează, ${s.title}`}
+          >
+            Programează
+            <Icon name="ph:arrow-right" size={18} aria-hidden="true" />
+          </a>
+        </div>
+        <p class="menu__desc">{s.description}</p>
+      </li>
+    ))}
+  </ul>
 
-            <div class="flex items-baseline gap-6 md:flex-col md:items-end md:gap-3 md:text-right">
-              <span class="font-display text-2xl whitespace-nowrap tabular-nums text-[var(--color-gold-ink)]">
-                {s.price}
-              </span>
-              <a
-                href={waLink(`Bună, Ana! Aș dori o programare pentru ${s.title}. Când ai un loc liber?`)}
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center min-h-[44px] label-md uppercase text-[var(--color-on-surface)] underline underline-offset-4 decoration-[var(--color-outline-variant)] hover:decoration-[var(--color-blush-deep)] hover:text-[var(--color-blush-deep)] transition-colors"
-              >
-                Programează →
-              </a>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ul>
-
-    <p class="mt-10 text-sm text-[var(--color-on-surface-variant)]">
-      Nu găsești ce cauți?{" "}
+  <p class="label-md muted menu__foot">
+    Nu găsești ce cauți?{" "}
+    <span class="menu__nowrap">
       <a
         href={waLink("Bună, Ana! Aș vrea să întreb despre un serviciu care nu e în listă.")}
         target="_blank"
         rel="noopener"
-        class="font-semibold text-[var(--color-on-surface)] underline underline-offset-4 hover:text-[var(--color-blush-deep)]"
       >
         Întreabă-mă pe WhatsApp
       </a>
       .
-    </p>
-  </div>
+    </span>
+  </p>
 </section>
+
+<style>
+  .menu {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .menu__head {
+    padding: 0.875rem 1.5rem 0.75rem;
+    background-color: var(--color-blush);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .menu__head p {
+    margin-top: 0.125rem;
+    font-weight: 400;
+  }
+
+  .menu__rows {
+    padding-inline: 1.5rem;
+  }
+
+  .menu__row {
+    padding: 0.625rem 0 0.75rem;
+  }
+
+  .menu__row + .menu__row {
+    border-top: 1px solid var(--color-outline-variant);
+  }
+
+  .menu__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1rem;
+  }
+
+  .menu__top h3 {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  /* The price never clips: "/ unghie" wraps to a second line before it does. */
+  .menu__price {
+    margin-left: auto;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 30;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+    color: var(--color-gold-ink);
+    text-align: right;
+  }
+
+  .menu__price span {
+    white-space: nowrap;
+  }
+
+  .menu__mid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-height: 1.25rem;
+  }
+
+  .menu__sub {
+    min-width: 0;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+    color: var(--color-secondary);
+  }
+
+  .menu__row .link {
+    margin-block: -0.75rem;
+  }
+
+  .menu__desc {
+    margin-top: 0.125rem;
+    color: var(--color-on-surface-variant);
+  }
+
+  .menu__foot {
+    padding: 0.5rem 1.5rem 0.375rem;
+    border-top: 1px solid var(--color-outline-variant);
+    font-weight: 400;
+  }
+
+  .menu__foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
+    color: var(--color-on-surface);
+    text-decoration-color: var(--color-gold-ink);
+    text-underline-offset: 3px;
+  }
+
+  .menu__nowrap {
+    white-space: nowrap;
+  }
+
+  @media (min-width: 901px) {
+    .menu__row {
+      padding: 0.75rem 0 0.875rem;
+    }
+
+    .menu__desc {
+      margin-top: 0.25rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .menu__head {
+      padding: 0.75rem 1.25rem 0.625rem;
+    }
+
+    .menu__rows {
+      padding-inline: 1.25rem;
+    }
+
+    .menu__row {
+      padding: 0.5rem 0 0.625rem;
+    }
+
+    .menu__foot {
+      padding-inline: 1.25rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .menu__head,
+    .menu__foot {
+      padding-inline: 1rem;
+    }
+
+    .menu__rows {
+      padding-inline: 1rem;
+    }
+  }
+</style>

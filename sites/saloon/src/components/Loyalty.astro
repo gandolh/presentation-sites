@@ -4,55 +4,49 @@ import { Icon } from "astro-icon/components";
 
 <section id="loialitate" class="section">
   <div class="container-page">
-    <div class="reveal relative rounded-[1.5rem] overflow-hidden bg-[var(--color-primary-container)] px-8 md:px-16 py-12 md:py-20">
-      <!-- Decorative gold motif -->
-      <div
-        aria-hidden="true"
-        class="loyalty-gold-motif absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-30"
-      ></div>
-
-      <div class="relative grid md:grid-cols-2 gap-10 items-center">
+    <div class="card loyalty reveal">
+      <div class="loyalty__grid">
         <div>
-          <h2 class="heading-lg text-[var(--color-on-primary-container)]">
-            Cu cât vii mai des, cu atât te răsfeți mai mult.
-          </h2>
+          <h2 class="heading-lg">Cu cât vii mai des, cu atât te răsfeți mai mult.</h2>
           <span class="gold-divider"></span>
         </div>
 
-        <div class="space-y-5">
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-surface-container-lowest)] text-[var(--color-on-primary-container)] flex items-center justify-center font-display text-lg">
+        <div>
+          <div class="perk">
+            <span class="perk__coin perk__coin--figure" aria-hidden="true">
               5
-            </div>
-            <p class="text-[var(--color-on-surface)] leading-relaxed">
+            </span>
+            <p>
               La fiecare <strong>a 5-a programare</strong>, primești
               <strong>20% reducere</strong> la serviciul ales. Ne ținem evidența, tu te bucuri de unghii frumoase.
             </p>
           </div>
 
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-surface-container-lowest)] text-[var(--color-on-primary-container)] flex items-center justify-center">
+          <div class="perk">
+            <span class="perk__coin" aria-hidden="true">
               <Icon name="ph:users-three" size={20} aria-hidden="true" />
-            </div>
-            <p class="text-[var(--color-on-surface)] leading-relaxed">
+            </span>
+            <p>
               <strong>Recomandă o prietenă</strong> și primiți amândouă
               <strong>10% reducere</strong> la următoarea vizită.
             </p>
           </div>
 
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-surface-container-lowest)] text-[var(--color-on-primary-container)] flex items-center justify-center">
+          <div class="perk">
+            <span class="perk__coin" aria-hidden="true">
               <Icon name="ph:gift" size={20} aria-hidden="true" />
-            </div>
-            <p class="text-[var(--color-on-surface)] leading-relaxed">
+            </span>
+            <p>
               <strong>Voucher cadou</strong>: surprinde pe cineva drag cu un card cadou pentru serviciile mele. Scrie-mi
               pe WhatsApp și îl pregătesc.
             </p>
           </div>
 
-          <a href="#programari" class="btn btn-on-blush mt-2">
-            Programează-te acum
-          </a>
+          <div class="loyalty__cta">
+            <a href="#programari" class="btn btn-primary">
+              Programează-te acum
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -60,8 +54,71 @@ import { Icon } from "astro-icon/components";
 </section>
 
 <style>
-  /* Decorative gold motif — brand gold token, not a hard-coded hex. */
-  .loyalty-gold-motif {
-    background: radial-gradient(circle, var(--color-gold) 0%, transparent 65%);
+  .loyalty {
+    padding: 4rem;
+    background-color: var(--color-blush);
+  }
+
+  .loyalty__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+
+  .loyalty h2 {
+    font-size: 2.5rem;
+    line-height: 2.875rem;
+    color: var(--color-on-primary-container);
+  }
+
+  .perk {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .perk + .perk {
+    margin-top: 1.25rem;
+  }
+
+  .perk__coin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--color-surface-container-lowest);
+    border: 1px solid var(--color-outline-variant);
+    color: var(--color-on-primary-container);
+  }
+
+  .perk__coin--figure {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+  }
+
+  .loyalty__cta {
+    margin-top: 1.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .loyalty__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .loyalty {
+      padding: 1.75rem 1.25rem;
+    }
+
+    .loyalty h2 {
+      font-size: 1.75rem;
+      line-height: 2.125rem;
+    }
   }
 </style>

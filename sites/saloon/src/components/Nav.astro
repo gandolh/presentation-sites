@@ -10,77 +10,106 @@ const links = [
 ];
 ---
 
-<header id="site-nav" class="sticky md:fixed inset-x-0 z-40 transition-colors duration-300" data-scrolled="false">
-  <div class="container-page flex items-center justify-between py-4">
-    <a href="#acasa" class="wordmark text-2xl md:text-3xl">
+<header class="site-header">
+  <div class="container-page site-header__bar">
+    <a href="#acasa" class="wordmark site-header__mark">
       Unghii by Ana
     </a>
 
-    <nav class="hidden md:flex items-center gap-8">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class="label-md inline-flex items-center min-h-[24px] py-1 text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
-        >
-          {link.label}
-        </a>
-      ))}
+    <nav class="site-header__nav" aria-label="Principal">
+      <ul>
+        {links.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
-      <a href="#programari" class="hidden md:inline-flex btn btn-primary">
-        Programează-te
-      </a>
-      <MobileMenu client:load />
-    </div>
+    <a href="#programari" class="btn btn-pill site-header__pill">
+      Programează-te
+    </a>
+    <MobileMenu client:load />
   </div>
 </header>
 
-<script is:inline>
-  // Toggle the nav's scrolled state by observing an 8px sentinel at the top of
-  // the document rather than listening to every scroll frame. Same result, no
-  // per-frame work on the main thread.
-  (function () {
-    const nav = document.getElementById("site-nav");
-    if (!nav) return;
-
-    const set = (scrolled) => {
-      nav.dataset.scrolled = scrolled ? "true" : "false";
-    };
-
-    if (!("IntersectionObserver" in window)) {
-      set(false); // static, readable fallback
-      return;
-    }
-
-    const sentinel = document.createElement("div");
-    sentinel.setAttribute("aria-hidden", "true");
-    sentinel.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;";
-    document.body.prepend(sentinel);
-
-    new IntersectionObserver(([entry]) => set(!entry.isIntersecting)).observe(sentinel);
-  })();
-</script>
-
 <style>
-  /* Mobile: sticky and in-flow — it follows the in-flow banner, then pins to
-     the top once scrolled past it (top: 0). Desktop: fixed, sitting just below
-     the fixed WIP banner via --wip-banner-h (published by the banner's inline
-     script; falls back to 0 if the banner isn't present). */
-  #site-nav {
+  /* Sticky and always opaque: the ground, with a hairline under it. */
+  .site-header {
+    position: sticky;
     top: 0;
+    z-index: var(--z-index-header);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-outline-variant);
   }
 
-  @media (min-width: 768px) {
-    #site-nav {
-      top: var(--wip-banner-h, 0px);
+  .site-header__bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 4.25rem;
+  }
+
+  .site-header__mark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    justify-self: start;
+    font-size: 1.75rem;
+    line-height: 2rem;
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+
+  .site-header__nav ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .site-header__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-full);
+    font-weight: 500;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+  }
+
+  .site-header__nav a:hover {
+    color: var(--color-on-surface);
+  }
+
+  .site-header__pill {
+    justify-self: end;
+  }
+
+  @media (max-width: 900px) {
+    .site-header__bar {
+      grid-template-columns: 1fr auto auto;
+      gap: 0.75rem;
+      height: 4rem;
+    }
+
+    .site-header__nav {
+      display: none;
+    }
+
+    .site-header__mark {
+      font-size: 1.5rem;
+      line-height: 1.875rem;
     }
   }
 
-  #site-nav[data-scrolled="true"] {
-    background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
-    backdrop-filter: saturate(140%) blur(8px);
-    -webkit-backdrop-filter: saturate(140%) blur(8px);
-    border-bottom: 1px solid var(--color-outline-variant);
+  @media (max-width: 760px) {
+    .site-header__bar {
+      grid-template-columns: 1fr auto;
+      gap: 0;
+    }
+
+    .site-header__pill {
+      display: none;
+    }
   }
 </style>

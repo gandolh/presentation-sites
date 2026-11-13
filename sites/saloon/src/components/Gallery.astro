@@ -1,36 +1,37 @@
 ---
+import { Icon } from "astro-icon/components";
 import { gallery } from "../content/gallery";
 import { site } from "../content/site";
 ---
 
-<section id="galerie" class="section section--airy bg-[var(--color-surface-container-low)]">
+<section id="galerie" class="section band">
   <div class="container-page">
     <div class="reveal">
       <h2 class="heading-lg">Lucrări recente</h2>
-      <p class="mt-4 max-w-[55ch] text-[var(--color-on-surface-variant)]">Croite pe stilul fiecărei cliente.</p>
+      <p class="gallery__lead muted">Croite pe stilul fiecărei cliente.</p>
     </div>
 
-    <div class="mt-8 md:mt-12 columns-2 md:columns-3 gap-4 [column-fill:_balance]">
+    <ul class="gallery">
       {gallery.map((img, i) => (
-        <figure
-          class="reveal mb-4 break-inside-avoid rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]"
-          style={`--i: ${i}`}
-        >
-          <img
-            src={img.src}
-            alt={img.alt}
-            loading={i < 3 ? "eager" : "lazy"}
-            decoding="async"
-            width="600"
-            height="800"
-            class="gallery-img w-full h-auto block"
-          />
-        </figure>
+        <li class="reveal" style={`--i: ${i}`}>
+          <figure class="slot gallery__item">
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading={i < 3 ? "eager" : "lazy"}
+              decoding="async"
+              width="600"
+              height="800"
+              class="gallery-img"
+            />
+          </figure>
+        </li>
       ))}
-    </div>
+    </ul>
 
-    <div class="mt-12 text-center">
-      <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-secondary">
+    <div class="gallery__more">
+      <a href={site.social.instagram} target="_blank" rel="noopener" class="btn btn-line">
+        <Icon name="ph:instagram-logo" size={20} aria-hidden="true" />
         Urmărește-mă pe Instagram
       </a>
     </div>
@@ -38,13 +39,47 @@ import { site } from "../content/site";
 </section>
 
 <style>
+  .gallery__lead {
+    max-width: 55ch;
+    margin-top: 0.75rem;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .gallery__item {
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+  }
+
+  .gallery__more {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.75rem;
+    }
+
+    .gallery__more {
+      margin-top: 2rem;
+    }
+  }
+
   /* Subtle zoom on hover. Guarded so users who prefer reduced motion get a
-     static image — the one gallery transform that otherwise escaped the
-     site-wide reduced-motion coverage. */
+     static image. */
   @media (prefers-reduced-motion: no-preference) {
     .gallery-img {
       transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
     }
+
     .gallery-img:hover {
       transform: scale(1.02);
     }

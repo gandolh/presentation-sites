@@ -17,108 +17,70 @@ const legalLinks = [
 ];
 ---
 
-<footer class="bg-[var(--color-inverse-surface)] text-[var(--color-inverse-on-surface)] mt-12">
-  <div class="container-page py-16 grid gap-12 md:grid-cols-4">
-    <div>
-      <span class="wordmark text-3xl">Unghii by Ana</span>
-      <p class="mt-4 text-sm opacity-80 max-w-xs">{site.description}</p>
-    </div>
+<footer class="footer on-inverse">
+  <div class="container-page">
+    <div class="footer__grid">
+      <div>
+        <span class="wordmark footer__mark">Unghii by Ana</span>
+        <p class="label-md footer__blurb">{site.description}</p>
+      </div>
 
-    <nav class="flex flex-col gap-1">
-      <span class="label-md opacity-60 uppercase mb-2">Navigare</span>
-      {links.map((link) => (
-        <a
-          href={withBase(link.href)}
-          class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
+      <nav aria-label="Navigare">
+        <h3 class="footer__head">Navigare</h3>
+        {links.map((link) => (
+          <a href={withBase(link.href)} class="footer__link">
+            {link.label}
+          </a>
+        ))}
+      </nav>
 
-    <nav class="flex flex-col gap-1">
-      <span class="label-md opacity-60 uppercase mb-2">Legal</span>
-      {legalLinks.map((link) => (
-        <a
-          href={withBase(link.href)}
-          class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100 hover:underline underline-offset-4"
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
+      <nav aria-label="Legal">
+        <h3 class="footer__head">Legal</h3>
+        {legalLinks.map((link) => (
+          <a href={withBase(link.href)} class="footer__link">
+            {link.label}
+          </a>
+        ))}
+      </nav>
 
-    <div class="flex flex-col gap-1">
-      <span class="label-md opacity-60 uppercase mb-2">Contact</span>
-      <a
-        href={`tel:+${site.phoneE164}`}
-        class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100"
-      >
-        {site.phone}
-      </a>
-      <a
-        href={`mailto:${site.email}`}
-        class="inline-flex items-center min-h-[44px] text-sm opacity-90 hover:opacity-100"
-      >
-        {site.email}
-      </a>
-      <p class="text-sm opacity-90 mt-1">
-        {site.address}, {site.city}
-      </p>
+      <div>
+        <h3 class="footer__head">Contact</h3>
+        <a href={`tel:+${site.phoneE164}`} class="footer__link num">
+          {site.phone}
+        </a>
+        <a href={`mailto:${site.email}`} class="footer__link">
+          {site.email}
+        </a>
+        <p class="label-md footer__address">
+          {site.address}, {site.city}
+        </p>
 
-      <div class="flex items-center gap-2 mt-3">
-        <a
-          href={site.social.instagram}
-          aria-label="Instagram"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center justify-center w-11 h-11 -m-2 opacity-80 hover:opacity-100"
-        >
-          <Icon name="ph:instagram-logo" size={20} aria-hidden="true" />
-        </a>
-        <a
-          href={site.social.facebook}
-          aria-label="Facebook"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center justify-center w-11 h-11 -m-2 opacity-80 hover:opacity-100"
-        >
-          <Icon name="ph:facebook-logo" size={20} aria-hidden="true" />
-        </a>
-        <a
-          href={`https://wa.me/${site.whatsappE164}`}
-          aria-label="WhatsApp"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center justify-center w-11 h-11 -m-2 opacity-80 hover:opacity-100"
-        >
-          <Icon name="ph:whatsapp-logo" size={20} aria-hidden="true" />
-        </a>
+        <div class="footer__social">
+          <a href={site.social.instagram} aria-label="Instagram" target="_blank" rel="noopener">
+            <Icon name="ph:instagram-logo" size={20} aria-hidden="true" />
+          </a>
+          <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener">
+            <Icon name="ph:facebook-logo" size={20} aria-hidden="true" />
+          </a>
+          <a href={`https://wa.me/${site.whatsappE164}`} aria-label="WhatsApp" target="_blank" rel="noopener">
+            <Icon name="ph:whatsapp-logo" size={20} aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <style>
-    /* The mobile WhatsApp FAB is fixed over the bottom of the page; pad the
-       final legal block on small screens so its fixed bar never covers the
-       CUI / ANPC line. Desktop has no FAB, so no padding needed. */
-    @media (max-width: 767px) {
-      .footer-legal {
-        padding-bottom: calc(5rem + env(safe-area-inset-bottom));
-      }
-    }
-  </style>
-
-  <!-- Business identification (Legea 365/2002 art. 5) + ANPC SAL -->
-  <div class="footer-legal border-t border-[var(--color-inverse-line)] py-6 text-xs opacity-70">
-    <div class="container-page space-y-3">
-      <p class="leading-relaxed">
-        {site.legal.legalName} · CUI: {site.legal.cui} · Reg. Com.: {site.legal.regNumber}
-        {site.legal.form === "SRL" && site.legal.shareCapital
-          ? ` · Capital social: ${site.legal.shareCapital}`
-          : ""} · {site.address}, {site.city}, jud. {site.county}
-      </p>
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <!-- Business identification (Legea 365/2002 art. 5) + ANPC SAL -->
+    <div class="footer__legal label-md">
+      <ul>
+        <li>{site.legal.legalName}</li>
+        <li>CUI: {site.legal.cui}</li>
+        <li>Reg. Com.: {site.legal.regNumber}</li>
+        {site.legal.form === "SRL" && site.legal.shareCapital && <li>Capital social: {site.legal.shareCapital}</li>}
+        <li>
+          {site.address}, {site.city}, jud. {site.county}
+        </li>
+      </ul>
+      <div class="footer__row">
         <p>
           © {year} {site.name}. Toate drepturile rezervate.
         </p>
@@ -127,14 +89,154 @@ const legalLinks = [
           target="_blank"
           rel="noopener"
           aria-label="ANPC: Soluționarea Alternativă a Litigiilor"
-          class="inline-flex items-center gap-2 hover:opacity-100"
+          class="footer__anpc"
         >
-          <span class="inline-flex items-center justify-center rounded bg-[var(--color-inverse-wash)] px-2 py-1 label-md uppercase">
-            ANPC
-          </span>
+          <b>ANPC</b>
           <span>Soluționarea Alternativă a Litigiilor (SAL)</span>
         </a>
       </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer {
+    background-color: var(--color-inverse-surface);
+    color: var(--color-inverse-on-surface);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1.2fr 1.2fr;
+    gap: 3rem;
+    padding: 4rem 0 3rem;
+  }
+
+  .footer__mark {
+    display: inline-block;
+    font-size: 1.875rem;
+    line-height: 2rem;
+  }
+
+  .footer__blurb {
+    max-width: 28ch;
+    margin-top: 0.75rem;
+    font-weight: 400;
+    color: var(--color-inverse-on-surface-variant);
+  }
+
+  .footer__head {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-body);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+    color: var(--color-inverse-on-surface-variant);
+  }
+
+  .footer__link {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    color: var(--color-inverse-on-surface);
+    text-decoration: none;
+  }
+
+  .footer__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer__address {
+    margin-top: 0.25rem;
+    font-weight: 400;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .footer__social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    color: var(--color-inverse-on-surface);
+  }
+
+  .footer__social a:hover {
+    background-color: var(--color-inverse-wash);
+  }
+
+  .footer__legal {
+    padding: 1.5rem 0 1.75rem;
+    border-top: 1px solid var(--color-inverse-line);
+    font-weight: 400;
+    color: var(--color-inverse-on-surface-variant);
+  }
+
+  .footer__legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+
+  .footer__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .footer__anpc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    color: var(--color-inverse-on-surface);
+    text-decoration: none;
+  }
+
+  .footer__anpc b {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    background-color: var(--color-inverse-wash);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1040px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 3rem 0 2rem;
+    }
+
+    .footer__mark {
+      font-size: 1.75rem;
+    }
+
+    /* The docked booking bar is fixed over the bottom of the page: keep the
+       legal block clear of it. */
+    .footer__legal {
+      padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

@@ -2,54 +2,125 @@
 import { Icon } from "astro-icon/components";
 import { site, waLink } from "../content/site";
 import { img } from "../content/images";
+import Services from "./Services.astro";
 ---
 
-<section id="acasa" class="relative pt-16 md:pt-24 pb-16 md:pb-20 overflow-hidden">
-  <div class="container-page grid md:grid-cols-[1.05fr_0.95fr] gap-10 md:gap-16 items-center">
-    <div class="reveal">
-      <h1 class="heading-xl text-[var(--color-on-surface)]">{site.tagline}</h1>
-      <p class="mt-6 text-lg text-[var(--color-on-surface-variant)] max-w-md leading-relaxed">{site.description}</p>
+{/*
+  The first screen does the page's job: the work (the photograph), what it
+  costs and how to book (the menu card, each row with its own pre-filled
+  Programează). On a phone the photograph is short so the first price row
+  clears the docked booking bar, and the bar replaces the in-hero button.
+*/}
+<section id="acasa" class="hero">
+  <div class="container-page">
+    <h1 class="heading-xl">{site.tagline}</h1>
+    <p class="hero__lead text-lead">{site.description}</p>
 
-      <div class="mt-8 flex flex-wrap items-center gap-4">
-        <a href={waLink()} target="_blank" rel="noopener" class="btn btn-whatsapp">
-          <Icon name="ph:whatsapp-logo" size={20} aria-hidden="true" />
-          Programează-te pe WhatsApp
-        </a>
-        <a
-          href="#servicii"
-          class="inline-flex items-center min-h-[44px] text-sm font-semibold underline underline-offset-4 text-[var(--color-on-surface)] hover:text-[var(--color-blush-deep)]"
-        >
-          Vezi serviciile →
-        </a>
-      </div>
+    <div class="hero__go">
+      <a href={waLink()} target="_blank" rel="noopener" class="btn btn-whatsapp">
+        <Icon name="ph:whatsapp-logo" size={22} aria-hidden="true" />
+        Programează-te pe WhatsApp
+      </a>
     </div>
 
-    <div class="reveal relative">
-      <div class="aspect-[4/5] md:aspect-auto md:h-[27rem] lg:h-[30rem] w-full rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]">
+    <div class="hero__pair">
+      <div class="slot hero__photo">
         <img
           src={img("hero")}
           alt="Detaliu cu unghii manichiurate de Ana"
-          class="w-full h-full object-cover"
           width="800"
           height="1000"
           fetchpriority="high"
           decoding="async"
         />
       </div>
-      <!-- Decorative gold accent -->
-      <div
-        aria-hidden="true"
-        class="hero-gold-accent hidden md:block absolute -bottom-4 -left-4 w-20 h-20 rounded-full"
-      ></div>
+      <Services />
     </div>
   </div>
 </section>
 
 <style>
-  /* Decorative gold glow behind the hero portrait — uses the brand gold token
-     rather than a hard-coded hex so it tracks any palette change. */
-  .hero-gold-accent {
-    background: radial-gradient(circle at 30% 30%, var(--color-gold) 0%, var(--color-gold) 60%, transparent 70%);
-    opacity: 0.35;
+  .hero {
+    padding: 1.75rem 0 3.5rem;
+  }
+
+  .hero h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .hero__lead {
+    margin-bottom: 1.25rem;
+  }
+
+  .hero__go {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero__pair {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .hero__photo {
+    min-height: 18.75rem;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, var(--color-blush), var(--color-cream));
+  }
+
+  @media (min-width: 901px) {
+    .hero h1 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 1040px) {
+    .hero__pair {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero__pair {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__photo {
+      min-height: 0;
+      height: 15rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      padding: 1.25rem 0 2.25rem;
+    }
+
+    .hero__lead {
+      margin-bottom: 1rem;
+    }
+
+    .hero__go {
+      display: none;
+    }
+
+    .hero__pair {
+      gap: 1rem;
+    }
+
+    .hero__photo {
+      height: 46vw;
+      border-radius: 1.25rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .hero__photo {
+      height: 40vw;
+    }
   }
 </style>

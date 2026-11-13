@@ -40,18 +40,17 @@ export default function MobileMenu() {
         <button
           type="button"
           aria-label="Deschide meniul"
-          className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full hover:bg-surface-container transition-colors"
+          className="min-[901px]:hidden inline-flex items-center justify-center w-12 h-12 justify-self-end rounded-full text-on-surface hover:bg-surface-container transition-colors"
         >
-          <List size={22} weight="light" aria-hidden="true" />
+          <List size={28} weight="light" aria-hidden="true" />
         </button>
       }
       viewportClassName="fixed inset-0 z-50"
       // A warm blush panel: the deeper surface-container-high, not low (the
-      // latter is ~1.05:1 against the page and reads as transparent), with
-      // gold-tinted edges and a faint gold glow echoing the hero accent.
-      popupClassName="flex h-full flex-col bg-surface-container-high bg-[radial-gradient(120%_80%_at_100%_0%,rgba(201,169,97,0.16)_0%,rgba(201,169,97,0)_55%)] shadow-[0_8px_40px_-12px_rgba(43,31,26,0.28)] motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      // latter is ~1.05:1 against the page and reads as transparent).
+      popupClassName="flex h-full flex-col bg-surface-container-high shadow-(--shadow-card) motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)]"
     >
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gold/30">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-outline-variant">
         <span className="wordmark text-2xl">Unghii by Ana</span>
         <DrawerClose
           aria-label="Închide meniul"
@@ -60,13 +59,13 @@ export default function MobileMenu() {
           <X size={22} weight="light" aria-hidden="true" />
         </DrawerClose>
       </div>
-      <nav className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
+      <nav className="flex-1 flex flex-col items-center justify-center gap-5 px-6">
         {links.map((link, i) => (
           <a
             key={link.href}
             href={link.href}
             onClick={follow}
-            className={`${rise} font-display text-4xl text-on-surface hover:text-blush-deep`}
+            className={`${rise} inline-flex min-h-11 items-center font-display text-[2rem] leading-[2.375rem] text-on-surface no-underline hover:underline underline-offset-4`}
             style={{ "--i": i } as React.CSSProperties}
           >
             {link.label}
@@ -75,7 +74,7 @@ export default function MobileMenu() {
         <a
           href="#programari"
           onClick={follow}
-          className={`${rise} btn btn-primary mt-6`}
+          className={`${rise} btn btn-pill mt-2`}
           style={{ "--i": links.length } as React.CSSProperties}
         >
           Programează-te

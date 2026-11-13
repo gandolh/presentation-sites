@@ -1,113 +1,145 @@
 ---
-import { site } from "../content/site";
 import { img } from "../content/images";
 ---
 
-<section id="despre" class="section bg-[var(--color-surface-container-low)]">
-  <div class="container-page grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-    <div class="reveal order-2 md:order-1">
-      <div class="aspect-[4/5] w-full max-w-md mx-auto md:mx-0 rounded-[1rem] overflow-hidden bg-[var(--color-surface-container)]">
-        <img
-          src={img("ana-portrait")}
-          alt="Portret al Anei"
-          class="w-full h-full object-cover"
-          width="800"
-          height="1000"
-          loading="lazy"
-        />
-      </div>
-    </div>
+{/*
+  Ana's island sits on a band, mirrored: the text left, the portrait right,
+  with the gold rule and the signature. The facts pair (years of experience,
+  "1 la 1") waits until the years figure in site.ts is Ana's real number; to
+  bring it back, render site.stats.years and the "1 la 1" line under the
+  signature in a two-column grid, as the previous layout did.
+*/}
+<section id="despre" class="section band">
+  <div class="container-page">
+    <div class="card about reveal">
+      <div class="about__text">
+        <h2 class="heading-lg">Bună, sunt Ana</h2>
+        <span class="gold-divider"></span>
 
-    <div class="reveal order-1 md:order-2">
-      <h2 class="heading-lg">Bună, sunt Ana</h2>
-      <span class="gold-divider"></span>
-
-      <div class="mt-6 space-y-4 text-[var(--color-on-surface-variant)] leading-relaxed">
-        <p>
-          Am început manichiura lucrând pentru prietene și familie, iar de câțiva ani o fac cu seriozitate, pentru tot
-          mai multe cliente. Pun suflet în fiecare set de unghii și știu că pot livra un rezultat de care să fii
-          mulțumită.
-        </p>
-        <p>
-          Lucrez cu produse de calitate, în condiții de igienă atente, și îmi place să ascult ce își dorește fiecare
-          clientă, ca rezultatul să fie exact pe gustul tău.
-        </p>
-        <p>Dacă vrei unghii îngrijite și un moment doar pentru tine, te aștept în Iezureni.</p>
-      </div>
-
-      <!-- Signature sign-off: the page's warmest moment, signed in Ana's own
-           hand. Uses the italic Fraunces wordmark face (the brand mark) + the
-           gold accent, so it reads as a personal signature, not a label. -->
-      <p class="signature mt-6 text-[var(--color-primary)]" aria-label="semnat, Ana">
-        <span aria-hidden="true">cu drag, Ana</span>
-      </p>
-
-      <div class="mt-10 grid grid-cols-2 gap-4 max-w-sm">
-        <div class="text-center">
-          <p class="heading-md text-[var(--color-on-surface)]">{site.stats.years}</p>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">ani de experiență</p>
+        <div class="about__copy">
+          <p>
+            Am început manichiura lucrând pentru prietene și familie, iar de câțiva ani o fac cu seriozitate, pentru tot
+            mai multe cliente. Pun suflet în fiecare set de unghii și știu că pot livra un rezultat de care să fii
+            mulțumită.
+          </p>
+          <p>
+            Lucrez cu produse de calitate, în condiții de igienă atente, și îmi place să ascult ce își dorește fiecare
+            clientă, ca rezultatul să fie exact pe gustul tău.
+          </p>
+          <p>Dacă vrei unghii îngrijite și un moment doar pentru tine, te aștept în Iezureni.</p>
         </div>
-        <div class="text-center">
-          <p class="heading-md text-[var(--color-on-surface)]">1&nbsp;la&nbsp;1</p>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)] mt-1">doar tu și Ana</p>
-        </div>
+
+        <!-- Signature sign-off: the page's warmest moment, signed in Ana's own
+             hand, in the italic Fraunces wordmark face with the gold rule
+             under it. -->
+        <p class="signature" aria-label="semnat, Ana">
+          <span aria-hidden="true">cu drag, Ana</span>
+        </p>
+      </div>
+
+      <div class="slot about__photo">
+        <img src={img("ana-portrait")} alt="Portret al Anei" width="800" height="1000" loading="lazy" />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* The sign-off, in the italic Fraunces wordmark face — the brand's own
-     signature hand. A short gold rule grows in beneath it once the section
-     reveals, like the flourish under a handwritten name. The underline is
-     decorative only; the readable text carries the meaning. */
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 25rem;
+    gap: 3.5rem;
+    align-items: center;
+    padding: 3rem;
+  }
+
+  .about__photo {
+    order: 2;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--color-surface-container-high), var(--color-blush-deep));
+  }
+
+  .about__text {
+    order: 1;
+  }
+
+  .about__copy {
+    max-width: 60ch;
+    color: var(--color-on-surface-variant);
+  }
+
+  .about__copy p + p {
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .about {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .about__photo,
+    .about__text {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .about {
+      padding: 1.5rem;
+    }
+  }
+
+  /* The sign-off: the italic Fraunces wordmark face, with a gold rule that
+     grows in beneath it once the section reveals, like the flourish under a
+     handwritten name. The rule is decorative only; the readable text carries
+     the meaning. */
   .signature {
+    display: block;
+    width: fit-content;
+    margin-top: 1.25rem;
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    font-variation-settings:
-      "SOFT" 40,
-      "opsz" 40;
+    font-variation-settings: "SOFT" 30;
     font-style: italic;
     font-weight: 500;
-    font-size: 1.5rem;
-    line-height: 1;
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
     letter-spacing: -0.005em;
-    width: fit-content;
+    color: var(--color-primary);
   }
 
   .signature span {
     display: inline-block;
-    padding-bottom: 0.35rem;
+    padding-bottom: 0.4rem;
     background-image: linear-gradient(var(--color-gold), var(--color-gold));
     background-repeat: no-repeat;
     background-position: 0 100%;
-    /* Default (no-JS, crawlers): the flourish is fully drawn. Mirrors the
-       .reveal contract — never gate visible content on the animation. */
-    background-size: 100% 1.5px;
+    /* Default (no-JS, crawlers): the flourish is fully drawn. Never gate
+       visible content on the animation. */
+    background-size: 100% 2px;
   }
 
-  /* Only when JS enables the reveal system do we start the rule hidden and
-     draw it in once the About block scrolls into view. */
   :global(.js-reveal) .signature span {
-    background-size: 0% 1.5px;
+    background-size: 0% 2px;
     transition: background-size 900ms cubic-bezier(0.22, 1, 0.36, 1) 250ms;
   }
 
   :global(.js-reveal) .reveal.is-visible .signature span {
-    background-size: 100% 1.5px;
+    background-size: 100% 2px;
   }
 
-  /* Failsafe force-reveal and reduced-motion both snap to the drawn rule with
-     no animation — consistent with the global reveal behaviour. */
+  /* Failsafe force-reveal and reduced-motion both snap to the drawn rule. */
   :global(.js-reveal) .reveal.reveal-now .signature span {
     transition: none;
-    background-size: 100% 1.5px;
+    background-size: 100% 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
     :global(.js-reveal) .signature span {
       transition: none;
-      background-size: 100% 1.5px;
+      background-size: 100% 2px;
     }
   }
 </style>

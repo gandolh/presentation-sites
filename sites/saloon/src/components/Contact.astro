@@ -1,68 +1,75 @@
 ---
+import { Icon } from "astro-icon/components";
 import { hoursTable, site, waLink } from "../content/site";
 ---
 
-<section id="contact" class="section section--tight">
+<section id="contact" class="section section--tight band">
   <div class="container-page">
-    <div class="reveal">
-      <h2 class="heading-lg">Unde mă găsești</h2>
-    </div>
+    <h2 class="reveal heading-lg">Unde mă găsești</h2>
 
-    <div class="mt-12 grid md:grid-cols-2 gap-10 md:gap-16">
-      <div class="reveal space-y-8">
-        <div>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)]">Telefon · WhatsApp</p>
-          <a
-            href={`tel:+${site.phoneE164}`}
-            class="mt-2 inline-block font-display text-xl text-[var(--color-on-surface)] hover:text-[var(--color-blush-deep)]"
-          >
-            {site.phone}
-          </a>
-        </div>
+    <div class="contact">
+      <div class="card info reveal">
+        <dl>
+          <div>
+            <dt class="label-md">Telefon și WhatsApp</dt>
+            <dd>
+              <a class="big num" href={`tel:+${site.phoneE164}`}>
+                {site.phone}
+              </a>
+            </dd>
+          </div>
 
-        <div>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)]">Zonă</p>
-          <p class="mt-2 font-display text-xl text-[var(--color-on-surface)] leading-snug">
-            {site.city}, {site.county}
-          </p>
-          <p class="mt-2 text-sm text-[var(--color-on-surface-variant)] max-w-xs">
-            Îți comunic adresa exactă pe WhatsApp când stabilim programarea.
-          </p>
-        </div>
+          <div>
+            <dt class="label-md">Zonă</dt>
+            <dd>
+              <span class="big">
+                {site.city}, {site.county}
+              </span>
+              <p class="label-md info__note">Îți comunic adresa exactă pe WhatsApp când stabilim programarea.</p>
+            </dd>
+          </div>
 
-        <div>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)]">Email</p>
-          <a
-            href={`mailto:${site.email}`}
-            class="mt-2 inline-block font-display text-xl text-[var(--color-on-surface)] hover:text-[var(--color-blush-deep)]"
-          >
-            {site.email}
-          </a>
-        </div>
-
-        <div>
-          <p class="label-md uppercase text-[var(--color-on-surface-variant)]">Program</p>
-          <ul class="mt-3 space-y-2 divide-y divide-[var(--color-outline-variant)]">
-            {hoursTable.map((h) => (
-              <li class="flex justify-between gap-4 pt-2 first:pt-0">
-                <span class="text-[var(--color-on-surface-variant)]">{h.day}</span>
-                <span class="text-[var(--color-on-surface)] font-semibold tabular-nums">{h.value}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div>
+            <dt class="label-md">Email</dt>
+            <dd>
+              <a class="big" href={`mailto:${site.email}`}>
+                {site.email}
+              </a>
+            </dd>
+          </div>
+        </dl>
       </div>
 
-      <div class="reveal flex flex-col justify-center gap-6">
-        <p class="text-[var(--color-on-surface-variant)] leading-relaxed">
+      <div class="reveal">
+        <div class="card info">
+          <dl>
+            <div>
+              <dt class="label-md">Program</dt>
+              <dd>
+                <ul class="hours">
+                  {hoursTable.map((h) => (
+                    <li>
+                      <span class="muted">{h.day}</span>
+                      <b>{h.value}</b>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <p class="contact__lead muted">
           Cel mai simplu mod de a-ți face o programare este pe WhatsApp: îmi scrii ce serviciu te interesează și
           stabilim împreună ziua și ora.
         </p>
-        <div class="flex flex-wrap gap-4">
-          <a href={waLink()} target="_blank" rel="noopener" class="btn btn-whatsapp">
+        <div class="contact__btns">
+          <a href={waLink()} target="_blank" rel="noopener" class="btn btn-whatsapp" data-booking-cta>
+            <Icon name="ph:whatsapp-logo" size={22} aria-hidden="true" />
             Scrie-mi pe WhatsApp
           </a>
-          <a href={`tel:+${site.phoneE164}`} class="btn btn-secondary">
+          <a href={`tel:+${site.phoneE164}`} class="btn btn-line">
+            <Icon name="ph:phone" size={20} aria-hidden="true" />
             Sună-mă
           </a>
         </div>
@@ -70,3 +77,99 @@ import { hoursTable, site, waLink } from "../content/site";
     </div>
   </div>
 </section>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+    margin-top: 2rem;
+  }
+
+  .info {
+    padding: 2rem;
+  }
+
+  .info dl > div + div {
+    margin-top: 1.5rem;
+  }
+
+  .info dt {
+    color: var(--color-on-surface-variant);
+  }
+
+  .info dd {
+    margin-top: 0.25rem;
+  }
+
+  .big {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 30;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+
+  a.big:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .info__note {
+    max-width: 30ch;
+    margin-top: 0.25rem;
+    font-weight: 400;
+    color: var(--color-on-surface-variant);
+  }
+
+  .hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .hours li + li {
+    border-top: 1px solid var(--color-outline-variant);
+  }
+
+  .hours b {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contact__lead {
+    margin-top: 1.5rem;
+  }
+
+  .contact__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .info {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .contact__btns {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
