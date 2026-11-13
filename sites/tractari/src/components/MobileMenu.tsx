@@ -32,55 +32,53 @@ export default function MobileMenu({ links }: { links: Link[] }) {
         <button
           type="button"
           aria-label="Deschide meniul"
-          className="nav-burger inline-flex items-center justify-center w-11 h-11 rounded-md text-on-surface hover:bg-white/10 transition-colors"
+          className="nav-burger inline-flex items-center justify-center w-11 h-11 rounded-md text-on-surface bg-surface-container-high border border-outline-variant hover:bg-outline-variant transition-colors"
         >
           <svg
-            width="22"
-            height="22"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <line x1="4" y1="7" x2="20" y2="7" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <line x1="4" y1="17" x2="20" y2="17" />
+            <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       }
       viewportClassName="fixed inset-0 z-(--z-overlay)"
-      popupClassName="flex h-full flex-col text-on-surface bg-surface-container-lowest bg-[radial-gradient(120%_90%_at_100%_0%,oklch(80%_0.16_80/0.18)_0%,oklch(80%_0.16_80/0)_58%)] shadow-[0_8px_50px_-12px_oklch(0%_0_0/0.7)] motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+      popupClassName="flex h-full flex-col text-on-surface bg-background motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
     >
-      <div className="roadline roadline--full" aria-hidden="true" />
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-        <span className="wordmark text-xl">{site.name}</span>
+      <div className="flex items-center justify-between px-4 h-14 border-b border-outline-variant bg-surface-container">
+        <span className="wordmark text-2xl">{site.name}</span>
         <DrawerClose
           aria-label="Închide meniul"
-          className="inline-flex items-center justify-center w-11 h-11 rounded-md hover:bg-white/10 transition-colors"
+          className="inline-flex items-center justify-center w-11 h-11 rounded-md bg-surface-container-high border border-outline-variant hover:bg-outline-variant transition-colors"
         >
           <svg
-            width="22"
-            height="22"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <line x1="6" y1="6" x2="18" y2="18" />
-            <line x1="18" y1="6" x2="6" y2="18" />
+            <path d="M18 6 6 18M6 6l12 12" />
           </svg>
         </DrawerClose>
       </div>
 
-      <nav className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
+      <nav className="flex flex-col px-4 pt-2" aria-label="Meniu">
         {links.map((link, i) => (
           <a
             key={link.href}
             href={link.href}
             onClick={follow}
-            className={`${rise} font-display font-extrabold uppercase text-3xl tracking-wide hover:text-primary`}
+            className={`${rise} flex items-center min-h-14 border-t border-outline-variant first:border-t-0 text-xl hover:text-primary-bright`}
             style={{ "--i": i } as React.CSSProperties}
           >
             {link.label}
@@ -88,12 +86,32 @@ export default function MobileMenu({ links }: { links: Link[] }) {
         ))}
       </nav>
 
-      {/* All three numbers — the point of the site. */}
-      <div className="px-6 pb-8 pt-4 border-t border-white/10 flex flex-col gap-3">
+      {/* All three numbers: the point of the site. */}
+      <div className="mt-auto px-4 pb-8 pt-2 flex flex-col">
         {phones.map((p) => (
-          <a key={p.e164} href={telLink(p.e164)} onClick={follow} className="btn btn-call w-full justify-between">
-            <span className="text-[0.8rem] font-semibold opacity-80">{p.label}</span>
-            <span className="tnum text-[1.05rem]">{p.display}</span>
+          <a
+            key={p.e164}
+            href={telLink(p.e164)}
+            onClick={follow}
+            className="tnum flex items-center justify-between gap-4 min-h-14 border-t border-outline-variant"
+          >
+            <span className="flex items-center gap-3 text-on-surface-variant">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--color-accent)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              {p.label}
+            </span>
+            <span className="font-display font-extrabold text-2xl whitespace-nowrap">{p.display}</span>
           </a>
         ))}
       </div>

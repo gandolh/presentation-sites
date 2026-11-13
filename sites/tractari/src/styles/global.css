@@ -130,8 +130,6 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    /* anchor jumps clear the fixed banner + nav stack */
-    scroll-padding-top: calc(5rem + var(--banner-h, 0px));
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -182,86 +180,36 @@
     width: 100%;
     max-width: var(--container-max-width);
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    padding-inline: 2rem;
   }
-  @media (min-width: 768px) {
+  @media (max-width: 760px) {
     .container-page {
-      padding-inline: 2rem;
+      padding-inline: 1rem;
+    }
+  }
+
+  /* The page starts under the fixed demo banner and header (36 + 65 px; the
+     banner can wrap on a phone, so its height is measured into --banner-h). */
+  .page-main {
+    padding-top: calc(var(--banner-h, 0px) + 65px);
+  }
+  @media (max-width: 760px) {
+    .page-main {
+      padding-top: calc(var(--banner-h, 0px) + 57px);
+    }
+  }
+  /* Anchors clear the banner and the header. */
+  [id] {
+    scroll-margin-top: 101px;
+  }
+  @media (max-width: 760px) {
+    [id] {
+      scroll-margin-top: 113px;
     }
   }
 
   .section {
     padding-block: clamp(3.5rem, 7vw, 7rem);
-  }
-
-  /* ====================================================================== */
-  /*  THE ROAD SPINE — the one structural move made literal.                */
-  /*  A continuous lit lane-marking runs down the whole page. Each section   */
-  /*  is a STOP pinned to it by a glowing distance-marker node, so the drive */
-  /*  is no longer just a metaphor in the docs — it is the page's backbone.  */
-  /*  Desktop: the spine lives in a left gutter. Mobile: it collapses to a    */
-  /*  hairline at the far-left edge so content keeps full width.             */
-  /* ====================================================================== */
-  .road {
-    position: relative;
-  }
-
-  /* The lane line: a dashed centre-marking streaming down the page, amber
-     easing to safety-orange. A repeating mask makes it read as painted road
-     dashes rather than a solid bar. */
-  .road__line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: clamp(1.4rem, 3.5vw, 3.5rem);
-    width: 3px;
-    z-index: 0;
-    pointer-events: none;
-    background: linear-gradient(var(--color-primary), var(--color-accent));
-    -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
-    mask-image: repeating-linear-gradient(180deg, #000 0 26px, transparent 26px 46px);
-    opacity: 0.5;
-  }
-  @media (max-width: 1023px) {
-    .road__line {
-      left: 0.5rem;
-      opacity: 0.32;
-    }
-  }
-  /* A soft amber glow travelling down the dashes — the truck's light moving
-     along the road. Pure decoration; off under reduced motion. */
-  .road__line::after {
-    content: "";
-    position: absolute;
-    left: -7px;
-    right: -7px;
-    height: 20vh;
-    border-radius: var(--radius-full);
-    background: radial-gradient(50% 50% at 50% 50%, oklch(82% 0.16 82 / 0.85) 0%, oklch(82% 0.16 82 / 0) 72%);
-    filter: blur(6px);
-    animation: road-travel 9s linear infinite;
-  }
-  @keyframes road-travel {
-    0% {
-      top: -20vh;
-      opacity: 0;
-    }
-    8% {
-      opacity: 1;
-    }
-    92% {
-      opacity: 1;
-    }
-    100% {
-      top: 100%;
-      opacity: 0;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .road__line::after {
-      animation: none;
-      opacity: 0;
-    }
   }
 
   /* A STOP: a section anchored to the spine. On desktop its content is pushed
@@ -369,32 +317,27 @@
     flex: none;
   }
 
-  /* ---- Display headings (condensed, heavy, signage-uppercase) ------------ */
+  /* ---- Headings: condensed, heavy, sentence case -------------------------- */
   .heading-xl {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2.75rem, 9vw, 7rem);
-    line-height: 0.92;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    text-wrap: balance;
+    font-weight: var(--text-display--font-weight);
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: 0;
   }
   .heading-lg {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    line-height: 0.96;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    text-wrap: balance;
+    font-weight: var(--text-h2--font-weight);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: 0;
   }
   .heading-md {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.35rem, 2.6vw, 1.85rem);
-    line-height: 1.05;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
+    font-weight: var(--text-h3--font-weight);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: 0;
   }
 
   /* A single word in a heading gets the amber glow underline. */
@@ -453,53 +396,50 @@
     }
   }
 
-  /* ---- Buttons ------------------------------------------------------------ */
+  /* ---- Buttons -------------------------------------------------------------
+     Two kinds only: the filled orange call (near-black ink) and an outline call
+     with the phone glyph in orange. One orange call per frame. */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    padding: 0.95rem 1.6rem;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
     border-radius: var(--radius-md);
+    border: 1px solid transparent;
     font-family: var(--font-body);
     font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.01em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
     text-decoration: none;
     cursor: pointer;
-    border: 1.5px solid transparent;
-    transition:
-      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn--sm {
+    min-height: 2.75rem;
+    padding: 0 1rem;
   }
   .btn:active {
     transform: translateY(1px);
   }
-
-  /* The PHONE button — safety orange, the one CTA that matters. */
   .btn-call {
     background-color: var(--color-accent);
     color: var(--color-on-accent);
-    box-shadow: 0 8px 30px -8px oklch(68% 0.2 45 / 0.6);
   }
   .btn-call:hover {
     background-color: var(--color-accent-hover);
-    box-shadow: 0 10px 38px -8px oklch(68% 0.2 45 / 0.75);
   }
-
   .btn-outline {
     background-color: transparent;
     color: var(--color-on-surface);
-    border-color: oklch(100% 0 0 / 0.28);
+    border-color: var(--color-outline);
+  }
+  .btn-outline svg {
+    color: var(--color-accent);
   }
   .btn-outline:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background-color: oklch(80% 0.16 80 / 0.06);
+    background-color: var(--color-surface-container-high);
   }
 
   /* ---- Card --------------------------------------------------------------- */
@@ -727,91 +667,121 @@
     }
   }
 
-  /* ---- Call dock (mobile, CallDock.tsx) ----------------------------------
-     Persistent bottom bar — the load-bearing call action. */
+  /* ---- Call dock (phone only, CallDock.tsx) -------------------------------
+     The orange band: visible by default (no script keeps it), hidden while the
+     dispatcher's plate is on screen, shown from the moment it leaves. */
   .call-dock {
+    display: none;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: var(--z-sticky);
-    padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(to top, oklch(11% 0.012 255) 60%, oklch(11% 0.012 255 / 0));
+    min-height: 4.5rem;
+    padding: 0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  @media (max-width: 760px) {
+    .call-dock {
+      display: block;
+    }
+    html[data-plate="in"] .call-dock {
+      display: none;
+    }
+    /* The page keeps clearance for the dock. */
+    body {
+      padding-bottom: 4.5rem;
+    }
+  }
+  /* The amber ring would vanish on orange: the dock rings in the dark ink. */
+  .call-dock :focus-visible {
+    outline-color: var(--color-on-accent);
   }
   .call-dock__bar {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: 0.5rem;
   }
   .call-dock__main {
     flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-    padding: 0.7rem 1rem;
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent);
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding-right: 0.25rem;
     color: var(--color-on-accent);
     text-decoration: none;
-    box-shadow: 0 8px 30px -8px oklch(68% 0.2 45 / 0.7);
   }
   .call-dock__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: var(--radius-full);
-    background: oklch(100% 0 0 / 0.18);
+    background: var(--color-on-accent);
+    color: var(--color-accent);
+  }
+  .call-dock__text {
+    display: flex;
+    flex-direction: column;
+  }
+  .call-dock__label {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+  }
+  .call-dock__num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.625rem;
+    line-height: 1.75rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   .call-dock__toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
     width: 3rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    height: 3rem;
+    padding: 0;
+    border: 0;
     border-radius: var(--radius-md);
-    background-color: var(--color-surface-container-high);
-    color: var(--color-on-surface);
-    border: 1px solid var(--color-outline-variant);
+    background: var(--color-on-accent);
+    color: var(--color-accent);
   }
   .call-dock__more {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 0.5rem;
-    animation: dock-more-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    list-style: none;
   }
   .call-dock__more-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.7rem 1rem;
+    min-height: 3rem;
+    padding: 0 1rem;
     border-radius: var(--radius-md);
-    background-color: var(--color-surface-container-high);
-    border: 1px solid var(--color-outline-variant);
+    background: var(--color-on-accent);
     color: var(--color-on-surface);
     text-decoration: none;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
-  @keyframes dock-more-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .call-dock__who {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-on-surface-variant);
   }
-  @media (prefers-reduced-motion: reduce) {
-    .call-dock__more {
-      animation: none;
-    }
-  }
-  /* Page gets bottom padding on mobile so the dock never covers content. */
-  @media (max-width: 1023px) {
-    body {
-      padding-bottom: 5.5rem;
-    }
+  .call-dock__who svg {
+    color: var(--color-accent);
   }
 }
 

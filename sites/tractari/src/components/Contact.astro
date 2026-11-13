@@ -1,150 +1,287 @@
 ---
 import PhoneIcon from "./PhoneIcon.astro";
-import { phones, telLink } from "../content/site";
-import { site } from "../content/site";
+import { phones, site, telLink } from "../content/site";
 
-// STOP 4 — the destination. The drive ends here. The three numbers are the
-// brightest, largest thing on the page: the primary dispatcher dominates,
-// the other two sit beneath it, asymmetric — NOT a 3-card grid.
+// The board: the only raised object on the page. Three named lines; the
+// dispatcher's number is set large on the orange plate and the other two sit
+// beside it. It is the Contact section (`#contact`) and sits in the hero.
 const [primary, ...others] = phones;
 ---
 
-<section id="contact" class="stop section relative overflow-hidden">
-  <span class="stop__marker stop__marker--end" aria-hidden="true"></span>
-  <div class="contact-glow" aria-hidden="true"></div>
-
-  <div class="container-page relative z-[2]">
-    <div class="lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:items-center">
-      <div class="reveal">
-        <span class="stop-label">Suntem pe drum</span>
-        <h2 class="heading-xl !text-[clamp(2.6rem,8vw,5rem)] mt-4">
-          Sună. <span class="glow-word">Răspundem.</span>
-        </h2>
-        <p class="mt-5 max-w-md text-lg text-[var(--color-on-surface-variant)]">
-          Oricând, în toată {site.region}. Alege linia potrivită — sau sună la dispecerat și te direcționăm noi.
-        </p>
-      </div>
-
-      <div class="mt-10 lg:mt-0">
-        <!-- Primary number — dominant -->
-        <a href={telLink(primary.e164)} class="contact-primary reveal group">
-          <span class="contact-primary__icon">
-            <PhoneIcon class="w-6 h-6" />
+<section id="contact" class="board" aria-labelledby="contact-h">
+  <div class="board__head">
+    <h2 id="contact-h" class="heading-lg">
+      Sună. <br />
+      Răspundem.
+    </h2>
+    <p class="board__copy">
+      Oricând, în toată {site.region}. Alege linia potrivită. Sau sună la dispecerat și te direcționăm noi.
+    </p>
+  </div>
+  <div class="lines">
+    {primary && (
+      <a href={telLink(primary.e164)} class="line line--main">
+        <span class="disc">
+          <PhoneIcon class="icon" />
+        </span>
+        <span class="who">
+          <span class="tag">
+            <span>{primary.label}</span>
+            <span>sună acum</span>
           </span>
-          <span class="min-w-0">
-            <span class="block text-[0.78rem] uppercase tracking-[0.16em] text-[var(--color-on-accent)]/80">
-              {primary.label} · sună acum
-            </span>
-            <span class="block tnum font-display font-extrabold text-[clamp(1.9rem,6vw,2.8rem)] leading-none mt-1">
-              {primary.display}
-            </span>
-          </span>
-        </a>
-
-        <!-- The other two — secondary, side by side -->
-        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {others.map((p) => (
-            <a href={telLink(p.e164)} class="contact-secondary reveal group">
-              <span class="contact-secondary__icon">
-                <PhoneIcon class="w-4 h-4" />
-              </span>
-              <span class="min-w-0">
-                <span class="block text-[0.72rem] uppercase tracking-wider text-[var(--color-on-surface-variant)]">
-                  {p.label}
-                </span>
-                <span class="block tnum text-[1.15rem] font-semibold text-[var(--color-on-surface)] group-hover:text-[var(--color-primary)] transition-colors truncate">
-                  {p.display}
-                </span>
-              </span>
-            </a>
-          ))}
-        </div>
-
-        <p class="mt-5 text-[0.88rem] text-[var(--color-on-surface-variant)] reveal">
-          Preferi scris?{" "}
-          <a href={`mailto:${site.email}`} class="text-[var(--color-primary)] hover:underline">
-            {site.email}
-          </a>
-          . Pentru urgențe, telefonul rămâne cel mai rapid.
-        </p>
-      </div>
-    </div>
+          <span class="num">{primary.display}</span>
+        </span>
+      </a>
+    )}
+    {others.map((p, i) => (
+      <a href={telLink(p.e164)} class={`line ${i === 0 ? "line--a" : "line--b"}`}>
+        <span class="nm">{p.label}</span>
+        <span class="g">
+          <PhoneIcon class="icon" />
+        </span>
+        <span class="n2">{p.display}</span>
+      </a>
+    ))}
   </div>
 </section>
+<p class="mail">
+  Preferi scris? <a href={`mailto:${site.email}`}>{site.email}</a>. Pentru urgențe, telefonul rămâne cel mai rapid.
+</p>
+
+<script is:inline>
+  // One observer on the dispatcher's plate drives both the header call and the
+  // phone dock: while the plate is in view the header call is an outline and
+  // the dock is hidden; once it leaves, the header call fills and the dock
+  // shows. Without script the dock stays visible and the header call stays an
+  // outline.
+  (function () {
+    const plate = document.querySelector(".line--main");
+    if (!plate || typeof IntersectionObserver === "undefined") return;
+    const nav = document.getElementById("site-nav");
+    const top = nav ? Math.round(nav.getBoundingClientRect().bottom) : 0;
+    const root = document.documentElement;
+    new IntersectionObserver(
+      function (entries) {
+        root.dataset.plate = entries[entries.length - 1].isIntersecting ? "in" : "out";
+      },
+      { rootMargin: "-" + top + "px 0px 0px 0px" },
+    ).observe(plate);
+  })();
+</script>
 
 <style>
-  .contact-glow {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(55% 55% at 80% 35%, oklch(80% 0.16 80 / 0.2) 0%, oklch(80% 0.16 80 / 0) 60%),
-      radial-gradient(45% 45% at 95% 60%, oklch(95% 0.03 230 / 0.1) 0%, oklch(95% 0.03 230 / 0) 55%);
+  .board {
+    position: relative;
+    margin-top: 1.25rem;
+    padding: 2rem;
+    background: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-board);
+  }
+  .board__head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: end;
+  }
+  .board__copy {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--color-on-surface-variant);
+  }
+  .lines {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .line {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 6rem;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+  }
+  .line:active {
+    transform: translateY(1px);
+  }
+  .line :global(.icon) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
-  .contact-primary {
-    display: flex;
+  /* The dispatcher's plate: the one filled orange call on the first screen. */
+  .line--main {
+    grid-column: 1 / span 6;
+    flex-direction: row;
     align-items: center;
-    gap: 1.1rem;
-    padding: 1.4rem 1.6rem;
-    border-radius: var(--radius-lg);
-    background-color: var(--color-accent);
+    gap: 1.25rem;
+    background: var(--color-accent);
     color: var(--color-on-accent);
-    text-decoration: none;
-    box-shadow: 0 16px 50px -14px oklch(68% 0.2 45 / 0.7);
-    transition:
-      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 200ms ease;
   }
-  .contact-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 60px -14px oklch(68% 0.2 45 / 0.85);
+  .line--main:hover {
+    background: var(--color-accent-hover);
   }
-  .contact-primary:active {
-    transform: translateY(0);
-  }
-  .contact-primary__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .disc {
+    display: grid;
+    place-items: center;
+    flex: none;
     width: 3rem;
     height: 3rem;
     border-radius: var(--radius-full);
-    flex: none;
-    background: oklch(100% 0 0 / 0.2);
+    background: var(--color-on-accent);
+    color: var(--color-accent);
   }
-  @media (prefers-reduced-motion: reduce) {
-    .contact-primary:hover {
-      transform: none;
+  .who {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .tag {
+    display: flex;
+    gap: 0.75rem;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+  }
+  .tag span:last-child {
+    font-weight: 400;
+  }
+  .num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-h2);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* The two backup lines. */
+  .line--a,
+  .line--b {
+    display: grid;
+    grid-template-areas: "nm nm" "g n2";
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.125rem 0.5rem;
+    align-content: center;
+    background: var(--color-surface-container-high);
+  }
+  .line--a {
+    grid-column: 7 / span 3;
+  }
+  .line--b {
+    grid-column: 10 / span 3;
+  }
+  .line--a:hover,
+  .line--b:hover {
+    background: var(--color-outline-variant);
+  }
+  .nm {
+    grid-area: nm;
+    color: var(--color-on-surface-variant);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+  }
+  .g {
+    grid-area: g;
+    align-self: center;
+    color: var(--color-accent);
+  }
+  .g :global(.icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .n2 {
+    grid-area: n2;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-h3);
+    line-height: 1.0715;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .mail {
+    margin: 1rem 0 0;
+    color: var(--color-on-surface-variant);
+  }
+  .mail a {
+    color: var(--color-on-surface);
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 1000px) {
+    .line--main {
+      grid-column: 1 / -1;
+    }
+    .line--a {
+      grid-column: 1 / span 6;
+    }
+    .line--b {
+      grid-column: 7 / span 6;
     }
   }
 
-  .contact-secondary {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 1rem 1.1rem;
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface-container);
-    border: 1px solid var(--color-outline-variant);
-    text-decoration: none;
-    transition:
-      border-color 200ms ease,
-      background-color 200ms ease;
-  }
-  .contact-secondary:hover {
-    border-color: oklch(80% 0.16 80 / 0.5);
-    background-color: var(--color-surface-container-high);
-  }
-  .contact-secondary__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: var(--radius-full);
-    flex: none;
-    background: var(--color-primary-container);
-    color: var(--color-primary);
+  @media (max-width: 760px) {
+    .board {
+      margin-top: 0.75rem;
+      padding: 1rem;
+    }
+    .board__head {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .board__head :global(br) {
+      display: none;
+    }
+    .board__copy {
+      font-size: 0.9375rem;
+      line-height: 1.375rem;
+    }
+    .lines {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .line--main,
+    .line--a,
+    .line--b {
+      grid-column: 1;
+    }
+    .line--main {
+      min-height: 4.5rem;
+      padding: 0 1rem;
+      gap: 1rem;
+    }
+    .disc {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    .disc :global(.icon) {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    .num {
+      font-size: 2rem;
+      line-height: 2.125rem;
+    }
+    .line--a,
+    .line--b {
+      min-height: 3.5rem;
+      grid-template-areas: "g nm n2";
+      grid-template-columns: 1.25rem 1fr auto;
+      align-items: center;
+      gap: 0 0.75rem;
+      padding: 0 1rem;
+    }
+    .n2 {
+      font-size: 1.5rem;
+      line-height: 1.625rem;
+    }
   }
 </style>
