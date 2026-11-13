@@ -18,16 +18,16 @@ import { services } from "../content/services";
   path="/servicii/"
 >
   <WipBanner />
-  <Nav current="/servicii/" solid />
+  <Nav current="/servicii/" />
   <main id="main">
     <PageHeader
       title="Ce facem pe BMW"
       lead="De la revizia de rutină la lucrările pe care nu le face oricine. Fiecare intrare de aici pleacă de la o diagnoză, nu de la o presupunere."
-      readout={`${services.length} lucrări · deviz în avans · garanție 12 luni`}
+      readout={[`${services.length} lucrări`, "deviz în avans", "garanție 12 luni"]}
     />
     <Services
       title="Nouă lucrări, toate pe BMW"
-      lede="Fiecare intrare de aici are un simbol în bord și o cauză de găsit. Dacă lucrarea ta nu e în listă, sună-ne — probabil o rezolvăm."
+      lede="Fiecare intrare de aici are un simbol în bord și o cauză de găsit. Dacă lucrarea ta nu e în listă, sună-ne, probabil o rezolvăm."
       id="lista"
     />
     <Process />

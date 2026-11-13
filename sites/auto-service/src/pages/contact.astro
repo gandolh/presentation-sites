@@ -16,12 +16,13 @@ import MobileCallBar from "../components/MobileCallBar.astro";
   path="/contact/"
 >
   <WipBanner />
-  <Nav current="/contact/" solid />
+  <Nav current="/contact/" />
   <main id="main">
     <PageHeader
       title="Hai cu mașina la noi"
-      lead="Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp — poți atașa și o poză cu martorul aprins sau cu piesa."
-      readout={`Deschis ${hoursReadout}`}
+      lead="Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp, poți atașa și o poză cu martorul aprins sau cu piesa."
+      readout={hoursReadout}
+      openNow
     />
     <Contact bare />
     <Faq />

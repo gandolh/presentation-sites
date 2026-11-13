@@ -17,12 +17,12 @@ import { site } from "../content/site";
   path="/despre/"
 >
   <WipBanner />
-  <Nav current="/despre/" solid />
+  <Nav current="/despre/" />
   <main id="main">
     <PageHeader
       title="Atelierul"
       lead="Suntem câțiva oameni dintr-o familie care repară BMW-uri pentru că asta le place cu adevărat. Atât."
-      readout={`${site.stats.family} oameni · ${site.stats.years} ani · numai BMW`}
+      readout={[`${site.stats.family} oameni`, `${site.stats.years} ani`, "numai BMW"]}
     />
     <About />
     <WhyUs />

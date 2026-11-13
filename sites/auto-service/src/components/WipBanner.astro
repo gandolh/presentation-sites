@@ -1,70 +1,24 @@
 ---
 // Thin top banner for the soft-launch phase: tells visitors the site is still
 // being finished and points them at the phone / WhatsApp (the real conversion
-// path). Sits at the very top, above the sticky Nav. Toggle via site.wip.show
-// (set false in site.local.ts once real content is live). RO-only.
+// path). Sits at the very top, above the sticky header, under the M stripe.
+// Toggle via site.wip.show (set false in site.local.ts once real content is
+// live). RO-only.
 import { site, telLink, waLink } from "../content/site";
 ---
 
 {site.wip.show && (
-  <div
-    id="wip-banner"
-    class="relative z-[var(--z-sticky)] border-b border-[var(--color-outline-variant)] bg-[oklch(10%_0.008_255)] text-[var(--color-on-surface)]"
-  >
-    <div class="m-stripe m-stripe--full" aria-hidden="true" />
-    <div class="container-page flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
-      <span class="inline-flex items-center gap-2">
-        <span class="wip-dot" aria-hidden="true" />
-        <span class="text-[0.8rem] font-semibold leading-tight">{site.wip.text}</span>
-      </span>
-      <span class="inline-flex items-center gap-3 text-[0.8rem] font-semibold">
-        <a href={telLink()} class="text-[var(--color-primary-bright)] hover:underline underline-offset-2">
-          {site.phone}
-        </a>
-        <span class="text-[var(--color-outline)]" aria-hidden="true">
-          ·
-        </span>
-        <a
-          href={waLink()}
-          target="_blank"
-          rel="noopener"
-          class="text-[var(--color-primary-bright)] hover:underline underline-offset-2"
-        >
-          WhatsApp
-        </a>
-      </span>
+  <>
+    <div class="stripe" aria-hidden="true">
+      <i />
+      <i />
+      <i />
     </div>
-  </div>
+    <p class="banner">
+      {site.wip.text} <a href={telLink()}>{site.phone}</a>{" "}
+      <a href={waLink()} target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+    </p>
+  </>
 )}
-
-<style>
-  /* Brand-blue info accent, not a green "open/live" status light (which would
-     misread next to the WhatsApp green and imply availability, not "in lucru"). */
-  .wip-dot {
-    flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: var(--radius-full);
-    background-color: var(--color-primary-bright);
-    box-shadow: 0 0 0 0 var(--color-primary-bright);
-    animation: wip-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes wip-pulse {
-    0% {
-      box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-primary-bright) 60%, transparent);
-    }
-    70% {
-      box-shadow: 0 0 0 6px color-mix(in oklch, var(--color-primary-bright) 0%, transparent);
-    }
-    100% {
-      box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-primary-bright) 0%, transparent);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .wip-dot {
-      animation: none;
-    }
-  }
-</style>

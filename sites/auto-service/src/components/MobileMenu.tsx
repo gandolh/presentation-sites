@@ -17,7 +17,7 @@ const CLOSE = "M5.6 5.6l12.8 12.8 M18.4 5.6 5.6 18.4";
 
 // Each link rises and fades in after the panel, staggered by its index (--i).
 const rise =
-  "motion-safe:[transition:opacity_400ms_var(--ease-out)_calc(60ms+var(--i)*42ms),translate_400ms_var(--ease-out)_calc(60ms+var(--i)*42ms),color_150ms] group-data-starting-style:translate-y-[9px] group-data-starting-style:opacity-0";
+  "motion-safe:[transition:opacity_400ms_var(--ease-out)_calc(60ms+var(--i)*42ms),translate_400ms_var(--ease-out)_calc(60ms+var(--i)*42ms)] group-data-starting-style:translate-y-[9px] group-data-starting-style:opacity-0";
 
 export default function MobileMenu({ current = "/" }: { current?: string }) {
   const [open, setOpen] = useState(false);
@@ -40,14 +40,11 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
       title="Meniu de navigare"
       finalFocus={() => !leftByLink.current}
       trigger={
-        <button
-          type="button"
-          aria-label="Deschide meniul"
-          className="nav-burger lg:hidden inline-flex items-center justify-center w-11 h-11 rounded transition-colors hover:bg-white/8"
-        >
+        <button type="button" aria-label="Deschide meniul" className="menu">
           <svg
-            width="22"
-            height="22"
+            className="ic"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -61,23 +58,18 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
         </button>
       }
       viewportClassName="fixed inset-0 z-(--z-overlay)"
-      popupClassName="flex h-full flex-col text-on-surface bg-surface-menu bg-[radial-gradient(130%_92%_at_100%_0%,oklch(72%_0.17_58/0.16)_0%,oklch(72%_0.17_58/0)_62%)] shadow-[0_10px_54px_-14px_oklch(0%_0_0/0.85)] motion-safe:ease-out"
+      popupClassName="flex h-full flex-col bg-background px-6 pb-6 text-on-surface motion-safe:ease-out"
     >
-      <div className="flex items-center justify-between px-5 py-4 border-b border-outline-variant">
-        <span className="flex items-center gap-2.5">
-          <span
-            className="w-[9px] h-[9px] rounded-full bg-primary shadow-[0_0_10px_oklch(72%_0.17_58/0.9)]"
-            aria-hidden="true"
-          />
-          <span className="wordmark text-lg uppercase">{site.name}</span>
-        </span>
+      <div className="flex items-center justify-between border-b border-outline-variant py-3">
+        <span className="mark text-lg">{site.name}</span>
         <DrawerClose
           aria-label="Închide meniul"
-          className="inline-flex items-center justify-center w-11 h-11 rounded transition-colors hover:bg-white/8"
+          className="inline-flex h-12 w-12 items-center justify-center rounded-md border border-outline"
         >
           <svg
-            width="22"
-            height="22"
+            className="ic"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -90,33 +82,27 @@ export default function MobileMenu({ current = "/" }: { current?: string }) {
           </svg>
         </DrawerClose>
       </div>
-
-      <nav className="flex-1 flex flex-col justify-center gap-1 px-6">
+      <nav className="flex flex-1 flex-col overflow-y-auto">
         {links.map((link, i) => (
           <a
             key={link.href}
             href={withBase(link.href)}
             onClick={follow}
             aria-current={current === link.href ? "page" : undefined}
-            className={
-              `${rise} flex items-baseline gap-4 py-3 border-b border-outline-variant ` +
-              (current === link.href ? "text-primary-bright" : "hover:text-primary-bright")
-            }
+            className={`${rise} flex min-h-14 items-center border-b border-outline-variant text-number font-bold no-underline aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8`}
             style={{ "--i": i } as React.CSSProperties}
           >
-            <span className="reading text-[0.66rem] text-outline">{String(i + 1).padStart(2, "0")}</span>
-            <span className="heading-lg !text-[1.6rem]">{link.label}</span>
+            {link.label}
           </a>
         ))}
-
-        <div className={`${rise} flex flex-col gap-3 mt-8`} style={{ "--i": links.length } as React.CSSProperties}>
-          <a href={telLink()} onClick={follow} className="btn btn-primary btn-lg w-full" data-cta="menu-call">
-            Sună acum · {site.phone}
+        <div className={`${rise} mt-6 grid gap-3`} style={{ "--i": links.length } as React.CSSProperties}>
+          <a href={telLink()} onClick={follow} className="call !min-h-12" data-cta="menu-call">
+            <span className="text-title font-bold">Sună acum: {site.phone}</span>
           </a>
           <a
             href={waLink()}
             onClick={follow}
-            className="btn btn-whatsapp w-full"
+            className="btn ol"
             target="_blank"
             rel="noopener"
             data-cta="menu-whatsapp"

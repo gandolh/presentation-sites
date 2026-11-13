@@ -1,9 +1,7 @@
 ---
-/*
-  The five steps, run as a service-interval readout: one illuminated rail with
-  a lit segment per stage. The numbers are kept because the sequence itself is
-  the information — this is the order the customer experiences.
-*/
+// The five steps of the work, in the order the customer meets them. The
+// sequence is the information, so the numbers stay, with a node on each step's
+// rule and a hairline over its short result.
 const steps = [
   {
     title: "Ne suni sau ne scrii",
@@ -29,139 +27,19 @@ const steps = [
 ];
 ---
 
-<section id="proces" class="section proc" aria-labelledby="proces-title">
-  <div class="container-page">
-    <div class="proc__head reveal">
-      <h2 id="proces-title" class="heading-lg">
-        Cum lucrăm, de la telefon la cheie
-      </h2>
-      <p class="proc__lede">Fără bătăi de cap și fără costuri care apar din senin. Știi tot timpul la ce pas ești.</p>
-    </div>
-
-    <ol class="proc__rail reveal">
+<section class="sec" aria-labelledby="proc-title">
+  <h2 id="proc-title">Cum lucrăm, de la telefon la cheie</h2>
+  <p class="slede">Fără bătăi de cap și fără costuri care apar din senin. Știi tot timpul la ce pas ești.</p>
+  <div class="panel">
+    <ol class="steps">
       {steps.map((s, i) => (
-        <li class="proc__step" style={`--i:${i}`}>
-          <div class="proc__marker" aria-hidden="true">
-            <span class="proc__seg"></span>
-            <span class="proc__dot"></span>
-          </div>
-          <p class="proc__n reading">{String(i + 1).padStart(2, "0")}</p>
-          <h3 class="heading-md proc__title">{s.title}</h3>
-          <p class="proc__body">{s.body}</p>
-          <p class="legend proc__read">{s.read}</p>
+        <li>
+          <span class="num">{String(i + 1).padStart(2, "0")}</span>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+          <span class="read">{s.read}</span>
         </li>
       ))}
     </ol>
   </div>
 </section>
-
-<style>
-  .proc {
-    background-color: oklch(15.5% 0.01 255);
-    border-block: 1px solid var(--color-outline-variant);
-  }
-  .proc__head {
-    max-width: 46ch;
-    margin-bottom: clamp(2.5rem, 6vw, 4rem);
-  }
-  .proc__lede {
-    margin-top: 1.1rem;
-    font-size: 1.02rem;
-    color: var(--color-on-surface-variant);
-  }
-
-  .proc__rail {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 2rem;
-  }
-  @media (min-width: 860px) {
-    .proc__rail {
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0 1.5rem;
-    }
-  }
-
-  .proc__step {
-    position: relative;
-    padding-top: 2.15rem;
-  }
-
-  /* The rail: a dim channel with a lit segment per step. */
-  .proc__marker {
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: 3px;
-    background-color: oklch(23% 0.012 256);
-  }
-  /* The rail is coded in the M order — segment colour, not illumination.
-     Amber is reserved for the step the visitor is actually touching. */
-  .proc__seg {
-    position: absolute;
-    inset: 0;
-    background-color: var(--seg, var(--color-m-blue));
-    transition:
-      background-color 200ms var(--ease-out),
-      box-shadow 200ms var(--ease-out);
-  }
-  .proc__step:nth-child(1) .proc__seg,
-  .proc__step:nth-child(2) .proc__seg {
-    --seg: var(--color-m-blue);
-  }
-  .proc__step:nth-child(3) .proc__seg {
-    --seg: var(--color-m-indigo);
-  }
-  .proc__step:nth-child(4) .proc__seg,
-  .proc__step:nth-child(5) .proc__seg {
-    --seg: var(--color-m-red);
-  }
-
-  .proc__dot {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 9px;
-    height: 9px;
-    margin-top: -4.5px;
-    border-radius: 50%;
-    background-color: var(--color-on-surface);
-    transition:
-      background-color 200ms var(--ease-out),
-      box-shadow 200ms var(--ease-out);
-  }
-  .proc__step:hover .proc__seg,
-  .proc__step:focus-within .proc__seg {
-    background-color: var(--color-primary);
-    box-shadow: 0 0 12px -1px oklch(72% 0.17 58 / 0.7);
-  }
-  .proc__step:hover .proc__dot,
-  .proc__step:focus-within .proc__dot {
-    background-color: var(--color-primary);
-    box-shadow: 0 0 10px oklch(72% 0.17 58 / 0.85);
-  }
-
-  .proc__n {
-    color: var(--color-on-surface-variant);
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.7rem;
-  }
-  .proc__title {
-    margin-bottom: 0.5rem;
-  }
-  .proc__body {
-    font-size: 0.885rem;
-    line-height: 1.6;
-    color: var(--color-on-surface-variant);
-    max-width: 34ch;
-  }
-  .proc__read {
-    margin-top: 0.9rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid var(--color-outline-variant);
-    color: var(--color-on-surface);
-  }
-</style>

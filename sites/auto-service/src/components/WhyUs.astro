@@ -1,17 +1,13 @@
 ---
 import Icon from "./Icon.astro";
 
-/*
-  Four reasons, each pinned to a symbol from the closed set. Deliberately not a
-  card grid: a lead statement against a hairline column of claims, the way a
-  spec page reads. Each claim is short — the old version was a wall of
-  paragraphs, which is exactly what made the page feel text-heavy.
-*/
+// Four reasons, each pinned to a symbol from the closed set, as a lead
+// statement against a hairline column of claims. Not a card grid.
 const reasons = [
   {
     icon: "diagnose",
     title: "Doar BMW, zi de zi",
-    body: "Aceleași motoare și aceeași electronică în fiecare zi. Cunoaștem bolile de model — lanț N47, VANOS, răcire — și știm unde ne uităm întâi.",
+    body: "Aceleași motoare și aceeași electronică în fiecare zi. Cunoaștem bolile de model (lanț N47, VANOS, răcire) și știm unde ne uităm întâi.",
   },
   {
     icon: "phone",
@@ -31,93 +27,29 @@ const reasons = [
 ];
 ---
 
-<section id="de-ce-noi" class="section why" aria-labelledby="why-title">
-  <div class="container-page why__grid">
-    <div class="why__lead reveal">
-      <div>
-        <h2 id="why-title" class="heading-lg">
-          De ce să ne lași tocmai nouă mașina
-        </h2>
-        <p class="why__lede">
-          Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate, în schimb, să te trateze ca pe un{" "}
-          <strong class="why__em">vecin</strong>, nu ca pe un număr de bon.
-        </p>
-      </div>
+<section class="sec" aria-labelledby="why-title">
+  <div class="why">
+    <div>
+      <h2 id="why-title">De ce să ne lași tocmai nouă mașina</h2>
+      <p class="slede" style="margin-bottom:0">
+        Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate, în schimb, să te trateze ca pe un{" "}
+        <strong>vecin</strong>, nu ca pe un număr de bon.
+      </p>
     </div>
-
-    <ul class="why__list reveal">
-      {reasons.map((r) => (
-        <li class="why__item">
-          <span class="why__ico" aria-hidden="true">
-            <Icon name={r.icon} size={20} />
-          </span>
-          <div>
-            <h3 class="heading-md why__title">{r.title}</h3>
-            <p class="why__body">{r.body}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div class="panel">
+      <ul class="rows">
+        {reasons.map((r) => (
+          <li>
+            <span class="well" aria-hidden="true">
+              <Icon name={r.icon} size={24} class="ic" />
+            </span>
+            <div>
+              <h3>{r.title}</h3>
+              <p>{r.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
-
-<style>
-  .why__grid {
-    display: grid;
-    gap: 2.75rem;
-  }
-  @media (min-width: 1024px) {
-    .why__grid {
-      grid-template-columns: 0.86fr 1.14fr;
-      gap: 4rem;
-      align-items: start;
-    }
-  }
-
-  .why__lede {
-    margin-top: 1.1rem;
-    font-size: 1.05rem;
-    line-height: 1.62;
-    color: var(--color-on-surface-variant);
-    max-width: 40ch;
-  }
-  .why__em {
-    color: var(--color-on-surface);
-    font-weight: 600;
-  }
-
-  .why__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--color-outline-variant);
-  }
-  @media (min-width: 700px) {
-    .why__list {
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: 2.75rem;
-    }
-  }
-
-  .why__item {
-    display: grid;
-    grid-template-columns: 2.1rem 1fr;
-    gap: 0.9rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--color-outline-variant);
-  }
-  .why__ico {
-    color: var(--color-primary-bright);
-    padding-top: 0.15rem;
-  }
-  .why__title {
-    margin-bottom: 0.4rem;
-  }
-  .why__body {
-    font-size: 0.885rem;
-    line-height: 1.62;
-    color: var(--color-on-surface-variant);
-  }
-</style>

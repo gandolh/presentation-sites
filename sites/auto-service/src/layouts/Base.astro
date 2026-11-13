@@ -34,6 +34,9 @@ const ogImage = absoluteUrl("/images/og-image.png");
 // The hours come from the single source in site.ts (`openingHoursSpecification`
 // is derived there, with the table and the readouts) — nothing is retyped here.
 const openingHours = openingHoursSpecification;
+
+// The same hours for the open-now script, as plain days and times.
+const openDays = site.hours.flatMap((h) => (h.closed ? [] : [{ days: h.days, opens: h.opens, closes: h.closes }]));
 ---
 
 <!doctype html>
@@ -41,7 +44,7 @@ const openingHours = openingHoursSpecification;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07090c" />
+    <meta name="theme-color" content="#161310" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <link rel="canonical" href={canonical} />
 
@@ -97,97 +100,55 @@ const openingHours = openingHoursSpecification;
     />
   </head>
   <body>
-    <!--
-      DIRECTION CONTRACT — Bordcomputer
-
-      THESIS: The page IS the car's instrument binnacle at night, not a
-      description of a workshop; it refuses the dark-hero-plus-icon-card auto
-      template this category always ships.
-      OWN-WORLD: Near-black graphite bezel, steel wells stepping up out of it,
-      silver-white printed legends, ONE amber illumination that lights only what
-      is live, the M tri-color as LED segment coding, and brushed-aluminium trim
-      as the single light material. Archivo on its width axis, Hanken body,
-      Azeret Mono for readings. One closed 1.75-stroke pictogram set.
-      STORY: A worried BMW owner recognises people who read the car, taps his own
-      symptom, and calls.
-      FIRST VIEWPORT: Full-bleed binnacle. Left: three symptom chips, display
-      headline with one lit word, the amber call control, a status rail. Right: a
-      tachometer with its dot-matrix window plus a cropped shoulder dial. Under
-      both: the service-interval LED band carrying the four proofs.
-      FORM: Bordcomputer, candidate 3 of the grounded list; seed key 32bf8b80.
-      FINISH: unreviewed and undocumented is unfinished; this build ends with the
-      finish review, the verdict, DESIGN.md, and every shipping raster carrying
-      its provenance.
-    -->
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-primary)] focus:text-[var(--color-on-primary)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-md)] focus:font-semibold"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:bg-[var(--color-on-surface)] focus:text-[var(--color-background)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-md)] focus:font-semibold"
     >
       Sari la conținut
     </a>
     <slot />
 
+    <!--
+      Two small scripts, and the page reads fine without either.
+
+      Open now: the readout window and the contact header show the green dot and "Deschis acum" only inside the
+      opening hours, read in the workshop's time zone from the hours in site.ts. With scripts off the window keeps the
+      town.
+
+      Call bar: the phone's sticky call bar shows once the card's call has left the view, and hides while a page's own
+      call (the contact block) is in view. With scripts off it stays visible, as it always did.
+    -->
+    <script is:inline define:vars={{ hours: openDays }}>
+      (() => {
+        const parts = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Europe/Bucharest",
+          weekday: "long",
+          hour: "2-digit",
+          minute: "2-digit",
+          hourCycle: "h23",
+        }).formatToParts(new Date());
+        const get = (type) => parts.find((p) => p.type === type)?.value;
+        const now = `${get("hour")}:${get("minute")}`;
+        const day = get("weekday");
+        const open = hours.some((h) => h.days.includes(day) && now >= h.opens && now < h.closes);
+        if (open) document.documentElement.setAttribute("data-open", "");
+      })();
+    </script>
     <script is:inline>
-      // Scroll-triggered fade-in. Only hide-then-reveal when JS + observer are
-      // available; otherwise the CSS default leaves all .reveal content visible
-      // (no-JS, crawlers, link-preview bots). Honour reduced-motion too.
-      //
-      // CRITICAL failsafe: a JS-capable client that never scrolls — a headless
-      // renderer, a link-preview / social-card bot, or a backgrounded tab where
-      // IntersectionObserver is throttled — would otherwise leave every
-      // not-yet-seen .reveal stuck at opacity:0 and capture a blank page. So we
-      // (a) reveal anything already in the first viewport synchronously, and
-      // (b) force-reveal everything after a short timeout regardless of scroll.
-      (function () {
-        const prefersReduced =
-          typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (typeof IntersectionObserver === "undefined" || prefersReduced) {
-          return; // leave content visible, skip animation entirely
-        }
-
-        document.documentElement.classList.add("js-reveal");
-        const reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
-
-        function show(el) {
-          el.classList.add("is-visible");
-        }
-
-        const io = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                show(entry.target);
-                io.unobserve(entry.target);
-              }
-            });
-          },
-          { rootMargin: "-40px 0px" },
-        );
-        reveals.forEach(function (el) {
-          io.observe(el);
-        });
-
-        // (a) Reveal whatever is already on screen at load.
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        reveals.forEach(function (el) {
-          if (el.getBoundingClientRect().top < vh) {
-            show(el);
-            io.unobserve(el);
+      (() => {
+        const bar = document.querySelector("[data-call-bar]");
+        if (!bar || typeof IntersectionObserver === "undefined") return;
+        const seen = new Set();
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) seen.add(e.target);
+            else seen.delete(e.target);
           }
+          if (seen.size === 0) bar.setAttribute("data-show", "");
+          else bar.removeAttribute("data-show");
         });
-
-        // (b) Hard failsafe: after a short grace period, reveal everything still
-        // hidden, whether or not the client ever scrolled.
-        function revealAll() {
-          reveals.forEach(function (el) {
-            if (!el.classList.contains("is-visible")) {
-              el.classList.add("reveal-now");
-              show(el);
-            }
-          });
-          io.disconnect();
-        }
-        window.setTimeout(revealAll, 2500);
+        document.querySelectorAll("[data-call-card], [data-call-own]").forEach((el) => io.observe(el));
+        document.documentElement.classList.add("bar-js");
       })();
     </script>
   </body>

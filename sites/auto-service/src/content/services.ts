@@ -56,7 +56,7 @@ export const services: Service[] = [
     title: "Electrică & electronică auto",
     subtitle: "Baterie, alternator, instalație",
     description:
-      "Baterie (cu înregistrare în sistem), alternator, electromotor, instalație electrică, iluminat și senzori — diagnoză și reparație.",
+      "Baterie (cu înregistrare în sistem), alternator, electromotor, instalație electrică, iluminat și senzori: diagnoză și reparație.",
   },
   {
     id: "climatizare",

@@ -9,7 +9,7 @@ export type FaqItem = {
 export const faq: FaqItem[] = [
   {
     q: "Reparați doar BMW?",
-    a: "Suntem specializați pe BMW — acolo avem experiența, sculele și diagnoza dedicată. Pentru alte mărci ne poți întreba, însă punctul nostru forte rămâne BMW.",
+    a: "Suntem specializați pe BMW: acolo avem experiența, sculele și diagnoza dedicată. Pentru alte mărci ne poți întreba, însă punctul nostru forte rămâne BMW.",
   },
   {
     q: "Primesc un deviz înainte de reparație?",
@@ -21,7 +21,7 @@ export const faq: FaqItem[] = [
   },
   {
     q: "Cât durează o revizie?",
-    a: "O revizie obișnuită durează în jur de 1–2 ore. Lucrările mai complexe (distribuție, suspensie) le programăm și îți spunem estimarea la confirmare.",
+    a: "O revizie obișnuită durează în jur de 1‒2 ore. Lucrările mai complexe (distribuție, suspensie) le programăm și îți spunem estimarea la confirmare.",
   },
   {
     q: "Pot aduce piesele mele?",

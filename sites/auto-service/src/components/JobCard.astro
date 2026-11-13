@@ -1,0 +1,75 @@
+---
+/*
+  The job card: the one light material on the page. The call, WhatsApp, the
+  three symptoms a worried owner arrives with and the readout window, pinned at
+  the right of a wide screen and under the lede on a phone. Each symptom opens
+  WhatsApp with the message already written, so the visitor never has to compose
+  the awkward first message.
+
+  The readout window keeps the town on line 1 with scripts off or out of hours;
+  a script in Base.astro adds the green dot and "Deschis acum" inside the hours.
+*/
+import Icon from "./Icon.astro";
+import { hoursReadout, site, telLink, waLink } from "../content/site";
+
+const symptoms = [
+  {
+    icon: "warning",
+    label: "Mi-a apărut un martor",
+    msg: "Bună ziua! Mi-a apărut un martor pe bord. Model și an: ___. Ce scrie / cum arată martorul: ___.",
+  },
+  {
+    icon: "wrench",
+    label: "Revizie depășită",
+    msg: "Bună ziua! Am revizia depășită și aș vrea o programare. Model și an: ___. Km actuali: ___.",
+  },
+  {
+    icon: "noise",
+    label: "Face un zgomot",
+    msg: "Bună ziua! Mașina face un zgomot. Model și an: ___. Când apare zgomotul: ___.",
+  },
+];
+---
+
+<aside class="card" aria-label="Contact rapid">
+  <a class="call" href={telLink()} data-call-card data-cta="card-call">
+    <Icon name="phone" size={24} class="ic" />
+    <span>
+      <span class="l">Sună acum</span>
+      <span class="n">{site.phone}</span>
+    </span>
+  </a>
+  <a class="wab" href={waLink()} target="_blank" rel="noopener noreferrer" data-cta="card-whatsapp">
+    <Icon name="whatsapp" size={24} class="ic" />
+    Trimite o poză pe WhatsApp
+  </a>
+  <hr class="h1" />
+  <p class="sub">Spune-ne ce are mașina</p>
+  <ul class="sym" aria-label="Spune-ne ce are mașina">
+    {symptoms.map((s) => (
+      <li>
+        <a href={waLink(s.msg)} target="_blank" rel="noopener noreferrer">
+          <Icon name={s.icon} size={24} class="ic" />
+          {s.label}
+          <span class="wa">
+            <Icon name="whatsapp" size={24} class="ic" />
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <hr class="h2" />
+  <div class="hours" role="group" aria-label="Program">
+    <div class="open" data-open-only>
+      <span class="dot" aria-hidden="true"></span>Deschis acum
+    </div>
+    <div class="town">
+      {site.city}, {site.county}
+    </div>
+    <div class="hrs">
+      {hoursReadout.map((h) => (
+        <span class="t">{h}</span>
+      ))}
+    </div>
+  </div>
+</aside>

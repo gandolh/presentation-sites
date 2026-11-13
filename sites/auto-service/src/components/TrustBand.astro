@@ -1,144 +1,28 @@
 ---
 /*
-  The service-interval band. On a real cluster, pressing the trip stalk with
-  the key at position I lights a row of LED segments showing how much service
-  life is left. Here the same instrument carries the four things a worried
-  owner needs to believe — and the segments are coded in the M order
-  (light blue -> indigo -> red), with amber reserved for what is live.
+  The four things a worried owner needs to believe, as a bordered table above
+  the fold: a label, the claim, the note. No note is shortened.
 */
 const items = [
-  {
-    legend: "AUTORIZARE",
-    title: "Autorizat RAR",
-    note: "Lucrări conforme, cu factură",
-    lit: 5,
-    tone: "blue",
-  },
-  {
-    legend: "ÎNAINTE DE LUCRARE",
-    title: "Deviz scris, în avans",
-    note: "Niciun cost neaprobat de tine",
-    lit: 4,
-    tone: "indigo",
-  },
-  {
-    legend: "DUPĂ LUCRARE",
-    title: "Garanție 12 luni",
-    note: "Piese și manoperă, în scris",
-    lit: 3,
-    tone: "red",
-  },
-  {
-    legend: "SPECIALIZARE",
-    title: "Doar BMW, zi de zi",
-    note: "Diagnoză dedicată, nu generalistă",
-    lit: 5,
-    tone: "amber",
-  },
+  { label: "Autorizare", title: "Autorizat RAR", note: "Lucrări conforme, cu factură" },
+  { label: "Înainte de lucrare", title: "Deviz scris, în avans", note: "Niciun cost neaprobat de tine" },
+  { label: "După lucrare", title: "Garanție 12 luni", note: "Piese și manoperă, în scris" },
+  { label: "Specializare", title: "Doar BMW, zi de zi", note: "Diagnoză dedicată, nu generalistă" },
 ] as const;
-
-const SEGMENTS = 5;
 ---
 
-<section class="band" aria-label="De ce ne poți lăsa mașina">
-  <div class="band__grid">
-    {items.map((it) => (
-      <div class="band__cell">
-        <p class="legend band__legend">{it.legend}</p>
-        <div class="band__leds" aria-hidden="true">
-          {Array.from({ length: SEGMENTS }, (_, i) => (
-            <span class:list={["led", i < it.lit && `led--${it.tone}`]}></span>
-          ))}
-        </div>
-        <h3 class="heading-md band__title">{it.title}</h3>
-        <p class="band__note">{it.note}</p>
-      </div>
-    ))}
+<div class="trustwrap">
+  <div class="panel">
+    <table class="trust" aria-label="De ce ne poți lăsa mașina">
+      <tbody class="tbody">
+        {items.map((it) => (
+          <tr>
+            <th scope="row">{it.label}</th>
+            <td>{it.title}</td>
+            <td>{it.note}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
-</section>
-
-<style>
-  .band {
-    border-block: 1px solid var(--color-outline-variant);
-    background-image: linear-gradient(180deg, oklch(15.5% 0.01 255), oklch(12% 0.008 255));
-  }
-  .band__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 1560px;
-    margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-  @media (min-width: 768px) {
-    .band__grid {
-      padding-inline: 2.25rem;
-    }
-  }
-  @media (min-width: 640px) {
-    .band__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 1024px) {
-    .band__grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .band__cell {
-    padding: 1.6rem 0;
-    border-top: 1px solid oklch(22% 0.012 256);
-  }
-  .band__cell:first-child {
-    border-top: 0;
-  }
-
-  @media (min-width: 640px) {
-    .band__cell {
-      padding: 1.7rem 1.55rem;
-      border-top: 0;
-      border-left: 1px solid oklch(22% 0.012 256);
-    }
-    .band__cell:nth-child(-n + 2) {
-      border-top: 0;
-    }
-    .band__cell:nth-child(2n + 1) {
-      border-left: 0;
-      padding-left: 0;
-    }
-    .band__cell:nth-child(n + 3) {
-      border-top: 1px solid oklch(22% 0.012 256);
-    }
-  }
-  @media (min-width: 1024px) {
-    .band__cell:nth-child(n + 3) {
-      border-top: 0;
-    }
-    .band__cell:nth-child(2n + 1) {
-      border-left: 1px solid oklch(22% 0.012 256);
-      padding-left: 1.9rem;
-    }
-    .band__cell:first-child {
-      border-left: 0;
-      padding-left: 0;
-    }
-  }
-
-  .band__legend {
-    margin-bottom: 0.85rem;
-  }
-  .band__leds {
-    display: flex;
-    gap: 0.24rem;
-    margin-bottom: 1rem;
-  }
-  .band__title {
-    margin-bottom: 0.32rem;
-    text-wrap: nowrap;
-  }
-  .band__note {
-    font-size: 0.83rem;
-    color: var(--color-on-surface-variant);
-  }
-</style>
+</div>

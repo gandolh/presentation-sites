@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import WipBanner from "../components/WipBanner.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import JobCard from "../components/JobCard.astro";
 import TrustBand from "../components/TrustBand.astro";
 import Services from "../components/Services.astro";
 import WhyUs from "../components/WhyUs.astro";
@@ -17,13 +18,23 @@ import MobileCallBar from "../components/MobileCallBar.astro";
   <WipBanner />
   <Nav current="/" />
   <main id="main">
-    <Hero />
-    <TrustBand />
-    <Services />
-    <WhyUs />
-    <Process />
-    <About />
-    <Contact />
+    <!-- The card is pinned beside the hero, the trust table and the services, and ends with them. -->
+    <div class="wrap">
+      <Hero />
+      <div class="cardcol">
+        <JobCard />
+      </div>
+      <div class="rest">
+        <TrustBand />
+        <Services />
+      </div>
+    </div>
+    <div class="full">
+      <WhyUs />
+      <Process />
+      <About />
+      <Contact />
+    </div>
   </main>
   <Footer />
   <MobileCallBar />
