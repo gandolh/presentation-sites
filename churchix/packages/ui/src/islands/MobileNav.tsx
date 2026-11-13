@@ -9,7 +9,7 @@ interface NavItem {
 
 interface Props {
   nav: NavItem[];
-  /** Current path, for the active-item underline (mirrors Header's isActive). */
+  /** Current path, for the current-place mark (mirrors Header's isActive). */
   activePath?: string;
   /** Donează target + label; both present only when `features.giving` is on. */
   givingHref?: string;
@@ -32,15 +32,26 @@ const LOCALE_NAMES: Record<string, string> = {
 const localeHref = (loc: string, defaultLocale: string) =>
   loc === defaultLocale ? withBase("/") : withBase(`/${loc}/`);
 
+const stroke = {
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.75,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+  focusable: false,
+};
+
 /**
- * Mobile menu toggle + sheet. Hydrated `client:load`; the wrapping `md:hidden`
- * in Header keeps it off desktop. The sheet is `primitives/Drawer.tsx`, a Base
- * UI `Drawer`: it moves focus into the sheet on open and traps it there, locks
- * the page's scroll, closes on a swipe up, a press outside, the toggle (turned
- * into an X) or Esc, and hands focus back to the toggle. A nav or locale link
- * closes it without that, since focus goes on to the page it opens. The sheet
- * is portalled into this island's own wrapper, so it still hangs under the
- * toggle. All color via M3 tokens.
+ * The `Meniu` place of the phone's bottom bar, and the sheet behind it. Hydrated `client:load` inside
+ * `BottomBar`, which hides it from 960 px up. The sheet is `primitives/Drawer.tsx`, a Base UI `Drawer`: it
+ * rises from the bar, moves focus into the sheet on open and traps it there, locks the page's scroll, closes
+ * on a swipe down, a press outside, the toggle (turned into an X), its own close button or Esc, and hands focus
+ * back to the toggle. A nav or locale link closes it without that, since focus goes on to the page it opens.
+ * The sheet is portalled into this island's own wrapper. All color via M3 tokens.
  */
 export default function MobileNav({
   nav,
@@ -58,17 +69,15 @@ export default function MobileNav({
     leftByLink.current = true;
     setOpen(false);
   };
-
   const isActive = (href: string) =>
     href === "/" ? activePath === "/" : activePath === href || activePath.startsWith(href + "/");
-
   const localeList = locales && locales.length > 1 ? locales : null;
 
   const linkBase =
-    "block rounded px-3 py-2 font-label-md text-label-md uppercase no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
+    "flex min-h-12 items-center rounded px-3 font-body-md text-body-md no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
 
   return (
-    <div ref={setWrapper} className="relative">
+    <div ref={setWrapper} className="relative h-full">
       <Drawer
         open={open}
         onOpenChange={(next) => {
@@ -76,36 +85,30 @@ export default function MobileNav({
           setOpen(next);
         }}
         title="Meniu"
+        swipeDirection="down"
         trigger={
           <button
             type="button"
-            className="flex items-center justify-center p-2.5 text-primary rounded-full hover:bg-surface-container-low transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="flex h-full min-h-16 w-full min-w-11 flex-col items-center justify-center gap-0.5 bg-transparent p-0 font-body-md text-label-md font-normal text-on-surface-variant transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
             aria-label={open ? "Închide meniul" : "Deschide meniul"}
           >
-            {/* Material Symbols `menu` / `close` glyph paths (match @churchix/ui Icon). */}
-            <svg
-              width={26}
-              height={26}
-              viewBox="0 -960 960 960"
-              fill="currentColor"
-              aria-hidden="true"
-              focusable="false"
-            >
-              {open ? (
-                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-              ) : (
-                <path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z" />
-              )}
-            </svg>
+            <svg {...stroke}>{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+            Meniu
           </button>
         }
         container={wrapper}
         finalFocus={() => !leftByLink.current}
-        // The header is a backdrop-filter, so it is the containing block of a fixed child: the layer
-        // starts at the header's bottom edge and covers the page below it.
-        backdropClassName="fixed inset-x-0 top-full z-49 h-dvh"
-        viewportClassName="absolute right-0 top-[calc(100%+0.5rem)] z-50"
-        popupClassName="min-w-[14rem] rounded-lg border border-outline-variant/30 bg-surface-container-low p-2 shadow-md"
+        backdropClassName="fixed inset-0 z-49"
+        viewportClassName="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] right-3 z-50"
+        popupClassName="w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border border-outline-variant bg-surface-container-lowest p-4 shadow-board"
+        titleClassName="font-heading text-[22px] font-bold leading-7 text-primary"
+        closeLabel="Închide meniul"
+        closeClassName="flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-primary hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        closeIcon={
+          <svg {...stroke}>
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        }
       >
         {nav.map((item) => {
           const active = isActive(item.href);
@@ -118,8 +121,8 @@ export default function MobileNav({
                 linkBase +
                 " " +
                 (active
-                  ? "text-primary font-bold border-b-2 border-secondary"
-                  : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high")
+                  ? "bg-surface-highlight font-semibold text-primary"
+                  : "text-on-surface hover:bg-surface-container hover:text-primary")
               }
               onClick={follow}
             >
@@ -127,22 +130,18 @@ export default function MobileNav({
             </a>
           );
         })}
-
         {givingLabel && (
           <a
-            className="mt-1 inline-flex items-center justify-center gap-xs rounded-full bg-primary px-6 py-3 font-label-md text-label-md uppercase text-on-primary no-underline transition-[color,background-color,box-shadow,transform] hover:bg-primary-container active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low"
+            className={linkBase + " font-semibold text-primary hover:bg-surface-container"}
             href={givingHref}
             onClick={follow}
           >
             {givingLabel}
           </a>
         )}
-
         {localeList && (
-          <div className="mt-1 border-t border-outline-variant/30 pt-1">
-            <p className="px-3 py-1 font-caption text-caption uppercase tracking-wide text-on-surface-variant">
-              {localeLabel}
-            </p>
+          <div className="mt-1 border-t border-outline-variant pt-1">
+            <p className="px-3 py-1 font-label-md text-label-md text-on-surface-variant">{localeLabel}</p>
             {localeList.map((loc) => (
               <a
                 key={loc}
@@ -150,10 +149,11 @@ export default function MobileNav({
                 href={localeHref(loc, defaultLocale)}
                 aria-current={loc === defaultLocale ? "true" : undefined}
                 className={
-                  "block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset " +
+                  linkBase +
+                  " " +
                   (loc === defaultLocale
-                    ? "text-primary font-bold"
-                    : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high")
+                    ? "bg-surface-highlight font-semibold text-primary"
+                    : "text-on-surface hover:bg-surface-container hover:text-primary")
                 }
                 onClick={follow}
               >

@@ -1,0 +1,90 @@
+---
+/**
+ * `<BottomBar>` — the phone's bar of five places, fixed to the bottom edge below 960 px (the porch notice,
+ * approved 2026-11-13): Acasă, Program, Pomelnice, Donează and `Meniu`. The four links are plain anchors; the
+ * fifth place is the `MobileNav` island, whose Drawer holds the rest of the nav (Despre, Anunțuri, Contact).
+ * Pomelnice and Donează follow `features.pomelnice` and `features.giving`, as the header does. The bar is
+ * 64 px plus the gesture inset (`viewport-fit=cover`), and the Footer pads its bottom by the same height, so the
+ * bar never covers the last content.
+ *
+ * @prop {SiteConfig} site
+ * @prop {string} [path]  The current path, with the Astro base, for `aria-current`.
+ */
+import MobileNav from "../islands/MobileNav.tsx";
+import { withBase, stripBase } from "../lib/base.ts";
+import type { SiteConfig } from "@churchix/schemas";
+
+interface Props {
+  site: SiteConfig;
+  path?: string;
+}
+
+const { site, path = "/" } = Astro.props;
+const nav = site.nav ?? [];
+const relPath = stripBase(path);
+const isActive = (href: string) =>
+  href === "/" ? relPath === "/" : relPath === href || relPath.startsWith(href + "/");
+
+const showGiving = site.features.giving;
+const locales = site.locales ?? [];
+const defaultLocale = site.defaultLocale ?? locales[0] ?? "ro";
+const showLangSwitcher = locales.length > 1;
+
+const icons = {
+  home: "M4 11l8-7 8 7v9H4z",
+  program: "M12 7v5l3 2",
+  pomelnice: "M6 3h12v18H6zM9 8h6M9 12h6M9 16h4",
+  doneaza: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z",
+};
+
+const places = [
+  { href: "/", label: "Acasă", d: icons.home },
+  { href: "/program", label: "Program", d: icons.program, circle: true },
+  site.features.pomelnice && { href: "/pomelnice", label: "Pomelnice", d: icons.pomelnice },
+  showGiving && { href: "/donatii", label: "Donează", d: icons.doneaza },
+].filter(Boolean) as { href: string; label: string; d: string; circle?: boolean }[];
+
+const cell =
+  "flex min-h-16 min-w-11 flex-col items-center justify-center gap-0.5 p-0 font-body-md text-label-md font-normal text-on-surface-variant no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
+---
+
+<nav
+  aria-label="Locuri principale"
+  class="fixed inset-x-0 bottom-0 z-40 grid h-[calc(4rem+env(safe-area-inset-bottom))] border-t border-outline-variant bg-surface-container-lowest pb-[env(safe-area-inset-bottom)] min-[960px]:hidden"
+  style={`grid-template-columns: repeat(${places.length + 1}, minmax(0, 1fr));`}
+>
+  {places.map((p) => (
+    <a
+      href={withBase(p.href)}
+      aria-current={isActive(p.href) ? "page" : undefined}
+      class:list={[cell, isActive(p.href) && "!font-semibold !text-primary"]}
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        {p.circle && <circle cx="12" cy="12" r="9" />}
+        <path d={p.d}></path>
+      </svg>
+      {p.label}
+    </a>
+  ))}
+  <MobileNav
+    client:load
+    nav={nav.map((item) => ({ ...item, href: withBase(item.href) }))}
+    activePath={path}
+    givingHref={showGiving ? withBase("/donatii") : undefined}
+    givingLabel={showGiving ? "Donează" : undefined}
+    locales={showLangSwitcher ? locales : undefined}
+    defaultLocale={defaultLocale}
+    localeLabel="Schimbă limba"
+  />
+</nav>

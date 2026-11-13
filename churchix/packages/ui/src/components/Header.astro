@@ -1,18 +1,16 @@
 ---
 /**
- * `<Header>` — sticky white-label site chrome (Ecclesia Digitalis).
+ * `<Header>` — sticky white-label site chrome (the porch notice, approved 2026-11-13).
  *
- * Glass header: `bg-surface/95 backdrop-blur-md`, hairline bottom outline.
- * Wordmark in display serif (`font-display-lg text-primary`), uppercase
- * desktop nav with a gold underline on the active item, a language switcher
- * (rendered only when the church ships more than one locale), and a primary
- * **Donează** CTA (gated on `site.features.giving`). The interactive mobile
- * sheet lives in the `MobileNav` island (hydrated `client:load`).
+ * A solid white band (`surface-container-lowest`) with a full-strength 1 px edge, 72 px tall from 960 px and
+ * 56 px below it. Wordmark in the display serif; from 960 px the six places in sentence case with the current
+ * one marked in `primary` and underlined in `secondary-strong`, a language switcher (rendered only when the
+ * church ships more than one locale), and the one filled pill, **Donează** (gated on `site.features.giving`).
+ * Below 960 px the header holds only the wordmark: the places are the `BottomBar`, with the Drawer behind `Meniu`.
  *
  * Everything is token-driven — no church name, color, or hex is hardcoded, so
  * the header re-skins per church by token swap alone.
  */
-import MobileNav from "../islands/MobileNav.tsx";
 import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 import { withBase, stripBase } from "../lib/base.ts";
@@ -48,34 +46,32 @@ const localeNames: Record<string, string> = {
 const showGiving = site.features.giving;
 
 const navLinkBase =
-  "relative font-label-md text-label-md uppercase tracking-wide transition-colors rounded px-2 py-2.5 whitespace-nowrap inline-flex items-center " +
-  "after:absolute after:left-2 after:right-2 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-secondary after:transition-transform after:duration-200 after:origin-left " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
-// Active = gold underline drawn (rail motif); idle = underline collapsed, grows on hover.
-const navLinkActive = "text-primary font-bold after:scale-x-100";
-const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 hover:after:scale-x-100";
+  "flex h-[72px] items-center whitespace-nowrap border-b-2 pt-0.5 font-body-md text-body-md no-underline transition-colors " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset";
+const navLinkActive = "border-secondary-strong font-semibold text-primary";
+const navLinkIdle = "border-transparent font-normal text-on-surface-variant hover:text-primary";
 ---
 
-<header class="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant/30">
-  <div class="flex justify-between items-center w-full max-w-container-max mx-auto px-sm md:px-gutter py-sm gap-sm md:gap-md">
+<header class="sticky top-0 z-50 w-full border-b border-outline-variant bg-surface-container-lowest">
+  <div class="mx-auto flex h-14 w-full max-w-container-max items-center gap-4 px-4 min-[960px]:h-[72px] min-[960px]:gap-6 min-[960px]:px-6">
     <a
-      class="flex items-center gap-xs font-display-lg text-headline-md font-bold text-primary no-underline min-w-0 md:shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      class="flex min-h-11 min-w-0 items-center gap-3 rounded font-wordmark text-wordmark-mobile text-primary no-underline min-[960px]:shrink-0 min-[960px]:text-wordmark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
       href={withBase("/")}
     >
       {site.brand.logo && (
         <img
           src={withBase(site.brand.logo)}
           alt=""
-          width="32"
-          height="32"
+          width="36"
+          height="36"
           decoding="async"
-          class="h-8 w-8 object-contain shrink-0"
+          class="h-9 w-9 shrink-0 object-contain"
         />
       )}
-      <span class="truncate md:overflow-visible">{wordmark}</span>
+      <span class="min-w-0 break-words">{wordmark}</span>
     </a>
 
-    <nav class="hidden md:flex min-w-0 items-center flex-nowrap gap-x-sm gap-y-xs justify-end" aria-label="Principal">
+    <nav class="mx-auto hidden min-w-0 flex-nowrap items-center gap-6 min-[960px]:flex" aria-label="Principal">
       {nav.map((item) => (
         <a
           href={withBase(item.href)}
@@ -87,12 +83,12 @@ const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 
       ))}
     </nav>
 
-    <div class="flex items-center gap-md shrink-0">
+    <div class="ml-auto flex shrink-0 items-center gap-4 min-[960px]:ml-0">
       {showLangSwitcher && (
-        <div class="hidden md:block relative cx-lang">
+        <div class="relative hidden cx-lang min-[960px]:block">
           <button
             type="button"
-            class="flex items-center justify-center p-2.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            class="flex h-11 w-11 items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
             aria-haspopup="menu"
             aria-expanded="false"
             aria-label="Schimbă limba"
@@ -101,7 +97,7 @@ const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 
             <Icon name="language" size={22} />
           </button>
           <ul
-            class="absolute right-0 top-[calc(100%+0.5rem)] hidden min-w-[10rem] flex-col rounded-lg border border-outline-variant/30 bg-surface-container-low p-1 shadow-md z-50"
+            class="absolute right-0 top-[calc(100%+0.5rem)] z-50 hidden min-w-[10rem] flex-col rounded-lg border border-outline-variant bg-surface-container-lowest p-1 shadow-board"
             role="menu"
             data-cx-lang-menu
           >
@@ -113,8 +109,10 @@ const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 
                   href={loc === defaultLocale ? withBase("/") : withBase(`/${loc}/`)}
                   aria-current={loc === defaultLocale ? "true" : undefined}
                   class:list={[
-                    "block rounded px-3 py-2 font-label-md text-label-md no-underline transition-colors hover:bg-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
-                    loc === defaultLocale ? "text-primary font-bold" : "text-on-surface-variant hover:text-primary",
+                    "flex min-h-11 items-center rounded px-3 font-body-md text-body-md no-underline transition-colors hover:bg-surface-container focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
+                    loc === defaultLocale
+                      ? "bg-surface-highlight font-semibold text-primary"
+                      : "text-on-surface hover:text-primary",
                   ]}
                 >
                   {localeNames[loc] ?? loc.toUpperCase()}
@@ -126,23 +124,10 @@ const navLinkIdle = "text-on-surface-variant hover:text-primary after:scale-x-0 
       )}
 
       {showGiving && (
-        <Button variant="primary" shape="pill" size="sm" href={withBase("/donatii")} class="hidden sm:inline-flex">
+        <Button variant="primary" shape="pill" size="sm" href={withBase("/donatii")} class="max-[959px]:hidden">
           Donează
         </Button>
       )}
-
-      <div class="md:hidden">
-        <MobileNav
-          client:load
-          nav={nav.map((item) => ({ ...item, href: withBase(item.href) }))}
-          activePath={path}
-          givingHref={showGiving ? withBase("/donatii") : undefined}
-          givingLabel={showGiving ? "Donează" : undefined}
-          locales={showLangSwitcher ? locales : undefined}
-          defaultLocale={defaultLocale}
-          localeLabel="Schimbă limba"
-        />
-      </div>
     </div>
   </div>
 </header>

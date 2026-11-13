@@ -1,47 +1,42 @@
 ---
 /**
- * `<Hero>` — the asymmetric home banner (redesign: "the liturgical spine").
+ * `<Hero>` — the Home door (the porch notice, approved 2026-11-13).
  *
- * NOT a centered stack on a dark scrim. The hero is an asymmetric split anchored
- * by the liturgical rail:
+ * A full-width `primary` band holds the parish's name and its picture in an arch. Two white cards rise out of
+ * the band's lower edge: the program board (the next service, then the week) and the giving card.
  *
- *   LEFT column  — the church identity + the single most-wanted fact:
- *                  overline → church name (display-xl) → the live "Următoarea
- *                  Slujbă" as a large, prominent line → CTAs. The eye enters here.
- *   RIGHT column — a FRAMED image (icon-in-its-frame, not full-bleed) above a quiet
- *                  "this week" timeline rendered from the schedule. The timeline is
- *                  the structural subject; it makes the schedule the hero.
+ *   BAND   — the name (`h1`, Cardo 52/60 from 960 px, 32/40 from 600, 28/34 below; wraps, never cut), the
+ *            lede under it, and the arch: 246 x 298 in the band's middle (210 x 252 on screens 780 px tall or
+ *            less, 96 x 116 on phones). A photo fills the arch (cover); without one the arch is the primary
+ *            strong fill with the church glyph in light gold, so the template stays designed with no picture.
+ *   BOARD  — "Următoarea slujbă": the service's name, then its day and the time at display size (the loudest
+ *            fact after the name, `flex-wrap` so 17:00 never crosses the divider), then "Săptămâna aceasta"
+ *            with the week's rows (Sunday on `surface-highlight`) and the one route to /program.
+ *   GIVING — the account lines and Copiază, and `Sprijinește parohia`, the one filled action beside the board.
+ *            The account lines hide while the IBAN fails its checksum (a placeholder); the route stays.
  *
- * Graceful degradation:
- *   - no image  → the frame holds a tonal burgundy panel with a church glyph.
- *   - no schedule → the right column collapses to just the framed image, full height.
- *   - no next-service → the left column drops that line (CTAs move up).
+ * Graceful degradation: no schedule drops the board's week and next service; no giving feature drops the card.
  *
- * White-label: every color flows through M3 tokens; per-church inputs arrive as
- * props only. Feature flags gate the giving / livestream CTAs.
- *
- * @prop {string}  title              Church name → `<h1>` (`font-display-xl`).
- * @prop {string}  [eyebrow]          Overline label above the name.
- * @prop {string}  [subtitle]         Optional lead paragraph under the name.
- * @prop {string}  [image]            Framed image URL (under `public/`). Optional.
+ * @prop {string}  title              Church name → `<h1>`.
+ * @prop {string}  [subtitle]         Lede under the name.
+ * @prop {string}  [image]            The picture for the arch (a URL). Optional.
  * @prop {string}  [imageAlt]         Alt text (decorative if omitted).
- * @prop {string}  [nextService]      "Următoarea Slujbă" text. Block hidden when absent.
+ * @prop {{label: string; day: string; time: string}} [next]  The next service. Hidden when absent.
  * @prop {string}  [nextServiceLabel='Următoarea slujbă']
  * @prop {Array<{day: string; time: string; label: string; highlight?: boolean}>} [week=[]]
- *        Compact week rows for the timeline (already formatted/sorted by the caller).
  * @prop {string}  [weekLabel='Săptămâna aceasta']
- * @prop {string}  [weekHref]         "Vezi tot programul" link target (e.g. /program).
+ * @prop {string}  [weekHref]         "Programul complet" link target (e.g. /program).
  * @prop {string}  [weekHrefLabel='Programul complet']
- * @prop {boolean} [giving=true]      Honors `features.giving`. Gates the primary CTA.
+ * @prop {boolean} [giving=true]      Honors `features.giving`. Gates the giving card.
+ * @prop {{label: string; currency: string; iban: string}} [account]  The first IBAN, for the account lines.
+ * @prop {string}  [accountHeading='Donații prin transfer']
  * @prop {string}  [ctaLabel='Donează']  @prop {string} [ctaHref]
- * @prop {boolean} [sermons=false]    Honors `features.sermons`. Gates the livestream CTA.
- * @prop {string}  [livestreamHref]   @prop {string} [livestreamLabel='Urmărește live']
- * @prop {string}  [secondaryLabel]   @prop {string} [secondaryHref]  Extra outline CTA.
  * @prop {string}  [class]
  */
 import Icon from "./Icon.astro";
-import Rail from "./Rail.astro";
+import CopyIban from "../islands/CopyIban.tsx";
 import { withBase } from "../lib/base.ts";
+import { isValidIban } from "../lib/iban.ts";
 
 interface WeekRow {
   day: string;
@@ -52,195 +47,191 @@ interface WeekRow {
 
 interface Props {
   title: string;
-  eyebrow?: string;
   subtitle?: string;
   image?: string;
   imageAlt?: string;
-  nextService?: string;
+  next?: { label: string; day: string; time: string };
   nextServiceLabel?: string;
   week?: WeekRow[];
   weekLabel?: string;
   weekHref?: string;
   weekHrefLabel?: string;
   giving?: boolean;
+  account?: { label: string; currency: string; iban: string };
+  accountHeading?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  sermons?: boolean;
-  livestreamHref?: string;
-  livestreamLabel?: string;
-  secondaryLabel?: string;
-  secondaryHref?: string;
   class?: string;
 }
 
 const {
   title,
-  eyebrow,
   subtitle,
   image,
   imageAlt,
-  nextService,
+  next,
   nextServiceLabel = "Următoarea slujbă",
   week = [],
   weekLabel = "Săptămâna aceasta",
   weekHref,
   weekHrefLabel = "Programul complet",
   giving = true,
+  account,
+  accountHeading = "Donații prin transfer",
   ctaLabel = "Donează",
   ctaHref,
-  sermons = false,
-  livestreamHref,
-  livestreamLabel = "Urmărește live",
-  secondaryLabel,
-  secondaryHref,
   class: className,
 } = Astro.props;
 
-const hasImage = Boolean(image);
 const hasWeek = week.length > 0;
+const hasBoard = Boolean(next) || hasWeek;
 const showGiving = giving && Boolean(ctaHref);
-const showLivestream = sermons && Boolean(livestreamHref);
-const showSecondary = Boolean(secondaryHref && secondaryLabel);
-const hasActions = showGiving || showLivestream || showSecondary;
+// A placeholder account is never printed on the card (the footer and /donatii still carry it).
+const showAccount = Boolean(account && isValidIban(account.iban));
+const lnk =
+  "inline-flex min-h-11 items-center rounded font-body-md text-body-md font-semibold text-primary underline decoration-1 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest";
 ---
 
-<section class:list={["relative overflow-hidden bg-surface", className]}>
-  {/* Quiet tonal wash + a faint corner glyph so the cream hero never feels empty
-      on an image-less parish, without resorting to a dark scrim. */}
-  <div
-    class="pointer-events-none absolute inset-0 -z-0"
-    aria-hidden="true"
-    style="background: radial-gradient(120% 80% at 88% 0%, color-mix(in srgb, var(--secondary) 9%, transparent), transparent 55%), radial-gradient(90% 70% at 0% 100%, color-mix(in srgb, var(--primary) 6%, transparent), transparent 60%);"
-  ></div>
-
-  <div class="relative z-10 w-full max-w-container-max mx-auto px-sm md:px-gutter py-xl">
-    <div class="flex gap-sm md:gap-lg">
-      <Rail markers={7} class="hidden sm:block" />
-
-      <div class="min-w-0 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl items-stretch">
-        <!-- LEFT: identity + next service + CTAs -->
-        <div class="lg:col-span-6 flex flex-col justify-center">
-          {eyebrow && <p class="font-overline text-overline uppercase text-on-secondary-container mb-sm">{eyebrow}</p>}
-
-          <h1 class="font-display-xl text-display-xl text-primary text-balance m-0">{title}</h1>
-
-          {subtitle && (
-            <p class="mt-md max-w-[36rem] font-body-lg text-body-lg text-on-surface-variant text-pretty">{subtitle}</p>
-          )}
-
-          {nextService && (
-            <div class="mt-lg flex items-start gap-sm border-l-2 border-secondary pl-md">
-              <Icon name="schedule" size={22} class="mt-1 text-secondary shrink-0" />
-              <div class="min-w-0">
-                <p class="font-overline text-overline uppercase text-on-surface-variant">{nextServiceLabel}</p>
-                <p class="font-headline-md text-headline-md text-primary text-balance">{nextService}</p>
-              </div>
-            </div>
-          )}
-
-          {hasActions && (
-            <div class="mt-xl flex flex-col sm:flex-row gap-sm">
-              {showGiving && (
-                <a
-                  href={withBase(ctaHref)}
-                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded bg-primary text-on-primary shadow-sm hover:shadow-md hover:bg-primary-container transition-[box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                >
-                  {ctaLabel}
-                  <Icon name="arrow_forward" size={18} />
-                </a>
-              )}
-              {showLivestream && (
-                <a
-                  href={withBase(livestreamHref)}
-                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded border border-primary/40 text-primary bg-transparent hover:bg-surface-container-high transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                >
-                  <Icon name="live_tv" size={18} />
-                  {livestreamLabel}
-                </a>
-              )}
-              {showSecondary && (
-                <a
-                  href={withBase(secondaryHref)}
-                  class="inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase px-7 py-3.5 rounded border border-primary/40 text-primary bg-transparent hover:bg-surface-container-high transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                >
-                  {secondaryLabel}
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-
-        <!-- RIGHT: framed image + this-week timeline -->
-        <div class="lg:col-span-6 flex flex-col gap-md">
-          {/* Framed image — icon-in-its-frame: a gold hairline + offset shadow,
-              not a full-bleed scrim. Falls back to a tonal burgundy panel. The
-              frame grows to fill the column so it stays balanced against the left. */}
-          <figure class="relative m-0 flex-1 min-h-[16rem]">
-            <div class="absolute -inset-1.5 rounded-xl border border-secondary/40" aria-hidden="true"></div>
-            <div class="relative h-full overflow-hidden rounded-lg ring-1 ring-outline-variant/40 shadow-md">
-              {hasImage ? (
-                <img
-                  src={image}
-                  alt={imageAlt ?? ""}
-                  aria-hidden={imageAlt ? undefined : "true"}
-                  class="block h-full min-h-[16rem] w-full object-cover"
-                  width="1280"
-                  height="720"
-                  loading="eager"
-                  decoding="async"
-                />
-              ) : (
-                <div
-                  class="flex h-full min-h-[16rem] w-full items-center justify-center bg-primary"
-                  aria-hidden="true"
-                  style="background-image: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--secondary) 14%, transparent), transparent 60%);"
-                >
-                  <Icon name="church" fill size={104} class="text-on-primary/25" />
-                </div>
-              )}
-            </div>
-          </figure>
-
-          {hasWeek && (
-            <div class="rounded-lg border border-outline-variant/40 bg-surface-container-lowest/80 backdrop-blur-sm shadow-sm">
-              <div class="flex items-center justify-between gap-sm border-b border-outline-variant/30 px-md py-sm">
-                <span class="font-overline text-overline uppercase text-on-surface-variant">{weekLabel}</span>
-                {weekHref && (
-                  <a
-                    href={withBase(weekHref)}
-                    class="inline-flex items-center gap-1 font-label-md text-caption uppercase text-primary hover:underline underline-offset-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    {weekHrefLabel}
-                    <Icon name="arrow_forward" size={14} />
-                  </a>
-                )}
-              </div>
-              <ul class="m-0 flex flex-col p-0 list-none">
-                {week.map((row) => (
-                  <li
-                    class:list={[
-                      "flex items-baseline gap-sm px-md py-sm border-b border-outline-variant/15 last:border-b-0",
-                      row.highlight && "bg-secondary/5",
-                    ]}
-                  >
-                    <span
-                      class:list={[
-                        "font-overline text-overline uppercase w-12 shrink-0",
-                        row.highlight ? "text-primary" : "text-on-surface-variant",
-                      ]}
-                    >
-                      {row.day}
-                    </span>
-                    <span class="font-label-md text-label-md tabular-nums w-14 shrink-0 text-primary">{row.time}</span>
-                    <span class="font-body-md text-body-md text-on-surface min-w-0 break-words">{row.label}</span>
-                    {row.highlight && <Icon name="church" fill size={15} class="ml-auto shrink-0 text-secondary" />}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+<section class:list={[className]}>
+  <div class="bg-primary pb-14 pt-6 text-on-primary min-[960px]:pb-[88px] min-[960px]:pt-9 min-[960px]:[@media(max-height:780px)]:pb-20 min-[960px]:[@media(max-height:780px)]:pt-7">
+    <div class="mx-auto grid w-full max-w-container-max grid-cols-[minmax(0,1fr)_auto] items-start gap-3 px-4 min-[380px]:gap-4 min-[960px]:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] min-[960px]:items-center min-[960px]:gap-6 min-[960px]:px-6">
+      <div class="min-w-0">
+        <h1 class="m-0 text-balance break-words font-heading text-[28px] font-bold leading-[34px] text-on-primary min-[600px]:text-[32px] min-[600px]:leading-10 min-[960px]:text-display-md min-[960px]:leading-[60px]">
+          {title}
+        </h1>
+        {subtitle && (
+          <p class="mt-3 font-body-md text-body-md text-on-primary-variant min-[960px]:mt-4 min-[960px]:text-body-lg">
+            {subtitle}
+          </p>
+        )}
       </div>
+
+      <figure class="m-0 h-[126px] w-[106px] justify-self-end rounded-t-[53px] rounded-b-xl border border-secondary p-1 min-[960px]:h-[316px] min-[960px]:w-[264px] min-[960px]:justify-self-center min-[960px]:rounded-t-[132px] min-[960px]:rounded-b-[20px] min-[960px]:p-2 min-[960px]:[@media(max-height:780px)]:h-[270px] min-[960px]:[@media(max-height:780px)]:w-[228px] min-[960px]:[@media(max-height:780px)]:rounded-t-[114px] min-[960px]:[@media(max-height:780px)]:rounded-b-[18px]">
+        <div class="grid h-full w-full place-items-center overflow-hidden rounded-t-[48px] rounded-b-[10px] bg-primary-strong text-secondary-fixed min-[960px]:rounded-t-[123px] min-[960px]:rounded-b-xl min-[960px]:[@media(max-height:780px)]:rounded-t-[105px]">
+          {image ? (
+            <img
+              src={image}
+              alt={imageAlt ?? ""}
+              aria-hidden={imageAlt ? undefined : "true"}
+              class="block h-full w-full object-cover"
+              width="246"
+              height="298"
+              loading="eager"
+              decoding="async"
+            />
+          ) : (
+            <Icon name="church" fill class="h-11 w-11 min-[960px]:h-[88px] min-[960px]:w-[88px]" />
+          )}
+        </div>
+      </figure>
     </div>
   </div>
+
+  {(hasBoard || showGiving) && (
+    <div class="relative -mt-8 min-[960px]:-mt-16">
+      <div class="mx-auto grid w-full max-w-container-max grid-cols-1 items-stretch gap-4 px-4 min-[960px]:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] min-[960px]:gap-6 min-[960px]:px-6">
+        {hasBoard && (
+          <div
+            class:list={[
+              "grid grid-cols-1 rounded-lg border border-outline-variant bg-surface-container-lowest py-5 shadow-board min-[960px]:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] min-[960px]:py-8",
+              !showGiving && "min-[960px]:col-span-2",
+            ]}
+          >
+            {next && (
+              <div class="min-w-0 px-5 min-[960px]:px-7 max-[380px]:px-4">
+                <p class="m-0 font-body-md text-body-md font-semibold text-on-surface-variant">{nextServiceLabel}</p>
+                <p class="mt-1 font-display-sm text-[30px] font-bold leading-9 text-primary min-[960px]:mt-2 min-[960px]:text-display-sm min-[960px]:leading-[44px]">
+                  {next.label}
+                </p>
+                <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-4 min-[960px]:mt-2">
+                  <span class="font-body-lg text-body-lg text-on-surface">{next.day}</span>
+                  <span class="font-time text-time-mobile tabular-nums text-primary min-[960px]:text-time">
+                    {next.time}
+                  </span>
+                </p>
+              </div>
+            )}
+            {hasWeek && (
+              <div class="mt-4 min-w-0 border-t border-outline-variant px-5 pt-4 min-[960px]:mt-0 min-[960px]:border-l min-[960px]:border-t-0 min-[960px]:px-7 min-[960px]:pt-0 max-[380px]:px-4">
+                <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3">
+                  <h2 class="m-0 self-center font-body-md text-body-md font-semibold text-on-surface max-[380px]:text-label-md">
+                    {weekLabel}
+                  </h2>
+                  <ul class="col-span-2 row-start-2 m-0 list-none p-0">
+                    {week.map((row) => (
+                      <li
+                        class:list={[
+                          "-mx-3 grid min-h-12 grid-cols-[44px_60px_minmax(0,1fr)_24px] items-center gap-2 rounded px-3 min-[960px]:min-h-14 min-[960px]:grid-cols-[44px_64px_minmax(0,1fr)_24px] max-[380px]:min-h-11",
+                          row.highlight && "bg-surface-highlight",
+                        ]}
+                      >
+                        <span class="font-label-md text-label-md text-on-surface-variant">{row.day}</span>
+                        <span class="font-body-lg text-body-lg tabular-nums text-primary">{row.time}</span>
+                        <span class="min-w-0 break-words font-body-md text-body-md text-on-surface">{row.label}</span>
+                        <span class="text-secondary-strong">
+                          {row.highlight && <Icon name="church" fill size={20} />}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {weekHref && (
+                    <a
+                      href={withBase(weekHref)}
+                      class:list={[
+                        lnk,
+                        "col-start-2 row-start-1 justify-self-end min-[960px]:col-span-2 min-[960px]:col-start-1 min-[960px]:row-start-3 min-[960px]:justify-self-start",
+                      ]}
+                    >
+                      {weekHrefLabel}
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {showGiving && ctaHref && (
+          <div
+            class:list={[
+              "flex flex-col rounded-lg border border-outline-variant bg-surface-container-lowest p-5 shadow-board min-[960px]:p-8 max-[380px]:p-4",
+              !hasBoard && "min-[960px]:col-span-2",
+            ]}
+          >
+            <h2 class="m-0 flex items-center gap-3 font-body-md text-body-md font-semibold text-on-surface">
+              <Icon name="account_balance" size={24} class="text-secondary-strong" />
+              {accountHeading}
+            </h2>
+            {showAccount && account && (
+              <>
+                <p class="m-0 mt-2 font-body-md text-body-md text-on-surface-variant">
+                  {account.label} ({account.currency})
+                </p>
+                <p class="m-0 mt-1 break-words text-[length:16px] font-semibold leading-6 tabular-nums text-on-surface min-[381px]:text-body-lg min-[381px]:leading-7 [overflow-wrap:anywhere]">
+                  {account.iban}
+                </p>
+              </>
+            )}
+            <div class="mt-3 flex flex-wrap gap-3 min-[960px]:mt-auto min-[960px]:pt-4">
+              {showAccount && account && (
+                <CopyIban
+                  client:visible
+                  iban={account.iban}
+                  label={`Copiază IBAN ${account.label}`}
+                  className="max-[959px]:px-3"
+                  iconClassName="max-[959px]:hidden"
+                />
+              )}
+              <a
+                href={withBase(ctaHref)}
+                class="inline-flex min-h-12 flex-[1_1_190px] items-center justify-center rounded border border-transparent bg-primary px-5 text-center font-body-md text-body-md font-semibold text-on-primary no-underline transition-colors hover:bg-primary-strong active:bg-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest max-[959px]:px-3"
+              >
+                {ctaLabel}
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )}
 </section>

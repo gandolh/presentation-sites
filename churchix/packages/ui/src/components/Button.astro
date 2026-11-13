@@ -7,9 +7,8 @@
  * padding accommodates long Romanian verbs (e.g. "Trimite pomelnicul").
  *
  * @prop {'primary'|'secondary'|'ghost'} [variant='primary']
- *        primary   = solid burgundy `bg-primary` + `text-on-primary`.
- *        secondary = gold OUTLINE — `border-secondary` with burgundy `text-primary`
- *                    label (AA-safe; gold text on light is intentionally avoided).
+ *        primary   = solid `bg-primary` + `text-on-primary`; hover and pressed go to `primary-strong`.
+ *        secondary = outlined: the grey `outline` edge (3:1; a gold edge fails it) with a `text-primary` label.
  *        ghost     = transparent, `text-primary`, subtle hover surface.
  * @prop {'pill'|'rounded'} [shape='rounded']  `rounded` = `rounded` (0.5rem, the
  *        DESIGN.md standard); `pill` = `rounded-full` (chip-like CTAs, e.g. header).
@@ -26,14 +25,14 @@
  *
  * @slot default — the button label (text/markup).
  *
- * Focus: visible `focus-visible` ring in `secondary` (per spec). Active: `scale-[0.98]`.
+ * Targets are 48 px (44 for `sm`). Focus: a 2 px `primary` ring with a 2 px offset. Labels are sentence case.
  *
  * @example
  *   ---
  *   import Button from '@churchix/ui/components/Button.astro';
  *   ---
  *   <Button variant="primary" href="/doneaza" trailingIcon="arrow_forward">Donează</Button>
- *   <Button variant="secondary" shape="rounded">Vezi programul</Button>
+ *   <Button variant="secondary" shape="rounded">Copiază</Button>
  *   <Button variant="ghost" size="sm" icon="content_copy">Copiază</Button>
  */
 import Icon from "./Icon.astro";
@@ -70,10 +69,11 @@ const {
 } = Astro.props;
 
 const base =
-  "inline-flex items-center justify-center gap-xs font-label-md text-label-md uppercase " +
-  "transition-[color,background-color,box-shadow,transform,opacity] duration-200 select-none " +
+  "inline-flex items-center justify-center gap-2 text-center font-body-md text-body-md font-semibold no-underline " +
+  "transition-[color,background-color,border-color] duration-200 select-none " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface " +
-  "active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:pointer-events-none";
+  "disabled:pointer-events-none disabled:border-surface-container-high disabled:bg-surface-container-high disabled:text-on-surface-variant " +
+  "aria-disabled:pointer-events-none aria-disabled:border-surface-container-high aria-disabled:bg-surface-container-high aria-disabled:text-on-surface-variant";
 
 // `rounded` = the DESIGN.md standard 0.5rem; `pill` for chip-like CTAs.
 const shapes = {
@@ -83,23 +83,20 @@ const shapes = {
 
 // Generous horizontal padding for long Romanian verbs.
 const sizes = {
-  sm: "px-4 py-2.5 text-label-md",
-  md: "px-6 py-3",
-  lg: "px-8 py-4 text-body-md",
+  sm: "min-h-11 px-6",
+  md: "min-h-12 px-5",
+  lg: "min-h-12 px-8",
 } as const;
 
 const variants = {
-  // Solid burgundy. on-primary passes AA over burgundy.
-  primary: "bg-primary text-on-primary hover:shadow-md hover:bg-primary-container",
-  // Gold OUTLINE; burgundy label (AA-safe). Gold fills the surface gently on hover.
-  secondary: "border border-secondary text-primary bg-transparent hover:bg-secondary-container/20 hover:shadow-sm",
-  // Transparent; burgundy label.
-  ghost: "bg-transparent text-primary hover:bg-surface-container-high",
+  primary: "border border-transparent bg-primary text-on-primary hover:bg-primary-strong active:bg-primary-strong",
+  secondary: "border border-outline bg-transparent text-primary hover:bg-surface-container",
+  ghost: "border border-transparent bg-transparent text-primary hover:bg-surface-container",
 } as const;
 
 const classes = [base, shapes[shape], sizes[size], variants[variant], block ? "w-full" : "", className];
 
-const iconSize = size === "lg" ? 20 : 18;
+const iconSize = 20;
 const Tag = href ? "a" : "button";
 const tagProps = href ? { href, ...(disabled ? { "aria-disabled": "true", tabindex: -1 } : {}) } : { type, disabled };
 ---
