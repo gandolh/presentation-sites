@@ -17,41 +17,40 @@ const staff = (await getCollection("staff")).map((e) => e.data).sort((a, b) => (
     title="Despre parohia noastră"
     lede="Biserica „Sfinții Trei Ierarhi” din Hârlești — o scurtă istorie a comunității."
   >
-    <article class="cx-prose font-body-lg text-body-lg text-on-surface">
-      <p>
-        Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău, a fost ridicată în anul
-        1846. Parohia a primit statut de sine stătător în anul 2002, fiind anterior filie a unei parohii învecinate.
-      </p>
-      <p>
-        În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia aparține de Arhiepiscopia
-        Romanului și Bacăului, Protopopiatul Bacău.
-      </p>
-      <h2>Hramul</h2>
-      <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
-    </article>
-
+    <Card padding="none" radius="lg" elevation="board" class="px-5 py-6 min-[960px]:px-8 min-[960px]:py-8">
+      <article class="cx-prose max-w-[46rem] font-body-lg text-body-lg text-on-surface">
+        <p>
+          Biserica „Sfinții Trei Ierarhi” din satul Hârlești, comuna Filipești, județul Bacău, a fost ridicată în anul
+          1846. Parohia a primit statut de sine stătător în anul 2002, fiind anterior filie a unei parohii învecinate.
+        </p>
+        <p>
+          În urma lucrărilor de restaurare, biserica a fost resfințită în anul 2012. Parohia aparține de Arhiepiscopia
+          Romanului și Bacăului, Protopopiatul Bacău.
+        </p>
+        <h2>Hramul</h2>
+        <p>Sfinții Trei Ierarhi: Vasile cel Mare, Grigorie Teologul și Ioan Gură de Aur — prăznuiți pe 30 ianuarie.</p>
+      </article>
+    </Card>
     {staff.length > 0 && (
-      <div class="mt-xl">
-        <p class="font-overline text-overline uppercase text-on-secondary-container mb-xs">Slujitorii parohiei</p>
-        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-lg">
-          Conducerea parohiei
-        </h2>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-lg list-none p-0 m-0">
+      <div class="mt-10 min-[960px]:mt-12">
+        <h2 class="m-0 font-headline-md text-[28px] font-bold leading-9 text-primary">Conducerea parohiei</h2>
+        <p class="m-0 mt-1 font-body-md text-body-md text-on-surface-variant">Slujitorii parohiei</p>
+        <ul class="m-0 mt-5 grid list-none grid-cols-1 gap-4 p-0 min-[960px]:grid-cols-2 min-[960px]:gap-6">
           {staff.map((p) => (
-            <Card as="li" padding="lg" radius="lg" class="flex flex-col gap-md">
-              <div class="flex items-start gap-md">
+            <Card as="li" padding="none" radius="lg" class="flex flex-col gap-4 p-5 min-[960px]:p-7">
+              <div class="flex items-start gap-4">
                 <span
-                  class="shrink-0 grid place-items-center w-12 h-12 rounded-full bg-primary-container/40 text-primary"
+                  class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-surface-container text-primary"
                   aria-hidden="true"
                 >
                   <Icon name="person" size={24} />
                 </span>
                 <div class="min-w-0">
-                  <p class="font-headline-md text-headline-md text-on-surface">{p.name}</p>
-                  <p class="font-overline text-overline uppercase text-on-secondary-container mt-xs">{p.role}</p>
+                  <p class="m-0 font-headline-md text-headline-md font-bold text-on-surface">{p.name}</p>
+                  <p class="m-0 mt-1 font-label-md text-label-md text-on-surface-variant">{p.role}</p>
                 </div>
               </div>
-              {p.bio && <p class="font-body-md text-body-md text-on-surface-variant">{p.bio}</p>}
+              {p.bio && <p class="m-0 font-body-md text-body-md text-on-surface-variant">{p.bio}</p>}
             </Card>
           ))}
         </ul>
@@ -59,7 +58,6 @@ const staff = (await getCollection("staff")).map((e) => e.data).sort((a, b) => (
     )}
   </PageShell>
 </BaseLayout>
-
 <style>
   /* Readable, diacritic-safe prose — mirrors the announcement detail prose so the
      two long-form pages feel identical. Generous line-height keeps stacked
