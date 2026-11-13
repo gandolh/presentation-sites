@@ -625,7 +625,7 @@ Step 1's measurements: `exactOptionalPropertyTypes` 0 errors in all four live si
 subcort 86, tractari 5; lint 27.9 s, of which the bots take 2.7 s, so they stay in the root lint; the
 `@vitest/eslint-plugin` pin stays because the house config imports it. Lint went from 26 errors to 0; seven
 warnings stay (six `!` in the bots' tests, one `process.env` read in the bots). The bots' `TODO(impl)` comments
-became `// Live wiring:` notes, listed in [saloon-bots-live-wiring.md](todos/saloon-bots-live-wiring.md). The
+became `// Live wiring:` notes, listed in [saloon-bots-live-wiring.md](todos/blocked/saloon-bots-live-wiring.md). The
 reformat's compare (esbuild over 101 files, the five sites built before and after) and every count are in the
 [brief's outcome](briefs/done/03-the-house-style-and-the-quality-harness.md); the decisions are on
 [decisions-house-style.md](wiki/decisions-house-style.md). Waits on a deploy of the five sites. Questions on the

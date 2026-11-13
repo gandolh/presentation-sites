@@ -247,7 +247,7 @@ raised tractari's `noUncheckedIndexedAccess` count from 5 to 13); subcort
 `ExplodedPlate.astro` guards the deck panel; the two inline scripts use
 `const`; the bots lose a dead cast, an unused import and the unused
 `rowToLead`. The bots' eleven `TODO(impl)` comments are now `// Live wiring:`
-notes, listed in [saloon-bots-live-wiring.md](../../todos/saloon-bots-live-wiring.md),
+notes, listed in [saloon-bots-live-wiring.md](../../todos/blocked/saloon-bots-live-wiring.md),
 and the bots' README, SCAFFOLD_PLAN and the saloon's STATUS and MARKETING
 docs name the new marker. The built output of these fixes was compared too:
 only auto-service's Nav script, tractari's DemoBanner script and tractari's
