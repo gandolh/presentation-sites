@@ -18,14 +18,18 @@ import MobileCallBar from "../components/MobileCallBar.astro";
   <WipBanner />
   <Nav current="/contact/" />
   <main id="main">
-    <PageHeader
-      title="Hai cu mașina la noi"
-      lead="Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp, poți atașa și o poză cu martorul aprins sau cu piesa."
-      readout={hoursReadout}
-      openNow
-    />
-    <Contact bare />
-    <Faq />
+    <div class="pgh">
+      <PageHeader
+        title="Hai cu mașina la noi"
+        lead="Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp, poți atașa și o poză cu martorul aprins sau cu piesa."
+        readout={hoursReadout}
+        openNow
+      />
+    </div>
+    <div class="full">
+      <Contact bare />
+      <Faq />
+    </div>
   </main>
   <Footer />
   <MobileCallBar />

@@ -193,6 +193,7 @@
 
   a {
     color: inherit;
+    text-decoration-line: underline;
   }
 }
 
