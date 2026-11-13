@@ -208,63 +208,6 @@
     }
   }
 
-  .section {
-    padding-block: clamp(3.5rem, 7vw, 7rem);
-  }
-
-  /* A STOP: a section anchored to the spine. On desktop its content is pushed
-     past the rail; the marker node sits ON the line. */
-  .stop {
-    position: relative;
-  }
-  @media (min-width: 1024px) {
-    .stop > .container-page {
-      padding-left: clamp(5rem, 8vw, 8rem);
-    }
-  }
-  .stop__marker {
-    position: absolute;
-    top: clamp(3.5rem, 7vw, 7rem); /* aligns with the section top padding */
-    left: clamp(1.4rem, 3.5vw, 3.5rem);
-    transform: translateX(-50%);
-    z-index: 1;
-    display: none;
-    width: 1.15rem;
-    height: 1.15rem;
-    border-radius: var(--radius-full);
-    background: var(--color-background);
-    border: 2px solid var(--color-primary);
-    box-shadow:
-      0 0 0 5px var(--color-background),
-      0 0 22px 2px oklch(80% 0.16 80 / 0.5);
-  }
-  .stop__marker::before {
-    content: "";
-    position: absolute;
-    inset: 3px;
-    border-radius: var(--radius-full);
-    background: var(--color-primary);
-  }
-  @media (min-width: 1024px) {
-    .stop__marker {
-      display: block;
-    }
-  }
-
-  /* The destination node — end of the drive. Larger, safety-orange, filled. */
-  .stop__marker--end {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-color: var(--color-accent);
-    box-shadow:
-      0 0 0 5px var(--color-background),
-      0 0 28px 3px oklch(68% 0.2 45 / 0.6);
-  }
-  .stop__marker--end::before {
-    background: var(--color-accent);
-    inset: 4px;
-  }
-
   /* ---- The road-line (the signature) -------------------------------------
      A thin two-tone bar evoking a lit lane marking: amber easing into safety
      orange. Used as a divider, the mark beside the wordmark, a section edge. */
@@ -295,28 +238,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* ---- Section opener (replaces the 01/02/03 + eyebrow reflex) ------------
-     A stop on the road gets a short distance-marker label tied to the spine,
-     NOT a numbered editorial index. Used once per stop, reads as signage. */
-  .stop-label {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 0.92rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .stop-label::before {
-    content: "";
-    width: 1.6rem;
-    height: 2px;
-    background: var(--color-primary);
-    flex: none;
-  }
-
   /* ---- Headings: condensed, heavy, sentence case -------------------------- */
   .heading-xl {
     font-family: var(--font-display);
@@ -338,12 +259,6 @@
     font-size: var(--text-h3);
     line-height: var(--text-h3--line-height);
     letter-spacing: 0;
-  }
-
-  /* A single word in a heading gets the amber glow underline. */
-  .glow-word {
-    color: var(--color-primary);
-    text-shadow: 0 0 28px oklch(80% 0.16 80 / 0.55);
   }
 
   /* ---- Wordmark ----------------------------------------------------------- */
@@ -452,65 +367,6 @@
     opacity: 0.05;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* ---- Process timeline (Cum funcționează) ------------------------------- */
-  .timeline {
-    position: relative;
-    display: grid;
-    gap: 2rem;
-  }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    background: linear-gradient(var(--tl-dir, 90deg), var(--color-primary) 0%, var(--color-accent) 100%);
-    opacity: 0.5;
-    left: 1rem;
-    top: 0.6rem;
-    bottom: 0.6rem;
-    width: 2px;
-    --tl-dir: 180deg;
-  }
-  .timeline__step {
-    position: relative;
-    padding-left: 3.5rem;
-  }
-  .timeline__node {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.1rem;
-    height: 2.1rem;
-    border-radius: var(--radius-full);
-    background: var(--color-surface);
-    border: 2px solid var(--color-primary);
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.05rem;
-    color: var(--color-primary);
-    font-variant-numeric: tabular-nums;
-  }
-  @media (min-width: 1024px) {
-    .timeline {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
-    }
-    .timeline::before {
-      left: 1.05rem;
-      right: 1.05rem;
-      top: 1.05rem;
-      bottom: auto;
-      width: auto;
-      height: 2px;
-      --tl-dir: 90deg;
-    }
-    .timeline__step {
-      padding-left: 0;
-      padding-top: 3.25rem;
-    }
   }
 
   /* ---- Scroll reveal (visible by default; JS opts into hidden start) ------ */

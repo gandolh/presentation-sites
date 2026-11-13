@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
-// The WebGL hero island. Mounts the self-contained chase-cam tow-truck scene,
-// but ONLY when the device can handle it and the user hasn't asked for reduced
-// motion. Three.js is dynamically imported so it never touches the initial
-// bundle. If unavailable, this renders nothing and the hero stage's CSS
-// backdrop carries the visual — the page is fully usable either way.
+// The WebGL island on the "Cum funcționează" plate. Mounts the self-contained
+// chase-cam tow-truck scene, but ONLY when the device can handle it and the user
+// hasn't asked for reduced motion. Three.js is dynamically imported so it never
+// touches the initial bundle. If unavailable, this renders nothing and the
+// plate's CSS backdrop carries the visual: the page is fully usable either way.
 
 function canRunWebGL(): boolean {
   if (typeof window === "undefined") return false;
@@ -52,10 +52,9 @@ export default function HeroCanvas() {
       const onResize = () => sizeToHost();
       window.addEventListener("resize", onResize, { passive: true });
 
-      // Pause when off-screen or tab hidden (battery). Both halves: this used
-      // to restart the loop when the hero came back but never stop it when it
-      // left, so the scene rendered at the display's refresh rate for the rest
-      // of the visit once you had scrolled past it.
+      // Pause when off-screen or tab hidden (battery). Both halves: the loop
+      // restarts when the plate comes back and stops when it leaves, so the scene
+      // does not render at the display's refresh rate for the rest of the visit.
       let visible = true;
       const io = new IntersectionObserver(
         ([e]) => {
@@ -83,7 +82,7 @@ export default function HeroCanvas() {
       document.addEventListener("visibilitychange", onVis);
 
       function loop() {
-        // A frame already in flight when the hero left (or the tab hid) must
+        // A frame already in flight when the plate left (or the tab hid) must
         // not re-arm the loop.
         if (disposed || !visible || document.hidden) {
           raf = 0;

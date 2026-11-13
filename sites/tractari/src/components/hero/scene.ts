@@ -474,6 +474,9 @@ export function createScene(canvas: HTMLCanvasElement, dpr: number): Scene {
   function resize(w: number, h: number) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
+    // The plate in "Cum funcționează" has its head and the steps strip over its foot, so the view slides down the
+    // frame to lift the truck clear of them.
+    camera.setViewOffset(w, h, 0, Math.round(h * 0.25), w, h);
     camera.updateProjectionMatrix();
   }
 

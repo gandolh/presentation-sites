@@ -1,7 +1,11 @@
 ---
-// STOP 2 — Cum funcționează. Three steps, the whole interaction. Reuses the
-// `.timeline` component styles (vertical on mobile, horizontal road on lg+).
-// Keeps the promise honest: one call, then we drive.
+import HeroCanvas from "./hero/HeroCanvas.tsx";
+
+// Cum funcționează: the 3D chase-cam scene is a plate across the top of the
+// section, with the three steps on a strip that overlaps its foot. The head sits
+// at the plate's lower left. All copy is real HTML; the scene is decoration
+// that mounts when the device can run it, and the plate's own gradient is what
+// shows when it cannot (reduced motion, no WebGL, the chunk still loading).
 const steps = [
   {
     title: "Suni",
@@ -18,26 +22,182 @@ const steps = [
 ];
 ---
 
-<section id="cum-functioneaza" class="stop section relative bg-[var(--color-surface-container-low)]">
-  <span class="stop__marker" aria-hidden="true"></span>
-  <div class="container-page relative z-[2]">
-    <div class="reveal max-w-2xl">
-      <span class="stop-label">Cum funcționează</span>
-      <h2 class="heading-lg mt-4">
-        Un apel, <span class="glow-word">și suntem pe drum.</span>
+<section id="cum-functioneaza" class="drive" aria-labelledby="cum-h">
+  <div class="plate">
+    <div class="plate__bg" aria-hidden="true">
+      <HeroCanvas client:only="react" />
+    </div>
+    <div class="plate__scrim" aria-hidden="true"></div>
+    <div class="container-page plate__head">
+      <h2 id="cum-h" class="heading-lg">
+        Un apel, și suntem pe drum.
       </h2>
     </div>
+  </div>
 
-    <ol class="timeline mt-10 reveal" style="--tl-dir:180deg;">
+  <div class="container-page">
+    <ol class="strip">
       {steps.map((s, i) => (
-        <li class="timeline__step">
-          <span class="timeline__node" aria-hidden="true">
+        <li>
+          <span class="node" aria-hidden="true">
             {i + 1}
           </span>
-          <h3 class="heading-md text-[var(--color-on-surface)]">{s.title}</h3>
-          <p class="mt-2 text-[var(--color-on-surface-variant)]">{s.body}</p>
+          <h3 class="heading-md">{s.title}</h3>
+          <p>{s.body}</p>
         </li>
       ))}
     </ol>
   </div>
 </section>
+
+<style>
+  .drive {
+    padding-top: 7rem;
+  }
+  .plate {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 27.5rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .plate__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(60% 38% at 50% 16%, var(--color-plate-beacon) 0%, transparent 60%),
+      radial-gradient(46% 32% at 50% 8%, var(--color-plate-moon) 0%, transparent 55%),
+      linear-gradient(180deg, var(--color-plate-top) 0%, var(--color-plate-mid) 50%, var(--color-background) 100%);
+  }
+  .plate__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(
+      from 90deg at 50% 118%,
+      transparent 0deg,
+      var(--color-plate-road) 10deg,
+      transparent 20deg
+    );
+    opacity: 0.8;
+  }
+  /* The scene mounts over the backdrop. */
+  .plate__bg :global(.hero-canvas) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .plate__bg :global(.hero-canvas canvas) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  /* The scrim ends on the page ground, so the plate melts into the page. */
+  .plate__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        to top,
+        var(--color-background) 0%,
+        color-mix(in oklab, var(--color-background) 80%, transparent) 30%,
+        transparent 62%
+      ),
+      linear-gradient(to right, color-mix(in oklab, var(--color-scrim) 70%, transparent) 0%, transparent 55%);
+  }
+  .plate__head {
+    position: relative;
+    z-index: 3;
+    padding-bottom: 4.5rem;
+  }
+
+  .strip {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: -3rem 0 0;
+    padding: 0;
+    list-style: none;
+    background: var(--color-surface-container);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-xl);
+  }
+  /* The lit lane through the three steps, fading to the right. */
+  .strip::before {
+    content: "";
+    position: absolute;
+    left: 2.25rem;
+    right: 2.25rem;
+    top: 2.5rem;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--color-primary) 0 10px, transparent 10px 20px);
+    mask: linear-gradient(90deg, var(--color-mask-on), var(--color-mask-half));
+  }
+  .strip li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem 1.75rem 2rem;
+  }
+  .strip li + li {
+    border-left: 1px solid var(--color-outline-variant);
+  }
+  .strip p {
+    margin: 0;
+    color: var(--color-on-surface-variant);
+  }
+  .node {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+  }
+
+  @media (max-width: 760px) {
+    .drive {
+      padding-top: 4.5rem;
+    }
+    .plate {
+      height: 18.75rem;
+    }
+    .strip {
+      grid-template-columns: 1fr;
+    }
+    .strip::before {
+      left: 1.9375rem;
+      right: auto;
+      top: 2.5rem;
+      bottom: 3.75rem;
+      width: 2px;
+      height: auto;
+      background: repeating-linear-gradient(180deg, var(--color-primary) 0 10px, transparent 10px 20px);
+      mask: none;
+    }
+    .strip li {
+      padding: 1.25rem 1rem 1.5rem 3.75rem;
+    }
+    .strip li + li {
+      border-left: 0;
+      border-top: 1px solid var(--color-outline-variant);
+    }
+    .strip .node {
+      position: absolute;
+      left: 0.9375rem;
+      top: 1.25rem;
+    }
+  }
+</style>
