@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { site } from "../content/site";
+import { site, waLink } from "../content/site";
 import { withBase } from "@sites/kit";
 
 const year = new Date().getFullYear();
@@ -62,7 +62,7 @@ const legalLinks = [
           <a href={site.social.facebook} aria-label="Facebook" target="_blank" rel="noopener">
             <Icon name="ph:facebook-logo" size={20} aria-hidden="true" />
           </a>
-          <a href={`https://wa.me/${site.whatsappE164}`} aria-label="WhatsApp" target="_blank" rel="noopener">
+          <a href={waLink()} aria-label="WhatsApp" target="_blank" rel="noopener">
             <Icon name="ph:whatsapp-logo" size={20} aria-hidden="true" />
           </a>
         </div>
