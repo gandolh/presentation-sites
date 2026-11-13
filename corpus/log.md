@@ -591,7 +591,7 @@ Written from the owner's three calls of 2026-11-09 (Base UI 1.9.0 pinned, Tailwi
 - [02](briefs/done/02-pin-base-ui-exactly.md): saloon's `^1.9.0` becomes `1.9.0`. Three sites already pin; the lockfile resolves 1.9.0.
 - [03](briefs/done/03-the-house-style-and-the-quality-harness.md): Prettier with `prettier-plugin-astro` (about 3,790 changed lines of 30,147 at width 120, 188 of 274 files), `astro check` per site (0 errors, 8.5 to 14.6 s each), ESLint with the Astro plugin (50 s typed, because `astro-eslint-parser` has no `projectService`), the tsconfig flags, `check`, `check:fast`, `.claude/rules/`, a root `CLAUDE.md`.
 - [04](briefs/done/04-base-ui-by-the-conventions.md): the four phone menus on the swipeable `Drawer` (Q40), wrappers under `ui/`, and the Light / Dark / System switch (Q18). No Tailwind brief: the sites are on Tailwind v4 already.
-- [05](briefs/done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/todo/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
+- [05](briefs/done/05-auto-service-redesign-with-hallmark-on-the-estate-board.md), [06](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md), [07](briefs/done/07-subcort-redesign-with-hallmark-on-the-estate-board.md), [08](briefs/todo/08-tractari-redesign-with-hallmark-on-the-estate-board.md): a Hallmark redesign per site, on the estate board (Q39). 05 holds the shared steps.
 
 Brief 01, the Hallmark against taste-skill bake-off, moved to `briefs/superseded/` under the same answer to Q39; its links in this log and in [status.md](wiki/status.md) now point there. `design-study` gets no redesign brief (it is a study), and the repo has no server, so no server brief. Churchix's briefs are in its own corpus.
 
@@ -682,3 +682,14 @@ The owner approved the subcort redesign direction "On your ground" (runner-up "M
 board, with every question on the board standing as proposed: the direction is B and reopens the near-white sheet, the
 language face and the plate-head spine, the hero keeps `Vezi dimensiunile și dotările` as a neutral link-button, and the
 hero keeps both lede sentences word for word. The build follows, one commit for the tokens and one per screen.
+
+## [2026-11-13] brief | 07 subcort redesign, "On your ground"
+
+Built from the approved board: tokens (the sage ground and field with its 32 px grid, paper cards, Commissioner pinned at 5.3.0),
+then home, corturi, servicii, zona, contact and the legal layout, one commit each, the OG card regenerated, and
+`e2e/subcort.spec.ts` (first screens, the hero's still frame and off-screen pause, the size picker, clip, column and gap
+checks) beside the shared Floor checks. `DESIGN.md` is rewritten from what shipped, `PRODUCT.md` principle 5 changed, and the
+reopened lines are recorded as changed in `wiki/decisions-ui.md`. The hero tent's motion is unchanged. At 1280 the pages differ
+from the comps by 0.19-0.39% of pixels. Waits on `node cli.ts subcort deploy`. Details in the
+[brief's outcome](briefs/done/07-subcort-redesign-with-hallmark-on-the-estate-board.md).
+
