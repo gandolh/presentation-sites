@@ -18,7 +18,7 @@ test("every tab stop shows a focus ring of at least 3:1", async ({ page }) => {
         const label = el.tagName.toLowerCase() + (el.getAttribute("href") ? "[" + el.getAttribute("href") + "]" : "") + (el.getAttribute("aria-label") ? "(" + el.getAttribute("aria-label") + ")" : "") + ":" + (el.textContent || "").trim().slice(0, 24);
         const cs = getComputedStyle(el);
         const r = el.getBoundingClientRect();
-        const skip = el.classList.contains("sr-only") || el.tagName === "IFRAME"; // an embedded map draws its own focus
+        const skip = el.classList.contains("sr-only") || el.tagName === "IFRAME" || el.tagName === "ASTRO-DEV-TOOLBAR"; // an embedded map draws its own focus; the dev toolbar exists only in development
         const hasOutline = cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) >= 2;
         let ring = hasOutline ? cs.outlineColor : null;
         if (!ring && cs.boxShadow !== "none") {
