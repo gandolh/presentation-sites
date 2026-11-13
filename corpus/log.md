@@ -675,3 +675,10 @@ from the root `e2e/` (whose focus spec now reads the outermost 2 px shadow and s
 `docs/tokens.md` are rewritten from what shipped, and the four reopened lines are recorded as changed in
 `wiki/decisions-ui.md`. Waits on `node cli.ts saloon deploy`. Details in the
 [brief's outcome](briefs/done/06-saloon-redesign-with-hallmark-on-the-estate-board.md).
+
+## [2026-11-13] approval | 07 subcort redesign, "On your ground"
+
+The owner approved the subcort redesign direction "On your ground" (runner-up "Montaj, mounted") on the estate redesign
+board, with every question on the board standing as proposed: the direction is B and reopens the near-white sheet, the
+language face and the plate-head spine, the hero keeps `Vezi dimensiunile și dotările` as a neutral link-button, and the
+hero keeps both lede sentences word for word. The build follows, one commit for the tokens and one per screen.
