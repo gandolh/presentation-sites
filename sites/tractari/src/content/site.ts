@@ -19,7 +19,7 @@ const defaults = {
   shortName: "AXA",
   // Phone-first, urgency-led. The hook is availability — stranded drivers want
   // a number they can call now, day or night.
-  tagline: "Tractări auto pe platformă, NON-STOP, în toată Oltenia.",
+  tagline: "Tractări auto pe platformă, non-stop, în toată Oltenia.",
   description:
     "AXA Tractări asigură tractări auto pe platformă omologată, non-stop, în Gorj, Dolj, Vâlcea, Olt și Mehedinți. Intervenție rapidă, prețuri transparente. Sunați 24/7.",
   city: "Târgu-Jiu",

@@ -78,7 +78,7 @@ export default function MobileMenu({ links }: { links: Link[] }) {
             key={link.href}
             href={link.href}
             onClick={follow}
-            className={`${rise} flex items-center min-h-14 border-t border-outline-variant first:border-t-0 text-xl hover:text-primary-bright`}
+            className={`${rise} flex items-center min-h-14 border-t border-outline-variant first:border-t-0 text-xl hover:bg-surface-container-high`}
             style={{ "--i": i } as React.CSSProperties}
           >
             {link.label}
