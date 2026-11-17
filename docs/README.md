@@ -4,9 +4,9 @@ Start with the [main README](../README.md). This folder holds what it links to.
 
 | File | What it covers |
 |---|---|
-| [getting-started.md](getting-started.md) | Install, run one site, real vs placeholder photos, builds, docs sites, churchix |
-| [architecture.md](architecture.md) | How the workspaces fit together, what `@sites/kit` shares, where each kind of doc lives |
-| [adding-a-site.md](adding-a-site.md) | The steps for adding a new site to the workspace |
+| [getting-started.md](getting-started.md) | Install, run one site, real vs placeholder photos, builds, docs sites, churchix, the checks and the Playwright specs |
+| [architecture.md](architecture.md) | How the workspaces fit together, what `@sites/kit` shares, what `e2e/` and the house style cover, where each kind of doc lives |
+| [adding-a-site.md](adding-a-site.md) | The steps for adding a new site to the workspace and to the checks |
 | [images/](images/shots.md) | The screenshots in the README, and how each was made |
 
 ## The sites

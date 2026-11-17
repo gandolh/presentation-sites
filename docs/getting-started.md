@@ -52,7 +52,7 @@ Real business details such as the phone, address, company ID and map coordinates
 Real photos live in `public/images/real/`, also gitignored. Each site addresses images by a logical name, and `@sites/kit` picks the real photo or the committed SVG placeholder:
 
 - **saloon** asks for real photos in `dev`, `build` and `preview`. On a clone without them, use the mock variants: `npm run saloon -- dev:mock`, `npm run saloon:build:mock`.
-- **auto-service** asks for real photos too, but lists none, so it looks the same either way. It draws its workshop instead.
+- **auto-service** asks for real photos too, but lists none, so it looks the same either way. It draws its workshop instead. Its mock variants match the salon's: `npm run auto-service -- dev:mock`, `npm run auto-service:build:mock`.
 - **subcort**, **tractari** and **design-study** use placeholders or drawings by default.
 
 `npm run saloon:placeholders` regenerates the salon's SVG placeholders, and the same script exists for `auto-service` and `design-study`. `npm run subcort:og` redraws subcort's social card.
@@ -102,10 +102,27 @@ Read [churchix/README.md](../churchix/README.md) and [churchix/CLAUDE.md](../chu
 ## Checks
 
 ```bash
-npm run saloon:bots      # typecheck and tests for saloon's marketing/bots service
+npm run check            # the gate: typecheck, lint, format check, conventions, saloon bots
+npm run check:fast       # astro check in the sites with a changed file, then ESLint on the changed files
+npm run format           # Prettier writes every file it covers; Markdown stays out
+npm run test:e2e         # Playwright over the four business sites
 bash corpus/lint.sh      # health check for the project wiki
 ```
 
+`npm run check` runs before every hand-back. Its parts have their own scripts:
+
+| Script | What it runs |
+|---|---|
+| `npm run typecheck` | `tsc` over `e2e/` and the kit, then `astro check` in every site |
+| `npm run lint` | ESLint with the house config and an Astro layer, from the root |
+| `npm run format:check` | Prettier at width 120; Markdown, churchix, the docs sites and design-study stay out |
+| `npm run check:conventions` | knip, dependency-cruiser and the house checkers `check-base-ui` and `check-structure` |
+| `npm run saloon:bots` | typecheck and `node:test` suite of saloon's `marketing/bots/` service |
+
+`npm run check:fast` is the quick subset, and Claude Code's Stop hook runs it. The setup and its exceptions are on [decisions-house-style.md](../corpus/wiki/decisions-house-style.md).
+
+`npm run test:e2e` starts one dev server per site on ports 4701 to 4704 and runs every spec at phone and desktop size. Build the sites first, because the contrast spec reads `dist/` (`npm run saloon:build:mock` and `npm run auto-service:build:mock` where the real photos are missing). `SITES=tractari npm run test:e2e` runs one site. What each spec covers: [architecture.md](architecture.md).
+
 ## Deploy
 
-Not in this repo. Each site's `dist/` is served by Caddy under its own path on the VPS, and the build and upload tooling lives in a separate deploy repo. See [corpus/wiki/decisions.md](../corpus/wiki/decisions.md) before adding deploy scripts here.
+Not in this repo. Each site's `dist/` is served by Caddy under its own path on the VPS, and the build and upload tooling lives in a separate deploy repo, vps-deploy, where the owner runs `node cli.ts <site> deploy`. See [corpus/wiki/decisions.md](../corpus/wiki/decisions.md) before adding deploy scripts here.

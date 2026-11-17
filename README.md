@@ -4,22 +4,22 @@ Websites for small businesses in Gorj, Romania, one static Astro site per busine
 
 <table>
 <tr>
-<td width="33%" valign="top"><img src="docs/images/saloon-home.webp" alt="Ana Saloon home page: the headline 'Unghii care vorbesc despre tine', a green WhatsApp booking button and a photo of a hand with pink and blue nails"><br><b>Nail salon</b>, Târgu-Jiu<br><code>/saloon/</code></td>
-<td width="33%" valign="top"><img src="docs/images/auto-service-home.webp" alt="BavAuto Gorj home page on a dark background: the headline 'BMW-ul tău, pe mâini care îl citesc.' beside a drawn rev counter and a smaller gauge"><br><b>BMW repair garage</b>, Târgu-Jiu<br><code>/auto-service/</code></td>
-<td width="33%" valign="top"><img src="docs/images/tractari-home.webp" alt="AXA Tractări home page: the headline 'Tractări auto pe platformă.' in white and yellow over a 3D night scene of a tow truck on a winding road"><br><b>Car towing</b> demo, Oltenia<br><code>/tractari/</code></td>
+<td width="33%" valign="top"><img src="docs/images/saloon-home.webp" alt="Ana Saloon home page on a blush ground: the headline 'Unghii care vorbesc despre tine', a green WhatsApp booking button, a placeholder where the hero photo goes, and the 'Servicii & prețuri' card with prices from 80 lei"><br><b>Nail salon</b>, Târgu-Jiu<br><code>/saloon/</code></td>
+<td width="33%" valign="top"><img src="docs/images/auto-service-home.webp" alt="BavAuto Gorj home page on warm graphite: the headline 'BMW-ul tău, pe mâini care îl citesc.' beside a light card with a red call button, a WhatsApp button and three common faults to write about"><br><b>BMW repair garage</b>, Târgu-Jiu<br><code>/auto-service/</code></td>
+<td width="33%" valign="top"><img src="docs/images/tractari-home.webp" alt="AXA Tractări home page on dark asphalt: the headline 'Tractări auto pe platformă.' above a board of three phone lines, the first one in orange"><br><b>Car towing</b> demo, Oltenia<br><code>/tractari/</code></td>
 </tr>
 <tr>
-<td width="33%" valign="top"><img src="docs/images/subcort-home.webp" alt="Subcort home page: the headline 'Un spațiu pregătit, oriunde ai nevoie de el.' beside a line drawing of a marquee tent, with a strip of tent sizes below"><br><b>Event tent rental</b> demo, Gorj<br><code>/subcort/</code></td>
+<td width="33%" valign="top"><img src="docs/images/subcort-home.webp" alt="Subcort home page: the headline 'Un spațiu pregătit, oriunde ai nevoie de el.' on a white card over a sage grid, a line drawing of a marquee tent, and a strip of tent sizes below it"><br><b>Event tent rental</b> demo, Gorj<br><code>/subcort/</code></td>
 <td width="33%" valign="top"><img src="docs/images/churchix-home.webp" alt="Parish home page built on Churchix: the parish name in a large burgundy serif, the next service, and this week's schedule"><br><b>Orthodox parish</b> on the Churchix platform<br><code>/churchix/</code></td>
 <td width="33%" valign="top"><img src="docs/images/design-study-home.webp" alt="Fourteen Renderings index page: the title on a dark background above a grid of style cards, starting with Minimalism, Swiss Design and Brutalism"><br><b>Design study</b>: one blog in 14 styles<br><code>/design-study/</code></td>
 </tr>
 </table>
 
-**Status:** Maintenance and demos, as of the [2026-10-07 status page](corpus/wiki/status.md). All six are live on the production site. The two client sites, the salon and the garage, are code-complete and wait on the owners' real data, so both still show a "site în lucru" banner. The towing and tent sites are finished demos for made-up firms. Churchix is the only one with an open roadmap.
+**Status:** Maintenance and demos, as of the [status page](corpus/wiki/status.md) (updated 2026-11-13). All six are live on the production site. The salon, the garage, the tent site and the towing site were redesigned on 2026-11-13 and wait on a deploy, so the first four pictures above show the local builds, with placeholder photos. The two client sites, the salon and the garage, are code-complete and wait on the owners' real data, so both still show a "site în lucru" banner. The towing and tent sites are finished demos for made-up firms. Churchix is the only one with an open roadmap.
 
 ## What it does
 
-- Gives each business its own Romanian-language site, built around one action: phone the business or message it on WhatsApp.
+- Gives each business its own Romanian-language site. The salon, the garage and the towing firm are built around one action: phone the business or message it on WhatsApp. The tent site has no calls to action on purpose; it explains the service and leaves the contact details to the visitor.
 - Builds each site to plain static files, which Caddy serves under the site's own path on the production domain.
 - Keeps real phone numbers, addresses and photos out of git. They sit in gitignored files that the build merges in, so a clone builds with placeholders.
 - Gives every site a docs site at `/<site>/docs/`, rendered from that site's own README, PRODUCT.md, DESIGN.md and notes.
@@ -28,7 +28,7 @@ The sites share one small package, `@sites/kit`, and nothing else, so you can re
 
 ## How it works
 
-`package.json` at the root is an npm-workspaces root over `sites/*`, `sites/*/docs-site` and `packages/*`. Each site is Astro 7 with static output, React islands where something has to be interactive, and Tailwind v4, except design-study, which uses none. Root scripts such as `saloon:dev` pass through to one workspace by its package name. `@sites/kit` supplies base-path URLs and the switch between committed SVG placeholders and real photos. churchix is its own monorepo inside this one, with its own lockfile. More in [docs/architecture.md](docs/architecture.md).
+`package.json` at the root is an npm-workspaces root over `sites/*`, `sites/*/docs-site` and `packages/*`. Each site is Astro 7 with static output, React islands where something has to be interactive, and Tailwind v4, except design-study, which uses none. Root scripts such as `saloon:dev` pass through to one workspace by its package name. `@sites/kit` supplies base-path URLs and the switch between committed SVG placeholders and real photos. The four business sites share one house style for format, lint and typecheck, and one Playwright folder, `e2e/`, that checks their phone menus, contrast, focus ring, reduced motion and overflow at phone width. churchix is its own monorepo inside this one, with its own lockfile. More in [docs/architecture.md](docs/architecture.md).
 
 ## Run it locally
 
@@ -39,7 +39,7 @@ npm install            # once, at the root; covers every site
 npm run tractari:dev   # Astro dev server, http://localhost:4321/ by default
 ```
 
-Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The salon's dev script asks for real photos, which are not in git, so on a fresh clone run `npm run saloon -- dev:mock` instead. Builds, docs sites, churchix and the port flag: [docs/getting-started.md](docs/getting-started.md).
+Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The salon's and the garage's `dev` scripts ask for real photos, which are not in git, so on a fresh clone use their mock variants: `npm run saloon -- dev:mock` or `npm run auto-service -- dev:mock`. Builds, docs sites, churchix, the port flag and the checks (`npm run check`, `npm run test:e2e`): [docs/getting-started.md](docs/getting-started.md).
 
 ## Project layout
 
@@ -47,14 +47,16 @@ Swap `tractari` for `saloon`, `auto-service`, `subcort` or `design-study`. The s
 |---|---|
 | `sites/` | One workspace per site: `saloon`, `auto-service`, `subcort`, `tractari`, `design-study`. Each has its own README, PRODUCT.md, DESIGN.md and a Docusaurus `docs-site/` |
 | `packages/site-kit/` | `@sites/kit`, the only code the sites share |
+| `e2e/` | Playwright specs for the four business sites: the shared checks and one spec per site |
 | `churchix/` | Churchix, a white-label platform for Orthodox parish sites. Its own monorepo, not a workspace here |
 | `corpus/` | The repo's wiki: layout, decisions, status, work briefs |
 | `docs/` | The guides and images this README links to |
-| `package.json` | Workspace root and the per-site passthrough scripts |
+| `vendor/house-style/` | A generated copy of the house style the root configs extend. Never edited by hand |
+| `package.json` | Workspace root, the per-site passthrough scripts and the checks |
 
 ## Docs
 
-- [docs/](docs/README.md): every site with its live URL, docs site and README, plus setup, architecture and adding a site
+- [docs/](docs/README.md): every site with its live path, docs site and README, plus setup, checks, architecture and adding a site
 - Docs sites: `/<site>/docs/`, for example `/saloon/docs/`
 - [Project wiki](corpus/index.md): decisions, status and the briefs behind past work
 - [churchix/README.md](churchix/README.md) and its own [wiki](churchix/corpus/index.md)
