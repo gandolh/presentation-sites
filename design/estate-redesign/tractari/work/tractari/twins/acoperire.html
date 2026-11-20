@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AXA Tractări Acoperire (twin)</title>
+<meta name="description" content="A plain-HTML twin of the board comp, for the local Floor checks.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700..900&amp;family=Archivo:wght@400..700&amp;display=swap">
+<style>
+/* Hallmark · shape: marketing site · genre: roadside service (towing) · theme: brand (one dark look, no switch) · redesign: full
+ * ground: #090e12 cold asphalt · accent: #f76400 safety orange (the call) · beacon: #f3b01d amber, marks only · display: Big Shoulders Display, sentence case · body: Archivo
+ * nav: kept (header band with four places and the call; phone Drawer) · signature: the board of three named lines, the dispatcher's number set large on an orange plate · states: scene off, dock closed and open, menu open
+ * axes: dark-neutral asphalt/condensed display/one orange · posture: direct · modes: dark only · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, the page is a type-and-board sheet, so the scene's plate in Cum functioneaza carries the only picture */
+/* Hallmark · waive 3 · four supporting tiles keep today's icon-above-title tiles · the lead tile is a full-width row above them (today's asymmetry, kept), each icon is its own pictogram, and the brief keeps the tiles */
+/* Hallmark · waive 26b · no :disabled · the site has no form control or disabled state; :active is drawn on every call */
+/* Hallmark · answered F24 · the board has a 1px edge and one soft shadow · the edge holds it at 1.59 against the ground and the shadow lifts it; it is the only raised object */
+/* Hallmark · answered F4 · one filled orange call on the first screen: the dispatcher's plate; the header call is outlined while the board is on screen */
+[data-theme="dark"]{color-scheme:dark;--color-ground:#090e12;--color-surface:#181f25;--color-surface-2:#252c34;--color-line:#30363c;--color-line-strong:#636a71;--color-ink:#f0eee9;--color-ink-muted:#a8afb5;--color-amber:#f3b01d;--color-on-amber:#161107;--color-call:#f76400;--color-call-hover:#fc7a14;--color-on-call:#1a0b05;--color-banner:#3b2b0d;--color-on-banner:#fbc865;--color-focus:#f3b01d;--color-plate-top:oklch(10% 0.012 255);--color-plate-mid:oklch(15% 0.013 250);--color-plate-beacon:oklch(80% 0.16 80 / 0.2);--color-plate-moon:oklch(95% 0.03 230 / 0.12);--color-plate-road:oklch(45% 0.014 250 / 0.3);--color-scrim:oklch(11% 0.012 255);--mask-on:#000;--mask-half:rgb(0 0 0 / .45);--font-display:"Big Shoulders Display","Arial Narrow",system-ui,sans-serif;--font-body:"Archivo",system-ui,sans-serif;--shadow-board:0 24px 48px -24px rgb(0 0 0 / .7)}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--color-ground)}
+:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.page{position:relative;background:var(--color-ground);color:var(--color-ink);font-family:var(--font-body);font-size:16px;line-height:26px;min-height:800px;overflow-x:clip}
+:where(.page) a{color:inherit}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:32px;position:relative}
+.label{font-size:14px;line-height:20px;font-weight:600}
+.skip{position:absolute;left:16px;top:-64px;z-index:50;background:var(--color-ink);color:var(--color-ground);padding:8px 16px;border-radius:4px;font-weight:600;text-decoration:none}
+.skip:focus{top:8px}
+.banner{background:var(--color-banner);color:var(--color-on-banner);text-align:center;padding:8px 16px;min-height:32px;font-size:14px;line-height:20px;font-weight:600}
+.header{background:var(--color-surface);border-bottom:1px solid var(--color-line)}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px}
+.mark{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:28px;text-transform:uppercase;color:var(--color-ink);min-height:44px}
+.mark i{width:12px;height:12px;border-radius:50%;background:var(--color-amber);box-shadow:0 0 0 4px color-mix(in oklab,var(--color-amber) 22%,transparent)}
+.nav{display:flex;gap:8px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;text-decoration:none;color:var(--color-ink-muted);font-weight:400;border-radius:4px}
+.nav a:hover{color:var(--color-ink)}
+.hcall{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--color-line-strong);border-radius:4px;text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums}
+.hcall svg{color:var(--color-call)}
+.hcall:hover{background:var(--color-surface-2)}
+.hcall--on{background:var(--color-call);color:var(--color-on-call);border-color:var(--color-call)}
+.hcall--on svg{color:var(--color-on-call)}
+.hcall--on:hover{background:var(--color-call-hover)}
+.menu{display:none;width:44px;height:44px;align-items:center;justify-content:center;background:var(--color-surface-2);color:var(--color-ink);border:1px solid var(--color-line);border-radius:4px;padding:0}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:800;letter-spacing:0;margin:0}
+.top{padding-top:28px}
+.status{margin:0;font-size:18px;line-height:26px;font-weight:600;color:var(--color-ink)}
+h1{font-size:80px;line-height:80px;margin-top:4px}
+.lede{margin:12px 0 0;max-width:62ch;font-size:20px;line-height:30px;color:var(--color-ink-muted);text-wrap:pretty}
+.more{display:flex;width:max-content;align-items:center;gap:8px;min-height:44px;margin-top:4px;color:var(--color-ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--color-line-strong);text-underline-offset:6px;text-decoration-thickness:2px}
+.more:hover{text-decoration-color:var(--color-call)}
+.more svg{width:20px;height:20px;color:var(--color-call)}
+.lane{display:block;width:100%;height:10px;margin-top:12px;overflow:visible}
+.board{position:relative;margin-top:20px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;padding:32px;box-shadow:var(--shadow-board)}
+.board__head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end}
+.board h2{font-size:48px;line-height:48px}
+.board__copy{margin:0;max-width:52ch;color:var(--color-ink-muted)}
+.lines{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:24px}
+.line{display:flex;flex-direction:column;justify-content:center;text-decoration:none;border-radius:4px;padding:0 20px;min-height:96px}
+.line--main{grid-column:1/span 6;flex-direction:row;align-items:center;gap:20px;background:var(--color-call);color:var(--color-on-call)}
+.line--main:hover{background:var(--color-call-hover)}
+.line--main .disc{width:48px;height:48px;border-radius:50%;background:var(--color-on-call);color:var(--color-call);display:grid;place-items:center;flex:none}
+.line--main .who{display:flex;flex-direction:column;min-width:0}
+.line--main .tag{display:flex;gap:12px;font-size:14px;line-height:20px;font-weight:600}
+.line--main .tag span:last-child{font-weight:400}
+.line--main .num{font-family:var(--font-display);font-weight:800;font-size:48px;line-height:48px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.line--a,.line--b{display:grid;grid-template-areas:"nm nm" "g n2";grid-template-columns:20px 1fr;gap:2px 8px;align-content:center;background:var(--color-surface-2)}
+.line--a{grid-column:7/span 3}
+.line--b{grid-column:10/span 3}
+.line--a:hover,.line--b:hover{background:var(--color-line)}
+.line .nm{grid-area:nm;color:var(--color-ink-muted);font-size:14px;line-height:20px;font-weight:600}
+.line .g{grid-area:g;align-self:center;color:var(--color-call)}
+.line .g svg{width:20px;height:20px}
+.line .n2{grid-area:n2;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:30px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mail{margin:16px 0 0;color:var(--color-ink-muted)}
+.mail a{color:var(--color-ink);text-underline-offset:3px}
+
+section{padding-top:112px}
+section.board{padding-top:32px}
+h2.sh{font-size:48px;line-height:48px}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end}
+.sec-side{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.sec-side p{margin:0;color:var(--color-ink-muted);max-width:52ch}
+.call{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border-radius:4px;border:1px solid var(--color-line-strong);color:var(--color-ink);text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.call svg{color:var(--color-call)}
+.call:hover{background:var(--color-surface-2)}
+.call:active,.line:active,.dock__call:active,.hcall:active{transform:translateY(1px)}
+.lead{display:grid;grid-template-columns:64px 1fr 1.3fr;gap:24px;align-items:center;margin-top:32px;padding:28px 32px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px}
+.lead .well{width:64px;height:64px;border-radius:8px;background:var(--color-surface-2);color:var(--color-call);display:grid;place-items:center}
+.lead .well svg{width:40px;height:40px}
+h3{font-size:28px;line-height:30px}
+.lead p,.tile p{margin:0;color:var(--color-ink-muted)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.tile{padding:24px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;display:flex;flex-direction:column;gap:12px}
+.tile .well{width:40px;height:40px;border-radius:8px;background:var(--color-surface-2);color:var(--color-call);display:grid;place-items:center}
+
+.panel{color:var(--color-ink);display:grid;grid-template-columns:5fr 7fr;gap:40px;align-items:center;padding:40px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;position:relative}
+.panel p{margin:16px 0 0;color:var(--color-ink-muted)}
+.counties{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.counties li{display:flex;align-items:center;gap:12px;min-height:44px;border-top:1px solid var(--color-line);font-weight:600}
+.counties li i{width:10px;height:10px;border-radius:50%;background:var(--color-call)}
+.counties li.hub i{background:var(--color-amber)}
+.map{width:100%;height:auto;display:block}
+.map text{font-family:var(--font-body);font-weight:600;font-size:15px;fill:var(--color-ink);paint-order:stroke;stroke:var(--color-surface);stroke-width:4px;stroke-linejoin:round}
+
+.drive{padding-top:112px}
+.plate{position:relative;height:440px;overflow:hidden;display:flex;align-items:flex-end}
+.plate__bg{position:absolute;inset:0;background:
+ radial-gradient(60% 38% at 50% 16%,var(--color-plate-beacon) 0%,transparent 60%),
+ radial-gradient(46% 32% at 50% 8%,var(--color-plate-moon) 0%,transparent 55%),
+ linear-gradient(180deg,var(--color-plate-top) 0%,var(--color-plate-mid) 50%,var(--color-ground) 100%)}
+.plate__bg::after{content:"";position:absolute;inset:0;background:conic-gradient(from 90deg at 50% 118%,transparent 0deg,var(--color-plate-road) 10deg,transparent 20deg);opacity:.8}
+.plate__scrim{position:absolute;inset:0;background:
+ linear-gradient(to top,var(--color-ground) 0%,color-mix(in oklab,var(--color-ground) 80%,transparent) 30%,transparent 62%),
+ linear-gradient(to right,color-mix(in oklab,var(--color-scrim) 70%,transparent) 0%,transparent 55%)}
+.plate .wrap{width:100%;padding-bottom:72px}
+.strip{position:relative;margin-top:-48px;display:grid;grid-template-columns:repeat(3,1fr);background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;list-style:none;padding:0}
+.strip::before{content:"";position:absolute;left:36px;right:36px;top:40px;height:2px;background:repeating-linear-gradient(90deg,var(--color-amber) 0 10px,transparent 10px 20px);mask:linear-gradient(90deg,var(--mask-on),var(--mask-half));-webkit-mask:linear-gradient(90deg,var(--mask-on),var(--mask-half))}
+.strip li{position:relative;padding:24px 28px 32px;display:flex;flex-direction:column;gap:12px}
+.strip li+li{border-left:1px solid var(--color-line)}
+.strip p{margin:0;color:var(--color-ink-muted)}
+.node{width:32px;height:32px;border-radius:50%;background:var(--color-amber);color:var(--color-on-amber);display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:20px;line-height:20px;position:relative}
+
+footer{margin-top:112px;border-top:1px solid var(--color-line);padding:56px 0 40px}
+footer .wrap.fw{padding-top:0}
+.foot{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px}
+.foot .mark{min-height:0}
+.foot p{margin:12px 0 0;color:var(--color-ink-muted);max-width:34ch}
+.foot h2{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);font-family:var(--font-body);letter-spacing:0}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li a{display:flex;justify-content:space-between;gap:16px;min-height:44px;align-items:center;text-decoration:none;border-top:1px solid var(--color-line);font-variant-numeric:tabular-nums}
+.foot li a span:first-child{color:var(--color-ink-muted)}
+.legal{margin-top:40px;padding-top:20px;border-top:1px solid var(--color-line);display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--color-ink-muted);font-size:14px;line-height:20px;font-weight:600}
+.s-servicii section#servicii,.s-acoperire section#acoperire{padding-top:56px}
+
+.co{position:absolute;width:24px;height:24px;border-radius:50%;background:var(--color-ink);color:var(--color-ground);font:700 13px/24px var(--font-body);text-align:center;z-index:5;left:-48px;top:4px}
+.co::after{content:"";position:absolute;left:24px;top:11px;width:16px;height:1px;background:var(--color-line-strong)}
+.co-hcall{left:auto;right:-48px;top:10px}
+.co-hcall::after{left:auto;right:24px}
+.co-status{top:2px}
+.co-plate{top:188px}
+.co-more{top:10px}
+.co-lead{top:36px}
+.co-panel{top:44px}
+.co-drive{top:443px;left:24px}
+.lead,.panel,.board,.status,.more,.drive{position:relative}
+
+section[id]{scroll-margin-top:101px}
+.dock{display:none}
+.dock__bar{display:flex;gap:8px;align-items:center}
+.dock__call{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 4px 0 0;text-decoration:none;color:var(--color-on-call)}
+.dock__call .disc{width:40px;height:40px;border-radius:50%;background:var(--color-on-call);color:var(--color-call);display:grid;place-items:center;flex:none}
+.dock__call .t{display:flex;flex-direction:column}
+.dock__call .a{font-size:14px;line-height:20px;font-weight:600}
+.dock__call .b{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:28px;font-variant-numeric:tabular-nums}
+.dock__toggle{width:48px;height:48px;flex:none;background:var(--color-on-call);color:var(--color-call);border:0;border-radius:4px;display:grid;place-items:center;padding:0}
+.dock__more{display:flex;flex-direction:column;gap:8px;padding:0 0 8px}
+.dock__more a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 16px;background:var(--color-on-call);color:var(--color-ink);border-radius:4px;text-decoration:none;font-variant-numeric:tabular-nums}
+.dock__more a .gn{display:flex;align-items:center;gap:12px;color:var(--color-ink-muted)}
+.dock__more a .gn svg{width:20px;height:20px;color:var(--color-call)}
+
+@media (max-width:1100px){.co{display:none}}
+@media (max-width:1000px){
+ .tiles{grid-template-columns:1fr 1fr}
+ .foot{grid-template-columns:1fr 1fr}
+ .foot>:first-child{grid-column:1/-1}
+ .panel{grid-template-columns:1fr;padding:32px}
+ .lead{grid-template-columns:64px 1fr}
+ .lead p{grid-column:2}
+ .nav{display:none}
+ .menu{display:inline-flex}
+ .hcall{margin-left:auto}
+ .line--main{grid-column:1/-1}
+ .line--a{grid-column:1/span 6}
+ .line--b{grid-column:7/span 6}
+}
+@media (max-width:760px){
+ .hcall{display:none}
+ .wrap{padding-inline:16px}
+ .header .wrap{height:56px}
+ .mark{font-size:24px;line-height:24px}
+ .top{padding-top:16px}
+ .status{font-size:15px;line-height:22px}
+ h1{font-size:44px;line-height:46px;margin-top:2px;text-wrap:balance}
+ .lede{font-size:17px;line-height:25px;margin-top:8px}
+ .more{display:inline-flex;margin:0 0 0 4px;vertical-align:middle}
+ .lane{margin-top:8px}
+ .board{margin-top:12px;padding:16px}
+ section.board{padding-top:16px}
+ .board__head{grid-template-columns:1fr;gap:8px}
+ .board h2{font-size:32px;line-height:34px}
+ .board h2 br{display:none}
+ .board__copy{font-size:15px;line-height:22px}
+ .lines{grid-template-columns:1fr;gap:8px;margin-top:12px}
+ .line--main,.line--a,.line--b{grid-column:1}
+ .line--main{min-height:72px;padding:0 16px;gap:16px}
+ .line--main .disc{width:40px;height:40px}
+ .line--main .disc svg{width:20px;height:20px}
+ .line--main .num{font-size:32px;line-height:34px}
+ .line--a,.line--b{min-height:56px;grid-template-areas:"g nm n2";grid-template-columns:20px 1fr auto;align-items:center;gap:0 12px;padding:0 16px}
+ .line .n2{font-size:24px;line-height:26px}
+ section,.drive{padding-top:72px}
+ .s-servicii section#servicii,.s-acoperire section#acoperire{padding-top:32px}
+ h2.sh{font-size:32px;line-height:34px}
+ .sec-head{grid-template-columns:1fr;gap:16px}
+ .lead{grid-template-columns:1fr;gap:12px;padding:20px;margin-top:24px}
+ .lead p{grid-column:1}
+ .lead .well{width:48px;height:48px}
+ .lead .well svg{width:28px;height:28px}
+ h3{font-size:24px;line-height:26px}
+ .tiles{grid-template-columns:1fr}
+ .tile{padding:20px}
+ .panel{padding:20px;gap:24px}
+ .map text{font-size:22px;stroke-width:5px}
+ .plate{height:300px}
+ .plate .wrap{padding-bottom:72px}
+ .strip{grid-template-columns:1fr}
+ .strip::before{left:31px;right:auto;top:40px;bottom:60px;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--color-amber) 0 10px,transparent 10px 20px);mask:none;-webkit-mask:none}
+ .strip li{padding:20px 16px 24px 60px}
+ .strip li+li{border-left:0;border-top:1px solid var(--color-line)}
+ .strip .node{position:absolute;left:15px;top:20px}
+ footer{margin-top:72px;padding-top:40px}
+ .foot{grid-template-columns:1fr;gap:32px}
+ .page{padding-bottom:72px}
+ section[id]{scroll-margin-top:113px}
+ .dock{display:block;position:absolute;left:0;right:0;bottom:0;z-index:40;background:var(--color-call);padding:8px 12px;min-height:72px}
+}
+
+.s-contact main>.wrap{padding-top:40px}
+.frame{font-family:var(--font-body);color:var(--color-ink);font-size:16px;line-height:26px;position:relative;width:390px;height:844px;overflow:hidden;background:var(--color-ground)}
+.frame>.header{position:absolute;top:0;left:0;right:0;z-index:30}
+.frame .page{position:absolute;top:0;left:0;width:390px;min-height:0;padding-bottom:0}
+.frame>.dock{display:block;position:absolute;left:0;right:0;bottom:0;z-index:40;background:var(--color-call);padding:8px 12px;min-height:72px}
+@media (prefers-reduced-motion:reduce){.dock{transition:none}}
+</style>
+</head>
+<body>
+<div data-theme="dark" class="page s-acoperire" style="min-height: 800px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+<symbol id="timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+<symbol id="wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+<symbol id="down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+</svg>
+<a class="skip" href="#continut">Sari la conținut</a>
+<div class="banner" role="note">Site demonstrativ. Firma și numerele de telefon sunt fictive (concept de prezentare).</div>
+<header class="header">
+ <div class="wrap">
+  <a class="mark" href="#" aria-label="AXA Tractări, acasă"><i aria-hidden="true"></i>AXA Tractări</a>
+  <nav class="nav" aria-label="Navigare principală"><a href="#servicii">Servicii</a><a href="#acoperire">Acoperire</a><a href="#cum-functioneaza">Cum funcționează</a><a href="#contact">Contact</a></nav>
+  <a class="hcall hcall--on" href="tel:+40700000001"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg>07XX XXX XX1</a>
+  <button class="menu" type="button" aria-label="Deschide meniul"><svg class="i" aria-hidden="true" focusable="false"><use href="#menu"/></svg></button>
+ </div>
+</header>
+<main id="continut">
+<section id="acoperire" class="wrap" aria-labelledby="acoperire-h">
+ <div class="panel"><span class="co co-panel" aria-hidden="true">1</span>
+  <div><h2 class="sh" id="acoperire-h">Toată Oltenia, <span style="white-space:nowrap">dintr-un</span> singur apel.</h2>
+   <p>Cu baza în Târgu-Jiu, ajungem rapid în 5 județe. Pe autostradă, pe drum național sau pe o uliță de țară, venim la tine.</p>
+   <ul class="counties"><li class="hub"><i aria-hidden="true"></i>Gorj</li><li><i aria-hidden="true"></i>Vâlcea</li><li><i aria-hidden="true"></i>Mehedinți</li><li><i aria-hidden="true"></i>Dolj</li><li><i aria-hidden="true"></i>Olt</li></ul></div>
+  <svg class="map" viewBox="0 0 480 360" role="img" aria-label="Hartă de acoperire: Gorj, Dolj, Vâlcea, Olt, Mehedinți">
+ <defs><radialGradient id="hubGlow"><stop offset="0" style="stop-color:var(--color-amber);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--color-amber);stop-opacity:0"/></radialGradient></defs>
+ <g style="stroke:var(--color-line)" stroke-width="1" opacity=".7"><line x1="60" y1="0" x2="60" y2="360"/><line x1="120" y1="0" x2="120" y2="360"/><line x1="180" y1="0" x2="180" y2="360"/><line x1="240" y1="0" x2="240" y2="360"/><line x1="300" y1="0" x2="300" y2="360"/><line x1="360" y1="0" x2="360" y2="360"/><line x1="420" y1="0" x2="420" y2="360"/><line x1="0" y1="60" x2="480" y2="60"/><line x1="0" y1="120" x2="480" y2="120"/><line x1="0" y1="180" x2="480" y2="180"/><line x1="0" y1="240" x2="480" y2="240"/><line x1="0" y1="300" x2="480" y2="300"/></g>
+ <g style="stroke:var(--color-call)" stroke-width="2" stroke-linecap="round" fill="none"><path d="M230 150 L360 110"/><path d="M230 150 L110 215"/><path d="M230 150 L250 280"/><path d="M230 150 L400 245"/></g>
+ <circle cx="230" cy="150" r="46" style="fill:url(#hubGlow)"/>
+ <g style="fill:var(--color-call);stroke:var(--color-surface)" stroke-width="2"><circle cx="360" cy="110" r="8"/><circle cx="110" cy="215" r="8"/><circle cx="250" cy="280" r="8"/><circle cx="400" cy="245" r="8"/></g>
+ <circle cx="230" cy="150" r="10" style="fill:var(--color-amber);stroke:var(--color-surface)" stroke-width="2"/>
+ <g text-anchor="middle"><text x="230" y="124">Gorj</text><text x="360" y="88">Vâlcea</text><text x="110" y="192">Mehedinți</text><text x="250" y="310">Dolj</text><text x="400" y="275">Olt</text></g>
+</svg>
+ </div>
+</section>
+</main>
+<footer><div class="wrap fw">
+ <div class="foot">
+  <div><a class="mark" href="#" aria-label="AXA Tractări, acasă"><i aria-hidden="true"></i>AXA Tractări</a><p>Tractări auto pe platformă, non-stop, în toată Oltenia.</p><p class="label" style="color:var(--color-ink)">Non-stop 24/7</p></div>
+  <div><h2>Telefon</h2><ul><li><a href="tel:+40700000001"><span>Ionuț P.</span><span>07XX XXX XX1</span></a></li><li><a href="tel:+40700000002"><span>Andrei M.</span><span>07XX XXX XX2</span></a></li><li><a href="tel:+40700000003"><span>Vasile T.</span><span>07XX XXX XX3</span></a></li></ul></div>
+  <div><h2>Acoperire</h2><p style="margin-top:0;color:var(--color-ink)">Gorj, Dolj, Vâlcea, Olt, Mehedinți</p><p>Toată regiunea Oltenia, deplasări și în afara județului.</p></div>
+ </div>
+ <div class="legal"><span>© 2026 AXA Tractări S.R.L., site demonstrativ. Date fictive.</span><span>RO00000000</span><span>J18/000/2026</span></div>
+</div></footer>
+<div class="dock" role="region" aria-label="Sună AXA Tractări">
+ 
+ <div class="dock__bar"><a class="dock__call" href="tel:+40700000001" aria-label="Sună acum, dispecerat, 07XX XXX XX1"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="t"><span class="a">Sună acum, non-stop</span><span class="b">07XX XXX XX1</span></span></a>
+ <button class="dock__toggle" type="button" aria-label="Arată celelalte numere" aria-expanded="false"><svg class="i" aria-hidden="true" focusable="false"><use href="#up"/></svg></button></div>
+</div>
+</div>
+</body>
+</html>

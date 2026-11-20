@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unghii by Ana direction (twin)</title>
+<meta name="description" content="Plain-HTML twin of the board comp for the local Floor checks.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,400..600,0..100&amp;family=Manrope:wght@400..700&amp;display=swap">
+<style>
+/* Hallmark · shape: client site · genre: local service, booking by message · theme: brand · redesign: full
+ * paper: #f5e8e2 blush-cream · accent: #f4d6d0 blush, #118040 WhatsApp green for every booking action · display: Fraunces · body: Manrope
+ * nav: kept (wordmark, five places, a Programează-te pill; phone Drawer; docked WhatsApp and call bar) · signature: the price menu card beside the photo on the first screen · states: failed picture, focus, reduced motion, dock hides at booking
+ * axes: warm blush neutrals/soft serif plus humanist sans/one green action · posture: restrained · modes: light only · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, the page is calm by design, so the green action and the raised menu carry the emphasis */
+/* Hallmark · waive 24b · gaps and paddings of 6, 10, 12, 14 off the 4px scale · half steps that centre 20px icons beside text, hold the 6px icon gap the direction names and keep three price rows whole on the first screen; no value is arbitrary */
+/* Hallmark · waive 26b · no :disabled styling · the page has no control that can be disabled, only links and a button that opens the Drawer; :active is styled */
+/* Hallmark · waive 38ii · italic display type on .wordmark · the italic Fraunces wordmark and the signature · the identity DESIGN.md keeps ("Identity preservation wins"); no heading is italic */
+/* Hallmark · waive 72 · details.card at 1440px · the closed FAQ rows hold their answers hidden, so the linter reads text outside the box; open rows pad 24px at the sides and 20px below */
+/* Hallmark · answered F4 · one filled green action for booking everywhere; the call button and Instagram are outlined, and the loyalty panel's rose-brown button sits on blush where a green one would clash and a blush one would vanish */
+:root{--color-surface:#f5e8e2;--color-surface-container-lowest:#fffcfb;--color-surface-container-low:#efdcd4;--color-surface-container:#f1dfd8;--color-surface-container-high:#f3ddd5;--color-surface-container-highest:#ead3ca;--color-surface-dim:#e3cdc4;--color-on-surface:#241914;--color-on-surface-variant:#4f4442;--color-outline:#86726e;--color-outline-variant:#dcc3ba;--color-primary:#705955;--color-on-primary:#fffcfb;--color-primary-container:#f4d6d0;--color-on-primary-container:#5f4743;--color-secondary:#6f561a;--color-secondary-container:#f6e4bd;--color-on-secondary-container:#5a4512;--color-blush:#f4d6d0;--color-blush-deep:#e8a6a0;--color-gold:#c9a961;--color-gold-ink:#7a6118;--color-cream:#fbf7f2;--color-whatsapp:#118040;--color-whatsapp-deep:#0e7a37;--color-on-whatsapp:#fffcfb;--color-inverse-surface:#3b2e28;--color-inverse-on-surface:#ffede7;--color-inverse-on-surface-variant:#dccbc4;--color-on-whatsapp-wash:rgb(255 252 251 / .16);--color-inverse-wash:rgb(255 252 251 / .1);--color-inverse-line:rgb(255 252 251 / .16);--color-background:#f5e8e2;--color-on-background:#241914;--font-display:"Fraunces",Georgia,"Times New Roman",serif;--font-body:"Manrope",system-ui,sans-serif;--radius:8px;--radius-lg:16px;--radius-xl:24px;--radius-full:9999px;--shadow-card:0 1px 2px rgb(36 25 20 / .06),0 12px 32px -16px rgb(36 25 20 / .22);--shadow-glow:0 8px 20px -8px rgb(17 128 64 / .55)}
+html,body{margin:0;overflow-x:clip}
+html{scroll-padding-top:84px}
+@media (max-width:900px){html{scroll-padding-top:80px}}
+.sa{container:page / inline-size;background:var(--color-surface);color:var(--color-on-surface);font-family:var(--font-body);font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased;font-synthesis:none;position:relative;min-height:800px}
+.sa :where(strong,b){font-weight:600}
+.sa *{box-sizing:border-box}
+.sa :where(h1,h2,h3,p,ul,ol,dl,dd,figure){margin:0;padding:0}
+.sa :where(ul,ol){list-style:none}
+:where(.sa) a{color:inherit}
+.sa svg{flex:none}
+.sa :focus-visible{outline:2px solid var(--color-gold-ink);outline-offset:3px}
+.sa :where(.dark-on) :focus-visible{outline-color:var(--color-inverse-on-surface)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px;position:relative}
+h1,h2,h3,.serif{font-family:var(--font-display);font-variation-settings:"SOFT" 30}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+.notice{background:var(--color-secondary-container);color:var(--color-on-secondary-container);border-bottom:1px solid var(--color-gold);font-size:14px;line-height:20px;text-align:center;padding:8px 20px;min-height:36px}
+.header{position:sticky;top:0;z-index:20;background:var(--color-surface);border-bottom:1px solid var(--color-outline-variant)}
+.header .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px}
+.wordmark{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-style:italic;font-weight:500;font-size:28px;line-height:32px;text-decoration:none;color:var(--color-on-surface);justify-self:start}
+.places{display:flex;gap:8px}
+.places a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-weight:500;color:var(--color-on-surface-variant);text-decoration:none;border-radius:var(--radius-full)}
+.places a:hover{color:var(--color-on-surface)}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-blush);color:var(--color-on-surface);border:1px solid var(--color-outline-variant);font:600 16px/20px var(--font-body);text-decoration:none;box-shadow:var(--shadow-card);justify-self:end}
+.pill:hover{background:var(--color-blush-deep)}
+.menu-btn{display:none;width:48px;height:48px;border:0;background:transparent;color:var(--color-on-surface);border-radius:var(--radius-full);align-items:center;justify-content:center;cursor:pointer;justify-self:end}
+.btn-wa{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-whatsapp);color:var(--color-on-whatsapp);font:600 16px/20px var(--font-body);text-decoration:none;box-shadow:var(--shadow-glow)}
+.btn-wa:hover{background:var(--color-whatsapp-deep)}
+.btn-wa:active,.btn-line:active,.btn-prim:active,.pill:active{transform:translateY(1px)}
+.btn-line:active{background:var(--color-surface-container-high)}
+.btn-line{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-surface-container-lowest);color:var(--color-on-surface);border:1.5px solid var(--color-outline);font:600 16px/20px var(--font-body);text-decoration:none}
+.btn-line:hover{border-color:var(--color-on-surface)}
+.btn-prim{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-primary);color:var(--color-on-primary);font:600 16px/20px var(--font-body);text-decoration:none}
+.btn-prim:hover{background:var(--color-inverse-surface)}
+.link{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:600;color:var(--color-on-surface);text-decoration:underline;text-decoration-color:var(--color-outline-variant);text-decoration-thickness:2px;text-underline-offset:6px;white-space:nowrap}
+.link:hover{text-decoration-color:var(--color-on-surface)}
+.link:hover svg{transform:translateX(2px)}
+.link svg{transition:transform 200ms cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){.link svg{transition:none}.link:hover svg{transform:none}}
+.t-h1{font-weight:440;font-size:64px;line-height:68px;letter-spacing:-.015em}
+.t-h2{font-weight:440;font-size:32px;line-height:38px;letter-spacing:-.01em}
+.t-h3{font-weight:500;font-size:24px;line-height:30px}
+.t-lead{font-size:18px;line-height:28px;color:var(--color-on-surface-variant)}
+.t-label{font-size:14px;line-height:20px}
+.muted{color:var(--color-on-surface-variant)}
+
+/* hero */
+.hero{padding:28px 0 56px}
+.hero h1{margin:0 0 8px}
+.hero .t-lead{margin:0 0 20px}
+.hero .go{margin-bottom:28px;display:flex;align-items:center;gap:24px}
+.pair{display:grid;grid-template-columns:5fr 6fr;gap:32px;align-items:stretch}
+.slot{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--color-outline-variant)}
+.slot span{font-family:var(--font-display);font-style:italic;font-size:26px;line-height:32px;color:color-mix(in srgb,var(--color-on-surface) 58%,transparent);text-align:center;padding:0 12px}
+.slot-hero{border-radius:var(--radius-xl);background:linear-gradient(135deg,var(--color-blush),var(--color-cream));min-height:300px}
+.slot-ana{aspect-ratio:4/5;border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--color-surface-container-high),var(--color-blush-deep))}
+.card{background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);border-radius:var(--radius-xl);box-shadow:var(--shadow-card)}
+.menu{overflow:hidden;display:flex;flex-direction:column}
+.head{background:var(--color-blush);border-bottom:1px solid var(--color-outline-variant);padding:14px 24px 12px}
+.head .t-h2{font-size:32px}
+.head p{margin-top:2px;color:var(--color-on-surface-variant)}
+.rows{padding:0 24px}
+.row{padding:10px 0 12px}
+.row+.row{border-top:1px solid var(--color-outline-variant)}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px}
+.top .t-h3{flex:none;white-space:nowrap}
+.price{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-variant-numeric:tabular-nums;font-weight:500;font-size:24px;line-height:30px;color:var(--color-gold-ink);margin-left:auto;text-align:right}
+.price span{white-space:nowrap}
+.mid{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:20px}
+.sub{min-width:0;font-size:14px;line-height:20px;color:var(--color-secondary);font-weight:600}
+.desc{color:var(--color-on-surface-variant);margin-top:2px}
+.row .link{margin:-12px 0}
+.foot{padding:8px 24px 6px;border-top:1px solid var(--color-outline-variant);font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.foot a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--color-on-surface);text-decoration-color:var(--color-gold-ink);text-underline-offset:3px}
+
+/* sections */
+.band{background:var(--color-surface-container-low)}
+.sec{padding:80px 0}
+.sec-tight{padding:56px 0}
+.island{padding:48px}
+.about{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:56px;align-items:center}
+.about .slot-ana{order:2}
+.about-t{order:1}
+.rule{width:48px;height:2px;background:var(--color-gold);margin:20px 0 24px}
+.about p{color:var(--color-on-surface-variant);max-width:60ch}
+.about p+p{margin-top:16px}
+.sign{display:inline-block;font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-style:italic;font-weight:500;font-size:24px;line-height:30px;color:var(--color-primary);text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:2px;text-underline-offset:8px;margin-top:20px}
+.two{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:64px;align-items:start}
+.two .lead-p{margin-top:16px}
+.proto{padding:8px 40px}
+.proto li{display:grid;grid-template-columns:44px 1fr;gap:20px;padding:24px 0}
+.proto li+li{border-top:1px solid var(--color-outline-variant)}
+.num{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-variant-numeric:tabular-nums;font-size:24px;line-height:30px;color:var(--color-gold-ink)}
+.proto p{margin-top:8px;color:var(--color-on-surface-variant);max-width:60ch}
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.gal .slot{aspect-ratio:3/4;border-radius:var(--radius-lg)}
+.gal .slot span{font-size:24px;line-height:30px}
+.g1{background:linear-gradient(135deg,var(--color-blush),var(--color-blush-deep))}
+.g2{background:linear-gradient(135deg,var(--color-surface-container-high),var(--color-cream))}
+.g3{background:linear-gradient(135deg,var(--color-cream),var(--color-gold))}
+.g4{background:linear-gradient(135deg,var(--color-gold),var(--color-blush))}
+.g5{background:linear-gradient(135deg,var(--color-primary),var(--color-blush))}
+.g6{background:linear-gradient(135deg,var(--color-blush-deep),var(--color-surface-container-high))}
+.center{text-align:center;margin-top:48px}
+.loy{background:var(--color-blush);border:1px solid var(--color-outline-variant);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:64px}
+.loy-g{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.loy .t-h2{color:var(--color-on-primary-container);font-size:40px;line-height:46px}
+.perk{display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start}
+.perk+.perk{margin-top:20px}
+.coin{width:40px;height:40px;border-radius:50%;background:var(--color-surface-container-lowest);color:var(--color-on-primary-container);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;border:1px solid var(--color-outline-variant)}
+.faq{display:grid;grid-template-columns:minmax(0,1fr) 17rem;gap:56px;align-items:start;margin-top:40px}
+.faqcard{overflow:hidden}
+.qa+.qa{border-top:1px solid var(--color-outline-variant)}
+.qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:12px 24px;font-weight:600}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary svg{color:var(--color-primary)}
+.qa[open] summary svg{transform:rotate(45deg)}
+.qa p{padding:0 24px 20px;color:var(--color-on-surface-variant);max-width:62ch}
+.ask{background:var(--color-blush);border:1px solid var(--color-outline-variant);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-card)}
+.ask .serif{font-size:24px;line-height:30px;font-weight:500}
+.ask p+p{margin-top:8px;color:var(--color-on-surface-variant)}
+.book{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.good{margin-top:24px;padding:20px 24px;border-radius:var(--radius-lg)}
+.good b.l{display:block;font-size:14px;line-height:20px;font-weight:600;color:var(--color-secondary)}
+.good ul{margin-top:10px;font-size:14px;line-height:22px;color:var(--color-on-surface-variant)}
+.good li+li{margin-top:8px}
+.good a{font-weight:600;color:var(--color-on-surface)}
+.wa-card{display:grid;grid-template-columns:48px 1fr 20px;gap:16px;align-items:center;padding:20px 24px;border-radius:20px;background:var(--color-whatsapp);color:var(--color-on-whatsapp);text-decoration:none;box-shadow:var(--shadow-glow)}
+.wa-card:hover{background:var(--color-whatsapp-deep)}
+.wa-card .ic{width:48px;height:48px;border-radius:50%;background:var(--color-on-whatsapp-wash);display:flex;align-items:center;justify-content:center}
+.wa-card b{display:block;font-size:16px;line-height:20px;font-weight:600}
+.wa-card span.s{display:block;font-size:14px;line-height:20px}
+.or{text-align:center;margin:16px 0 12px;font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.call-wide{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:var(--radius-lg);background:var(--color-surface-container-lowest);border:1.5px solid var(--color-outline);text-decoration:none;font-weight:600;color:var(--color-on-surface);padding:8px 20px;flex-wrap:wrap;column-gap:10px}
+.call-wide:hover{border-color:var(--color-on-surface)}
+.num-t{font-variant-numeric:tabular-nums}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:32px}
+.info{padding:32px}
+.info dl>div+div{margin-top:24px}
+.info dt{font-size:14px;line-height:20px;font-weight:600;color:var(--color-on-surface-variant)}
+.info dd{margin-top:4px}
+.info .big{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-size:20px;line-height:28px;color:var(--color-on-surface);text-decoration:none}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:8px 0}
+.hours li+li{border-top:1px solid var(--color-outline-variant)}
+.hours b{font-weight:600;font-variant-numeric:tabular-nums}
+.btns{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px}
+.footer{background:var(--color-inverse-surface);color:var(--color-inverse-on-surface);margin-top:0}
+.footer .grid4{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.2fr;gap:48px;padding:64px 0 48px}
+.footer .wordmark{color:var(--color-inverse-on-surface);font-size:30px}
+.footer .mut{color:var(--color-inverse-on-surface-variant)}
+.footer h3.fl{font-family:var(--font-body);font-variation-settings:normal;font-size:14px;line-height:20px;font-weight:600;color:var(--color-inverse-on-surface-variant);margin-bottom:8px}
+.footer nav a,.footer .c a.t{display:flex;align-items:center;min-height:44px;font-size:14px;line-height:20px;text-decoration:none;color:var(--color-inverse-on-surface)}
+.footer nav a:hover,.footer .c a.t:hover{text-decoration:underline;text-underline-offset:4px}
+.soc{display:flex;gap:4px;margin-top:8px}
+.soc a{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--color-inverse-on-surface);border-radius:50%}
+.soc a:hover{background:var(--color-inverse-wash)}
+.legal{border-top:1px solid var(--color-inverse-line);padding:24px 0 28px;font-size:14px;line-height:20px;color:var(--color-inverse-on-surface-variant)}
+.legal ul{display:flex;flex-wrap:wrap;gap:4px 24px}
+.legal .row2{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.anpc{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:var(--color-inverse-on-surface);text-decoration:none}
+.anpc b{border-radius:4px;background:var(--color-inverse-wash);padding:2px 8px;font-weight:600}
+.dock{display:none}
+.co{display:none}
+@container page (min-width:901px){
+  .header .wrap{height:68px}
+  .hero h1{margin-bottom:16px}
+  .row{padding:12px 0 14px}
+  .desc{margin-top:4px}
+  .t-h1{font-variation-settings:"SOFT" 30,"opsz" 96}
+}
+@container page (min-width:1100px){
+  .co.r{left:auto;right:2px}
+  .co{display:flex;position:absolute;left:2px;width:24px;height:24px;border-radius:50%;background:var(--color-on-surface);color:var(--color-surface);font-size:14px;line-height:1;font-weight:600;align-items:center;justify-content:center;z-index:3}
+}
+@container page (max-width:1040px){
+  .pair{grid-template-columns:1fr 1fr;gap:24px}
+  .footer .grid4{grid-template-columns:1fr 1fr}
+}
+@container page (max-width:900px){
+  .header nav{display:none}
+  .menu-btn{display:inline-flex}
+  .header .wrap{grid-template-columns:1fr auto auto;gap:12px;height:64px}
+  .header .pill{height:44px;padding:0 20px}
+  .wordmark{font-size:24px;line-height:30px}
+  .two,.book,.contact,.faq,.loy-g,.about{grid-template-columns:1fr}
+  .about .slot-ana,.about-t{order:0}
+  .two,.book,.contact,.faq,.loy-g,.about{gap:32px}
+  .pair{grid-template-columns:1fr}
+  .slot-hero{min-height:0;height:240px}
+  .lands .slot-hero{display:none}
+}
+@container page (max-width:760px){
+  .header .pill{display:none}
+  .header .wrap{grid-template-columns:1fr auto;gap:0}
+  .wrap{padding:0 20px}
+  .notice{padding:6px 16px}
+  .hero{padding:20px 0 36px}
+  .t-h1{font-variation-settings:"SOFT" 30}
+  .hero h1{font-size:min(40px,10cqw);line-height:1.1;margin-bottom:8px}
+  .hero .t-lead{font-size:16px;line-height:24px;margin-bottom:16px}
+  .hero .go{display:none}
+  .pair{gap:16px}
+  .slot-hero{aspect-ratio:auto;height:46cqw;border-radius:20px}
+  .slot span{font-size:22px}
+  .t-h2,.head .t-h2{font-size:28px;line-height:34px}
+  .menu{border-radius:20px}
+  .head{padding:12px 20px 10px}
+  .rows{padding:0 20px}
+  .row{padding:8px 0 10px}
+  .foot{padding:8px 20px 6px}
+  .sec{padding:48px 0}
+  .sec-tight{padding:40px 0}
+  .island{padding:24px;border-radius:20px}
+  .proto{padding:4px 20px}
+  .proto li{grid-template-columns:32px 1fr;gap:12px;padding:20px 0}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
+  .gal .slot span{font-size:20px;line-height:26px}
+  .loy{padding:28px 20px;border-radius:20px}
+  .loy .t-h2{font-size:28px;line-height:34px}
+  .info{padding:24px 20px}
+  .footer .grid4{grid-template-columns:1fr;gap:24px;padding:48px 0 32px}
+  .footer .wordmark{font-size:28px}
+  .center{margin-top:32px}
+  .btns{flex-direction:column;align-items:stretch}
+  .btns>a{width:100%}
+  .dock{position:sticky;bottom:0;z-index:30;display:flex;gap:12px;align-items:center;padding:10px 20px 10px;min-height:72px;background:var(--color-surface-container-lowest);border-top:1px solid var(--color-outline-variant);box-shadow:var(--shadow-card)}
+  .dock .btn-wa{flex:1;min-width:0;padding:0 16px}
+  .dock .call{flex:none;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--color-outline);background:var(--color-surface-container-lowest);color:var(--color-on-surface);display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+  .wa-card{grid-template-columns:44px 1fr 20px;padding:16px}
+}
+@container page (max-width:380px){
+  .wrap{padding:0 16px}
+  .head{padding-left:16px;padding-right:16px}
+  .rows{padding:0 16px}
+  .foot{padding-left:16px;padding-right:16px}
+  .slot-hero{height:40cqw}
+  .dock{padding:10px 16px}
+  .btn-wa,.btn-line{padding:0 16px;gap:8px}
+  .dock .btn-wa{padding:0 12px}
+}
+.frame{width:390px;height:844px;overflow:hidden;position:relative}
+.frame .dock{position:absolute;left:0;right:0;bottom:0}
+
+.dir{width:1440px;padding:56px 64px 72px}
+.dir h1.name{font-size:56px;line-height:60px;font-weight:440;letter-spacing:-.015em}
+.dir .idea{font-size:20px;line-height:30px;max-width:62ch;margin-top:12px;color:var(--color-on-surface-variant)}
+.dir h2.sh{font-size:28px;line-height:34px;font-weight:440;margin:56px 0 20px;padding-top:24px;border-top:1px solid var(--color-outline-variant)}
+.dir .sub2{font-size:14px;line-height:20px;color:var(--color-on-surface-variant);margin:-12px 0 16px;max-width:90ch}
+.swg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.swc{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;padding:12px;border-radius:16px;background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant)}
+.swc i{display:block;width:56px;height:56px;border-radius:12px;border:1px solid var(--color-outline-variant)}
+.swc b{display:block;font-size:14px;line-height:18px;font-weight:600}
+.swc code{display:block;font-size:13px;line-height:18px;font-family:ui-monospace,Menlo,monospace;color:var(--color-on-surface-variant)}
+.swc span{display:block;font-size:13px;line-height:17px;color:var(--color-on-surface-variant)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.spec{padding:28px}
+.scale{width:100%;border-collapse:collapse;font-size:14px;line-height:20px}
+.scale td,.scale th{padding:10px 0;border-top:1px solid var(--color-outline-variant);text-align:left;vertical-align:baseline}
+.scale th{font-weight:600;width:90px}
+.boxes{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end}
+.bx{width:150px;height:100px;background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);display:flex;align-items:flex-end;padding:10px;font-size:13px;line-height:18px}
+.strip{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:20px}
+.lab{font-size:13px;line-height:18px;font-weight:600;color:var(--color-on-surface-variant);margin:24px 0 10px}
+.is-hover.btn-wa{background:var(--color-whatsapp-deep)}
+.is-focus{outline:2px solid var(--color-gold-ink);outline-offset:3px}
+.is-off{opacity:1;background:var(--color-surface-container-high);color:var(--color-on-surface-variant);box-shadow:none}
+.drawer{width:390px;height:560px;background:var(--color-surface-container-high);box-shadow:var(--shadow-card);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.drawer .dh{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--color-outline-variant)}
+.drawer nav{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.drawer nav a.l{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-size:32px;line-height:38px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.phone{width:390px;position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--color-outline-variant)}
+.panel{padding:20px;border-radius:16px;border:1px solid var(--color-outline-variant);background:var(--color-surface)}
+.ct{width:100%;border-collapse:collapse;font-size:14px;line-height:20px}
+.ct td,.ct th{padding:8px 12px;border-top:1px solid var(--color-outline-variant);text-align:left}
+.ct th{font-weight:600;background:var(--color-surface-container-low)}
+.ct .ok{font-weight:600;color:var(--color-whatsapp)}
+.ct tr.s td{background:var(--color-surface-container-low)}
+.st{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.st>div{min-width:0}
+.st .phone{width:auto}
+.st h3{font-size:18px;line-height:24px;font-weight:600;margin-bottom:10px;font-family:var(--font-body);font-variation-settings:normal}
+.st p.n{font-size:14px;line-height:20px;color:var(--color-on-surface-variant);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="look sa">
+<div class="dir">
+<h1 class="name serif">Menu beside the work</h1>
+<p class="idea">The first screen answers what a visitor from Instagram wants to know: what the work looks like, what it costs and how to book. The headline runs across, the photo and the raised price menu sit side by side under it, and on a phone the WhatsApp and call dock is there from the first paint. One light look; there is no dark theme and no theme switch.</p>
+
+<h2 class="sh serif">Palette by role, one light look</h2>
+<p class="sub2">Token names are the site's own (src/styles/global.css). Ground, band and card separate by lightness, an edge and a shadow; gold-ink is for card or ground only.</p>
+<div class="swg"><div class="swc"><i style="background: var(--color-surface)"></i><div><b>surface</b><code>--color-surface #f5e8e2</code><span>ground: the page (background, surface-bright)</span></div></div>
+<div class="swc"><i style="background: var(--color-surface-container-low)"></i><div><b>surface-container-low</b><code>--color-surface-container-low #efdcd4</code><span>band: a section set off from the ground</span></div></div>
+<div class="swc"><i style="background: var(--color-surface-container-lowest)"></i><div><b>surface-container-lowest</b><code>--color-surface-container-lowest #fffcfb</code><span>card: raised surface, always with an edge and shadow</span></div></div>
+<div class="swc"><i style="background: var(--color-surface-container-high)"></i><div><b>surface-container-high</b><code>--color-surface-container-high #f3ddd5</code><span>picture well</span></div></div>
+<div class="swc"><i style="background: var(--color-outline-variant)"></i><div><b>outline-variant</b><code>--color-outline-variant #dcc3ba</code><span>hairlines and card edges</span></div></div>
+<div class="swc"><i style="background: var(--color-outline)"></i><div><b>outline</b><code>--color-outline #86726e</code><span>control edge (call button, secondary button)</span></div></div>
+<div class="swc"><i style="background: var(--color-on-surface)"></i><div><b>on-surface</b><code>--color-on-surface #241914</code><span>ink</span></div></div>
+<div class="swc"><i style="background: var(--color-on-surface-variant)"></i><div><b>on-surface-variant</b><code>--color-on-surface-variant #4f4442</code><span>muted ink</span></div></div>
+<div class="swc"><i style="background: var(--color-primary)"></i><div><b>primary</b><code>--color-primary #705955</code><span>rose-brown: signature, call glyph, FAQ plus</span></div></div>
+<div class="swc"><i style="background: var(--color-primary-container)"></i><div><b>primary-container</b><code>--color-primary-container #f4d6d0</code><span>blush: menu head, header pill, loyalty panel (same hex as blush)</span></div></div>
+<div class="swc"><i style="background: var(--color-blush-deep)"></i><div><b>blush-deep</b><code>--color-blush-deep #e8a6a0</code><span>hover on blush</span></div></div>
+<div class="swc"><i style="background: var(--color-gold)"></i><div><b>gold</b><code>--color-gold #c9a961</code><span>the rule, the notice foot, the signature underline (never text)</span></div></div>
+<div class="swc"><i style="background: var(--color-gold-ink)"></i><div><b>gold-ink</b><code>--color-gold-ink #7a6118</code><span>prices, numerals and the focus ring (card or ground only)</span></div></div>
+<div class="swc"><i style="background: var(--color-secondary)"></i><div><b>secondary</b><code>--color-secondary #6f561a</code><span>service subtitles, small labels</span></div></div>
+<div class="swc"><i style="background: var(--color-secondary-container)"></i><div><b>secondary-container</b><code>--color-secondary-container #f6e4bd</code><span>notice band (on: on-secondary-container)</span></div></div>
+<div class="swc"><i style="background: var(--color-whatsapp)"></i><div><b>whatsapp</b><code>--color-whatsapp #118040</code><span>every booking action (hover: whatsapp-deep)</span></div></div>
+<div class="swc"><i style="background: var(--color-inverse-surface)"></i><div><b>inverse-surface</b><code>--color-inverse-surface #3b2e28</code><span>footer (on: inverse-on-surface)</span></div></div></div>
+<p class="lab">Also in the token set</p>
+<div class="swg"><div class="swc"><i style="background: var(--color-blush)"></i><div><b>blush</b><code>--color-blush #f4d6d0</code></div></div>
+<div class="swc"><i style="background: var(--color-cream)"></i><div><b>cream</b><code>--color-cream #fbf7f2</code></div></div>
+<div class="swc"><i style="background: var(--color-surface-container)"></i><div><b>surface-container</b><code>--color-surface-container #f1dfd8</code></div></div>
+<div class="swc"><i style="background: var(--color-surface-container-highest)"></i><div><b>surface-container-highest</b><code>--color-surface-container-highest #ead3ca</code></div></div>
+<div class="swc"><i style="background: var(--color-surface-dim)"></i><div><b>surface-dim</b><code>--color-surface-dim #e3cdc4</code></div></div>
+<div class="swc"><i style="background: var(--color-inverse-on-surface)"></i><div><b>inverse-on-surface</b><code>--color-inverse-on-surface #ffede7</code></div></div>
+<div class="swc"><i style="background: var(--color-inverse-on-surface-variant)"></i><div><b>inverse-on-surface-variant</b><code>--color-inverse-on-surface-variant #dccbc4</code></div></div>
+<div class="swc"><i style="background: var(--color-on-primary-container)"></i><div><b>on-primary-container</b><code>--color-on-primary-container #5f4743</code></div></div>
+<div class="swc"><i style="background: var(--color-on-secondary-container)"></i><div><b>on-secondary-container</b><code>--color-on-secondary-container #5a4512</code></div></div>
+<div class="swc"><i style="background: var(--color-whatsapp-deep)"></i><div><b>whatsapp-deep</b><code>--color-whatsapp-deep #0e7a37</code></div></div>
+<div class="swc"><i style="background: var(--color-on-whatsapp)"></i><div><b>on-whatsapp</b><code>--color-on-whatsapp #fffcfb</code></div></div></div>
+
+<h2 class="sh serif">Type</h2>
+<div class="cols">
+<div class="card spec">
+<p class="serif" style="font-size:64px;line-height:68px;font-weight:440;letter-spacing:-.015em">Unghii care vorbesc despre tine</p>
+<p class="serif" style="font-size:32px;line-height:38px;font-weight:440;margin-top:16px">Servicii &amp; prețuri</p>
+<p class="price" style="margin-top:12px">de la 150 lei</p>
+<p class="serif" style="font-style:italic;font-weight:500;font-size:24px;line-height:30px;color:var(--color-primary);margin-top:12px">cu drag, Ana</p>
+<p style="font-size:18px;line-height:28px;color:var(--color-on-surface-variant);margin-top:16px">Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.</p>
+<p style="margin-top:12px">Pun suflet în fiecare set de unghii și știu că pot livra un rezultat de care să fii mulțumită.</p>
+<p class="t-label muted" style="margin-top:12px">Font check: Bună, câțiva, săptămâni, Construcție, șablon, Întreabă-mă, Târgu-Jiu</p>
+</div>
+<div class="card spec">
+<table class="scale"><tbody>
+<tr><th>Display</th><td>Fraunces 440, 64/68 (40/44 on a phone, sized to the width), tracking -0.015em, SOFT 30</td></tr>
+<tr><th>Heading</th><td>Fraunces 440, 32/38 (28/34)</td></tr>
+<tr><th>Title</th><td>Fraunces 500, 24/30: service titles, prices (tabular), steps, the signature in italic</td></tr>
+<tr><th>Lead</th><td>Manrope 400, 18/28 (16/24)</td></tr>
+<tr><th>Body</th><td>Manrope 400, 16/24; links and buttons 600</td></tr>
+<tr><th>Label</th><td>Manrope 400-600, 14/20: subtitles, notice, foot, legal, card intro. Nothing is under 14.</td></tr>
+<tr><th>Wordmark</th><td>Fraunces italic 500, 28/32 (24/30); it is the logo, not a size in the scale</td></tr>
+</tbody></table>
+<p class="t-label muted" style="margin-top:16px">Both faces are today's, loaded here from Google Fonts; the site keeps self-hosting them with Fontsource. Sentence case everywhere: no tracked capitals.</p>
+</div></div>
+
+<h2 class="sh serif">Spacing, radii, elevation</h2>
+<div class="boxes">
+<div class="bx" style="border-radius:8px">8 radius</div>
+<div class="bx" style="border-radius:16px">16 frames, rows</div>
+<div class="bx" style="border-radius:24px;box-shadow:var(--shadow-card)">24 cards, islands</div>
+<div class="bx" style="border-radius:9999px;justify-content:center;align-items:center">full buttons</div>
+<div class="bx" style="border-radius:16px;box-shadow:var(--shadow-card)">shadow-card</div>
+<div class="bx" style="border-radius:16px;box-shadow:var(--shadow-glow);background:var(--color-whatsapp);color:var(--color-on-whatsapp);border-color:var(--color-whatsapp)">shadow-glow</div>
+</div>
+<p class="t-label muted" style="margin-top:16px;max-width:100ch">Spacing runs on 4 and 8: 8, 12, 16, 24, 32, 48, 56 and 80 between sections at 1280 (48 on a phone). Space between groups is larger than inside them. Container 1200, gutters 32 (20, and 16 under 380). Hairline: outline-variant at 1 px. Card shadow: 0 1px 2px at 6% plus 0 12px 32px -16px at 22%, with a 1 px edge.</p>
+
+<h2 class="sh serif">Components, one look</h2>
+<p class="lab">Booking action: WhatsApp green carries every booking action. Default, hover, focus, disabled</p>
+<div class="strip">
+<a class="btn-wa" href="#x"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Programează-te pe WhatsApp</a>
+<a class="btn-wa is-hover" href="#x"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Hover</a>
+<a class="btn-wa is-focus" href="#x"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Focus</a>
+<span class="btn-wa is-off" aria-disabled="true">Disabled</span>
+</div>
+<p class="lab">Header pill (blush), outlined call button, loyalty button, text link with arrow icon</p>
+<div class="strip">
+<a class="pill" href="#x" style="justify-self:auto">Programează-te</a>
+<a class="pill is-focus" href="#x" style="justify-self:auto">Focus</a>
+<a class="btn-line" href="#x"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Sună-mă</a>
+<a class="btn-prim" href="#x">Programează-te acum</a>
+<a class="link" href="#x">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a>
+<a class="link is-focus" href="#x">Focus<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a>
+</div>
+<div class="cols" style="margin-top:28px">
+<div>
+<p class="lab" style="margin-top:0">Menu card: head, ruled rows, foot</p>
+<div class="card menu" style="max-width:600px"><header class="head"><h2 class="t-h2">Servicii &amp; prețuri</h2><p class="t-label">Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe WhatsApp.</p></header><ul class="rows"><li class="row" style="list-style:none"><div class="top"><h3 class="t-h3">Manichiură</h3><b class="price"><span>de la 80 lei</span></b></div><div class="mid"><p class="sub">Clasică &amp; semipermanentă</p><a class="link" href="#x" aria-label="Programează, Manichiură">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="desc">Manichiură îngrijită cu lac semipermanent rezistent până la 3 săptămâni.</p></li><li class="row" style="list-style:none"><div class="top"><h3 class="t-h3">Nail Art</h3><b class="price"><span>de la 20 lei</span> <span>/ unghie</span></b></div><div class="mid"><p class="sub">Design-uri personalizate</p><a class="link" href="#x" aria-label="Programează, Nail Art">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="desc">French, babyboomer, ombre, pictură manuală: design-uri unice, adaptate stilului tău.</p></li></ul><p class="foot">Nu găsești ce cauți? <a href="#x">Întreabă-mă pe WhatsApp</a>.</p></div>
+<p class="lab">Notice (pale gold, not the old loud yellow)</p>
+<div class="notice" style="border-radius:8px;border:1px solid var(--color-gold)">Site în lucru. Pentru programări, scrie-mi oricând pe WhatsApp.</div>
+<p class="lab">FAQ rows, closed and open</p>
+<div class="card faqcard" style="max-width:600px"><details class="qa" open="open"><summary><span>Cum mă programez?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Cel mai simplu pe WhatsApp: apasă butonul „Programează-te”, scrie-mi ziua și intervalul preferat.</p></details><details class="qa"><summary><span>Cum pot plăti?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Plata se face la programare.</p></details></div>
+</div>
+<div>
+<p class="lab" style="margin-top:0">Phone: docked bar from the first paint (WhatsApp pill, round call button)</p>
+<div class="phone" style="height:100px;background:var(--color-surface)"><div class="dock" style="position:absolute;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;padding:10px 20px;min-height:72px;background:var(--color-surface-container-lowest);border-top:1px solid var(--color-outline-variant);box-shadow:var(--shadow-card)"><a class="btn-wa" style="flex:1;padding:0 16px" href="#x"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Scrie-mi pe WhatsApp</a><a href="#x" aria-label="Sună-mă" style="flex:none;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--color-outline);background:var(--color-surface-container-lowest);color:var(--color-on-surface);display:inline-flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a></div></div>
+<p class="lab">Phone menu: the Base UI Drawer, as today (full height, wordmark and close, links in Fraunces, the pill)</p>
+<div class="drawer"><div class="dh"><span class="wordmark" style="font-size:24px">Unghii by Ana</span><a href="#x" aria-label="Închide meniul" style="width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:var(--color-on-surface)"><svg width="24" height="24" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line transform="rotate(45 128 128)" x1="128" y1="48" x2="128" y2="208"></line><line transform="rotate(45 128 128)" x1="48" y1="128" x2="208" y2="128"></line></svg></a></div>
+<nav aria-label="Meniu de navigare"><a class="l" href="#x">Acasă</a><a class="l" href="#x">Despre</a><a class="l" href="#x">Servicii</a><a class="l" href="#x">Galerie</a><a class="l" href="#x">Întrebări</a><a class="l" href="#x">Contact</a><a class="pill" href="#x" style="margin-top:8px;justify-self:auto">Programează-te</a></nav></div>
+</div>
+</div>
+<p class="t-label muted" style="margin-top:24px;max-width:110ch">This site has no form field, no toast and no menu popover: it books through WhatsApp links and a call link, so none is drawn. Focus uses the same 2 px gold-ink ring at a 3 px offset on every link and button.</p>
+
+<h2 class="sh serif">States</h2>
+<div class="st">
+<div><h3>Home: a picture fails to load</h3><div class="slot slot-hero" style="height:150px;border-radius:20px" role="img" aria-label="Detaliu cu unghii manichiurate de Ana"><span>Hero photo</span></div><p class="n">The well and its label stay; alt text is never drawn across it.</p></div>
+<div><h3>Servicii: focus on a price row</h3><div class="card" style="padding:12px 16px"><div class="top"><h3 class="t-h3" style="margin:0">Unghii cu gel</h3><b class="price"><span>de la 150 lei</span></b></div><div class="mid"><p class="sub">Construcție &amp; gel</p><a class="link is-focus" href="#x" style="margin:0">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div></div><p class="n">Prices never change at runtime; the only state is focus and hover.</p></div>
+<div><h3>Galerie: reduced motion</h3><div class="slot g1" style="height:150px;border-radius:16px;aspect-ratio:auto" role="img" aria-label="Galerie 1"><span>Galerie 1</span></div><p class="n">No scroll reveals, no zoom on hover, no arrow slide. Everything is visible at once.</p></div>
+<div><h3>Programări: the dock hides</h3><div class="phone" style="height:150px;background:var(--color-surface);padding:16px"><a class="wa-card" href="#x" style="grid-template-columns:44px 1fr 20px;padding:12px"><span class="ic"><svg width="24" height="24" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg></span><span><b>Scrie-mi pe WhatsApp</b><span class="s">07xx xxx xxx</span></span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="n">The bar leaves while Programează-te or Unde mă găsești is on screen, as today: the page's own buttons take over.</p></div>
+</div>
+
+<h2 class="sh serif">Contrast, one look</h2>
+<p class="sub2">WCAG 2.2 AA: 4.5 for text, 3 for large text, UI parts and the focus ring. Surface rows need 1.09, or an edge of 1.3, or elevation. Ratios are computed from these token values.</p>
+<table class="ct"><thead><tr><th>Pair</th><th>Ratio</th><th>Needs</th><th>Result</th></tr></thead><tbody>
+<tr class=""><td>ink on ground</td><td class="num-t">14.31</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>ink on band</td><td class="num-t">12.95</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>ink on card</td><td class="num-t">16.80</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>ink on blush</td><td class="num-t">12.56</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>muted ink on ground</td><td class="num-t">7.83</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>muted ink on band</td><td class="num-t">7.09</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>muted ink on card</td><td class="num-t">9.19</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>muted ink on blush</td><td class="num-t">6.87</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>muted ink on well</td><td class="num-t">7.20</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>primary (signature, figures) on card</td><td class="num-t">6.33</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>primary on ground</td><td class="num-t">5.39</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>primary on band</td><td class="num-t">4.88</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>gold-ink (prices, numerals) on card</td><td class="num-t">5.79</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>gold-ink on ground</td><td class="num-t">4.94</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>secondary (subtitles) on card</td><td class="num-t">6.81</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>secondary on ground</td><td class="num-t">5.80</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>white on whatsapp</td><td class="num-t">4.91</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>white on whatsapp-deep (hover)</td><td class="num-t">5.33</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>on-secondary-container on notice</td><td class="num-t">7.30</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>on-primary-container on blush</td><td class="num-t">6.23</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>white on primary (loyalty button)</td><td class="num-t">6.33</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>ink on blush-deep (header pill hover)</td><td class="num-t">8.49</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>inverse text on footer</td><td class="num-t">11.52</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>inverse muted on footer</td><td class="num-t">8.33</td><td class="num-t">4.5</td><td class="ok">pass</td></tr>
+<tr class=""><td>picture label (ink 58%) on blush, large text</td><td class="num-t">3.84</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>picture label (ink 58%) on blush-deep, large text</td><td class="num-t">3.30</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>picture label (ink 58%) on well, large text</td><td class="num-t">3.90</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>focus ring gold-ink on ground</td><td class="num-t">4.94</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>focus ring gold-ink on card</td><td class="num-t">5.79</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>focus ring gold-ink on band</td><td class="num-t">4.47</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>focus ring on footer (inverse-on-surface)</td><td class="num-t">11.52</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>control edge (outline) on card, call button</td><td class="num-t">4.43</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>control edge on ground</td><td class="num-t">3.77</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>control edge on band</td><td class="num-t">3.41</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>whatsapp fill on ground (UI part)</td><td class="num-t">4.19</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>whatsapp fill on card (dock)</td><td class="num-t">4.91</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class=""><td>primary icon (FAQ plus) on card</td><td class="num-t">6.33</td><td class="num-t">3</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE card on ground</td><td class="num-t">1.17</td><td class="num-t">1.09 or edge 1.4</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE band on ground</td><td class="num-t">1.11</td><td class="num-t">1.09</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE card on band</td><td class="num-t">1.30</td><td class="num-t">1.09 or edge 1.26</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE blush on ground (loyalty, menu head on card)</td><td class="num-t">1.14</td><td class="num-t">1.09 or edge 1.4</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE blush head on card</td><td class="num-t">1.34</td><td class="num-t">1.09</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE picture well on ground</td><td class="num-t">1.09</td><td class="num-t">1.09 or edge 1.4</td><td class="ok">pass</td></tr>
+<tr class="s"><td>SURFACE footer on ground</td><td class="num-t">10.90</td><td class="num-t">1.09</td><td class="ok">pass</td></tr>
+<tr class="s"><td>EDGE outline-variant on ground</td><td class="num-t">1.40</td><td class="num-t">1.3</td><td class="ok">pass</td></tr>
+<tr class="s"><td>EDGE outline-variant on card</td><td class="num-t">1.64</td><td class="num-t">1.3</td><td class="ok">pass</td></tr>
+</tbody></table>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+/*
+ * churchix, "The porch notice": the token set for the board's proposal, in the template's own names.
+ *
+ * The template has no dark palette and no theme switch (one look per parish), and its mechanism is
+ * not a bare @theme block: packages/ui/src/styles/tokens.css holds the seeds and the color-mix()
+ * derived roles under :where(:root), and theme.css maps each to a Tailwind name with var(). So this
+ * file has two parts, one for each of those files. A parish still sets only four seeds in
+ * site.json brand (primary, secondary, surface, onPrimary); nothing below is a hex.
+ */
+
+/* ───────── Part A: packages/ui/src/styles/tokens.css, inside :where(:root). Replace the lines of the same name. ───────── */
+:where(:root) {
+  /* Seeds: unchanged names. The default seeds stay as they are (the parish sets its own). */
+
+  /* Text: derived from the primary, so a blue parish gets blue-black text. */
+  --on-surface: color-mix(in srgb, var(--primary) 12%, #161412);
+  --on-background: var(--on-surface);
+  --on-surface-variant: color-mix(in srgb, var(--primary) 22%, #5b5552);
+
+  /* The news tray and the Pomelnice name-card heads: tinted by the primary, not darkened. */
+  --surface-container: color-mix(in srgb, var(--primary) 7%, var(--surface));
+
+  /* --primary-container stays as it is today (primary 80 % with white): Badge, Alert, the form note and
+   * the Drawer ring use it. The darker mix gets its own name. */
+  /* New: hover, pressed and the arch fill, darker than the primary. */
+  --primary-strong: color-mix(in srgb, var(--primary) 80%, #000000);
+
+  /* New: icons and marks on light surfaces (bank, church, download, the current-place underline).
+   * Secondary 55 % with primary: bronze for the parish, pewter blue for the blue seeds; at least 3:1
+   * on white and on the Sunday row for both seed sets. Pure --secondary stays for rules, the arch line
+   * and the logo cross on the primary, never an icon on light. */
+  --secondary-strong: color-mix(in srgb, var(--secondary) 55%, var(--primary));
+
+  /* New: the lede on the primary name band. */
+  --on-primary-variant: color-mix(in srgb, var(--on-primary) 80%, var(--primary));
+
+  /* New: the Sunday row. */
+  --surface-highlight: color-mix(in srgb, var(--secondary-strong) 18%, #ffffff);
+
+  /* Badges: 30% instead of 35% so the badge text keeps its 10:1 on every seed set. */
+  --secondary-container: color-mix(in srgb, var(--secondary) 30%, #ffffff);
+
+  /* Unchanged and used as they are: --outline-variant (the 1 px card edge), --outline,
+   * --surface-container-lowest (#ffffff), --surface-container-high (the footer), --secondary,
+   * --secondary-fixed, --on-secondary-container, --error, --error-container, --on-error-container,
+   * --inverse-surface, --inverse-on-surface (the callout numbers). */
+}
+
+/* ───────── Part B: packages/ui/src/styles/theme.css, inside the existing @theme { … } ───────── */
+@theme {
+  /* Two new colour names, mapped like the rest. */
+  --color-primary-strong: var(--primary-strong);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-on-primary-variant: var(--on-primary-variant);
+  --color-surface-highlight: var(--surface-highlight);
+
+  /* Elevation: two levels. Every card also keeps its 1 px --color-outline-variant edge. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--on-surface) 6%, transparent);
+  --shadow-board: 0 4px 12px color-mix(in srgb, var(--on-surface) 10%, transparent);
+
+  /* Radius: no change. 8 px (--radius) for controls, 16 px (--radius-lg) for cards, full for pills. */
+
+  /* Type. Labels lose their tracking and go to 600: sentence case everywhere. */
+  --text-label-md--letter-spacing: 0;
+  --text-label-md--font-weight: 600;
+
+  /* New sizes. Cardo is --font-heading, Inter --font-body, as today. */
+  --font-display-md: var(--font-heading);
+  --text-display-md: 52px; /* the parish name on the Home band from 960 px, 2 lines at 1280; page heads use --text-headline-lg + 8 (40/48) */
+  --text-display-md--line-height: 60px;
+  --text-display-md--font-weight: 700;
+
+  --font-display-sm: var(--font-heading);
+  --text-display-sm: 36px; /* the next service's name */
+  --text-display-sm--line-height: 44px;
+  --text-display-sm--font-weight: 700;
+
+  --font-time: var(--font-body);
+  --text-time: 48px; /* 17:00, the loudest fact after the name (the name is 52 on desktop) */
+  --text-time--line-height: 52px;
+  --text-time--font-weight: 600;
+  --text-time-mobile: 40px;
+  --text-time-mobile--line-height: 44px;
+  --text-time-mobile--font-weight: 600;
+
+  --font-wordmark: var(--font-heading);
+  --text-wordmark: 22px; /* header and footer wordmark */
+  --text-wordmark--line-height: 28px;
+  --text-wordmark--font-weight: 700;
+  --text-wordmark-mobile: 20px;
+  --text-wordmark-mobile--line-height: 24px;
+  --text-wordmark-mobile--font-weight: 700;
+
+  /* Kept as they are: --text-headline-lg 32/40, --text-headline-lg-mobile 28/36, --text-headline-md 24/32,
+   * --text-body-lg 18/28, --text-body-md 16/24, --text-label-md 14/20, --text-caption 12/16. */
+}

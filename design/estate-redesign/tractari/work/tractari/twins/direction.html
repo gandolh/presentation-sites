@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=1440"><title>direction (twin)</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700..900&amp;family=Archivo:wght@400..700&amp;display=swap"><style>
+/* Hallmark · waive 72 · the sheet is a fixed 1440 artboard, never shown on a phone · a direction specimen drawn at one width */
+/* Hallmark · dismissed F25 · the palette and contrast tables belong to a fixed 1440 specimen sheet and are never read at 375 */
+[data-theme="dark"]{color-scheme:dark;--color-ground:#090e12;--color-surface:#181f25;--color-surface-2:#252c34;--color-line:#30363c;--color-line-strong:#636a71;--color-ink:#f0eee9;--color-ink-muted:#a8afb5;--color-amber:#f3b01d;--color-on-amber:#161107;--color-call:#f76400;--color-call-hover:#fc7a14;--color-on-call:#1a0b05;--color-banner:#3b2b0d;--color-on-banner:#fbc865;--color-focus:#f3b01d;--color-plate-top:oklch(10% 0.012 255);--color-plate-mid:oklch(15% 0.013 250);--color-plate-beacon:oklch(80% 0.16 80 / 0.2);--color-plate-moon:oklch(95% 0.03 230 / 0.12);--color-plate-road:oklch(45% 0.014 250 / 0.3);--color-scrim:oklch(11% 0.012 255);--mask-on:#000;--mask-half:rgb(0 0 0 / .45);--font-display:"Big Shoulders Display","Arial Narrow",system-ui,sans-serif;--font-body:"Archivo",system-ui,sans-serif;--shadow-board:0 24px 48px -24px rgb(0 0 0 / .7)}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--color-ground)}
+:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.page{position:relative;background:var(--color-ground);color:var(--color-ink);font-family:var(--font-body);font-size:16px;line-height:26px;min-height:800px;overflow-x:clip}
+:where(.page) a{color:inherit}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:32px;position:relative}
+.label{font-size:14px;line-height:20px;font-weight:600}
+.skip{position:absolute;left:16px;top:-64px;z-index:50;background:var(--color-ink);color:var(--color-ground);padding:8px 16px;border-radius:4px;font-weight:600;text-decoration:none}
+.skip:focus{top:8px}
+.banner{background:var(--color-banner);color:var(--color-on-banner);text-align:center;padding:8px 16px;min-height:32px;font-size:14px;line-height:20px;font-weight:600}
+.header{background:var(--color-surface);border-bottom:1px solid var(--color-line)}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px}
+.mark{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:28px;text-transform:uppercase;color:var(--color-ink);min-height:44px}
+.mark i{width:12px;height:12px;border-radius:50%;background:var(--color-amber);box-shadow:0 0 0 4px color-mix(in oklab,var(--color-amber) 22%,transparent)}
+.nav{display:flex;gap:8px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;text-decoration:none;color:var(--color-ink-muted);font-weight:400;border-radius:4px}
+.nav a:hover{color:var(--color-ink)}
+.hcall{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--color-line-strong);border-radius:4px;text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums}
+.hcall svg{color:var(--color-call)}
+.hcall:hover{background:var(--color-surface-2)}
+.hcall--on{background:var(--color-call);color:var(--color-on-call);border-color:var(--color-call)}
+.hcall--on svg{color:var(--color-on-call)}
+.hcall--on:hover{background:var(--color-call-hover)}
+.menu{display:none;width:44px;height:44px;align-items:center;justify-content:center;background:var(--color-surface-2);color:var(--color-ink);border:1px solid var(--color-line);border-radius:4px;padding:0}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:800;letter-spacing:0;margin:0}
+.top{padding-top:28px}
+.status{margin:0;font-size:18px;line-height:26px;font-weight:600;color:var(--color-ink)}
+h1{font-size:80px;line-height:80px;margin-top:4px}
+.lede{margin:12px 0 0;max-width:62ch;font-size:20px;line-height:30px;color:var(--color-ink-muted);text-wrap:pretty}
+.more{display:flex;width:max-content;align-items:center;gap:8px;min-height:44px;margin-top:4px;color:var(--color-ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--color-line-strong);text-underline-offset:6px;text-decoration-thickness:2px}
+.more:hover{text-decoration-color:var(--color-call)}
+.more svg{width:20px;height:20px;color:var(--color-call)}
+.lane{display:block;width:100%;height:10px;margin-top:12px;overflow:visible}
+.board{position:relative;margin-top:20px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;padding:32px;box-shadow:var(--shadow-board)}
+.board__head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end}
+.board h2{font-size:48px;line-height:48px}
+.board__copy{margin:0;max-width:52ch;color:var(--color-ink-muted)}
+.lines{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:24px}
+.line{display:flex;flex-direction:column;justify-content:center;text-decoration:none;border-radius:4px;padding:0 20px;min-height:96px}
+.line--main{grid-column:1/span 6;flex-direction:row;align-items:center;gap:20px;background:var(--color-call);color:var(--color-on-call)}
+.line--main:hover{background:var(--color-call-hover)}
+.line--main .disc{width:48px;height:48px;border-radius:50%;background:var(--color-on-call);color:var(--color-call);display:grid;place-items:center;flex:none}
+.line--main .who{display:flex;flex-direction:column;min-width:0}
+.line--main .tag{display:flex;gap:12px;font-size:14px;line-height:20px;font-weight:600}
+.line--main .tag span:last-child{font-weight:400}
+.line--main .num{font-family:var(--font-display);font-weight:800;font-size:48px;line-height:48px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.line--a,.line--b{display:grid;grid-template-areas:"nm nm" "g n2";grid-template-columns:20px 1fr;gap:2px 8px;align-content:center;background:var(--color-surface-2)}
+.line--a{grid-column:7/span 3}
+.line--b{grid-column:10/span 3}
+.line--a:hover,.line--b:hover{background:var(--color-line)}
+.line .nm{grid-area:nm;color:var(--color-ink-muted);font-size:14px;line-height:20px;font-weight:600}
+.line .g{grid-area:g;align-self:center;color:var(--color-call)}
+.line .g svg{width:20px;height:20px}
+.line .n2{grid-area:n2;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:30px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mail{margin:16px 0 0;color:var(--color-ink-muted)}
+.mail a{color:var(--color-ink);text-underline-offset:3px}
+
+section{padding-top:112px}
+section.board{padding-top:32px}
+h2.sh{font-size:48px;line-height:48px}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end}
+.sec-side{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.sec-side p{margin:0;color:var(--color-ink-muted);max-width:52ch}
+.call{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border-radius:4px;border:1px solid var(--color-line-strong);color:var(--color-ink);text-decoration:none;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.call svg{color:var(--color-call)}
+.call:hover{background:var(--color-surface-2)}
+.call:active,.line:active,.dock__call:active,.hcall:active{transform:translateY(1px)}
+.lead{display:grid;grid-template-columns:64px 1fr 1.3fr;gap:24px;align-items:center;margin-top:32px;padding:28px 32px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px}
+.lead .well{width:64px;height:64px;border-radius:8px;background:var(--color-surface-2);color:var(--color-call);display:grid;place-items:center}
+.lead .well svg{width:40px;height:40px}
+h3{font-size:28px;line-height:30px}
+.lead p,.tile p{margin:0;color:var(--color-ink-muted)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.tile{padding:24px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;display:flex;flex-direction:column;gap:12px}
+.tile .well{width:40px;height:40px;border-radius:8px;background:var(--color-surface-2);color:var(--color-call);display:grid;place-items:center}
+
+.panel{color:var(--color-ink);display:grid;grid-template-columns:5fr 7fr;gap:40px;align-items:center;padding:40px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;position:relative}
+.panel p{margin:16px 0 0;color:var(--color-ink-muted)}
+.counties{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.counties li{display:flex;align-items:center;gap:12px;min-height:44px;border-top:1px solid var(--color-line);font-weight:600}
+.counties li i{width:10px;height:10px;border-radius:50%;background:var(--color-call)}
+.counties li.hub i{background:var(--color-amber)}
+.map{width:100%;height:auto;display:block}
+.map text{font-family:var(--font-body);font-weight:600;font-size:15px;fill:var(--color-ink);paint-order:stroke;stroke:var(--color-surface);stroke-width:4px;stroke-linejoin:round}
+
+.drive{padding-top:112px}
+.plate{position:relative;height:440px;overflow:hidden;display:flex;align-items:flex-end}
+.plate__bg{position:absolute;inset:0;background:
+ radial-gradient(60% 38% at 50% 16%,var(--color-plate-beacon) 0%,transparent 60%),
+ radial-gradient(46% 32% at 50% 8%,var(--color-plate-moon) 0%,transparent 55%),
+ linear-gradient(180deg,var(--color-plate-top) 0%,var(--color-plate-mid) 50%,var(--color-ground) 100%)}
+.plate__bg::after{content:"";position:absolute;inset:0;background:conic-gradient(from 90deg at 50% 118%,transparent 0deg,var(--color-plate-road) 10deg,transparent 20deg);opacity:.8}
+.plate__scrim{position:absolute;inset:0;background:
+ linear-gradient(to top,var(--color-ground) 0%,color-mix(in oklab,var(--color-ground) 80%,transparent) 30%,transparent 62%),
+ linear-gradient(to right,color-mix(in oklab,var(--color-scrim) 70%,transparent) 0%,transparent 55%)}
+.plate .wrap{width:100%;padding-bottom:72px}
+.strip{position:relative;margin-top:-48px;display:grid;grid-template-columns:repeat(3,1fr);background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;list-style:none;padding:0}
+.strip::before{content:"";position:absolute;left:36px;right:36px;top:40px;height:2px;background:repeating-linear-gradient(90deg,var(--color-amber) 0 10px,transparent 10px 20px);mask:linear-gradient(90deg,var(--mask-on),var(--mask-half));-webkit-mask:linear-gradient(90deg,var(--mask-on),var(--mask-half))}
+.strip li{position:relative;padding:24px 28px 32px;display:flex;flex-direction:column;gap:12px}
+.strip li+li{border-left:1px solid var(--color-line)}
+.strip p{margin:0;color:var(--color-ink-muted)}
+.node{width:32px;height:32px;border-radius:50%;background:var(--color-amber);color:var(--color-on-amber);display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:20px;line-height:20px;position:relative}
+
+footer{margin-top:112px;border-top:1px solid var(--color-line);padding:56px 0 40px}
+footer .wrap.fw{padding-top:0}
+.foot{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px}
+.foot .mark{min-height:0}
+.foot p{margin:12px 0 0;color:var(--color-ink-muted);max-width:34ch}
+.foot h2{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);font-family:var(--font-body);letter-spacing:0}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li a{display:flex;justify-content:space-between;gap:16px;min-height:44px;align-items:center;text-decoration:none;border-top:1px solid var(--color-line);font-variant-numeric:tabular-nums}
+.foot li a span:first-child{color:var(--color-ink-muted)}
+.legal{margin-top:40px;padding-top:20px;border-top:1px solid var(--color-line);display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--color-ink-muted);font-size:14px;line-height:20px;font-weight:600}
+.s-servicii section#servicii,.s-acoperire section#acoperire{padding-top:56px}
+
+.co{position:absolute;width:24px;height:24px;border-radius:50%;background:var(--color-ink);color:var(--color-ground);font:700 13px/24px var(--font-body);text-align:center;z-index:5;left:-48px;top:4px}
+.co::after{content:"";position:absolute;left:24px;top:11px;width:16px;height:1px;background:var(--color-line-strong)}
+.co-hcall{left:auto;right:-48px;top:10px}
+.co-hcall::after{left:auto;right:24px}
+.co-status{top:2px}
+.co-plate{top:188px}
+.co-more{top:10px}
+.co-lead{top:36px}
+.co-panel{top:44px}
+.co-drive{top:443px;left:24px}
+.lead,.panel,.board,.status,.more,.drive{position:relative}
+
+section[id]{scroll-margin-top:101px}
+.dock{display:none}
+.dock__bar{display:flex;gap:8px;align-items:center}
+.dock__call{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:56px;padding:0 4px 0 0;text-decoration:none;color:var(--color-on-call)}
+.dock__call .disc{width:40px;height:40px;border-radius:50%;background:var(--color-on-call);color:var(--color-call);display:grid;place-items:center;flex:none}
+.dock__call .t{display:flex;flex-direction:column}
+.dock__call .a{font-size:14px;line-height:20px;font-weight:600}
+.dock__call .b{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:28px;font-variant-numeric:tabular-nums}
+.dock__toggle{width:48px;height:48px;flex:none;background:var(--color-on-call);color:var(--color-call);border:0;border-radius:4px;display:grid;place-items:center;padding:0}
+.dock__more{display:flex;flex-direction:column;gap:8px;padding:0 0 8px}
+.dock__more a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 16px;background:var(--color-on-call);color:var(--color-ink);border-radius:4px;text-decoration:none;font-variant-numeric:tabular-nums}
+.dock__more a .gn{display:flex;align-items:center;gap:12px;color:var(--color-ink-muted)}
+.dock__more a .gn svg{width:20px;height:20px;color:var(--color-call)}
+
+@media (max-width:1100px){.co{display:none}}
+@media (max-width:1000px){
+ .tiles{grid-template-columns:1fr 1fr}
+ .foot{grid-template-columns:1fr 1fr}
+ .foot>:first-child{grid-column:1/-1}
+ .panel{grid-template-columns:1fr;padding:32px}
+ .lead{grid-template-columns:64px 1fr}
+ .lead p{grid-column:2}
+ .nav{display:none}
+ .menu{display:inline-flex}
+ .hcall{margin-left:auto}
+ .line--main{grid-column:1/-1}
+ .line--a{grid-column:1/span 6}
+ .line--b{grid-column:7/span 6}
+}
+@media (max-width:760px){
+ .hcall{display:none}
+ .wrap{padding-inline:16px}
+ .header .wrap{height:56px}
+ .mark{font-size:24px;line-height:24px}
+ .top{padding-top:16px}
+ .status{font-size:15px;line-height:22px}
+ h1{font-size:44px;line-height:46px;margin-top:2px;text-wrap:balance}
+ .lede{font-size:17px;line-height:25px;margin-top:8px}
+ .more{display:inline-flex;margin:0 0 0 4px;vertical-align:middle}
+ .lane{margin-top:8px}
+ .board{margin-top:12px;padding:16px}
+ section.board{padding-top:16px}
+ .board__head{grid-template-columns:1fr;gap:8px}
+ .board h2{font-size:32px;line-height:34px}
+ .board h2 br{display:none}
+ .board__copy{font-size:15px;line-height:22px}
+ .lines{grid-template-columns:1fr;gap:8px;margin-top:12px}
+ .line--main,.line--a,.line--b{grid-column:1}
+ .line--main{min-height:72px;padding:0 16px;gap:16px}
+ .line--main .disc{width:40px;height:40px}
+ .line--main .disc svg{width:20px;height:20px}
+ .line--main .num{font-size:32px;line-height:34px}
+ .line--a,.line--b{min-height:56px;grid-template-areas:"g nm n2";grid-template-columns:20px 1fr auto;align-items:center;gap:0 12px;padding:0 16px}
+ .line .n2{font-size:24px;line-height:26px}
+ section,.drive{padding-top:72px}
+ .s-servicii section#servicii,.s-acoperire section#acoperire{padding-top:32px}
+ h2.sh{font-size:32px;line-height:34px}
+ .sec-head{grid-template-columns:1fr;gap:16px}
+ .lead{grid-template-columns:1fr;gap:12px;padding:20px;margin-top:24px}
+ .lead p{grid-column:1}
+ .lead .well{width:48px;height:48px}
+ .lead .well svg{width:28px;height:28px}
+ h3{font-size:24px;line-height:26px}
+ .tiles{grid-template-columns:1fr}
+ .tile{padding:20px}
+ .panel{padding:20px;gap:24px}
+ .map text{font-size:22px;stroke-width:5px}
+ .plate{height:300px}
+ .plate .wrap{padding-bottom:72px}
+ .strip{grid-template-columns:1fr}
+ .strip::before{left:31px;right:auto;top:40px;bottom:60px;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--color-amber) 0 10px,transparent 10px 20px);mask:none;-webkit-mask:none}
+ .strip li{padding:20px 16px 24px 60px}
+ .strip li+li{border-left:0;border-top:1px solid var(--color-line)}
+ .strip .node{position:absolute;left:15px;top:20px}
+ footer{margin-top:72px;padding-top:40px}
+ .foot{grid-template-columns:1fr;gap:32px}
+ .page{padding-bottom:72px}
+ section[id]{scroll-margin-top:113px}
+ .dock{display:block;position:absolute;left:0;right:0;bottom:0;z-index:40;background:var(--color-call);padding:8px 12px;min-height:72px}
+}
+
+.dir{display:flex;flex-direction:column;gap:56px;padding:64px;background:var(--color-ground);color:var(--color-ink);font-family:var(--font-body);font-size:16px;line-height:26px}
+.dir h1{font-size:96px;line-height:96px;margin:0}
+.dir h2.d{font-family:var(--font-display);font-weight:800;font-size:32px;line-height:34px;margin:0}
+.blk{display:flex;flex-direction:column;gap:20px;padding-top:32px;border-top:1px solid var(--color-line)}
+.sws{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 24px}
+.sw{display:grid;grid-template-columns:44px 100px 1fr 80px;gap:4px 10px;align-items:center;font-size:13px;line-height:18px;color:var(--color-ink-muted)}
+.sw b{color:var(--color-ink);font-weight:600}
+.sw .chip{grid-row:1/span 2;width:44px;height:44px;border-radius:6px;border:1px solid var(--color-line)}
+.sw .app{grid-column:3/span 2;color:var(--color-ink-muted)}
+.sw span:nth-of-type(2){grid-column:3}
+.sp{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.sp>div{display:flex;flex-direction:column;gap:6px}
+.tt{display:grid;grid-template-columns:260px 1fr;gap:8px 24px;align-items:baseline;border-top:1px solid var(--color-line);padding-top:12px}
+.tt small{color:var(--color-ink-muted);font-size:13px;line-height:18px;display:block}
+.demo{display:flex;flex-wrap:wrap;gap:24px 32px;align-items:flex-start}
+.demo>figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.demo figcaption{color:var(--color-ink-muted);font-size:13px;line-height:18px}
+.phone{width:390px;position:relative;background:var(--color-ground);border:1px solid var(--color-line);border-radius:8px;overflow:hidden}
+.phone .dock{display:block;position:relative;left:auto;right:auto;bottom:auto;background:var(--color-call);padding:8px 12px}
+.pm{width:300px;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow-board)}
+.pm a{display:flex;justify-content:space-between;min-height:48px;align-items:center;text-decoration:none;border-top:1px solid var(--color-line);font-variant-numeric:tabular-nums}
+.pm a:first-of-type{border-top:0}
+.fake-focus{outline:2px solid var(--color-focus);outline-offset:2px}
+.press{transform:translateY(1px)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;line-height:20px}
+.tbl th,.tbl td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--color-line)}
+.tbl .n{font-variant-numeric:tabular-nums;text-align:right}
+.mini-plate{position:relative;width:390px;height:160px;overflow:hidden;border-radius:8px;border:1px solid var(--color-line)}
+.dir .plate__bg,.dir .plate__scrim{position:absolute;inset:0}
+.dir .mini-plate .t{position:absolute;left:16px;bottom:14px;font-family:var(--font-display);font-weight:800;font-size:32px;line-height:34px}
+.dir .more{margin:0}
+</style></head><body><div data-theme="dark" class="page" style="width:1440px"><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+<symbol id="timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+<symbol id="wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+<symbol id="down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+</svg><div class="dir">
+<div><h1>Lines first</h1>
+<p style="margin:12px 0 0;font-size:20px;line-height:30px;max-width:64ch;color:var(--color-ink-muted)">The dispatcher's answer comes before the story: three named lines on one raised board, the drive in the steps, one orange.</p>
+<p class="label" style="margin:16px 0 0;color:var(--color-ink-muted)">One dark look, no theme switch: light and dark are the same set, drawn once.</p></div>
+
+<div class="blk"><h2 class="d">Palette, by role</h2>
+<div class="sws"><div class="sw"><span class="chip" style="background:var(--color-ground)"></span><b>ground</b><span>--color-ground</span><span>#090e12</span><span class="app">background / surface</span></div><div class="sw"><span class="chip" style="background:var(--color-surface)"></span><b>surface</b><span>--color-surface</span><span>#181f25</span><span class="app">surface-container</span></div><div class="sw"><span class="chip" style="background:var(--color-surface-2)"></span><b>surface-2</b><span>--color-surface-2</span><span>#252c34</span><span class="app">surface-container-high</span></div><div class="sw"><span class="chip" style="background:var(--color-line)"></span><b>line</b><span>--color-line</span><span>#30363c</span><span class="app">outline-variant</span></div><div class="sw"><span class="chip" style="background:var(--color-line-strong)"></span><b>line-strong</b><span>--color-line-strong</span><span>#636a71</span><span class="app">outline</span></div><div class="sw"><span class="chip" style="background:var(--color-ink)"></span><b>ink</b><span>--color-ink</span><span>#f0eee9</span><span class="app">on-surface</span></div><div class="sw"><span class="chip" style="background:var(--color-ink-muted)"></span><b>ink-muted</b><span>--color-ink-muted</span><span>#a8afb5</span><span class="app">on-surface-variant</span></div><div class="sw"><span class="chip" style="background:var(--color-amber)"></span><b>amber</b><span>--color-amber</span><span>#f3b01d</span><span class="app">primary</span></div><div class="sw"><span class="chip" style="background:var(--color-on-amber)"></span><b>on-amber</b><span>--color-on-amber</span><span>#161107</span><span class="app">on-primary</span></div><div class="sw"><span class="chip" style="background:var(--color-call)"></span><b>call</b><span>--color-call</span><span>#f76400</span><span class="app">accent</span></div><div class="sw"><span class="chip" style="background:var(--color-call-hover)"></span><b>call-hover</b><span>--color-call-hover</span><span>#fc7a14</span><span class="app">accent-hover</span></div><div class="sw"><span class="chip" style="background:var(--color-on-call)"></span><b>on-call</b><span>--color-on-call</span><span>#1a0b05</span><span class="app">on-accent</span></div><div class="sw"><span class="chip" style="background:var(--color-banner)"></span><b>banner</b><span>--color-banner</span><span>#3b2b0d</span><span class="app">primary-container</span></div><div class="sw"><span class="chip" style="background:var(--color-on-banner)"></span><b>on-banner</b><span>--color-on-banner</span><span>#fbc865</span><span class="app">on-primary-container</span></div><div class="sw"><span class="chip" style="background:var(--color-focus)"></span><b>focus</b><span>--color-focus</span><span>#f3b01d</span><span class="app">primary (ring)</span></div></div>
+<h2 class="d" style="font-size:20px;line-height:24px">The scene plate, today's reduced-motion backdrop</h2>
+<div class="sws"><div class="sw"><span class="chip" style="background:var(--color-plate-top);outline:1px solid var(--color-line)"></span><b>plate-top</b><span>--color-plate-top</span><span>today's backdrop</span><span class="app">new</span></div><div class="sw"><span class="chip" style="background:var(--color-plate-mid);outline:1px solid var(--color-line)"></span><b>plate-mid</b><span>--color-plate-mid</span><span>today's backdrop</span><span class="app">new</span></div><div class="sw"><span class="chip" style="background:var(--color-plate-beacon);outline:1px solid var(--color-line)"></span><b>plate-beacon</b><span>--color-plate-beacon</span><span>today's backdrop</span><span class="app">new</span></div><div class="sw"><span class="chip" style="background:var(--color-plate-moon);outline:1px solid var(--color-line)"></span><b>plate-moon</b><span>--color-plate-moon</span><span>today's backdrop</span><span class="app">new</span></div><div class="sw"><span class="chip" style="background:var(--color-plate-road);outline:1px solid var(--color-line)"></span><b>plate-road</b><span>--color-plate-road</span><span>today's backdrop</span><span class="app">new</span></div><div class="sw"><span class="chip" style="background:var(--color-scrim);outline:1px solid var(--color-line)"></span><b>scrim</b><span>--color-scrim</span><span>today's backdrop</span><span class="app">new</span></div></div></div>
+
+<div class="blk"><h2 class="d">Type</h2>
+<div class="tt"><div><b>Big Shoulders Display 800</b><small>sentence case; the wordmark stays in capitals</small></div><div style="font-family:var(--font-display);font-weight:800;font-size:56px;line-height:56px">AXA Tractări · Sună. Răspundem. 07XX XXX XX1</div></div>
+<div class="tt"><div><b>Archivo 400 to 700</b><small>body, labels, nav, tabular figures for numbers</small></div><div style="font-size:20px;line-height:30px">Ai rămas pe drum în Gorj, Dolj, Vâlcea, Olt sau Mehedinți? Venim cu platforma.</div></div>
+<div class="tt"><div><b>Display, h1</b><small>800 · 80/80, phone 44/46</small></div><div style="font-family:var(--font-display);font-weight:800;font-size:80px;line-height:80px;white-space:nowrap">Tractări auto pe platformă.</div></div><div class="tt"><div><b>H2, board head, plate number</b><small>800 · 48/48, phone 32/34</small></div><div style="font-family:var(--font-display);font-weight:800;font-size:48px;line-height:48px;white-space:nowrap">Un apel, și suntem pe drum.</div></div><div class="tt"><div><b>H3, line numbers, tile titles</b><small>800 · 28/30, phone 24/26</small></div><div style="font-family:var(--font-display);font-weight:800;font-size:28px;line-height:30px;white-space:nowrap">Intervenții rapide</div></div>
+<div class="tt"><div><b>Lede</b><small>Archivo 400 · 20/30, phone 17/25</small></div><div style="font-size:20px;line-height:30px;color:var(--color-ink-muted)">Venim cu platforma și ducem mașina în siguranță acolo unde ai nevoie.</div></div>
+<div class="tt"><div><b>Body</b><small>Archivo 400 · 16/26</small></div><div>Îți spunem costul la telefon, înainte să pornim. Fără surprize.</div></div>
+<div class="tt"><div><b>Label</b><small>Archivo 600 · 14/20, sentence case, untracked</small></div><div class="label">Non-stop 24/7, Oltenia</div></div></div>
+
+<div class="blk"><h2 class="d">Space, shape, depth</h2>
+<div class="sp"><div><b>Spacing</b><span>4 8 12 16 20 24 32 40 56 72 112. Container 1200, gutters 32 (16 on a phone). Sections 112 apart (72 on a phone).</span></div>
+<div><b>Radii</b><span>4 controls and line cells, 8 pictogram wells, 12 panels, the board and tiles, full for nodes and dots.</span></div>
+<div><b>Elevation</b><span>Tone plus a line edge everywhere; the board alone carries a shadow: 0 24px 48px -24px, black at 70 %. No glow, no hover lift.</span></div></div></div>
+
+<div class="blk"><h2 class="d">Components</h2>
+<div class="demo">
+<figure><div style="width:360px"><a class="line line--main" href="#"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="who"><span class="tag"><span>Ionuț P.</span><span>sună acum</span></span><span class="num">07XX XXX XX1</span></span></a></div><figcaption>Dispatcher plate, default</figcaption></figure>
+<figure><div style="width:360px"><a class="line line--main" href="#" style="background:var(--color-call-hover)"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="who"><span class="tag"><span>Ionuț P.</span><span>sună acum</span></span><span class="num">07XX XXX XX1</span></span></a></div><figcaption>Hover</figcaption></figure>
+<figure><div style="width:360px"><a class="line line--main fake-focus" href="#"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="who"><span class="tag"><span>Ionuț P.</span><span>sună acum</span></span><span class="num">07XX XXX XX1</span></span></a></div><figcaption>Focus-visible, 2 px amber ring</figcaption></figure>
+<figure><div style="width:200px"><a class="line line--a" href="#" style="grid-column:auto"><span class="nm">Andrei M.</span><span class="g"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="n2">07XX XXX XX2</span></a></div><figcaption>Backup line cell</figcaption></figure>
+<figure><a class="call" href="#"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg>07XX XXX XX1</a><figcaption>Servicii call</figcaption></figure>
+<figure><a class="hcall" href="#"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg>07XX XXX XX1</a><figcaption>Header call, outline (plate in view)</figcaption></figure>
+<figure><a class="hcall hcall--on" href="#"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg>07XX XXX XX1</a><figcaption>Header call, filled (plate out of view)</figcaption></figure>
+<figure><a class="hcall fake-focus" href="#" style="background:var(--color-surface-2)"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg>07XX XXX XX1</a><figcaption>Outline, hover and focus</figcaption></figure>
+<figure><a class="more" href="#">Ce facem<svg class="i" aria-hidden="true" focusable="false"><use href="#down"/></svg></a><figcaption>Text link</figcaption></figure>
+<figure><ul class="counties" style="width:360px;margin:0"><li class="hub"><i aria-hidden="true"></i>Gorj</li><li><i aria-hidden="true"></i>Vâlcea</li></ul><figcaption>County rows (hub amber)</figcaption></figure>
+<figure><div style="width:360px" class="foot"><ul style="grid-column:1/-1"><li><a href="#"><span>Ionuț P.</span><span>07XX XXX XX1</span></a></li></ul></div><figcaption>Footer phone row</figcaption></figure>
+<figure><div style="display:flex;gap:16px;align-items:center"><span class="node">1</span><span class="node">2</span><span class="node">3</span></div><figcaption>Step nodes, on-amber on amber</figcaption></figure>
+<figure><div class="pm"><a href="#">Servicii<span></span></a><a href="#">Acoperire<span></span></a><a href="#">Cum funcționează<span></span></a><a href="#">Contact<span></span></a><a href="#"><span style="color:var(--color-ink-muted)">Ionuț P.</span><span>07XX XXX XX1</span></a><a href="#"><span style="color:var(--color-ink-muted)">Andrei M.</span><span>07XX XXX XX2</span></a><a href="#"><span style="color:var(--color-ink-muted)">Vasile T.</span><span>07XX XXX XX3</span></a></div><figcaption>Phone menu (the Drawer), open</figcaption></figure>
+</div>
+<p class="label" style="margin:0;color:var(--color-ink-muted)">No form and no toast exist on this site, so none is drawn: no input, error or toast styles.</p></div>
+
+<div class="blk"><h2 class="d">States</h2>
+<div class="demo">
+<figure><div class="mini-plate"><div class="plate__bg"></div><div class="plate__scrim"></div><span class="t">Un apel, și suntem pe drum.</span></div><figcaption>Home, Cum funcționează: the scene loading, or off (reduced motion, low GPU): the plate stays as drawn</figcaption></figure>
+<figure><div class="phone"><div class="dock" role="region" aria-label="Sună AXA Tractări">
+ 
+ <div class="dock__bar"><a class="dock__call" href="tel:+40700000001" aria-label="Sună acum, dispecerat, 07XX XXX XX1"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="t"><span class="a">Sună acum, non-stop</span><span class="b">07XX XXX XX1</span></span></a>
+ <button class="dock__toggle" type="button" aria-label="Arată celelalte numere" aria-expanded="false"><svg class="i" aria-hidden="true" focusable="false"><use href="#up"/></svg></button></div>
+</div></div><figcaption>Home, phone: the call dock, closed (JS off keeps it visible)</figcaption></figure>
+<figure><div class="phone"><div class="dock" role="region" aria-label="Sună AXA Tractări">
+ <div class="dock__more"><a href="tel:+40700000002"><span class="gn"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg><span>Andrei M.</span></span><span>07XX XXX XX2</span></a><a href="tel:+40700000003"><span class="gn"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg><span>Vasile T.</span></span><span>07XX XXX XX3</span></a></div>
+ <div class="dock__bar"><a class="dock__call" href="tel:+40700000001" aria-label="Sună acum, dispecerat, 07XX XXX XX1"><span class="disc"><svg class="i" aria-hidden="true" focusable="false"><use href="#phone"/></svg></span><span class="t"><span class="a">Sună acum, non-stop</span><span class="b">07XX XXX XX1</span></span></a>
+ <button class="dock__toggle" type="button" aria-label="Arată celelalte numere" aria-expanded="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#x"/></svg></button></div>
+</div></div><figcaption>Home, phone: the dock, open to the other two lines</figcaption></figure>
+</div>
+<p class="label" style="margin:0;color:var(--color-ink-muted)">Servicii, Acoperire and Contact fetch nothing and take no input, so they have no empty, loading or error state.</p></div>
+
+<div class="blk"><h2 class="d">Contrast, one look</h2>
+<table class="tbl"><thead><tr><th>Pair</th><th class="n">Ratio</th><th class="n">Needs</th><th>Result</th></tr></thead><tbody><tr><td>ink on ground (body, h1)</td><td class="n">16.72</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink on surface (header, board, tiles, panel)</td><td class="n">14.36</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink on surface-2 (line cells, dock chevron well)</td><td class="n">12.17</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on ground (lede, mail line, status)</td><td class="n">8.74</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on surface (copy, nav, footer)</td><td class="n">7.50</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on surface-2 (backup lines' names)</td><td class="n">6.36</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on line (backup line under the pointer)</td><td class="n">5.51</td><td class="n">4.5</td><td>pass</td></tr><tr><td>on-call on call: dispatcher plate name, tag and number, the header call once filled, dock</td><td class="n">6.20</td><td class="n">4.5</td><td>pass</td></tr><tr><td>on-call on call-hover (hover of every orange control)</td><td class="n">7.25</td><td class="n">4.5</td><td>pass</td></tr><tr><td>call on on-call (phone icon in the ink disc, dock chevron)</td><td class="n">6.20</td><td class="n">3</td><td>pass</td></tr><tr><td>call on ground (county dots, header phone icon)</td><td class="n">6.26</td><td class="n">3</td><td>pass</td></tr><tr><td>call on surface (icons in tile wells, county dots, header, backup-line glyphs on surface-2 see below)</td><td class="n">5.37</td><td class="n">3</td><td>pass</td></tr><tr><td>call on surface-2 (pictogram wells, backup-line phone glyphs)</td><td class="n">4.55</td><td class="n">3</td><td>pass</td></tr><tr><td>amber on ground (lane line start, focus ring)</td><td class="n">10.19</td><td class="n">3</td><td>pass</td></tr><tr><td>amber on surface (beacon, step nodes' rim, focus ring)</td><td class="n">8.75</td><td class="n">3</td><td>pass</td></tr><tr><td>on-amber on amber (step numbers 1 to 3)</td><td class="n">9.88</td><td class="n">4.5</td><td>pass</td></tr><tr><td>on-banner on banner (demo banner)</td><td class="n">8.81</td><td class="n">4.5</td><td>pass</td></tr><tr><td>line-strong on ground (outline header call, Servicii call, Ce facem underline)</td><td class="n">3.54</td><td class="n">3</td><td>pass</td></tr><tr><td>line-strong on surface (outline controls inside panels)</td><td class="n">3.04</td><td class="n">3</td><td>pass</td></tr><tr><td>ink on ground, skip link (ground on ink)</td><td class="n">16.72</td><td class="n">4.5</td><td>pass</td></tr><tr><td>surface on ground (board, tiles, panels, header band)</td><td class="n">1.16</td><td class="n">1.09</td><td>pass</td></tr><tr><td>line on ground (a panel's edge)</td><td class="n">1.59</td><td class="n">1.3</td><td>pass</td></tr><tr><td>line on surface (rules inside a panel)</td><td class="n">1.36</td><td class="n">1.3</td><td>pass</td></tr><tr><td>surface-2 on surface (cells inside the board, wells)</td><td class="n">1.18</td><td class="n">1.09</td><td>pass</td></tr><tr><td>ink on the scene plate behind the h2, lightest pixel #090e12 (measured at 1280)</td><td class="n">16.72</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink on the scene plate behind the h2, lightest pixel #090e12 (measured at 390)</td><td class="n">16.72</td><td class="n">4.5</td><td>pass</td></tr></tbody></table></div>
+</div></div></body></html>

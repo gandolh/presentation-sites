@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>BavAuto Gorj direction (twin)</title>
+<meta name="description" content="A plain-HTML twin of the board's direction sheet.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Encode+Sans:wdth,wght@100..125,400..800&amp;display=swap">
+<style>
+/* Hallmark · waive 72 · the sheet is a fixed 1440 artboard, never shown on a phone · a direction specimen drawn at one width */
+/* Hallmark · dismissed F25 · the palette and contrast tables belong to a fixed 1440 specimen sheet and are never read at 375 */
+/* Hallmark · waive 72 · div.panel bottom -49px · the FAQ's closed answers keep hidden boxes under their summaries (details content-visibility), so the probe sees text past the panel edge; nothing visible crowds it and an open answer is padded 20px */
+/* Hallmark · waive 39b · a.btn 72px tall · the contact page's WhatsApp button stands beside the 72px two-line call and takes its height; nothing else is that tall */
+/* Hallmark · waive 80 · div.panel 467x264, 35 shapes · the workshop elevation is today's authored asset (BayScene), a labelled line drawing kept because the site has no photography by decision (DESIGN.md, brief 05 default 1); it is not new imagery */
+/* Hallmark · waive 49b · a.wab and the footer legal links at 320px · at 320 the labels wrap to two lines inside controls that keep a 48px minimum height; nothing clips, and the checked phone widths are 360 and 390 */
+/* Hallmark · dismissed F19 · four weights 400, 600, 700, 800 · one variable face carries body, labels, titles and display; 700 only names titles and the card number, which sit 4px or more apart in size from the 600 labels */
+/* Hallmark · dismissed F25 · the contrast and palette tables belong to a fixed 1440 specimen sheet */
+[data-theme="dark"]{--color-ground:#161310;--color-surface:#24211e;--color-surface-2:#312d29;--color-line:#413c38;--color-line-strong:#736e67;--color-ink:#f2f0ec;--color-ink-muted:#bbb7b0;--color-card:#ece9e4;--color-card-ink:#201c18;--color-card-ink-muted:#5a544e;--color-card-line:#cbc7c0;--color-card-row:#dddad5;--color-signal:#c52525;--color-signal-hover:#ae1c1d;--color-on-signal:#fdfcf9;--color-focus:#fdc9c2;--color-success:#4fc47f;--color-whatsapp:#42b970;--color-whatsapp-on-card:#00773d;--color-window:#0f0d0b;--color-window-edge:#201c18;--color-window-amber:#fcb368;--color-error:#e97ab2;--color-m-blue:#2fa7f3;--color-m-indigo:#7e74e1;--color-m-red:#ed413b;--shadow-card:0 16px 40px -16px rgb(0 0 0 / 0.6);--font-body:"Encode Sans", system-ui, sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0;overflow-x:clip}
+.ro{background:var(--color-ground);color:var(--color-ink);font-family:var(--font-body);font-size:16px;line-height:26px;font-weight:400;font-variant-numeric:tabular-nums;min-height:800px;position:relative}
+.ro a{color:inherit}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+.call:active{background:var(--color-signal-hover)}
+.wab:active,.sym a:active,.btn:active{background:var(--color-card-row)}
+.btn:active{background:var(--color-line)}
+.hphone:active,.menu:active{background:var(--color-surface-2)}
+.btn:disabled,.menu:disabled{color:var(--color-ink-muted);border-color:var(--color-line);cursor:not-allowed}
+.ro :focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.ro .card :focus-visible{outline-color:var(--color-card-ink)}
+.ic{flex:none;display:block}
+.stripe{display:grid;grid-template-columns:1fr 1fr 1fr;height:4px}
+.stripe i:nth-child(1){background:var(--color-m-blue)}.stripe i:nth-child(2){background:var(--color-m-indigo)}.stripe i:nth-child(3){background:var(--color-m-red)}
+.banner{margin:0;padding:12px 20px;text-align:center;font-size:14px;line-height:20px;font-weight:600}
+.banner a{text-underline-offset:3px;white-space:nowrap}
+.hdr{background:var(--color-surface);border-bottom:1px solid var(--color-line);position:sticky;top:0;z-index:10}
+.hdr-in{max-width:1240px;margin:0 auto;padding:0 36px;height:64px;display:flex;align-items:center;gap:32px}
+.mark{font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:20px;line-height:24px;text-decoration:none;white-space:nowrap;display:flex;align-items:center;min-height:44px}
+.nav{margin-left:auto;display:flex;gap:4px}
+.nav a{display:flex;align-items:center;height:64px;padding:0 16px;font-size:14px;line-height:20px;font-weight:600;text-decoration:none;color:var(--color-ink-muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav a[aria-current]{color:var(--color-ink);border-bottom-color:var(--color-ink)}
+.nav a:hover{color:var(--color-ink)}
+.hphone{display:flex;align-items:center;gap:12px;height:44px;padding:0 16px;border:1px solid var(--color-line-strong);border-radius:4px;text-decoration:none;font-weight:600;font-size:16px}
+.menu{display:none;margin-left:auto;width:48px;height:48px;align-items:center;justify-content:center;border:1px solid var(--color-line-strong);border-radius:4px;background:transparent;color:var(--color-ink)}
+.wrap{max-width:1240px;margin:0 auto;padding:56px 36px 0;display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-areas:"head card" "rest card";grid-template-rows:auto 1fr;column-gap:48px;position:relative}
+.head{grid-area:head}.rest{grid-area:rest;position:relative}.cardcol{grid-area:card;align-self:stretch;position:relative}
+h1{margin:0;font-size:64px;line-height:66px;font-weight:800;letter-spacing:-.02em}
+h2{margin:72px 0 0;font-size:40px;line-height:44px;font-weight:800;letter-spacing:-.015em}
+h3{margin:0}
+.lede{margin:24px 0 0;font-size:18px;line-height:26px;max-width:560px;color:var(--color-ink-muted)}
+.ph .readout{margin:28px 0 0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink)}
+.ph .readout>span{display:flex;align-items:center;gap:8px;padding:0 20px;border-left:1px solid var(--color-line-strong)}
+.ph .readout>span:first-child{padding-left:0;border-left:0}
+.pgh{max-width:1240px;margin:0 auto;padding:56px 36px 0}
+.card{position:sticky;top:88px;background:var(--color-card);color:var(--color-card-ink);border-radius:8px;padding:24px;box-shadow:var(--shadow-card);display:flex;flex-direction:column}
+.call{display:flex;align-items:center;justify-content:center;gap:12px;min-height:72px;padding:8px 20px;border-radius:4px;background:var(--color-signal);color:var(--color-on-signal);text-decoration:none}
+.ro .call{color:var(--color-on-signal)}
+.call:hover{background:var(--color-signal-hover)}
+.call span{display:block;text-align:left}
+.call .l{font-size:14px;line-height:20px;font-weight:600}
+.call .n{font-size:24px;line-height:28px;font-weight:700;white-space:nowrap}
+.wab{display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;margin-top:12px;padding:0 16px;border:1.5px solid var(--color-card-ink-muted);border-radius:4px;color:var(--color-card-ink);font-weight:600;font-size:16px;line-height:20px;text-decoration:none;text-align:center}
+.wab:hover{background:var(--color-card-row)}
+.wab .ic{color:var(--color-whatsapp-on-card)}
+.card hr{border:0;border-top:1px solid var(--color-card-line);margin:20px 0}
+.sub{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:600}
+.sym{list-style:none;margin:0;padding:0}
+.sym li+li{border-top:1px solid var(--color-card-line)}
+.sym a{display:flex;align-items:center;gap:12px;min-height:52px;text-decoration:none;font-weight:600;font-size:16px;line-height:22px;padding:0 4px;border-radius:4px;color:var(--color-card-ink)}
+.sym a:hover{background:var(--color-card-row)}
+.sym a .wa{margin-left:auto;color:var(--color-whatsapp-on-card);display:flex}
+.hours{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:16px;line-height:22px;background:var(--color-window);color:var(--color-ink);border:1px solid var(--color-window-edge);border-radius:4px;padding:12px}
+.hrs{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:0 16px}
+.hours .town{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);text-align:right;justify-self:end}
+.hours.closed .town{grid-column:1 / -1;justify-self:start;text-align:left}
+.open{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--color-ink)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--color-success);flex:none}
+.hours .t{color:var(--color-window-amber);font-weight:600;font-size:14px;line-height:20px}
+.panel{background:var(--color-surface);color:var(--color-ink);border:1px solid var(--color-line);border-radius:8px}
+
+.trustwrap{position:relative;margin-top:56px}
+.trust{width:100%;border-collapse:collapse;margin:0}
+.tbody{display:block}
+.trust tr{display:grid;grid-template-columns:160px minmax(0,0.85fr) minmax(0,1.15fr);gap:0 20px;align-items:baseline;padding:16px 28px}
+.trust tr+tr{border-top:1px solid var(--color-line)}
+.trust th,.trust td{display:block;padding:0;text-align:left}
+.trust th{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.trust td:nth-child(2){font-size:18px;line-height:26px;font-weight:700}
+.trust td:nth-child(3){color:var(--color-ink-muted)}
+.slede{margin:16px 0 28px;font-size:18px;line-height:26px;color:var(--color-ink-muted);max-width:600px}
+.slede strong{color:var(--color-ink)}
+.svcwrap{position:relative}
+.idx{list-style:none;margin:0;padding:0 28px}
+.idx li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;padding:24px 0;align-items:start}
+.idx li+li{border-top:1px solid var(--color-line)}
+.who{display:flex;gap:16px;align-items:flex-start}
+.well{width:44px;height:44px;border-radius:4px;background:var(--color-surface-2);display:flex;align-items:center;justify-content:center;flex:none}
+.idx h3{font-size:18px;line-height:26px;font-weight:700}
+.st{margin:0;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.idx .d{margin:0;color:var(--color-ink-muted)}
+.foot{margin:0;padding:20px 28px;border-top:1px solid var(--color-line);font-weight:600}
+.foot a{text-underline-offset:3px}
+.full{max-width:1240px;margin:0 auto;padding:0 36px}
+.sec{margin-top:96px}
+.sec h2{margin-top:0}
+.why{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.why .slede{max-width:440px}
+.rows{list-style:none;margin:0;padding:0 28px}
+.rows li{display:flex;gap:16px;align-items:flex-start;padding:24px 0}
+.rows li+li{border-top:1px solid var(--color-line)}
+.rows h3{font-size:18px;line-height:26px;font-weight:700}
+.rows p{margin:2px 0 0;color:var(--color-ink-muted)}
+.steps{list-style:none;margin:0;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:28px 24px}
+.steps li{position:relative;display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:2px solid var(--color-line-strong)}
+.steps li::before{content:"";position:absolute;left:0;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--color-ink)}
+.steps .num{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.steps h3{font-size:18px;line-height:26px;font-weight:700}
+.steps p{margin:0;color:var(--color-ink-muted)}
+.steps .read{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-line);font-size:14px;line-height:20px;font-weight:600}
+.ab{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:48px;align-items:center}
+.abc .lead{margin:20px 0 0;font-size:18px;line-height:26px}
+.abc .body{margin:16px 0 0;color:var(--color-ink-muted);max-width:560px}
+.abc strong{color:var(--color-ink)}
+.abf{margin:0}
+.bayp{padding:20px}
+.bay{display:block;width:100%;height:auto}
+.abf figcaption{margin-top:12px;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.record{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
+.record li{padding:20px 28px;font-weight:700;font-size:18px;line-height:26px}
+.record li+li{border-left:1px solid var(--color-line)}
+.faq{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.fl{padding:0 28px}
+.fl details+details{border-top:1px solid var(--color-line)}
+.fl summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:12px 0;cursor:pointer;list-style:none;font-weight:700;font-size:18px;line-height:26px}
+.fl summary::-webkit-details-marker{display:none}
+.fl .pl{display:flex;width:44px;height:44px;align-items:center;justify-content:center;flex:none;color:var(--color-ink-muted)}
+.fl .m{display:none}.fl details[open] .p{display:none}.fl details[open] .m{display:block}
+.fl p{margin:0 0 20px;color:var(--color-ink-muted);max-width:600px}
+.ctg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:stretch}
+.acts{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:12px}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:0 20px;border:1px solid var(--color-line-strong);border-radius:4px;background:var(--color-surface-2);color:var(--color-ink);font:inherit;font-weight:600;font-size:16px;line-height:20px;text-decoration:none;cursor:pointer;text-align:center}
+.btn.ol{background:transparent}
+.btn.big{min-height:72px}
+.btn .ic{color:var(--color-whatsapp)}
+.facts{margin:16px 0 0;padding:0 28px}
+.facts>div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:20px 0}
+.facts>div+div{border-top:1px solid var(--color-line)}
+.facts dt{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);padding-top:4px}
+.facts dd{margin:0}
+.facts a{text-underline-offset:3px}
+.hl{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.hl li{display:flex;justify-content:space-between;gap:16px;max-width:320px}
+.map{background:var(--color-surface-2);border:1px solid var(--color-line);border-radius:8px;min-height:360px;display:flex;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(var(--color-line) 1px,transparent 1px),linear-gradient(90deg,var(--color-line) 1px,transparent 1px);background-size:32px 32px}
+.mapin{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:340px;background:var(--color-surface-2);padding:24px;border-radius:8px}
+.mapin p{margin:0;color:var(--color-ink-muted)}
+.mapb{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.ft{margin-top:112px;background:var(--color-surface);border-top:1px solid var(--color-line)}
+.ft-in{max-width:1240px;margin:0 auto;padding:0 36px}
+.ftg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:40px;padding:48px 0 40px}
+.ftg a{text-underline-offset:3px}
+.ftg nav,.ftg>div{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.ftg nav a,.ftg>div>a:not(.mark){display:flex;align-items:center;min-height:36px;color:var(--color-ink-muted);text-decoration:none}
+.ftg nav a:hover,.ftg>div>a:hover{color:var(--color-ink);text-decoration:underline}
+.ftl{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:700}
+.tag{margin:12px 0 0;color:var(--color-ink-muted);max-width:260px}
+.soc{display:flex;gap:8px;margin-top:16px}
+.soc a{display:flex;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--color-line-strong);border-radius:4px;color:var(--color-ink);text-decoration:none}
+.addr{margin:0;color:var(--color-ink-muted)}
+.fth{margin:8px 0 0;display:grid;gap:2px;color:var(--color-ink-muted);font-size:14px;line-height:20px}
+.fth>div{display:flex;gap:16px;justify-content:space-between;width:100%;max-width:240px}
+.fth dt,.fth dd{margin:0}
+.legal{border-top:1px solid var(--color-line);padding:28px 0 36px;display:grid;gap:16px;color:var(--color-ink-muted);font-size:14px;line-height:20px}
+.ident{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 24px}
+.disc{margin:0;max-width:860px}
+.btm{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center}
+.btm p{margin:0}
+.anpc{display:flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;color:var(--color-ink)}
+.am{border:1px solid var(--color-line-strong);border-radius:4px;padding:2px 8px;font-weight:700}
+.bar{display:none}
+.co{position:absolute;width:24px;height:24px;border-radius:50%;background:var(--color-ink);color:var(--color-ground);font-size:13px;line-height:24px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.co-l{left:-40px}.co-r{right:-40px}
+.scrolled{position:relative;width:390px;height:844px;overflow:hidden;background:var(--color-ground)}
+.scin{width:390px}
+@media (max-width:1100px){.co{display:none}}
+@media (min-width:960px) and (max-width:1199px){
+ .trust tr{grid-template-columns:200px minmax(0,1fr);gap:0 20px}
+ .trust th{grid-column:1;grid-row:1}
+ .trust td:nth-child(2){grid-column:1;grid-row:2}
+ .trust td:nth-child(3){grid-column:2;grid-row:1 / 3;align-self:center}
+}
+@media (max-width:959px){
+ .nav,.hphone{display:none}.menu{display:flex}
+ .hdr{position:static}
+ .hdr-in{height:56px;padding:0 20px}
+ .stripe+.banner{padding:8px 16px}
+ .ph .readout>span{white-space:nowrap;padding:0 12px}
+ .ph .readout>.rd{flex-basis:100%;padding:0;border-left:0}
+ .ph .readout>.rd+span{padding-left:0;border-left:0}
+ .wrap{display:block;padding:28px 20px 0}
+ .pgh{padding:28px 20px 0}
+ .cardcol{margin-top:24px}
+ .onlydesk{display:none}
+ .card{position:static;padding:16px}
+ h1{font-size:40px;line-height:44px}
+ .lede{margin-top:16px}
+ h2{font-size:30px;line-height:34px;margin-top:56px}
+ .sec{margin-top:64px}
+ .slede{margin-bottom:24px}
+ .call{min-height:64px;padding:8px 16px}
+ .card .hours{order:-1;margin-bottom:12px;padding:12px}
+ .card hr.h2{display:none}
+ .card hr.h1{margin:12px 0}
+ .sym a{min-height:48px}
+ .trustwrap{margin-top:40px}
+ .trust tr{grid-template-columns:1fr;gap:2px;padding:16px 20px}
+ .idx{padding:0 20px}
+ .idx li{grid-template-columns:1fr;gap:12px;padding:20px 0}
+ .foot{padding:20px}
+ .why,.faq,.ab,.ctg{grid-template-columns:1fr;gap:24px}
+ .rows{padding:0 20px}
+ .steps{padding:20px;grid-template-columns:1fr;gap:20px}
+ .fl{padding:0 20px}
+ .full,.ft-in{padding:0 20px}
+ .acts{grid-template-columns:1fr}
+ .btn.big{min-height:48px}
+ .facts{padding:0 20px}.facts>div{grid-template-columns:96px minmax(0,1fr);gap:12px}
+ .record li+li{border-left:0;border-top:1px solid var(--color-line)}
+ .record li{padding:16px 20px}
+ .ft{margin-top:72px}
+ .ftg{grid-template-columns:1fr 1fr;gap:32px 24px;padding:36px 0 32px}
+ .ftg>div:first-child,.ftg>div:last-child{grid-column:1 / -1}
+ .map{min-height:300px;padding:12px}
+ .mapin{padding:16px 8px}
+ .btn{padding:0 16px}
+ .bar{display:none}
+ .bar.fix{display:flex;gap:12px;position:sticky;bottom:0;padding:8px 20px;background:var(--color-ground);border-top:1px solid var(--color-line);z-index:5}
+ .bar.abs{display:flex;gap:12px;position:absolute;left:0;right:0;bottom:0;padding:8px 20px;background:var(--color-ground);border-top:1px solid var(--color-line);z-index:5}
+ .bar .call{flex:1;min-height:48px;padding:0 16px;gap:12px;justify-content:center}
+ .bar .n2{font-size:18px;line-height:24px;font-weight:700}
+ .bar .wbtn{width:48px;height:48px;border:1px solid var(--color-line-strong);border-radius:4px;background:var(--color-surface-2);color:var(--color-whatsapp);display:flex;align-items:center;justify-content:center;text-decoration:none}
+}
+@media (max-width:380px){
+ .hdr-in{height:52px}
+ .menu{width:44px;height:44px}
+ .stripe+.banner{padding:8px 12px;font-size:13px;line-height:18px}
+ .wrap{padding-top:20px}
+ h1{font-size:34px;line-height:38px}
+ .lede{margin-top:12px;font-size:16px;line-height:24px}
+ .cardcol{margin-top:16px}
+ .card{padding:12px}
+ .call{min-height:56px;padding:4px 12px}
+ .call .l{font-size:13px;line-height:16px}
+ .call .n{font-size:22px;line-height:26px}
+ .wab{margin-top:8px}
+ .card .hours{margin-bottom:8px;padding:8px 12px}
+ .card hr.h1{margin:8px 0}
+ .sub{margin-bottom:2px}
+}
+
+.dir{width:1440px;padding:64px 72px 96px;display:flex;flex-direction:column;gap:64px}
+.dir h1{font-size:64px;line-height:66px}
+.dir h2{margin:0;font-size:24px;line-height:28px;font-weight:700;letter-spacing:0}
+.dir h3{font-size:18px;line-height:26px;font-weight:700}
+.blk{display:flex;flex-direction:column;gap:24px;padding-top:32px;border-top:1px solid var(--color-line)}
+.dir p{margin:0}
+.sub2{font-size:18px;line-height:26px;color:var(--color-ink-muted);max-width:760px}
+.swg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 24px}
+.swg li{display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:20px}
+.swg .sw{display:block;height:56px;border-radius:4px;border:1px solid var(--color-line-strong);margin-bottom:6px}
+.swg b{font-weight:700;font-size:16px}
+.swg code{font-family:inherit;font-weight:600}
+.swg .ap,.swg .us{color:var(--color-ink-muted)}
+.tg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px}
+.tl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid var(--color-line)}
+.tl small{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.spc{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end}
+.spc div{display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:20px;font-weight:600}
+.spc i{display:block;background:var(--color-ink-muted);height:16px}
+.rad{display:flex;gap:24px;flex-wrap:wrap}
+.rad div{width:120px;height:72px;background:var(--color-surface);border:1px solid var(--color-line-strong);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.elev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.elev>div{padding:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:20px;font-weight:600}
+.cmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 24px;align-items:start}
+.cmp>div{display:flex;flex-direction:column;gap:12px}
+.cmp small,.lab{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.cmp .card{position:static;width:100%}
+.call.is-hover{background:var(--color-signal-hover)}
+.is-focus{outline:2px solid var(--color-focus);outline-offset:2px}
+.card .is-focus{outline-color:var(--color-card-ink)}
+.wab.is-hover{background:var(--color-card-row)}
+.sym a.is-hover{background:var(--color-card-row)}
+.btn.is-hover{background:var(--color-line)}
+.nav2{display:flex;gap:4px}
+.nav2 a{display:flex;align-items:center;height:48px;padding:0 14px;font-size:14px;font-weight:600;text-decoration:none;color:var(--color-ink-muted);border-bottom:2px solid transparent}
+.nav2 a.on{color:var(--color-ink);border-bottom-color:var(--color-ink)}
+.nav2 a.is-hover{color:var(--color-ink)}
+.drawer{width:390px;background:var(--color-ground);border:1px solid var(--color-line-strong);border-radius:8px;padding:0 24px 24px}
+.drawer .top{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--color-line)}
+.drawer .x{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid var(--color-line-strong);border-radius:4px}
+.drawer a.l{display:flex;align-items:center;min-height:56px;border-bottom:1px solid var(--color-line);font-size:24px;line-height:28px;font-weight:700;text-decoration:none}
+.drawer .acts2{display:grid;gap:12px;margin-top:24px}
+.cue{display:grid;grid-template-columns:420px minmax(0,1fr);gap:48px;align-items:center}
+.stbox{display:flex;flex-direction:column;gap:12px}
+.cap{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.ct2{width:100%;border-collapse:collapse;font-size:14px;line-height:20px}
+.ct2 th{text-align:left;color:var(--color-ink-muted);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--color-line-strong)}
+.ct2 td{padding:8px 12px;border-bottom:1px solid var(--color-line)}
+.ct2 .n{text-align:right}
+.chip{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:700;border:1px solid var(--color-line)}
+.stg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 48px}
+.stg>div{display:flex;flex-direction:column;gap:12px}
+.mini{display:flex;gap:12px;flex-wrap:wrap}
+.faqm{padding:0 20px}
+</style>
+</head>
+<body>
+<div data-theme="dark" class="ro" style="width: 1440px">
+<div class="dir">
+<div><h1>The job card</h1><p class="sub2" style="margin-top:20px">The workshop's job card, pinned beside the page: the number, WhatsApp, the three symptoms and the hours stay on screen while the page makes its case. One dark look, no theme switch (brief 05, Q18), so every table below shows the one palette once.</p></div>
+<section class="blk" aria-label="Palette"><h2>Palette, by role (one look)</h2><ul class="swg"><li><span class="sw" style="background:var(--color-ground)"></span><b>ground</b><code>#161310</code><span class="ap">app: background</span><span class="us">the page; the phone call bar; the one place red may sit besides the card</span></li><li><span class="sw" style="background:var(--color-surface)"></span><b>surface</b><code>#24211e</code><span class="ap">app: surface-container-lowest</span><span class="us">header, trust table, services index, about and contact panels, footer</span></li><li><span class="sw" style="background:var(--color-surface-2)"></span><b>surface-2</b><code>#312d29</code><span class="ap">app: surface-container</span><span class="us">pictogram wells, steel buttons, the map placeholder</span></li><li><span class="sw" style="background:var(--color-line)"></span><b>line</b><code>#413c38</code><span class="ap">app: outline-variant</span><span class="us">panel edges, row hairlines</span></li><li><span class="sw" style="background:var(--color-line-strong)"></span><b>line-strong</b><code>#736e67</code><span class="ap">app: outline</span><span class="us">control edges on dark</span></li><li><span class="sw" style="background:var(--color-ink)"></span><b>ink</b><code>#f2f0ec</code><span class="ap">app: on-surface</span><span class="us">text on the ground and the panels</span></li><li><span class="sw" style="background:var(--color-ink-muted)"></span><b>ink-muted</b><code>#bbb7b0</code><span class="ap">app: on-surface-variant</span><span class="us">legends, notes, the lede, subtitles</span></li><li><span class="sw" style="background:var(--color-card)"></span><b>card</b><code>#ece9e4</code><span class="ap">app: inverse-surface</span><span class="us">the job card: the one light material</span></li><li><span class="sw" style="background:var(--color-card-ink)"></span><b>card-ink</b><code>#201c18</code><span class="ap">app: inverse-on-surface</span><span class="us">text on the card</span></li><li><span class="sw" style="background:var(--color-card-ink-muted)"></span><b>card-ink-muted</b><code>#5a544e</code><span class="ap">app: inverse-on-surface-variant</span><span class="us">hour rows, the outline-button edge on the card</span></li><li><span class="sw" style="background:var(--color-card-line)"></span><b>card-line</b><code>#cbc7c0</code><span class="ap">app: inverse-outline-variant</span><span class="us">hairlines inside the card</span></li><li><span class="sw" style="background:var(--color-card-row)"></span><b>card-row</b><code>#dddad5</code><span class="ap">app: inverse-surface-container</span><span class="us">row and button hover on the card only</span></li><li><span class="sw" style="background:var(--color-signal)"></span><b>signal</b><code>#c52525</code><span class="ap">app: primary</span><span class="us">the call fill (on the card or the ground only)</span></li><li><span class="sw" style="background:var(--color-signal-hover)"></span><b>signal-hover</b><code>#ae1c1d</code><span class="ap">app: primary-hover</span><span class="us">the call under the pointer</span></li><li><span class="sw" style="background:var(--color-on-signal)"></span><b>on-signal</b><code>#fdfcf9</code><span class="ap">app: on-primary</span><span class="us">text on the call</span></li><li><span class="sw" style="background:var(--color-focus)"></span><b>focus</b><code>#fdc9c2</code><span class="ap">app: primary-bright</span><span class="us">the focus ring on dark (the card uses card-ink)</span></li><li><span class="sw" style="background:var(--color-success)"></span><b>success</b><code>#4fc47f</code><span class="ap">app: success</span><span class="us">the open-now dot on dark</span></li><li><span class="sw" style="background:var(--color-whatsapp)"></span><b>whatsapp</b><code>#42b970</code><span class="ap">app: whatsapp</span><span class="us">the WhatsApp mark on dark</span></li><li><span class="sw" style="background:var(--color-whatsapp-on-card)"></span><b>whatsapp-on-card</b><code>#00773d</code><span class="ap">app: whatsapp-on-inverse</span><span class="us">the WhatsApp mark on the card (mark only, never text)</span></li><li><span class="sw" style="background:var(--color-window)"></span><b>window</b><code>#0f0d0b</code><span class="ap">app: surface-window</span><span class="us">the readout window in the card head (today's on-board computer display)</span></li><li><span class="sw" style="background:var(--color-window-edge)"></span><b>window-edge</b><code>#201c18</code><span class="ap">app: outline-window</span><span class="us">the 1px edge of the readout window</span></li><li><span class="sw" style="background:var(--color-window-amber)"></span><b>window-amber</b><code>#fcb368</code><span class="ap">app: lit-window</span><span class="us">the hours in the readout window, the one amber, no glow</span></li><li><span class="sw" style="background:var(--color-error)"></span><b>error</b><code>#e97ab2</code><span class="ap">app: error</span><span class="us">errors, always with an icon and words</span></li><li><span class="sw" style="background:var(--color-m-blue)"></span><b>m-blue</b><code>#2fa7f3</code><span class="ap">app: m-blue</span><span class="us">the M stripe, the rail</span></li><li><span class="sw" style="background:var(--color-m-indigo)"></span><b>m-indigo</b><code>#7e74e1</code><span class="ap">app: m-indigo</span><span class="us">the M stripe, the rail</span></li><li><span class="sw" style="background:var(--color-m-red)"></span><b>m-red</b><code>#ed413b</code><span class="ap">app: m-red</span><span class="us">the M stripe, the rail</span></li></ul></section>
+<section class="blk" aria-label="Type"><h2>Type: Encode Sans throughout, wordmark at wdth 125</h2><div class="tg"><div>
+<div class="tl"><small>Display 64/66, 800</small><span style="font-size:64px;line-height:66px;font-weight:800;letter-spacing:-.02em">BMW-ul tău</span></div>
+<div class="tl"><small>Phone 40/44, 800</small><span style="font-size:40px;line-height:44px;font-weight:800;letter-spacing:-.02em">pe mâini care</span></div>
+<div class="tl"><small>Heading 40/44, 800</small><span style="font-size:40px;line-height:44px;font-weight:800">Ce citim din mașina ta</span></div>
+<div class="tl"><small>Phone heading 30/34</small><span style="font-size:30px;line-height:34px;font-weight:800">Cum lucrăm</span></div>
+<div class="tl"><small>Wordmark, wdth 125, 800</small><span class="mark" style="font-size:20px">BAVAUTO GORJ</span></div></div><div>
+<div class="tl"><small>Card number 24/28, 700</small><span style="font-size:24px;line-height:28px;font-weight:700">07XX XXX XXX</span></div>
+<div class="tl"><small>Lede, titles 18/26, 400, 700</small><span style="font-size:18px;line-height:26px"><b>Garanție 12 luni</b> Piese și manoperă, în scris</span></div>
+<div class="tl"><small>Body 16/26, 400</small><span>Citim toate modulele, îți spunem exact ce are și cât costă.</span></div>
+<div class="tl"><small>Label 14/20, 600, sentence case</small><span style="font-size:14px;line-height:20px;font-weight:600">Înainte de lucrare</span></div>
+<div class="tl"><small>Figures</small><span>Tabular figures on, 08:00‒18:00, 12 luni</span></div></div></div></section>
+<section class="blk" aria-label="Spacing, radii and elevation"><h2>Spacing, radii, elevation</h2><div class="spc"><div><i style="width:4px"></i>4</div><div><i style="width:8px"></i>8</div><div><i style="width:12px"></i>12</div><div><i style="width:16px"></i>16</div><div><i style="width:20px"></i>20</div><div><i style="width:24px"></i>24</div><div><i style="width:28px"></i>28</div><div><i style="width:32px"></i>32</div><div><i style="width:48px"></i>48</div><div><i style="width:56px"></i>56</div><div><i style="width:72px"></i>72</div><div><i style="width:96px"></i>96</div></div><div class="rad"><div style="border-radius:4px">4 controls</div><div style="border-radius:8px">8 card, panels</div><div style="border-radius:60px">full, dots</div></div>
+<div class="elev"><div class="panel"><b>Panel</b>Tone step to surface plus a line edge; no shadow.</div><div style="background:var(--color-card);color:var(--color-card-ink);border-radius:8px;box-shadow:var(--shadow-card)"><b>Job card</b>The one light material; the one shadow.</div><div style="background:var(--color-ground);border-top:1px solid var(--color-line)"><b>Call bar</b>Ground with a line top, on the phone only.</div></div></section>
+<section class="blk" aria-label="Components"><h2>Components</h2><div class="cmp">
+<div><span class="lab">Call: default, hover, focus (on the card)</span><div class="card" style="gap:12px"><a class="call" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a><a class="call is-hover" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a><a class="call is-focus" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a></div></div>
+<div><span class="lab">WhatsApp and symptom row on the card: default, hover, focus</span><div class="card" style="gap:8px"><a class="wab" style="margin-top:0" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>Trimite o poză pe WhatsApp</a><a class="wab is-hover" style="margin-top:0" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>Trimite o poză pe WhatsApp</a><ul class="sym"><li><a class="is-focus" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.8 19.5h18.4z"></path><path d="M12 10v4.5"></path><path d="M12 17.3v.01"></path></svg>Mi-a apărut un martor<span class="wa"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></span></a></li><li><a class="is-hover" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"></path></svg>Revizie depășită<span class="wa"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></span></a></li></ul></div></div>
+<div><span class="lab">Header phone, steel button, outline link, call on the ground</span><div class="stbox"><a class="hphone" href="#" style="width:fit-content"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>07XX XXX XXX</a><div class="row"><a class="btn" href="#">Încarcă harta</a><a class="btn is-hover" href="#">Hover</a><a class="btn ol is-focus" href="#">Deschide în Google Maps</a></div><a class="call" style="width:300px" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a></div></div>
+<div><span class="lab">Places: current, hover, default</span><nav class="nav2" aria-label="Specimen"><a class="on" href="#">Acasă</a><a class="is-hover" href="#">Servicii</a><a href="#">Atelier</a><a href="#">Contact</a></nav><span class="lab" style="margin-top:12px">Index row (service) and FAQ rows, open and closed</span><div class="panel faqm"><ul class="idx" style="padding:0"><li style="grid-template-columns:1fr;padding:16px 0"><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9.5 15a2.8 2.8 0 0 0 2.5 2"></path></svg></span><div><h3>Revizii &amp; schimb ulei</h3><p class="st">Ulei + filtre, conform fișei BMW</p></div></div></li></ul><div class="fl" style="padding:0"><details open="open"><summary><span>Cât durează o revizie?</span><span class="pl"><span class="p"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg></span><span class="m"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg></span></span></summary><p>O revizie obișnuită durează în jur de 1‒2 ore.</p></details><details><summary><span>Lucrați și sâmbăta?</span><span class="pl"><span class="p"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg></span><span class="m"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg></span></span></summary><p>Da.</p></details></div></div></div>
+<div><span class="lab">Phone menu (the Drawer), open</span><div class="drawer"><div class="top"><a class="mark" href="#" style="font-size:18px">BAVAUTO GORJ</a><span class="x"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></span></div><a class="l" href="#" aria-current="page">Acasă</a><a class="l" href="#">Servicii</a><a class="l" href="#">Atelier</a><a class="l" href="#">Contact</a><div class="acts2"><a class="call" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span class="n2" style="font-size:18px;font-weight:700">Sună acum: 07XX XXX XXX</span></a><a class="btn ol big" style="min-height:48px" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>Scrie pe WhatsApp</a></div></div></div>
+<div><span class="lab">Phone call bar (shown only after the card's call has scrolled out)</span><div style="width:390px;border:1px solid var(--color-line)"><div class="bar fix" style="display:flex;gap:12px;padding:8px 20px;background:var(--color-ground);position:static"><a class="call" href="#" style="flex:1;min-height:48px;padding:0 16px"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span style="font-size:18px;font-weight:700">Sună: 07XX XXX XXX</span></a><a class="wbtn" href="#" aria-label="Scrie pe WhatsApp" style="width:48px;height:48px;border:1px solid var(--color-line-strong);border-radius:4px;background:var(--color-surface-2);color:var(--color-whatsapp);display:flex;align-items:center;justify-content:center"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></a></div></div></div>
+</div></section>
+<section class="blk" aria-label="The instrument cue"><h2>The one cue from the instrument cluster</h2><div class="cue"><div class="card" style="width:400px;position:static"><div class="hours" role="group" aria-label="Program"><div class="open"><span class="dot " aria-hidden="true"></span>Deschis acum</div><div class="town">Târgu-Jiu, Gorj</div><div class="hrs"><span class="t">L‒V 08:00‒18:00</span><span class="t">Sâ 09:00‒14:00</span></div></div></div><div class="stbox"><p class="cap">Today's on-board computer window (Gauge.astro, where it read ULEI 3.400 km), carrying the one live fact: open now</p><p class="cap">Near-black window, 1 px edge, the green dot and Deschis acum with the town, the hours in the window's own amber. Encode Sans, sentence case, no glow, no capitals.</p></div></div></section>
+<section class="blk" aria-label="States"><h2>States</h2><div class="stg">
+<div><span class="lab">Home, job card: open now (script adds the dot and the words) and out of hours (the hours alone)</span><div class="mini"><div class="card" style="width:400px"><div class="hours" role="group" aria-label="Program"><div class="open"><span class="dot " aria-hidden="true"></span>Deschis acum</div><div class="town">Târgu-Jiu, Gorj</div><div class="hrs"><span class="t">L‒V 08:00‒18:00</span><span class="t">Sâ 09:00‒14:00</span></div></div></div><div class="card" style="width:400px"><div class="hours closed" role="group" aria-label="Program"><div class="town">Târgu-Jiu, Gorj</div><div class="hrs"><span class="t">L‒V 08:00‒18:00</span><span class="t">Sâ 09:00‒14:00</span></div></div></div></div></div>
+<div><span class="lab">Home, Servicii, Despre: empty, loading, error</span><p class="sub2" style="font-size:16px;line-height:26px">None drawn: static pages, no data is fetched. With scripts off, the card reads as out of hours.</p><span class="lab">Contact: the map before consent is the comp; after consent the Google embed fills the same box</span></div>
+<div><span class="lab">Contact page head: open</span><div class="ph"><p class="readout" style="margin-top:0"><span class="rd on"><span class="dot lg" aria-hidden="true"></span>Deschis acum</span><span>L‒V 08:00‒18:00</span><span>Sâ 09:00‒14:00</span></p></div><span class="lab">Out of hours: the status word and dot go, the hours stay</span><div class="ph"><p class="readout" style="margin-top:0"><span>L‒V 08:00‒18:00</span><span>Sâ 09:00‒14:00</span></p></div></div>
+<div><span class="lab">Focus on a dark surface and on the card</span><div class="row"><a class="btn is-focus" href="#">Încarcă harta</a><div class="card" style="padding:12px"><a class="wab is-focus" style="margin:0" href="#"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>WhatsApp</a></div></div></div>
+</div></section>
+<section class="blk" aria-label="Contrast"><h2>Contrast: every pair, one palette</h2><table class="ct2"><thead><tr><th>Pair</th><th>Sample</th><th class="n">Ratio</th><th class="n">Needs</th><th>Result</th></tr></thead><tbody><tr><td>ink on ground</td><td><span class="chip" style="background:#161310;color:#f2f0ec">Aa 12</span></td><td class="n">16.26</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink on surface</td><td><span class="chip" style="background:#24211e;color:#f2f0ec">Aa 12</span></td><td class="n">14.07</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink on surface-2</td><td><span class="chip" style="background:#312d29;color:#f2f0ec">Aa 12</span></td><td class="n">12.00</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on ground</td><td><span class="chip" style="background:#161310;color:#bbb7b0">Aa 12</span></td><td class="n">9.26</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on surface</td><td><span class="chip" style="background:#24211e;color:#bbb7b0">Aa 12</span></td><td class="n">8.02</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on surface-2</td><td><span class="chip" style="background:#312d29;color:#bbb7b0">Aa 12</span></td><td class="n">6.84</td><td class="n">4.5</td><td>pass</td></tr><tr><td>card-ink on card</td><td><span class="chip" style="background:#ece9e4;color:#201c18">Aa 12</span></td><td class="n">13.98</td><td class="n">4.5</td><td>pass</td></tr><tr><td>card-ink-muted on card</td><td><span class="chip" style="background:#ece9e4;color:#5a544e">Aa 12</span></td><td class="n">6.17</td><td class="n">4.5</td><td>pass</td></tr><tr><td>card-ink on card-row (hover)</td><td><span class="chip" style="background:#dddad5;color:#201c18">Aa 12</span></td><td class="n">12.14</td><td class="n">4.5</td><td>pass</td></tr><tr><td>card-ink-muted on card-row (hover)</td><td><span class="chip" style="background:#dddad5;color:#5a544e">Aa 12</span></td><td class="n">5.36</td><td class="n">4.5</td><td>pass</td></tr><tr><td>on-signal on signal</td><td><span class="chip" style="background:#c52525;color:#fdfcf9">Aa 12</span></td><td class="n">5.58</td><td class="n">4.5</td><td>pass</td></tr><tr><td>on-signal on signal-hover</td><td><span class="chip" style="background:#ae1c1d;color:#fdfcf9">Aa 12</span></td><td class="n">6.86</td><td class="n">4.5</td><td>pass</td></tr><tr><td>error on surface (text)</td><td><span class="chip" style="background:#24211e;color:#e97ab2">Aa 12</span></td><td class="n">6.02</td><td class="n">4.5</td><td>pass</td></tr><tr><td>error on ground (text)</td><td><span class="chip" style="background:#161310;color:#e97ab2">Aa 12</span></td><td class="n">6.95</td><td class="n">4.5</td><td>pass</td></tr><tr><td>focus ring on ground</td><td><span class="chip" style="background:#161310;color:#fdc9c2">Aa 12</span></td><td class="n">12.61</td><td class="n">3</td><td>pass</td></tr><tr><td>focus ring on surface</td><td><span class="chip" style="background:#24211e;color:#fdc9c2">Aa 12</span></td><td class="n">10.91</td><td class="n">3</td><td>pass</td></tr><tr><td>focus ring on card (card-ink)</td><td><span class="chip" style="background:#ece9e4;color:#201c18">Aa 12</span></td><td class="n">13.98</td><td class="n">3</td><td>pass</td></tr><tr><td>card-ink-muted edge on card (outline button)</td><td><span class="chip" style="background:#ece9e4;color:#5a544e">Aa 12</span></td><td class="n">6.17</td><td class="n">3</td><td>pass</td></tr><tr><td>line-strong edge on ground</td><td><span class="chip" style="background:#161310;color:#736e67">Aa 12</span></td><td class="n">3.66</td><td class="n">3</td><td>pass</td></tr><tr><td>line-strong edge on surface</td><td><span class="chip" style="background:#24211e;color:#736e67">Aa 12</span></td><td class="n">3.17</td><td class="n">3</td><td>pass</td></tr><tr><td>signal call fill on ground (UI)</td><td><span class="chip" style="background:#161310;color:#c52525">Aa 12</span></td><td class="n">3.23</td><td class="n">3</td><td>pass</td></tr><tr><td>signal call fill on card (UI)</td><td><span class="chip" style="background:#ece9e4;color:#c52525">Aa 12</span></td><td class="n">4.73</td><td class="n">3</td><td>pass</td></tr><tr><td>ink on window (Deschis acum)</td><td><span class="chip" style="background:#0f0d0b;color:#f2f0ec">Aa 12</span></td><td class="n">17.04</td><td class="n">4.5</td><td>pass</td></tr><tr><td>ink-muted on window (town)</td><td><span class="chip" style="background:#0f0d0b;color:#bbb7b0">Aa 12</span></td><td class="n">9.71</td><td class="n">4.5</td><td>pass</td></tr><tr><td>window-amber on window (the hours)</td><td><span class="chip" style="background:#0f0d0b;color:#fcb368">Aa 12</span></td><td class="n">10.89</td><td class="n">4.5</td><td>pass</td></tr><tr><td>success dot on window</td><td><span class="chip" style="background:#0f0d0b;color:#4fc47f">Aa 12</span></td><td class="n">8.81</td><td class="n">3</td><td>pass</td></tr><tr><td>SURFACE window on card</td><td><span class="chip" style="background:#ece9e4;color:#0f0d0b">Aa 12</span></td><td class="n">16.02</td><td class="n">1.09</td><td>pass</td></tr><tr><td>success dot on ground</td><td><span class="chip" style="background:#161310;color:#4fc47f">Aa 12</span></td><td class="n">8.40</td><td class="n">3</td><td>pass</td></tr><tr><td>success dot on surface</td><td><span class="chip" style="background:#24211e;color:#4fc47f">Aa 12</span></td><td class="n">7.27</td><td class="n">3</td><td>pass</td></tr><tr><td>whatsapp mark on surface-2</td><td><span class="chip" style="background:#312d29;color:#42b970">Aa 12</span></td><td class="n">5.47</td><td class="n">3</td><td>pass</td></tr><tr><td>whatsapp mark on ground</td><td><span class="chip" style="background:#161310;color:#42b970">Aa 12</span></td><td class="n">7.41</td><td class="n">3</td><td>pass</td></tr><tr><td>whatsapp-on-card mark on card</td><td><span class="chip" style="background:#ece9e4;color:#00773d">Aa 12</span></td><td class="n">4.68</td><td class="n">3</td><td>pass</td></tr><tr><td>SURFACE surface on ground (panels, header)</td><td><span class="chip" style="background:#161310;color:#24211e">Aa 12</span></td><td class="n">1.16</td><td class="n">1.09</td><td>pass</td></tr><tr><td>SURFACE surface-2 on surface (wells, steel buttons)</td><td><span class="chip" style="background:#24211e;color:#312d29">Aa 12</span></td><td class="n">1.17</td><td class="n">1.09</td><td>pass</td></tr><tr><td>SURFACE card on ground (the job card)</td><td><span class="chip" style="background:#161310;color:#ece9e4">Aa 12</span></td><td class="n">15.28</td><td class="n">1.09</td><td>pass</td></tr><tr><td>EDGE line on ground (panel edge)</td><td><span class="chip" style="background:#161310;color:#413c38">Aa 12</span></td><td class="n">1.70</td><td class="n">1.3</td><td>pass</td></tr><tr><td>EDGE line on surface (row hairline)</td><td><span class="chip" style="background:#24211e;color:#413c38">Aa 12</span></td><td class="n">1.47</td><td class="n">1.3</td><td>pass</td></tr><tr><td>EDGE card-line on card (hairline in the card)</td><td><span class="chip" style="background:#ece9e4;color:#cbc7c0">Aa 12</span></td><td class="n">1.39</td><td class="n">1.3</td><td>pass</td></tr></tbody></table></section>
+</div>
+</div>
+</body>
+</html>

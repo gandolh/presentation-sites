@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subcort home (twin)</title>
+<meta name="description" content="Plain-HTML twin of the board comp for the local Floor checks.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400..700&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+/* Hallmark · shape: client site · genre: local service, a drawing set (tent rental), no calls to action · theme: brand · redesign: full
+ * paper: #f0f4f0 sage-grey ground, #ffffff cards · accent: #af4316 drafting orange, annotation only · display: Commissioner · body: Commissioner, IBM Plex Mono for figures
+ * nav: kept (wordmark, five places with the current one underlined in orange; phone Drawer) · signature: the assembled tent large on its gridded plot, the title block card in its corner
+ * axes: cool sage neutrals/humanist sans/one drafting orange · posture: restrained · modes: light only (one look, no theme switch) · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, calm by decision (PRODUCT.md), so the ink rules, the grid and the numbered drawing carry the emphasis */
+/* Hallmark · waive 26b · no :disabled beyond the dir sheet · the page has one control that can be disabled (the size picker without script), drawn on the direction sheet; :active is styled */
+/* Hallmark · waive 71 · heads nearer what precedes them · each panel h2 shares its grid row with its lede (or sits above a lede), so the space under it is the row height, not a gap; the band above is a separate 48 px head */
+/* Hallmark · dismissed F19 · four weights 400, 500, 600, 700 · one variable face carries body, labels, titles and display; 700 only names the wordmark and the banner label, 500 the 14 px labels */
+/* Hallmark · waive 24b · gaps and paddings of 14 and 18 off the 4px scale · half steps that centre a 20px label in a 48px row and keep the phone head card's rhythm; every other value is on the scale */
+/* Hallmark · waive 80 · the tent still and the exploded plate · the site's only pictures by decision (no photography, brief 07 decision 2); both are today's marquee model lifted from the site and recoloured through tokens, not new imagery */
+/* Hallmark · waive 47c · no drawn subject beyond the marquee · the One-Model Rule: both drawings come from one model, the site's only pictures */
+:root{--color-sheet:#f0f4f0;--color-field:#dfe8de;--color-grid:#d4ded3;--color-paper:#fcfdfc;--color-fill-2:#eef1ee;--color-edge:#b5bdb5;--color-hair:#dde1dd;--color-ink:#1d2e37;--color-ink-2:#516069;--color-line:#5b6c76;--color-line-soft:#a7b3ba;--color-signal:#af4316;--color-signal-hover:#9a3409;--color-signal-soft:#fceae3;--color-on-signal-soft:#8f2d01;--color-deck:#eceff1;--color-membrane:#fafaf8;--color-membrane-shade:#eeeeec;--font-sans:"Commissioner",system-ui,-apple-system,"Segoe UI",sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;--radius-sm:0px;--radius-md:2px;--radius-full:9999px}
+html,body{margin:0;overflow-x:clip}
+.sb{container:page / inline-size;background:var(--color-sheet);color:var(--color-ink);font-family:var(--font-sans);font-size:16px;line-height:26px;-webkit-font-smoothing:antialiased;position:relative;min-height:800px}
+.sb *{box-sizing:border-box}
+.sb :where(h1,h2,h3,p,ul,ol,dl,dd,figure){margin:0;padding:0}
+.sb :where(ul,ol){list-style:none}
+.sb a{color:inherit}
+.sb svg{flex:none}
+.rg{font-family:var(--font-mono);font-weight:600;font-size:.94em;color:var(--color-ink)}
+.link:active,.pick button:active,.menu:active,.soc a:active{background:var(--color-fill-2)}
+.pick button:disabled{color:var(--color-ink-2);background:var(--color-fill-2);border-style:dashed;cursor:default}
+.sb :focus-visible{outline:2px solid var(--color-signal);outline-offset:3px}
+.sb :where(h1,h2,h3){text-wrap:balance}
+.sb :where(p,li){text-wrap:pretty}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.banner{background:var(--color-signal-soft);color:var(--color-on-signal-soft);font-size:14px;line-height:20px;font-weight:500;padding:8px 0}
+.banner b{font-weight:700;margin-right:8px}
+.hdr{background:var(--color-paper);border-bottom:1.5px solid var(--color-ink)}
+.hdr .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:700;font-size:20px;line-height:24px;letter-spacing:.01em;text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.hdr nav ul{display:flex;gap:8px}
+.hdr nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:15px;font-weight:500;color:var(--color-ink-2);text-decoration:none}
+.hdr nav a:hover{color:var(--color-ink)}
+.hdr nav a span{padding:4px 0;border-bottom:2px solid transparent}
+.hdr nav a[aria-current]{color:var(--color-ink);font-weight:600}
+.hdr nav a[aria-current] span{border-bottom-color:var(--color-signal)}
+.menu{display:none;width:48px;height:48px;align-items:center;justify-content:center;border:1px solid var(--color-edge);border-radius:var(--radius-md);background:var(--color-paper);color:var(--color-ink);padding:0;cursor:pointer}
+.field{background-color:var(--color-field);background-image:linear-gradient(var(--color-grid) 1px,transparent 1px),linear-gradient(90deg,var(--color-grid) 1px,transparent 1px);background-size:32px 32px;background-position:-1px -1px;border-bottom:1px solid var(--color-edge)}
+.field>.wrap{display:grid;grid-template-columns:5fr 7fr;gap:24px;padding-top:32px;padding-bottom:32px;align-items:stretch}
+.card{background:var(--color-paper);border:1px solid var(--color-edge);border-top:1.5px solid var(--color-ink)}
+.head{padding:32px;display:flex;flex-direction:column;align-items:flex-start}
+h1{margin:0;font-size:52px;line-height:56px;font-weight:650;letter-spacing:-.02em}
+.lede{font-size:18px;line-height:28px;margin-top:20px;color:var(--color-ink-2)}
+.link{display:inline-flex;align-items:center;gap:8px;margin-top:24px;min-height:48px;padding:0 16px;border:1px solid var(--color-ink);border-radius:var(--radius-md);font-weight:600;font-size:16px;text-decoration:none;color:var(--color-ink);background:var(--color-paper)}
+.link:hover{border-color:var(--color-signal-hover);color:var(--color-signal-hover)}
+.stage{display:flex;flex-direction:column;justify-content:space-between;gap:16px;align-items:flex-end}
+.plate{display:contents}
+.still{display:block;width:460px;max-width:100%;height:auto;margin:auto 0 auto auto}
+.tb{width:100%}
+.tb dl{display:grid;grid-template-columns:repeat(5,auto)}
+.cell{padding:14px 16px;border-left:1px solid var(--color-hair);min-width:0}
+.cell:first-child{border-left:0}
+dt{font-size:14px;line-height:20px;font-weight:500;color:var(--color-ink-2)}
+dd{margin:2px 0 0;text-align:start;font-size:18px;line-height:24px;font-weight:600}
+.tb dd{white-space:nowrap}
+.fig{font-family:var(--font-mono);font-weight:600;font-size:17px}
+.panel{position:relative;width:calc(100% - 48px);max-width:1152px;margin:32px auto 0;background:var(--color-paper);border:1px solid var(--color-edge)}
+.pband{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;min-height:48px;padding:8px 32px;background:var(--color-fill-2);border-bottom:1px solid var(--color-hair);font-size:14px;line-height:20px;font-weight:500}
+.pband .n{font-family:var(--font-mono);font-weight:600;font-size:15px;color:var(--color-signal)}
+.pband .nm{font-weight:600;font-size:16px}
+.pband .nt{color:var(--color-ink-2)}
+.pbody{padding:40px 32px 32px}
+.intro{display:grid;grid-template-columns:5fr 7fr;gap:32px;align-items:start}
+h2{margin:0;font-size:36px;line-height:40px;font-weight:650;letter-spacing:-.01em}
+.intro p{font-size:18px;line-height:28px;color:var(--color-ink-2)}
+.draw{display:grid;grid-template-columns:7fr 5fr;gap:32px;margin-top:32px;align-items:start}
+.exploded{display:block;width:100%;max-height:540px;height:auto;margin:0 auto}
+.num{font-family:var(--font-mono);font-size:12.5px;font-weight:600;text-anchor:middle}
+.badge{transform-box:fill-box;transform-origin:center}
+figcaption{font-size:14px;line-height:20px;font-weight:500;color:var(--color-ink-2);margin-top:12px}
+.parts{border-top:0}
+.parts li{display:grid;grid-template-columns:32px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--color-hair)}
+.parts li:first-child{border-top:0;padding-top:0}
+.dot{width:32px;height:32px;border-radius:var(--radius-full);border:1.5px solid var(--color-signal);color:var(--color-signal);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:14px;line-height:1;flex:none}
+h3{margin:0;font-size:20px;line-height:26px;font-weight:600}
+.parts p,.svc p,.am p{margin-top:4px;font-size:16px;line-height:26px;color:var(--color-ink-2)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:32px;border-top:1px solid var(--color-hair)}
+.step{padding:24px 24px 8px 0;border-left:0}
+.step+.step{border-left:1px solid var(--color-hair);padding-left:24px}
+.sh3{display:flex;align-items:baseline;gap:12px}
+.sn{font-family:var(--font-mono);font-weight:600;font-size:15px;line-height:20px;color:var(--color-signal)}
+.step p{margin-top:12px;font-size:16px;line-height:26px;color:var(--color-ink-2)}
+/* subpage head */
+.field--page>.wrap{grid-template-columns:1fr}
+.head--page .hb{display:grid;grid-template-columns:5fr 7fr;gap:32px;align-items:start}
+.head--page .hb .lede{margin-top:6px}
+.field--contact .hb{display:block}
+.field--contact .hb .lede{margin-top:16px}
+.field--contact>.wrap{grid-template-columns:5fr 7fr}
+.head--page{padding:0}
+.head--page .rband{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;min-height:48px;padding:8px 32px;background:var(--color-fill-2);border-bottom:1px solid var(--color-hair);width:100%;font-size:14px;line-height:20px;font-weight:500}
+.rband .n{font-family:var(--font-mono);font-weight:600;font-size:15px;color:var(--color-signal)}
+.rband .nm{font-weight:600;font-size:16px}
+.rband .nt{color:var(--color-ink-2)}
+.head--page .hb{padding:28px 32px 28px}
+.field--page>.wrap{padding-top:24px;padding-bottom:24px}
+.field--page+.panel{margin-top:24px}
+.head--page .lede{max-width:60ch}
+/* corturi */
+.plan{display:grid;grid-template-columns:7fr 5fr;gap:32px;margin-top:32px;align-items:start}
+.planbox{background:var(--color-field);border:1px solid var(--color-edge);padding:12px}
+.planbox svg{display:block;width:100%;height:auto;background:var(--color-paper)}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pick button{min-height:48px;padding:0 12px;font-family:var(--font-mono);font-weight:500;font-size:15px;color:var(--color-ink-2);background:var(--color-paper);border:1px solid var(--color-line);border-radius:var(--radius-md);cursor:pointer}
+.pick button:hover{color:var(--color-ink);border-color:var(--color-ink)}
+.pick button[aria-pressed="true"]{background:var(--color-ink);border-color:var(--color-ink);color:var(--color-paper);font-weight:600}
+.data{margin-top:20px;border-top:1.5px solid var(--color-ink)}
+.data>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--color-hair)}
+.data dd{margin:0;text-align:right;font-size:17px;line-height:24px;font-weight:600}
+.data dd.fig{font-size:20px}
+.note{margin-top:16px;font-size:15px;line-height:24px;color:var(--color-ink-2);max-width:42ch}
+.tbl-wrap{margin-top:32px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th[scope="col"]{text-align:left;font-size:14px;line-height:20px;font-weight:500;color:var(--color-ink-2);padding:12px 20px 12px 16px;background:var(--color-fill-2);border-bottom:1.5px solid var(--color-ink);white-space:nowrap}
+.tbl td,.tbl th[scope="row"]{padding:16px 20px 16px 16px;border-bottom:1px solid var(--color-hair);text-align:left;font-size:16px;line-height:24px;color:var(--color-ink-2);vertical-align:middle}
+.tbl th[scope="row"]{font-variant-numeric:tabular-nums;font-size:20px;font-weight:650;color:var(--color-ink);white-space:nowrap}
+.tbl td.ar{font-family:var(--font-mono);font-weight:600;color:var(--color-ink)}
+.tbl .bar{width:30%}
+.dimbar{display:block;position:relative;height:14px}
+.dimbar::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed var(--color-line-soft)}
+.dimbar i{position:absolute;left:0;top:50%;width:var(--f);border-top:1.5px solid var(--color-signal)}
+.dimbar i::before,.dimbar i::after{content:"";position:absolute;top:-5px;height:11px;border-left:1.5px solid var(--color-signal)}
+.dimbar i::before{left:0}.dimbar i::after{right:0}
+.prose{margin-top:24px;max-width:68ch;font-size:16px;line-height:26px;color:var(--color-ink-2)}
+.notes{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px 40px}
+.notes li{display:flex;gap:16px;font-size:15px;line-height:24px;color:var(--color-ink-2)}
+.notes b{flex:0 0 88px;font-family:var(--font-mono);font-weight:600;font-size:15px;color:var(--color-ink)}
+.ams{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.amcol{border:1px solid var(--color-edge);border-top:1.5px solid var(--color-ink)}
+.amcol .ch{display:flex;align-items:center;min-height:48px;padding:8px 24px;background:var(--color-fill-2);border-bottom:1px solid var(--color-hair);font-weight:600;font-size:16px}
+.amcol .ch.opt{font-weight:600;background:var(--color-signal-soft);color:var(--color-on-signal-soft);border-bottom-color:var(--color-signal-soft)}
+.amcol ul{padding:8px 24px}
+.am{display:grid;grid-template-columns:32px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--color-hair)}
+.am:first-child{border-top:0}
+.lede2{margin-top:16px;font-size:18px;line-height:28px;color:var(--color-ink-2);max-width:60ch}
+/* servicii */
+.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:0}
+.svc{border:1px solid var(--color-edge);border-top:1.5px solid var(--color-ink);padding:24px}
+.svc h3{margin-top:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:24px}
+.two p{font-size:18px;line-height:28px;color:var(--color-ink-2);max-width:60ch}
+/* contact */
+.dcard .rows{padding:0 32px 8px}
+.crow{padding:16px 0;border-top:1px solid var(--color-hair)}
+.crow:first-child{border-top:0}
+.crow .big{display:inline-block;margin-top:4px;font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.01em;overflow-wrap:anywhere;text-decoration:none}
+.crow a.big{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-decoration-color:var(--color-line-soft);text-decoration-thickness:1.5px;text-underline-offset:5px}
+.crow a.big:hover{color:var(--color-signal-hover);text-decoration-color:var(--color-signal-hover)}
+.crow .big.fig{font-size:24px}
+.hrs{display:grid;grid-template-columns:7fr 5fr;gap:32px;align-items:start}
+.hrs li{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--color-hair)}
+.hrs li:first-child{border-top:0;padding-top:0}
+.hrs li span{color:var(--color-ink-2)}
+.hrs li b{font-family:var(--font-mono);font-weight:600;font-size:16px;text-align:right}
+.hrs p{font-size:18px;line-height:28px;color:var(--color-ink-2)}
+/* footer */
+.foot{margin-top:48px;background:var(--color-fill-2);border-top:1.5px solid var(--color-ink)}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1.2fr}
+.fc{padding:28px 24px 24px 0;border-right:1px solid var(--color-hair)}
+.fc+.fc{padding-left:24px}
+.fc:last-child{border-right:0}
+.fc .k{font-size:14px;line-height:20px;font-weight:500;color:var(--color-ink-2)}
+.fc .w{margin-top:8px;font-size:20px;line-height:24px;font-weight:700}
+.fc .s{margin-top:8px;max-width:30ch;font-size:15px;line-height:24px;color:var(--color-ink-2)}
+.fc ul{margin-top:8px}
+.fc ul a{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:15px;text-decoration:underline;text-decoration-color:var(--color-line-soft);text-decoration-thickness:1px;text-underline-offset:4px}
+.fc ul a:hover{color:var(--color-signal-hover);text-decoration-color:var(--color-signal-hover)}
+.fc ul a i{font-style:normal;font-family:var(--font-mono);font-size:14px;color:var(--color-ink-2)}
+.fc li.ad{font-size:15px;line-height:24px;color:var(--color-ink-2);padding-top:4px}
+.soc{display:flex;gap:8px;margin-top:12px}
+.soc a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--color-edge);background:var(--color-paper);color:var(--color-ink-2);border-radius:var(--radius-md)}
+.soc a:hover{border-color:var(--color-signal-hover);color:var(--color-signal-hover)}
+.rev{border-top:1px solid var(--color-hair);padding:20px 0 32px;font-size:14px;line-height:22px;color:var(--color-ink-2)}
+.rev .legal{display:flex;flex-wrap:wrap;gap:0 24px}
+.rev .row{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.rev a{display:inline-flex;align-items:center;min-height:44px}
+/* board callouts: the margin only, 1280 only */
+.co{position:absolute;z-index:3;width:22px;height:22px;border-radius:var(--radius-full);background:var(--color-ink);color:var(--color-paper);font-family:var(--font-mono);font-weight:600;font-size:12px;line-height:22px;text-align:center}
+@container page (max-width:1279px){.co{display:none}}
+@container page (max-width:1099px){
+ .tb dl{grid-template-columns:repeat(6,1fr)}
+ .tb .cell{grid-column:span 2}
+ .tb .cell:nth-child(n+4){grid-column:span 3;border-top:1px solid var(--color-hair)}
+ .tb .cell:nth-child(4){border-left:0}
+ .still{width:380px}
+ .fgrid{grid-template-columns:1fr 1fr}
+ .fc{border-right:0;border-bottom:1px solid var(--color-hair);padding-left:0!important}
+ .steps{grid-template-columns:1fr 1fr}
+ .step:nth-child(3){border-left:0;padding-left:0}
+ .step:nth-child(n+3){border-top:1px solid var(--color-hair)}
+ .svcs{grid-template-columns:1fr}
+}
+@container page (max-width:800px){
+ .wrap{padding:0 12px}
+ .banner{padding:8px 0}
+ .hdr .wrap{height:56px}
+ .hdr nav{display:none}
+ .menu{display:inline-flex}
+ .field>.wrap{grid-template-columns:1fr;gap:12px;padding-top:12px;padding-bottom:12px}
+ .head{padding:20px 16px}
+ h1{font-size:34px;line-height:38px}
+ .lede{font-size:17px;line-height:26px;margin-top:14px}
+ .link{display:flex;justify-content:center;margin-top:18px;width:100%}
+ .stage{display:block;background:var(--color-paper);border:1px solid var(--color-edge);border-top:1.5px solid var(--color-ink)}
+ .plate{display:flex;justify-content:center;align-items:center;padding:12px;background-color:var(--color-field);background-image:linear-gradient(var(--color-grid) 1px,transparent 1px),linear-gradient(90deg,var(--color-grid) 1px,transparent 1px);background-size:32px 32px;background-position:-1px -1px;border-bottom:1px solid var(--color-hair)}
+ .still{width:auto;max-width:100%;height:150px;margin:0}
+ .tb{border:0;background:transparent}
+ .tb dl{display:flex;flex-direction:column}
+ .cell{border-left:0!important;border-top:1px solid var(--color-hair)!important;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 16px;min-height:48px}
+ .cell:last-child{order:-1;border-top:0!important}
+ .cell:nth-last-child(2){}
+ .tb dd{margin:0;text-align:right}
+ .crow dd{text-align:start}
+ .hrs li{flex-wrap:wrap}
+ .hrs li:last-child b{flex-basis:100%;text-align:start;margin-top:2px}
+ .panel{width:calc(100% - 24px);margin:12px auto 0}
+ .pband{padding:10px 16px}
+ .pbody{padding:24px 16px 20px}
+ .intro,.draw,.plan,.hrs,.two,.ams{grid-template-columns:1fr;gap:16px}
+ h2{font-size:28px;line-height:32px}
+ .intro p,.two p,.hrs p,.lede2{font-size:17px;line-height:26px}
+ .draw,.plan{margin-top:24px}
+ .badge{transform:scale(1.7)}
+ .exploded{max-height:none}
+ .parts li{padding:16px 0}
+ .steps{grid-template-columns:1fr;margin-top:24px}
+ .step,.step+.step{border-left:0;padding:20px 0 8px}
+ .step+.step{border-top:1px solid var(--color-hair)}
+ .step:nth-child(n+3){border-top:1px solid var(--color-hair)}
+ .field--page>.wrap,.field--contact>.wrap{grid-template-columns:1fr}
+ .head--page{padding:0}
+ .head--page .hb,.field--contact .hb{display:block}
+ .head--page .hb .lede{margin-top:14px}
+ .head--page .rband{gap:2px 12px}
+ .head--page .rband{padding:10px 16px}
+ .head--page .hb{padding:20px 16px 24px}
+ .dcard .rows{padding:0 16px 4px}
+ .crow .big,.crow .big.fig{font-size:20px;line-height:28px}
+ .svcs{gap:12px}
+ .svc{padding:20px 16px}
+ .notes{grid-template-columns:1fr}
+ .notes{gap:0}
+ .notes li{flex-direction:column;gap:4px;padding:16px 0;border-top:1px solid var(--color-hair)}
+ .notes li:first-child{border-top:0;padding-top:0}
+ .notes b{flex:none}
+ .amcol .ch{padding:8px 16px}
+ .amcol ul{padding:4px 16px}
+ .tbl thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+ .tbl,.tbl tbody,.tbl tr,.tbl td,.tbl th{display:block}
+ .tbl tr{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;padding:16px 0;border-bottom:1px solid var(--color-hair)}
+ .tbl tr:first-child{padding-top:0}
+ .tbl td,.tbl th[scope="row"]{padding:0;border:0}
+ .tbl th[scope="row"]{grid-column:1/-1;font-size:20px}
+ .tbl td[data-l]::before{content:attr(data-l);display:block;font-size:14px;line-height:20px;font-weight:500;color:var(--color-ink-2);font-family:var(--font-sans)}
+ .tbl td.bar{grid-column:1/-1;width:auto;padding-top:8px}
+ .tbl td.bar::before{display:none}
+ .tbl-wrap{margin-top:20px}
+ .planbox{padding:4px}
+ .pd{font-size:1.4px}
+ .pc{font-size:1.25px}
+ .foot{margin-top:32px}
+ .fgrid{grid-template-columns:1fr}
+ .fc{padding:20px 0}
+ .rev .row{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.sb *{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="look sb">
+<div class="banner"><div class="wrap"><b>Notă</b>Site demonstrativ. Datele de contact și firma sunt fictive (concept de prezentare).</div></div>
+<header class="hdr"><div class="wrap">
+<a class="logo" href="/" aria-label="Subcort — acasă">SUBCORT</a>
+<nav aria-label="Navigare principală"><ul><li><a href="/" aria-current="page"><span>Acasă</span></a></li><li><a href="/corturi/"><span>Corturi</span></a></li><li><a href="/servicii/"><span>Servicii</span></a></li><li><a href="/zona/"><span>Zonă</span></a></li><li><a href="/contact/"><span>Contact</span></a></li></ul></nav>
+<button class="menu" type="button" aria-label="Deschide meniul"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+</div></header>
+<main>
+<section class="field" aria-label="Subcort — corturi pentru evenimente"><div class="wrap">
+<span class="co" aria-hidden="true" style="left:0;top:40px">1</span><span class="co" aria-hidden="true" style="right:0;top:436px">2</span>
+<div class="card head"><h1>Un spațiu pregătit, oriunde ai nevoie de el.</h1>
+<p class="lede">Aducem structura la tine, o ridicăm pe terenul tău și o pregătim complet: pardoseală, pereți, iluminat și climatizare. Tu te ocupi de eveniment, noi de spațiul în care are loc.</p>
+<a class="link" href="/corturi/">Vezi dimensiunile și dotările <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+<div class="stage">
+<div class="plate"><svg class="still" viewBox="162 93 356 267" role="img" aria-label="Cort de 15 × 10 m, vedere axonometrică"><g><polygon points="307.5,156.3 502.4,268.8 372.5,343.8 177.6,231.3" stroke-width="1.1" style="fill:var(--color-deck);stroke:var(--color-line)"></polygon><line x1="307.5" y1="156.3" x2="307.5" y2="111.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="502.4" y1="268.8" x2="502.4" y2="223.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="307.5" y1="111.3" x2="405.0" y2="109.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="502.4" y1="223.8" x2="405.0" y2="109.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="275.0" y1="175.0" x2="275.0" y2="130.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="469.9" y1="287.5" x2="469.9" y2="242.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="275.0" y1="130.0" x2="372.5" y2="127.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="469.9" y1="242.5" x2="372.5" y2="127.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="242.6" y1="193.8" x2="242.6" y2="148.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="437.4" y1="306.3" x2="437.4" y2="261.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="242.6" y1="148.8" x2="340.0" y2="146.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="437.4" y1="261.3" x2="340.0" y2="146.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="210.1" y1="212.5" x2="210.1" y2="167.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="405.0" y1="325.0" x2="405.0" y2="280.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="210.1" y1="167.5" x2="307.5" y2="165.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="405.0" y1="280.0" x2="307.5" y2="165.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="177.6" y1="231.3" x2="177.6" y2="186.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="372.5" y1="343.8" x2="372.5" y2="298.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="177.6" y1="186.3" x2="275.0" y2="184.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="372.5" y1="298.8" x2="275.0" y2="184.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="307.5" y1="156.3" x2="275.0" y2="175.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="307.5" y1="111.3" x2="275.0" y2="130.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="405.0" y1="109.0" x2="372.5" y2="127.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="502.4" y1="223.8" x2="469.9" y2="242.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="502.4" y1="268.8" x2="469.9" y2="287.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="356.2" y1="110.1" x2="323.8" y2="128.9" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="453.7" y1="166.4" x2="421.2" y2="185.1" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="275.0" y1="175.0" x2="242.6" y2="193.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="275.0" y1="130.0" x2="242.6" y2="148.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="372.5" y1="127.8" x2="340.0" y2="146.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="469.9" y1="242.5" x2="437.4" y2="261.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="469.9" y1="287.5" x2="437.4" y2="306.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="323.8" y1="128.9" x2="291.3" y2="147.6" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="421.2" y1="185.1" x2="388.7" y2="203.9" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="242.6" y1="193.8" x2="210.1" y2="212.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="242.6" y1="148.8" x2="210.1" y2="167.5" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="340.0" y1="146.5" x2="307.5" y2="165.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="437.4" y1="261.3" x2="405.0" y2="280.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="437.4" y1="306.3" x2="405.0" y2="325.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="291.3" y1="147.6" x2="258.8" y2="166.4" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="388.7" y1="203.9" x2="356.2" y2="222.6" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="210.1" y1="212.5" x2="177.6" y2="231.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="210.1" y1="167.5" x2="177.6" y2="186.3" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="307.5" y1="165.3" x2="275.0" y2="184.0" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="405.0" y1="280.0" x2="372.5" y2="298.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="405.0" y1="325.0" x2="372.5" y2="343.8" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="258.8" y1="166.4" x2="226.3" y2="185.1" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="356.2" y1="222.6" x2="323.8" y2="241.4" stroke-width="1.5" stroke-linecap="round" style="stroke:var(--color-ink)"></line><polygon points="307.5,111.3 405.0,109.0 372.5,127.8 275.0,130.0" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="502.4,223.8 405.0,109.0 372.5,127.8 469.9,242.5" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="307.5,156.3 307.5,111.3 275.0,130.0 275.0,175.0" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="502.4,268.8 502.4,223.8 469.9,242.5 469.9,287.5" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="275.0,130.0 372.5,127.8 340.0,146.5 242.6,148.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="469.9,242.5 372.5,127.8 340.0,146.5 437.4,261.3" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="275.0,175.0 275.0,130.0 242.6,148.8 242.6,193.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="469.9,287.5 469.9,242.5 437.4,261.3 437.4,306.3" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="242.6,148.8 340.0,146.5 307.5,165.3 210.1,167.5" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="437.4,261.3 340.0,146.5 307.5,165.3 405.0,280.0" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="242.6,193.8 242.6,148.8 210.1,167.5 210.1,212.5" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="437.4,306.3 437.4,261.3 405.0,280.0 405.0,325.0" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="210.1,167.5 307.5,165.3 275.0,184.0 177.6,186.3" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="405.0,280.0 307.5,165.3 275.0,184.0 372.5,298.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="210.1,212.5 210.1,167.5 177.6,186.3 177.6,231.3" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="405.0,325.0 405.0,280.0 372.5,298.8 372.5,343.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="307.5,156.3 307.5,111.3 405.0,109.0 502.4,223.8 502.4,268.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="177.6,231.3 177.6,186.3 275.0,184.0 372.5,298.8 372.5,343.8" fill-opacity="0.9" stroke-width="1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon></g></svg></div>
+<div class="card tb"><dl><div class="cell"><dt>Deschidere</dt><dd class="fig">8‒20 m</dd></div><div class="cell"><dt>Suprafață</dt><dd class="fig">64‒300 m²</dd></div><div class="cell"><dt>Capacitate</dt><dd class="fig">40‒320</dd></div><div class="cell"><dt>Montaj</dt><dd>La tine acasă</dd></div><div class="cell"><dt>Zonă</dt><dd>Gorj, Oltenia</dd></div></dl></div>
+</div>
+</div></section>
+<section class="panel" aria-labelledby="p1">
+<span class="co" aria-hidden="true" style="left:-30px;top:13px">3</span><span class="co" aria-hidden="true" style="left:-30px;top:420px">4</span>
+<div class="pband"><span class="n">01</span><span class="nm">Alcătuire</span><span class="nt">Axonometrie 1:100</span></div>
+<div class="pbody">
+<div class="intro"><h2 id="p1">Ce vine odată cu cortul</h2><p>Venim cu structura, o ridicăm pe terenul tău și o pregătim complet. Lăsăm un spațiu gata de folosit, potrivit oricărei ocazii, și revenim după eveniment ca să demontăm.</p></div>
+<div class="draw"><figure><svg class="exploded" viewBox="184 22 540 528" role="img" aria-labelledby="ex-t ex-d"><title id="ex-t">Vedere explodată a cortului</title><desc id="ex-d">Desen axonometric al unui cort de 15 × 10 m, cu straturile separate pe verticală: 1 membrana și acoperișul, 2 pereții laterali, 3 structura portantă, 4 pardoseala modulară.</desc><g><polygon points="423.6,339.6 631.4,459.6 492.8,539.6 285.0,419.6" stroke-width="1.2" style="fill:var(--color-deck);stroke:var(--color-line)"></polygon><line x1="400.5" y1="352.9" x2="608.3" y2="472.9" stroke-width=".7" style="stroke:var(--color-line-soft)"></line><line x1="377.4" y1="366.3" x2="585.2" y2="486.3" stroke-width=".7" style="stroke:var(--color-line-soft)"></line><line x1="354.3" y1="379.6" x2="562.1" y2="499.6" stroke-width=".7" style="stroke:var(--color-line-soft)"></line><line x1="331.2" y1="392.9" x2="539.0" y2="512.9" stroke-width=".7" style="stroke:var(--color-line-soft)"></line><line x1="308.1" y1="406.3" x2="515.9" y2="526.3" stroke-width=".7" style="stroke:var(--color-line-soft)"></line><line x1="423.6" y1="260.4" x2="423.6" y2="212.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="631.4" y1="380.4" x2="631.4" y2="332.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="423.6" y1="212.4" x2="527.5" y2="210.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="631.4" y1="332.4" x2="527.5" y2="210.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="388.9" y1="280.4" x2="388.9" y2="232.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="596.8" y1="400.4" x2="596.8" y2="352.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="388.9" y1="232.4" x2="492.8" y2="230.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="596.8" y1="352.4" x2="492.8" y2="230.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="354.3" y1="300.4" x2="354.3" y2="252.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="562.1" y1="420.4" x2="562.1" y2="372.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="354.3" y1="252.4" x2="458.2" y2="250.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="562.1" y1="372.4" x2="458.2" y2="250.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="319.6" y1="320.4" x2="319.6" y2="272.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="527.5" y1="440.4" x2="527.5" y2="392.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="319.6" y1="272.4" x2="423.6" y2="270.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="527.5" y1="392.4" x2="423.6" y2="270.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="285.0" y1="340.4" x2="285.0" y2="292.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="492.8" y1="460.4" x2="492.8" y2="412.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="285.0" y1="292.4" x2="388.9" y2="290.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="492.8" y1="412.4" x2="388.9" y2="290.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="423.6" y1="260.4" x2="388.9" y2="280.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="423.6" y1="212.4" x2="388.9" y2="232.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="527.5" y1="210.0" x2="492.8" y2="230.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="631.4" y1="332.4" x2="596.8" y2="352.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="631.4" y1="380.4" x2="596.8" y2="400.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="475.5" y1="211.2" x2="440.9" y2="231.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="579.4" y1="271.2" x2="544.8" y2="291.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="388.9" y1="280.4" x2="354.3" y2="300.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="388.9" y1="232.4" x2="354.3" y2="252.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="492.8" y1="230.0" x2="458.2" y2="250.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="596.8" y1="352.4" x2="562.1" y2="372.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="596.8" y1="400.4" x2="562.1" y2="420.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="440.9" y1="231.2" x2="406.2" y2="251.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="544.8" y1="291.2" x2="510.2" y2="311.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="354.3" y1="300.4" x2="319.6" y2="320.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="354.3" y1="252.4" x2="319.6" y2="272.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="458.2" y1="250.0" x2="423.6" y2="270.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="562.1" y1="372.4" x2="527.5" y2="392.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="562.1" y1="420.4" x2="527.5" y2="440.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="406.2" y1="251.2" x2="371.6" y2="271.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="510.2" y1="311.2" x2="475.5" y2="331.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="319.6" y1="320.4" x2="285.0" y2="340.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="319.6" y1="272.4" x2="285.0" y2="292.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="423.6" y1="270.0" x2="388.9" y2="290.0" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="527.5" y1="392.4" x2="492.8" y2="412.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="527.5" y1="440.4" x2="492.8" y2="460.4" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="371.6" y1="271.2" x2="337.0" y2="291.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><line x1="475.5" y1="331.2" x2="440.9" y2="351.2" stroke-width="1.6" stroke-linecap="round" style="stroke:var(--color-ink)"></line><polygon points="423.6,36.4 527.5,34.0 492.8,54.0 388.9,56.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="631.4,156.4 527.5,34.0 492.8,54.0 596.8,176.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="388.9,56.4 492.8,54.0 458.2,74.0 354.3,76.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="596.8,176.4 492.8,54.0 458.2,74.0 562.1,196.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="354.3,76.4 458.2,74.0 423.6,94.0 319.6,96.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="562.1,196.4 458.2,74.0 423.6,94.0 527.5,216.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="319.6,96.4 423.6,94.0 388.9,114.0 285.0,116.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane);stroke:var(--color-line)"></polygon><polygon points="527.5,216.4 423.6,94.0 388.9,114.0 492.8,236.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="423.6,172.4 423.6,124.4 388.9,144.4 388.9,192.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="631.4,292.4 631.4,244.4 596.8,264.4 596.8,312.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="388.9,192.4 388.9,144.4 354.3,164.4 354.3,212.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="596.8,312.4 596.8,264.4 562.1,284.4 562.1,332.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="354.3,212.4 354.3,164.4 319.6,184.4 319.6,232.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="562.1,332.4 562.1,284.4 527.5,304.4 527.5,352.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="319.6,232.4 319.6,184.4 285.0,204.4 285.0,252.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="527.5,352.4 527.5,304.4 492.8,324.4 492.8,372.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="423.6,172.4 423.6,124.4 527.5,122.0 631.4,244.4 631.4,292.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><polygon points="285.0,252.4 285.0,204.4 388.9,202.0 492.8,324.4 492.8,372.4" fill-opacity="0.94" stroke-width="1.1" stroke-linejoin="round" style="fill:var(--color-membrane-shade);stroke:var(--color-line)"></polygon><g>
+    <line x1="440.88457199999993" y1="55.19999999999999" x2="701.4101599999999" y2="74" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--color-signal)"></line>
+    <circle cx="440.88457199999993" cy="55.19999999999999" r="2.4" style="fill:var(--color-signal)"></circle>
+    <g class="badge"><circle cx="701.4101599999999" cy="74" r="12.5" stroke-width="1.5" style="fill:var(--color-paper);stroke:var(--color-signal)"></circle>
+    <text class="num" x="701.4101599999999" y="78.4" text-anchor="middle"
+      font-size="12.5" font-weight="600" style="fill:var(--color-signal)">1</text></g>
+    
+  </g><g>
+    <line x1="539.0341173333333" y1="321.7333333333333" x2="701.4101599999999" y2="261.52" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--color-signal)"></line>
+    <circle cx="539.0341173333333" cy="321.7333333333333" r="2.4" style="fill:var(--color-signal)"></circle>
+    <g class="badge"><circle cx="701.4101599999999" cy="261.52" r="12.5" stroke-width="1.5" style="fill:var(--color-paper);stroke:var(--color-signal)"></circle>
+    <text class="num" x="701.4101599999999" y="265.91999999999996" text-anchor="middle"
+      font-size="12.5" font-weight="600" style="fill:var(--color-signal)">2</text></g>
+    
+  </g><g>
+    <line x1="285" y1="316.4" x2="215" y2="347.472" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--color-signal)"></line>
+    <circle cx="285" cy="316.4" r="2.4" style="fill:var(--color-signal)"></circle>
+    <g class="badge"><circle cx="215" cy="347.472" r="12.5" stroke-width="1.5" style="fill:var(--color-paper);stroke:var(--color-signal)"></circle>
+    <text class="num" x="215" y="351.87199999999996" text-anchor="middle"
+      font-size="12.5" font-weight="600" style="fill:var(--color-signal)">3</text></g>
+    
+  </g><g>
+    <line x1="423.564064" y1="459.59999999999997" x2="215" y2="515.5999999999999" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--color-signal)"></line>
+    <circle cx="423.564064" cy="459.59999999999997" r="2.4" style="fill:var(--color-signal)"></circle>
+    <g class="badge"><circle cx="215" cy="515.5999999999999" r="12.5" stroke-width="1.5" style="fill:var(--color-paper);stroke:var(--color-signal)"></circle>
+    <text class="num" x="215" y="519.9999999999999" text-anchor="middle"
+      font-size="12.5" font-weight="600" style="fill:var(--color-signal)">4</text></g>
+    
+  </g></g></svg><figcaption>Fig. 1. Cort 15 × 10 m, vedere explodată. Axonometrie, scara 1:100.</figcaption></figure>
+<ol class="parts"><li><span class="dot" aria-hidden="true">1</span><div><h3>Membrană & acoperiș</h3><p>Învelitoarea care ține apa și soarele afară, tensionată peste structură și fixată pe toată lungimea.</p></div></li><li><span class="dot" aria-hidden="true">2</span><div><h3>Pereți laterali</h3><p>Laterale care se pot deschide sau închide complet, în funcție de vreme și de cum vrei spațiul.</p></div></li><li><span class="dot" aria-hidden="true">3</span><div><h3>Structură portantă</h3><p>Cadrele și panele care duc toată sarcina în teren, montate la deschiderea aleasă, în travei de 2,5 m.</p></div></li><li><span class="dot" aria-hidden="true">4</span><div><h3>Pardoseală modulară</h3><p>Podea stabilă, nivelată, montată peste teren, confortabilă chiar și pe iarbă sau pământ.</p></div></li></ol>
+</div></div></section>
+<section class="panel" aria-labelledby="p2">
+<div class="pband"><span class="n">02</span><span class="nm">Execuție</span><span class="nt">Succesiunea lucrărilor</span></div>
+<div class="pbody">
+<div class="intro"><h2 id="p2">Cum funcționează</h2><p>Patru etape, de la prima discuție până la demontare. De logistică ne ocupăm noi, cap-coadă.</p></div>
+<ol class="steps"><li class="step"><div class="sh3"><span class="sn" aria-hidden="true">01</span><h3>Solicitare & măsurători</h3></div><p>Ne spui data, locul și numărul de invitați. Stabilim împreună dimensiunea cortului și verificăm terenul unde se montează.</p></li><li class="step"><div class="sh3"><span class="sn" aria-hidden="true">02</span><h3>Livrare & montaj</h3></div><p>Aducem cortul la adresa ta și îl montăm complet: structură, pardoseală, pereți, iluminat și climatizare, exact cum am convenit.</p></li><li class="step"><div class="sh3"><span class="sn" aria-hidden="true">03</span><h3>Evenimentul tău</h3></div><p>În ziua evenimentului spațiul este pregătit și verificat. Eventualele servicii prin parteneri (catering, muzică, decor) sunt deja la locul lor.</p></li><li class="step"><div class="sh3"><span class="sn" aria-hidden="true">04</span><h3>Demontare</h3></div><p>După eveniment ne întoarcem și demontăm totul. Tu nu te ocupi de nimic din partea logistică, preluăm noi.</p></li></ol>
+</div></section>
+</main>
+<footer class="foot"><div class="wrap">
+<div class="fgrid">
+<div class="fc"><p class="k">Beneficiar / Executant</p><p class="w">SUBCORT</p><p class="s">Corturi pentru evenimente, montate la tine acasă. Pentru orice ocazie.</p></div>
+<nav class="fc" aria-label="Navigare subsol"><p class="k">Planșe</p><ul><li><a href="/"><i>00</i>Acasă</a></li><li><a href="/corturi/"><i>01</i>Corturi</a></li><li><a href="/servicii/"><i>02</i>Servicii</a></li><li><a href="/zona/"><i>03</i>Zonă</a></li><li><a href="/contact/"><i>04</i>Contact</a></li></ul></nav>
+<nav class="fc" aria-label="Documente legale"><p class="k">Documente</p><ul><li><a href="/confidentialitate/">Politică de confidențialitate</a></li><li><a href="/termeni/">Termeni și condiții</a></li><li><a href="/cookie-uri/">Politică de cookie-uri</a></li></ul></nav>
+<div class="fc"><p class="k">Contact</p><ul><li><a href="tel:+40700000000">07xx xxx xxx</a></li><li><a href="mailto:contact@subcort.ro">contact@subcort.ro</a></li><li class="ad">Str. Exemplu nr. X, Târgu-Jiu</li></ul>
+<div class="soc"><a href="https://facebook.com/subcort" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a><a href="https://instagram.com/subcort" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a></div></div>
+</div>
+<div class="rev"><div class="legal"><span>Subcort S.R.L.</span><span>CUI: RO00000000</span><span>Reg. Com.: J18/000/2024</span><span>Capital social: 200 RON</span></div>
+<p>Str. Exemplu nr. X, Târgu-Jiu, jud. Gorj</p>
+<p>Site demonstrativ. Datele de contact și firma sunt fictive (concept de prezentare).</p>
+<div class="row"><span>© 2026 Subcort</span><a href="https://anpc.ro/ce-este-sal/">ANPC, Soluționarea Alternativă a Litigiilor</a></div></div>
+</div></footer>
+</div>
+</body>
+</html>

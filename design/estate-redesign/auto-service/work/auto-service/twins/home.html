@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BavAuto Gorj home (twin)</title>
+<meta name="description" content="A plain-HTML twin of the board comp, for the local Floor checks.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Encode+Sans:wdth,wght@100..125,400..800&amp;display=swap">
+<style>
+/* Hallmark · waive 72 · div.panel bottom -49px · the FAQ's closed answers keep hidden boxes under their summaries (details content-visibility), so the probe sees text past the panel edge; nothing visible crowds it and an open answer is padded 20px */
+/* Hallmark · waive 39b · a.btn 72px tall · the contact page's WhatsApp button stands beside the 72px two-line call and takes its height; nothing else is that tall */
+/* Hallmark · waive 80 · div.panel 467x264, 35 shapes · the workshop elevation is today's authored asset (BayScene), a labelled line drawing kept because the site has no photography by decision (DESIGN.md, brief 05 default 1); it is not new imagery */
+/* Hallmark · waive 49b · a.wab and the footer legal links at 320px · at 320 the labels wrap to two lines inside controls that keep a 48px minimum height; nothing clips, and the checked phone widths are 360 and 390 */
+/* Hallmark · dismissed F19 · four weights 400, 600, 700, 800 · one variable face carries body, labels, titles and display; 700 only names titles and the card number, which sit 4px or more apart in size from the 600 labels */
+/* Hallmark · dismissed F25 · the contrast and palette tables belong to a fixed 1440 specimen sheet */
+[data-theme="dark"]{--color-ground:#161310;--color-surface:#24211e;--color-surface-2:#312d29;--color-line:#413c38;--color-line-strong:#736e67;--color-ink:#f2f0ec;--color-ink-muted:#bbb7b0;--color-card:#ece9e4;--color-card-ink:#201c18;--color-card-ink-muted:#5a544e;--color-card-line:#cbc7c0;--color-card-row:#dddad5;--color-signal:#c52525;--color-signal-hover:#ae1c1d;--color-on-signal:#fdfcf9;--color-focus:#fdc9c2;--color-success:#4fc47f;--color-whatsapp:#42b970;--color-whatsapp-on-card:#00773d;--color-window:#0f0d0b;--color-window-edge:#201c18;--color-window-amber:#fcb368;--color-error:#e97ab2;--color-m-blue:#2fa7f3;--color-m-indigo:#7e74e1;--color-m-red:#ed413b;--shadow-card:0 16px 40px -16px rgb(0 0 0 / 0.6);--font-body:"Encode Sans", system-ui, sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0;overflow-x:clip}
+.ro{background:var(--color-ground);color:var(--color-ink);font-family:var(--font-body);font-size:16px;line-height:26px;font-weight:400;font-variant-numeric:tabular-nums;min-height:800px;position:relative}
+.ro a{color:inherit}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+.call:active{background:var(--color-signal-hover)}
+.wab:active,.sym a:active,.btn:active{background:var(--color-card-row)}
+.btn:active{background:var(--color-line)}
+.hphone:active,.menu:active{background:var(--color-surface-2)}
+.btn:disabled,.menu:disabled{color:var(--color-ink-muted);border-color:var(--color-line);cursor:not-allowed}
+.ro :focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.ro .card :focus-visible{outline-color:var(--color-card-ink)}
+.ic{flex:none;display:block}
+.stripe{display:grid;grid-template-columns:1fr 1fr 1fr;height:4px}
+.stripe i:nth-child(1){background:var(--color-m-blue)}.stripe i:nth-child(2){background:var(--color-m-indigo)}.stripe i:nth-child(3){background:var(--color-m-red)}
+.banner{margin:0;padding:12px 20px;text-align:center;font-size:14px;line-height:20px;font-weight:600}
+.banner a{text-underline-offset:3px;white-space:nowrap}
+.hdr{background:var(--color-surface);border-bottom:1px solid var(--color-line);position:sticky;top:0;z-index:10}
+.hdr-in{max-width:1240px;margin:0 auto;padding:0 36px;height:64px;display:flex;align-items:center;gap:32px}
+.mark{font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:20px;line-height:24px;text-decoration:none;white-space:nowrap;display:flex;align-items:center;min-height:44px}
+.nav{margin-left:auto;display:flex;gap:4px}
+.nav a{display:flex;align-items:center;height:64px;padding:0 16px;font-size:14px;line-height:20px;font-weight:600;text-decoration:none;color:var(--color-ink-muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav a[aria-current]{color:var(--color-ink);border-bottom-color:var(--color-ink)}
+.nav a:hover{color:var(--color-ink)}
+.hphone{display:flex;align-items:center;gap:12px;height:44px;padding:0 16px;border:1px solid var(--color-line-strong);border-radius:4px;text-decoration:none;font-weight:600;font-size:16px}
+.menu{display:none;margin-left:auto;width:48px;height:48px;align-items:center;justify-content:center;border:1px solid var(--color-line-strong);border-radius:4px;background:transparent;color:var(--color-ink)}
+.wrap{max-width:1240px;margin:0 auto;padding:56px 36px 0;display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-areas:"head card" "rest card";grid-template-rows:auto 1fr;column-gap:48px;position:relative}
+.head{grid-area:head}.rest{grid-area:rest;position:relative}.cardcol{grid-area:card;align-self:stretch;position:relative}
+h1{margin:0;font-size:64px;line-height:66px;font-weight:800;letter-spacing:-.02em}
+h2{margin:72px 0 0;font-size:40px;line-height:44px;font-weight:800;letter-spacing:-.015em}
+h3{margin:0}
+.lede{margin:24px 0 0;font-size:18px;line-height:26px;max-width:560px;color:var(--color-ink-muted)}
+.ph .readout{margin:28px 0 0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink)}
+.ph .readout>span{display:flex;align-items:center;gap:8px;padding:0 20px;border-left:1px solid var(--color-line-strong)}
+.ph .readout>span:first-child{padding-left:0;border-left:0}
+.pgh{max-width:1240px;margin:0 auto;padding:56px 36px 0}
+.card{position:sticky;top:88px;background:var(--color-card);color:var(--color-card-ink);border-radius:8px;padding:24px;box-shadow:var(--shadow-card);display:flex;flex-direction:column}
+.call{display:flex;align-items:center;justify-content:center;gap:12px;min-height:72px;padding:8px 20px;border-radius:4px;background:var(--color-signal);color:var(--color-on-signal);text-decoration:none}
+.ro .call{color:var(--color-on-signal)}
+.call:hover{background:var(--color-signal-hover)}
+.call span{display:block;text-align:left}
+.call .l{font-size:14px;line-height:20px;font-weight:600}
+.call .n{font-size:24px;line-height:28px;font-weight:700;white-space:nowrap}
+.wab{display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;margin-top:12px;padding:0 16px;border:1.5px solid var(--color-card-ink-muted);border-radius:4px;color:var(--color-card-ink);font-weight:600;font-size:16px;line-height:20px;text-decoration:none;text-align:center}
+.wab:hover{background:var(--color-card-row)}
+.wab .ic{color:var(--color-whatsapp-on-card)}
+.card hr{border:0;border-top:1px solid var(--color-card-line);margin:20px 0}
+.sub{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:600}
+.sym{list-style:none;margin:0;padding:0}
+.sym li+li{border-top:1px solid var(--color-card-line)}
+.sym a{display:flex;align-items:center;gap:12px;min-height:52px;text-decoration:none;font-weight:600;font-size:16px;line-height:22px;padding:0 4px;border-radius:4px;color:var(--color-card-ink)}
+.sym a:hover{background:var(--color-card-row)}
+.sym a .wa{margin-left:auto;color:var(--color-whatsapp-on-card);display:flex}
+.hours{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:16px;line-height:22px;background:var(--color-window);color:var(--color-ink);border:1px solid var(--color-window-edge);border-radius:4px;padding:12px}
+.hrs{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:0 16px}
+.hours .town{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);text-align:right;justify-self:end}
+.hours.closed .town{grid-column:1 / -1;justify-self:start;text-align:left}
+.open{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--color-ink)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--color-success);flex:none}
+.hours .t{color:var(--color-window-amber);font-weight:600;font-size:14px;line-height:20px}
+.panel{background:var(--color-surface);color:var(--color-ink);border:1px solid var(--color-line);border-radius:8px}
+
+.trustwrap{position:relative;margin-top:56px}
+.trust{width:100%;border-collapse:collapse;margin:0}
+.tbody{display:block}
+.trust tr{display:grid;grid-template-columns:160px minmax(0,0.85fr) minmax(0,1.15fr);gap:0 20px;align-items:baseline;padding:16px 28px}
+.trust tr+tr{border-top:1px solid var(--color-line)}
+.trust th,.trust td{display:block;padding:0;text-align:left}
+.trust th{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.trust td:nth-child(2){font-size:18px;line-height:26px;font-weight:700}
+.trust td:nth-child(3){color:var(--color-ink-muted)}
+.slede{margin:16px 0 28px;font-size:18px;line-height:26px;color:var(--color-ink-muted);max-width:600px}
+.slede strong{color:var(--color-ink)}
+.svcwrap{position:relative}
+.idx{list-style:none;margin:0;padding:0 28px}
+.idx li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;padding:24px 0;align-items:start}
+.idx li+li{border-top:1px solid var(--color-line)}
+.who{display:flex;gap:16px;align-items:flex-start}
+.well{width:44px;height:44px;border-radius:4px;background:var(--color-surface-2);display:flex;align-items:center;justify-content:center;flex:none}
+.idx h3{font-size:18px;line-height:26px;font-weight:700}
+.st{margin:0;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.idx .d{margin:0;color:var(--color-ink-muted)}
+.foot{margin:0;padding:20px 28px;border-top:1px solid var(--color-line);font-weight:600}
+.foot a{text-underline-offset:3px}
+.full{max-width:1240px;margin:0 auto;padding:0 36px}
+.sec{margin-top:96px}
+.sec h2{margin-top:0}
+.why{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.why .slede{max-width:440px}
+.rows{list-style:none;margin:0;padding:0 28px}
+.rows li{display:flex;gap:16px;align-items:flex-start;padding:24px 0}
+.rows li+li{border-top:1px solid var(--color-line)}
+.rows h3{font-size:18px;line-height:26px;font-weight:700}
+.rows p{margin:2px 0 0;color:var(--color-ink-muted)}
+.steps{list-style:none;margin:0;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:28px 24px}
+.steps li{position:relative;display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:2px solid var(--color-line-strong)}
+.steps li::before{content:"";position:absolute;left:0;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--color-ink)}
+.steps .num{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.steps h3{font-size:18px;line-height:26px;font-weight:700}
+.steps p{margin:0;color:var(--color-ink-muted)}
+.steps .read{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-line);font-size:14px;line-height:20px;font-weight:600}
+.ab{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:48px;align-items:center}
+.abc .lead{margin:20px 0 0;font-size:18px;line-height:26px}
+.abc .body{margin:16px 0 0;color:var(--color-ink-muted);max-width:560px}
+.abc strong{color:var(--color-ink)}
+.abf{margin:0}
+.bayp{padding:20px}
+.bay{display:block;width:100%;height:auto}
+.abf figcaption{margin-top:12px;font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted)}
+.record{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))}
+.record li{padding:20px 28px;font-weight:700;font-size:18px;line-height:26px}
+.record li+li{border-left:1px solid var(--color-line)}
+.faq{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.fl{padding:0 28px}
+.fl details+details{border-top:1px solid var(--color-line)}
+.fl summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:12px 0;cursor:pointer;list-style:none;font-weight:700;font-size:18px;line-height:26px}
+.fl summary::-webkit-details-marker{display:none}
+.fl .pl{display:flex;width:44px;height:44px;align-items:center;justify-content:center;flex:none;color:var(--color-ink-muted)}
+.fl .m{display:none}.fl details[open] .p{display:none}.fl details[open] .m{display:block}
+.fl p{margin:0 0 20px;color:var(--color-ink-muted);max-width:600px}
+.ctg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:stretch}
+.acts{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:12px}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:0 20px;border:1px solid var(--color-line-strong);border-radius:4px;background:var(--color-surface-2);color:var(--color-ink);font:inherit;font-weight:600;font-size:16px;line-height:20px;text-decoration:none;cursor:pointer;text-align:center}
+.btn.ol{background:transparent}
+.btn.big{min-height:72px}
+.btn .ic{color:var(--color-whatsapp)}
+.facts{margin:16px 0 0;padding:0 28px}
+.facts>div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:20px 0}
+.facts>div+div{border-top:1px solid var(--color-line)}
+.facts dt{font-size:14px;line-height:20px;font-weight:600;color:var(--color-ink-muted);padding-top:4px}
+.facts dd{margin:0}
+.facts a{text-underline-offset:3px}
+.hl{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.hl li{display:flex;justify-content:space-between;gap:16px;max-width:320px}
+.map{background:var(--color-surface-2);border:1px solid var(--color-line);border-radius:8px;min-height:360px;display:flex;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(var(--color-line) 1px,transparent 1px),linear-gradient(90deg,var(--color-line) 1px,transparent 1px);background-size:32px 32px}
+.mapin{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:340px;background:var(--color-surface-2);padding:24px;border-radius:8px}
+.mapin p{margin:0;color:var(--color-ink-muted)}
+.mapb{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.ft{margin-top:112px;background:var(--color-surface);border-top:1px solid var(--color-line)}
+.ft-in{max-width:1240px;margin:0 auto;padding:0 36px}
+.ftg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:40px;padding:48px 0 40px}
+.ftg a{text-underline-offset:3px}
+.ftg nav,.ftg>div{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.ftg nav a,.ftg>div>a:not(.mark){display:flex;align-items:center;min-height:36px;color:var(--color-ink-muted);text-decoration:none}
+.ftg nav a:hover,.ftg>div>a:hover{color:var(--color-ink);text-decoration:underline}
+.ftl{margin:0 0 8px;font-size:14px;line-height:20px;font-weight:700}
+.tag{margin:12px 0 0;color:var(--color-ink-muted);max-width:260px}
+.soc{display:flex;gap:8px;margin-top:16px}
+.soc a{display:flex;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--color-line-strong);border-radius:4px;color:var(--color-ink);text-decoration:none}
+.addr{margin:0;color:var(--color-ink-muted)}
+.fth{margin:8px 0 0;display:grid;gap:2px;color:var(--color-ink-muted);font-size:14px;line-height:20px}
+.fth>div{display:flex;gap:16px;justify-content:space-between;width:100%;max-width:240px}
+.fth dt,.fth dd{margin:0}
+.legal{border-top:1px solid var(--color-line);padding:28px 0 36px;display:grid;gap:16px;color:var(--color-ink-muted);font-size:14px;line-height:20px}
+.ident{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 24px}
+.disc{margin:0;max-width:860px}
+.btm{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center}
+.btm p{margin:0}
+.anpc{display:flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;color:var(--color-ink)}
+.am{border:1px solid var(--color-line-strong);border-radius:4px;padding:2px 8px;font-weight:700}
+.bar{display:none}
+.co{position:absolute;width:24px;height:24px;border-radius:50%;background:var(--color-ink);color:var(--color-ground);font-size:13px;line-height:24px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.co-l{left:-40px}.co-r{right:-40px}
+.scrolled{position:relative;width:390px;height:844px;overflow:hidden;background:var(--color-ground)}
+.scin{width:390px}
+@media (max-width:1100px){.co{display:none}}
+@media (min-width:960px) and (max-width:1199px){
+ .trust tr{grid-template-columns:200px minmax(0,1fr);gap:0 20px}
+ .trust th{grid-column:1;grid-row:1}
+ .trust td:nth-child(2){grid-column:1;grid-row:2}
+ .trust td:nth-child(3){grid-column:2;grid-row:1 / 3;align-self:center}
+}
+@media (max-width:959px){
+ .nav,.hphone{display:none}.menu{display:flex}
+ .hdr{position:static}
+ .hdr-in{height:56px;padding:0 20px}
+ .stripe+.banner{padding:8px 16px}
+ .ph .readout>span{white-space:nowrap;padding:0 12px}
+ .ph .readout>.rd{flex-basis:100%;padding:0;border-left:0}
+ .ph .readout>.rd+span{padding-left:0;border-left:0}
+ .wrap{display:block;padding:28px 20px 0}
+ .pgh{padding:28px 20px 0}
+ .cardcol{margin-top:24px}
+ .onlydesk{display:none}
+ .card{position:static;padding:16px}
+ h1{font-size:40px;line-height:44px}
+ .lede{margin-top:16px}
+ h2{font-size:30px;line-height:34px;margin-top:56px}
+ .sec{margin-top:64px}
+ .slede{margin-bottom:24px}
+ .call{min-height:64px;padding:8px 16px}
+ .card .hours{order:-1;margin-bottom:12px;padding:12px}
+ .card hr.h2{display:none}
+ .card hr.h1{margin:12px 0}
+ .sym a{min-height:48px}
+ .trustwrap{margin-top:40px}
+ .trust tr{grid-template-columns:1fr;gap:2px;padding:16px 20px}
+ .idx{padding:0 20px}
+ .idx li{grid-template-columns:1fr;gap:12px;padding:20px 0}
+ .foot{padding:20px}
+ .why,.faq,.ab,.ctg{grid-template-columns:1fr;gap:24px}
+ .rows{padding:0 20px}
+ .steps{padding:20px;grid-template-columns:1fr;gap:20px}
+ .fl{padding:0 20px}
+ .full,.ft-in{padding:0 20px}
+ .acts{grid-template-columns:1fr}
+ .btn.big{min-height:48px}
+ .facts{padding:0 20px}.facts>div{grid-template-columns:96px minmax(0,1fr);gap:12px}
+ .record li+li{border-left:0;border-top:1px solid var(--color-line)}
+ .record li{padding:16px 20px}
+ .ft{margin-top:72px}
+ .ftg{grid-template-columns:1fr 1fr;gap:32px 24px;padding:36px 0 32px}
+ .ftg>div:first-child,.ftg>div:last-child{grid-column:1 / -1}
+ .map{min-height:300px;padding:12px}
+ .mapin{padding:16px 8px}
+ .btn{padding:0 16px}
+ .bar{display:none}
+ .bar.fix{display:flex;gap:12px;position:sticky;bottom:0;padding:8px 20px;background:var(--color-ground);border-top:1px solid var(--color-line);z-index:5}
+ .bar.abs{display:flex;gap:12px;position:absolute;left:0;right:0;bottom:0;padding:8px 20px;background:var(--color-ground);border-top:1px solid var(--color-line);z-index:5}
+ .bar .call{flex:1;min-height:48px;padding:0 16px;gap:12px;justify-content:center}
+ .bar .n2{font-size:18px;line-height:24px;font-weight:700}
+ .bar .wbtn{width:48px;height:48px;border:1px solid var(--color-line-strong);border-radius:4px;background:var(--color-surface-2);color:var(--color-whatsapp);display:flex;align-items:center;justify-content:center;text-decoration:none}
+}
+@media (max-width:380px){
+ .hdr-in{height:52px}
+ .menu{width:44px;height:44px}
+ .stripe+.banner{padding:8px 12px;font-size:13px;line-height:18px}
+ .wrap{padding-top:20px}
+ h1{font-size:34px;line-height:38px}
+ .lede{margin-top:12px;font-size:16px;line-height:24px}
+ .cardcol{margin-top:16px}
+ .card{padding:12px}
+ .call{min-height:56px;padding:4px 12px}
+ .call .l{font-size:13px;line-height:16px}
+ .call .n{font-size:22px;line-height:26px}
+ .wab{margin-top:8px}
+ .card .hours{margin-bottom:8px;padding:8px 12px}
+ .card hr.h1{margin:8px 0}
+ .sub{margin-bottom:2px}
+}
+</style>
+</head>
+<body>
+<div data-theme="dark" class="ro">
+<div class="stripe" aria-hidden="true"><i></i><i></i><i></i></div>
+<p class="banner">Site în lucru. <span class="b2">Pentru programări și oferte, sună-ne sau scrie-ne pe WhatsApp. <a href="tel:+40700000000">07XX XXX XXX</a> <a href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!">WhatsApp</a></span></p><header class="hdr"><div class="hdr-in">
+<a class="mark" href="/" aria-label="BavAuto Gorj — acasă">BAVAUTO GORJ</a>
+<nav class="nav" aria-label="Navigare principală"><a href="/" aria-current="page">Acasă</a><a href="/servicii/">Servicii</a><a href="/despre/">Atelier</a><a href="/contact/">Contact</a></nav>
+<a class="hphone" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>07XX XXX XXX</a>
+<button class="menu" type="button" aria-label="Deschide meniul"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+</div></header><main class="wrap"><div class="head"><h1>BMW-ul tău,<br>pe mâini care<br>îl citesc.</h1><p class="lede">Trei oameni, o singură marcă. Citim toate modulele, îți spunem exact ce are și cât costă, și abia apoi punem mâna pe mașină.</p></div>
+<div class="cardcol"><aside class="card" aria-label="Contact rapid">
+<a class="call" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a>
+<a class="wab" href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!%20A%C8%99%20dori%20o%20programare%20%2F%20un%20deviz%20pentru%20BMW-ul%20meu.%20Model%20%C8%99i%20an%3A%20___.%20Problema%3A%20___."><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>Trimite o poză pe WhatsApp</a>
+<hr class="h1">
+<p class="sub">Spune-ne ce are mașina</p>
+<ul class="sym" aria-label="Spune-ne ce are mașina"><li><a href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!%20Mi-a%20ap%C4%83rut%20un%20martor%20pe%20bord.%20Model%20%C8%99i%20an%3A%20___.%20Ce%20scrie%20%2F%20cum%20arat%C4%83%20martorul%3A%20___."><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.8 19.5h18.4z"></path><path d="M12 10v4.5"></path><path d="M12 17.3v.01"></path></svg>Mi-a apărut un martor<span class="wa"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></span></a></li><li><a href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!%20Am%20revizia%20dep%C4%83%C8%99it%C4%83%20%C8%99i%20a%C8%99%20vrea%20o%20programare.%20Model%20%C8%99i%20an%3A%20___.%20Km%20actuali%3A%20___."><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"></path></svg>Revizie depășită<span class="wa"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></span></a></li><li><a href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!%20Ma%C8%99ina%20face%20un%20zgomot.%20Model%20%C8%99i%20an%3A%20___.%20C%C3%A2nd%20apare%20zgomotul%3A%20___."><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a9 9 0 0 1 0 12"></path></svg>Face un zgomot<span class="wa"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></span></a></li></ul>
+<hr class="h2">
+<div class="hours" role="group" aria-label="Program"><div class="open"><span class="dot " aria-hidden="true"></span>Deschis acum</div><div class="town">Târgu-Jiu, Gorj</div><div class="hrs"><span class="t">L‒V 08:00‒18:00</span><span class="t">Sâ 09:00‒14:00</span></div></div>
+</aside><span class="co co-r" style="top:0" aria-hidden="true">1</span><span class="co co-r" style="top:440px" aria-hidden="true">2</span></div>
+<div class="rest"><div class="trustwrap"><div class="panel"><table class="trust" aria-label="De ce ne poți lăsa mașina"><tbody class="tbody"><tr><th scope="row">Autorizare</th><td>Autorizat RAR</td><td>Lucrări conforme, cu factură</td></tr><tr><th scope="row">Înainte de lucrare</th><td>Deviz scris, în avans</td><td>Niciun cost neaprobat de tine</td></tr><tr><th scope="row">După lucrare</th><td>Garanție 12 luni</td><td>Piese și manoperă, în scris</td></tr><tr><th scope="row">Specializare</th><td>Doar BMW, zi de zi</td><td>Diagnoză dedicată, nu generalistă</td></tr></tbody></table></div></div><h2 id="svc-title">Ce citim din mașina ta</h2>
+<p class="slede">De la revizia de rutină la lucrările pe care nu le face oricine. Dacă nu găsești aici ce-ți trebuie, sună-ne, probabil o rezolvăm.</p>
+<div class="svcwrap"><div class="panel"><ul class="idx"><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg></span><div><h3>Diagnoză computerizată BMW</h3><p class="st">Citire &amp; ștergere erori, codări</p></div></div><p class="d">Diagnoză dedicată BMW: citim toate modulele, interpretăm corect erorile și facem codări/adaptări (retrofit, înregistrare baterie, resetări service).</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path><path d="M9.5 15a2.8 2.8 0 0 0 2.5 2"></path></svg></span><div><h3>Revizii &amp; schimb ulei</h3><p class="st">Ulei + filtre, conform fișei BMW</p></div></div><p class="d">Revizie completă cu ulei și filtre potrivite motorului tău (ulei, aer, polen, combustibil), cu resetarea corectă a indicatorului de service.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg></span><div><h3>Distribuție &amp; lanț</h3><p class="st">Curea/lanț + pompă apă</p></div></div><p class="d">Înlocuire kit distribuție (curea sau lanț, inclusiv lanțuri N47/N57) și pompă de apă, cu piese de calitate și montaj la cuplul corect.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 5v1.5M12 17.5V19M5 12h1.5M17.5 12H19"></path></svg></span><div><h3>Sistem de frânare</h3><p class="st">Plăcuțe, discuri, lichid</p></div></div><p class="d">Plăcuțe și discuri față/spate, purjare și schimb lichid de frână, resetarea senzorilor de uzură și a martorilor din bord.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12M6 20h12"></path><path d="M7 7l10 2.5L7 12l10 2.5L7 17"></path></svg></span><div><h3>Suspensie &amp; direcție</h3><p class="st">Amortizoare, brațe, rulmenți</p></div></div><p class="d">Amortizoare, arcuri, brațe și bucși, rulmenți de roată, capete de direcție, pentru ținuta de drum specifică unui BMW.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z"></path><path d="M12 9v7"></path></svg></span><div><h3>Răcire &amp; VANOS</h3><p class="st">Termostat, pompă, garnituri</p></div></div><p class="d">Reparații sistem de răcire (termostat, pompă apă, vas expansiune) și intervenții specifice BMW: garnituri VANOS, capac valve, scurgeri de ulei.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg></span><div><h3>Electrică &amp; electronică auto</h3><p class="st">Baterie, alternator, instalație</p></div></div><p class="d">Baterie (cu înregistrare în sistem), alternator, electromotor, instalație electrică, iluminat și senzori: diagnoză și reparație.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.9 7l14.2 10M19.1 7 4.9 17"></path><path d="M9.5 3.8 12 6l2.5-2.2M9.5 20.2 12 18l2.5 2.2"></path></svg></span><div><h3>Climatizare / AC</h3><p class="st">Freon, etanșeitate, igienizare</p></div></div><p class="d">Încărcare freon (R134a / R1234yf), verificarea etanșeității sistemului, reparații compresor/condensator și igienizarea habitaclului.</p></li><li><div class="who"><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1"></path><path d="m9 13 2 2 4-4"></path></svg></span><div><h3>Pre-ITP &amp; remediere</h3><p class="st">Verificare înainte de inspecție</p></div></div><p class="d">Verificăm mașina înainte de ITP și remediem deficiențele, ca să treci inspecția din prima, fără drumuri în plus.</p></li></ul>
+<p class="foot">Nu găsești aici ce ai nevoie? <a href="tel:+40700000000">Sună-ne</a> și îți spunem din vorbă, fără obligații.</p></div></div></div></main>
+<div class="full"><section class="sec" aria-labelledby="why-title"><div class="why"><div><h2 id="why-title">De ce să ne lași tocmai nouă mașina</h2><p class="slede" style="margin-bottom:0">Un atelier de familie nu poate concura cu un dealer la dimensiune. Poate, în schimb, să te trateze ca pe un <strong>vecin</strong>, nu ca pe un număr de bon.</p></div>
+<div class="panel"><ul class="rows"><li><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"></path><path d="M8 12h2l1.5-3 2 6 1.5-3H17"></path></svg></span><div><h3>Doar BMW, zi de zi</h3><p>Aceleași motoare și aceeași electronică în fiecare zi. Cunoaștem bolile de model (lanț N47, VANOS, răcire) și știm unde ne uităm întâi.</p></div></li><li><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg></span><div><h3>Vorbești cu omul care repară</h3><p>Fără call-center, fără consilier care pasează mai departe. Discuți direct cu mecanicul care îți ia mașina în primire.</p></div></li><li><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5M9 12h7M9 16h7"></path></svg></span><div><h3>Deviz înainte, fără surprize</h3><p>Întâi diagnoza, apoi devizul. Nicio lucrare neaprobată de tine, și îți explicăm pe înțeles ce și de ce.</p></div></li><li><span class="well"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"></circle><path d="m11 12 8-8M16 7l3 3M14 9l2 2"></path></svg></span><div><h3>Scule și diagnoză potrivite</h3><p>Tester dedicat pentru erori, codări și adaptări, plus sculele specifice pe care le cer lucrările pe marca asta.</p></div></li></ul></div></div></section><section class="sec" aria-labelledby="proc-title"><h2 id="proc-title">Cum lucrăm, de la telefon la cheie</h2><p class="slede">Fără bătăi de cap și fără costuri care apar din senin. Știi tot timpul la ce pas ești.</p>
+<div class="panel"><ol class="steps"><li><span class="num">01</span><h3>Ne suni sau ne scrii</h3><p>Spune-ne modelul, anul și ce simptome are mașina. Stabilim când o aduci.</p><span class="read">0 lei</span></li><li><span class="num">02</span><h3>Diagnoză</h3><p>Verificăm mașina cu diagnoza dedicată BMW și găsim cauza, nu doar simptomul.</p><span class="read">cauza</span></li><li><span class="num">03</span><h3>Primești devizul</h3><p>Îți spunem clar ce e de făcut, ce piese și cât costă, totul înainte de lucrare.</p><span class="read">în scris</span></li><li><span class="num">04</span><h3>Aprobi și reparăm</h3><p>Lucrăm doar ce ai aprobat. Dacă apare ceva pe parcurs, te sunăm întâi.</p><span class="read">aprobat</span></li><li><span class="num">05</span><h3>Ridici mașina</h3><p>Cu factură și certificat de garanție pentru piese și manoperă.</p><span class="read">12 luni</span></li></ol></div></section><section class="sec" aria-labelledby="about-title"><div class="ab"><div class="abc"><h2 id="about-title">O familie, o singură marcă</h2>
+<p class="lead">BavAuto Gorj e un atelier mic, de familie, din Târgu-Jiu. Suntem câțiva oameni care reparăm BMW-uri de ani buni, pentru că asta ne place cu adevărat să facem, nu pentru că „a ieșit așa”.</p>
+<p class="body">Tocmai pentru că suntem puțini, fiecare mașină trece prin mâini pe care le cunoști. Îți explicăm pe înțeles ce are, îți dăm un deviz corect și îți spunem sincer când o lucrare nu merită banii.</p>
+<p class="body">Suntem un atelier <strong>independent</strong>: nu suntem dealer și nu avem nicio legătură cu BMW AG. Suntem doar niște pasionați care îți tratează mașina ca pe a noastră.</p></div>
+<figure class="abf"><div class="panel bayp"><svg class="bay" viewBox="0 0 920 520" role="img" aria-label="Elevație desenată: un BMW ridicat pe elevator cu două coloane, în atelier" preserveAspectRatio="xMidYMid meet"><g fill="none" stroke="var(--color-line)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 60V452 M880 60V452"></path><path d="M40 130h840 M40 218h840 M40 306h840" opacity="0.6"></path><path d="M234 60V452 M460 60V452 M686 60V452" opacity="0.5"></path></g><path d="M20 452h880" fill="none" stroke="var(--color-ink-muted)" stroke-width="2" stroke-linecap="round"></path><path d="M20 468h880" fill="none" stroke="var(--color-line)" stroke-width="1.2" stroke-dasharray="10 9"></path><g fill="none" stroke="var(--color-ink-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M150 452V96h34v356Z"></path><path d="M736 452V96h34v356Z"></path><path d="M150 96h620"></path><path d="M184 300h96 M640 300h96"></path><path d="M280 300v-16 M640 300v-16"></path></g><g fill="none" stroke="var(--color-line-strong)" stroke-width="1.4"><path d="M167 130v290" stroke-dasharray="7 8"></path><path d="M753 130v290" stroke-dasharray="7 8"></path></g><g fill="none" stroke="var(--color-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M258 282c-6-26-2-46 14-56l72-20c12-14 24-26 40-34l104-10c40-4 68 2 92 18l58 40 70 12c22 4 34 14 36 30l2 20"></path><path d="M258 282h404"></path><path d="M700 284h-38"></path></g><g fill="none" stroke="var(--color-ink-muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M356 202l30-30 92-8-4 38Z"></path><path d="M492 202l4-38 60 4 42 34Z"></path></g><g fill="none" stroke="var(--color-line-strong)" stroke-width="1.5" stroke-linecap="round"><path d="M484 206v76 M356 210v72"></path><path d="M410 244h26 M520 244h26"></path><path d="M666 236h34 M272 240h26"></path></g><g fill="none" stroke="var(--color-ink)" stroke-width="2.4"><circle cx="348" cy="298" r="46"></circle><circle cx="626" cy="298" r="46"></circle></g><g fill="none" stroke="var(--color-line-strong)" stroke-width="1.5"><circle cx="348" cy="298" r="27"></circle><circle cx="626" cy="298" r="27"></circle><path d="M348 271v54 M321 298h54 M329 279l38 38 M367 279l-38 38" opacity="0.7"></path><path d="M626 271v54 M599 298h54 M607 279l38 38 M645 279l-38 38" opacity="0.7"></path></g><g fill="none" stroke="var(--color-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M184 300h84l22-16"></path><path d="M736 300h-84l-22-16"></path></g><g fill="none" stroke="var(--color-line-strong)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M56 452v-96h72v96"></path><path d="M56 382h72 M56 410h72"></path><circle cx="70" cy="452" r="7"></circle><circle cx="114" cy="452" r="7"></circle></g><g><path d="M812 96v168" fill="none" stroke="var(--color-line-strong)" stroke-width="1.4"></path><path d="M796 264h32l10 22h-52Z" fill="none" stroke="var(--color-ink)" stroke-width="2.2" stroke-linejoin="round"></path><circle cx="812" cy="292" r="7" fill="var(--color-ink)"></circle></g></svg></div><figcaption>Elevație desenată a atelierului, nu o fotografie de stoc.</figcaption></figure></div>
+<ul class="record panel"><li>5 ani numai pe BMW</li><li>3 oameni, aceeași familie</li><li>Autorizat RAR, lucrări cu factură</li></ul></section><section class="sec ct" aria-labelledby="ct-title"><h2 id="ct-title">Hai cu mașina la noi</h2><p class="slede">Cel mai rapid e un telefon. Dacă preferi să scrii, trimite-ne un mesaj pe WhatsApp, poți atașa și o poză cu martorul aprins sau cu piesa.</p>
+<div class="ctg"><div class="cta"><div class="acts"><a class="call" href="tel:+40700000000"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg><span><span class="l">Sună acum</span><span class="n">07XX XXX XXX</span></span></a><a class="btn ol big" href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!%20A%C8%99%20dori%20o%20programare%20%2F%20un%20deviz%20pentru%20BMW-ul%20meu.%20Model%20%C8%99i%20an%3A%20___.%20Problema%3A%20___."><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg>WhatsApp</a></div>
+<dl class="panel facts"><div><dt>Adresă</dt><dd>Str. Exemplu nr. X<br>Târgu-Jiu, jud. Gorj</dd></div><div><dt>Email</dt><dd><a href="mailto:contact@bavauto.ro">contact@bavauto.ro</a></dd></div><div><dt>Program</dt><dd><ul class="hl"><li><span>Luni‒Vineri</span><span>08:00‒18:00</span></li><li><span>Sâmbătă</span><span>09:00‒14:00</span></li><li><span>Duminică</span><span>Închis</span></li></ul></dd></div></dl></div>
+<div class="map"><div class="mapin"><svg class="ic" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><p>Harta Google nu se încarcă automat, ca să-ți protejăm confidențialitatea. Apasă mai jos pentru a o încărca.</p><div class="mapb"><button type="button" class="btn">Încarcă harta</button><a class="btn ol" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.0357,23.2748">Deschide în Google Maps</a></div></div></div></div></section></div><footer class="ft"><div class="stripe" aria-hidden="true"><i></i><i></i><i></i></div><div class="ft-in"><div class="ftg">
+<div><a class="mark" href="/" aria-label="BavAuto Gorj — acasă">BAVAUTO GORJ</a><p class="tag">Specialiști BMW. Atelier de familie în Târgu-Jiu.</p><div class="soc"><a href="https://facebook.com/bavauto" aria-label="Facebook"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"></path></svg></a><a href="https://instagram.com/bavauto" aria-label="Instagram"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="5"></rect><circle cx="12" cy="12" r="3.6"></circle><path d="M16.8 7.2v.01"></path></svg></a><a href="https://wa.me/40700000000?text=Bun%C4%83%20ziua!" aria-label="WhatsApp"><svg class="ic" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zM8.6 7.6c-.3 0-.8.2-1 1-.3 1 .2 2.4 1.6 4 1.5 1.6 3 2.4 4.2 2.6.9.1 1.6-.4 1.8-1 .1-.4 0-.6-.2-.7l-1.5-.7c-.2-.1-.4 0-.6.2l-.5.6c-.9-.3-2.2-1.4-2.7-2.3l.5-.6c.1-.2.2-.4.1-.6l-.7-1.5c-.1-.2-.3-.3-.6-.3z"></path></svg></a></div></div>
+<nav aria-label="Navigare subsol"><p class="ftl">Navigare</p><a href="/">Acasă</a><a href="/servicii/">Servicii</a><a href="/despre/">Atelier</a><a href="/contact/">Contact</a></nav>
+<nav aria-label="Pagini legale"><p class="ftl">Legal</p><a href="/confidentialitate/">Politică de confidențialitate</a><a href="/termeni/">Termeni și condiții</a><a href="/cookie-uri/">Politică de cookie-uri</a></nav>
+<div><p class="ftl">Contact</p><a href="tel:+40700000000">07XX XXX XXX</a><a href="mailto:contact@bavauto.ro">contact@bavauto.ro</a><p class="addr">Str. Exemplu nr. X, Târgu-Jiu</p><dl class="fth"><div><dt>Luni‒Vineri</dt><dd>08:00‒18:00</dd></div><div><dt>Sâmbătă</dt><dd>09:00‒14:00</dd></div><div><dt>Duminică</dt><dd>Închis</dd></div></dl></div></div>
+<div class="legal"><ul class="ident"><li>BavAuto Gorj S.R.L.</li><li>CUI: RO00000000</li><li>Reg. Com.: J18/000/2024</li><li>Capital social: 200 RON</li><li>Autorizație RAR nr. 0000/AAAA</li><li>Str. Exemplu nr. X, Târgu-Jiu, jud. Gorj</li></ul>
+<p class="disc">BavAuto Gorj este un atelier independent. Nu suntem dealer autorizat și nu avem nicio afiliere cu BMW AG. „BMW”, „M” și denumirile de modele sunt mărci înregistrate ale BMW AG, folosite aici doar pentru a descrie mașinile pe care le reparăm.</p>
+<div class="btm"><p>© 2026 BavAuto Gorj. Toate drepturile rezervate.</p><a class="anpc" href="https://reclamatiisal.anpc.ro/" aria-label="ANPC: Soluționarea Alternativă a Litigiilor"><span class="am">ANPC</span><span>Soluționarea Alternativă a Litigiilor (SAL)</span></a></div></div></div></footer>
+</div>
+</body>
+</html>

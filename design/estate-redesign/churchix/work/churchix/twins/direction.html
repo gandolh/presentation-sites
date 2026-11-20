@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<meta name="description" content="A plain-HTML twin of the direction sheet.">
+<title>Churchix direction, The porch notice</title>
+
+</head>
+<body>
+
+<style>
+@font-face{font-family:Cardo;font-weight:400;src:url(../fonts/cardo-latin-400-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Cardo;font-weight:400;src:url(../fonts/cardo-latin-ext-400-normal.woff2);unicode-range:U+0100-02AF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Cardo;font-weight:700;src:url(../fonts/cardo-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Cardo;font-weight:700;src:url(../fonts/cardo-latin-ext-700-normal.woff2);unicode-range:U+0100-02AF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Inter;font-weight:100 900;src:url(../fonts/inter-latin-wght-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Inter;font-weight:100 900;src:url(../fonts/inter-latin-ext-wght-normal.woff2);unicode-range:U+0100-02AF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
+/* Hallmark · waive 72 · the sheet is a fixed 1440 artboard, never shown on a phone · a direction specimen drawn at one width */
+/* Hallmark · dismissed F25 · the palette and contrast tables belong to a fixed 1440 specimen sheet and are never read at 375 */
+/* Hallmark · shape: marketing site (parish template) · genre: editorial · theme: brand · redesign: full
+ * paper: #faf6ef cream · accent: #6b1f2a burgundy, gold #c8a24b in rules and glyphs only · display: Cardo · body: Inter
+ * nav: kept (white header band, six places with the current one marked, one filled pill) plus a phone bottom bar of five · footer: kept (three columns on a darker surface, the IBAN on every page) · copy: verbatim · surface: absolute (white cards)
+ * signature: the arched window, the parish's picture or its no-photo glyph traced in a gold line in the burgundy name band, the program board rising out of the band's edge · states: no photo, no announcements, no IBAN, pomelnice not enabled, form errors, sent, copied, campaign done
+ * axes: warm paper neutrals tinted by the seed, a humanist serif for names and a neutral sans for facts, one burgundy · posture: restrained, the burgundy is the full-width name band and the one filled action per screen · modes: light only, one look per parish · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, the look is the parish's own seeds, so the band, the arch line and Cardo carry it; a blue parish gets a blue door */
+/* Hallmark · waive 7b · white is the template's card surface (surface-container-lowest) and the parish's own onPrimary seed · the cards lift off the cream by a full-strength edge, and onPrimary is a seed a parish sets, so the build keeps both as they are */
+/* Hallmark · answered F4 · one filled action per screen: Donează in the header, Sprijinește parohia beside the board on Home, Copiază on Donații, the note replaces Trimite on Pomelnice */
+[data-theme="light"],[data-theme="seed2"]{
+ --font-heading:Cardo,"Source Serif 4",Georgia,"Times New Roman",serif;
+ --font-body:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --color-surface:var(--seed-surface);--color-background:var(--seed-surface);
+ --color-surface-container-lowest:#ffffff;
+ --color-on-surface:color-mix(in srgb,var(--seed-primary) 12%,#161412);
+ --color-on-surface-variant:color-mix(in srgb,var(--seed-primary) 22%,#5b5552);
+ --color-outline-variant:color-mix(in srgb,var(--seed-primary) 18%,var(--seed-surface));
+ --color-outline:color-mix(in srgb,var(--color-on-surface) 50%,var(--seed-surface));
+ --color-surface-container:color-mix(in srgb,var(--seed-primary) 7%,var(--seed-surface));
+ --color-surface-container-high:color-mix(in srgb,var(--seed-surface) 90%,#000000);
+ --color-primary:var(--seed-primary);--color-on-primary:var(--seed-on-primary);
+ --color-primary-container:color-mix(in srgb,var(--seed-primary) 80%,#ffffff);
+ --color-primary-strong:color-mix(in srgb,var(--seed-primary) 80%,#000000);
+ --color-on-primary-variant:color-mix(in srgb,var(--seed-on-primary) 80%,var(--seed-primary));
+ --color-secondary:var(--seed-secondary);
+ --color-secondary-fixed:color-mix(in srgb,var(--seed-secondary) 25%,#ffffff);
+ --color-secondary-container:color-mix(in srgb,var(--seed-secondary) 30%,#ffffff);
+ --color-on-secondary-container:color-mix(in srgb,var(--seed-secondary) 30%,#000000);
+ --color-secondary-strong:color-mix(in srgb,var(--seed-secondary) 55%,var(--seed-primary));
+ --color-surface-highlight:color-mix(in srgb,var(--color-secondary-strong) 18%,#ffffff);
+ --color-error:#ba1a1a;
+ --color-error-container:color-mix(in srgb,var(--color-error) 16%,#ffffff);
+ --color-on-error-container:color-mix(in srgb,var(--color-error) 78%,#000000);
+ --color-inverse-surface:#31302d;--color-inverse-on-surface:#f3f0eb;
+ --radius:8px;--radius-lg:16px;--radius-full:9999px;
+ --shadow-sm:0 1px 2px color-mix(in srgb,var(--color-on-surface) 6%,transparent);
+ --shadow-board:0 4px 12px color-mix(in srgb,var(--color-on-surface) 10%,transparent);
+}
+[data-theme="light"]{--seed-primary:#6b1f2a;--seed-secondary:#c8a24b;--seed-surface:#faf6ef;--seed-on-primary:#ffffff}
+[data-theme="seed2"]{--seed-primary:#1f3f66;--seed-secondary:#a8b0b8;--seed-surface:#f5f6f4;--seed-on-primary:#ffffff}
+html,body{overflow-x:clip}
+body{margin:0}
+*{box-sizing:border-box}
+.cx{background:var(--color-surface);color:var(--color-on-surface);font:400 16px/24px var(--font-body);-webkit-font-smoothing:antialiased;text-wrap:pretty}
+.cx a{color:inherit;text-decoration:none}
+.chip:has(:focus-visible){outline:2px solid var(--color-primary);outline-offset:2px}
+.cx :focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+.cx .band :focus-visible,.cx .hd-b :focus-visible{outline-color:var(--color-on-primary)}
+.cx svg{flex:none}
+.cx h1,.cx h2,.cx h3,.cx h4{margin:0;font-family:var(--font-heading);font-weight:700;overflow-wrap:break-word;min-width:0;text-wrap:balance}
+.cx p{margin:0}
+.cx ul{margin:0;padding:0;list-style:none}
+.arch-out,.card{position:relative}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* header */
+.hd{position:sticky;top:0;z-index:5;background:var(--color-surface-container-lowest);border-bottom:1px solid var(--color-outline-variant)}
+.hd .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;min-height:44px;font:700 22px/28px var(--font-heading);color:var(--color-primary)}
+.logo-disc{fill:var(--color-primary)}.logo-cross{stroke:var(--color-secondary);fill:none}
+.places{display:flex;gap:24px;margin:0 auto}
+.places a{display:flex;align-items:center;height:72px;padding-top:2px;border-bottom:2px solid transparent;font-weight:400;color:var(--color-on-surface-variant)}
+.places a[aria-current="page"]{color:var(--color-primary);font-weight:600;border-bottom-color:var(--color-secondary-strong)}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border-radius:var(--radius-full);background:var(--color-primary);color:var(--color-on-primary)!important;font-weight:600}
+/* name band */
+.band{background:var(--color-primary);color:var(--color-on-primary);padding:36px 0 88px}
+.band-in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px;align-items:center}
+.band h1{font-size:40px;line-height:48px;color:var(--color-on-primary)}
+.band .sub{margin-top:16px;font-size:18px;line-height:28px;color:var(--color-on-primary-variant)}
+.arch-out{justify-self:center;margin:0;width:264px;height:316px;padding:8px;border:1px solid var(--color-secondary);border-radius:132px 132px 20px 20px}
+.arch{width:246px;height:298px;border-radius:123px 123px 12px 12px;background:var(--color-primary-strong);display:grid;place-items:center;color:var(--color-secondary-fixed)}
+.band.slim{padding:40px 0 88px}
+.band.slim .band-in{grid-template-columns:minmax(0,1fr)}
+.band.slim .sub{margin-top:8px}
+/* board row */
+.pull{position:relative;margin-top:-64px}
+.pull.slim{margin-top:-56px}
+.cols.stretch>*{align-self:stretch}
+.cols{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px;align-items:start}
+.card{background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);border-radius:var(--radius-lg)}
+.raised{box-shadow:var(--shadow-board)}
+.board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);padding:32px 0}
+.board>div{padding:0 28px}
+.board>div+div{border-left:1px solid var(--color-outline-variant)}
+.lbl{font-size:16px;line-height:24px;font-weight:600;color:var(--color-on-surface-variant)}
+.lbl.ink{color:var(--color-on-surface)}
+.next .name{margin-top:8px;font:700 36px/44px var(--font-heading);color:var(--color-primary)}
+.when{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px;margin-top:8px}
+.when .day{font-size:18px;line-height:28px}
+.when .time{font:600 48px/52px var(--font-body);font-variant-numeric:tabular-nums;color:var(--color-primary)}
+.week{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px}
+.week .lbl{grid-row:1;grid-column:1}
+.week .rows{grid-row:2;grid-column:1/-1}
+.week .lnk{grid-row:3;grid-column:1/-1;justify-self:start}
+.rows{margin-top:8px}
+.rows li{display:grid;grid-template-columns:44px 64px minmax(0,1fr) 24px;align-items:center;gap:8px;min-height:56px;padding:0 12px;margin:0 -12px;border-radius:var(--radius)}
+.rows li.sun{background:var(--color-surface-highlight)}
+.rows .d{font-size:14px;line-height:20px;font-weight:600;color:var(--color-on-surface-variant)}
+.rows .t{font-size:18px;line-height:28px;font-variant-numeric:tabular-nums;color:var(--color-primary)}
+.rows .ic{color:var(--color-secondary-strong)}
+.lnk{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--color-primary)!important;text-decoration:underline!important;text-decoration-thickness:1px!important;text-underline-offset:4px}
+.give{padding:32px;display:flex;flex-direction:column}
+.give .h{display:flex;align-items:center;gap:12px;font-weight:600}
+.give .h svg,.gold{color:var(--color-secondary-strong)}
+.give .acc{margin-top:8px;color:var(--color-on-surface-variant)}
+.iban{margin-top:4px;font-size:18px;line-height:28px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:var(--radius);font:600 16px/24px var(--font-body);border:1px solid transparent;cursor:pointer;text-align:center}
+.btn.fill{background:var(--color-primary);color:var(--color-on-primary)!important}
+.btn.ghost{background:transparent;color:var(--color-primary)!important;border-color:var(--color-outline)}
+.btn.fill:hover{background:var(--color-primary-strong)}
+.btn.ghost:hover{background:var(--color-surface-container)}
+.btn:active{background:var(--color-primary-strong);color:var(--color-on-primary)!important}
+.btn:disabled,.btn[aria-disabled="true"],.inp:disabled{background:var(--color-surface-container-high);color:var(--color-on-surface-variant)!important;border-color:var(--color-surface-container-high);cursor:not-allowed}
+.btn.hover{background:var(--color-primary-strong)}
+.btn.focus{outline:2px solid var(--color-primary);outline-offset:2px}
+.btn.off{background:var(--color-surface-container-high);color:var(--color-on-surface-variant)!important;cursor:not-allowed}
+.give .fill{width:100%}
+.give .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:16px}
+.give .actions .ghost{margin:0;flex:none}
+.give .actions .fill{width:auto;flex:1 1 190px}
+.give .acc+.iban+.ghost{}
+/* tray and news */
+.tray{background:var(--color-surface-container);padding:56px 0;margin-top:56px}
+.sechead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px}
+.cx h2{font-size:32px;line-height:40px;color:var(--color-primary)}
+.sechead p{margin-top:4px;color:var(--color-on-surface-variant)}
+.news{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px;align-items:start}
+.news .card{padding:28px;box-shadow:var(--shadow-sm)}
+.news .lead{border-bottom:2px solid var(--color-secondary)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--color-secondary-container);color:var(--color-on-secondary-container);font-size:14px;line-height:20px;font-weight:600;padding:2px 12px;border-radius:var(--radius-full)}
+.cx h3{font-size:24px;line-height:32px}
+.news h3{margin:0 0 8px}
+.news .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px}
+.news p{color:var(--color-on-surface-variant);margin-bottom:4px}
+.date{display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+/* about */
+.about{padding:64px 0}
+.about .abouthead{margin-bottom:28px}
+.about .cols2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+.about h3{font-size:24px;line-height:32px;color:var(--color-primary)}
+.about p{margin-top:12px;max-width:46ch;color:var(--color-on-surface-variant)}
+.facts{padding:8px 24px}
+.facts ul{margin-top:8px}
+.facts li{display:flex;gap:16px;align-items:flex-start;padding:16px 0}
+.facts li+li{border-top:1px solid var(--color-outline-variant)}
+.facts svg{color:var(--color-secondary-strong);margin-top:2px}
+.k{font-size:14px;line-height:20px;font-weight:600;color:var(--color-on-surface-variant)}
+.v{font-weight:400}
+/* footer */
+.ft{background:var(--color-surface-container-high);border-top:1px solid var(--color-outline-variant);padding:48px 0}
+.ft .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.2fr);gap:40px}
+.cx .ft h3{font:600 16px/24px var(--font-body);margin-bottom:12px}
+.ft p,.ft li{font-size:14px;line-height:20px;color:var(--color-on-surface-variant);margin-bottom:8px}
+.ft li a{display:inline-flex;min-height:28px;align-items:center}
+.ft .wm{font:700 22px/28px var(--font-heading);color:var(--color-primary);margin-bottom:12px}
+.ft strong{color:var(--color-on-surface)}
+.ft .legal{margin-top:16px}
+/* bottom bar */
+.bar{display:none}
+/* callouts (1280 board only) */
+.co{position:absolute;width:24px;height:24px;border-radius:var(--radius-full);background:var(--color-inverse-surface);color:var(--color-inverse-on-surface);border:2px solid var(--color-surface-container-lowest);font:600 12px/20px var(--font-body);text-align:center}
+/* inner pages */
+.pg h2.small{font-size:24px;line-height:32px}
+.daycards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.dcard{padding:28px 32px}
+.dcard .dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--color-outline-variant)}
+.dcard .dh h2{font-size:28px;line-height:36px;display:flex;align-items:center;gap:12px}
+.srv{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:16px;min-height:72px;padding:8px 12px;margin:12px -12px 0;border-radius:var(--radius)}
+.srv.sun{background:var(--color-surface-highlight)}
+.srv .tm{font:600 32px/40px var(--font-body);font-variant-numeric:tabular-nums;color:var(--color-primary)}
+.srv .sn{font:700 24px/32px var(--font-heading)}
+.srv .srvnote{grid-column:2;color:var(--color-on-surface-variant);margin-top:-8px}
+.special{margin-top:24px}
+.special .srv{grid-template-columns:112px minmax(0,1fr)}
+.formgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.formgrid.split{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.namecard{overflow:hidden}
+.namecard .nh{display:flex;align-items:center;gap:12px;padding:20px 28px;border-bottom:1px solid var(--color-outline-variant);background:var(--color-surface-container)}
+.namecard .nh.alt{background:var(--color-surface-highlight)}
+.namecard .nh .ci{display:grid;place-items:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--color-surface-container-lowest);color:var(--color-primary)}
+.namecard .nb{padding:20px 28px 28px}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld label,.fld .fl{font-size:14px;line-height:20px;font-weight:600}
+.fld .hint{font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.inp{width:100%;min-height:48px;padding:12px 16px;border:1px solid var(--color-outline);border-radius:var(--radius);background:var(--color-surface-container-lowest);color:var(--color-on-surface);font:400 16px/24px var(--font-body)}
+.inp::placeholder{color:var(--color-on-surface-variant);opacity:1}
+textarea.inp{min-height:200px;resize:vertical;margin-top:12px}
+.inp.err{border-color:var(--color-error);border-width:2px}
+.errtxt{display:flex;gap:8px;align-items:center;font-size:14px;line-height:20px;color:var(--color-on-error-container)}
+.pad{padding:28px 32px}
+.cx .pad h2{font-size:24px;line-height:32px}
+.pad .desc{margin-top:8px;color:var(--color-on-surface-variant);max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid var(--color-outline);border-radius:var(--radius);background:var(--color-surface-container-lowest);font:600 16px/24px var(--font-body);font-variant-numeric:tabular-nums;color:var(--color-on-surface)}
+.chip.on{background:var(--color-primary);color:var(--color-on-primary);border-color:var(--color-primary)}
+.chip.other{min-width:160px;font-weight:400}
+.srvnote{display:block}
+.note{display:flex;gap:12px;align-items:flex-start;padding:20px 28px;border-radius:var(--radius-lg);background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);color:var(--color-on-surface)}
+.note svg{color:var(--color-primary);margin-top:2px}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:16px 20px;border-radius:var(--radius);background:var(--color-error-container);color:var(--color-on-error-container);font-size:16px;line-height:24px}
+.alert.ok{background:var(--color-secondary-container);color:var(--color-on-secondary-container)}
+.iban-card{padding:32px}
+.cx .iban-card h2{display:flex;align-items:center;gap:12px;font-size:24px;line-height:32px}
+.iban-card h2 svg{color:var(--color-secondary-strong)}
+.iban-card .lede{margin-top:8px;color:var(--color-on-surface-variant)}
+.check{display:flex;gap:12px;align-items:flex-start;margin-top:20px;padding:16px;border-radius:var(--radius);background:var(--color-secondary-container);color:var(--color-on-secondary-container)}
+.check svg{color:var(--color-primary);margin-top:2px}
+.benef{margin-top:20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 24px;align-items:end}
+.benef .name{font-weight:600;font-size:18px;line-height:28px}
+.benef .iban{font-size:24px;line-height:32px;margin-top:0}
+.benef .cur{color:var(--color-on-surface-variant)}
+.proj{overflow:hidden}
+.proj .ph{position:relative;display:grid;justify-items:center;align-content:center;gap:8px;height:144px;background:var(--color-surface-container);color:var(--color-on-surface-variant)}
+.proj .ph svg{color:var(--color-primary)}
+.proj .pb{padding:24px 28px 28px}
+.proj .ph .badge{position:absolute;top:16px;left:20px}
+.proj h3{margin:0 0 8px}
+.proj .sum{color:var(--color-on-surface-variant)}
+.meter{margin-top:20px}
+.meter .mh{display:flex;justify-content:space-between;font-weight:600}
+.track{height:8px;margin-top:8px;border-radius:var(--radius-full);background:var(--color-surface-container-high);overflow:hidden}
+.fill-bar{height:100%;background:var(--color-primary);border-radius:var(--radius-full)}
+.meter .mf{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.f230{padding:28px 32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.cols.stretch{align-items:stretch}
+.acct{display:flex;gap:8px;align-items:baseline}
+.f230 h3{display:flex;align-items:center;gap:12px}
+.f230 h3 svg{color:var(--color-secondary-strong)}
+.f230 p{margin:8px 0 0;max-width:72ch;color:var(--color-on-surface-variant)}
+.stack{display:grid;gap:24px}
+.empty{display:grid;justify-items:center;gap:8px;text-align:center;padding:40px 24px}
+.empty svg{color:var(--color-primary)}
+.empty h3{font-size:22px;line-height:28px;color:var(--color-primary)}
+.empty p{color:var(--color-on-surface-variant)}
+.frame{position:relative;height:844px;overflow:hidden}
+.frame .bar{position:absolute!important}
+.frame .hd{position:static}
+@media (max-width:1279px){.co{display:none}}
+@media (min-width:960px){.band h1{font-size:52px;line-height:60px}.band.slim h1{font-size:40px;line-height:48px}}
+@media (min-width:960px) and (max-height:780px){
+ .arch-out{width:228px;height:270px;border-radius:114px 114px 18px 18px}
+ .arch{width:210px;height:252px;border-radius:105px 105px 12px 12px}
+ .band:not(.slim){padding:28px 0 80px}
+}
+@media (max-width:959px){
+ .hd .wrap{height:56px;padding:0 16px}
+ .places,.hd .pill{display:none}
+ .brand{font-size:20px;line-height:24px;gap:12px}
+ .wrap{padding:0 16px}
+ .band{padding:24px 0 56px}
+ .band-in{grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
+ .band h1{font-size:28px;line-height:34px}
+ .band .sub{font-size:16px;line-height:24px;margin-top:12px}
+ .arch-out{width:106px;height:126px;padding:4px;border-radius:53px 53px 12px 12px;justify-self:end}
+ .arch{width:96px;height:116px;border-radius:48px 48px 10px 10px}
+ .arch svg{width:44px;height:44px}
+ .band.slim{padding:24px 0 56px}
+ .band.slim .band-in{grid-template-columns:minmax(0,1fr)}
+ .pull{margin-top:-32px}.pull.slim{margin-top:-28px}
+ .cols{grid-template-columns:minmax(0,1fr);gap:16px}
+ .board{grid-template-columns:minmax(0,1fr);padding:20px 0}
+ .board>div{padding:0 20px}
+ .board>div+div{border-left:0;border-top:1px solid var(--color-outline-variant);margin-top:16px;padding-top:16px}
+ .next .name{font-size:30px;line-height:36px;margin-top:4px}
+ .when{margin-top:4px}
+ .when .time{font-size:40px;line-height:44px}
+ .week .lnk{grid-row:1;grid-column:2;justify-self:end}
+ .week .lbl{align-self:center}
+ .rows{margin-top:4px}
+ .rows li{min-height:48px;grid-template-columns:44px 60px minmax(0,1fr) 24px}
+ .give{padding:20px}
+ .give .actions{margin-top:12px;padding-top:0}
+ .give .actions .ghost svg{display:none}
+ .give .actions .btn{padding:0 12px}
+ .tray{padding:40px 0;margin-top:40px}
+ .cx .sechead h2,.cx .about h2{font-size:28px;line-height:36px}
+ .news{grid-template-columns:minmax(0,1fr)}
+ .news .card{padding:20px}
+ .cx .news h3{font-size:22px;line-height:28px}
+ .about{padding:48px 0}
+ .about .cols2{grid-template-columns:minmax(0,1fr);gap:20px}
+ .ft .wrap{grid-template-columns:minmax(0,1fr);gap:28px}
+ .daycards,.formgrid,.formgrid.split{grid-template-columns:minmax(0,1fr);gap:16px}
+ .dcard{padding:20px}
+ .srv{grid-template-columns:96px minmax(0,1fr);gap:12px;min-height:64px}
+ .srv .tm{font-size:28px;line-height:36px}
+ .srv .sn{font-size:22px;line-height:28px}
+ .dcard .dh h2{font-size:24px;line-height:32px}
+ .namecard .nh{padding:16px 20px}.namecard .nb{padding:16px 20px 20px}
+ .pad{padding:20px}
+ .chips{gap:8px}
+ .chip{padding:0 16px}
+ .chip.other{flex:1 1 100%}
+ .note{padding:16px 20px}
+ .iban-card{padding:20px}
+ .benef{grid-template-columns:minmax(0,1fr)}
+ .benef .iban{font-size:18px;line-height:28px}
+ .proj .pb{padding:20px}
+ .f230{padding:20px;grid-template-columns:minmax(0,1fr);gap:16px}
+ .stack{gap:16px}
+ .bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:sticky;bottom:0;z-index:6;height:calc(64px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--color-surface-container-lowest);border-top:1px solid var(--color-outline-variant)}
+ .bar a,.bar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;min-width:44px;padding:0;border:0;background:none;font:400 14px/20px var(--font-body);color:var(--color-on-surface-variant)}
+ .bar [aria-current="page"]{color:var(--color-primary);font-weight:600}
+}
+@media (max-width:380px){
+ .band-in{gap:12px}
+ .week .lbl{font-size:14px;line-height:20px}
+ .board{padding:16px 0}
+ .board>div{padding:0 16px}
+ .board>div+div{margin-top:12px;padding-top:12px}
+ .rows li{min-height:44px}
+ .give{padding:16px}
+ .give .iban{font-size:16px;line-height:24px}
+ .give .actions{margin-top:8px}
+}
+@media (max-width:380px){.give .actions .btn{padding:0 12px}}
+@media (max-width:339px){.give .actions{flex-wrap:wrap}}
+@media (min-width:600px) and (max-width:959px){.band:not(.slim) h1{font-size:32px;line-height:40px}}
+.sheet{width:1440px;padding:56px 64px 80px;display:grid;gap:56px}
+.sheet h1.t{font-size:48px;line-height:56px;color:var(--color-primary)}
+.sheet .idea{font-size:20px;line-height:32px;max-width:72ch;color:var(--color-on-surface)}
+.sheet h2.s{font-size:32px;line-height:40px;color:var(--color-primary);margin-bottom:8px}
+.sheet .cap{color:var(--color-on-surface-variant);max-width:80ch;margin-bottom:24px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{text-align:left;vertical-align:middle;padding:10px 12px;border-bottom:1px solid var(--color-outline-variant);font-size:14px;line-height:20px}
+.sheet th{font-weight:600}
+.sheet .tok{font-weight:600;font-variant-numeric:tabular-nums}
+.sw{display:flex;align-items:center;gap:12px}
+.chipc{width:56px;height:32px;border-radius:var(--radius);border:1px solid var(--color-outline-variant);flex:none}
+.hex{font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.panel{padding:24px;border-radius:var(--radius-lg);background:var(--color-surface);color:var(--color-on-surface);border:1px solid var(--color-outline-variant)}
+.panel h3{font-size:22px;line-height:28px;color:var(--color-primary);margin-bottom:16px}
+.strip{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:20px}
+.mini{font-size:14px;line-height:20px;font-weight:600;color:var(--color-on-surface-variant);margin-bottom:8px}
+.specrow{display:grid;grid-template-columns:200px minmax(0,1fr) 220px;gap:24px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--color-outline-variant)}
+.specrow .m{font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.sp{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end}
+.sp .box{display:grid;gap:8px;justify-items:start;font-size:14px;line-height:20px}
+.sp .blk{background:var(--color-primary);height:16px}
+.el{width:200px;height:96px;display:grid;place-items:center;background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);border-radius:var(--radius-lg);font-size:14px;line-height:20px;text-align:center;padding:8px}
+.drawer{width:320px;background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);border-radius:var(--radius-lg);box-shadow:var(--shadow-board);padding:16px}
+.drawer .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.drawer .dh span{font:700 22px/28px var(--font-heading);color:var(--color-primary)}
+.drawer a{display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--radius);font-weight:400}
+.drawer a[aria-current="page"]{background:var(--color-surface-highlight);color:var(--color-primary);font-weight:600}
+.iconbtn{display:inline-grid;place-items:center;width:48px;height:48px;border:1px solid var(--color-outline);border-radius:var(--radius);background:transparent;color:var(--color-primary)}
+.states{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:24px}
+.states .st{display:grid;gap:12px;align-content:start}
+.states .lab{font-weight:600}
+.ctab td.n,.ctab th.n{text-align:right;font-variant-numeric:tabular-nums}
+.okc{color:var(--color-primary);font-weight:600}
+.kind{color:var(--color-on-surface-variant)}
+
+</style>
+
+<div data-theme="light" class="cx sheet">
+<section><h1 class="t">Direction · The porch notice</h1><p class="idea">The page opens the way a church door does: the parish's name and its picture on a burgundy band, the program pinned on a raised board that rises out of the band, the account beside it. One look, no dark palette (parish sites keep the one look designed for each church), so the sheet sets the parish's seeds beside a second parish's seeds where other sheets set light beside dark. Every other colour is derived from the four seeds.</p></section>
+
+<section><h2 class="s">Palette by role</h2><p class="cap">Four seeds (surface, on-primary, primary, secondary) set the rest by color-mix(). Token names are the template's own, with the board's two new ones marked. Left: Parohia Hârlești. Right: a second parish with blue and silver seeds.</p>
+<table><thead><tr><th>Role and use</th><th>Parohia Hârlești</th><th>Second parish</th></tr></thead><tbody><tr><th scope="row"><span class="tok">--color-surface</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">seed: the page ground (the parish's surface)</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-surface)"></span><span class="hex">#faf6ef</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-surface)"></span><span class="hex">#f5f6f4</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-primary</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">seed: text and icons on the primary</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-primary)"></span><span class="hex">#ffffff</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-primary)"></span><span class="hex">#ffffff</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-primary</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">seed: the name band, filled actions, links, headings</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-primary)"></span><span class="hex">#6b1f2a</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-primary)"></span><span class="hex">#1f3f66</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-secondary</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">seed: gold or silver, rules, the arch line and the logo cross on the primary, never text and never an icon on light</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-secondary)"></span><span class="hex">#c8a24b</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-secondary)"></span><span class="hex">#a8b0b8</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-surface-container-lowest</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">fixed white: cards, the header, the bottom bar, inputs</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-surface-container-lowest)"></span><span class="hex">#ffffff</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-surface-container-lowest)"></span><span class="hex">#ffffff</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-outline-variant</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">primary 18% into surface: the edge on every card and the header</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-outline-variant)"></span><span class="hex">#e0cfcc</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-outline-variant)"></span><span class="hex">#ced5da</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-outline</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">on-surface 50% into surface: input, chip and ghost-button edge</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-outline)"></span><span class="hex">#8d8682</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-outline)"></span><span class="hex">#868888</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-surface-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">primary 7% into surface: the news tray, name-card heads</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-surface-container)"></span><span class="hex">#f0e7e1</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-surface-container)"></span><span class="hex">#e6e9ea</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-surface-container-high</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">surface 90% with black: the footer, the progress track</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-surface-container-high)"></span><span class="hex">#e1ddd7</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-surface-container-high)"></span><span class="hex">#dddddc</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-surface</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">primary 12% into near-black: body text</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-surface)"></span><span class="hex">#201515</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-surface)"></span><span class="hex">#17191c</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-surface-variant</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">primary 22% into grey: labels, notes, nav</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-surface-variant)"></span><span class="hex">#5f4949</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-surface-variant)"></span><span class="hex">#4e5056</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-primary-strong</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">new: primary 80% with black: hover, pressed, the arch fill</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-primary-strong)"></span><span class="hex">#561922</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-primary-strong)"></span><span class="hex">#193252</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-primary-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">unchanged, primary 80% with white: kept for Badge, Alert, the form note and the Drawer ring; the comps do not use it</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-primary-container)"></span><span class="hex">#894c55</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-primary-container)"></span><span class="hex">#4c6585</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-secondary-strong</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">new: secondary 55% with primary: icons and marks on light surfaces (bank, church, download, the current place), at least 3:1 on every seed set</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-secondary-strong)"></span><span class="hex">#9e673c</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-secondary-strong)"></span><span class="hex">#6a7d93</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-primary-variant</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">new: on-primary 80% with primary, the lede on the band</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-primary-variant)"></span><span class="hex">#e1d2d4</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-primary-variant)"></span><span class="hex">#d2d9e0</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-secondary-fixed</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">secondary 25% into white: light gold on the band, the arch glyph</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-secondary-fixed)"></span><span class="hex">#f1e8d2</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-secondary-fixed)"></span><span class="hex">#e9ebed</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-secondary-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">secondary 30% into white: badges</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-secondary-container)"></span><span class="hex">#efe3c9</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-secondary-container)"></span><span class="hex">#e5e7ea</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-secondary-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">secondary 30% into black: badge text</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-secondary-container)"></span><span class="hex">#3c3117</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-secondary-container)"></span><span class="hex">#323537</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-surface-highlight</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">new: secondary-strong 18% into white: the Sunday row</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-surface-highlight)"></span><span class="hex">#eee4dc</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-surface-highlight)"></span><span class="hex">#e4e8ec</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-error</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">default #ba1a1a, not a seed: field errors</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-error)"></span><span class="hex">#ba1a1a</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-error)"></span><span class="hex">#ba1a1a</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-error-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">error 16% into white: the alert</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-error-container)"></span><span class="hex">#f4dada</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-error-container)"></span><span class="hex">#f4dada</span></div></td></tr>
+<tr><th scope="row"><span class="tok">--color-on-error-container</span><br><span style="font-weight:400;color:var(--color-on-surface-variant)">error 78% with black: alert and field-error text</span></th>
+<td><div class="sw"><span data-theme="light" class="chipc" style="background:var(--color-on-error-container)"></span><span class="hex">#911414</span></div></td>
+<td><div class="sw"><span data-theme="seed2" class="chipc" style="background:var(--color-on-error-container)"></span><span class="hex">#911414</span></div></td></tr></tbody></table></section>
+
+<section><h2 class="s">Type</h2><p class="cap">Cardo for the parish's name and every heading (the owner's call of 2026-11-04), Inter for facts, labels and the time. Labels are sentence case and untracked. Smallest size on any comp is 14 px.</p><div class="specrow"><div><strong>Cardo 700, 40/48</strong><div class="m">h1 on the band</div></div><div><span style="font:700 40px/48px var(--font-heading)">Parohia Ortodoxă „Sfinții Trei Ierarhi” – Hârlești</span></div><div class="m">--text-display-md</div></div><div class="specrow"><div><strong>Cardo 700, 36/44</strong><div class="m">the next service's name</div></div><div><span style="font:700 36px/44px var(--font-heading)">Vecernia</span></div><div class="m">--text-display-sm (new)</div></div><div class="specrow"><div><strong>Inter 600, 52/56</strong><div class="m">the time</div></div><div><span style="font:600 52px/56px var(--font-body);font-variant-numeric:tabular-nums">17:00</span></div><div class="m">--text-time (new)</div></div><div class="specrow"><div><strong>Cardo 700, 32/40</strong><div class="m">section heads</div></div><div><span style="font:700 32px/40px var(--font-heading)">Anunțuri</span></div><div class="m">--text-headline-lg</div></div><div class="specrow"><div><strong>Cardo 700, 28/36</strong><div class="m">page heads on a phone, day heads</div></div><div><span style="font:700 28px/36px var(--font-heading)">Sâmbătă</span></div><div class="m">--text-headline-lg-mobile</div></div><div class="specrow"><div><strong>Cardo 700, 24/32</strong><div class="m">card titles</div></div><div><span style="font:700 24px/32px var(--font-heading)">Transfer bancar (IBAN)</span></div><div class="m">--text-headline-md</div></div><div class="specrow"><div><strong>Inter 400, 18/28</strong><div class="m">lede, IBAN (600), time rows</div></div><div><span style="font:400 18px/28px var(--font-body)">Orice dar, mic sau mare, ne ajută în lucrarea liturgică</span></div><div class="m">--text-body-lg</div></div><div class="specrow"><div><strong>Inter 400, 16/24</strong><div class="m">body, buttons (600)</div></div><div><span style="font:400 16px/24px var(--font-body)">Puteți transfera fonduri direct în conturile parohiei.</span></div><div class="m">--text-body-md</div></div><div class="specrow"><div><strong>Inter 600, 14/20</strong><div class="m">labels, badges, footer text</div></div><div><span style="font:600 14px/20px var(--font-body)">Beneficiar</span></div><div class="m">--text-label-md (tracking 0)</div></div><div class="specrow"><div><strong>Inter 400, 12/16</strong><div class="m">smallest size, used on nothing in the comps</div></div><div><span style="font:400 12px/16px var(--font-body)">Caption</span></div><div class="m">--text-caption</div></div></section>
+
+<section><h2 class="s">Space, radii and elevation</h2><p class="cap">A 4 px scale. Two radii plus full: 8 for controls, 16 for cards and the arch's foot, full for pills and the arch's top. Two shadows, and every card also carries a full-strength 1 px edge.</p>
+<div class="sp"><div class="box"><div class="blk" style="width:4px"></div>4</div><div class="box"><div class="blk" style="width:8px"></div>8</div><div class="box"><div class="blk" style="width:12px"></div>12</div><div class="box"><div class="blk" style="width:16px"></div>16</div><div class="box"><div class="blk" style="width:24px"></div>24</div><div class="box"><div class="blk" style="width:32px"></div>32</div><div class="box"><div class="blk" style="width:48px"></div>48</div><div class="box"><div class="blk" style="width:64px"></div>64</div>
+<div class="box"><div class="blk" style="width:96px;border-radius:8px"></div>--radius 8</div><div class="box"><div class="blk" style="width:96px;border-radius:16px;height:32px"></div>--radius-lg 16</div><div class="box"><div class="blk" style="width:96px;border-radius:9999px"></div>--radius-full</div></div>
+<div class="sp" style="margin-top:24px"><div class="el" style="box-shadow:none">Edge only: header, bottom bar, tray cards sit on 1 px outline-variant</div><div class="el" style="box-shadow:var(--shadow-sm)">--shadow-sm: the news cards</div><div class="el" style="box-shadow:var(--shadow-board)">--shadow-board: the board, the giving card, drawers</div></div></section>
+
+<section><h2 class="s">Components</h2><p class="cap">The same set on both parishes. Focus is a 2 px primary ring with a 2 px offset (on-primary on the band). Targets are 48 px, the phone bar 64.</p>
+<div class="two"><div data-theme="light" class="cx panel"><h3>Parohia Hârlești</h3>
+<div class="mini">Buttons: rest, hover, focus, pressed, disabled, outlined</div>
+<div class="strip"><button class="btn fill" type="button">Sprijinește parohia</button><button class="btn fill hover" type="button">Hover</button><button class="btn fill focus" type="button">Focus</button><button class="btn fill" style="background:var(--color-primary-strong)" type="button">Pressed</button><button class="btn off" type="button" aria-disabled="true">Disabled</button><button class="btn ghost" type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Copiază</button></div>
+<div class="mini">Header action and the bottom bar item</div>
+<div class="strip"><a class="pill" href="/donatii">Donează</a><span class="cx" style="display:inline-flex;flex-direction:column;align-items:center;min-width:64px;color:var(--color-primary);font:600 14px/20px var(--font-body)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>Donează</span><span style="display:inline-flex;flex-direction:column;align-items:center;min-width:64px;color:var(--color-on-surface-variant);font:400 14px/20px var(--font-body)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Program</span></div>
+<div class="mini">Field with label, with an error, and the amount chips</div>
+<div class="strip" style="align-items:flex-start"><div class="fld" style="width:240px"><label for="s1theme-light">Adresă de email</label><input id="s1theme-light" class="inp" type="email"><span class="hint">Pentru a primi o confirmare.</span></div>
+<div class="fld" style="width:240px"><label for="s2theme-light">Nume și prenume</label><input id="s2theme-light" class="inp err" type="text" aria-describedby="etheme-light"><span id="etheme-light" class="errtxt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.01"></path></svg>Adăugați cel puțin un nume.</span></div></div>
+<div class="strip"><span class="chip">20,00 RON</span><span class="chip on">50,00 RON</span><span class="chip" style="outline:2px solid var(--color-primary);outline-offset:2px">100,00 RON</span><span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M8 3h8l-1 7 3 4H6l3-4z"></path></svg>Fixat</span><span class="badge">Ziua Domnului</span></div>
+<div class="mini">List row, current and Sunday</div>
+<div class="card" style="padding:8px 16px"><ul class="rows"><li><span class="d">Sâm</span><span class="t">17:00</span><span>Vecernia</span><span></span></li><li class="sun"><span class="d">Dum</span><span class="t">09:30</span><span>Sfânta Liturghie</span><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 1h2v2h2v2h-2v2.2l5 3.3V21H4V10.5l5-3.3V5H7V3h4zM10 21v-5a2 2 0 0 1 4 0v5z"></path></svg></span></li></ul></div>
+</div><div data-theme="seed2" class="cx panel"><h3>Second parish</h3>
+<div class="mini">Buttons: rest, hover, focus, pressed, disabled, outlined</div>
+<div class="strip"><button class="btn fill" type="button">Sprijinește parohia</button><button class="btn fill hover" type="button">Hover</button><button class="btn fill focus" type="button">Focus</button><button class="btn fill" style="background:var(--color-primary-strong)" type="button">Pressed</button><button class="btn off" type="button" aria-disabled="true">Disabled</button><button class="btn ghost" type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Copiază</button></div>
+<div class="mini">Header action and the bottom bar item</div>
+<div class="strip"><a class="pill" href="/donatii">Donează</a><span class="cx" style="display:inline-flex;flex-direction:column;align-items:center;min-width:64px;color:var(--color-primary);font:600 14px/20px var(--font-body)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>Donează</span><span style="display:inline-flex;flex-direction:column;align-items:center;min-width:64px;color:var(--color-on-surface-variant);font:400 14px/20px var(--font-body)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Program</span></div>
+<div class="mini">Field with label, with an error, and the amount chips</div>
+<div class="strip" style="align-items:flex-start"><div class="fld" style="width:240px"><label for="s1theme-seed2">Adresă de email</label><input id="s1theme-seed2" class="inp" type="email"><span class="hint">Pentru a primi o confirmare.</span></div>
+<div class="fld" style="width:240px"><label for="s2theme-seed2">Nume și prenume</label><input id="s2theme-seed2" class="inp err" type="text" aria-describedby="etheme-seed2"><span id="etheme-seed2" class="errtxt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.01"></path></svg>Adăugați cel puțin un nume.</span></div></div>
+<div class="strip"><span class="chip">20,00 RON</span><span class="chip on">50,00 RON</span><span class="chip" style="outline:2px solid var(--color-primary);outline-offset:2px">100,00 RON</span><span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M8 3h8l-1 7 3 4H6l3-4z"></path></svg>Fixat</span><span class="badge">Ziua Domnului</span></div>
+<div class="mini">List row, current and Sunday</div>
+<div class="card" style="padding:8px 16px"><ul class="rows"><li><span class="d">Sâm</span><span class="t">17:00</span><span>Vecernia</span><span></span></li><li class="sun"><span class="d">Dum</span><span class="t">09:30</span><span>Sfânta Liturghie</span><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 1h2v2h2v2h-2v2.2l5 3.3V21H4V10.5l5-3.3V5H7V3h4zM10 21v-5a2 2 0 0 1 4 0v5z"></path></svg></span></li></ul></div>
+</div></div>
+<div class="two" style="margin-top:24px"><div><div class="mini">Phone menu: the Drawer behind Meniu (brief 04)</div><div data-theme="light" class="cx drawer" style="position:relative"><div class="dh"><span>Meniu</span><button class="iconbtn" type="button" aria-label="Închide meniul"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div>
+<nav aria-label="Meniu navigare"><a href="/" aria-current="page">Acasă</a><a href="/despre">Despre</a><a href="/program">Program</a><a href="/anunturi">Anunțuri</a><a href="/pomelnice">Pomelnice</a><a href="/contact">Contact</a><a href="/donatii" style="color:var(--color-primary);font-weight:600">Donează</a></nav></div></div>
+<div><div class="mini">Alerts, the toast of this site: error and sent</div><div data-theme="light" class="cx stack" style="padding:0"><div class="alert" role="alert"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.01"></path></svg><p>A apărut o eroare la trimitere. Vă rugăm încercați din nou.</p></div><div class="alert ok" role="status"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><div><strong>Pomelnicul a fost trimis</strong><p>Numele vor fi pomenite la Sfânta Liturghie. Dumnezeu să vă ajute!</p></div></div></div></div></div></section>
+
+<section><h2 class="s">States</h2><p class="cap">Drawn from the strings the template already has. Where it has none, the note says so.</p><div class="states">
+<div class="st"><div class="lab">Home: no photo (the arch stand-in)</div><div class="band" style="padding:24px;border-radius:var(--radius-lg)"><div class="arch-out" style="width:132px;height:160px;padding:6px;border-radius:66px 66px 16px 16px"><div class="arch" style="width:118px;height:146px;border-radius:59px 59px 10px 10px"><svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 1h2v2h2v2h-2v2.2l5 3.3V21H4V10.5l5-3.3V5H7V3h4zM10 21v-5a2 2 0 0 1 4 0v5z"></path></svg></div></div></div><p class="hint" style="color:var(--color-on-surface-variant)">With a photo, it fills the 5:6 arch (cover). A parish supplies its own; the template ships none.</p></div>
+<div class="st"><div class="lab">Home: no announcements</div><div class="card empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 1h2v2h2v2h-2v2.2l5 3.3V21H4V10.5l5-3.3V5H7V3h4zM10 21v-5a2 2 0 0 1 4 0v5z"></path></svg><h3>Niciun anunț momentan</h3><p>Reveniți curând pentru noutățile parohiei.</p></div></div>
+<div class="st"><div class="lab">Home: the parish has not set a real IBAN (the build hides the account lines)</div><div class="card give" style="padding:24px"><div class="h"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"></path></svg>Donații prin transfer</div><a class="btn fill" style="margin-top:16px" href="/donatii">Sprijinește parohia</a></div></div>
+<div class="st"><div class="lab">Pomelnice: not enabled for this parish (the option the Ask asks about)</div><div class="card empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1.5 2 1.5 3.5 0 5-1.5-1.5-1.5-3 0-5zM8 11h8v10H8z"></path></svg><h3>Pomelnice indisponibile</h3><p>Trimiterea pomelnicelor online nu este activată pentru această parohie.</p><a class="btn ghost" href="/contact">Contactați parohia</a></div></div>
+<div class="st"><div class="lab">Pomelnice: validation error</div><div class="alert" role="alert"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.01"></path></svg><p>Adăugați cel puțin un nume în pomelnicul de vii sau în cel pentru adormiți.</p></div></div>
+<div class="st"><div class="lab">Pomelnice: send error</div><div class="alert" role="alert"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.01"></path></svg><p>A apărut o eroare la trimitere. Vă rugăm încercați din nou.</p></div></div>
+<div class="st"><div class="lab">Pomelnice: sent</div><div class="alert ok" role="status"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><div><strong>Pomelnicul a fost trimis</strong><p>Numele vor fi pomenite la Sfânta Liturghie. Dumnezeu să vă ajute!</p></div></div></div>
+<div class="st"><div class="lab">Pomelnice: with an endpoint, no name yet, and sending</div><div class="strip"><button class="btn off" type="button" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"></path></svg>Trimite Pomelnicul</button><button class="btn off" type="button" aria-disabled="true">Se trimite…</button></div><p class="hint" style="color:var(--color-on-surface-variant)">Adăugați cel puțin un nume pentru a putea trimite pomelnicul.</p></div>
+<div class="st"><div class="lab">Donații: copied, and a finished campaign</div><div class="strip"><button class="btn fill" type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Copiat!</button></div><div class="alert ok" role="status"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><p>Obiectiv atins — mulțumim!</p></div></div>
+<div class="st"><div class="lab">Program: more than two rows</div><p class="hint" style="color:var(--color-on-surface-variant)">The day cards grow downward and a long list never scrolls inside its card. The template has no string for an empty schedule: the code brief decides whether to hide the card.</p></div>
+<div class="st"><div class="lab">Loading</div><p class="hint" style="color:var(--color-on-surface-variant)">None. The site is static per build, so no screen waits on data; the pomelnice send shows Se trimite… above.</p></div></div></section>
+
+<section><h2 class="s">Contrast</h2><p class="cap">Computed from the derived values for both parishes. Text needs 4.5, UI parts and the focus ring 3, and a card must differ from the page by 1.09 or carry an edge of 1.3. Pure gold or silver on white is under 3, so it is kept for rules and the arch line on the primary; every icon on a light surface takes secondary-strong, gated at 3.</p>
+<table class="ctab"><thead><tr><th>Pair</th><th>Kind</th><th class="n">Needs</th><th class="n">Hârlești</th><th class="n">Second</th><th>Result</th></tr></thead><tbody><tr><td>on-surface on surface (body on the page)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">16.53</td><td class="n">16.25</td><td class="okc">pass</td></tr><tr><td>on-surface on card (body, names, IBAN)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">17.8</td><td class="n">17.61</td><td class="okc">pass</td></tr><tr><td>on-surface on footer</td><td class="kind">text</td><td class="n">4.5</td><td class="n">13.16</td><td class="n">12.96</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on card (labels, notes)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">8.28</td><td class="n">8.06</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on surface (lede, Despre text)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">7.69</td><td class="n">7.43</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on tray (news dates, nav on header is on card)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">6.79</td><td class="n">6.6</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on footer</td><td class="kind">text</td><td class="n">4.5</td><td class="n">6.12</td><td class="n">5.93</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on highlight (Sunday weekday)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">6.61</td><td class="n">6.54</td><td class="okc">pass</td></tr><tr><td>on-surface on highlight (Sunday service)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">14.21</td><td class="n">14.3</td><td class="okc">pass</td></tr><tr><td>primary on card (links, headings, 17:00)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">11.32</td><td class="n">10.71</td><td class="okc">pass</td></tr><tr><td>primary on surface (links on the page)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">10.51</td><td class="n">9.88</td><td class="okc">pass</td></tr><tr><td>primary on tray (links on the news tray)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">9.29</td><td class="n">8.77</td><td class="okc">pass</td></tr><tr><td>primary on highlight (Sunday time)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">9.04</td><td class="n">8.7</td><td class="okc">pass</td></tr><tr><td>primary on footer (wordmark)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">8.37</td><td class="n">7.88</td><td class="okc">pass</td></tr><tr><td>on-primary on primary (name band, Donează, filled buttons)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">11.32</td><td class="n">10.71</td><td class="okc">pass</td></tr><tr><td>on-primary-variant on primary (Biserica Ortodoxă Română, band lede)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">7.75</td><td class="n">7.52</td><td class="okc">pass</td></tr><tr><td>on-primary on primary-strong (hover, pressed)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">13.48</td><td class="n">12.97</td><td class="okc">pass</td></tr><tr><td>secondary-fixed on primary-strong (arch glyph)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">11.05</td><td class="n">10.85</td><td class="okc">pass</td></tr><tr><td>on-secondary-container on secondary-container (badges)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">10.04</td><td class="n">9.97</td><td class="okc">pass</td></tr><tr><td>on-surface on tray (Pomelnice name-card heads)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">14.6</td><td class="n">14.43</td><td class="okc">pass</td></tr><tr><td>on-error-container on error-container (alert)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">6.87</td><td class="n">6.87</td><td class="okc">pass</td></tr><tr><td>on-error-container on card (error under a field)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">9.07</td><td class="n">9.07</td><td class="okc">pass</td></tr><tr><td>inverse-on-surface on inverse-surface (callout number)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">11.61</td><td class="n">11.61</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on card (bottom bar labels)</td><td class="kind">text</td><td class="n">4.5</td><td class="n">8.28</td><td class="n">8.06</td><td class="okc">pass</td></tr><tr><td>outline on card (input, chip and ghost-button edge)</td><td class="kind">ui</td><td class="n">3</td><td class="n">3.58</td><td class="n">3.56</td><td class="okc">pass</td></tr><tr><td>outline on surface</td><td class="kind">ui</td><td class="n">3</td><td class="n">3.32</td><td class="n">3.29</td><td class="okc">pass</td></tr><tr><td>error on card (field error edge)</td><td class="kind">ui</td><td class="n">3</td><td class="n">6.46</td><td class="n">6.46</td><td class="okc">pass</td></tr><tr><td>secondary on primary (arch line, gold rule on the band)</td><td class="kind">ui</td><td class="n">3</td><td class="n">4.7</td><td class="n">4.88</td><td class="okc">pass</td></tr><tr><td>primary on track (progress fill)</td><td class="kind">ui</td><td class="n">3</td><td class="n">8.37</td><td class="n">7.88</td><td class="okc">pass</td></tr><tr><td>focus ring primary on card</td><td class="kind">ui</td><td class="n">3</td><td class="n">11.32</td><td class="n">10.71</td><td class="okc">pass</td></tr><tr><td>focus ring primary on surface</td><td class="kind">ui</td><td class="n">3</td><td class="n">10.51</td><td class="n">9.88</td><td class="okc">pass</td></tr><tr><td>focus ring primary on tray</td><td class="kind">ui</td><td class="n">3</td><td class="n">9.29</td><td class="n">8.77</td><td class="okc">pass</td></tr><tr><td>focus ring primary on footer</td><td class="kind">ui</td><td class="n">3</td><td class="n">8.37</td><td class="n">7.88</td><td class="okc">pass</td></tr><tr><td>focus ring primary on highlight</td><td class="kind">ui</td><td class="n">3</td><td class="n">9.04</td><td class="n">8.7</td><td class="okc">pass</td></tr><tr><td>focus ring on-primary on primary (band, pill)</td><td class="kind">ui</td><td class="n">3</td><td class="n">11.32</td><td class="n">10.71</td><td class="okc">pass</td></tr><tr><td>secondary-strong on card (bank, church, download icons, the current-place underline)</td><td class="kind">ui</td><td class="n">3</td><td class="n">4.71</td><td class="n">4.23</td><td class="okc">pass</td></tr><tr><td>secondary-strong on highlight (Sunday church mark)</td><td class="kind">ui</td><td class="n">3</td><td class="n">3.76</td><td class="n">3.43</td><td class="okc">pass</td></tr><tr><td>primary on secondary-container (the shield in the beneficiary callout)</td><td class="kind">ui</td><td class="n">3</td><td class="n">8.9</td><td class="n">8.64</td><td class="okc">pass</td></tr><tr><td>on-surface-variant on secondary-container</td><td class="kind">text</td><td class="n">4.5</td><td class="n">6.51</td><td class="n">6.5</td><td class="okc">pass</td></tr><tr><td>card on surface (edge required below 1.09)</td><td class="kind">surface</td><td class="n">1</td><td class="n">1.08</td><td class="n">1.08</td><td class="okc">pass</td></tr><tr><td>outline-variant edge on surface (needs 1.3)</td><td class="kind">surface</td><td class="n">1.3</td><td class="n">1.4</td><td class="n">1.37</td><td class="okc">pass</td></tr><tr><td>outline-variant edge on tray (card on the news tray)</td><td class="kind">surface</td><td class="n">1.15</td><td class="n">1.23</td><td class="n">1.22</td><td class="okc">pass</td></tr><tr><td>card on tray</td><td class="kind">surface</td><td class="n">1.15</td><td class="n">1.22</td><td class="n">1.22</td><td class="okc">pass</td></tr><tr><td>tray on surface (needs 1.09)</td><td class="kind">surface</td><td class="n">1.09</td><td class="n">1.13</td><td class="n">1.13</td><td class="okc">pass</td></tr><tr><td>footer on surface (needs 1.09)</td><td class="kind">surface</td><td class="n">1.09</td><td class="n">1.26</td><td class="n">1.25</td><td class="okc">pass</td></tr><tr><td>highlight on card (Sunday row, needs 1.09)</td><td class="kind">surface</td><td class="n">1.09</td><td class="n">1.25</td><td class="n">1.23</td><td class="okc">pass</td></tr><tr><td>primary-strong on primary (the arch; the gold line carries the boundary)</td><td class="kind">surface</td><td class="n">1</td><td class="n">1.19</td><td class="n">1.21</td><td class="okc">pass</td></tr></tbody></table></section>
+</div>
+</body>
+</html>

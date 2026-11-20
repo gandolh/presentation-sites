@@ -1,0 +1,83 @@
+/*
+ * AXA Tractări, direction B "Lines first": the token set in the site's own names.
+ * Replaces the colour, radius and type groups of the @theme block in
+ * src/styles/global.css and adds the new names. The file's mechanism stays: one
+ * @theme block, OKLCH values, dark only (no theme switch, so no [data-theme="dark"]
+ * block), Material-ish role names. The hex in each comment is the board's value.
+ * The three phone overrides sit below the block: @theme cannot hold a media query.
+ */
+@theme {
+  /* Surfaces: cold asphalt, the raised board lighter than the ground */
+  --color-background: oklch(16.0% 0.012 242) /* #090e12 */; /* page ground (today oklch(16% 0.012 250): darker now) */
+  --color-surface: oklch(16.0% 0.012 242) /* #090e12 */; /* same as the background, as today */
+  --color-surface-container-lowest: oklch(16.0% 0.012 242) /* #090e12 */; /* kept: no longer a distinct band */
+  --color-surface-container-low: oklch(23.5% 0.015 244) /* #181f25 */; /* kept: alias of the raised surface */
+  --color-surface-container: oklch(23.5% 0.015 244) /* #181f25 */; /* header band, board, tiles, coverage panel, steps strip, footer rules */
+  --color-surface-container-high: oklch(29.0% 0.018 252) /* #252c34 */; /* backup line cells, pictogram wells, menu button */
+  --color-surface-container-highest: oklch(29.0% 0.018 252) /* #252c34 */; /* kept: alias */
+
+  /* Ink */
+  --color-on-surface: oklch(94.9% 0.007 89) /* #f0eee9 */;
+  --color-on-surface-variant: oklch(75.0% 0.012 244) /* #a8afb5 */; /* lede, nav, copy, footer text */
+  --color-outline: oklch(52.1% 0.014 248) /* #636a71 */; /* outline controls: header call, Ce facem underline */
+  --color-outline-variant: oklch(33.0% 0.013 248) /* #30363c */; /* a panel's edge, rules inside panels */
+
+  /* Primary: the amber beacon. Marks only now: beacon, lane start, map hub, step nodes, focus ring. Never text. */
+  --color-primary: oklch(80.0% 0.160 80) /* #f3b01d */;
+  --color-primary-hover: oklch(80.0% 0.160 80) /* #f3b01d */;
+  --color-on-primary: oklch(18.1% 0.021 85) /* #161107 */;
+  --color-primary-container: oklch(30.1% 0.050 80) /* #3b2b0d */; /* the demo banner */
+  --color-on-primary-container: oklch(85.9% 0.130 82) /* #fbc865 */;
+  --color-primary-bright: oklch(80.0% 0.160 80) /* #f3b01d */;
+
+  /* Accent: safety orange, the one call. Dark ink on it, never white. */
+  --color-accent: oklch(68.1% 0.198 44) /* #f76400 */;
+  --color-accent-hover: oklch(71.9% 0.185 50) /* #fc7a14 */;
+  --color-on-accent: oklch(17.0% 0.030 45) /* #1a0b05 */; /* was white (3.02:1); now 6.20:1 */
+
+  /* NEW: the scene plate (today's reduced-motion backdrop, hardcoded in Hero.astro). Cum functioneaza owns it now; its gradient and scrim end on --color-background. */
+  --color-plate-top: oklch(10% 0.012 255);
+  --color-plate-mid: oklch(15% 0.013 250);
+  --color-plate-beacon: oklch(80% 0.16 80 / 0.2);
+  --color-plate-moon: oklch(95% 0.03 230 / 0.12);
+  --color-plate-road: oklch(45% 0.014 250 / 0.3);
+  --color-scrim: oklch(11% 0.012 255);
+  --color-mask-on: #000; /* NEW: the lane's fade mask in the steps strip */
+  --color-mask-half: rgb(0 0 0 / 0.45);
+
+  /* Type */
+  --font-display: "Big Shoulders Display Variable", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Archivo Variable", system-ui, sans-serif;
+  --text-display: 5rem; --text-display--line-height: 1; --text-display--font-weight: 800; /* h1 */
+  --text-h2: 3rem; --text-h2--line-height: 1; --text-h2--font-weight: 800; /* section heads, the board head, the plate number */
+  --text-h3: 1.75rem; --text-h3--line-height: 1.0715; --text-h3--font-weight: 800; /* line numbers, tile and step titles */
+  --text-lede: 1.25rem; --text-lede--line-height: 1.5;
+  --text-body: 1rem; --text-body--line-height: 1.625;
+  --text-label: 0.875rem; --text-label--line-height: 1.4286; --text-label--font-weight: 600; /* status, line names, legal */
+
+  /* Radius: controls 4, wells 8, panels 12 */
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.25rem; /* buttons, line cells (was 7px) */
+  --radius-lg: 0.5rem; /* pictogram wells (was 10px) */
+  --radius-xl: 0.75rem; /* board, tiles, panels, strip (was 15px) */
+  --radius-full: 9999px;
+
+  /* Elevation: the board alone */
+  --shadow-board: 0 24px 48px -24px rgb(0 0 0 / 0.7); /* NEW */
+
+  --container-max-width: 1200px;
+  --z-canvas: 0;
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+}
+
+/* Phone: heads step down (the call dock and the board stay as drawn) */
+@media (max-width: 760px) {
+  :root {
+    --text-display: 2.75rem; --text-display--line-height: 1.0455;
+    --text-h2: 2rem; --text-h2--line-height: 1.0625;
+    --text-h3: 1.5rem; --text-h3--line-height: 1.0833;
+    --text-lede: 1.0625rem; --text-lede--line-height: 1.47;
+  }
+}

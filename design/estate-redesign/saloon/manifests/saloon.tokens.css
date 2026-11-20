@@ -1,0 +1,96 @@
+/* Saloon (Unghii by Ana): drop-in for src/styles/global.css, direction "Menu beside the work".
+   One light look: there is no [data-theme="dark"] block, by the owner's answer to Q18 (decisions-ui.md).
+   Replace the @theme block's values; names are the site's own. New names are marked NEW. */
+@theme {
+  /* Surfaces: ground, band, card, well */
+  --color-surface: #f5e8e2;
+  --color-surface-dim: #e3cdc4;
+  --color-surface-bright: #f5e8e2;
+  --color-surface-container-lowest: #fffcfb;   /* card: always with an edge and --shadow-card */
+  --color-surface-container-low: #efdcd4;      /* band */
+  --color-surface-container: #f1dfd8;
+  --color-surface-container-high: #f3ddd5;     /* picture well */
+  --color-surface-container-highest: #ead3ca;
+  --color-on-surface: #241914;
+  --color-on-surface-variant: #4f4442;
+  --color-inverse-surface: #3b2e28;            /* footer */
+  --color-inverse-on-surface: #ffede7;
+  --color-inverse-on-surface-variant: #dccbc4; /* NEW: footer secondary text, replaces opacity-70 and opacity-80 */
+  --color-outline: #86726e;
+  --color-outline-variant: #dcc3ba;
+  --color-surface-tint: #705955;
+
+  --color-primary: #705955;
+  --color-on-primary: #fffcfb;
+  --color-primary-container: #f4d6d0;
+  --color-on-primary-container: #5f4743;
+  --color-inverse-primary: #ddc0ba;
+
+  --color-secondary: #6f561a;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #f6e4bd;        /* notice band */
+  --color-on-secondary-container: #5a4512;
+
+  --color-tertiary: #605e5b;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #e0dcd7;
+  --color-on-tertiary-container: #62605d;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-background: #f5e8e2;
+  --color-on-background: #241914;
+  --color-surface-variant: #f4ded6;
+
+  /* Brand */
+  --color-blush: #f4d6d0;
+  --color-blush-deep: #e8a6a0;
+  --color-gold: #c9a961;                       /* the rule, the notice foot, the signature underline; never text */
+  --color-gold-ink: #7a6118;                   /* prices, numerals and the focus ring; on card or ground only */
+  --color-cream: #fbf7f2;
+  --color-whatsapp: #118040;
+  --color-whatsapp-deep: #0e7a37;
+  --color-on-whatsapp: #fffcfb;                /* NEW */
+  --color-on-whatsapp-wash: rgb(255 252 251 / 0.16); /* NEW: the glyph disc on the booking card */
+  --color-inverse-wash: rgb(255 252 251 / 0.1);      /* NEW: footer hover and chip fill */
+  --color-inverse-line: rgb(255 252 251 / 0.16);     /* NEW: footer hairline */
+
+  /* Typography */
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --text-display: 4rem;                        /* NEW: h1, 64/68; phone 40/44, sized to the width */
+  --text-display--line-height: 1.0625;
+  --text-display--font-weight: 440;
+  --text-heading: 2rem;                        /* NEW: h2, 32/38; phone 28/34 */
+  --text-heading--line-height: 1.1875;
+  --text-heading--font-weight: 440;
+  --text-title: 1.5rem;                        /* NEW: titles, prices, steps, signature, 24/30 */
+  --text-title--line-height: 1.25;
+  --text-title--font-weight: 500;
+  --text-lead: 1.125rem;                       /* NEW: 18/28; phone 16/24 */
+  --text-lead--line-height: 1.5556;
+  --text-label: 0.875rem;                      /* NEW: 14/20: subtitles, notice, foot, legal */
+  --text-label--line-height: 1.4286;
+
+  /* Radii: 8, 16, 24 and full */
+  --radius-sm: 0.25rem;
+  --radius: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgb(36 25 20 / 0.06), 0 12px 32px -16px rgb(36 25 20 / 0.22); /* NEW */
+  --shadow-glow: 0 8px 20px -8px rgb(17 128 64 / 0.55);                                    /* NEW: the booking button */
+
+  /* Layers */
+  --z-index-header: 20; /* NEW */
+  --z-index-dock: 30;   /* NEW: phone booking bar, above the header */
+
+  /* Container */
+  --container-max-width: 1200px;
+}

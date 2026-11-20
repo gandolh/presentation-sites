@@ -711,3 +711,7 @@ no phone number wraps, clip and gap checks) runs beside the shared Floor checks.
 `PRODUCT.md`'s structural move changed and the reopened lines are recorded as changed in `wiki/decisions-ui.md`. At 1280 the
 page differs from the twin by 0.47% of pixels. Waits on `node cli.ts tractari deploy`. Details in the
 [brief's outcome](briefs/done/08-tractari-redesign-with-hallmark-on-the-estate-board.md).
+
+## [2026-11-20] maintenance | The redesigns' board pages copied into the repo
+
+The estate redesign board is a private canvas, so `design/estate-redesign/` now holds a copy of each site's page on it and the build behind it, one folder per site (auto-service, saloon, subcort, tractari, churchix): the directions, the judges' and the controller's rulings, the critique, the token hand-off, the board's notes, the owner's decisions, the proposed screens as HTML with renders, and today's shots from before the redesign. They are the design record of briefs 05-08 and churchix brief 05, which built them. Prettier skips the folder.

@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unghii by Ana home first paint (twin)</title>
+<meta name="description" content="Plain-HTML twin of the board comp for the local Floor checks.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,400..600,0..100&amp;family=Manrope:wght@400..700&amp;display=swap">
+<style>
+/* Hallmark · shape: client site · genre: local service, booking by message · theme: brand · redesign: full
+ * paper: #f5e8e2 blush-cream · accent: #f4d6d0 blush, #118040 WhatsApp green for every booking action · display: Fraunces · body: Manrope
+ * nav: kept (wordmark, five places, a Programează-te pill; phone Drawer; docked WhatsApp and call bar) · signature: the price menu card beside the photo on the first screen · states: failed picture, focus, reduced motion, dock hides at booking
+ * axes: warm blush neutrals/soft serif plus humanist sans/one green action · posture: restrained · modes: light only · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, the page is calm by design, so the green action and the raised menu carry the emphasis */
+/* Hallmark · waive 24b · gaps and paddings of 6, 10, 12, 14 off the 4px scale · half steps that centre 20px icons beside text, hold the 6px icon gap the direction names and keep three price rows whole on the first screen; no value is arbitrary */
+/* Hallmark · waive 26b · no :disabled styling · the page has no control that can be disabled, only links and a button that opens the Drawer; :active is styled */
+/* Hallmark · waive 38ii · italic display type on .wordmark · the italic Fraunces wordmark and the signature · the identity DESIGN.md keeps ("Identity preservation wins"); no heading is italic */
+/* Hallmark · waive 72 · details.card at 1440px · the closed FAQ rows hold their answers hidden, so the linter reads text outside the box; open rows pad 24px at the sides and 20px below */
+/* Hallmark · answered F4 · one filled green action for booking everywhere; the call button and Instagram are outlined, and the loyalty panel's rose-brown button sits on blush where a green one would clash and a blush one would vanish */
+:root{--color-surface:#f5e8e2;--color-surface-container-lowest:#fffcfb;--color-surface-container-low:#efdcd4;--color-surface-container:#f1dfd8;--color-surface-container-high:#f3ddd5;--color-surface-container-highest:#ead3ca;--color-surface-dim:#e3cdc4;--color-on-surface:#241914;--color-on-surface-variant:#4f4442;--color-outline:#86726e;--color-outline-variant:#dcc3ba;--color-primary:#705955;--color-on-primary:#fffcfb;--color-primary-container:#f4d6d0;--color-on-primary-container:#5f4743;--color-secondary:#6f561a;--color-secondary-container:#f6e4bd;--color-on-secondary-container:#5a4512;--color-blush:#f4d6d0;--color-blush-deep:#e8a6a0;--color-gold:#c9a961;--color-gold-ink:#7a6118;--color-cream:#fbf7f2;--color-whatsapp:#118040;--color-whatsapp-deep:#0e7a37;--color-on-whatsapp:#fffcfb;--color-inverse-surface:#3b2e28;--color-inverse-on-surface:#ffede7;--color-inverse-on-surface-variant:#dccbc4;--color-on-whatsapp-wash:rgb(255 252 251 / .16);--color-inverse-wash:rgb(255 252 251 / .1);--color-inverse-line:rgb(255 252 251 / .16);--color-background:#f5e8e2;--color-on-background:#241914;--font-display:"Fraunces",Georgia,"Times New Roman",serif;--font-body:"Manrope",system-ui,sans-serif;--radius:8px;--radius-lg:16px;--radius-xl:24px;--radius-full:9999px;--shadow-card:0 1px 2px rgb(36 25 20 / .06),0 12px 32px -16px rgb(36 25 20 / .22);--shadow-glow:0 8px 20px -8px rgb(17 128 64 / .55)}
+html,body{margin:0;overflow-x:clip}
+html{scroll-padding-top:84px}
+@media (max-width:900px){html{scroll-padding-top:80px}}
+.sa{container:page / inline-size;background:var(--color-surface);color:var(--color-on-surface);font-family:var(--font-body);font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased;font-synthesis:none;position:relative;min-height:800px}
+.sa :where(strong,b){font-weight:600}
+.sa *{box-sizing:border-box}
+.sa :where(h1,h2,h3,p,ul,ol,dl,dd,figure){margin:0;padding:0}
+.sa :where(ul,ol){list-style:none}
+:where(.sa) a{color:inherit}
+.sa svg{flex:none}
+.sa :focus-visible{outline:2px solid var(--color-gold-ink);outline-offset:3px}
+.sa :where(.dark-on) :focus-visible{outline-color:var(--color-inverse-on-surface)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px;position:relative}
+h1,h2,h3,.serif{font-family:var(--font-display);font-variation-settings:"SOFT" 30}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+.notice{background:var(--color-secondary-container);color:var(--color-on-secondary-container);border-bottom:1px solid var(--color-gold);font-size:14px;line-height:20px;text-align:center;padding:8px 20px;min-height:36px}
+.header{position:sticky;top:0;z-index:20;background:var(--color-surface);border-bottom:1px solid var(--color-outline-variant)}
+.header .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px}
+.wordmark{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-style:italic;font-weight:500;font-size:28px;line-height:32px;text-decoration:none;color:var(--color-on-surface);justify-self:start}
+.places{display:flex;gap:8px}
+.places a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-weight:500;color:var(--color-on-surface-variant);text-decoration:none;border-radius:var(--radius-full)}
+.places a:hover{color:var(--color-on-surface)}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-blush);color:var(--color-on-surface);border:1px solid var(--color-outline-variant);font:600 16px/20px var(--font-body);text-decoration:none;box-shadow:var(--shadow-card);justify-self:end}
+.pill:hover{background:var(--color-blush-deep)}
+.menu-btn{display:none;width:48px;height:48px;border:0;background:transparent;color:var(--color-on-surface);border-radius:var(--radius-full);align-items:center;justify-content:center;cursor:pointer;justify-self:end}
+.btn-wa{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-whatsapp);color:var(--color-on-whatsapp);font:600 16px/20px var(--font-body);text-decoration:none;box-shadow:var(--shadow-glow)}
+.btn-wa:hover{background:var(--color-whatsapp-deep)}
+.btn-wa:active,.btn-line:active,.btn-prim:active,.pill:active{transform:translateY(1px)}
+.btn-line:active{background:var(--color-surface-container-high)}
+.btn-line{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-surface-container-lowest);color:var(--color-on-surface);border:1.5px solid var(--color-outline);font:600 16px/20px var(--font-body);text-decoration:none}
+.btn-line:hover{border-color:var(--color-on-surface)}
+.btn-prim{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 28px;border-radius:var(--radius-full);background:var(--color-primary);color:var(--color-on-primary);font:600 16px/20px var(--font-body);text-decoration:none}
+.btn-prim:hover{background:var(--color-inverse-surface)}
+.link{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:600;color:var(--color-on-surface);text-decoration:underline;text-decoration-color:var(--color-outline-variant);text-decoration-thickness:2px;text-underline-offset:6px;white-space:nowrap}
+.link:hover{text-decoration-color:var(--color-on-surface)}
+.link:hover svg{transform:translateX(2px)}
+.link svg{transition:transform 200ms cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){.link svg{transition:none}.link:hover svg{transform:none}}
+.t-h1{font-weight:440;font-size:64px;line-height:68px;letter-spacing:-.015em}
+.t-h2{font-weight:440;font-size:32px;line-height:38px;letter-spacing:-.01em}
+.t-h3{font-weight:500;font-size:24px;line-height:30px}
+.t-lead{font-size:18px;line-height:28px;color:var(--color-on-surface-variant)}
+.t-label{font-size:14px;line-height:20px}
+.muted{color:var(--color-on-surface-variant)}
+
+/* hero */
+.hero{padding:28px 0 56px}
+.hero h1{margin:0 0 8px}
+.hero .t-lead{margin:0 0 20px}
+.hero .go{margin-bottom:28px;display:flex;align-items:center;gap:24px}
+.pair{display:grid;grid-template-columns:5fr 6fr;gap:32px;align-items:stretch}
+.slot{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--color-outline-variant)}
+.slot span{font-family:var(--font-display);font-style:italic;font-size:26px;line-height:32px;color:color-mix(in srgb,var(--color-on-surface) 58%,transparent);text-align:center;padding:0 12px}
+.slot-hero{border-radius:var(--radius-xl);background:linear-gradient(135deg,var(--color-blush),var(--color-cream));min-height:300px}
+.slot-ana{aspect-ratio:4/5;border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--color-surface-container-high),var(--color-blush-deep))}
+.card{background:var(--color-surface-container-lowest);border:1px solid var(--color-outline-variant);border-radius:var(--radius-xl);box-shadow:var(--shadow-card)}
+.menu{overflow:hidden;display:flex;flex-direction:column}
+.head{background:var(--color-blush);border-bottom:1px solid var(--color-outline-variant);padding:14px 24px 12px}
+.head .t-h2{font-size:32px}
+.head p{margin-top:2px;color:var(--color-on-surface-variant)}
+.rows{padding:0 24px}
+.row{padding:10px 0 12px}
+.row+.row{border-top:1px solid var(--color-outline-variant)}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px}
+.top .t-h3{flex:none;white-space:nowrap}
+.price{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-variant-numeric:tabular-nums;font-weight:500;font-size:24px;line-height:30px;color:var(--color-gold-ink);margin-left:auto;text-align:right}
+.price span{white-space:nowrap}
+.mid{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:20px}
+.sub{min-width:0;font-size:14px;line-height:20px;color:var(--color-secondary);font-weight:600}
+.desc{color:var(--color-on-surface-variant);margin-top:2px}
+.row .link{margin:-12px 0}
+.foot{padding:8px 24px 6px;border-top:1px solid var(--color-outline-variant);font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.foot a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--color-on-surface);text-decoration-color:var(--color-gold-ink);text-underline-offset:3px}
+
+/* sections */
+.band{background:var(--color-surface-container-low)}
+.sec{padding:80px 0}
+.sec-tight{padding:56px 0}
+.island{padding:48px}
+.about{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:56px;align-items:center}
+.about .slot-ana{order:2}
+.about-t{order:1}
+.rule{width:48px;height:2px;background:var(--color-gold);margin:20px 0 24px}
+.about p{color:var(--color-on-surface-variant);max-width:60ch}
+.about p+p{margin-top:16px}
+.sign{display:inline-block;font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-style:italic;font-weight:500;font-size:24px;line-height:30px;color:var(--color-primary);text-decoration:underline;text-decoration-color:var(--color-gold);text-decoration-thickness:2px;text-underline-offset:8px;margin-top:20px}
+.two{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:64px;align-items:start}
+.two .lead-p{margin-top:16px}
+.proto{padding:8px 40px}
+.proto li{display:grid;grid-template-columns:44px 1fr;gap:20px;padding:24px 0}
+.proto li+li{border-top:1px solid var(--color-outline-variant)}
+.num{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-variant-numeric:tabular-nums;font-size:24px;line-height:30px;color:var(--color-gold-ink)}
+.proto p{margin-top:8px;color:var(--color-on-surface-variant);max-width:60ch}
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.gal .slot{aspect-ratio:3/4;border-radius:var(--radius-lg)}
+.gal .slot span{font-size:24px;line-height:30px}
+.g1{background:linear-gradient(135deg,var(--color-blush),var(--color-blush-deep))}
+.g2{background:linear-gradient(135deg,var(--color-surface-container-high),var(--color-cream))}
+.g3{background:linear-gradient(135deg,var(--color-cream),var(--color-gold))}
+.g4{background:linear-gradient(135deg,var(--color-gold),var(--color-blush))}
+.g5{background:linear-gradient(135deg,var(--color-primary),var(--color-blush))}
+.g6{background:linear-gradient(135deg,var(--color-blush-deep),var(--color-surface-container-high))}
+.center{text-align:center;margin-top:48px}
+.loy{background:var(--color-blush);border:1px solid var(--color-outline-variant);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:64px}
+.loy-g{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.loy .t-h2{color:var(--color-on-primary-container);font-size:40px;line-height:46px}
+.perk{display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start}
+.perk+.perk{margin-top:20px}
+.coin{width:40px;height:40px;border-radius:50%;background:var(--color-surface-container-lowest);color:var(--color-on-primary-container);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;border:1px solid var(--color-outline-variant)}
+.faq{display:grid;grid-template-columns:minmax(0,1fr) 17rem;gap:56px;align-items:start;margin-top:40px}
+.faqcard{overflow:hidden}
+.qa+.qa{border-top:1px solid var(--color-outline-variant)}
+.qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:12px 24px;font-weight:600}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary svg{color:var(--color-primary)}
+.qa[open] summary svg{transform:rotate(45deg)}
+.qa p{padding:0 24px 20px;color:var(--color-on-surface-variant);max-width:62ch}
+.ask{background:var(--color-blush);border:1px solid var(--color-outline-variant);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-card)}
+.ask .serif{font-size:24px;line-height:30px;font-weight:500}
+.ask p+p{margin-top:8px;color:var(--color-on-surface-variant)}
+.book{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.good{margin-top:24px;padding:20px 24px;border-radius:var(--radius-lg)}
+.good b.l{display:block;font-size:14px;line-height:20px;font-weight:600;color:var(--color-secondary)}
+.good ul{margin-top:10px;font-size:14px;line-height:22px;color:var(--color-on-surface-variant)}
+.good li+li{margin-top:8px}
+.good a{font-weight:600;color:var(--color-on-surface)}
+.wa-card{display:grid;grid-template-columns:48px 1fr 20px;gap:16px;align-items:center;padding:20px 24px;border-radius:20px;background:var(--color-whatsapp);color:var(--color-on-whatsapp);text-decoration:none;box-shadow:var(--shadow-glow)}
+.wa-card:hover{background:var(--color-whatsapp-deep)}
+.wa-card .ic{width:48px;height:48px;border-radius:50%;background:var(--color-on-whatsapp-wash);display:flex;align-items:center;justify-content:center}
+.wa-card b{display:block;font-size:16px;line-height:20px;font-weight:600}
+.wa-card span.s{display:block;font-size:14px;line-height:20px}
+.or{text-align:center;margin:16px 0 12px;font-size:14px;line-height:20px;color:var(--color-on-surface-variant)}
+.call-wide{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:var(--radius-lg);background:var(--color-surface-container-lowest);border:1.5px solid var(--color-outline);text-decoration:none;font-weight:600;color:var(--color-on-surface);padding:8px 20px;flex-wrap:wrap;column-gap:10px}
+.call-wide:hover{border-color:var(--color-on-surface)}
+.num-t{font-variant-numeric:tabular-nums}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:32px}
+.info{padding:32px}
+.info dl>div+div{margin-top:24px}
+.info dt{font-size:14px;line-height:20px;font-weight:600;color:var(--color-on-surface-variant)}
+.info dd{margin-top:4px}
+.info .big{font-family:var(--font-display);font-variation-settings:"SOFT" 30;font-size:20px;line-height:28px;color:var(--color-on-surface);text-decoration:none}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:8px 0}
+.hours li+li{border-top:1px solid var(--color-outline-variant)}
+.hours b{font-weight:600;font-variant-numeric:tabular-nums}
+.btns{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px}
+.footer{background:var(--color-inverse-surface);color:var(--color-inverse-on-surface);margin-top:0}
+.footer .grid4{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.2fr;gap:48px;padding:64px 0 48px}
+.footer .wordmark{color:var(--color-inverse-on-surface);font-size:30px}
+.footer .mut{color:var(--color-inverse-on-surface-variant)}
+.footer h3.fl{font-family:var(--font-body);font-variation-settings:normal;font-size:14px;line-height:20px;font-weight:600;color:var(--color-inverse-on-surface-variant);margin-bottom:8px}
+.footer nav a,.footer .c a.t{display:flex;align-items:center;min-height:44px;font-size:14px;line-height:20px;text-decoration:none;color:var(--color-inverse-on-surface)}
+.footer nav a:hover,.footer .c a.t:hover{text-decoration:underline;text-underline-offset:4px}
+.soc{display:flex;gap:4px;margin-top:8px}
+.soc a{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--color-inverse-on-surface);border-radius:50%}
+.soc a:hover{background:var(--color-inverse-wash)}
+.legal{border-top:1px solid var(--color-inverse-line);padding:24px 0 28px;font-size:14px;line-height:20px;color:var(--color-inverse-on-surface-variant)}
+.legal ul{display:flex;flex-wrap:wrap;gap:4px 24px}
+.legal .row2{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.anpc{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:var(--color-inverse-on-surface);text-decoration:none}
+.anpc b{border-radius:4px;background:var(--color-inverse-wash);padding:2px 8px;font-weight:600}
+.dock{display:none}
+.co{display:none}
+@container page (min-width:901px){
+  .header .wrap{height:68px}
+  .hero h1{margin-bottom:16px}
+  .row{padding:12px 0 14px}
+  .desc{margin-top:4px}
+  .t-h1{font-variation-settings:"SOFT" 30,"opsz" 96}
+}
+@container page (min-width:1100px){
+  .co.r{left:auto;right:2px}
+  .co{display:flex;position:absolute;left:2px;width:24px;height:24px;border-radius:50%;background:var(--color-on-surface);color:var(--color-surface);font-size:14px;line-height:1;font-weight:600;align-items:center;justify-content:center;z-index:3}
+}
+@container page (max-width:1040px){
+  .pair{grid-template-columns:1fr 1fr;gap:24px}
+  .footer .grid4{grid-template-columns:1fr 1fr}
+}
+@container page (max-width:900px){
+  .header nav{display:none}
+  .menu-btn{display:inline-flex}
+  .header .wrap{grid-template-columns:1fr auto auto;gap:12px;height:64px}
+  .header .pill{height:44px;padding:0 20px}
+  .wordmark{font-size:24px;line-height:30px}
+  .two,.book,.contact,.faq,.loy-g,.about{grid-template-columns:1fr}
+  .about .slot-ana,.about-t{order:0}
+  .two,.book,.contact,.faq,.loy-g,.about{gap:32px}
+  .pair{grid-template-columns:1fr}
+  .slot-hero{min-height:0;height:240px}
+  .lands .slot-hero{display:none}
+}
+@container page (max-width:760px){
+  .header .pill{display:none}
+  .header .wrap{grid-template-columns:1fr auto;gap:0}
+  .wrap{padding:0 20px}
+  .notice{padding:6px 16px}
+  .hero{padding:20px 0 36px}
+  .t-h1{font-variation-settings:"SOFT" 30}
+  .hero h1{font-size:min(40px,10cqw);line-height:1.1;margin-bottom:8px}
+  .hero .t-lead{font-size:16px;line-height:24px;margin-bottom:16px}
+  .hero .go{display:none}
+  .pair{gap:16px}
+  .slot-hero{aspect-ratio:auto;height:46cqw;border-radius:20px}
+  .slot span{font-size:22px}
+  .t-h2,.head .t-h2{font-size:28px;line-height:34px}
+  .menu{border-radius:20px}
+  .head{padding:12px 20px 10px}
+  .rows{padding:0 20px}
+  .row{padding:8px 0 10px}
+  .foot{padding:8px 20px 6px}
+  .sec{padding:48px 0}
+  .sec-tight{padding:40px 0}
+  .island{padding:24px;border-radius:20px}
+  .proto{padding:4px 20px}
+  .proto li{grid-template-columns:32px 1fr;gap:12px;padding:20px 0}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
+  .gal .slot span{font-size:20px;line-height:26px}
+  .loy{padding:28px 20px;border-radius:20px}
+  .loy .t-h2{font-size:28px;line-height:34px}
+  .info{padding:24px 20px}
+  .footer .grid4{grid-template-columns:1fr;gap:24px;padding:48px 0 32px}
+  .footer .wordmark{font-size:28px}
+  .center{margin-top:32px}
+  .btns{flex-direction:column;align-items:stretch}
+  .btns>a{width:100%}
+  .dock{position:sticky;bottom:0;z-index:30;display:flex;gap:12px;align-items:center;padding:10px 20px 10px;min-height:72px;background:var(--color-surface-container-lowest);border-top:1px solid var(--color-outline-variant);box-shadow:var(--shadow-card)}
+  .dock .btn-wa{flex:1;min-width:0;padding:0 16px}
+  .dock .call{flex:none;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--color-outline);background:var(--color-surface-container-lowest);color:var(--color-on-surface);display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+  .wa-card{grid-template-columns:44px 1fr 20px;padding:16px}
+}
+@container page (max-width:380px){
+  .wrap{padding:0 16px}
+  .head{padding-left:16px;padding-right:16px}
+  .rows{padding:0 16px}
+  .foot{padding-left:16px;padding-right:16px}
+  .slot-hero{height:40cqw}
+  .dock{padding:10px 16px}
+  .btn-wa,.btn-line{padding:0 16px;gap:8px}
+  .dock .btn-wa{padding:0 12px}
+}
+.frame{width:390px;height:844px;overflow:hidden;position:relative}
+.frame .dock{position:absolute;left:0;right:0;bottom:0}
+</style>
+</head>
+<body>
+<div class="look sa frame">
+<div class="notice">Site în lucru. Pentru programări, scrie-mi oricând pe WhatsApp.</div>
+<header class="header">
+<div class="wrap">
+<a class="wordmark" href="#acasa">Unghii by Ana</a>
+<nav aria-label="Principal"><ul class="places">
+<li><a href="#despre">Despre</a></li><li><a href="#servicii">Servicii</a></li><li><a href="#galerie">Galerie</a></li><li><a href="#intrebari">Întrebări</a></li><li><a href="#contact">Contact</a></li>
+</ul></nav>
+<a class="pill" href="#programari">Programează-te</a>
+<button class="menu-btn" type="button" aria-label="Deschide meniul"><svg width="28" height="28" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="80" x2="216" y2="80"></line><line x1="40" y1="128" x2="216" y2="128"></line><line x1="40" y1="176" x2="216" y2="176"></line></svg></button>
+</div>
+</header>
+<main>
+<section class="hero" id="acasa">
+<div class="wrap">
+<span class="co l" style="top:26px" aria-hidden="true">1</span>
+<h1 class="t-h1">Unghii care vorbesc despre tine</h1>
+<p class="t-lead">Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.</p>
+<div class="go"><a class="btn-wa" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Programează-te pe WhatsApp</a></div>
+<span class="co r" style="top:206px" aria-hidden="true">2</span>
+<div class="pair">
+<div class="slot slot-hero" role="img" aria-label="Detaliu cu unghii manichiurate de Ana"><span>Hero photo</span></div>
+<section class="card menu" id="servicii" aria-labelledby="h-servicii">
+<header class="head"><h2 class="t-h2" id="h-servicii">Servicii &amp; prețuri</h2><p class="t-label">Prețuri orientative. Pentru o ofertă personalizată, scrie-mi pe WhatsApp.</p></header>
+<ul class="rows">
+<li class="row"><div class="top"><h3 class="t-h3">Manichiură</h3><b class="price"><span>de la 80 lei</span></b></div><div class="mid"><p class="sub">Clasică &amp; semipermanentă</p><a class="link" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare%20pentru%20Manichiur%C4%83.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F" aria-label="Programează, Manichiură">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="desc">Manichiură îngrijită cu lac semipermanent rezistent până la 3 săptămâni.</p></li>
+<li class="row"><div class="top"><h3 class="t-h3">Unghii cu gel</h3><b class="price"><span>de la 150 lei</span></b></div><div class="mid"><p class="sub">Construcție &amp; gel</p><a class="link" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare%20pentru%20Unghii%20cu%20gel.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F" aria-label="Programează, Unghii cu gel">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="desc">Construcție pe tipsuri sau șablon, pentru unghii rezistente și un aspect impecabil.</p></li>
+<li class="row"><div class="top"><h3 class="t-h3">Nail Art</h3><b class="price"><span>de la 20 lei</span> <span>/ unghie</span></b></div><div class="mid"><p class="sub">Design-uri personalizate</p><a class="link" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare%20pentru%20Nail%20Art.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F" aria-label="Programează, Nail Art">Programează<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></div><p class="desc">French, babyboomer, ombre, pictură manuală: design-uri unice, adaptate stilului tău.</p></li>
+</ul>
+<p class="foot">Nu găsești ce cauți? <span style="white-space:nowrap"><a href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20vrea%20s%C4%83%20%C3%AEntreb%20despre%20un%20serviciu%20care%20nu%20e%20%C3%AEn%20list%C4%83.">Întreabă-mă pe WhatsApp</a>.</span></p>
+</section>
+</div>
+</div>
+</section>
+<section class="band sec" id="despre">
+<div class="wrap">
+<span class="co l" style="top:82px" aria-hidden="true">3</span>
+<div class="card island about">
+<div class="about-t">
+<h2 class="t-h2">Bună, sunt Ana</h2>
+<div class="rule"></div>
+<p>Am început manichiura lucrând pentru prietene și familie, iar de câțiva ani o fac cu seriozitate, pentru tot mai multe cliente. Pun suflet în fiecare set de unghii și știu că pot livra un rezultat de care să fii mulțumită.</p>
+<p>Lucrez cu produse de calitate, în condiții de igienă atente, și îmi place să ascult ce își dorește fiecare clientă, ca rezultatul să fie exact pe gustul tău.</p>
+<p>Dacă vrei unghii îngrijite și un moment doar pentru tine, te aștept în Iezureni.</p>
+<span class="sign" aria-label="semnat, Ana">cu drag, Ana</span>
+</div>
+<div class="slot slot-ana" role="img" aria-label="Portret al Anei"><span>Portret Ana</span></div>
+</div>
+</div>
+</section>
+<section class="sec" id="igiena">
+<div class="wrap"><span class="co l" style="top:2px" aria-hidden="true">4</span><div class="two">
+<div><h2 class="t-h2">Curățenie fără compromisuri</h2><p class="lead-p muted">Sănătatea ta contează la fel de mult ca aspectul unghiilor. Iată cum am grijă de igienă la fiecare programare.</p></div>
+<ol class="card proto">
+<li><span class="num" aria-hidden="true">01</span><div><h3 class="t-h3">Sterilizare în autoclav</h3><p>Instrumentarul metalic este sterilizat în autoclav după fiecare clientă, standardul medical pentru eliminarea completă a microorganismelor.</p></div></li>
+<li><span class="num" aria-hidden="true">02</span><div><h3 class="t-h3">Consumabile de unică folosință</h3><p>Pilele, buffer-ele și alte consumabile care nu se pot steriliza sunt de unică folosință, proaspete pentru fiecare programare.</p></div></li>
+<li><span class="num" aria-hidden="true">03</span><div><h3 class="t-h3">Dezinfecție &amp; suprafețe curate</h3><p>Masa de lucru, lampa și suprafețele sunt dezinfectate între cliente, iar mâinile igienizate riguros înainte de fiecare serviciu.</p></div></li>
+</ol>
+</div></div>
+</section>
+<section class="band sec" id="galerie">
+<div class="wrap">
+<h2 class="t-h2">Lucrări recente</h2>
+<p class="lead-p muted" style="margin-top:12px;max-width:55ch">Croite pe stilul fiecărei cliente.</p>
+<ul class="gal">
+<li><figure class="slot g1" role="img" aria-label="Manichiură semipermanentă nude" style="width:100%"><span>Galerie 1</span></figure></li>
+<li><figure class="slot g2" role="img" aria-label="Unghii cu gel french clasic" style="width:100%"><span>Galerie 2</span></figure></li>
+<li><figure class="slot g3" role="img" aria-label="Nail art floral pe fundal blush" style="width:100%"><span>Galerie 3</span></figure></li>
+<li><figure class="slot g4" role="img" aria-label="Babyboomer cu accent gold" style="width:100%"><span>Galerie 4</span></figure></li>
+<li><figure class="slot g5" role="img" aria-label="Ombre roz pal cu sclipici" style="width:100%"><span>Galerie 5</span></figure></li>
+<li><figure class="slot g6" role="img" aria-label="Manichiură roșie clasică" style="width:100%"><span>Galerie 6</span></figure></li>
+</ul>
+<div class="center"><a class="btn-line" href="https://instagram.com/anasaloon" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="36" y="36" width="184" height="184" rx="52"></rect><circle cx="128" cy="128" r="42"></circle><circle cx="180" cy="76" r="4"></circle></svg>Urmărește-mă pe Instagram</a></div>
+</div>
+</section>
+<section class="sec" id="loialitate">
+<div class="wrap"><div class="loy"><div class="loy-g">
+<div><h2 class="t-h2">Cu cât vii mai des, cu atât te răsfeți mai mult.</h2><div class="rule"></div></div>
+<div>
+<div class="perk"><span class="coin" aria-hidden="true">5</span><p>La fiecare <strong>a 5-a programare</strong>, primești <strong>20% reducere</strong> la serviciul ales. Ne ținem evidența, tu te bucuri de unghii frumoase.</p></div>
+<div class="perk"><span class="coin" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="128" cy="96" r="36"></circle><path d="M60 204c0-34 30-56 68-56s68 22 68 56"></path><circle cx="44" cy="112" r="24"></circle><circle cx="212" cy="112" r="24"></circle></svg></span><p><strong>Recomandă o prietenă</strong> și primiți amândouă <strong>10% reducere</strong> la următoarea vizită.</p></div>
+<div class="perk"><span class="coin" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="40" y="88" width="176" height="48" rx="8"></rect><path d="M52 136v72h152v-72M128 88v120M128 88c-20-8-44-12-44-36s30-24 44 4c14-28 44-28 44-4s-24 28-44 36z"></path></svg></span><p><strong>Voucher cadou</strong>: surprinde pe cineva drag cu un card cadou pentru serviciile mele. Scrie-mi pe WhatsApp și îl pregătesc.</p></div>
+<div style="margin-top:28px"><a class="btn-prim" href="#programari">Programează-te acum</a></div>
+</div>
+</div></div></div>
+</section>
+<section class="band sec" id="intrebari">
+<div class="wrap">
+<h2 class="t-h2">Întrebări frecvente</h2>
+<div class="faq">
+<div class="card faqcard">
+<details class="qa" open="open"><summary><span>Cum mă programez?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Cel mai simplu pe WhatsApp: apasă butonul „Programează-te”, scrie-mi ziua și intervalul preferat, iar eu îți confirm un loc liber. Mă poți suna și la telefon.</p></details>
+<details class="qa"><summary><span>Cât rezistă manichiura semipermanentă?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>În medie 2-3 săptămâni, în funcție de ritmul de creștere al unghiilor și de activitatea zilnică. Pentru construcția cu gel, rezistența este de obicei mai mare.</p></details>
+<details class="qa"><summary><span>Ce produse folosești?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Lucrez doar cu produse premium, profesionale, și pun accent pe igienă impecabilă: instrumentar sterilizat și consumabile de unică folosință acolo unde e cazul.</p></details>
+<details class="qa"><summary><span>Cât durează o programare?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>O manichiură semipermanentă durează în jur de o oră; construcția cu gel sau un nail art mai elaborat pot dura mai mult. Îți spun estimarea când stabilim programarea.</p></details>
+<details class="qa"><summary><span>Care este politica de anulare?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Te rog să anunți o eventuală anulare sau reprogramare cu cel puțin 24 de ore înainte, ca să pot oferi locul altei cliente. Detalii în pagina de Termeni și condiții.</p></details>
+<details class="qa"><summary><span>Cum pot plăti?</span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="128" y1="48" x2="128" y2="208"></line><line x1="48" y1="128" x2="208" y2="128"></line></svg></summary><p>Plata se face la programare, în numerar sau prin transfer/aplicație, după preferință. Confirmăm detaliile când stabilim programarea.</p></details>
+</div>
+<aside class="ask"><p class="serif">Nu ai găsit răspunsul?</p><p class="t-label" style="font-size:14px">Scrie-mi pe WhatsApp și îți răspund cât pot de repede.</p><a class="link" style="margin-top:12px" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20Am%20o%20%C3%AEntrebare%20despre%20serviciile%20tale." target="_blank" rel="noopener">Întreabă-mă<svg width="18" height="18" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a></aside>
+</div>
+</div>
+</section>
+<section class="sec" id="programari">
+<div class="wrap"><div class="book">
+<div>
+<h2 class="t-h2">Programează-te</h2>
+<p class="muted" style="margin-top:16px;max-width:52ch">Scrie-mi pe WhatsApp sau sună-mă, spune-mi ce serviciu te interesează și îți confirm programarea în cel mai scurt timp.</p>
+<div class="card good"><b class="l">Bun de știut</b>
+<ul><li>Programarea devine fermă după mesajul meu de confirmare pe WhatsApp.</li><li>Te rog anunță-mă cu minimum <strong>24 de ore</strong> înainte dacă vrei să anulezi sau să reprogramezi.</li><li>Detalii complete în <a href="#termeni">Termeni și condiții</a>.</li></ul></div>
+</div>
+<div>
+<a class="wa-card" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F">
+<span class="ic"><svg width="24" height="24" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg></span><span><b>Scrie-mi pe WhatsApp</b><span class="s">Răspund cel mai repede aici</span><span class="s num-t">07xx xxx xxx</span></span><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="40" y1="128" x2="216" y2="128"></line><polyline points="144 56 216 128 144 200"></polyline></svg></a>
+<p class="or">sau, dacă preferi</p>
+<a class="call-wide" href="tel:+40700000000"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>Sună-mă</span><span class="num-t muted">07xx xxx xxx</span></a>
+</div>
+</div></div>
+</section>
+<section class="band sec-tight" id="contact">
+<div class="wrap">
+<h2 class="t-h2">Unde mă găsești</h2>
+<div class="contact">
+<div class="card info"><dl>
+<div><dt>Telefon și WhatsApp</dt><dd><a class="big num-t" href="tel:+40700000000">07xx xxx xxx</a></dd></div>
+<div><dt>Zonă</dt><dd><span class="big">Târgu-Jiu, Gorj</span><p class="t-label muted" style="margin-top:4px;max-width:30ch">Îți comunic adresa exactă pe WhatsApp când stabilim programarea.</p></dd></div>
+<div><dt>Email</dt><dd><a class="big" href="mailto:contact@anasaloon.ro">contact@anasaloon.ro</a></dd></div>
+</dl></div>
+<div>
+<div class="card info"><dl><div><dt>Program</dt><dd><ul class="hours"><li><span class="muted">Luni - Vineri</span><b>09:00 - 19:00</b></li><li><span class="muted">Sâmbătă</span><b>10:00 - 16:00</b></li><li><span class="muted">Duminică</span><b>Închis</b></li></ul></dd></div></dl></div>
+<p class="muted" style="margin-top:24px">Cel mai simplu mod de a-ți face o programare este pe WhatsApp: îmi scrii ce serviciu te interesează și stabilim împreună ziua și ora.</p>
+<div class="btns"><a class="btn-wa" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Scrie-mi pe WhatsApp</a><a class="btn-line" href="tel:+40700000000"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Sună-mă</a></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer dark-on">
+<div class="wrap">
+<div class="grid4">
+<div><a class="wordmark" href="#acasa">Unghii by Ana</a><p class="mut t-label" style="margin-top:12px;max-width:28ch">Manichiură personalizată lângă Târgu-Jiu, dedicată fiecărei cliente în parte.</p></div>
+<nav aria-label="Navigare"><h3 class="fl">Navigare</h3><a href="#acasa">Acasă</a><a href="#servicii">Servicii</a><a href="#galerie">Galerie</a><a href="#contact">Contact</a></nav>
+<nav aria-label="Legal"><h3 class="fl">Legal</h3><a href="#confidentialitate">Politică de confidențialitate</a><a href="#termeni">Termeni și condiții</a><a href="#cookie">Politică de cookie-uri</a></nav>
+<div class="c"><h3 class="fl">Contact</h3><a class="t num-t" href="tel:+40700000000">07xx xxx xxx</a><a class="t" href="mailto:contact@anasaloon.ro">contact@anasaloon.ro</a><p class="t-label" style="margin-top:4px">Str. Exemplu nr. X, Târgu-Jiu</p>
+<div class="soc"><a href="https://instagram.com/anasaloon" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="36" y="36" width="184" height="184" rx="52"></rect><circle cx="128" cy="128" r="42"></circle><circle cx="180" cy="76" r="4"></circle></svg></a><a href="https://facebook.com/anasaloon" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M160 40h-24c-22 0-36 14-36 36v28H72v36h28v76h38v-76h28l6-36h-34V80c0-8 4-12 12-12h16z"></path></svg></a><a href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!" aria-label="WhatsApp"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg></a></div></div>
+</div>
+<div class="legal">
+<ul><li>Ana Saloon S.R.L.</li><li>CUI: RO00000000</li><li>Reg. Com.: J18/000/2024</li><li>Capital social: 200 RON</li><li>Str. Exemplu nr. X, Târgu-Jiu, jud. Gorj</li></ul>
+<div class="row2"><p>© 2026 Unghii by Ana. Toate drepturile rezervate.</p><a class="anpc" href="https://reclamatiisal.anpc.ro/" target="_blank" rel="noopener" aria-label="ANPC: Soluționarea Alternativă a Litigiilor"><b>ANPC</b><span>Soluționarea Alternativă a Litigiilor (SAL)</span></a></div>
+</div>
+</div>
+</footer>
+<div class="dock"><a class="btn-wa" href="https://wa.me/40700000000?text=Bun%C4%83%2C%20Ana!%20A%C8%99%20dori%20o%20programare.%20C%C3%A2nd%20ai%20un%20loc%20liber%3F" aria-label="Scrie-mi pe WhatsApp la 07XX XXX XXX"><svg width="22" height="22" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M44 200l10-36a88 88 0 1 1 32 32z"></path><path d="M96 100c0 32 28 60 60 60l12-12-24-12-10 8c-10-4-18-12-22-22l8-10-12-24z" stroke-width="12"></path></svg>Scrie-mi pe WhatsApp</a><a class="call" href="tel:+40700000000" aria-label="Sună-mă"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a></div>
+</div>
+</body>
+</html>
