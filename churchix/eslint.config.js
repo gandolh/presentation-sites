@@ -12,8 +12,8 @@ const house = houseStyle({
   root,
   // The church site and the shared UI: their React islands get the hooks rules.
   web: ["apps/parohia-harlesti-bacau/src", "packages/ui/src"],
-  // Scripts run by hand, which print: the UI package's max-w guard.
-  scripts: ["packages/*/scripts"],
+  // Scripts run by hand, which print: the UI package's max-w guard, and the gate's own scripts.
+  scripts: ["packages/*/scripts", "scripts"],
   // Astro hydrates a React island through its default export.
   defaultExports: ["packages/ui/src/islands/*.tsx"],
   // An .astro file's <script> blocks reach ESLint as virtual files no tsconfig holds.

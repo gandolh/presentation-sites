@@ -64,6 +64,8 @@ npm install <pkg> -w packages/ui     # add a dependency to a specific workspace
 PUBLIC_SITE_WIP=1 npm run build -w apps/<church>   # build with the "Site în lucru" banner on
 ```
 
+`npm run check` keeps going after a failing step and prints one line per step, then the end of each failure. The whole output stays in `node_modules/.cache/check/last.log`, so read that log rather than running the gate again. While you work, `npm run check:fast` and any test file you touched are enough; run the full gate once, after your last change.
+
 > **Deploy is not in this repo.** It was moved out in `6d2f237` (2026-06-18) along
 > with every other site's deploy tooling. Each church app builds a static `dist/`
 > that is served by Caddy on the VPS; the build+upload tooling and the server
