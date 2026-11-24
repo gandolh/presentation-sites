@@ -55,7 +55,10 @@ describe("the movement drawing", () => {
   test("no colour is written into the drawing: the stylesheet colours it", () => {
     for (const pose of ["hero", "whole", "chapter"] as const) {
       const svg = draw({ pose, id: pose });
-      assert.doesNotMatch(svg, /#[0-9a-f]{3,8}\b|rgb\(|oklch\(| fill="| stroke="/i, pose);
+      // No hex colour, no fill or stroke attribute, and no CSS function but the transforms.
+      assert.ok(!svg.includes("#"), `${pose}: a hex colour`);
+      assert.doesNotMatch(svg, / (fill|stroke)="/, pose);
+      assert.deepEqual([...new Set(svg.match(/[a-z-]+\(/gi))].sort(), ["rotate(", "translate("], pose);
     }
   });
 
