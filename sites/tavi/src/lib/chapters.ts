@@ -78,18 +78,25 @@ function watchPartNames(chapter: HTMLElement, figure: HTMLElement) {
   const light = (part: string | null) => {
     setFocus(figure, part !== null && shows(part) ? part : null);
   };
+  let hovered: string | null = null;
+  const focusedName = () => {
+    const focused = document.activeElement;
+    return focused instanceof HTMLElement && chapter.contains(focused) ? (focused.dataset.part ?? null) : null;
+  };
   // Back to the part name that has the keyboard focus, if any, else to the step's own parts.
   const rest = () => {
-    const focused = document.activeElement;
-    const named = focused instanceof HTMLElement && chapter.contains(focused) ? focused.dataset.part : undefined;
-    light(named ?? null);
+    light(focusedName());
   };
   for (const button of chapter.querySelectorAll<HTMLButtonElement>(".part-name[data-part]")) {
     const part = button.dataset.part ?? null;
     button.addEventListener("mouseenter", () => {
+      hovered = part;
       light(part);
     });
-    button.addEventListener("mouseleave", rest);
+    button.addEventListener("mouseleave", () => {
+      hovered = null;
+      rest();
+    });
     button.addEventListener("focus", () => {
       light(part);
     });
@@ -101,6 +108,11 @@ function watchPartNames(chapter: HTMLElement, figure: HTMLElement) {
       button.focus();
     });
   }
+  // Once a turn-over settles (the faces' visibility has changed), light again what is pointed at: its part may have
+  // come into view or gone out of it.
+  figure.addEventListener("transitionend", (event) => {
+    if (event.propertyName === "visibility") light(hovered ?? focusedName());
+  });
 }
 
 function watchCurrentChapter() {

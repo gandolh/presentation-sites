@@ -816,7 +816,9 @@ async function readStepOf(page: Page, chapter: string, step: string, phone: bool
 async function wheelsTrayReady(page: Page, phone: boolean) {
   await page.goto("/");
   await readStepOf(page, "wheels", "2", phone);
-  await page.waitForFunction(() => document.querySelector('astro-island[component-url*="FigureTray"]:not([ssr])'));
+  await page.waitForFunction(() =>
+    document.querySelector('#wheels-figure astro-island[component-url*="FigureTray"]:not([ssr])'),
+  );
 }
 
 /** Which of the train's wheels are in colour (their first shape's fill isn't the ghost token's), and each ratio's
@@ -1006,6 +1008,36 @@ test.describe("chapter 2, the wheels and the dial", () => {
     await expect(page.locator("#wheels-figure")).not.toHaveAttribute("data-focus");
   });
 
+  test("a focused name follows the turn-over: a hand lights once the dial turns in, and goes out as it turns away", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    const figure = page.locator("#wheels-figure");
+    const focus = (name: string) =>
+      page
+        .locator("#wheels")
+        .getByRole("button", { name, exact: true })
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+    await readStepOf(page, "wheels", "4", phone);
+    await expect(figure).toHaveAttribute("data-step", "4");
+    await focus("hour hand");
+    await expect(figure).not.toHaveAttribute("data-focus");
+    await readStepOf(page, "wheels", "5", phone);
+    await expect(figure).toHaveAttribute("data-step", "5");
+    await expect(figure).toHaveAttribute("data-focus", "hour-hand");
+
+    await focus("small seconds");
+    await expect(figure).toHaveAttribute("data-focus", "seconds-hand");
+    await readStepOf(page, "wheels", "4", phone);
+    await expect(figure).not.toHaveAttribute("data-step", "5");
+    await expect(figure).not.toHaveAttribute("data-focus");
+    // The back is in its step's colours again, not all ghost.
+    await expect.poll(async () => (await trainColours(page)).lit.length).toBeGreaterThan(0);
+  });
+
   test("the hands stand at 10:10:30 when still; at 1/10 the seconds hand jumps once every 10/6 s", async ({
     page,
   }, info) => {
@@ -1082,6 +1114,18 @@ test.describe("chapter 2, the wheels and the dial", () => {
       await expect.poll(async () => (await faces(page)).train.opacity).toBe("0");
       expect((await faces(page)).dial.opacity).toBe("1");
       await expect(page.locator("#wheels-dial")).toHaveCSS("transition-property", /opacity/);
+      // A name focused while its face is faded out lights its part once it has faded in.
+      await page
+        .locator("#wheels")
+        .getByRole("button", { name: "fourth wheel", exact: true })
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+      await expect(page.locator("#wheels-figure")).not.toHaveAttribute("data-focus");
+      await readStepOf(page, "wheels", "3", phone);
+      await expect(page.locator("#wheels-figure")).toHaveAttribute("data-focus", "fourth");
+      await readStepOf(page, "wheels", "5", phone);
+      await expect(page.locator("#wheels-figure")).toHaveAttribute("data-step", "5");
 
       const pause = page.locator("#wheels-figure").getByRole("button", { name: "Pause", exact: true });
       await expect(pause).toHaveAttribute("aria-pressed", "true");
