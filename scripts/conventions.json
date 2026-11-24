@@ -1,6 +1,6 @@
 {
   "$schema": "../vendor/house-style/conventions.schema.json",
-  "web": ["sites/auto-service/src", "sites/saloon/src", "sites/subcort/src", "sites/tractari/src"],
+  "web": ["sites/auto-service/src", "sites/saloon/src", "sites/subcort/src", "sites/tractari/src", "sites/tavi/src"],
   "server": [],
   "shared": ["packages/site-kit/src"],
   "stylesheet": "styles/global.css"

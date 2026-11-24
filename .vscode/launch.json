@@ -31,6 +31,13 @@
       "cwd": "${workspaceFolder}"
     },
     {
+      "command": "npm run tavi:dev",
+      "name": "tavi: dev server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "command": "npm run design-study:dev",
       "name": "design-study: dev server",
       "request": "launch",

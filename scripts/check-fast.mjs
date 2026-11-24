@@ -18,12 +18,13 @@ const run = (command, args) => {
   if (result.status !== 0) process.exit(result.status ?? 1);
 };
 
-// Each project's own typecheck: the five sites' astro check, the kit's tsc, and the saloon bots' tsc.
+// Each project's own typecheck: the six sites' astro check, the kit's tsc, and the saloon bots' tsc.
 const workspaces = {
   "sites/auto-service/": "bavauto-gorj",
   "sites/saloon/": "ana-saloon",
   "sites/subcort/": "subcort",
   "sites/tractari/": "tractari",
+  "sites/tavi/": "tavi-ceasornicaru",
   "sites/design-study/": "design-study",
   "packages/site-kit/": "@sites/kit",
 };

@@ -10,6 +10,7 @@ const sites = [
   { name: "saloon", port: 4702 },
   { name: "subcort", port: 4703 },
   { name: "tractari", port: 4704 },
+  { name: "tavi", port: 4705 },
 ];
 const wanted = process.env.SITES?.split(",") ?? sites.map((s) => s.name);
 const chosen = sites.filter((s) => wanted.includes(s.name));

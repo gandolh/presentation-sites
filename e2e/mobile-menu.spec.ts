@@ -1,12 +1,30 @@
 import { expect, test, type Locator, type Page, type TestInfo } from "@playwright/test";
 
-// What differs between the four phone menus. The three full-screen panels
-// have no page outside them to tap; subcort's hangs under its header.
-const menus: Record<string, { dialog: string; closeButton: boolean; outsideTap: boolean }> = {
-  "auto-service": { dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
-  saloon: { dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
-  subcort: { dialog: "Meniu", closeButton: false, outsideTap: true },
-  tractari: { dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
+// What differs between the phone menus: the island, the button that opens it,
+// the panel's name and its X's. The three full-screen panels have no page
+// outside them to tap; subcort's and tavi's hang under their headers.
+interface Menu {
+  island: string;
+  trigger: string;
+  dialog: string;
+  close: string;
+  closeButton: boolean;
+  outsideTap: boolean;
+}
+const ro = { island: "MobileMenu", trigger: "Deschide meniul", close: "Închide meniul" };
+const menus: Record<string, Menu> = {
+  "auto-service": { ...ro, dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
+  saloon: { ...ro, dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
+  subcort: { ...ro, dialog: "Meniu", closeButton: false, outsideTap: true },
+  tractari: { ...ro, dialog: "Meniu de navigare", closeButton: true, outsideTap: false },
+  tavi: {
+    island: "ChaptersMenu",
+    trigger: "Chapters",
+    dialog: "Chapters",
+    close: "Close the chapters",
+    closeButton: true,
+    outsideTap: true,
+  },
 };
 
 function menuFor(site: string) {
@@ -26,19 +44,20 @@ async function boxOf(locator: Locator) {
   return box;
 }
 
-async function ready(page: Page) {
+async function ready(page: Page, island: string) {
   await page.goto("/");
   await page.waitForFunction(
-    () =>
-      document.querySelector('astro-island[component-url*="MobileMenu"]') !== null &&
-      document.querySelector('astro-island[component-url*="MobileMenu"][ssr]') === null,
+    (name) =>
+      document.querySelector(`astro-island[component-url*="${name}"]`) !== null &&
+      document.querySelector(`astro-island[component-url*="${name}"][ssr]`) === null,
+    island,
   );
 }
 
-async function openMenu(page: Page, dialogName: string) {
-  const trigger = page.getByRole("button", { name: "Deschide meniul" });
+async function openMenu(page: Page, menu: Menu) {
+  const trigger = page.getByRole("button", { name: menu.trigger, exact: true });
   await trigger.click();
-  const dialog = page.getByRole("dialog", { name: dialogName });
+  const dialog = page.getByRole("dialog", { name: menu.dialog });
   await expect(dialog).toBeVisible();
   return { trigger, dialog };
 }
@@ -60,11 +79,11 @@ async function swipeUp(page: Page, x: number, fromY: number, toY: number) {
 test.describe("the phone menu", () => {
   test.beforeEach(async ({ page }, info) => {
     test.skip(info.project.metadata["device"] !== "phone", "the menu button is a phone control");
-    await ready(page);
+    await ready(page, menuFor(siteOf(info)).island);
   });
 
   test("closes on Esc and gives focus back to the menu button", async ({ page }, info) => {
-    const { trigger, dialog } = await openMenu(page, menuFor(siteOf(info)).dialog);
+    const { trigger, dialog } = await openMenu(page, menuFor(siteOf(info)));
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
     await expect(trigger).toBeFocused();
@@ -72,14 +91,14 @@ test.describe("the phone menu", () => {
 
   test("closes on its X and gives focus back to the menu button", async ({ page }, info) => {
     const menu = menuFor(siteOf(info));
-    const { trigger, dialog } = await openMenu(page, menu.dialog);
+    const { trigger, dialog } = await openMenu(page, menu);
     // Subcort has no X in the panel: its menu button turns into one. The
     // drawer makes the page behind it inert, so the button is no longer in the
     // accessibility tree and a press on it is a press outside.
     await (
       menu.closeButton
-        ? dialog.getByRole("button", { name: "Închide meniul" })
-        : page.locator("header button", { hasText: "Închide meniul" })
+        ? dialog.getByRole("button", { name: menu.close })
+        : page.locator("header button", { hasText: menu.close })
     ).click({ force: true });
     await expect(dialog).toBeHidden();
     await expect(trigger).toBeFocused();
@@ -88,7 +107,7 @@ test.describe("the phone menu", () => {
   test("closes on a tap outside", async ({ page }, info) => {
     const menu = menuFor(siteOf(info));
     test.skip(!menu.outsideTap, "the panel fills the screen: there is nothing outside it to tap");
-    const { trigger, dialog } = await openMenu(page, menu.dialog);
+    const { trigger, dialog } = await openMenu(page, menu);
     const box = await boxOf(dialog);
     await page.touchscreen.tap(195, Math.min(box.y + box.height + 120, 800));
     await expect(dialog).toBeHidden();
@@ -96,7 +115,7 @@ test.describe("the phone menu", () => {
   });
 
   test("closes on a swipe up and gives focus back to the menu button", async ({ page }, info) => {
-    const { trigger, dialog } = await openMenu(page, menuFor(siteOf(info)).dialog);
+    const { trigger, dialog } = await openMenu(page, menuFor(siteOf(info)));
     await page.waitForTimeout(600);
     const box = await boxOf(dialog);
     const mid = box.y + box.height / 2;
@@ -106,7 +125,7 @@ test.describe("the phone menu", () => {
   });
 
   test("a link inside the menu closes it", async ({ page }, info) => {
-    const { dialog } = await openMenu(page, menuFor(siteOf(info)).dialog);
+    const { dialog } = await openMenu(page, menuFor(siteOf(info)));
     await dialog.getByRole("link").first().click();
     await expect(dialog).toBeHidden();
   });
@@ -114,7 +133,7 @@ test.describe("the phone menu", () => {
   test("has no horizontal scroll at 390 px, shut or open", async ({ page }, info) => {
     const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(await overflow()).toBeLessThanOrEqual(0);
-    await openMenu(page, menuFor(siteOf(info)).dialog);
+    await openMenu(page, menuFor(siteOf(info)));
     expect(await overflow()).toBeLessThanOrEqual(0);
   });
 });

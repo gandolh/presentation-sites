@@ -11,8 +11,8 @@ const bots = "sites/saloon/marketing/bots";
  */
 const house = houseStyle({
   root,
-  // The four live sites: their React islands get the hooks rules.
-  web: ["sites/auto-service/src", "sites/saloon/src", "sites/subcort/src", "sites/tractari/src"],
+  // The four live sites and tavi: their React islands get the hooks rules.
+  web: ["sites/auto-service/src", "sites/saloon/src", "sites/subcort/src", "sites/tractari/src", "sites/tavi/src"],
   // Scripts run by hand, which print and read the environment: the sites' generators.
   scripts: ["scripts", "sites/*/scripts"],
   // Astro hydrates a React island through its default export.
