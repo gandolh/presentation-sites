@@ -41,8 +41,8 @@ with sources in the outcome; anything about Tavi may be invented ([decisions-tav
 - `sites/tavi/src/lib/clockFigure.ts` (new): the frame loop that applies `stateAt` to a drawing
 - `sites/tavi/src/movement/svg/`: the close-up poses and the hairspring path from an angle; `src/movement/` tests if
   a pure function is added
-- `sites/tavi/src/lib/figure.ts` (the hold), `sites/tavi/src/components/chapter/FigureTray.tsx` (Play shows and
-  releases a hold), `sites/tavi/src/pages/index.astro` (chapters 3 and 4), `sites/tavi/src/styles/global.css`
+- `sites/tavi/src/lib/figure.ts` (the hold), `sites/tavi/src/components/chapter/FigureTray.tsx` (its Pause shows a
+  hold pressed, and un-pressing it releases the hold), `sites/tavi/src/pages/index.astro` (chapters 3 and 4), `sites/tavi/src/styles/global.css`
 - `e2e/tavi.spec.ts`; corpus: `wiki/decisions-tavi.md` (only if the hold or the hook has to change),
   `wiki/status.md`, `log.md`
 
@@ -56,15 +56,16 @@ with sources in the outcome; anything about Tavi may be invented ([decisions-tav
    transforms (and the path) from `stateAt(t)`, with `t` advanced by real time divided by the figure's `--slow`. It runs
    only while the page is playing (`playback.ts`), the figure is on screen (an IntersectionObserver) and the tab is
    visible; it clamps a frame's step at 0.25 s, as the prototype does, so a slow device keeps real time. Under reduced
-   motion it starts on a still frame until Play. A figure can also be **held**: `data-hold` on the figure, a still
+   motion it starts on a still frame until its Pause is released. A figure can also be **held**: `data-hold` on the figure, a still
    frame that a step asks for. A hold is the figure's own: it never touches the page's `data-playing`, and the
-   figure's tray shows Play while it is held; its Play releases the hold (and starts the page if it was paused).
+   figure's tray shows its Pause pressed while it is held; un-pressing it releases the hold (and starts the page if it
+   was paused). Every Pause keeps one name (a toggle); `decisions-tavi.md` has the ruling of 2026-11-25.
    Development only: one hook, `window.taviPose(figure, pose)`, keyed by the figure's id (`escapement` and `balance`
    here; brief 16 registers `together`), poses a figure for stills and tests. Both are in the islands' contract on
    [decisions-tavi.md](../../wiki/decisions-tavi.md).
 2. **Chapter 3**: a close-up of the escape wheel, pallet fork with its ruby stones, and the roller with its impulse
    pin, cropped as the sketch crops chapter 1 (the edges fade). Each step holds a phase: the step sets `t` to a moment
-   inside one beat that shows it and holds the figure there (`data-hold`) until its Play. A beat counter in Plex Mono.
+   inside one beat that shows it and holds the figure there (`data-hold`) until its Pause is released. A beat counter in Plex Mono.
    The tray's Speed opens on 1/10.
 3. **Chapter 4**: the balance and hairspring large, the lift window drawn as a thin arc, the amplitude as a readout;
    the hairspring's path follows the balance angle.

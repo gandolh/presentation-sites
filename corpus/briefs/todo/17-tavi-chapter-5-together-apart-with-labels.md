@@ -78,7 +78,7 @@ with sources in the outcome; anything about Tavi may be invented ([decisions-tav
 - [ ] At 390 x 844 the parts list holds every labelled part as a button, and pressing one lights it in the figure.
 - [ ] Keyboard only: Take apart, Put back, Turn and the parts list all work.
 - [ ] With WebGL unavailable, the same slider takes the drawing apart.
-- [ ] Reduced motion: Take apart and the turn jump; nothing moves until Play.
+- [ ] Reduced motion: Take apart and the turn jump; nothing moves until its Pause is released.
 - [ ] Shots at 1280 x 800 (assembled, apart) and 390 x 844 (apart, the list showing), out of git, beside
       `design/tavi/prototype-*.png`; sloplint `--scope app`: no FAIL.
 - [ ] `npm run check` exits 0; `SITES=tavi npx playwright test -c e2e` passes; `bash corpus/lint.sh` passes.

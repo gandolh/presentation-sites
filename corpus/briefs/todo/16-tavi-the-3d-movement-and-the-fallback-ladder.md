@@ -24,7 +24,7 @@ This brief puts it in chapter 5 as the one React island for the movement, on the
 1. Desktop with WebGL 2: the island replaces the SVG poster in the same box.
 2. Phones (narrow and a coarse pointer): the poster stays; a "Turn it in 3D" button loads the island on demand.
 3. No WebGL, or a lost context: the poster.
-4. Reduced motion: still until Play.
+4. Reduced motion: still until its Pause is released.
 5. No scripting: the still poster.
 
 Brief 17 adds the chapter's steps, Take apart with labels, the parts list and turning. This brief ends with the 3D
@@ -102,7 +102,7 @@ page's first paint and the hero's text come before any three.js request. See dec
       runs.
 - [ ] With WebGL unavailable the poster stays with its line; a forced context loss (`WEBGL_lose_context`) returns to
       the poster.
-- [ ] Reduced motion: still until Play. Zero frames over 2 s while paused, scrolled away, or in a hidden tab.
+- [ ] Reduced motion: still until its Pause is released. Zero frames over 2 s while paused, scrolled away, or in a hidden tab.
 - [ ] The built chunks: three.js only in the island's chunk; the outcome lists the island's size gzipped and the
       first screen's script size before and after (unchanged).
 - [ ] The DPR 2 shot reads cleanly; the outcome names the line method and the draw calls.

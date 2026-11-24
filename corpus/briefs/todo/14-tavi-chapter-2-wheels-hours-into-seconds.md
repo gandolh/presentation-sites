@@ -73,7 +73,7 @@ with sources in the outcome; anything about Tavi may be invented ([decisions-tav
 - [ ] The five steps re-pose the figure in turn; the ratios read in Plex Mono beside their meshes; step 5 shows the
       dial with the small seconds over the fourth wheel.
 - [ ] Paused, the seconds hand stands on a whole degree; at 1/10 it jumps once every 10/6 s.
-- [ ] Reduced motion: still until Play; the turn-over is a cross-fade.
+- [ ] Reduced motion: still until its Pause is released; the turn-over is a cross-fade.
 - [ ] Shots at 1280 x 800 and 390 x 844 of steps 1 and 5 (out of git); sloplint against the dev server: no FAIL.
 - [ ] `npm run check` exits 0; `SITES=tavi npx playwright test -c e2e` passes; `bash corpus/lint.sh` passes.
 
