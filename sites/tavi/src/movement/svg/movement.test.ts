@@ -62,7 +62,10 @@ describe("the movement drawing", () => {
   test("the mainspring coils tighter round the arbor as it winds", () => {
     // The mean distance of its points from the barrel's centre.
     const spread = (d: string) => {
-      const points = d.slice(1).split("L").map((pair) => pair.split(" ").map(Number));
+      const points = d
+        .slice(1)
+        .split("L")
+        .map((pair) => pair.split(" ").map(Number));
       const sum = points.reduce((total, [x = 0, y = 0]) => total + Math.hypot(x + 59.397, y + 59.397), 0);
       return sum / points.length;
     };
