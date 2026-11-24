@@ -62,28 +62,54 @@ test.describe("the header's chapter links", () => {
   });
 });
 
+/** The header's Pause: one name whatever the page's play state. */
+const globalPause = (page: Page) =>
+  page.locator("header").getByRole("button", { name: "Pause every moving drawing", exact: true });
+
+/** A colour token as the page computes it, read through a probe element's background. */
+async function tokenColour(page: Page, token: string) {
+  return page.evaluate((t) => {
+    const probe = document.createElement("div");
+    probe.style.background = `var(${t})`;
+    document.body.append(probe);
+    const colour = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return colour;
+  }, token);
+}
+
 test.describe("the global Pause", () => {
-  test("flips data-playing on the page and its label", async ({ page }, info) => {
+  test("is a toggle: its name and its word never change, and aria-pressed follows the page's play state", async ({
+    page,
+  }, info) => {
     await page.goto("/");
     const html = page.locator("html");
     await expect(html).toHaveAttribute("data-playing", "true");
-    const pause = page.getByRole("button", { name: "Pause every moving drawing" });
+    const pause = globalPause(page);
     await expect(pause).toBeVisible();
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
     // Below 40rem the button shows its icon only; its name still says what it does.
     if (!isPhone(info)) await expect(pause).toHaveText("Pause", { useInnerText: true });
 
     await pause.click();
     await expect(html).toHaveAttribute("data-playing", "false");
-    const play = page.getByRole("button", { name: "Play every moving drawing" });
-    await expect(play).toBeVisible();
-    if (!isPhone(info)) await expect(play).toHaveText("Play", { useInnerText: true });
+    await expect(pause).toHaveAttribute("aria-pressed", "true");
+    await expect(pause).toHaveAttribute("aria-label", "Pause every moving drawing");
+    if (!isPhone(info)) await expect(pause).toHaveText("Pause", { useInnerText: true });
+    // Pressed, it wears the tray's pressed look (after the colour fade); no Play button appears anywhere.
+    const soft = await tokenColour(page, "--color-accent-soft");
+    const accent = await tokenColour(page, "--color-accent");
+    await expect.poll(() => pause.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(soft);
+    await expect.poll(() => pause.evaluate((el) => getComputedStyle(el).borderTopColor)).toBe(accent);
+    await expect(page.getByRole("button", { name: /\bplay\b/i })).toHaveCount(0);
 
-    await play.click();
+    await pause.click();
     await expect(html).toHaveAttribute("data-playing", "true");
-    await expect(page.getByRole("button", { name: "Pause every moving drawing" })).toBeVisible();
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+    await expect(pause).toHaveAttribute("aria-label", "Pause every moving drawing");
   });
 
-  test("keeps its width when Pause turns into Play, so the header's links stay put", async ({ page }, info) => {
+  test("keeps its width when pressed, so the header's links stay put", async ({ page }, info) => {
     test.skip(isPhone(info), "the phone shows the icon only");
     await page.goto("/");
     await page.evaluate(() => document.fonts.ready);
@@ -94,7 +120,7 @@ test.describe("the global Pause", () => {
         return [button?.x, button?.width, link?.x];
       });
     const playing = await where();
-    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    await globalPause(page).click();
     await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
     expect(await where()).toEqual(playing);
   });
@@ -102,12 +128,15 @@ test.describe("the global Pause", () => {
   test.describe("with reduced motion", () => {
     test.use({ reducedMotion: "reduce" });
 
-    test("the page loads paused, and Play still plays", async ({ page }) => {
+    test("the page loads paused with the Pause pressed, and releasing it plays", async ({ page }) => {
       await page.goto("/");
       const html = page.locator("html");
       await expect(html).toHaveAttribute("data-playing", "false");
-      await page.getByRole("button", { name: "Play every moving drawing" }).click();
+      const pause = globalPause(page);
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      await pause.click();
       await expect(html).toHaveAttribute("data-playing", "true");
+      await expect(pause).toHaveAttribute("aria-pressed", "false");
     });
   });
 });
@@ -145,19 +174,19 @@ test.describe("the hero's drawing", () => {
     expect(escape?.timing).toMatch(/^steps\(30(, (jump-)?start)?\)$/);
     for (const group of ["rot-pallet", "rot-fourth", "rot-third", "rot-centre"]) expect(of(group), group).toBeDefined();
 
-    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    await globalPause(page).click();
     expect(await heroAnimations(page)).toEqual([]);
   });
 
   test.describe("with reduced motion", () => {
     test.use({ reducedMotion: "reduce" });
 
-    test("nothing turns until Play sets data-playing to true", async ({ page }) => {
+    test("nothing turns until releasing the Pause sets data-playing to true", async ({ page }) => {
       await page.goto("/");
       await expect(page.locator("#hero-movement")).toBeVisible();
       await page.waitForTimeout(300);
       expect(await heroAnimations(page)).toEqual([]);
-      await page.getByRole("button", { name: "Play every moving drawing" }).click();
+      await globalPause(page).click();
       await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
       await expect.poll(async () => (await heroAnimations(page)).map((a) => a.group)).toContain("rot-balance");
     });
@@ -480,18 +509,18 @@ test.describe("chapter 1, on the chapter engine", () => {
     await pause.click();
     await expect(html).toHaveAttribute("data-playing", "false");
     await expect(pause).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByRole("button", { name: "Play every moving drawing" })).toHaveCount(1);
+    await expect(globalPause(page)).toHaveAttribute("aria-pressed", "true");
     expect(await figureAnimations(page)).toEqual([]);
 
-    await page.getByRole("button", { name: "Play every moving drawing" }).click();
+    await globalPause(page).click();
     await expect(html).toHaveAttribute("data-playing", "true");
     await expect(pause).toHaveAttribute("aria-pressed", "false");
 
-    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    await globalPause(page).click();
     await expect(pause).toHaveAttribute("aria-pressed", "true");
     await pause.click();
     await expect(html).toHaveAttribute("data-playing", "true");
-    await expect(page.getByRole("button", { name: "Pause every moving drawing" })).toHaveCount(1);
+    await expect(globalPause(page)).toHaveAttribute("aria-pressed", "false");
   });
 
   test("Speed 1/10 makes the figure's animations ten times longer, and 1/100 a hundred", async ({ page }, info) => {
@@ -568,6 +597,34 @@ test.describe("chapter 1, on the chapter engine", () => {
     });
   });
 });
+
+// A short screen in one column, a phone turned sideways, and a small laptop window: the sticky figure must leave the
+// step on the reading line readable. Both sizes take the one-column reading line, whichever project runs them.
+for (const viewport of [
+  { width: 844, height: 390 },
+  { width: 1000, height: 600 },
+]) {
+  test.describe(`chapter 1 at ${viewport.width} x ${viewport.height}`, () => {
+    test.use({ viewport });
+
+    test("each step's text sits below the sticky figure as it reaches the reading line", async ({ page }) => {
+      await page.goto("/");
+      await page.evaluate(() => document.fonts.ready);
+      for (const { step } of POSES) {
+        await readStep(page, step, true);
+        await expect(page.locator("#energy-figure")).toHaveAttribute("data-step", step);
+        const where = await page.evaluate((n) => {
+          const text = document.querySelector(`#energy .step[data-step="${n}"] p`)?.getBoundingClientRect();
+          const stage = document.querySelector("#energy-figure")?.getBoundingClientRect();
+          const head = document.querySelector(".site-head")?.getBoundingClientRect();
+          return { text: text?.top ?? 0, stage: stage?.bottom ?? Infinity, head: head?.bottom ?? Infinity };
+        }, step);
+        expect(where.text, `step ${step}'s text clears the figure`).toBeGreaterThanOrEqual(where.stage);
+        if (viewport.height < 512) expect(where.head, "the header has scrolled away").toBeLessThanOrEqual(0);
+      }
+    });
+  });
+}
 
 test.describe("without scripting", () => {
   test.use({ javaScriptEnabled: false });

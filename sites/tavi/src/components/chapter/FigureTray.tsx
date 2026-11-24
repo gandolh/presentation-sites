@@ -59,7 +59,7 @@ export default function FigureTray({ figure, speed: opening = 1, children }: Pro
           <svg className="size-3.5 shrink-0 fill-current" viewBox="0 0 14 14" aria-hidden="true">
             <path d="M3 2h3v10H3zM8 2h3v10H8z" />
           </svg>
-          <span className="max-sm:sr-only">Pause</span>
+          <span>Pause</span>
         </Toggle>
         <RadioGroup<SpeedValue>
           label="Speed"

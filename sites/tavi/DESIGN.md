@@ -27,7 +27,7 @@ became Tailwind's, so a sketch rule copied over must take the new name:
 | `--container` | `--container-page` |
 | `"Newsreader"` in `--font-display` and `--font-body` | `"Newsreader Variable"`, Fontsource's family name |
 | `.needs-js` (hidden without scripting) | the `no-js:hidden` utility |
-| `.i-pause`, `.i-play` (shown by `data-playing`) | `.if-playing`, `.if-paused`, on icons and labels alike |
+| `.i-pause`, `.i-play` (shown by `data-playing`) | none: every Pause keeps its glyph and shows pressed while paused |
 | `.visually-hidden` | Tailwind's `sr-only` |
 | `.site-head .wrap` | `.wrap.site-head-row` |
 
@@ -112,7 +112,7 @@ in the figure.
 - Moving things animate `transform` and `opacity` only; hovers fade colour, ground and border. Durations
   `--dur-micro` 120ms, `--dur-short` 220ms, `--dur-long` 420ms, on `--ease-out` `cubic-bezier(0.16, 1, 0.3, 1)`
   (`--ease-in-out` and `--ease-swing` for the balance).
-- Under reduced motion the page starts paused on a still frame; Play still runs it. Explode, step changes and hovers
+- Under reduced motion the page starts paused on a still frame; releasing a Pause still runs it. Explode, step changes and hovers
   jump instead of easing.
 - The WebGL loop renders only while something moves: not when paused, off screen or in a hidden tab.
 
@@ -123,12 +123,12 @@ in the figure.
   changes it through `src/lib/playback.ts` (`isPlaying()`, `setPlaying(on)`, `subscribe(listener)`, one
   `tavi:playing` event); islands read it with `useSyncExternalStore(subscribe, isPlaying, () => true)`. Motion runs
   only under `.js` and `[data-playing="true"]`.
-- A play control shows its state from the first paint: `.if-playing` and `.if-paused` are hidden by CSS according to
-  `data-playing`.
+- Every Pause is a toggle: it keeps the word "Pause", the pause glyph and one name, and shows pressed (blued steel,
+  `aria-pressed`) while the page is paused. The header's follows `data-playing` in CSS from the first paint.
 - **Speed** belongs to each figure: `--slow` (1, 10 or 100) on the figure stretches every duration. Chapter 3 opens
   at 1/10.
-- **A hold** is a figure's own still frame, asked for by a step: `data-hold` on the figure, released by its tray's
-  Play. It never changes the page's `data-playing`.
+- **A hold** is a figure's own still frame, asked for by a step: `data-hold` on the figure, released by un-pressing
+  its tray's Pause. It never changes the page's `data-playing`.
 - One dev hook, `window.taviPose(figure, pose)`, keyed by the figure's id, in development builds only.
 - Without scripting, a control that only works with it is hidden: `no-js:hidden`.
 
@@ -141,7 +141,7 @@ chapter 5, in the same box.
    the first drag, so the swap doesn't jump.
 2. Phones (narrow, coarse pointer): the drawing stays, ticking in CSS; "Turn it in 3D" loads the island on demand.
 3. No WebGL, or a lost context: the drawing, taken apart through its lift groups.
-4. Reduced motion: whichever figure shows starts paused on a still frame until Play.
+4. Reduced motion: whichever figure shows starts paused on a still frame until its Pause is released.
 5. No scripting: the still drawing, all the prose, and every chapter link (the contents band carries them).
 
 ## Exports

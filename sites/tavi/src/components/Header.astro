@@ -42,17 +42,12 @@ const links: ChapterLink[] = [
       type="button"
       data-toggle-play
       aria-label="Pause every moving drawing"
+      aria-pressed="false"
     >
-      <svg class="if-playing" viewBox="0 0 14 14" aria-hidden="true">
+      <svg viewBox="0 0 14 14" aria-hidden="true">
         <path d="M3 2h3v10H3zM8 2h3v10H8z"></path>
       </svg>
-      <svg class="if-paused" viewBox="0 0 14 14" aria-hidden="true">
-        <path d="M3 1.5v11l9.5-5.5z"></path>
-      </svg>
-      <span class="lbl">
-        <span class="if-playing">Pause</span>
-        <span class="if-paused">Play</span>
-      </span>
+      <span class="lbl">Pause</span>
     </button>
   </div>
 </header>
@@ -60,12 +55,11 @@ const links: ChapterLink[] = [
 <script>
   import { isPlaying, setPlaying, subscribe } from "../lib/playback";
 
-  // The visible label and the icon follow `data-playing` in CSS from the first paint; the name a screen reader
-  // hears says what a press will do.
+  // A toggle, like each figure's tray Pause: its name and its word stay "Pause", and pressed means paused. The
+  // pressed look follows `data-playing` in CSS from the first paint; `aria-pressed` follows it here.
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-toggle-play]");
-  const name = (playing: boolean) => (playing ? "Pause every moving drawing" : "Play every moving drawing");
   const show = (playing: boolean) => {
-    for (const button of buttons) button.setAttribute("aria-label", name(playing));
+    for (const button of buttons) button.setAttribute("aria-pressed", String(!playing));
   };
   for (const button of buttons) {
     button.addEventListener("click", () => {

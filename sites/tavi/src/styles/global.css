@@ -350,23 +350,12 @@
     flex-shrink: 0;
   }
 
-  /* What a play control shows follows the page's play state, from the first paint. */
-  :root[data-playing="false"] .if-playing,
-  :root:not([data-playing="false"]) .if-paused {
-    display: none;
-  }
-  /* A quiet button's two labels share one cell and the idle one is only hidden, so the button keeps the width of the
-     longer word when Pause turns into Play, and nothing beside it moves. */
-  .quiet .lbl {
-    display: inline-grid;
-  }
-  .quiet .lbl > * {
-    grid-area: 1 / 1;
-  }
-  :root[data-playing="false"] .quiet .lbl > .if-playing,
-  :root:not([data-playing="false"]) .quiet .lbl > .if-paused {
-    display: inline;
-    visibility: hidden;
+  /* The header's Pause is a toggle like a tray's: it keeps its word and glyph, and while the page is paused it shows
+     pressed in blued steel, from the first paint (the head script sets data-playing before it). */
+  :root[data-playing="false"] .global-pause {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
   }
 
   /* The primary button: blued steel, the only saturated colour on the first screen. */
@@ -569,7 +558,7 @@
      it keeps the sentence's line height. */
   .part-name {
     font: inherit;
-    padding: 0;
+    padding: 0 1px;
     border: 0;
     background: none;
     cursor: pointer;
@@ -583,6 +572,12 @@
   }
   .part-name:hover {
     text-decoration-thickness: 3px;
+  }
+  /* The focus ring sits on the box, 2px clear of the word before it: with the usual 2px offset it filled the space
+     between the words. A pixel of padding keeps it off the name's own letters without parting the name from the
+     comma after it. */
+  .part-name:focus-visible {
+    outline-offset: 0;
   }
   .k-spring {
     --k: var(--color-part-spring-ink);
@@ -873,6 +868,16 @@
     }
     .pager .t {
       font-size: var(--text-md);
+    }
+  }
+  /* A short screen in one column (a phone turned sideways) has no room for a sticky header above the sticky figure:
+     the header scrolls away as on a phone, and the figure sticks at the very top, clear of the reading line. */
+  @media (width < 64rem) and (height < 32rem) {
+    .site-head {
+      position: static;
+    }
+    .stage {
+      top: 0;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -1177,7 +1182,8 @@
       font-size: 20px;
     }
   }
-  /* Reduced motion: the head script starts the page paused, so nothing turns until Play; moves between poses jump. */
+  /* Reduced motion: the head script starts the page paused, so nothing turns until a Pause is released; moves between
+     poses jump. */
   @media (prefers-reduced-motion: reduce) {
     .lift,
     .movement .part {
