@@ -764,3 +764,16 @@ bankings (`npm run tavi:test`, the last step of `npm run check`). The design rec
 time. The hero shows the drawing ticking in CSS at the sketch's size: 0 differing pixels against the sketch at
 1280 x 800. Not deployed: vps-deploy has no `tavi` stack yet. Details in the
 [brief's outcome](briefs/done/10-tavi-the-part-table-and-the-drawing-at-build-time.md).
+
+## [2026-11-24] brief | 11 tavi, the hero, the contents band and the footer
+
+The first screen, the map of the chapters and the footer, as the sketch draws them. The hero holds the head "Six
+beats every second", the lede, the one blue button to chapter 1 and the drawing in one sized box, `.hero-stage`,
+which brief 16's 3D island fills without moving the page. The contents band is a labelled `<nav>` of seven numbered
+links on paper-2: seven across on a desktop, two columns on a phone (357 px tall at 390), chapter 7 to the footer.
+Its class is `.contents-band` because Tailwind's own `contents` utility erased a `.contents` band. The footer keeps
+the repair line and Tavi's line as a dashed placeholder, with no contact line; nothing on the first screen says
+repair. No JavaScript added. Sloplint 0 FAIL (3 REFLEX kept, as the sketch did); the shots match the sketch's
+renders at 1280 x 800 and 390 x 844, differences listed in the outcome. Built in one commit, `44f7a7f`, which the
+2026-11-24 rollout deployed. A design-critic pass follows. Details in the
+[brief's outcome](briefs/done/11-tavi-hero-contents-band-and-footer.md).
