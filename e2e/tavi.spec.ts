@@ -602,6 +602,196 @@ test.describe("chapter 1, on the chapter engine", () => {
   });
 });
 
+// Chapter 1's own controls in its tray: Wind coils the mainspring, Take apart lifts the barrel's parts off.
+/** The figure's lift groups: each one's --lift and its translate now, in the drawing's units. */
+async function lifts(page: Page) {
+  return page.locator("#energy-movement .lift").evaluateAll((groups) =>
+    groups.map((g) => {
+      const m = new DOMMatrix(getComputedStyle(g).transform === "none" ? undefined : getComputedStyle(g).transform);
+      return {
+        name: [...g.classList].find((c) => c.startsWith("lift-")) ?? "?",
+        lift: Number(getComputedStyle(g).getPropertyValue("--lift")),
+        x: m.e,
+        y: m.f,
+      };
+    }),
+  );
+}
+
+test.describe("chapter 1's Wind and Take apart", () => {
+  const sliders = (page: Page) => {
+    const tray = page.locator("#energy-figure");
+    return {
+      wind: tray.getByRole("slider", { name: "Wind", exact: true }),
+      apart: tray.getByRole("slider", { name: "Take apart", exact: true }),
+      readouts: tray.locator("output"),
+    };
+  };
+  const springPathNow = (page: Page) =>
+    page.locator("#energy-movement .p-spring .spring-f").evaluate((path) => path.getAttribute("d") ?? "");
+
+  test("Wind at 0 and at 100 draws two springs, two readouts and two spoken values", async ({ page }, info) => {
+    await trayReady(page, isPhone(info));
+    const { wind, readouts } = sliders(page);
+    // It opens where the drawing is built: 62, a quarter of a day left.
+    await expect(wind).toHaveValue("62");
+    await expect(readouts.nth(0)).toHaveText("25 of 41 h");
+    await expect(wind).toHaveAttribute("aria-valuetext", "Wound to 25 of 41 hours");
+    expect(await readouts.nth(0).evaluate((o) => getComputedStyle(o).fontFamily)).toMatch(/IBM Plex Mono/);
+    const built = await springPathNow(page);
+
+    await wind.focus();
+    await page.keyboard.press("Home");
+    await expect(readouts.nth(0)).toHaveText("0 of 41 h");
+    await expect(wind).toHaveAttribute("aria-valuetext", "Wound to 0 of 41 hours");
+    const letDown = await springPathNow(page);
+    const arborDown = await page.locator("#energy-movement .rot-arbor").evaluate((g) => getComputedStyle(g).transform);
+
+    await page.keyboard.press("End");
+    await expect(readouts.nth(0)).toHaveText("41 of 41 h");
+    await expect(wind).toHaveAttribute("aria-valuetext", "Wound to 41 of 41 hours");
+    const wound = await springPathNow(page);
+    const arborUp = await page.locator("#energy-movement .rot-arbor").evaluate((g) => getComputedStyle(g).transform);
+
+    expect(letDown).not.toBe(wound);
+    expect(letDown).not.toBe(built);
+    expect(wound).not.toBe(built);
+    // Both outlines of the spring are redrawn together.
+    expect(await page.locator("#energy-movement .p-spring .spring-o").getAttribute("d")).toBe(wound);
+    // The arbor turns with the spring: still at 0, a turn of 4.1 radians at 100.
+    expect(arborDown).toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
+    expect(arborUp).not.toBe(arborDown);
+  });
+
+  test("Take apart at 100 lifts each part along its axis, and each step re-poses it", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await trayReady(page, phone);
+    const { apart, readouts } = sliders(page);
+    await expect(apart).toHaveValue("55");
+    await expect(readouts.nth(1)).toHaveText("55%");
+
+    await apart.focus();
+    await page.keyboard.press("End");
+    await expect(readouts.nth(1)).toHaveText("100%");
+    expect(await page.locator("#energy-figure").evaluate((el) => el.style.getPropertyValue("--e"))).toBe("1");
+    // Every lift group ends up its full lift along the one oblique axis: up and to the right, 30 degrees off vertical.
+    await expect
+      .poll(async () => (await lifts(page)).map((l) => [Math.round(l.x * 10) / 10, Math.round(l.y * 10) / 10]))
+      .toEqual(
+        (await lifts(page)).map((l) => [Math.round(l.lift * 0.5 * 10) / 10, Math.round(-l.lift * 0.866 * 10) / 10]),
+      );
+    expect((await lifts(page)).map((l) => l.name)).toEqual([
+      "lift-bridge",
+      "lift-ratchet",
+      "lift-crownwheel",
+      "lift-click",
+    ]);
+    await expect(page.locator("#energy-movement .axes")).toHaveCSS("opacity", "1");
+
+    // Back to 0: everything down, the dashed axes gone.
+    await page.keyboard.press("Home");
+    await expect(page.locator("#energy-movement .axes")).toHaveCSS("opacity", "0");
+    await expect.poll(async () => (await lifts(page)).every((l) => Math.abs(l.x) + Math.abs(l.y) < 0.01)).toBe(true);
+
+    // The visitor's setting holds until the next step arrives, which takes the figure to its own pose.
+    await readStep(page, "3", phone);
+    await expect(page.locator("#energy-figure")).toHaveAttribute("data-step", "3");
+    await expect(apart).toHaveValue("20");
+    await expect(readouts.nth(1)).toHaveText("20%");
+  });
+
+  test("both sliders answer the arrows, Page Up and Page Down, Home and End", async ({ page }, info) => {
+    await trayReady(page, isPhone(info));
+    const { wind, apart } = sliders(page);
+    for (const [slider, start] of [
+      [wind, 62],
+      [apart, 55],
+    ] as const) {
+      await slider.focus();
+      await expect(slider).toHaveValue(String(start));
+      for (const [key, value] of [
+        ["ArrowRight", start + 1],
+        ["ArrowUp", start + 2],
+        ["ArrowLeft", start + 1],
+        ["ArrowDown", start],
+        ["PageUp", start + 10],
+        ["PageDown", start],
+        ["Home", 0],
+        ["End", 100],
+      ] as const) {
+        await page.keyboard.press(key);
+        await expect(slider, `${key}`).toHaveValue(String(value));
+      }
+    }
+    // Take apart's value is the figure's --e.
+    expect(await page.locator("#energy-figure").evaluate((el) => el.style.getPropertyValue("--e"))).toBe("1");
+  });
+
+  test("a hint under steps 1 and 2 names the control, at 15 px or more", async ({ page }) => {
+    await page.goto("/");
+    const hints = page.locator("#energy .try");
+    await expect(hints).toHaveText(["Slide Take apart to see inside.", "Drag Wind to coil it."], {
+      useInnerText: true,
+    });
+    for (const hint of await hints.all()) {
+      await expect(hint).toBeVisible();
+      expect(parseFloat(await hint.evaluate((el) => getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(15);
+    }
+    await expect(page.locator('#energy .step[data-step="1"] .try')).toHaveCount(1);
+    await expect(page.locator('#energy .step[data-step="2"] .try')).toHaveCount(1);
+  });
+
+  test("on a phone the tray is two rows with nothing wrapped, and the drawing keeps 30% of the screen", async ({
+    page,
+  }, info) => {
+    test.skip(!isPhone(info), "the phone's tray");
+    await trayReady(page, true);
+    await page.evaluate(() => document.fonts.ready);
+    const rows = await page.evaluate(() => {
+      const tray = document.querySelector("#energy-figure .tray");
+      const top = (el: Element | null | undefined) => Math.round(el?.getBoundingClientRect().top ?? NaN);
+      const sliders = [...(tray?.querySelectorAll('input[type="range"]') ?? [])].map((input) =>
+        top(input.closest("[data-orientation]")),
+      );
+      const leaves = [...(tray?.querySelectorAll("*") ?? [])].filter(
+        (el) => el.childElementCount === 0 && (el.textContent ?? "").trim() !== "" && el.checkVisibility(),
+      );
+      const wrapped = leaves
+        .filter((el) => {
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          return range.getClientRects().length > 1;
+        })
+        .map((el) => el.textContent);
+      return { first: top(tray?.querySelector(".tray-row")), sliders, wrapped };
+    });
+    expect(rows.wrapped).toEqual([]);
+    expect(rows.sliders).toHaveLength(2);
+    expect(rows.sliders[0], "Wind and Take apart share a row").toBe(rows.sliders[1]);
+    expect(rows.sliders[0] ?? 0, "under the Pause and the Speed").toBeGreaterThan(rows.first);
+    const viewport = page.viewportSize()?.height ?? 0;
+    const drawing = await page.locator("#energy-movement").boundingBox();
+    expect(drawing?.height ?? 0).toBeGreaterThanOrEqual(viewport * 0.3 - 1);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("Take apart jumps: the parts are at their full lift at once", async ({ page }, info) => {
+      await trayReady(page, isPhone(info));
+      await expect(page.locator("#energy-movement .lift-ratchet")).toHaveCSS("transition-duration", "0s");
+      await sliders(page).apart.focus();
+      await page.keyboard.press("End");
+      await expect(sliders(page).apart).toHaveValue("100");
+      const now = await lifts(page);
+      for (const l of now) {
+        expect(l.x, l.name).toBeCloseTo(l.lift * 0.5, 1);
+        expect(l.y, l.name).toBeCloseTo(-l.lift * 0.866, 1);
+      }
+    });
+  });
+});
+
 // A short screen in one column, a phone turned sideways, and a small laptop window: the sticky figure must leave the
 // step on the reading line readable. Both sizes take the one-column reading line, whichever project runs them.
 for (const viewport of [
@@ -644,7 +834,11 @@ test.describe("without scripting", () => {
     expect(await figureAnimations(page)).toEqual([]);
     await expect(page.locator("#energy-figure .tray")).toBeHidden();
     await expect(page.getByRole("radio")).toHaveCount(0);
+    await expect(page.getByRole("slider")).toHaveCount(0);
     await expect(page.locator("#energy-figure").getByRole("button")).toHaveCount(0);
+    // A hint points at a control that isn't there without scripting, so it is hidden too.
+    await expect(page.locator("#energy .try")).toHaveCount(2);
+    for (const hint of await page.locator("#energy .try").all()) await expect(hint).toBeHidden();
     await expect(page.locator("#energy").getByRole("link", { name: "Back to Contents" })).toBeVisible();
   });
 
