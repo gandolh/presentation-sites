@@ -5,7 +5,7 @@ import Hero from "../components/Hero.astro";
 import Contents from "../components/Contents.astro";
 import Footer from "../components/Footer.astro";
 import Chapter from "../components/chapter/Chapter.astro";
-import FigureTray from "../components/chapter/FigureTray.tsx";
+import EnergyTray from "../components/chapter/EnergyTray.tsx";
 import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
@@ -59,7 +59,7 @@ const chapters = [
         viewBox="-255 -250 420 345"
         aria-label="Diagram of the barrel, opened: the mainspring coiled round its arbor inside the toothed drum, with the barrel bridge, ratchet wheel, crown wheel and click lifted above it."
       />
-      <FigureTray slot="tray" client:visible figure="energy-figure" />
+      <EnergyTray slot="tray" client:visible figure="energy-figure" />
     </Chapter>
 
     {chapters.map((chapter) => (

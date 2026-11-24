@@ -344,7 +344,7 @@ async function readStep(page: Page, step: string, phone: boolean) {
 async function trayReady(page: Page, phone: boolean) {
   await page.goto("/");
   await readStep(page, "2", phone);
-  await page.waitForFunction(() => document.querySelector('astro-island[component-url*="FigureTray"]:not([ssr])'));
+  await page.waitForFunction(() => document.querySelector('astro-island[component-url*="EnergyTray"]:not([ssr])'));
 }
 
 /** An element's own `--slow`, as the stylesheet resolves it. */
@@ -566,6 +566,10 @@ test.describe("chapter 1, on the chapter engine", () => {
     await page.keyboard.press("ArrowLeft");
     await expect(one).toBeChecked();
     expect(await slowOf(page, "#energy-figure")).toBe("1");
+    for (const name of ["Wind"]) {
+      await page.keyboard.press("Tab");
+      await expect(chapter.getByRole("slider", { name, exact: true })).toBeFocused();
+    }
     await page.keyboard.press("Tab");
     await expect(chapter.getByRole("link", { name: "Back to Contents" })).toBeFocused();
     await page.keyboard.press("Tab");

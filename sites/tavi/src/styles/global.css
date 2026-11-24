@@ -1138,6 +1138,12 @@
     transition: opacity var(--dur-short) var(--ease-out);
   }
 
+  /* Wound: the arbor turns with the spring's inner end, and the ratchet wheel squared on it turns too. --wind (0 to 1)
+     is chapter 1's Wind; until it moves, the spring is drawn at 0.62 and the arbor meets it there. */
+  .mode-chapter :is(.rot-arbor, .rot-ratchet) {
+    transform: rotate(calc(var(--wind, 0.62) * 4.1rad));
+  }
+
   /* Taken apart: lifted parts travel along one oblique axis, drawn dashed while anything is lifted. */
   .movement .axes {
     opacity: clamp(0, (var(--e, 0) - 0.02) * 1000, 1);
