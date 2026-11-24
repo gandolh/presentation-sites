@@ -777,3 +777,16 @@ repair. No JavaScript added. Sloplint 0 FAIL (3 REFLEX kept, as the sketch did);
 renders at 1280 x 800 and 390 x 844, differences listed in the outcome. Built in one commit, `44f7a7f`, which the
 2026-11-24 rollout deployed. A design-critic pass follows. Details in the
 [brief's outcome](briefs/done/11-tavi-hero-contents-band-and-footer.md).
+
+## [2026-11-24] brief | 12 tavi, the chapter engine, on chapter 1's steps
+
+First, the design-critic's fixes after brief 11: the header's Pause keeps its width when it turns into Play (both
+labels in one grid cell), and the contents band's lines are balanced; the footer wordmark's nit was measured and left.
+Then the chapter engine: a figure's state lives on its element (`lib/figure.ts`: `data-step`, `--e`, `data-focus`,
+`--slow`, one event), a plain module script runs the steps at the reading line, the part names (focus by subtraction)
+and the current-chapter mark (`lib/chapters.ts`), and each figure's tray is a React island with a Base UI Toggle Pause
+on the page's play state and a RadioGroup Speed. Chapter 1 runs on it with the sketch's four steps and the opened
+barrel. Steps are 46svh on a desktop; the one-column layout (figure at 30% of the screen, a lower reading line)
+starts at 64rem. `tavi.spec.ts` checks the scroll, focus, current mark, both Pauses, speed, keyboard, reduced motion
+and no scripting; 61 passed. Not pushed. Details in the
+[brief's outcome](briefs/done/12-tavi-the-chapter-engine-on-chapter-1s-steps.md).
