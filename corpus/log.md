@@ -752,3 +752,15 @@ line) and small seconds at 8 o'clock. Revised: the 3D movement lives in the hero
 docs site comes later (brief 21), and copy may invent anything about Tavi but must use real, checked facts for every
 mechanism, brand, part name and ratio (decisions-tavi.md, Copy; briefs 13-18 updated, brief 18's review step
 dropped). See [wiki/decisions-tavi.md](wiki/decisions-tavi.md).
+
+## [2026-11-24] brief | 10 tavi, the part table, the drawing at build time and the hero poster
+
+The movement is one part table in `sites/tavi/src/movement/`: `parts.ts` holds the sketch's 21,600 vph train as a
+spec and each part's metal, prose shade, layer, lift window and label anchor; `calibre.ts` derives every position
+from the meshing rules; `clock.ts` ports the prototype's `stateAt(t)` with the amplitude as a parameter. `node:test`
+checks the meshes, the modules, 4,320:1, the escape wheel at 72 and 360 degrees, 21,600 beats an hour and the fork's
+bankings (`npm run tavi:test`, the last step of `npm run check`). The design record's SVG generator is ported to
+`src/movement/svg/` (hero, whole and chapter poses), string-identical to it, and `Movement.astro` draws it at build
+time. The hero shows the drawing ticking in CSS at the sketch's size: 0 differing pixels against the sketch at
+1280 x 800. Not deployed: vps-deploy has no `tavi` stack yet. Details in the
+[brief's outcome](briefs/done/10-tavi-the-part-table-and-the-drawing-at-build-time.md).
