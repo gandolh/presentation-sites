@@ -59,7 +59,7 @@ with sources in the outcome; anything about Tavi may be invented ([decisions-tav
    motion it starts on a still frame until its Pause is released. A figure can also be **held**: `data-hold` on the figure, a still
    frame that a step asks for. A hold is the figure's own: it never touches the page's `data-playing`, and the
    figure's tray shows its Pause pressed while it is held; un-pressing it releases the hold (and starts the page if it
-   was paused). Every Pause keeps one name (a toggle); `decisions-tavi.md` has the ruling of 2026-11-25.
+   was paused). Every Pause keeps one name (a toggle); `decisions-tavi.md` has the ruling of 2026-11-24.
    Development only: one hook, `window.taviPose(figure, pose)`, keyed by the figure's id (`escapement` and `balance`
    here; brief 16 registers `together`), poses a figure for stills and tests. Both are in the islands' contract on
    [decisions-tavi.md](../../wiki/decisions-tavi.md).
