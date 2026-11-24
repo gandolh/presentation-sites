@@ -1,7 +1,8 @@
-// The whole movement as one SVG, seen from the back, in one of three poses:
+// The whole movement as one SVG, seen from the back, in one of four poses:
 // - `hero`: assembled, with callouts;
 // - `whole`: assembled, no callouts (chapter 5's poster);
-// - `chapter`: the barrel opened, its bridge, ratchet wheel, crown wheel and click in lift groups that `--e` raises.
+// - `chapter`: the barrel opened, its bridge, ratchet wheel, crown wheel and click in lift groups that `--e` raises;
+// - `train`: the bridges off, the going train with each mesh's ratio (chapter 2, train.ts).
 // Groups whose class names a `rot-*` animation turn about their own centre when the page's CSS plays them.
 
 import { DEG, polar, type Pt } from "../geometry.ts";
@@ -21,8 +22,9 @@ import {
   wheel,
 } from "./draw.ts";
 import { axis, balanceWheel, barrelCutaway, hairspring, palletFork } from "./pieces.ts";
+import { trainBody } from "./train.ts";
 
-export type Pose = "hero" | "whole" | "chapter";
+export type Pose = "hero" | "whole" | "chapter" | "train";
 
 /** The parts a callout can name. */
 export type CalloutKey = "barrel" | "train" | "balance" | "escape";
@@ -80,6 +82,7 @@ function callout(key: CalloutKey, m: Calibre) {
 
 /** The drawing's layers, bottom to top, for a pose. */
 export function movementBody(pose: Pose, m: Calibre = MOVEMENT) {
+  if (pose === "train") return trainBody(m);
   const opened = pose === "chapter";
   const { barrel: b, centre: c, third: t, fourth: fo, escape: e, pallet: pa, balance: ba, crownWheel: cw } = m;
   const lift = (amt: number, inner: string, extra: string) =>

@@ -1167,6 +1167,34 @@
     font-size: 15px;
     fill: var(--color-ink);
   }
+  /* Chapter 2's train: beside each mesh its ratio in Plex Mono, on a leader from the point the teeth meet. The ratio
+     of the mesh the step reads is in ink; the others step back to muted, still legible. */
+  .ratio {
+    --rk: var(--color-ink);
+    --rl: var(--color-ink-2);
+  }
+  .ratio .dot {
+    fill: var(--rk);
+  }
+  .ratio .leader {
+    fill: none;
+    stroke: var(--rl);
+    stroke-width: 0.9;
+  }
+  .ratio text {
+    font-family: var(--font-figure);
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--rk);
+  }
+  .stage[data-step="1"]:not([data-focus]) .mode-train .ratio:not(.s1),
+  .stage[data-step="2"]:not([data-focus]) .mode-train .ratio:not(.s2),
+  .stage[data-step="3"]:not([data-focus]) .mode-train .ratio:not(.s3),
+  .stage[data-step="4"]:not([data-focus]) .mode-train .ratio:not(.s4),
+  .stage[data-focus] .mode-train .ratio {
+    --rk: var(--color-muted);
+    --rl: var(--color-ghost-line);
+  }
 
   /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair;
      while a part named in the prose is pointed at (data-focus), every part but that one does, whichever step it is
@@ -1181,6 +1209,9 @@
   .stage[data-step="3"]:not([data-focus])
     .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s3, .s3 *),
+  .stage[data-step="4"]:not([data-focus])
+    .mode-train
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s4, .s4 *),
   .stage[data-focus]
     .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.is-focus, .is-focus *) {
@@ -1242,10 +1273,17 @@
   .js:root[data-playing="true"] .rot-centre {
     animation: turn-back calc(3600s * var(--slow)) linear infinite;
   }
+  /* Chapter 2's train turns the barrel too: once in six hours, the way the escape wheel turns. */
+  .js:root[data-playing="true"] .mode-train .rot-barrel {
+    animation: turn calc(21600s * var(--slow)) linear infinite;
+  }
 
   @media (max-width: 40rem) {
     .callout text {
       font-size: 20px;
+    }
+    .ratio text {
+      font-size: 22px;
     }
   }
   /* Reduced motion: the head script starts the page paused, so nothing turns until a Pause is released; moves between
