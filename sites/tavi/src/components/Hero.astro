@@ -1,0 +1,40 @@
+---
+import Movement from "./drawing/Movement.astro";
+
+// The first screen: the head, the lede and the one blue button on the left; on the right the movement drawn from the
+// part table, ticking in CSS at the watch's own rate (six beats a second), stopped by the header's Pause. The drawing
+// sits in one sized box, `.hero-stage`, so whatever later takes its place (the 3D view) fills the same box and nothing
+// on the page moves. The repair line stays off this screen: it lives in the footer.
+---
+
+<section class="hero" aria-labelledby="hero-head">
+  <div class="wrap">
+    <div class="hero-text">
+      <h1 id="hero-head">
+        Six beats
+        <br />
+        every second
+      </h1>
+      <p class="lede">Tavi loves clocks and watches. Here is how one keeps time.</p>
+      <a class="btn" href="#energy">
+        Start with the mainspring
+      </a>
+    </div>
+    <figure class="hero-fig">
+      <div class="hero-stage">
+        <Movement
+          pose="hero"
+          id="hero-movement"
+          viewBox="-250 -215 500 430"
+          aria-label="Diagram of a wristwatch movement seen from the back: the barrel and crown at the upper left, the wheel train across the middle, the escape wheel, pallet fork and balance at the bottom."
+          callouts={["barrel", "train", "balance", "escape"]}
+        />
+      </div>
+      <figcaption>
+        <span>
+          The movement from the back, beating <span class="fig">21,600</span> times an hour.
+        </span>
+      </figcaption>
+    </figure>
+  </div>
+</section>

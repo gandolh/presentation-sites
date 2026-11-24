@@ -1,0 +1,28 @@
+---
+// The map of the chapters under the hero: seven numbered entries, each a link with a line on what the chapter shows.
+// Seven across on a desktop, two columns on a phone. Chapter 7 is the footer, where the repair line lives. Plain
+// links, so every chapter is reachable without scripting.
+const entries = [
+  { href: "#energy", n: 1, title: "Energy", line: "Where the power waits." },
+  { href: "#wheels", n: 2, title: "Wheels", line: "Hours down to seconds." },
+  { href: "#escapement", n: 3, title: "Escapement", line: "Let out, tooth by tooth." },
+  { href: "#balance", n: 4, title: "Balance", line: "Six swings a second." },
+  { href: "#together", n: 5, title: "Together", line: "Apart and back again." },
+  { href: "#bench", n: 6, title: "The bench", line: "Tavi’s tools, drawn." },
+  { href: "#repairs", n: 7, title: "Repairs", line: "What Tavi mends." },
+];
+---
+
+<nav class="contents-band" id="contents" aria-label="Chapters, with what each one shows">
+  <div class="wrap">
+    <ol>
+      {entries.map((entry) => (
+        <li>
+          <a href={entry.href}>
+            <span class="n">{entry.n}</span> <span class="t">{entry.title}</span> <span class="d">{entry.line}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>

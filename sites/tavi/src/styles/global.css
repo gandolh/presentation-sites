@@ -356,8 +356,37 @@
     display: none;
   }
 
-  /* The hero: the head on the left, the ticking drawing on the right at the sketch's size; the hero brief adds the
-     lede, the button and the caption. */
+  /* The primary button: blued steel, the only saturated colour on the first screen. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    min-height: 48px;
+    padding: 0 var(--space-lg);
+    border-radius: var(--radius-control);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    font-size: var(--text-md);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      border-color var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+  .btn:hover {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* The hero: the head, the lede and the button on the left, the ticking drawing on the right at about 520px. */
   .hero {
     padding-block: var(--space-xl) var(--space-2xl);
   }
@@ -373,22 +402,99 @@
     gap: var(--space-lg);
     justify-items: start;
   }
+  .hero h1 {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+    font-variation-settings: "opsz" 72;
+  }
+  .lede {
+    font-size: var(--text-lead);
+    line-height: var(--text-lead--line-height);
+    color: var(--color-ink-2);
+    max-width: 30ch;
+  }
   .hero-fig {
     grid-column: 6 / span 7;
     margin: 0;
     display: grid;
     gap: var(--space-sm);
   }
-  .hero-fig .movement {
+  /* The figure's one box, sized by the drawing's viewBox (500 x 430) and capped so the whole drawing, its callouts
+     and the caption fit the first screen. What fills it, the drawing now and the 3D view later, takes the box as it
+     is, so the swap moves nothing on the page. */
+  .hero-stage {
     width: 100%;
-    height: auto;
+    aspect-ratio: 500 / 430;
     max-height: calc(100svh - var(--header-h) - 160px);
   }
-  .hero h1 {
-    font-size: var(--text-display);
-    line-height: var(--text-display--line-height);
-    letter-spacing: var(--text-display--letter-spacing);
+  .hero-stage > .movement {
+    width: 100%;
+    height: 100%;
+  }
+  .hero-fig figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-lg);
+    padding-inline: var(--space-lg);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  /* The contents band: the seven chapters as numbered links on the paper-2 band, seven across. */
+  .contents-band {
+    background: var(--color-paper-2);
+    border-block: 1px solid var(--color-rule);
+  }
+  .contents-band ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .contents-band li + li {
+    border-left: 1px solid var(--color-rule);
+  }
+  .contents-band a {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2xs);
+    height: 100%;
+    padding: var(--space-lg) var(--space-md);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: background-color var(--dur-short) var(--ease-out);
+  }
+  .contents-band li:first-child a {
+    padding-left: 0;
+  }
+  .contents-band li:last-child a {
+    padding-right: 0;
+  }
+  .contents-band a:hover {
+    background: var(--color-paper-3);
+  }
+  .contents-band .n {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-muted);
     font-variation-settings: "opsz" 72;
+  }
+  .contents-band .t {
+    font-size: var(--text-md);
+    font-weight: 600;
+  }
+  .contents-band .d {
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: var(--color-muted);
+  }
+  .contents-band a[aria-current="true"] .n {
+    color: var(--color-accent);
   }
 
   /* A chapter's head; the chapter briefs add the steps and the figure. */
@@ -408,15 +514,59 @@
     font-variation-settings: "opsz" 72;
   }
 
-  /* The footer, chapter 7; the footer brief adds the name, its meaning and Tavi's line. */
+  /* The footer, chapter 7, on a quiet band: the name and its meaning on the left, the repair line and Tavi's own line
+     on the right, the drawn-not-photographed note across the foot. */
   .site-foot {
     background: var(--color-paper-2);
     border-top: 1px solid var(--color-rule);
     padding-block: var(--space-2xl) var(--space-xl);
   }
+  .site-foot .wrap {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-xl) var(--gap-columns);
+  }
+  .foot-name {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--space-xs);
+    align-content: start;
+    justify-items: start;
+  }
+  .foot-name .wordmark {
+    font-size: 1.75rem;
+  }
+  .foot-name p,
+  .foot-small {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  .foot-repairs {
+    grid-column: 6 / span 7;
+    display: grid;
+    gap: var(--space-md);
+    align-content: start;
+  }
   .site-foot h2 {
     font-size: var(--text-xl);
     line-height: 1.2;
+  }
+  .foot-repairs p {
+    max-width: 46ch;
+  }
+  /* A slot waiting for material: dashed and bracketed, so nobody takes it for Tavi's words. */
+  .fill {
+    display: inline-block;
+    padding: var(--space-2xs) var(--space-sm);
+    border: 1px dashed var(--color-rule-strong);
+    border-radius: var(--radius-control);
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .foot-small {
+    grid-column: 1 / -1;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-rule);
   }
 
   @media (max-width: 75rem) {
@@ -442,8 +592,22 @@
     .hero-fig {
       grid-column: 1 / -1;
     }
-    .hero-fig .movement {
+    .hero-stage {
       max-height: none;
+    }
+    /* Between a phone and a desktop the seven entries keep their row and scroll sideways. */
+    .contents-band {
+      overflow-x: auto;
+    }
+    .contents-band ol {
+      grid-template-columns: repeat(7, minmax(9.5rem, 1fr));
+    }
+    .site-foot .wrap {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .foot-name,
+    .foot-repairs {
+      grid-column: 1 / -1;
     }
   }
   @media (max-width: 40rem) {
@@ -462,6 +626,46 @@
     .hero {
       padding-block: var(--space-lg) var(--space-xl);
     }
+    .hero-text {
+      gap: var(--space-md);
+    }
+    .hero-fig figcaption {
+      padding-inline: 0;
+    }
+    /* On a phone the band is two columns, the number beside its title and line, so the map stays under half a
+       screen. Hairlines part the rows and the columns; chapter 7, the footer, takes the last row whole. */
+    .contents-band {
+      overflow-x: visible;
+    }
+    .contents-band ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .contents-band li + li {
+      border-left: 0;
+    }
+    .contents-band li:nth-child(n + 3) {
+      border-top: 1px solid var(--color-rule);
+    }
+    .contents-band li:nth-child(even) {
+      border-left: 1px solid var(--color-rule);
+    }
+    .contents-band li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+    .contents-band a,
+    .contents-band li:first-child a,
+    .contents-band li:last-child a {
+      grid-template-columns: 1.75rem minmax(0, 1fr);
+      gap: 0 var(--space-xs);
+      padding: var(--space-sm);
+    }
+    .contents-band li:nth-child(odd) a {
+      padding-left: 0;
+    }
+    .contents-band .n {
+      grid-row: span 2;
+      font-size: 1.5rem;
+    }
     .chapter-head {
       margin-bottom: var(--space-lg);
     }
@@ -469,7 +673,9 @@
   @media (prefers-reduced-motion: reduce) {
     .quiet,
     .wordmark,
-    .chapters a {
+    .chapters a,
+    .btn,
+    .contents-band a {
       transition: none;
     }
   }
