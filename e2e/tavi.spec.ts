@@ -792,6 +792,305 @@ test.describe("chapter 1's Wind and Take apart", () => {
   });
 });
 
+// Chapter 2: the train's meshes one step at a time on the back, then the figure turned over to the dial side.
+const WHEELS = ["barrel", "centre", "third", "fourth", "escape"];
+const WHEEL_STEPS = [
+  { step: "1", lit: ["barrel", "centre"], ratio: "72 / 12" },
+  { step: "2", lit: ["centre", "third"], ratio: "80 / 10" },
+  { step: "3", lit: ["third", "fourth"], ratio: "75 / 10" },
+  { step: "4", lit: ["fourth", "escape"], ratio: "84 / 7" },
+];
+
+/** Scrolls a step of a chapter onto the reading line: mid-screen in two columns, lower in one. */
+async function readStepOf(page: Page, chapter: string, step: string, phone: boolean) {
+  await page.evaluate(
+    ({ chapter, step, line }) => {
+      const el = document.querySelector(`#${chapter} .step[data-step="${step}"]`);
+      if (el) window.scrollBy(0, el.getBoundingClientRect().top - innerHeight * line);
+    },
+    { chapter, step, line: phone ? 0.7 : 0.47 },
+  );
+}
+
+/** The page with chapter 2's tray hydrated, the figure stuck whole on screen. */
+async function wheelsTrayReady(page: Page, phone: boolean) {
+  await page.goto("/");
+  await readStepOf(page, "wheels", "2", phone);
+  await page.waitForFunction(() => document.querySelector('astro-island[component-url*="FigureTray"]:not([ssr])'));
+}
+
+/** Which of the train's wheels are in colour (their first shape's fill isn't the ghost token's), and each ratio's
+ * colour and font. */
+async function trainColours(page: Page) {
+  return page.evaluate((wheels) => {
+    const drawing = document.querySelector("#wheels-train");
+    const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    probe.style.fill = "var(--color-ghost-fill)";
+    probe.style.stroke = "var(--color-ink)";
+    drawing?.append(probe);
+    const ghost = getComputedStyle(probe).fill;
+    const ink = getComputedStyle(probe).stroke;
+    probe.remove();
+    const lit = wheels.filter(
+      (w) => getComputedStyle(drawing?.querySelector(`[data-part="${w}"] .fo`) ?? document.body).fill !== ghost,
+    );
+    const ratios = [...(drawing?.querySelectorAll(".ratio text") ?? [])].map((t) => ({
+      text: t.textContent,
+      ink: getComputedStyle(t).fill === ink,
+      font: getComputedStyle(t).fontFamily,
+    }));
+    const others = [...(drawing?.querySelectorAll('.mv [data-part="plate"] .fo, .mv [data-part="balance"] .fo') ?? [])];
+    return { lit, ratios, othersGhosted: others.every((el) => getComputedStyle(el).fill === ghost) };
+  }, WHEELS);
+}
+
+/** The faces' state: which is shown, and each one's transform and opacity. */
+async function faces(page: Page) {
+  return page.evaluate(() => {
+    const face = (id: string) => {
+      const cs = getComputedStyle(document.querySelector(id) ?? document.body);
+      return { visibility: cs.visibility, transform: cs.transform, opacity: cs.opacity };
+    };
+    return { train: face("#wheels-train"), dial: face("#wheels-dial") };
+  });
+}
+
+/** A hand's angle on the dial, in degrees from twelve: the turn it is drawn at plus its running animation's. */
+async function handAngle(page: Page, hand: string) {
+  return page.evaluate((h) => {
+    const inner = document.querySelector(`#wheels-dial .rot-hand-${h}`);
+    const drawn = Number(/rotate\(([-\d.]+)\)/.exec(inner?.parentElement?.getAttribute("transform") ?? "")?.[1]);
+    const t = getComputedStyle(inner ?? document.body).transform;
+    const m = new DOMMatrix(t === "none" ? undefined : t);
+    return drawn + (Math.atan2(m.b, m.a) * 180) / Math.PI;
+  }, hand);
+}
+
+test.describe("chapter 2, the wheels and the dial", () => {
+  test("the five steps re-pose the figure in turn: each mesh's wheels and ratio, then the dial side", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    const figure = page.locator("#wheels-figure");
+    for (const { step, lit, ratio } of WHEEL_STEPS) {
+      await readStepOf(page, "wheels", step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect(page.locator("#wheels .step.is-active")).toHaveAttribute("data-step", step);
+      await expect.poll(async () => (await trainColours(page)).lit, `step ${step}'s wheels`).toEqual(lit);
+      const colours = await trainColours(page);
+      expect(colours.othersGhosted, "the plate and the balance are ghosted").toBe(true);
+      expect(colours.ratios.filter((r) => r.ink).map((r) => r.text)).toEqual([ratio]);
+      await expect.poll(async () => (await faces(page)).train.visibility).toBe("visible");
+      expect((await faces(page)).dial.visibility).toBe("hidden");
+    }
+    await expect(page.locator('.contents-band a[href="#wheels"]')).toHaveAttribute("aria-current", "true");
+
+    await readStepOf(page, "wheels", "5", phone);
+    await expect(figure).toHaveAttribute("data-step", "5");
+    await expect.poll(async () => (await faces(page)).train.visibility).toBe("hidden");
+    const shown = await faces(page);
+    expect(shown.dial).toEqual({ visibility: "visible", transform: "none", opacity: "1" });
+    await expect(page.getByRole("img", { name: /^Diagram of the dial side/ })).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the going train/ })).toBeHidden();
+  });
+
+  test("the ratios read in Plex Mono beside their meshes", async ({ page }, info) => {
+    await page.goto("/");
+    await readStepOf(page, "wheels", "1", isPhone(info));
+    const { ratios } = await trainColours(page);
+    expect(ratios.map((r) => r.text)).toEqual(["72 / 12", "80 / 10", "75 / 10", "84 / 7"]);
+    for (const r of ratios) expect(r.font).toMatch(/IBM Plex Mono/);
+    // Each ratio's dot is on the pinion the wheel drives: the centre's, the third's, the fourth's, the escape wheel's.
+    const onPinions = await page.evaluate(() =>
+      [...document.querySelectorAll("#wheels-train .ratio")].map((ratio, i) => {
+        const driven = ["centre", "third", "fourth", "escape"][i];
+        const dot = ratio.querySelector(".dot")?.getBoundingClientRect();
+        const pinion = document.querySelector(`#wheels-train [data-part="${driven}"] .pin`)?.getBoundingClientRect();
+        if (!dot || !pinion) return false;
+        const [x, y] = [dot.x + dot.width / 2, dot.y + dot.height / 2];
+        return x >= pinion.left - 2 && x <= pinion.right + 2 && y >= pinion.top - 2 && y <= pinion.bottom + 2;
+      }),
+    );
+    expect(onPinions).toEqual([true, true, true, true]);
+    // Legible on a phone too: at least 13 px tall on screen.
+    const heights = await page
+      .locator("#wheels-train .ratio text")
+      .evaluateAll((texts) =>
+        (texts as SVGTextElement[]).map(
+          (t) => parseFloat(getComputedStyle(t).fontSize) * (t.getBoundingClientRect().height / t.getBBox().height),
+        ),
+      );
+    for (const h of heights) expect(h).toBeGreaterThanOrEqual(13);
+  });
+
+  test("a part name lights its wheel and ghosts the others; a hand named while the back shows lights nothing", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    await readStepOf(page, "wheels", "2", phone);
+    const chapter = page.locator("#wheels");
+    const figure = page.locator("#wheels-figure");
+    const third = chapter.getByRole("button", { name: "third wheel", exact: true });
+    if (!phone) {
+      await third.hover();
+      await expect(figure).toHaveAttribute("data-focus", "third");
+      expect((await trainColours(page)).lit).toEqual(["third"]);
+      await page.mouse.move(2, 2);
+      await expect(figure).not.toHaveAttribute("data-focus");
+    }
+    // Focused where they are, without scrolling, so step 2 stays on the reading line.
+    const focus = (name: string) =>
+      chapter.getByRole("button", { name, exact: true }).evaluate((el) => {
+        (el as HTMLElement).focus({ preventScroll: true });
+      });
+    await focus("escape wheel");
+    await expect(figure).toHaveAttribute("data-focus", "escape");
+    expect((await trainColours(page)).lit).toEqual(["escape"]);
+    // Every ratio steps back while a single wheel is lit.
+    expect((await trainColours(page)).ratios.filter((r) => r.ink)).toEqual([]);
+
+    // The minute hand is on the dial side, turned away during step 2: naming it changes nothing.
+    await focus("minute hand");
+    await expect(figure).not.toHaveAttribute("data-focus");
+    expect((await trainColours(page)).lit).toEqual(["centre", "third"]);
+  });
+
+  test("step 5: the small seconds sits over the fourth wheel, and naming a hand lights it", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    await readStepOf(page, "wheels", "4", phone);
+    await expect(page.locator("#wheels-figure")).toHaveAttribute("data-step", "4");
+    await expect.poll(async () => (await faces(page)).train.transform).toBe("none");
+    const centreOf = (selector: string) =>
+      page.evaluate((s) => {
+        const r = document.querySelector(s)?.getBoundingClientRect();
+        return r ? [r.x + r.width / 2, r.y + r.height / 2] : [NaN, NaN];
+      }, selector);
+    const box = await page.locator("#wheels-train").boundingBox();
+    const fourth = await centreOf('#wheels-train [data-part="fourth"] .rot');
+
+    await readStepOf(page, "wheels", "5", phone);
+    await expect.poll(async () => (await faces(page)).dial.transform).toBe("none");
+    const small = await centreOf("#wheels-dial .subdial circle");
+    // The same place seen in the mirror: across the figure's middle, at the same height.
+    expect(Math.abs((small[0] ?? 0) - (2 * ((box?.x ?? 0) + (box?.width ?? 0) / 2) - (fourth[0] ?? 0)))).toBeLessThan(
+      2,
+    );
+    expect(Math.abs((small[1] ?? 0) - (fourth[1] ?? 0))).toBeLessThan(2);
+
+    const chapter = page.locator("#wheels");
+    await chapter.getByRole("button", { name: "small seconds", exact: true }).focus();
+    await expect(page.locator("#wheels-figure")).toHaveAttribute("data-focus", "seconds-hand");
+    const lit = await page.evaluate(() => {
+      const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      probe.style.fill = "var(--color-ghost-fill)";
+      document.querySelector("#wheels-dial")?.append(probe);
+      const ghost = getComputedStyle(probe).fill;
+      probe.remove();
+      const fill = (s: string) => getComputedStyle(document.querySelector(s) ?? document.body).fill;
+      return {
+        seconds: fill("#wheels-dial .rot-hand-seconds .hf") !== ghost,
+        subdial: fill("#wheels-dial .subdial .fo") !== ghost,
+        minute: fill("#wheels-dial .rot-hand-minute .hf") !== ghost,
+        index: fill("#wheels-dial .index .fo") !== ghost,
+      };
+    });
+    expect(lit).toEqual({ seconds: true, subdial: true, minute: false, index: false });
+    // The fourth wheel is on the back, turned away now: naming it changes nothing.
+    await chapter.getByRole("button", { name: "fourth wheel", exact: true }).evaluate((el) => {
+      (el as HTMLElement).focus({ preventScroll: true });
+    });
+    await expect(page.locator("#wheels-figure")).toHaveAttribute("data-step", "5");
+    await expect(page.locator("#wheels-figure")).not.toHaveAttribute("data-focus");
+  });
+
+  test("the hands stand at 10:10:30 when still; at 1/10 the seconds hand jumps once every 10/6 s", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await wheelsTrayReady(page, phone);
+    await readStepOf(page, "wheels", "5", phone);
+    await expect(page.locator("#wheels-figure")).toHaveAttribute("data-step", "5");
+    const tray = page.locator("#wheels-figure");
+    await tray.getByRole("radio", { name: "1/10", exact: true }).click();
+    await expect(tray.getByRole("radio", { name: "1/10", exact: true })).toBeChecked();
+    // Running at 1/10: a turn in 600 s, in 360 jumps, so one every 1,666.7 ms.
+    const timing = await page.evaluate(() => {
+      const [animation] = document.querySelector("#wheels-dial .rot-hand-seconds")?.getAnimations() ?? [];
+      const t = animation?.effect?.getComputedTiming();
+      const hand = document.querySelector("#wheels-dial .rot-hand-seconds") ?? document.body;
+      return { duration: Number(t?.duration), easing: getComputedStyle(hand).animationTimingFunction };
+    });
+    expect(timing.duration).toBeCloseTo(600_000, 0);
+    expect(timing.easing).toMatch(/^steps\(360(, (jump-)?start)\)$/);
+    // Read at moments either side of each jump: 1, 1, 2, 2, 3 degrees past 30 s.
+    const at = async (ms: number) => {
+      await page.evaluate((time) => {
+        const [animation] = document.querySelector("#wheels-dial .rot-hand-seconds")?.getAnimations() ?? [];
+        if (animation) {
+          animation.pause();
+          animation.currentTime = time;
+        }
+      }, ms);
+      return Math.round((await handAngle(page, "seconds")) * 1000) / 1000;
+    };
+    expect([await at(0), await at(1600), await at(1700), await at(3300), await at(3400)]).toEqual([
+      181, 181, 182, 182, 183,
+    ]);
+    await page.evaluate(() => {
+      for (const a of document.querySelector("#wheels-dial .rot-hand-seconds")?.getAnimations() ?? []) a.play();
+    });
+    await page.waitForTimeout(1900);
+
+    // Paused, the figure stands on its still frame: every hand on a whole degree, at 10:10:30.
+    await tray.getByRole("button", { name: "Pause", exact: true }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    const still = {
+      seconds: await handAngle(page, "seconds"),
+      minute: await handAngle(page, "minute"),
+      hour: await handAngle(page, "hour"),
+    };
+    expect(Number.isInteger(Math.round(still.seconds * 1e6) / 1e6)).toBe(true);
+    expect(still).toEqual({ seconds: 180, minute: 63, hour: 305.25 });
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the figure is still until its Pause is released, and the turn-over is a cross-fade", async ({
+      page,
+    }, info) => {
+      const phone = isPhone(info);
+      await wheelsTrayReady(page, phone);
+      await readStepOf(page, "wheels", "5", phone);
+      await expect(page.locator("#wheels-figure")).toHaveAttribute("data-step", "5");
+      const running = () =>
+        page.evaluate(
+          () =>
+            [...document.querySelectorAll("#wheels-figure .rot")].flatMap((g) =>
+              g.getAnimations().filter((a) => a.playState === "running"),
+            ).length,
+        );
+      await page.waitForTimeout(300);
+      expect(await running()).toBe(0);
+      // Nothing turns: one face fades out as the other fades in.
+      const shown = await faces(page);
+      expect(shown.train.transform).toBe("none");
+      expect(shown.dial.transform).toBe("none");
+      await expect.poll(async () => (await faces(page)).train.opacity).toBe("0");
+      expect((await faces(page)).dial.opacity).toBe("1");
+      await expect(page.locator("#wheels-dial")).toHaveCSS("transition-property", /opacity/);
+
+      const pause = page.locator("#wheels-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      await pause.click();
+      await expect.poll(running).toBeGreaterThan(0);
+    });
+  });
+});
+
 // A short screen in one column, a phone turned sideways, and a small laptop window: the sticky figure must leave the
 // step on the reading line readable. Both sizes take the one-column reading line, whichever project runs them.
 for (const viewport of [
@@ -912,6 +1211,19 @@ test.describe("without scripting", () => {
     await expect(page.locator("#energy .try")).toHaveCount(2);
     for (const hint of await page.locator("#energy .try").all()) await expect(hint).toBeHidden();
     await expect(page.locator("#energy").getByRole("link", { name: "Back to Contents" })).toBeVisible();
+  });
+
+  test("chapter 2 reads in full, its back shows still, and its tray shows no control", async ({ page }) => {
+    await page.goto("/");
+    const steps = page.locator("#wheels .step p");
+    await expect(steps).toHaveCount(5);
+    for (const step of await steps.all()) await expect(step).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the going train/ })).toBeVisible();
+    await expect(page.locator("#wheels-dial")).toBeHidden();
+    await expect(page.locator("#wheels-figure .tray")).toBeHidden();
+    await expect(
+      page.locator("#wheels").getByRole("link", { name: "Next chapter 3. Escapement, let out tooth by tooth" }),
+    ).toBeVisible();
   });
 
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {
