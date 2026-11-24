@@ -1,7 +1,9 @@
-// Chapter 1's tray: the figure's Pause and Speed, then its own controls. Wind coils the mainspring and turns the arbor
-// with it. A React island, hydrated when it scrolls into view. The drawing is Astro's: the island writes to it.
+// Chapter 1's tray: the figure's Pause and Speed, then its own two controls. Wind coils the mainspring and turns the
+// arbor with it; Take apart lifts the barrel bridge, the ratchet wheel, the crown wheel and the click off along their
+// axis. A React island, hydrated when it scrolls into view. The drawing is Astro's: the island writes to it.
 
-import { useState } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
+import { onFigureChange, setPose, type Pose } from "../../lib/figure";
 import { springPath } from "../../movement/svg/pieces";
 import { Slider } from "../ui/Slider";
 import FigureTray from "./FigureTray";
@@ -39,15 +41,57 @@ function Wind({ figure }: ControlProps) {
   );
 }
 
+/**
+ * Take apart, 0 to 100%: the figure's `--e`, through its pose. Each step sets it as it reaches the reading line; a
+ * drag sets it until the next step arrives. While a thumb is dragged the lifted parts follow it without easing.
+ */
+function TakeApart({ figure, opening }: ControlProps & { opening: number }) {
+  const subscribe = useCallback(
+    (listener: () => void) => {
+      const el = document.getElementById(figure);
+      return el ? onFigureChange(el, listener) : () => undefined;
+    },
+    [figure],
+  );
+  const apart = useSyncExternalStore(
+    subscribe,
+    () => {
+      const e = document.getElementById(figure)?.style.getPropertyValue("--e");
+      return e ? Math.round(Number(e) * 100) : opening;
+    },
+    () => opening,
+  );
+  return (
+    <Slider
+      label="Take apart"
+      value={apart}
+      readout={`${apart}%`}
+      getAriaValueText={(value) => `${value}% apart`}
+      onValueChange={(value, reason) => {
+        const el = document.getElementById(figure);
+        if (!el) return;
+        el.classList.toggle("dragging", reason === "drag");
+        setPose(el, el.dataset.step ?? "", { e: value / 100 });
+      }}
+      onValueCommitted={() => {
+        document.getElementById(figure)?.classList.remove("dragging");
+      }}
+    />
+  );
+}
+
 interface Props {
   /** The figure's id. */
   figure: string;
+  /** The pose the figure opens in (the chapter's first step), for the server's render. */
+  opening: Pose;
 }
 
-export default function EnergyTray({ figure }: Props) {
+export default function EnergyTray({ figure, opening }: Props) {
   return (
     <FigureTray figure={figure}>
       <Wind figure={figure} />
+      <TakeApart figure={figure} opening={Math.round(opening.e * 100)} />
     </FigureTray>
   );
 }

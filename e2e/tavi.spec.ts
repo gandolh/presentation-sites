@@ -566,7 +566,7 @@ test.describe("chapter 1, on the chapter engine", () => {
     await page.keyboard.press("ArrowLeft");
     await expect(one).toBeChecked();
     expect(await slowOf(page, "#energy-figure")).toBe("1");
-    for (const name of ["Wind"]) {
+    for (const name of ["Wind", "Take apart"]) {
       await page.keyboard.press("Tab");
       await expect(chapter.getByRole("slider", { name, exact: true })).toBeFocused();
     }

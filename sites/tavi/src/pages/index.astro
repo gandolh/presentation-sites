@@ -19,6 +19,9 @@ const chapters = [
   { id: "together", head: "5. Together, apart and back again" },
   { id: "bench", head: "6. The bench, Tavi’s tools" },
 ];
+
+// Chapter 1's figure opens half apart, as its first step stands; the tray's Take apart starts there too.
+const energyOpening = { e: 0.55 };
 ---
 
 <Base>
@@ -32,10 +35,10 @@ const chapters = [
       n={1}
       head="1. Energy, wound into a spring"
       caption="The barrel, opened: the mainspring coiled inside, the bridge, ratchet wheel and crown wheel lifted above it."
-      opening={{ e: 0.55 }}
+      opening={energyOpening}
       next={{ href: "#wheels", head: "2. Wheels, hours into seconds" }}
     >
-      <Step n={1} pose={{ e: 0.55 }}>
+      <Step n={1} pose={energyOpening}>
         Everything here runs on one coiled spring, the <PartName part="mainspring">mainspring</PartName>. It lives
         inside the <PartName part="barrel">barrel</PartName>, the toothed drum beside the crown.
       </Step>
@@ -59,7 +62,7 @@ const chapters = [
         viewBox="-255 -250 420 345"
         aria-label="Diagram of the barrel, opened: the mainspring coiled round its arbor inside the toothed drum, with the barrel bridge, ratchet wheel, crown wheel and click lifted above it."
       />
-      <EnergyTray slot="tray" client:visible figure="energy-figure" />
+      <EnergyTray slot="tray" client:visible figure="energy-figure" opening={energyOpening} />
     </Chapter>
 
     {chapters.map((chapter) => (
