@@ -1,14 +1,15 @@
 # presentation-sites
 
-Romanian marketing sites on Astro, one npm workspace each: four live sites
-(saloon, auto-service, subcort, tractari) and a design study under `sites/`,
-with shared helpers in `packages/site-kit`. Read [corpus/index.md](corpus/index.md)
+Presentation sites on Astro, one npm workspace each: four live Romanian
+marketing sites (saloon, auto-service, subcort, tractari), tavi (Tavi
+Ceasornicaru, an English interactive watch site, being built) and a design
+study under `sites/`, with shared helpers in `packages/site-kit`. Read [corpus/index.md](corpus/index.md)
 first.
 
 ## Commands
 
 - `npm run <site>:dev`: the site's dev server (`saloon`, `auto-service`,
-  `subcort`, `tractari`, `design-study`).
+  `subcort`, `tractari`, `tavi`, `design-study`).
 - `npm run check`: typecheck (`astro check` in every site, `tsc` in the kit),
   lint, format check, conventions, and the saloon bots' tests. Run it before
   every hand-back.
@@ -50,6 +51,8 @@ first.
   `public/images/real/` are gitignored. Never paste their contents into the
   repo or the corpus, and never write a secret's value anywhere.
 - **The copy is Romanian.** Don't run English prose or style skills over it.
+  The exception is tavi (`sites/tavi`): its copy is English, and English prose
+  skills may run over it.
 - **No CI.** Don't add GitHub Actions, runners or other GitHub automation.
 - **No pushes.** Commit locally; the owner pushes.
 - **Deploys and git settings are owner steps.** A site deploys with

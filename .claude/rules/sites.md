@@ -26,6 +26,8 @@ paths:
   goes through `withBase()`, `absoluteUrl()` or `pagePath()` from
   `@sites/kit`, never a bare `/path`.
 - The copy is Romanian. Don't run English prose or style skills over it.
+  tavi is the exception: its copy is English, and English prose skills may
+  run over it.
 - `is:inline` scripts ship as written: keep them small, and lint still
   checks them.
 - `npm run check:fast` typechecks the sites you changed and lints the changed
