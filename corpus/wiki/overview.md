@@ -1,6 +1,6 @@
 ---
-summary: What presentation-sites is — a monorepo of independent Romanian marketing sites, who each one is for, and what lives at the top level.
-updated: 2026-10-19
+summary: What presentation-sites is — a monorepo of independent Romanian marketing sites plus one English watch site (tavi, planned 2026-11-24), who each one is for, and what lives at the top level.
+updated: 2026-11-24
 ---
 
 # Overview
@@ -15,7 +15,8 @@ editor config and this corpus. Each site also has its own **documentation site**
 — a Docusaurus project at `sites/<site>/docs-site/`, built with
 `npm run <site>:docs` (see [architecture.md](architecture.md#docs-sites)).
 
-Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Oltenia**.
+Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Oltenia**. tavi is the
+exception: English, and for a person, not a business.
 
 ## The cast
 
@@ -25,6 +26,7 @@ Most sites are Romanian-language, for businesses in **Târgu-Jiu / Gorj / Olteni
 | [`auto-service/`](../../sites/auto-service/) | **BavAuto Gorj** — independent BMW-specialist auto service, Târgu-Jiu. | `/auto-service` |
 | [`subcort/`](../../sites/subcort/) | **Subcort** — demo event-tent rental site for Gorj/Oltenia. | `/subcort` |
 | [`tractari/`](../../sites/tractari/) | **AXA Tractări** — demo car-towing site. Minimalist, with a Three.js night-road hero. | `/tractari` |
+| `tavi/` | **Tavi Ceasornicaru** — an interactive watch movement you wind, slow down and take apart, drawn on warm paper, for a friend who mends wristwatches. English, light only. Planned 2026-11-24 (briefs 09-20), not built; see [decisions-tavi.md](decisions-tavi.md). | `/tavi` |
 | [`design-study/`](../../sites/design-study/) | **Fourteen Renderings** — not a marketing site but a UI/UX study: one fictional blog rendered in 14 design languages, content held constant. `noindex` by decision. | `/design-study` |
 | [`churchix/`](../../churchix/) | **Churchix** — a white-label *platform* for Orthodox church sites + giving. Its own npm-workspaces monorepo; the odd one out. | per-church |
 

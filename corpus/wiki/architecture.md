@@ -1,6 +1,6 @@
 ---
 summary: How this workspace is put together — the sites/ + packages/ layout, the per-site docs-sites, what @sites/kit shares, the shared Astro/Tailwind shape, the mock-vs-real image pipeline, the gitignored real-data split, and where deploy lives.
-updated: 2026-11-02
+updated: 2026-11-24
 ---
 
 # Architecture
@@ -17,6 +17,7 @@ presentation-sites/
   packages/site-kit/  @sites/kit — the only code shared between sites
   churchix/           NOT a workspace here — its own root, lockfile and packages/*
   corpus/             this knowledge workspace
+  design/             approved design records: the redesign board's pages, tavi's sketch
   .vscode/            launch configs (one per project)
 ```
 
@@ -68,8 +69,11 @@ All four share one shape:
   exports (`site.ts`, `gallery.ts`, `faq.ts`, `images.ts`). Components import them.
   `images.ts` is now a few lines supplying this site's `hasReal` list to
   `@sites/kit`; `url.ts` is gone, replaced by importing `withBase` from the kit.
-- `tractari` adds **Three.js + GSAP** for its hero scene; the others have no
-  animation runtime.
+- `tractari` adds **Three.js** for one scene; `subcort` adds Three.js, Motion
+  and anime.js; tractari's gsap went with its 2026-11-13 redesign. `tavi` (planned
+  2026-11-24, not built) will add three.js 0.187.0 in one island and draw its SVG
+  at build time from one part table in `src/movement/`
+  ([decisions-tavi.md](decisions-tavi.md)).
 
 ### The image pipeline (mock vs real)
 

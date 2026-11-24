@@ -2,6 +2,8 @@
 <!-- Read by the orchestrate skill. Tune freely; keep it short. -->
 
 **Implement skill:** plan-split-dispatch
+**Builders:** each brief names one on its **Builder** line: Opus for a new workspace, a shared engine, geometry,
+3D and the first look of a site; Sonnet for a narrow screen, a port from an approved sketch, and docs.
 **Review skill:** a general-purpose agent over the diff (no repo review command)
 **PR skill:** propose git commands (no PR tooling wired; `gh` is available)
 **Issue tracker:** none — work is captured in `corpus/todos/` and per-site `todo/` dirs
@@ -27,6 +29,8 @@ subtree.
 | Accessibility / UI-compliance check on code | design (check) | web-design-guidelines |
 | Docs or prose need a style pass | docs | writing-guidelines (+ unslop if AI-drafted) |
 | Romanian marketing/legal copy | docs | edit inline — do **not** run English prose skills over it |
+| tavi's copy (English, the one exception) | docs | writing-guidelines + unslop are fine here |
+| tavi's look | design | `design/tavi/` in the order its README gives, then `sites/tavi/DESIGN.md` once brief 09 writes it; hallmark's floor and sloplint |
 | Need a diagram | docs | diagram-design |
 | Branch ahead, ship intent | PR open | propose git commands |
 | "what do we call this" / record a decision | domain | corpus-flow §9 |

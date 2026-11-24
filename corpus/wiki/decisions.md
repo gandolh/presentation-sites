@@ -1,6 +1,6 @@
 ---
-summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md, the house style and its checks on decisions-house-style.md. Do not relitigate without a log entry.
-updated: 2026-11-11
+summary: Locked structural choices for this monorepo — self-contained sites, deploy living elsewhere, env-driven base paths, the mock/real image split, and gitignored business data. The islands' icon and Base UI calls are on decisions-ui.md, the house style and its checks on decisions-house-style.md, the tavi site's calls on decisions-tavi.md. Do not relitigate without a log entry.
+updated: 2026-11-24
 ---
 
 # Decisions
@@ -145,6 +145,11 @@ live in [decisions-ui.md](decisions-ui.md).
 **2026-11-11** — Prettier at width 120, the vendored house-style ESLint config
 with a local Astro layer, the tsconfig flags and the `npm run check` gate live
 in [decisions-house-style.md](decisions-house-style.md).
+
+## Tavi Ceasornicaru
+
+**2026-11-24** — The watch site's calls (English and light only, the stack, the one part table, the fallback ladder,
+the owner's defaults) live in [decisions-tavi.md](decisions-tavi.md).
 
 ## churchix governs itself
 

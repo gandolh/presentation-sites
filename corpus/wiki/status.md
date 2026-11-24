@@ -1,11 +1,13 @@
 ---
-summary: Where each site stands (updated 2026-11-13: saloon, auto-service, subcort and tractari are redesigned and wait on deploys), the recent work per area, and what this root corpus does versus the per-site docs. The living dashboard: start here after a break.
-updated: 2026-11-13
+summary: Where each site stands (updated 2026-11-24: saloon, auto-service, subcort and tractari are redesigned and wait on deploys; tavi, a new English watch site, is planned as briefs 09-20 and not built), the recent work per area, and what this root corpus does versus the per-site docs. The living dashboard: start here after a break.
+updated: 2026-11-24
 ---
 
 # Status — 2026-11-02
 
 ## Where things stand
+
+tavi (Tavi Ceasornicaru) is planned (2026-11-24): an interactive watch movement on warm paper, English and light only, drawn not photographed. The owner approved the sketch's direction A, "The workshop explained", and the record is `design/tavi/`. Briefs 09-20 build it one at a time, on the board; nothing is built yet ([decisions-tavi.md](decisions-tavi.md)). Until brief 09 adds `design/` to ESLint's and knip's ignores, `npm run check` fails on the copied sketch generator (lint and conventions). The deploy needs a `tavi` stack in vps-deploy, filed there separately. Owner todo: Tavi's own line for the footer ([todos/tavi-own-line.md](../todos/tavi-own-line.md)).
 
 saloon is redesigned as "Menu beside the work" (brief 06, 2026-11-13): a blush-cream ground with raised cards and bands, the Services menu card beside the photo on the first screen, a phone booking bar docked from the first paint (WhatsApp and call), a gold-ink focus ring; Fraunces and Manrope pinned at 5.3.0; saloon's own Playwright spec is `e2e/saloon.spec.ts`. Waits on a deploy.
 
@@ -45,6 +47,7 @@ per-site docs and is *not* duplicated here.
 | `auto-service` | Code-complete, redesigned 2026-11-13 as *The job card* (a pinned light card carrying the call on warm graphite; the 2026-08-23 *Bordcomputer* world is retired, see [decisions-ui.md](decisions-ui.md)). Full page set, legal pages, JSON-LD, consent-gated map, verified sub-path build. **No photography by decision** — the workshop is drawn and the gallery was removed. | [`sites/auto-service/docs/STATUS.md`](../../sites/auto-service/docs/STATUS.md) |
 | `subcort` | Demo, complete. Reworked twice on 2026-08-23 (a *scoarța* system, then **Montaj**, the site as a drawing set) and redesigned 2026-11-13 as *On your ground* (a sage plot with cards and panels on it; see [decisions-ui.md](decisions-ui.md)). One marquee model in `src/lib/draft.ts` drives every graphic (WebGL hero, exploded plate, scale plan, OG card); ink for the object, one orange for annotation; no photography. | [`subcort/PRODUCT.md`](../../sites/subcort/PRODUCT.md), [`DESIGN.md`](../../sites/subcort/DESIGN.md) |
 | `tractari` | Demo, complete; redesigned 2026-11-13 as *Lines first* (type on asphalt, a board of three named phone lines, the Three.js night-road scene as a plate in Cum funcționează; see [decisions-ui.md](decisions-ui.md)). | [`tractari/PRODUCT.md`](../../sites/tractari/PRODUCT.md), [`DESIGN.md`](../../sites/tractari/DESIGN.md) |
+| `tavi` | **Planned 2026-11-24**, not built. An English watch site for a friend who mends wristwatches: a drawn movement you wind, slow down and take apart over seven chapters, with a three.js centrepiece in chapter 5. Briefs 09-20. | [`design/tavi/README.md`](../../design/tavi/README.md), [decisions-tavi.md](decisions-tavi.md) |
 | `design-study` | **New, 2026-08-23.** Not a marketing site — a UI/UX study. One fictional blog (*Ratio*, 12 posts, 18 shared placeholders) rendered in 14 design languages, content held constant so only design varies. 183 static pages; each theme owns its markup, layout and CSS, and loads only its own fonts. No Tailwind. The written half is 14 per-style dossiers carrying image-treatment recipes and prompt descriptors — see [`design-styles.md`](design-styles.md). | [`design-study/PRODUCT.md`](../../sites/design-study/PRODUCT.md), [`DESIGN.md`](../../sites/design-study/DESIGN.md) |
 | `churchix` | Active product. One church app (`apps/parohia-harlesti-bacau`) on the shared packages. Runs its own corpus since 2026-10-07. Docs site on Docusaurus 2026-10-21, phone menu on Base UI 2026-10-23; open: the brand seeds lose to the token defaults in built pages. | [`churchix/CLAUDE.md`](../../churchix/CLAUDE.md), [`churchix/corpus/index.md`](../../churchix/corpus/index.md), [`churchix/corpus/wiki/status.md`](../../churchix/corpus/wiki/status.md) |
 

@@ -715,3 +715,18 @@ page differs from the twin by 0.47% of pixels. Waits on `node cli.ts tractari de
 ## [2026-11-20] maintenance | The redesigns' board pages copied into the repo
 
 The estate redesign board is a private canvas, so `design/estate-redesign/` now holds a copy of each site's page on it and the build behind it, one folder per site (auto-service, saloon, subcort, tractari, churchix): the directions, the judges' and the controller's rulings, the critique, the token hand-off, the board's notes, the owner's decisions, the proposed screens as HTML with renders, and today's shots from before the redesign. They are the design record of briefs 05-08 and churchix brief 05, which built them. Prettier skips the folder.
+
+## [2026-11-24] plan | Tavi Ceasornicaru: the approved sketch, the decisions and briefs 09-20
+
+The owner approved direction A, "The workshop explained", of the Tavi Ceasornicaru sketch: an interactive wristwatch
+movement on warm paper, wound, slowed down and taken apart over seven chapters, for a friend who mends wristwatches.
+The sketch, the three.js prototype, the direction, the critique, the renders and the generator are copied into
+`design/tavi/` (commit `02c3a96`; its README says which file wins). The calls are on the new
+[wiki/decisions-tavi.md](wiki/decisions-tavi.md): English and light only (the first English site here), drawn not
+photographed, no contact yet; Astro with Base UI controls and vanilla three.js 0.187.0 in one island; one part table
+with two renderers; the fallback ladder with the 3D in chapter 5 and the hero left as the drawing; no docs site in
+v1; and the owner's defaults (a quiet repair line, the generic 21,600 vph train, Tavi's line as a placeholder, small
+seconds over the fourth wheel). Twelve briefs, 09 to 20, build it one at a time, with a design-critic pass after 11 and
+after 17. Tavi's own line is an owner todo ([todos/tavi-own-line.md](todos/tavi-own-line.md)). The deploy needs a
+`tavi` stack in vps-deploy, filed there separately. Until brief 09's first step adds `design/` to ESLint's and knip's
+ignores, `npm run check` fails on the copied generator.
