@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
+import Movement from "../components/drawing/Movement.astro";
 
 // One long page: the hero, then the seven chapters in order. Each chapter's head is here; the chapter briefs add its
 // steps and its figure, and may reword the head.
@@ -19,7 +20,18 @@ const chapters = [
   <main id="top">
     <section class="hero" aria-labelledby="hero-head">
       <div class="wrap">
-        <h1 id="hero-head">Six beats every second</h1>
+        <div class="hero-text">
+          <h1 id="hero-head">Six beats every second</h1>
+        </div>
+        <figure class="hero-fig">
+          <Movement
+            pose="hero"
+            id="hero-movement"
+            viewBox="-250 -215 500 430"
+            aria-label="Diagram of a wristwatch movement seen from the back: the barrel and crown at the upper left, the wheel train across the middle, the escape wheel, pallet fork and balance at the bottom."
+            callouts={["barrel", "train", "balance", "escape"]}
+          />
+        </figure>
       </div>
     </section>
 
