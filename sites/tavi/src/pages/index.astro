@@ -6,14 +6,15 @@ import Contents from "../components/Contents.astro";
 import Footer from "../components/Footer.astro";
 import Chapter from "../components/chapter/Chapter.astro";
 import EnergyTray from "../components/chapter/EnergyTray.tsx";
+import FigureTray from "../components/chapter/FigureTray.tsx";
 import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
+import { dialSvg } from "../movement/svg/dial.ts";
 
-// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapter 1 is built
-// on the chapter engine (components/chapter); the others are still their heads, which their briefs fill in.
+// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 and 2
+// are built on the chapter engine (components/chapter); the others are still their heads, which their briefs fill in.
 const chapters = [
-  { id: "wheels", head: "2. Wheels, hours into seconds" },
   { id: "escapement", head: "3. Escapement, let out tooth by tooth" },
   { id: "balance", head: "4. Balance, six swings a second" },
   { id: "together", head: "5. Together, apart and back again" },
@@ -22,6 +23,11 @@ const chapters = [
 
 // Chapter 1's figure opens half apart, as its first step stands; the tray's Take apart starts there too.
 const energyOpening = { e: 0.55 };
+// Chapter 2 lifts nothing: its steps walk down the train, then turn the figure over to the dial.
+const wheelsPose = { e: 0 };
+// Both of chapter 2's faces frame the same stretch of the movement, mirrored about the centre arbor, so turning the
+// figure over keeps every part where it was.
+const wheelsFrame = "-245 -205 490 410";
 ---
 
 <Base>
@@ -69,6 +75,60 @@ const energyOpening = { e: 0.55 };
         aria-label="Diagram of the barrel, opened: the mainspring coiled round its arbor inside the toothed drum, with the barrel bridge, ratchet wheel, crown wheel and click lifted above it."
       />
       <EnergyTray slot="tray" client:visible figure="energy-figure" opening={energyOpening} />
+    </Chapter>
+
+    <Chapter
+      id="wheels"
+      n={2}
+      head="2. Wheels, hours into seconds"
+      caption="The going train from the back with its bridges off: the barrel, the centre, third and fourth wheels and the escape wheel, each mesh's ratio beside it. Turned over in step 5, the dial side: the hands at 10:10:30 and the small seconds over the fourth wheel."
+      opening={wheelsPose}
+      next={{ href: "#escapement", head: "3. Escapement, let out tooth by tooth" }}
+    >
+      <Step n={1} pose={wheelsPose}>
+        The <PartName part="barrel">barrel</PartName>’s <span class="fig">72</span> teeth drive the
+        <PartName part="centre">centre wheel</PartName>’s pinion of <span class="fig">12</span> leaves: six to one. So
+        the barrel turns once in six hours.
+      </Step>
+      <Step n={2} pose={wheelsPose}>
+        The <PartName part="centre">centre wheel</PartName> turns once an hour; its arbor comes through to the dial and
+        carries the minute hand. Its <span class="fig">80</span> teeth turn the
+        <PartName part="third">third wheel</PartName>’s <span class="fig">10</span> leaves: eight turns an hour.
+      </Step>
+      <Step n={3} pose={wheelsPose}>
+        <PartName part="third">Third wheel</PartName> to fourth: <span class="fig">75</span> teeth on
+        <span class="fig">10</span> leaves. Eight turns an hour become sixty, so the
+        <PartName part="fourth">fourth wheel</PartName> turns once a minute, the speed of a seconds hand.
+      </Step>
+      <Step n={4} pose={wheelsPose}>
+        Fourth to escape: <span class="fig">84</span> teeth on <span class="fig">7</span> leaves, twelve to one. The
+        <PartName part="escape">escape wheel</PartName> turns twelve times a minute. Chapter 3 shows what it does.
+      </Step>
+      <Step n={5} pose={wheelsPose}>
+        Turned over, the dial side. A cannon pinion of <span class="fig">10</span> rides the centre arbor and drives a
+        minute wheel of <span class="fig">30</span>, whose pinion of <span class="fig">8</span> drives an hour wheel of
+        <span class="fig">32</span>: twelve to one. So the <PartName part="hour-hand">hour hand</PartName> goes round
+        twice a day under the <PartName part="minute-hand">minute hand</PartName>, and the
+        <PartName part="seconds-hand">small seconds</PartName> rides the fourth wheel. The hands are blued steel, in the
+        shape Breguet designed in 1783.
+      </Step>
+      <div class="turnover" slot="figure">
+        <Movement
+          pose="train"
+          id="wheels-train"
+          viewBox={wheelsFrame}
+          aria-label="Diagram of the going train from the back, its bridges off: the barrel drives the centre wheel (72 / 12), the centre wheel the third (80 / 10), the third the fourth (75 / 10), and the fourth the escape wheel (84 / 7)."
+        />
+        <Fragment
+          set:html={dialSvg({
+            id: "wheels-dial",
+            viewBox: wheelsFrame,
+            label:
+              "Diagram of the dial side: a minute track, applied indices, blued Breguet hour and minute hands at 10:10, and the small seconds at about eight o’clock, over the fourth wheel.",
+          })}
+        />
+      </div>
+      <FigureTray slot="tray" client:visible figure="wheels-figure" />
     </Chapter>
 
     {chapters.map((chapter) => (

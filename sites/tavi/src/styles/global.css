@@ -636,6 +636,11 @@
     --k: var(--color-part-balance-ink);
     --k-line: var(--color-part-balance);
   }
+  /* The hands are blued steel, which has no prose shade of its own: its dark line shade, underlined in the blue. */
+  .k-screw {
+    --k: var(--color-part-screw-line);
+    --k-line: var(--color-part-screw);
+  }
 
   /* The figure: a card that sticks under the header, the drawing over its tray. */
   .stage {

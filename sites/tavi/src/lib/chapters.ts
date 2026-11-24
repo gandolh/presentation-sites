@@ -69,20 +69,29 @@ function watchSteps(chapter: HTMLElement, figure: HTMLElement) {
 }
 
 function watchPartNames(chapter: HTMLElement, figure: HTMLElement) {
+  // A figure with two faces (chapter 2's back and dial side) shows one at a time: a part drawn only on the face turned
+  // away lights nothing, rather than dropping the whole face it would leave to the ghost pair.
+  const shows = (part: string) =>
+    [...figure.querySelectorAll<SVGGElement>(`.part[data-part="${part}"]`)].some(
+      (group) => getComputedStyle(group).visibility !== "hidden",
+    );
+  const light = (part: string | null) => {
+    setFocus(figure, part !== null && shows(part) ? part : null);
+  };
   // Back to the part name that has the keyboard focus, if any, else to the step's own parts.
   const rest = () => {
     const focused = document.activeElement;
     const named = focused instanceof HTMLElement && chapter.contains(focused) ? focused.dataset.part : undefined;
-    setFocus(figure, named ?? null);
+    light(named ?? null);
   };
   for (const button of chapter.querySelectorAll<HTMLButtonElement>(".part-name[data-part]")) {
     const part = button.dataset.part ?? null;
     button.addEventListener("mouseenter", () => {
-      setFocus(figure, part);
+      light(part);
     });
     button.addEventListener("mouseleave", rest);
     button.addEventListener("focus", () => {
-      setFocus(figure, part);
+      light(part);
     });
     button.addEventListener("blur", () => {
       setFocus(figure, null);
