@@ -730,3 +730,17 @@ seconds over the fourth wheel). Twelve briefs, 09 to 20, build it one at a time,
 after 17. Tavi's own line is an owner todo ([todos/tavi-own-line.md](todos/tavi-own-line.md)). The deploy needs a
 `tavi` stack in vps-deploy, filed there separately. Until brief 09's first step adds `design/` to ESLint's and knip's
 ignores, `npm run check` fails on the copied generator.
+
+## [2026-11-24] brief | 09 tavi, the workspace, the page shell and the checks
+
+`design/` is out of ESLint and knip, which turned `npm run check` green again (its own commit). Then `sites/tavi`
+(package `tavi-ceasornicaru`) on the repo's pins, with Newsreader and Plex Mono from Fontsource and the origin from
+`PUBLIC_SITE` (fallback `https://example.com`); the wiring into every check and port 4705 for Playwright; one
+stylesheet with every token of the approved sketch (the part colours as `--color-part-*`, emitted static for the 3D
+island; spacing stays `--space-*`, since Tailwind 4 would size `max-w-*` from `--spacing-*`); the layout and its head
+script (`js`, `data-playing`); `src/lib/playback.ts`; the header with seven chapter links, the global Pause and the
+Chapters drawer below 64rem, mounted in the header as subcort's is; the chapter sections with their ids and heads;
+`DESIGN.md`, `PRODUCT.md` and `README.md`; and `e2e/tavi.spec.ts`. The phone menu spec's map now names each menu's
+island, button, title and X. The root `CLAUDE.md` and the sites rules carry tavi's English exception. Not deployed:
+vps-deploy has no `tavi` stack yet. Details in the
+[brief's outcome](briefs/done/09-tavi-the-workspace-the-shell-and-the-checks.md).

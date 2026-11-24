@@ -70,10 +70,11 @@ All four share one shape:
   `images.ts` is now a few lines supplying this site's `hasReal` list to
   `@sites/kit`; `url.ts` is gone, replaced by importing `withBase` from the kit.
 - `tractari` adds **Three.js** for one scene; `subcort` adds Three.js, Motion
-  and anime.js; tractari's gsap went with its 2026-11-13 redesign. `tavi` (planned
-  2026-11-24, not built) will add three.js 0.187.0 in one island and draw its SVG
-  at build time from one part table in `src/movement/`
-  ([decisions-tavi.md](decisions-tavi.md)).
+  and anime.js; tractari's gsap went with its 2026-11-13 redesign. `tavi` (since
+  2026-11-24) shares the shape without the image pipeline, typed site content or a
+  docs site, and with `noUncheckedIndexedAccess` on from the start; it will add
+  three.js 0.187.0 in one island and draw its SVG at build time from one part
+  table in `src/movement/` ([decisions-tavi.md](decisions-tavi.md)).
 
 ### The image pipeline (mock vs real)
 
@@ -153,7 +154,8 @@ without revisiting [decisions.md](decisions.md).
 ## Docs sites
 
 Each site has a **Docusaurus docs site** at `sites/<site>/docs-site/` (Starlight
-until 2026-10-19), and churchix has its own at `churchix/docs-site/`.
+until 2026-10-19), and churchix has its own at `churchix/docs-site/`. tavi has
+none in v1 ([decisions-tavi.md](decisions-tavi.md)).
 Each is a workspace of its own
 (`@sites/<site>-docs`), excluded from its parent site's `tsconfig.json` so
 `astro check` on the site does not walk its `.tsx` files.

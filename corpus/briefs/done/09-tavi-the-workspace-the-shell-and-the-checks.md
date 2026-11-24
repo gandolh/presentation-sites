@@ -157,3 +157,56 @@ dev `@astrojs/check` 0.9.10, `@types/node` 22.20.1, `typescript` 6.0.3. Fonts: `
 
 - Settled 2026-11-24 (owner): English only, light only, drawn only, no contact details, a path like the other sites.
 - Settled 2026-11-24 (planner): no docs site in v1; the origin from `PUBLIC_SITE` with the `example.com` fallback.
+
+## Outcome (2026-11-24)
+
+Built on `main` as local commits: `a16ab3d` (design/ out of ESLint and knip, alone, with `npm run check` green at it),
+`761d57a` (the workspace), `20a7e82` (the wiring), `b0a4138` (the stylesheet), `65f30d0` (the layout and favicon),
+`3be7583` (`playback.ts`), `4f9e826` (the header and the Chapters drawer), `47388fe` (the page), `dca0fd5` and
+`521e2ab` (DESIGN.md, PRODUCT.md, README.md), `af9f5c2` (`e2e/tavi.spec.ts`), `5399dfc` (the repo's own text), plus
+this closeout. Not deployed: vps-deploy has no `tavi` stack yet, so the board move is `done`; its first
+`node cli.ts tavi deploy` ships every tavi brief built by then.
+
+- **What later briefs build on.** `src/styles/global.css` holds every sketch token and the rules for `.wrap`,
+  `.skip`, the header (`.site-head`, `.site-head-row`, `.wordmark`, `.chapters`, `.chapters-menu`), `.quiet`, `.hero`,
+  `.chapter`, `.chapter-head` and a `.site-foot` stub. `src/lib/playback.ts` exports `isPlaying()`,
+  `setPlaying(on)` and `subscribe(listener)` over `data-playing` on `<html>` and one `tavi:playing` event on
+  `document`. The `no-js:` variant hides a control without scripting; `.if-playing` and `.if-paused` show what a play
+  control says from the first paint. The header's seven links live in `Header.astro`'s frontmatter and are passed to
+  `ChaptersMenu.tsx`.
+- **Token names.** Most are the sketch's. Renamed into Tailwind's namespaces: `--part-*` became `--color-part-*`, the
+  ghost pair `--color-ghost-fill` and `--color-ghost-line`, `--container` became `--container-page`, and the font
+  family is "Newsreader Variable". Spacing keeps `--space-*`: as `--spacing-*`, Tailwind 4 also sizes `max-w-lg` and
+  the like from it (checked against the compiler). Tailwind's own palette, type scale and radii are reset. The part
+  colours are `@theme static`; the other tokens reach the built CSS once something uses them. The full table is in
+  `sites/tavi/DESIGN.md`, "Tokens".
+- **The header against the sketch** (shots at 1280 x 800 and 390 x 844, kept out of git, compared by eye with
+  `design/tavi/sketch-*.png`): the wordmark, the numbered links, the Pause and the phone's Chapters button and
+  icon-only Pause match. Differences: the open menu is a full-width panel under the header with a "Chapters" title row
+  and an X (the sketch's is an 18rem dropdown from a `<details>`); the fold is `width < 64rem`, so at exactly 1024 px
+  the links show where the sketch shows the menu; the hero holds only its head until brief 11.
+- **Deviations.**
+  - The Chapters drawer hangs under the header, mounted in it (`contain: layout` on `.site-head`, subcort's
+    pattern), so it sits right under the header whether the header sticks (above 40rem) or scrolls away (at 40rem and
+    under). A transparent backdrop below it catches the tap outside.
+  - `ui/Drawer.tsx` is tractari's wrapper with an optional `titleClassName` (the title shows in the panel) and the
+    `--dur-long` duration in place of 300ms.
+  - `e2e/mobile-menu.spec.ts`'s map names each menu's island, button, title and X (the brief asked for the button's
+    name only): tavi's island is `ChaptersMenu`, and its X is "Close the chapters". The button is found by its exact
+    name.
+  - The Pause's visible label and icon follow `data-playing` in CSS; the module script sets only its `aria-label`
+    ("Pause every moving drawing" or "Play every moving drawing").
+  - The hero has its `<h1>` ("Six beats every second") and the footer stub its `<h2>` ("Tavi repairs wristwatches"),
+    so the page has a heading outline; the hero and footer briefs fill them in.
+  - The dev toolbar is off in `astro.config.mjs`, as in subcort's: it is a tab stop the Floor focus check would report.
+  - `tavi.spec.ts` also checks that every request stays on the origin and that the only fonts are Newsreader and Plex
+    Mono, so the network acceptance runs on every pass.
+- **Checks.** `npm run check` passed at `a16ab3d` and after the last code change. `PUBLIC_BASE=/tavi npm run
+  tavi:build`: every file-loading `src` and `href` starts with `/tavi/`, the CSS's font URLs too, and the canonical is
+  `https://example.com/tavi/`. `SITES=tavi npx playwright test -c e2e` (after `npm run tavi:build` at `/`): 25 passed,
+  the Floor specs (lowest text contrast 6.90:1 at 1280, 13.98:1 at 390), the menu spec at 390 and `tavi.spec.ts`. The
+  menu spec also passed on subcort and tractari after its map changed. The dev server's network log: every request on
+  the origin, Newsreader roman and italic the only faces loaded, no React chunk for the menu at 1280 (only the dev
+  server's own `@react-refresh`).
+- **For later.** `wiki/site-patterns.md` still says the repo has four phone menus; tavi's is the fifth, placed like
+  subcort's. `wiki/overview.md` still calls tavi "not built".
