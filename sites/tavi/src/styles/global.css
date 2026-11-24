@@ -674,6 +674,9 @@
     gap: var(--space-sm) var(--space-xl);
     align-items: center;
   }
+  .tray-row {
+    grid-column: 1 / -1;
+  }
 
   /* Under a chapter: back to the contents, on to the next chapter. */
   .pager {
@@ -907,14 +910,34 @@
       font-size: var(--text-md);
     }
   }
+  /* One column on a wide screen (a tablet, a small laptop window, a phone turned sideways): the tray is one row, the
+     Pause and the Speed beside a chapter's own controls, so the sticky figure stays short enough to leave the step on
+     the reading line in view. The buttons sit level with the sliders' tracks. */
+  @media (50rem <= width < 64rem) {
+    .tray {
+      grid-template-columns: auto repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-lg);
+      align-items: end;
+    }
+    .tray-row {
+      grid-column: auto;
+    }
+  }
   /* A short screen in one column (a phone turned sideways) has no room for a sticky header above the sticky figure:
-     the header scrolls away as on a phone, and the figure sticks at the very top, clear of the reading line. */
+     the header scrolls away as on a phone, and the figure sticks at the very top with the phone's tighter card,
+     clear of the reading line. */
   @media (width < 64rem) and (height < 32rem) {
     .site-head {
       position: static;
     }
     .stage {
       top: 0;
+      padding: var(--space-xs);
+      gap: var(--space-xs);
+    }
+    .tray {
+      padding: var(--space-xs) var(--space-sm);
+      row-gap: var(--space-2xs);
     }
   }
   @media (prefers-reduced-motion: reduce) {

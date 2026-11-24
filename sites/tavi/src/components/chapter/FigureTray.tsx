@@ -44,10 +44,11 @@ export default function FigureTray({ figure, speed: opening = 1, children }: Pro
     () => opening,
   );
 
-  // The Pause and the Speed share the tray's first row; a chapter's own controls take the cells under it.
+  // The Pause and the Speed share the tray's first row; a chapter's own controls take the cells under it, or the
+  // cells beside it where the tray is one row (`.tray` and `.tray-row` in the stylesheet).
   return (
     <>
-      <div className="col-span-full flex flex-wrap items-center gap-x-6 gap-y-3 max-sm:gap-x-3 max-sm:gap-y-2">
+      <div className="tray-row flex flex-wrap items-center gap-x-6 gap-y-3 max-sm:gap-x-3 max-sm:gap-y-2">
         <Toggle
           pressed={!playing}
           onPressedChange={(pressed) => {
