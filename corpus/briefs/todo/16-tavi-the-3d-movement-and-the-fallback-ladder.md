@@ -49,7 +49,8 @@ movement ticking in chapter 5 at its flat first frame, with Pause and Speed.
 - `sites/tavi/src/components/together/MovementFigure.tsx` (the island), `sites/tavi/src/three/` (scene, part
   builders, outlines, camera, loop; no file over 400 lines), tests for any pure function there (camera framing)
 - `sites/tavi/src/pages/index.astro` (chapter 5's section and poster), `sites/tavi/src/styles/global.css`
-- `sites/tavi/package.json` (`three`, `@types/three`), the root `package-lock.json`
+- `sites/tavi/package.json` (`three`, `@types/three`), the root `package-lock.json`. tractari and subcort stay on
+  three 0.185.1: after the install, `npm ls three` shows 0.187.0 under tavi and 0.185.1 for the other two.
 - `e2e/tavi.spec.ts`; corpus: `wiki/status.md`, `wiki/site-patterns.md` (the off-screen WebGL pattern, if tavi's
   differs from tractari's), `log.md`
 
@@ -78,8 +79,9 @@ movement ticking in chapter 5 at its flat first frame, with Pause and Speed.
 6. **Lines at DPR 2**: shoot a paused pose at device pixel ratio 2. If the gear outlines read thinner than the SVG's
    at the same size, draw them as screen-space-width lines (three's `LineSegments2` and `LineMaterial`, width in CSS
    pixels) and recount the draw calls (keep under about 150). Say in the outcome which method stayed and the count.
-7. **Dev-only hooks**: `window.taviPose(t, apart, yaw)` and `window.taviHide(names)` under `import.meta.env.DEV`, for
-   stills and tests.
+7. **The dev hook**: register `together` with brief 15's one hook, `window.taviPose("together", { t, apart, yaw,
+   hide })` (`hide` lists parts to hide, as the prototype's `taviHide` did), under `import.meta.env.DEV`, for stills
+   and tests. Don't add a second global.
 8. **`tavi.spec.ts`**: the checks below.
 
 ## Acceptance

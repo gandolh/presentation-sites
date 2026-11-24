@@ -40,7 +40,8 @@ Brief 13 adds chapter 1's own Wind and Take apart controls. The islands' contrac
 ## Files you OWN
 
 - `sites/tavi/src/components/chapter/` (`Chapter.astro`, `Step.astro`, `PartName.astro`, `Pager.astro`,
-  `FigureTray.tsx`), `sites/tavi/src/components/ui/` (`Toggle.tsx`, `RadioGroup.tsx`, and `Slider.tsx` for brief 13)
+  `FigureTray.tsx`), `sites/tavi/src/components/ui/` (`Toggle.tsx`, `RadioGroup.tsx`; `Slider.tsx` is brief 13's, so
+  knip finds no unused file)
 - `sites/tavi/src/lib/` (`figure.ts`, `chapters.ts`), `sites/tavi/src/pages/index.astro` (chapter 1),
   `sites/tavi/src/styles/global.css`, `sites/tavi/src/components/Header.astro` and `Contents.astro` (the current mark)
 - `e2e/tavi.spec.ts`; corpus: `wiki/status.md`, `log.md`

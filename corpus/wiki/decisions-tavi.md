@@ -88,6 +88,10 @@ header's Pause and the steps observer are plain module scripts, so they work bef
   paint (`false` under reduced motion), changed through `src/lib/playback.ts`, which every Pause uses. Motion runs only
   under `.js` and `data-playing="true"`.
 - **Speed** belongs to each figure: `--slow` (1, 10 or 100) on the figure. Chapter 3 opens at 1/10.
+- **A hold** is a figure's own still frame, asked for by a step (chapter 3 shows one phase of a beat): `data-hold` on
+  the figure, released by its tray's Play. It never changes the page's `data-playing`.
+- **One dev hook**, `window.taviPose(figure, pose)`, keyed by the figure's id, in development builds only, for stills
+  and tests.
 - **Colours** reach three.js by reading the part tokens from the stylesheet at runtime (a 1×1 canvas probe turns each
   token into sRGB, as `prototype.html` does), never as colour literals in code. The tokens are emitted with
   `@theme static` so the island can read them.
