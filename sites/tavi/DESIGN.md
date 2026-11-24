@@ -17,8 +17,8 @@ the rule. It is written from the approved sketch (`design/tavi/direction.md`) an
 ## Tokens
 
 `src/styles/global.css` is the source of truth: Tailwind 4's `@theme`, values copied exactly from the sketch's
-`:root`. Most names are the sketch's; four groups were renamed into Tailwind's namespaces, so a sketch rule copied
-over must take the new name:
+`:root`. Most names are the sketch's; a few tokens were renamed into Tailwind's namespaces and a few helper classes
+became Tailwind's, so a sketch rule copied over must take the new name:
 
 | In the sketch | In the site |
 | --- | --- |
@@ -26,6 +26,10 @@ over must take the new name:
 | `--ghost-fill`, `--ghost-line` | `--color-ghost-fill`, `--color-ghost-line` |
 | `--container` | `--container-page` |
 | `"Newsreader"` in `--font-display` and `--font-body` | `"Newsreader Variable"`, Fontsource's family name |
+| `.needs-js` (hidden without scripting) | the `no-js:hidden` utility |
+| `.i-pause`, `.i-play` (shown by `data-playing`) | `.if-playing`, `.if-paused`, on icons and labels alike |
+| `.visually-hidden` | Tailwind's `sr-only` |
+| `.site-head .wrap` | `.wrap.site-head-row` |
 
 Tailwind's own palette, type scale and radii are reset: only the site's tokens exist. A token reaches the built CSS
 once something uses it, except the part colours, which are emitted with `@theme static` because the 3D movement reads
@@ -98,7 +102,8 @@ in the figure.
 - The header: the wordmark, seven numbered chapter links and the global Pause; sticky, static at 40rem and under.
   Below 64rem the links fold into the Chapters drawer (`ChaptersMenu.tsx`), which hangs under the header and closes on
   a swipe up, a tap outside, its X or Esc.
-- Every target is at least 44px.
+- Links and buttons are at least 44px tall. Two exceptions come from the sketch: a part name inside a running sentence
+  keeps the line's height (its waiver: a 44px box would split the paragraph), and the speed segments are 42px.
 
 ## Motion
 

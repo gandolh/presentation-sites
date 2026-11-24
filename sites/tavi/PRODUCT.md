@@ -37,8 +37,8 @@ enough to see, and lets the visitor wind it, pause it, slow it down and take it 
 
 ## Accessibility
 
-English (`lang="en"`). Light only: body text at least 4.5:1 on paper, a 2px focus ring at least 3:1. Every target at
-least 44px. Reduced motion starts every figure paused; with scripting off the page reads in full and every chapter
+English (`lang="en"`). Light only: body text at least 4.5:1 on paper, a 2px focus ring at least 3:1. Links and
+buttons at least 44px tall, except a part name inside running prose, which keeps the sentence's line. Reduced motion starts every figure paused; with scripting off the page reads in full and every chapter
 link works.
 
 ## Stack
