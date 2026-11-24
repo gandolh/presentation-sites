@@ -790,3 +790,16 @@ barrel. Steps are 46svh on a desktop; the one-column layout (figure at 30% of th
 starts at 64rem. `tavi.spec.ts` checks the scroll, focus, current mark, both Pauses, speed, keyboard, reduced motion
 and no scripting; 61 passed. Not pushed. Details in the
 [brief's outcome](briefs/done/12-tavi-the-chapter-engine-on-chapter-1s-steps.md).
+
+## [2026-11-24] brief | 13 tavi, chapter 1, Energy: winding the spring and taking the barrel apart
+
+First, the design-critic's fixes after brief 12: every Pause is a toggle (the header's keeps its word and name and
+shows pressed while paused; the ruling is in decisions-tavi.md), the header scrolls away on short one-column screens,
+the tray keeps the word Pause on a phone, and the part names' focus ring clears the word before; the empty band above
+the tablet's drawing was measured as the lift's travel room and left. Then chapter 1's own controls on a Base UI
+`Slider` wrapper: Wind (0 to 41 h) redraws the mainspring with `springPath` and turns the arbor and ratchet wheel
+(`--wind`, from the first paint); Take apart (0 to 100%) is the figure's `--e`, re-posed by each step. The hints under
+steps 1 and 2 point at the tray with a small slider glyph. The tray is two compact rows on a phone and one row from 50
+to 64rem. `tavi.spec.ts` covers both sliders, the keyboard, the phone tray, reduced motion and the short screens; 76
+passed. Not pushed. Details in the
+[brief's outcome](briefs/done/13-tavi-chapter-1-energy-winding-and-taking-apart.md).
