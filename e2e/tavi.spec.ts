@@ -2,7 +2,8 @@ import { expect, test, type Page } from "@playwright/test";
 import { isPhone, siteOf } from "./floor.js";
 
 // tavi's own checks: every header link lands on its chapter, the global Pause drives the page's play state, reduced
-// motion starts paused, nothing works only with scripting, and no request leaves the origin. The chapter briefs
+// motion starts paused, the hero's drawing ticks at the movement's rate only while the page plays, nothing works only
+// with scripting, and no request leaves the origin. The chapter briefs
 // extend it. The Floor specs are shared (floor-*.spec.ts); the phone menu's behaviour is in mobile-menu.spec.ts.
 test.beforeEach(({ browserName: _browser }, info) => {
   test.skip(siteOf(info) !== "tavi", "tavi's own spec");
@@ -94,8 +95,69 @@ test.describe("the global Pause", () => {
   });
 });
 
+/** Each running animation on the hero drawing's turning groups: the group, the duration, the keyframes' timing. */
+async function heroAnimations(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("#hero-movement .rot")].flatMap((group) =>
+      group
+        .getAnimations()
+        .filter((a) => a.playState === "running")
+        .map((a) => ({
+          group: [...group.classList].find((c) => c.startsWith("rot-")) ?? "?",
+          duration: Number(a.effect?.getComputedTiming().duration),
+          iterations: a.effect?.getComputedTiming().iterations,
+          timing: getComputedStyle(group).animationTimingFunction,
+        })),
+    ),
+  );
+}
+
+test.describe("the hero's drawing", () => {
+  test("ticks: the balance swings in 166.67 ms, the escape wheel turns in 5 s in 30 steps", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#hero-movement")).toBeVisible();
+    const running = await heroAnimations(page);
+    const of = (group: string) => running.find((a) => a.group === group);
+    const balance = of("rot-balance");
+    expect(balance, "the balance swings").toBeDefined();
+    expect(balance?.duration).toBeCloseTo(166.667, 2);
+    expect(balance?.iterations).toBe(Infinity);
+    const escape = of("rot-escape");
+    expect(escape, "the escape wheel turns").toBeDefined();
+    expect(escape?.duration).toBe(5000);
+    expect(escape?.timing).toMatch(/^steps\(30(, (jump-)?start)?\)$/);
+    for (const group of ["rot-pallet", "rot-fourth", "rot-third", "rot-centre"]) expect(of(group), group).toBeDefined();
+
+    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    expect(await heroAnimations(page)).toEqual([]);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("nothing turns until Play sets data-playing to true", async ({ page }) => {
+      await page.goto("/");
+      await expect(page.locator("#hero-movement")).toBeVisible();
+      await page.waitForTimeout(300);
+      expect(await heroAnimations(page)).toEqual([]);
+      await page.getByRole("button", { name: "Play every moving drawing" }).click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      await expect.poll(async () => (await heroAnimations(page)).map((a) => a.group)).toContain("rot-balance");
+    });
+  });
+});
+
 test.describe("without scripting", () => {
   test.use({ javaScriptEnabled: false });
+
+  test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {
+    await page.goto("/");
+    const drawing = page.getByRole("img", { name: /^Diagram of a wristwatch movement seen from the back/ });
+    await expect(drawing).toBeVisible();
+    await expect(drawing).toHaveAttribute("id", "hero-movement");
+    await expect(drawing.locator(".callout text")).toHaveText(["Barrel", "Wheel train", "Balance", "Escape wheel"]);
+    expect(await heroAnimations(page)).toEqual([]);
+  });
 
   test("the Pause and the Chapters button are not shown, and the chapters are all there", async ({ page }, info) => {
     await page.goto("/");
