@@ -663,6 +663,35 @@
       linear-gradient(to right, var(--color-ink) 84%, transparent);
     mask-composite: intersect;
   }
+  /* A figure with two faces (chapter 2): the back and the dial side share one box, and turning the figure over swaps
+     them about its vertical axis, as a watch turns over in the hand. Each face is the whole movement, not a crop, so
+     neither fades at its edges. The face turned away is hidden, so a screen reader meets one drawing. */
+  .turnover {
+    display: grid;
+    perspective: 1600px;
+  }
+  .turnover > .movement {
+    grid-area: 1 / 1;
+    mask-image: none;
+    backface-visibility: hidden;
+    transition:
+      transform var(--dur-long) var(--ease-in-out),
+      visibility var(--dur-long);
+  }
+  /* One solid turning: the dial side is always half a turn behind the back. */
+  .turnover > .mode-dial {
+    transform: rotateY(-180deg);
+    visibility: hidden;
+  }
+  .stage[data-step="5"] .turnover > .mode-train {
+    transform: rotateY(180deg);
+    visibility: hidden;
+  }
+  .stage[data-step="5"] .turnover > .mode-dial {
+    transform: none;
+    visibility: visible;
+  }
+
   /* The figure's controls on the paper-2 ground: the Pause and the Speed across the top, a chapter's own controls
      in two cells under them. */
   .tray {
@@ -950,6 +979,22 @@
     .pager .t {
       transition: none;
     }
+    /* The turn-over is a cross-fade: nothing turns, one face fades into the other. */
+    .turnover > .movement,
+    .stage[data-step="5"] .turnover > .mode-train,
+    .stage[data-step="5"] .turnover > .mode-dial {
+      transform: none;
+      transition:
+        opacity var(--dur-short) var(--ease-out),
+        visibility var(--dur-short);
+    }
+    .turnover > .mode-dial,
+    .stage[data-step="5"] .turnover > .mode-train {
+      opacity: 0;
+    }
+    .stage[data-step="5"] .turnover > .mode-dial {
+      opacity: 1;
+    }
   }
 }
 
@@ -1187,6 +1232,59 @@
     font-variant-numeric: tabular-nums;
     fill: var(--rk);
   }
+  /* The dial side: the dial in the paper tone with plate-tone lines, steel indices lit along one edge, the small
+     seconds sunk in the plate tone with two turned grooves, and the hands in the blued screws' token. */
+  .p-dial {
+    --pf: var(--color-paper);
+    --po: var(--color-part-plate-line);
+  }
+  :is(.p-dial, .subdial) .rail,
+  :is(.p-dial, .subdial) .tick {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.8;
+  }
+  :is(.p-dial, .subdial) .tick.five {
+    stroke-width: 2;
+  }
+  .index {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+    --pg: var(--color-surface);
+  }
+  .index .edge {
+    fill: none;
+    stroke: var(--pg);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .subdial {
+    --pf: var(--color-part-plate);
+    --po: var(--color-part-plate-line);
+  }
+  .subdial .groove {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.5;
+    opacity: 0.6;
+  }
+  .p-hand {
+    --pf: var(--color-part-screw);
+    --po: var(--color-part-screw-line);
+  }
+  .p-hand .ho {
+    fill: var(--po);
+    stroke: var(--po);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+  }
+  .p-hand .hf {
+    fill: var(--pf);
+  }
+  .p-hand .cap {
+    fill: var(--po);
+  }
+
   .stage[data-step="1"]:not([data-focus]) .mode-train .ratio:not(.s1),
   .stage[data-step="2"]:not([data-focus]) .mode-train .ratio:not(.s2),
   .stage[data-step="3"]:not([data-focus]) .mode-train .ratio:not(.s3),
@@ -1202,19 +1300,34 @@
      their part. lib/figure.ts sets the attributes. */
   .stage[data-step="1"]:not([data-focus])
     .mv
-    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s1, .s1 *),
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
+      .s1,
+      .s1 *
+    ),
   .stage[data-step="2"]:not([data-focus])
     .mv
-    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s2, .s2 *),
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
+      .s2,
+      .s2 *
+    ),
   .stage[data-step="3"]:not([data-focus])
     .mv
-    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s3, .s3 *),
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
+      .s3,
+      .s3 *
+    ),
   .stage[data-step="4"]:not([data-focus])
     .mode-train
-    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s4, .s4 *),
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
+      .s4,
+      .s4 *
+    ),
   .stage[data-focus]
     .mv
-    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.is-focus, .is-focus *) {
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
+      .is-focus,
+      .is-focus *
+    ) {
     --pf: var(--color-ghost-fill);
     --po: var(--color-ghost-line);
     --ps: var(--color-ghost-line);
@@ -1272,6 +1385,17 @@
   }
   .js:root[data-playing="true"] .rot-centre {
     animation: turn-back calc(3600s * var(--slow)) linear infinite;
+  }
+  /* The hands, seen on the dial, all clockwise: the small seconds a degree a beat as the fourth wheel steps, the minute
+     hand once an hour with the centre wheel, the hour hand once in twelve. */
+  .js:root[data-playing="true"] .rot-hand-seconds {
+    animation: turn calc(60s * var(--slow)) steps(360, jump-start) infinite;
+  }
+  .js:root[data-playing="true"] .rot-hand-minute {
+    animation: turn calc(3600s * var(--slow)) linear infinite;
+  }
+  .js:root[data-playing="true"] .rot-hand-hour {
+    animation: turn calc(43200s * var(--slow)) linear infinite;
   }
   /* Chapter 2's train turns the barrel too: once in six hours, the way the escape wheel turns. */
   .js:root[data-playing="true"] .mode-train .rot-barrel {

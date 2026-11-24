@@ -10,7 +10,7 @@ import { MOVEMENT, type Calibre } from "./parts.ts";
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 /** The time the hands show at t = 0, in seconds after twelve: 10:10:30, as watches are set to be photographed. */
-export const HANDS_START = 10 * 3600 + 10 * 60 + 30;
+const HANDS_START = 10 * 3600 + 10 * 60 + 30;
 
 export interface ClockOptions {
   /** Degrees either side of rest. Defaults to the calibre's drawn amplitude; a spring running down lowers it. */
@@ -20,7 +20,7 @@ export interface ClockOptions {
 }
 
 /** The hands, each from twelve o'clock, clockwise as seen on the dial. */
-export interface Hands {
+interface Hands {
   readonly hour: number;
   readonly minute: number;
   readonly seconds: number;
