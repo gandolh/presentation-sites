@@ -25,8 +25,9 @@ const house = houseStyle({
   // An .astro file's <script> blocks reach ESLint as virtual files no tsconfig holds.
   untyped: ["**/*.astro/*.ts"],
   // Churchix and the docs sites are projects with their own checks; design-study is a study, outside
-  // lint (decided 2026-11-10); .astro/ holds Astro's generated types.
-  ignores: ["churchix/**", "sites/*/docs-site/**", "sites/design-study/**", "**/.astro/**"],
+  // lint (decided 2026-11-10); .astro/ holds Astro's generated types; design/ holds the approved design
+  // records, kept as exported.
+  ignores: ["churchix/**", "sites/*/docs-site/**", "sites/design-study/**", "**/.astro/**", "design/**"],
 });
 
 // house-style 1.1.0 has no Astro preset, and scopes its blocks to TypeScript and JavaScript files. These

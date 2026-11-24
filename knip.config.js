@@ -17,6 +17,8 @@ export default {
     "sites/subcort/src/content/images.ts",
     "sites/saloon/src/components/Testimonials.astro",
     "sites/saloon/src/content/testimonials.ts",
+    // The approved design records, kept as exported: the sketches and their generators run by hand.
+    "design/**",
   ],
   // The docs sites and design-study stay outside the harness.
   ignoreWorkspaces: ["sites/*/docs-site", "sites/design-study"],
