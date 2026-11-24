@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tavi movement prototype</title>
+<meta name="description" content="A prototype of the Tavi Ceasornicaru centrepiece: a procedural wristwatch movement in three.js that ticks at 21,600 beats an hour and comes apart with labels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · shape: app screen, one figure above its control tray · genre: editorial · theme: custom (the sketch's tokens) · job: explore · idea: "the same movement as the sketch, built in 3D from the same part table, ticking and coming apart" · vibe: "warm paper, exact drawing, a quiet workshop" · paper: oklch(96.6% 0.011 84) · accent: oklch(43% 0.135 262), blued steel · display: Newsreader · body: Newsreader · outlier: IBM Plex Mono, readouts only · hero: the movement fills the screen under a one-line head · nav: wordmark and a link back to the sketch · footer: none, a prototype screen · imagery: none, the movement is drawn by three.js · signature: the movement ticking and taking itself apart with its labels · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R3 V4 · weakest: R, labels on a 390px screen crowd the figure, so phones get eight of them in narrow columns */
+/* Hallmark · waive 38ii · italic sits only on the wordmark, every head is roman · the wordmark is Tavi's signature in Newsreader's italic, as on the sketch page */
+/* Hallmark · answered F-loop · the movement ticks in an infinite loop because ticking is the subject; Pause sits first in the tray, the loop stops off screen and in a hidden tab, and it starts paused under reduced motion */
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px;
+  --text-xs: 0.8125rem; --text-sm: 0.9375rem; --text-md: 1.0625rem; --text-lg: 1.25rem;
+  --text-head: clamp(1.75rem, 1.6vw + 1.2rem, 2.5rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms; --dur-short: 220ms;
+  --container: 1360px; --gutter: clamp(16px, 4vw, 56px); --header-h: 64px;
+  --radius-card: 14px; --radius-inner: 8px; --radius-control: 6px; --radius-pill: 999px;
+
+  --color-paper: oklch(96.6% 0.011 84);
+  --color-paper-2: oklch(93.4% 0.014 84);
+  --color-paper-3: oklch(90.2% 0.016 84);
+  --color-surface: oklch(98.8% 0.005 84);
+  --color-rule: oklch(85.5% 0.014 84);
+  --color-rule-strong: oklch(62% 0.016 84);
+  --color-ink: oklch(23% 0.016 258);
+  --color-ink-2: oklch(35% 0.014 258);
+  --color-muted: oklch(46% 0.014 70);
+  --color-accent: oklch(43% 0.135 262);
+  --color-accent-ink: oklch(97.5% 0.008 84);
+  --color-accent-soft: oklch(92% 0.028 262);
+  --color-focus: oklch(45% 0.19 262);
+  --color-leader: oklch(35% 0.014 258 / 0.7);
+
+  /* Parts: the sketch's values. The script reads these through a 2D canvas, so WebGL draws the same colours. */
+  --part-plate: oklch(90.5% 0.012 84);        --part-plate-line: oklch(56% 0.016 84);
+  --part-bridge: oklch(86.5% 0.008 245);      --part-bridge-line: oklch(47% 0.014 245);
+  --part-brass: oklch(81% 0.088 82);          --part-brass-line: oklch(47% 0.08 70);
+  --part-brass-deep: oklch(70% 0.09 76);
+  --part-gilt: oklch(87.5% 0.07 92);          --part-gilt-line: oklch(50% 0.075 84);
+  --part-steel: oklch(83% 0.01 245);          --part-steel-line: oklch(41% 0.016 245);
+  --part-spring: oklch(70% 0.07 215);         --part-spring-line: oklch(37% 0.065 225);
+  --part-balance: oklch(79% 0.075 52);        --part-balance-line: oklch(46% 0.085 42);
+  --part-hair: oklch(36% 0.03 250);
+  --part-screw: oklch(47% 0.13 262);          --part-screw-line: oklch(29% 0.08 262);   --part-screw-slot: oklch(82% 0.035 262);
+  --part-ruby: oklch(54% 0.165 18);           --part-ruby-line: oklch(35% 0.11 18);     --part-ruby-glint: oklch(86% 0.05 18);
+  --part-chaton: oklch(89% 0.055 90);
+
+  --font-display: "Newsreader", ui-serif, Georgia, serif;
+  --font-body: "Newsreader", ui-serif, Georgia, serif;
+  --font-figure: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-rule-strong) var(--color-paper); }
+::selection { background: var(--color-accent-soft); color: var(--color-ink); }
+body { caret-color: var(--color-accent); margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; font-optical-sizing: auto; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: var(--text-head); line-height: 1.1; letter-spacing: -0.02em; font-variation-settings: "opsz" 72; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+button, input { font: inherit; color: inherit; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.fig { font-family: var(--font-figure); font-variant-numeric: tabular-nums; font-size: 0.92em; }
+.wrap { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+
+.bar { background: var(--color-surface); border-bottom: 1px solid var(--color-rule); }
+.bar .wrap { display: flex; align-items: center; gap: var(--space-lg); min-height: var(--header-h); }
+.wordmark { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.375rem; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap; color: var(--color-ink); }
+.wordmark:hover { color: var(--color-accent); }
+.back { margin-left: auto; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-control); font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; }
+.back:hover { background: var(--color-paper-2); color: var(--color-ink); }
+
+.intro { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-xs) var(--space-xl); padding-block: var(--space-lg) var(--space-md); }
+.intro p { color: var(--color-ink-2); font-size: var(--text-lg); }
+
+.stage { margin: 0 0 var(--space-xl); background: var(--color-surface); border: 1px solid var(--color-rule); border-radius: var(--radius-card); padding: var(--space-md); display: grid; gap: var(--space-md); }
+.view { position: relative; height: clamp(380px, calc(100svh - var(--header-h) - 250px), 820px); border-radius: var(--radius-inner); overflow: hidden; background: var(--color-paper); }
+.view canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; border-radius: var(--radius-inner); }
+.view canvas:active { cursor: grabbing; }
+.view canvas:focus-visible { outline-offset: -3px; }
+.leaders { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.leaders path { fill: none; stroke: var(--color-leader); stroke-width: 1; }
+.leaders circle { fill: var(--color-ink); }
+.labels { position: absolute; inset: 0; pointer-events: none; }
+.labels span { position: absolute; top: 0; left: 0; font-size: var(--text-sm); line-height: 1; color: var(--color-ink); white-space: nowrap; will-change: transform; }
+.hint { position: absolute; left: var(--space-md); bottom: var(--space-sm); font-size: var(--text-xs); color: var(--color-muted); pointer-events: none; }
+.nogl { position: absolute; inset: 0; display: grid; place-content: center; gap: var(--space-xs); padding: var(--space-xl); text-align: center; color: var(--color-ink-2); }
+.nogl a { color: var(--color-accent); }
+.view.has-gl .nogl { display: none; }
+
+.tray { background: var(--color-paper-2); border-radius: var(--radius-inner); padding: var(--space-sm) var(--space-md); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-lg); }
+.quiet { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; padding: 0 var(--space-md); border-radius: var(--radius-control); border: 1px solid var(--color-rule-strong); background: var(--color-surface); color: var(--color-ink); font-size: var(--text-sm); white-space: nowrap; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out); }
+.quiet:hover { background: var(--color-paper-3); border-color: var(--color-ink-2); }
+.quiet:active { background: var(--color-paper-3); transform: translateY(1px); }
+.quiet:disabled { opacity: 0.55; cursor: not-allowed; }
+.quiet svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+.quiet .i-play { display: none; }
+.quiet[aria-pressed="false"] .i-play { display: block; }
+.quiet[aria-pressed="false"] .i-pause { display: none; }
+.speed { display: flex; align-items: center; gap: var(--space-xs); border: 0; margin: 0; padding: 0; }
+.speed legend { float: left; margin-right: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); }
+.seg { display: inline-flex; border: 1px solid var(--color-rule-strong); border-radius: var(--radius-control); background: var(--color-surface); overflow: hidden; }
+.seg label { position: relative; display: grid; place-items: center; min-width: 56px; min-height: 42px; padding: 0 var(--space-xs); cursor: pointer; font-size: var(--text-sm); }
+.seg label + label { border-left: 1px solid var(--color-rule-strong); }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.seg label:hover { background: var(--color-paper-2); }
+.seg label:has(input:checked) { background: var(--color-accent); color: var(--color-accent-ink); }
+.seg label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: -3px; }
+.apart { display: flex; align-items: center; gap: var(--space-sm); flex: 1 1 18rem; }
+.slider { flex: 1 1 10rem; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 var(--space-sm); }
+.slider label { font-size: var(--text-sm); }
+.slider output { font-size: 0.875rem; color: var(--color-muted); }
+.slider input { grid-column: 1 / -1; }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 40px; background: transparent; margin: 0; cursor: pointer; }
+input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) 0 var(--fill, 0%), var(--color-rule-strong) var(--fill, 0%) 100%); }
+input[type="range"]::-moz-range-track { height: 6px; border-radius: var(--radius-pill); background: var(--color-rule-strong); }
+input[type="range"]::-moz-range-progress { height: 6px; border-radius: var(--radius-pill); background: var(--color-accent); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: calc(var(--space-xs) * -1); border-radius: 50%; background: var(--color-accent); border: 3px solid var(--color-surface); box-shadow: 0 0 0 1px var(--color-accent); }
+input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--color-accent); border: 3px solid var(--color-surface); box-shadow: 0 0 0 1px var(--color-accent); }
+input[type="range"]:hover::-webkit-slider-thumb { background: var(--color-ink); box-shadow: 0 0 0 1px var(--color-ink); }
+input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.08); }
+input[type="range"]:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 0; border-radius: var(--radius-control); }
+input[type="range"]:disabled { opacity: 0.55; cursor: not-allowed; }
+.readout { margin-left: auto; display: flex; align-items: baseline; gap: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); }
+.readout output { color: var(--color-ink); min-width: 7ch; text-align: right; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quiet, .seg label { transition: none; }
+}
+@media (max-width: 40rem) {
+  :root { --header-h: 56px; }
+  .wordmark { font-size: 1.1875rem; }
+  .intro { padding-block: var(--space-md) var(--space-sm); }
+  .intro p { font-size: var(--text-md); }
+  .stage { padding: var(--space-xs); gap: var(--space-xs); margin-inline: calc(var(--space-xs) * -1); }
+  .view { height: 56svh; min-height: 340px; }
+  .labels span { font-size: var(--text-xs); }
+  .tray { padding: var(--space-xs) var(--space-sm); gap: var(--space-xs) var(--space-sm); }
+  .speed legend { display: none; }
+  .seg label { min-width: 46px; font-size: 0.875rem; }
+  .quiet .lbl-play { display: none; }
+  .readout { margin-left: 0; }
+}
+</style>
+<script type="importmap">{ "imports": { "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.187.0/three.module.min.js" } }</script>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="wordmark" href="sketch.html">Tavi Ceasornicaru</a>
+    <a class="back" href="sketch.html">Back to the sketch</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <h1>The movement, taken apart</h1>
+    <p>Slow it to 1/100 to watch one beat.</p>
+  </div>
+  <figure class="stage">
+    <div class="view" id="view">
+      <canvas id="gl" tabindex="0" role="img" aria-label="A wristwatch movement in three dimensions, ticking six times a second. Drag sideways or use the arrow keys to turn it."></canvas>
+      <svg class="leaders" id="leaders" aria-hidden="true"></svg>
+      <div class="labels" id="labels" aria-hidden="true"></div>
+      <p class="hint" id="hint">Drag sideways to turn it.</p>
+      <div class="nogl"><p>This figure needs JavaScript and WebGL.</p><p><a href="sketch.html">The sketch draws the same movement flat.</a></p></div>
+    </div>
+    <figcaption class="visually-hidden">From the bottom up: main plate and crown, barrel with its mainspring and lid, centre, third, fourth and escape wheels, pallet fork, balance and hairspring, then the barrel, train, pallet and balance bridges with their screws and jewels.</figcaption>
+    <div class="tray">
+      <button class="quiet" type="button" id="play" aria-pressed="true">
+        <svg class="i-pause" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg>
+        <svg class="i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5z"/></svg>
+        <span class="lbl-play">Pause</span>
+      </button>
+      <fieldset class="speed">
+        <legend>Speed</legend>
+        <div class="seg">
+          <label><input type="radio" name="speed" value="1" checked><span class="fig">1×</span></label>
+          <label><input type="radio" name="speed" value="10"><span class="fig">1/10</span></label>
+          <label><input type="radio" name="speed" value="100"><span class="fig">1/100</span></label>
+        </div>
+      </fieldset>
+      <div class="apart">
+        <button class="quiet" type="button" id="apart-btn">Take apart</button>
+        <div class="slider">
+          <label for="apart">Apart</label><output for="apart" id="apart-out" class="fig">0%</output>
+          <input id="apart" type="range" min="0" max="100" value="0" style="--fill:0%">
+        </div>
+      </div>
+      <p class="readout">Beats <output id="beats" class="fig">0</output></p>
+    </div>
+  </figure>
+</main>
+
+<script type="module">
+import * as THREE from 'three';
+
+const D = Math.PI / 180;
+const pol = (c, r, a) => [c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)];
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = (a, b, x) => { const u = clamp((x - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); };
+const O = [0, 0];
+
+// Part table: the output of gen/geometry.mjs, rounded to 3 decimals. Regenerate with
+// node -e "import('./gen/geometry.mjs').then(({M})=>console.log(JSON.stringify(M)))"
+// Units: plate radius 190; SVG axes (y down, angles clockwise). Every meshing pair sits at the sum of its pitch radii.
+const M = {"plate":{"R":190},"centre":{"c":[0,0],"N":80,"r":56,"pinion":{"N":12,"r":12}},"barrel":{"N":72,"r":72,"c":[-59.397,-59.397]},"third":{"N":75,"r":46,"pinion":{"N":10,"r":7},"c":[63,0]},"fourth":{"N":84,"r":42,"pinion":{"N":10,"r":6.133},"c":[85.032,47.249]},"escape":{"N":15,"r":24,"pinion":{"N":7,"r":3.5},"c":[58.935,84.52]},"pallet":{"c":[34.935,98.377]},"balance":{"r":42,"c":[-17.275,128.52]},"lineAngle":2.618,"ratchet":{"N":36,"r":34,"c":[-59.397,-59.397]},"crownWheel":{"N":24,"r":17,"c":[-104.427,-35.454]},"stemY":-31.454};
+
+/* ---------- The tick: one pure function of time ---------- */
+const BPS = 6;               // 21,600 vph = 6 beats a second
+const AMP = 200 * D;         // drawn balance amplitude
+const LIFT = 25 * D;         // half the 50° lift angle
+const PIN_R = 11;            // impulse pin radius on the roller
+const HALF_WIN = Math.asin(LIFT / AMP) / Math.PI; // half the lift window, in beats
+const angleTo = (a, b) => Math.atan2(b[1] - a[1], b[0] - a[0]);
+const forkAxis = angleTo(M.pallet.c, M.balance.c);
+const pinAng0 = angleTo(M.balance.c, M.pallet.c);
+const forkLen = Math.hypot(M.balance.c[0] - M.pallet.c[0], M.balance.c[1] - M.pallet.c[1]);
+
+// Escape wheel inside one beat: a hair of recoil as the stone unlocks, the impulse, the drop, then lock.
+function escEase(p) {
+  if (p <= 0) return 0;
+  if (p >= 1) return 1;
+  if (p < 0.15) return -0.04 * Math.sin((Math.PI * p) / 0.15);
+  if (p < 0.82) { const u = (p - 0.15) / 0.67; return 0.82 * u * u * (3 - 2 * u); }
+  return 0.82 + 0.18 * Math.min(1, (p - 0.82) / 0.06);
+}
+// The fork follows the impulse pin while the pin is in the notch, and rests on a banking outside it.
+function forkAngle(theta) {
+  const pin = pol(M.balance.c, PIN_R, pinAng0 + clamp(theta, -LIFT, LIFT));
+  let a = angleTo(M.pallet.c, pin) - forkAxis;
+  while (a > Math.PI) a -= 2 * Math.PI;
+  while (a < -Math.PI) a += 2 * Math.PI;
+  return a;
+}
+function stateAt(t) {
+  const phi = t * BPS;                         // beats since t = 0
+  const theta = AMP * Math.cos(Math.PI * phi); // zero crossings at half beats
+  const k = Math.floor(phi);
+  const p = clamp((phi - k - 0.5 + HALF_WIN) / (2 * HALF_WIN), 0, 1);
+  const steps = k + escEase(p);                // escape wheel teeth-halves moved, 12° each
+  return {
+    theta, steps, beats: k,
+    fork: forkAngle(theta),
+    escape: steps * 12 * D,                    // clockwise
+    fourth: -steps * D,                        // 84/7: one turn a minute
+    third: (steps / 7.5) * D,                  // 75/10
+    centre: -(steps / 60) * D,                 // 80/10: one turn an hour
+    barrel: (steps / 360) * D,                 // 72/12: one turn in six hours
+  };
+}
+window.stateAt = (t) => { const s = stateAt(t); return { beats: s.beats, escapeDeg: +(s.steps * 12).toFixed(3), fourthDeg: +(s.steps).toFixed(3), centreDeg: +(s.steps / 60).toFixed(4), forkDeg: +(s.fork / D).toFixed(3), balanceDeg: +(s.theta / D).toFixed(2) }; };
+
+/* ---------- Outlines, sampled from the SVG recipes in gen/movement.mjs ---------- */
+const arcPts = (c, r, a0, a1, n) => Array.from({ length: n + 1 }, (_, i) => pol(c, r, a0 + ((a1 - a0) * i) / n));
+const circlePts = (c, r, n = 72) => Array.from({ length: n }, (_, i) => pol(c, r, (i / n) * 2 * Math.PI));
+const lerp2 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const quadPts = (p0, p1, p2, n) => Array.from({ length: n }, (_, i) => { const t = (i + 1) / n; return lerp2(lerp2(p0, p1, t), lerp2(p1, p2, t), t); });
+const cubicPts = (p0, p1, p2, p3, n) => Array.from({ length: n }, (_, i) => { const t = (i + 1) / n, a = lerp2(p0, p1, t), b = lerp2(p1, p2, t), c = lerp2(p2, p3, t); return lerp2(lerp2(a, b, t), lerp2(b, c, t), t); });
+
+function gearPts(N, r, { add = 1, ded = 1.25, tipW = 0.25, start = 0 } = {}) {
+  const m = (2 * r) / N, p = (2 * Math.PI) / N, ra = (r + add * m) * 1.02, rf = r - ded * m, out = [];
+  for (let i = 0; i < N; i++) {
+    const a = start + i * p;
+    const s0 = pol(O, r, a - tipW * p), s1 = pol(O, r, a + tipW * p);
+    out.push(pol(O, rf, a - tipW * p), s0, ...cubicPts(s0, pol(O, ra, a - tipW * 0.75 * p), pol(O, ra, a + tipW * 0.75 * p), s1, 5), pol(O, rf, a + tipW * p));
+    out.push(...arcPts(O, rf, a + tipW * p, a + p - tipW * p, 4).slice(1, -1));
+  }
+  return out;
+}
+function crossingHoles(n, rOut, rIn, spokeW, twist = 14) {
+  const holes = [];
+  for (let j = 0; j < n; j++) {
+    const a1 = ((j * 360) / n) * D + spokeW / rOut, a2 = (((j + 1) * 360) / n) * D - spokeW / rOut;
+    const b1 = a1 + twist * D + (spokeW / rIn - spokeW / rOut), b2 = a2 + twist * D - (spokeW / rIn - spokeW / rOut);
+    const o1 = pol(O, rOut, a1), o2 = pol(O, rOut, a2), i2 = pol(O, rIn, b2), i1 = pol(O, rIn, b1);
+    const m2 = pol(O, (rOut + rIn) / 2, (a2 + b2) / 2 + twist * 0.25 * D), m1 = pol(O, (rOut + rIn) / 2, (a1 + b1) / 2 + twist * 0.25 * D);
+    holes.push([...arcPts(O, rOut, a1, a2, 16), ...quadPts(o2, m2, i2, 6), ...arcPts(O, rIn, b2, b1, 8).slice(1), ...quadPts(i1, m1, o1, 6).slice(0, -1)]);
+  }
+  return holes;
+}
+function escapePts(startDeg) {
+  const { N, r } = M.escape, root = r * 0.66, out = [];
+  for (let i = 0; i < N; i++) {
+    const a = startDeg + (i * 360) / N, tip = pol(O, r * 0.95, (a + 9.5) * D);
+    out.push(pol(O, root, a * D), pol(O, r, (a + 4) * D), tip, ...quadPts(tip, pol(O, r * 0.78, (a + 17) * D), pol(O, root, (a + 17) * D), 5));
+    out.push(...arcPts(O, root, (a + 17) * D, (a + 24) * D, 3).slice(1, -1));
+  }
+  return out;
+}
+function ratchetPts() {
+  const { N, r } = M.ratchet, rf = r - 2.6, p = (2 * Math.PI) / N, out = [];
+  for (let i = 0; i < N; i++) out.push(pol(O, rf, i * p), pol(O, r, i * p + p * 0.82));
+  return out;
+}
+function hullPts(circles) {
+  const pts = [];
+  for (const [c, r] of circles) for (let i = 0; i < 64; i++) pts.push(pol(c, r, (i / 64) * 2 * Math.PI));
+  pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cross(lo.at(-2), lo.at(-1), p) <= 0) lo.pop(); lo.push(p); }
+  for (const p of pts.slice().reverse()) { while (up.length >= 2 && cross(up.at(-2), up.at(-1), p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+function capsule(p0, p1, h, n = 10) {
+  const a = angleTo(p0, p1), out = [];
+  for (let i = 0; i <= n; i++) out.push(pol(p1, h, a - Math.PI / 2 + (Math.PI * i) / n));
+  for (let i = 0; i <= n; i++) out.push(pol(p0, h, a + Math.PI / 2 + (Math.PI * i) / n));
+  return out;
+}
+function springPts(wind, c) {
+  const turns = 9, n = 520, arbor = 13.5, wall = 59, out = [];
+  for (let i = 0; i <= n; i++) {
+    const u = i / n;
+    const wound = u < 0.86 ? arbor + 1.5 + 21 * (u / 0.86) : arbor + 22.5 + (wall - arbor - 22.5) * ((u - 0.86) / 0.14);
+    const loose = u < 0.12 ? arbor + 1.5 + 24 * (u / 0.12) : wall - 18 + 17 * ((u - 0.12) / 0.88);
+    out.push(pol(c, loose + (wound - loose) * wind, u * turns * 2 * Math.PI + wind * 4.1));
+  }
+  return out;
+}
+function hairPts(theta) {
+  const c = M.balance.c, turns = 11, n = 640, out = [], k = theta / AMP;
+  for (let i = 0; i <= n; i++) {
+    const u = i / n;
+    out.push(pol(c, 6.5 + 20 * u - 1.1 * k * Math.sin(Math.PI * u), u * turns * 2 * Math.PI + theta * (1 - u)));
+  }
+  return out.concat(quadPts(out.at(-1), pol(c, 29.5, 120 * D), pol(c, 31, 200 * D), 10));
+}
+
+/* ---------- Renderer, colours and materials ---------- */
+const view = document.getElementById('view');
+const canvas = document.getElementById('gl');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+} catch (err) {
+  console.warn('WebGL unavailable', err);
+}
+if (renderer) start();
+
+function start() {
+view.classList.add('has-gl');
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setClearColor(0x000000, 0);
+
+const css = getComputedStyle(document.documentElement);
+const probe = document.createElement('canvas'); probe.width = probe.height = 1;
+const px = probe.getContext('2d', { willReadFrequently: true });
+const tokenColor = (name) => {
+  px.clearRect(0, 0, 1, 1); px.fillStyle = '#000'; px.fillStyle = css.getPropertyValue(name).trim(); px.fillRect(0, 0, 1, 1);
+  const [r, g, b] = px.getImageData(0, 0, 1, 1).data;
+  return new THREE.Color().setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace);
+};
+const PAL = {
+  plate: ['--part-plate', '--part-plate-line'], bridge: ['--part-bridge', '--part-bridge-line'],
+  brass: ['--part-brass', '--part-brass-line'], gilt: ['--part-gilt', '--part-gilt-line'],
+  steel: ['--part-steel', '--part-steel-line'], spring: ['--part-spring', '--part-spring-line'],
+  balance: ['--part-balance', '--part-balance-line'], screw: ['--part-screw', '--part-screw-line'],
+  ruby: ['--part-ruby', '--part-ruby-line'], chaton: ['--part-chaton', '--part-gilt-line'],
+  hair: ['--part-hair', '--part-hair'], slot: ['--part-screw-slot', '--part-screw-line'], glint: ['--part-ruby-glint', '--part-ruby-line'],
+};
+// One material for every solid: each vertex carries its colour (cap = fill, walls = between fill and line), so a part is one draw call.
+const VC = new THREE.MeshBasicMaterial({ vertexColors: true, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+const MAT = {};
+for (const [k, [f, l]] of Object.entries(PAL)) {
+  const fill = tokenColor(f), line = tokenColor(l), side = fill.clone().lerp(line, 0.42);
+  MAT[k] = {
+    fill: [fill, side], shell: [line, side],
+    line: new THREE.LineBasicMaterial({ color: line }),
+    flat: new THREE.MeshBasicMaterial({ color: fill, side: THREE.DoubleSide }),
+  };
+}
+MAT.brass.drumSide = tokenColor('--part-brass-deep');
+window.__taviColor = { plateToken: '#' + tokenColor('--part-plate').getHexString(THREE.SRGBColorSpace) };
+
+/* ---------- Building blocks. Shapes are drawn in SVG units and flipped once (y up in three). ---------- */
+const V = (p) => new THREE.Vector2(p[0], -p[1]);
+// Paint a geometry by its material groups (ExtrudeGeometry: 0 caps, 1 walls), then drop the groups.
+function painted(geo, colors) {
+  const col = new Float32Array(geo.attributes.position.count * 3);
+  for (const g of geo.groups) { const c = colors[g.materialIndex] || colors[0]; for (let i = g.start; i < g.start + g.count; i++) col.set([c.r, c.g, c.b], i * 3); }
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.clearGroups();
+  return geo;
+}
+function concat(geos) {
+  const out = new THREE.BufferGeometry();
+  for (const name of Object.keys(geos[0].attributes)) {
+    const arr = new Float32Array(geos.reduce((a, g) => a + g.attributes[name].array.length, 0)); let o = 0;
+    for (const g of geos) { arr.set(g.attributes[name].array, o); o += g.attributes[name].array.length; }
+    out.setAttribute(name, new THREE.BufferAttribute(arr, geos[0].attributes[name].itemSize));
+  }
+  return out;
+}
+function extGeo(list, depth, colors) {
+  const shapes = list.map(({ outer, holes = [] }) => { const sh = new THREE.Shape(outer.map(V)); for (const h of holes) sh.holes.push(new THREE.Path(h.map(V))); return sh; });
+  return painted(new THREE.ExtrudeGeometry(shapes, { depth, bevelEnabled: false, curveSegments: 1 }), colors);
+}
+function extMany(parent, list, z0, depth, colors, edges = false) {
+  const geo = extGeo(list, depth, colors);
+  const mesh = new THREE.Mesh(geo, VC);
+  mesh.position.z = z0; parent.add(mesh);
+  if (edges) { const l = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), edges); l.position.z = z0; parent.add(l); }
+  return mesh;
+}
+const ext = (parent, outer, holes, z0, depth, colors, edges = false) => extMany(parent, [{ outer, holes }], z0, depth, colors, edges);
+// A flat part with a drawn outline: a wider shell in the line colour under the fill, as the SVG strokes under fills.
+function outlined(parent, fills, shells, z0, depth, m) {
+  const mesh = new THREE.Mesh(concat([extGeo(shells, depth, m.shell), extGeo(fills, depth + 0.25, m.fill)]), VC);
+  mesh.position.z = z0; parent.add(mesh);
+}
+function bandPart(parent, segs, discs, z0, depth, m) {
+  const fills = [], shells = [];
+  for (const s of segs) for (let i = 0; i < s.pts.length - 1; i++) {
+    fills.push({ outer: capsule(s.pts[i], s.pts[i + 1], s.w / 2) });
+    shells.push({ outer: capsule(s.pts[i], s.pts[i + 1], s.w / 2 + 1.3) });
+  }
+  for (const [c, r] of discs) { fills.push({ outer: circlePts(c, r, 48) }); shells.push({ outer: circlePts(c, r + 1.3, 48) }); }
+  outlined(parent, fills, shells, z0, depth, m);
+}
+const discs = (parent, list, z0, depth, m) => outlined(parent, list.map(([c, r]) => ({ outer: circlePts(c, r, 48) })), list.map(([c, r]) => ({ outer: circlePts(c, r + 1.1, 48) })), z0, depth, m);
+const disc = (parent, c, r, z0, depth, m) => discs(parent, [[c, r]], z0, depth, m);
+function jewels(parent, list, z) {
+  extMany(parent, list.map(([c, r]) => ({ outer: circlePts(c, r + 1.8, 40) })), z, 0.5, MAT.chaton.fill, MAT.chaton.line);
+  extMany(parent, list.map(([c, r]) => ({ outer: circlePts(c, r, 32) })), z, 0.9, MAT.ruby.fill, MAT.ruby.line);
+  extMany(parent, list.map(([c, r]) => ({ outer: circlePts([c[0] - r * 0.35, c[1] - r * 0.35], r * 0.3, 16) })), z, 1.0, MAT.glint.fill);
+}
+// A wall standing along a spiral: the mainspring is a tall steel strip.
+function curtain(parent, pts, z0, z1, m) {
+  const pos = new Float32Array(pts.length * 6), idx = [];
+  pts.forEach((p, i) => { pos.set([p[0], -p[1], z0, p[0], -p[1], z1], i * 6); if (i) { const a = 2 * (i - 1); idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } });
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setIndex(idx);
+  parent.add(new THREE.Mesh(g, m.flat));
+  const top = new THREE.BufferGeometry().setFromPoints(pts.map((p) => new THREE.Vector3(p[0], -p[1], z1 + 0.05)));
+  parent.add(new THREE.Line(top, m.line));
+}
+// A flat ribbon whose points change every frame (the hairspring breathing).
+function ribbon(parent, n, width, z, mat) {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 6), 3));
+  const idx = []; for (let i = 1; i < n; i++) { const a = 2 * (i - 1); idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  g.setIndex(idx);
+  const mesh = new THREE.Mesh(g, mat); mesh.frustumCulled = false; parent.add(mesh);
+  return (pts) => {
+    const pos = g.attributes.position.array;
+    for (let i = 0; i < n; i++) {
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n - 1, i + 1)];
+      const tx = b[0] - a[0], ty = b[1] - a[1], l = Math.hypot(tx, ty) || 1, nx = (-ty / l) * width / 2, ny = (tx / l) * width / 2;
+      const p = pts[i];
+      pos.set([p[0] + nx, -(p[1] + ny), z, p[0] - nx, -(p[1] - ny), z], i * 6);
+    }
+    g.attributes.position.needsUpdate = true;
+  };
+}
+
+/* ---------- The movement ---------- */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(22, 1, 10, 6000);
+camera.up.set(0, 0, 1);
+const parts = [];
+// Every part lifts along z when taken apart: `lift` units at full, inside its own window of the 0..1 slider.
+function part(name, label, { lift = 0, win = [0, 1], spin = 0, anchor = null, phone = false } = {}) {
+  const g = new THREE.Group(); scene.add(g);
+  const entry = { name, label, g, lift, win, spin, anchor, phone, pivots: [] };
+  parts.push(entry);
+  return entry;
+}
+function pivot(entry, c, z = 0) {
+  const p = new THREE.Group(); p.position.set(c[0], -c[1], z); entry.g.add(p); entry.pivots.push(p);
+  return p;
+}
+const b = M.barrel, c = M.centre, t = M.third, fo = M.fourth, e = M.escape, pa = M.pallet, ba = M.balance, cw = M.crownWheel;
+const PT = 10; // plate top
+
+// Meshing phases: a wheel's tooth points along the centre line, its pinion's gap faces back.
+const beta = { bc: angleTo(b.c, c.c), ct: angleTo(c.c, t.c), tf: angleTo(t.c, fo.c), fe: angleTo(fo.c, e.c) };
+const pinStart = (bt, N) => bt + Math.PI + Math.PI / N;
+
+// Heights in model units, bottom to top. Each wheel sits clear of the one it overlaps; each pinion reaches up to the wheel that drives it.
+const ZL = {
+  barrel: [PT + 0.5, PT + 3], drum: [PT + 3, PT + 9], lid: PT + 9, spring: [PT + 3.5, PT + 8.5],
+  centre: { pinion: [PT + 0.5, PT + 3], wheel: PT + 11, hub: [PT + 0.5, PT + 16] },
+  third: { pinion: [PT + 10.5, PT + 14.5], wheel: PT + 15, hub: [PT + 10, PT + 21] },
+  fourth: { pinion: [PT + 14.5, PT + 18.5], wheel: PT + 19, hub: [PT + 14, PT + 25] },
+  escape: { pinion: [PT + 18.5, PT + 22.5], wheel: PT + 23, hub: [PT + 18.5, PT + 27] },
+  fork: PT + 23, roller: PT + 20, rim: PT + 26, hair: PT + 30.5,
+  barrelBridge: PT + 15, train: PT + 28, palletCock: PT + 26, cock: PT + 32,
+};
+// Taking it apart: every part lifts by whole ranks of G, top parts first, so nothing passes through what it covers.
+const G = 36;
+const lift = (rank, a, b) => ({ lift: rank * G, win: [a, b] });
+
+// Plate, pillars and crown.
+const plate = part('plate', 'Main plate', { anchor: [pol(O, 186, 62 * D), PT], phone: true });
+outlined(plate.g, [{ outer: circlePts(O, M.plate.R, 160), holes: [[-150, 60], [150, 40], [-60, 165]].map((q) => circlePts(q, 3.2, 20)) }], [{ outer: circlePts(O, M.plate.R + 1.3, 160), holes: [circlePts(O, M.plate.R - 3, 160)] }], 0, PT, MAT.plate);
+{
+  const ring = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(circlePts(O, 183, 160).map((p) => new THREE.Vector3(p[0], -p[1], PT + 0.4))), new THREE.LineDashedMaterial({ color: MAT.plate.line.color, dashSize: 2, gapSize: 3 }));
+  ring.computeLineDistances(); plate.g.add(ring);
+}
+const bFeet = [[-152, -62], [-8, -112]], tFeet = [[-72, 60], [128, -54]], pFoot = [64, 150], cockFoot = [-98, 146];
+for (const [feet, z] of [[bFeet, ZL.barrelBridge], [tFeet, ZL.train], [[pFoot], ZL.palletCock], [[cockFoot], ZL.cock]]) discs(plate.g, feet.map((q) => [q, 7]), PT, z - PT, MAT.plate);
+
+const crown = part('crown', 'Crown', { anchor: [[-238, M.stemY - 22], 5] });
+{
+  const cyl = (r, len, x0, m, segs = 24) => {
+    const g = new THREE.CylinderGeometry(r, r, len, segs, 1);
+    const mesh = new THREE.Mesh(painted(g.toNonIndexed(), [m.fill[0], m.fill[1], m.fill[1]]), VC);
+    mesh.rotation.z = Math.PI / 2; mesh.position.set(x0 + len / 2, -M.stemY, 5);
+    const l = new THREE.LineSegments(new THREE.EdgesGeometry(g, 10), m.line); l.rotation.copy(mesh.rotation); l.position.copy(mesh.position);
+    crown.g.add(mesh, l);
+  };
+  cyl(3, 62, -198, MAT.steel, 12);
+  cyl(22, 40, -238, MAT.steel, 28);
+  cyl(9, 6, -200, MAT.steel, 20);
+}
+
+// Barrel: toothed drum, mainspring, arbor; the lid lifts off to show the spring.
+const barrel = part('barrel', 'Barrel', { ...lift(1, 0.6, 0.96), anchor: [pol(b.c, 70, 200 * D), ZL.barrel[1]], phone: true });
+{
+  const p = pivot(barrel, b.c);
+  ext(p, gearPts(b.N, b.r, { start: beta.bc }), [], ZL.barrel[0], ZL.barrel[1] - ZL.barrel[0], MAT.brass.fill, MAT.brass.line);
+  ext(p, circlePts(O, 62, 96), [circlePts(O, 59, 96)], ZL.drum[0], ZL.drum[1] - ZL.drum[0], [MAT.brass.fill[0], MAT.brass.drumSide], MAT.brass.line);
+  curtain(barrel.g, springPts(0.62, b.c), ZL.spring[0], ZL.spring[1], MAT.spring);
+  disc(barrel.g, b.c, 13, ZL.barrel[0], ZL.barrelBridge - ZL.barrel[0], MAT.steel);
+}
+const spring = part('spring', 'Mainspring', { ...lift(1, 0.6, 0.96), anchor: [pol(b.c, 44, 155 * D), ZL.spring[1]] });
+const lid = part('lid', 'Barrel lid', { ...lift(2, 0.56, 0.92), anchor: [pol(b.c, 58, 250 * D), ZL.lid + 1.2] });
+ext(lid.g, circlePts(b.c, 62, 96), [circlePts(b.c, 13.6, 40)], ZL.lid, 1.2, MAT.brass.fill, MAT.brass.line);
+
+// The train. Each arbor: pinion low, wheel above, hub through both.
+function arbor(entry, w, z, { pinion, hub, spokes = 4, rim = 3.5, hubR, wheelStart, pinStartA }) {
+  const p = pivot(entry, w.c);
+  const m = (2 * w.r) / w.N, rf = w.r - 1.25 * m;
+  ext(p, gearPts(w.N, w.r, { start: wheelStart }), crossingHoles(spokes, rf - rim, hub + 2.5, 2.2), z.wheel, 2.5, MAT.gilt.fill, MAT.gilt.line);
+  ext(p, gearPts(pinion.N, pinion.r * 0.92, { add: 1.1, ded: 1.4, tipW: 0.22, start: pinStartA }), [], z.pinion[0], z.pinion[1] - z.pinion[0], MAT.steel.fill, MAT.steel.line);
+  ext(p, circlePts(O, hubR, 32), [], z.hub[0], z.hub[1] - z.hub[0], MAT.steel.fill, MAT.steel.line);
+  ext(p, circlePts(O, hub * 0.95, 40), [], z.wheel - 0.2, 2.9, MAT.gilt.fill, MAT.gilt.line);
+  return p;
+}
+const centre = part('centre', 'Centre wheel', { ...lift(3, 0.52, 0.88), anchor: [pol(c.c, 50, 300 * D), ZL.centre.wheel + 2.5], phone: true });
+arbor(centre, c, ZL.centre, { pinion: c.pinion, hub: 9, rim: 4, hubR: 3.2, wheelStart: beta.ct, pinStartA: pinStart(beta.bc, c.pinion.N) });
+const third = part('third', 'Third wheel', { ...lift(4, 0.46, 0.82), anchor: [pol(t.c, 42, 330 * D), ZL.third.wheel + 2.5] });
+arbor(third, t, ZL.third, { pinion: t.pinion, hub: 7, hubR: 2.6, wheelStart: beta.tf, pinStartA: pinStart(beta.ct, t.pinion.N) });
+const fourth = part('fourth', 'Fourth wheel', { ...lift(5, 0.4, 0.76), anchor: [pol(fo.c, 40, 20 * D), ZL.fourth.wheel + 2.5] });
+arbor(fourth, fo, ZL.fourth, { pinion: fo.pinion, hub: 6, rim: 3, hubR: 2.2, wheelStart: beta.fe, pinStartA: pinStart(beta.tf, fo.pinion.N) });
+
+// Escape wheel, stones and fork. The stones sit 30° either side of the line to the fork, so they lock alternate half-teeth.
+const eAng = angleTo(e.c, pa.c);
+const stoneAt = (sign) => {
+  const a = eAng + sign * 30 * D, inner = pol(e.c, 23.4, a), outer = pol(e.c, 29.6, a), w = 1.35, n = [-Math.sin(a) * w, Math.cos(a) * w];
+  return [[inner[0] + n[0], inner[1] + n[1]], [outer[0] + n[0], outer[1] + n[1]], [outer[0] - n[0], outer[1] - n[1]], [inner[0] - n[0], inner[1] - n[1]]];
+};
+const rotAbout = (q, c0, a) => { const x = q[0] - c0[0], y = q[1] - c0[1]; return [c0[0] + x * Math.cos(a) - y * Math.sin(a), c0[1] + x * Math.sin(a) + y * Math.cos(a)]; };
+// At even beats the balance is at +AMP, so the fork rests on its first banking; lock a tooth on whichever stone is in.
+const bankA = forkAngle(LIFT);
+const stoneIn = [-1, 1].map((s) => { const pts = stoneAt(s).map((q) => rotAbout(q, pa.c, bankA)); const mid = lerp2(pts[0], pts[3], 0.5); return { s, r: Math.hypot(mid[0] - e.c[0], mid[1] - e.c[1]), ang: angleTo(e.c, mid) }; }).sort((x, y) => x.r - y.r)[0];
+const escStart = stoneIn.ang / D - 12.5;
+
+const escape = part('escape', 'Escape wheel', { ...lift(6, 0.34, 0.7), anchor: [pol(e.c, 26, 40 * D), ZL.escape.wheel + 2], phone: true });
+{
+  const p = pivot(escape, e.c);
+  const z = ZL.escape;
+  ext(p, escapePts(escStart), crossingHoles(5, e.r * 0.66 - 2.6, 4.6, 1.6, 10), z.wheel, 2, MAT.steel.fill, MAT.steel.line);
+  ext(p, gearPts(e.pinion.N, 3.6, { add: 1.1, ded: 1.4, tipW: 0.22, start: pinStart(beta.fe, e.pinion.N) }), [], z.pinion[0], z.pinion[1] - z.pinion[0], MAT.steel.fill, MAT.steel.line);
+  ext(p, circlePts(O, 1.8, 20), [], z.hub[0], z.hub[1] - z.hub[0], MAT.steel.fill, MAT.steel.line);
+}
+const fork = part('fork', 'Pallet fork', { ...lift(7, 0.18, 0.55), anchor: [lerp2(pa.c, ba.c, 0.45), ZL.fork + 2], phone: true });
+{
+  const p = pivot(fork, pa.c);
+  const L = (q) => [q[0] - pa.c[0], q[1] - pa.c[1]];
+  const F = (x, y) => [x * Math.cos(forkAxis) - y * Math.sin(forkAxis), x * Math.sin(forkAxis) + y * Math.cos(forkAxis)];
+  const tip = forkLen - PIN_R;
+  const stones = [-1, 1].map((s) => stoneAt(s).map(L));
+  const stoneMid = stones.map((q) => lerp2(lerp2(q[0], q[3], 0.5), lerp2(q[1], q[2], 0.5), 0.5));
+  bandPart(p, [
+    { pts: [O, stoneMid[0]], w: 4.4 }, { pts: [O, stoneMid[1]], w: 4.4 },
+    { pts: [O, F(tip - 2, 0)], w: 3.6 },
+    { pts: [F(tip - 1, -4.2), F(tip + 3.5, -4.6)], w: 2.4 }, { pts: [F(tip - 1, 4.2), F(tip + 3.5, 4.6)], w: 2.4 },
+    { pts: [F(tip - 2, -4.4), F(tip - 2, 4.4)], w: 2.4 },
+  ], [[O, 4.5]], ZL.fork, 2, MAT.steel);
+  extMany(p, stones.map((q) => ({ outer: q })), ZL.fork - 0.5, 3, MAT.ruby.fill, MAT.ruby.line);
+  ext(p, circlePts(O, 1.6, 20), [], ZL.fork - 8, 13, MAT.steel.fill, MAT.steel.line);
+}
+
+// Balance: roller and impulse pin at the fork's level, rim and arms above, hairspring above that.
+const balance = part('balance', 'Balance', { ...lift(8, 0.08, 0.45), anchor: [pol(ba.c, 42, 200 * D), ZL.rim + 3], phone: true });
+let setHair;
+{
+  const p = pivot(balance, ba.c);
+  disc(p, O, 12.5, ZL.roller, 2, MAT.steel);
+  ext(p, circlePts(pol(O, PIN_R, pinAng0), 1.3, 16), [], ZL.roller, ZL.fork + 2.5 - ZL.roller, MAT.ruby.fill, MAT.ruby.line);
+  const r = ba.r;
+  outlined(p, [{ outer: circlePts(O, r, 120), holes: [circlePts(O, r - 4.6, 120)] }], [{ outer: circlePts(O, r + 1.3, 120), holes: [circlePts(O, r - 5.9, 120)] }], ZL.rim, 3, MAT.balance);
+  bandPart(p, [90, 210, 330].map((a) => ({ pts: [pol(O, 3, a * D), pol(O, r - 3, a * D)], w: 3.4 })), [], ZL.rim, 2.5, MAT.balance);
+  discs(p, [45, 135, 225, 315].map((a) => [pol(O, r - 2.3, a * D), 2.4]), ZL.rim, 3.6, MAT.gilt);
+  ext(p, circlePts(O, 3.6, 24), [], ZL.roller - 3, ZL.cock - ZL.roller + 3, MAT.steel.fill, MAT.steel.line);
+  setHair = ribbon(balance.g, hairPts(0).length, 0.8, ZL.hair, MAT.hair.flat);
+  setHair(hairPts(0));
+}
+const hairLabel = part('hair', 'Hairspring', { ...lift(8, 0.08, 0.45), anchor: [pol(ba.c, 24, 250 * D), ZL.hair] });
+
+// Bridges, top layer. Screws leave first, then the bridge.
+function screw(entry, q, z, r = 5.2, slotAng = 30) {
+  const p = pivot(entry, q, 0);
+  disc(p, O, r, z, 1.8, MAT.screw);
+  ext(p, capsule(pol(O, r * 0.72, slotAng * D), pol(O, r * 0.72, (slotAng + 180) * D), 0.6, 4), [], z, 2.3, MAT.slot.fill);
+  return p;
+}
+function bridgeScrews(name, feet, z, rank, win) {
+  const s = part(name, null, { ...lift(rank + 0.9, Math.max(0, win[0] - 0.06), win[1] - 0.08), spin: 4 * Math.PI });
+  feet.forEach((q, i) => screw(s, q, z, 5.2, 20 + i * 37));
+}
+const barrelBridge = part('barrelBridge', 'Barrel bridge', { ...lift(4, 0.32, 0.68), anchor: [pol(b.c, 40, 250 * D), ZL.barrelBridge + 5] });
+{
+  const circles = [[b.c, 40], [cw.c, 21], [bFeet[0], 12]];
+  outlined(barrelBridge.g, [{ outer: hullPts(circles) }], [{ outer: hullPts(circles.map(([q, r]) => [q, r + 1.3])) }], ZL.barrelBridge, 5, MAT.bridge);
+  bandPart(barrelBridge.g, [{ pts: [b.c, bFeet[1]], w: 20 }], [[bFeet[1], 11]], ZL.barrelBridge, 5, MAT.bridge);
+}
+bridgeScrews('barrelScrews', bFeet, ZL.barrelBridge + 5.2, 4, [0.32, 0.68]);
+const BB = ZL.barrelBridge + 5.2;
+const ratchet = part('ratchet', 'Ratchet wheel', { ...lift(6, 0.2, 0.56), anchor: [pol(b.c, 34, 290 * D), BB + 2.5] });
+{
+  const p = pivot(ratchet, b.c);
+  ext(p, ratchetPts(), [], BB, 2.5, MAT.steel.fill, MAT.steel.line);
+  screw(ratchet, b.c, BB + 2.5, 9, 60);
+}
+const crownWheel = part('crownWheel', 'Crown wheel', { ...lift(5, 0.22, 0.58), anchor: [pol(cw.c, 18, 200 * D), BB + 2.5] });
+{
+  const p = pivot(crownWheel, cw.c);
+  ext(p, gearPts(cw.N, cw.r, { tipW: 0.22 }), [], BB, 2.5, MAT.steel.fill, MAT.steel.line);
+  screw(crownWheel, cw.c, BB + 2.5, 5.4, 110);
+}
+const click = part('click', 'Click', { ...lift(5, 0.22, 0.58), anchor: [pol(b.c, 46, -30 * D), BB + 1.6] });
+{
+  const cp = pol(b.c, 50, -14 * D), ctip = pol(b.c, M.ratchet.r - 1.2, -44 * D);
+  bandPart(click.g, [{ pts: [cp, pol(b.c, 42, -32 * D), ctip], w: 5 }], [], BB, 1.6, MAT.steel);
+  screw(click, cp, BB + 1.7, 3.6, 0);
+}
+const trainBridge = part('trainBridge', 'Train bridge', { ...lift(7, 0.26, 0.62), anchor: [t.c, ZL.train + 5], phone: true });
+bandPart(trainBridge.g, [{ pts: [tFeet[1], t.c, fo.c, e.c], w: 16 }, { pts: [tFeet[0], c.c], w: 15 }], [[c.c, 10.5], [t.c, 11], [fo.c, 11], [e.c, 10], [tFeet[0], 10]], ZL.train, 5, MAT.bridge);
+jewels(trainBridge.g, [c.c, t.c, fo.c, e.c].map((q) => [q, 2.8]), ZL.train + 5.25);
+bridgeScrews('trainScrews', tFeet, ZL.train + 5.25, 7, [0.26, 0.62]);
+const palletCock = part('palletCock', 'Pallet bridge', { ...lift(8, 0.14, 0.5), anchor: [pa.c, ZL.palletCock + 4] });
+bandPart(palletCock.g, [{ pts: [pa.c, pFoot], w: 11 }], [[pa.c, 8], [pFoot, 8]], ZL.palletCock, 4, MAT.bridge);
+jewels(palletCock.g, [[pa.c, 2.8]], ZL.palletCock + 4.25);
+bridgeScrews('palletScrews', [pFoot], ZL.palletCock + 4.25, 8, [0.14, 0.5]);
+const cock = part('cock', 'Balance cock', { ...lift(9, 0.04, 0.4), anchor: [lerp2(ba.c, cockFoot, 0.55), ZL.cock + 5] });
+{
+  const circles = [[ba.c, 13], [cockFoot, 19]];
+  outlined(cock.g, [{ outer: hullPts(circles) }], [{ outer: hullPts(circles.map(([q, r]) => [q, r + 1.3])) }], ZL.cock, 5, MAT.bridge);
+  bandPart(cock.g, [{ pts: [ba.c, pol(ba.c, 30, -62 * D)], w: 2.2 }], [], ZL.cock + 5.25, 1.2, MAT.bridge);
+  jewels(cock.g, [[ba.c, 3.4]], ZL.cock + 6.5);
+}
+bridgeScrews('cockScrews', [cockFoot], ZL.cock + 5.25, 9, [0.04, 0.4]);
+
+/* ---------- Bounds for framing: each part's footprint circle and height, measured once ---------- */
+scene.updateMatrixWorld(true);
+for (const pt of parts) {
+  const box = new THREE.Box3().setFromObject(pt.g);
+  if (box.isEmpty()) { pt.bounds = null; continue; }
+  const cx = (box.min.x + box.max.x) / 2, cy = (box.min.y + box.max.y) / 2;
+  let r = 0;
+  pt.g.traverse((o) => { if (!o.geometry) return; const pos = o.geometry.attributes.position, v = new THREE.Vector3(); for (let i = 0; i < pos.count; i += 3) { v.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld); r = Math.max(r, Math.hypot(v.x - cx, v.y - cy)); } });
+  pt.bounds = { cx, cy, r, z0: box.min.z, z1: box.max.z };
+}
+
+/* ---------- Labels ---------- */
+const labelsEl = document.getElementById('labels'), leadersEl = document.getElementById('leaders');
+const SVGNS = 'http://www.w3.org/2000/svg';
+const labelled = parts.filter((p) => p.label && p.anchor);
+for (const p of labelled) {
+  p.el = document.createElement('span'); p.el.textContent = p.label; labelsEl.append(p.el);
+  p.path = document.createElementNS(SVGNS, 'path'); p.dot = document.createElementNS(SVGNS, 'circle'); p.dot.setAttribute('r', '2.2');
+  leadersEl.append(p.path, p.dot);
+  p.anchorV = new THREE.Vector3(p.anchor[0][0], -p.anchor[0][1], p.anchor[1]);
+}
+
+/* ---------- State, controls and the loop ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S = { t: 0, playing: !reduce, scale: 1, E: 0, target: 0, anim: null, yaw: -18 * D, drag: null, inView: true, w: 1, h: 1 };
+const playBtn = document.getElementById('play'), apartBtn = document.getElementById('apart-btn');
+const apartIn = document.getElementById('apart'), apartOut = document.getElementById('apart-out'), beatsOut = document.getElementById('beats');
+const fmt = new Intl.NumberFormat('en-GB');
+
+function setPlaying(on) {
+  S.playing = on;
+  playBtn.setAttribute('aria-pressed', String(on));
+  playBtn.querySelector('.lbl-play').textContent = on ? 'Pause' : 'Play';
+  playBtn.setAttribute('aria-label', on ? 'Pause the movement' : 'Play the movement');
+  wake();
+}
+function setApartUI() {
+  const v = Math.round(S.E * 100);
+  apartIn.value = v; apartIn.style.setProperty('--fill', `${v}%`); apartOut.textContent = `${v}%`;
+  apartIn.setAttribute('aria-valuetext', v === 0 ? 'Assembled' : `${v}% apart`);
+  apartBtn.textContent = S.target > 0.5 || (S.anim === null && S.E > 0.5) ? 'Put back' : 'Take apart';
+}
+playBtn.addEventListener('click', () => setPlaying(!S.playing));
+document.querySelectorAll('input[name="speed"]').forEach((r) => r.addEventListener('change', () => { S.scale = 1 / +r.value; wake(); }));
+apartBtn.addEventListener('click', () => {
+  S.target = S.E > 0.5 ? 0 : 1;
+  if (reduce) { S.E = S.target; S.anim = null; } else S.anim = { from: S.E, to: S.target, t0: performance.now(), dur: 1800 * Math.abs(S.target - S.E) + 200 };
+  setApartUI(); wake();
+});
+apartIn.addEventListener('input', () => { S.anim = null; S.E = +apartIn.value / 100; S.target = S.E; setApartUI(); wake(); });
+canvas.addEventListener('pointerdown', (ev) => { S.drag = { x: ev.clientX, yaw: S.yaw }; canvas.setPointerCapture(ev.pointerId); });
+canvas.addEventListener('pointermove', (ev) => { if (!S.drag) return; S.yaw = S.drag.yaw - (ev.clientX - S.drag.x) * 0.006; wake(); });
+const endDrag = () => { S.drag = null; };
+canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+canvas.addEventListener('keydown', (ev) => {
+  if (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight') { S.yaw += (ev.key === 'ArrowLeft' ? 1 : -1) * 10 * D; ev.preventDefault(); wake(); }
+});
+document.addEventListener('visibilitychange', wake);
+new IntersectionObserver(([en]) => { S.inView = en.isIntersecting; wake(); }).observe(canvas);
+canvas.addEventListener('webglcontextlost', (ev) => { ev.preventDefault(); view.classList.remove('has-gl'); });
+new ResizeObserver(() => {
+  S.w = Math.max(1, view.clientWidth); S.h = Math.max(1, view.clientHeight);
+  renderer.setSize(S.w, S.h, false); camera.aspect = S.w / S.h; camera.updateProjectionMatrix(); wake();
+}).observe(view);
+
+function applyState() {
+  const s = stateAt(S.t);
+  barrel.pivots[0].rotation.z = -s.barrel;
+  centre.pivots[0].rotation.z = -s.centre;
+  third.pivots[0].rotation.z = -s.third;
+  fourth.pivots[0].rotation.z = -s.fourth;
+  escape.pivots[0].rotation.z = -s.escape;
+  fork.pivots[0].rotation.z = -s.fork;
+  balance.pivots[0].rotation.z = -s.theta;
+  setHair(hairPts(s.theta));
+  for (const p of parts) {
+    const f = smooth(p.win[0], p.win[1], S.E);
+    p.g.position.z = p.lift * f;
+    if (p.spin) for (const q of p.pivots) q.rotation.z = -p.spin * f;
+  }
+  beatsOut.textContent = fmt.format(s.beats);
+  return s;
+}
+
+const tmp = new THREE.Vector3(), dir = new THREE.Vector3(), right = new THREE.Vector3(), upv = new THREE.Vector3(), target = new THREE.Vector3();
+const phoneW = () => S.w < 640;
+function placeCamera(labelsOn) {
+  if (S.look) {
+    const [x, y, z, span] = S.look;
+    target.set(x, -y, z); camera.position.set(x, -y - span * 0.35, z + span * 2.2); camera.lookAt(target); camera.updateMatrixWorld();
+    return;
+  }
+  const ez = smooth(0, 1, S.E);
+  const gam = (34 + 34 * ez) * D;
+  dir.set(Math.sin(gam) * Math.sin(S.yaw), -Math.sin(gam) * Math.cos(S.yaw), Math.cos(gam)).normalize();
+  right.set(Math.cos(S.yaw), Math.sin(S.yaw), 0);
+  upv.crossVectors(dir, right).normalize();
+  const tanV = Math.tan((camera.fov * D) / 2) * 0.94;
+  // Desktop keeps a label column each side; a phone keeps one, on the right.
+  const room = labelsOn * (phoneW() ? Math.min(0.34, 116 / S.w) : Math.min(0.46, 340 / S.w));
+  const tanH = tanV * camera.aspect * (1 - room);
+  // Every part's footprint at its current height; centre the target on them, then back off until they all fit.
+  const pts = [];
+  for (const p of parts) {
+    if (!p.bounds) continue;
+    const { cx, cy, r, z0, z1 } = p.bounds;
+    for (const z of [z0, z1]) for (let i = 0; i < 12; i++) pts.push(new THREE.Vector3(cx + r * Math.cos((i * Math.PI) / 6), cy + r * Math.sin((i * Math.PI) / 6), z + p.g.position.z));
+  }
+  let r0 = Infinity, r1 = -Infinity, u0 = Infinity, u1 = -Infinity;
+  for (const q of pts) { const x = q.dot(right), y = q.dot(upv); r0 = Math.min(r0, x); r1 = Math.max(r1, x); u0 = Math.min(u0, y); u1 = Math.max(u1, y); }
+  target.set(0, 0, 0).addScaledVector(right, (r0 + r1) / 2).addScaledVector(upv, (u0 + u1) / 2);
+  let d = 0;
+  for (const q of pts) {
+    tmp.copy(q).sub(target);
+    const depth = tmp.dot(dir);
+    d = Math.max(d, Math.abs(tmp.dot(right)) / tanH + depth, Math.abs(tmp.dot(upv)) / tanV + depth);
+  }
+  if (phoneW()) target.addScaledVector(right, room * d * tanV * camera.aspect);
+  camera.position.copy(target).addScaledVector(dir, d);
+  camera.lookAt(target);
+  camera.updateMatrixWorld();
+}
+
+function placeLabels(on) {
+  labelsEl.style.opacity = on; leadersEl.style.opacity = on;
+  if (on <= 0.01) return;
+  const W = S.w, H = S.h, phone = phoneW(), pad = phone ? 8 : 18, col = phone ? 0 : 150, gap = phone ? 18 : 22;
+  const items = [];
+  for (const p of labelled) {
+    const show = !phone || p.phone;
+    p.el.style.display = show ? '' : 'none'; p.path.style.display = show ? '' : 'none'; p.dot.style.display = show ? '' : 'none';
+    if (!show) continue;
+    tmp.copy(p.anchorV); tmp.z += p.g.position.z; tmp.project(camera);
+    const x = ((tmp.x + 1) / 2) * W, y = ((1 - tmp.y) / 2) * H;
+    if (!p.w) p.w = p.el.offsetWidth;
+    items.push({ p, x, y, side: !phone && x < W / 2 ? 'L' : 'R', w: p.w });
+  }
+  for (const side of ['L', 'R']) {
+    const list = items.filter((i) => i.side === side).sort((a, b) => a.y - b.y);
+    let prev = -Infinity;
+    for (const it of list) { it.ly = Math.max(it.y, prev + gap, pad + 8); prev = it.ly; }
+    const over = prev - (H - pad - 8);
+    if (over > 0) for (const it of list) it.ly -= over;
+    for (const it of list) {
+      const tx = side === 'L' ? pad + Math.max(col, it.w) - it.w : W - pad - Math.max(col, it.w);
+      const edge = side === 'L' ? pad + Math.max(col, it.w) + 6 : W - pad - Math.max(col, it.w) - 6;
+      const elbow = side === 'L' ? edge + 14 : edge - 14;
+      it.p.el.style.transform = `translate(${tx.toFixed(1)}px, ${(it.ly - 7).toFixed(1)}px)`;
+      it.p.path.setAttribute('d', `M${it.x.toFixed(1)} ${it.y.toFixed(1)} L${elbow.toFixed(1)} ${it.ly.toFixed(1)} L${edge.toFixed(1)} ${it.ly.toFixed(1)}`);
+      it.p.dot.setAttribute('cx', it.x.toFixed(1)); it.p.dot.setAttribute('cy', it.y.toFixed(1));
+    }
+  }
+}
+
+let raf = 0, last = 0, frames = 0;
+function needsFrame() {
+  return (S.playing && S.inView && document.visibilityState === 'visible') || S.anim !== null || S.drag !== null;
+}
+function wake() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+function frame(now) {
+  raf = 0;
+  // Every angle comes from t, so a long frame can't destabilise anything; the clamp only stops jumps after a stall.
+  const dt = Math.min((now - last) / 1000, 0.25); last = now;
+  if (S.playing && document.visibilityState === 'visible') S.t += dt * S.scale;
+  if (S.anim) {
+    const u = clamp((now - S.anim.t0) / S.anim.dur, 0, 1), k = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+    S.E = S.anim.from + (S.anim.to - S.anim.from) * k;
+    if (u >= 1) S.anim = null;
+    setApartUI();
+  }
+  applyState();
+  const labelsOn = smooth(0.3, 0.6, S.E);
+  placeCamera(labelsOn);
+  renderer.render(scene, camera);
+  placeLabels(labelsOn);
+  frames++;
+  window.__tavi = { frames, calls: renderer.info.render.calls, triangles: renderer.info.render.triangles, E: S.E, t: S.t };
+  if (needsFrame()) raf = requestAnimationFrame(frame);
+}
+// Test hooks: freeze a moment, set the explode, and render once.
+// taviLook(svgX, svgY, z, span) frames a close-up for checks; taviLook() goes back to the fitted view.
+window.taviLook = (x, y, z = 30, span = 60) => { S.look = x === undefined ? null : [x, y, z, span]; frame(performance.now()); return window.__tavi; };
+window.taviHide = (names = []) => { for (const p of parts) p.g.visible = !names.includes(p.name); frame(performance.now()); return window.__tavi; };
+window.taviPose = (t, E = S.E, yaw) => { S.t = t; S.E = E; S.target = E; S.anim = null; if (yaw !== undefined) S.yaw = yaw * D; setPlaying(false); setApartUI(); frame(performance.now()); return window.__tavi; };
+document.fonts.ready.then(() => { for (const p of labelled) p.w = 0; wake(); });
+setPlaying(S.playing);
+setApartUI();
+wake();
+}
+</script>
+</body>
+</html>
