@@ -1,0 +1,21 @@
+---
+// Under a chapter: back to the contents band, and on to the next chapter by its head.
+interface Props {
+  /** The chapter's number, for the pager's name. */
+  n: number;
+  next?: { href: string; head: string } | undefined;
+}
+
+const { n, next } = Astro.props;
+---
+
+<nav class="pager" aria-label={`After chapter ${n}`}>
+  <a href="#contents">
+    <span class="k">Back to</span> <span class="t">Contents</span>
+  </a>
+  {next && (
+    <a href={next.href} rel="next">
+      <span class="k">Next chapter</span> <span class="t">{next.head}</span>
+    </a>
+  )}
+</nav>

@@ -1,0 +1,62 @@
+---
+import type { Speed } from "../../lib/figure.ts";
+import Pager from "./Pager.astro";
+
+// A chapter: its head, the prose steps on the left beside the sticky figure on the right, and the pager under them.
+// On a phone the figure sticks to the top at 30% of the screen and the steps scroll under it. The slots:
+// - the default slot holds the steps (Step.astro);
+// - `figure` holds the drawing; the figure element around it holds the state (lib/figure.ts);
+// - `tray` holds the figure's control island (FigureTray.tsx), hidden without scripting.
+// lib/chapters.ts runs the steps, the part names and the current-chapter mark.
+interface Props {
+  id: string;
+  /** The chapter's number. */
+  n: number;
+  head: string;
+  /** What the figure shows, for a screen reader. */
+  caption: string;
+  /** The first step's pose, which the figure opens in. */
+  opening: { e: number };
+  /** The speed the figure opens at. */
+  speed?: Speed;
+  next?: { href: string; head: string };
+}
+
+const { id, n, head, caption, opening, speed = 1, next } = Astro.props;
+---
+
+<section class="chapter" id={id} aria-labelledby={`${id}-head`}>
+  <div class="wrap">
+    <div class="chapter-head">
+      <h2 id={`${id}-head`}>{head}</h2>
+    </div>
+    <div class="chapter-grid">
+      <div class="steps">
+        <slot />
+      </div>
+      <figure
+        class="stage"
+        id={`${id}-figure`}
+        data-figure
+        data-step="1"
+        style={`--e: ${opening.e}; --slow: ${speed}`}
+        aria-labelledby={`${id}-figure-caption`}
+      >
+        <slot name="figure" />
+        <figcaption id={`${id}-figure-caption`} class="sr-only">
+          {caption}
+        </figcaption>
+        <div class="tray no-js:hidden">
+          <slot name="tray" />
+        </div>
+      </figure>
+    </div>
+    <Pager n={n} next={next} />
+  </div>
+</section>
+
+<script>
+  import { startChapters } from "../../lib/chapters";
+
+  startChapters();
+</script>

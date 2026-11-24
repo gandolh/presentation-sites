@@ -1,0 +1,19 @@
+---
+import type { Pose } from "../../lib/figure.ts";
+
+// One step of a chapter's prose. It carries the pose its figure takes while the step holds the reading line; the
+// first step is active before anything scrolls.
+interface Props {
+  /** The step's number in its chapter; the figure's `data-step` while it is active. */
+  n: number;
+  pose: Pose;
+}
+
+const { n, pose } = Astro.props;
+---
+
+<div class:list={["step", { "is-active": n === 1 }]} data-step={n} data-explode={pose.e}>
+  <p>
+    <slot />
+  </p>
+</div>

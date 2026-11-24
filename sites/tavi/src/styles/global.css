@@ -529,6 +529,157 @@
     font-variation-settings: "opsz" 72;
   }
 
+  /* The chapter engine: the prose steps on the left (five columns), the sticky figure on the right (seven). */
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap-columns);
+    align-items: start;
+  }
+  .steps {
+    grid-column: 1 / span 5;
+    display: grid;
+  }
+  /* A step is a little under half a screen tall, so the left column isn't mostly empty paper. The last one runs to
+     the foot of the screen from the reading line, so the figure stays whole while it is read. */
+  .step {
+    min-height: 46svh;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-rule);
+  }
+  .step:last-child {
+    min-height: 55svh;
+    padding-bottom: var(--space-xl);
+  }
+  .step p {
+    font-size: var(--text-step);
+    line-height: var(--text-step--line-height);
+    max-width: 46ch;
+    color: var(--color-ink-2);
+    transition: color var(--dur-short) var(--ease-out);
+  }
+  .js .step.is-active {
+    border-top-color: var(--color-ink);
+  }
+  .js .step.is-active p {
+    color: var(--color-ink);
+  }
+
+  /* A part named in the prose: its own text shade, underlined in its metal. A button inside a running sentence, so
+     it keeps the sentence's line height. */
+  .part-name {
+    font: inherit;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--k, var(--color-ink));
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--k-line, currentColor);
+    border-radius: 2px;
+  }
+  .part-name:hover {
+    text-decoration-thickness: 3px;
+  }
+  .k-spring {
+    --k: var(--color-part-spring-ink);
+    --k-line: var(--color-part-spring);
+  }
+  .k-brass {
+    --k: var(--color-part-brass-ink);
+    --k-line: var(--color-part-brass);
+  }
+  .k-steel {
+    --k: var(--color-part-steel-ink);
+    --k-line: var(--color-part-steel-line);
+  }
+  .k-gilt {
+    --k: var(--color-part-gilt-ink);
+    --k-line: var(--color-part-gilt);
+  }
+  .k-balance {
+    --k: var(--color-part-balance-ink);
+    --k-line: var(--color-part-balance);
+  }
+
+  /* The figure: a card that sticks under the header, the drawing over its tray. */
+  .stage {
+    grid-column: 6 / span 7;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-lg));
+    z-index: var(--z-raised);
+    margin: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-card);
+    padding: var(--space-md);
+    display: grid;
+    gap: var(--space-md);
+  }
+  /* The chapter's drawing is a close crop: its cut edges fade into the card, so the crop reads as framing (a mask
+     reads only alpha). */
+  .stage .movement {
+    width: 100%;
+    height: min(500px, calc(100svh - var(--header-h) - 260px));
+    overflow: hidden;
+    border-radius: var(--radius-inner);
+    mask-image:
+      linear-gradient(to bottom, var(--color-ink) 78%, transparent),
+      linear-gradient(to right, var(--color-ink) 84%, transparent);
+    mask-composite: intersect;
+  }
+  /* The figure's controls on the paper-2 ground: the Pause and the Speed across the top, a chapter's own controls
+     in two cells under them. */
+  .tray {
+    background: var(--color-paper-2);
+    border-radius: var(--radius-inner);
+    padding: var(--space-sm) var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm) var(--space-xl);
+    align-items: center;
+  }
+
+  /* Under a chapter: back to the contents, on to the next chapter. */
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-rule);
+  }
+  .pager a {
+    display: grid;
+    gap: var(--space-3xs);
+    min-height: 44px;
+    text-decoration: none;
+  }
+  .pager .k {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  .pager .t {
+    font-size: var(--text-lg);
+    text-decoration: underline;
+    text-decoration-color: var(--color-rule-strong);
+    text-underline-offset: 0.2em;
+    transition:
+      color var(--dur-short) var(--ease-out),
+      text-decoration-color var(--dur-short) var(--ease-out);
+  }
+  .pager a:hover .t {
+    text-decoration-color: currentColor;
+    color: var(--color-accent);
+  }
+  .pager a[rel="next"] {
+    text-align: right;
+    justify-items: end;
+  }
+
   /* The footer, chapter 7, on a quiet band: the name and its meaning on the left, the repair line and Tavi's own line
      on the right, the drawn-not-photographed note across the foot. */
   .site-foot {
@@ -610,6 +761,21 @@
     .hero-stage {
       max-height: none;
     }
+    /* In one column the figure goes first and sticks to the top at 30% of the screen; the steps scroll under it to a
+       reading line lower down (lib/chapters.ts). */
+    .chapter-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .steps,
+    .stage {
+      grid-column: 1 / -1;
+    }
+    .stage {
+      grid-row: 1;
+    }
+    .stage .movement {
+      height: 30svh;
+    }
     /* Between a phone and a desktop the seven entries keep their row and scroll sideways. */
     .contents-band {
       overflow-x: auto;
@@ -684,13 +850,39 @@
     .chapter-head {
       margin-bottom: var(--space-lg);
     }
+    /* On a phone the header scrolls away, so the figure sticks at the very top, a little wider than the column. */
+    .stage {
+      top: 0;
+      padding: var(--space-xs);
+      gap: var(--space-xs);
+      margin-inline: calc(var(--space-xs) * -1);
+    }
+    .tray {
+      padding: var(--space-xs) var(--space-sm);
+      gap: var(--space-2xs) var(--space-md);
+    }
+    .step {
+      min-height: 34svh;
+      padding-block: var(--space-md) var(--space-xl);
+    }
+    .step:last-child {
+      min-height: 40svh;
+    }
+    .step p {
+      font-size: var(--text-md);
+    }
+    .pager .t {
+      font-size: var(--text-md);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .quiet,
     .wordmark,
     .chapters a,
     .btn,
-    .contents-band a {
+    .contents-band a,
+    .step p,
+    .pager .t {
       transition: none;
     }
   }
@@ -762,9 +954,10 @@
   .p-barrel-inside {
     --pf: var(--color-part-brass);
     --po: var(--color-part-brass-line);
+    --pd: var(--color-part-brass-deep);
   }
   .p-barrel-inside .drum {
-    fill: var(--color-part-brass-deep);
+    fill: var(--pd);
   }
   .p-barrel .lid {
     --pf: var(--color-part-brass);
@@ -910,12 +1103,22 @@
     fill: var(--color-ink);
   }
 
-  /* Focus by subtraction: on a figure's step (data-step) or a part the prose names (data-focus), every other part
-     falls back to the ghost pair. The chapter engine sets the attributes. */
-  .stage[data-step="1"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s1, .s1 *),
-  .stage[data-step="2"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s2, .s2 *),
-  .stage[data-step="3"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s3, .s3 *),
-  .stage[data-focus] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.is-focus, .is-focus *) {
+  /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair;
+     while a part named in the prose is pointed at (data-focus), every part but that one does, whichever step it is
+     named in. The pieces that set their own colour (a pin, the roller, the drum) are listed too, so they ghost with
+     their part. lib/figure.ts sets the attributes. */
+  .stage[data-step="1"]:not([data-focus])
+    .mv
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s1, .s1 *),
+  .stage[data-step="2"]:not([data-focus])
+    .mv
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s2, .s2 *),
+  .stage[data-step="3"]:not([data-focus])
+    .mv
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.s3, .s3 *),
+  .stage[data-focus]
+    .mv
+    :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin):not(.is-focus, .is-focus *) {
     --pf: var(--color-ghost-fill);
     --po: var(--color-ghost-line);
     --ps: var(--color-ghost-line);
@@ -924,12 +1127,16 @@
     --pr: var(--color-ghost-fill);
     --prl: var(--color-ghost-line);
     --ph: var(--color-ghost-line);
+    --pd: var(--color-ghost-fill);
   }
   .movement .part {
     transition: opacity var(--dur-short) var(--ease-out);
   }
 
-  /* Taken apart: lifted parts travel along one oblique axis. */
+  /* Taken apart: lifted parts travel along one oblique axis, drawn dashed while anything is lifted. */
+  .movement .axes {
+    opacity: clamp(0, (var(--e, 0) - 0.02) * 1000, 1);
+  }
   .lift {
     transform: translate(calc(var(--e) * var(--lift) * 0.5px), calc(var(--e) * var(--lift) * -0.866px));
     transition: transform var(--dur-long) var(--ease-out);

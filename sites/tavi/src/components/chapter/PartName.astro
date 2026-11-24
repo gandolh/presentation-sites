@@ -1,0 +1,17 @@
+---
+import { MOVEMENT, partOf, type PartId } from "../../movement/parts.ts";
+
+// A part named in the prose: a button in the part's own text shade (from the part table), underlined in its metal.
+// Hovering or focusing it lights the part on the chapter's figure and drops every other part to the ghost pair
+// (lib/chapters.ts). Without scripting it is coloured words.
+interface Props {
+  part: PartId;
+}
+
+const { part } = Astro.props;
+const ink = partOf(MOVEMENT, part).ink;
+---
+
+<button type="button" class:list={["part-name", ink && `k-${ink}`]} data-part={part}>
+  <slot />
+</button>
