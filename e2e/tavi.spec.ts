@@ -291,8 +291,301 @@ test.describe("the footer", () => {
   });
 });
 
+// Chapter 1 on the chapter engine: the steps beside the sticky figure, the part names, the current-chapter mark and
+// the figure's tray.
+const POSES = [
+  { step: "1", e: "0.55" },
+  { step: "2", e: "0.55" },
+  { step: "3", e: "0.2" },
+  { step: "4", e: "0" },
+];
+
+/** Scrolls a step of chapter 1 onto the reading line (lib/chapters.ts): mid-screen in two columns, lower in one. */
+async function readStep(page: Page, step: string, phone: boolean) {
+  await page.evaluate(
+    ({ step, line }) => {
+      const el = document.querySelector(`#energy .step[data-step="${step}"]`);
+      if (el) window.scrollBy(0, el.getBoundingClientRect().top - innerHeight * line);
+    },
+    { step, line: phone ? 0.7 : 0.47 },
+  );
+}
+
+/** The page with chapter 1's tray in view and its island hydrated: from step 2 the figure is stuck whole on screen. */
+async function trayReady(page: Page, phone: boolean) {
+  await page.goto("/");
+  await readStep(page, "2", phone);
+  await page.waitForFunction(() => document.querySelector('astro-island[component-url*="FigureTray"]:not([ssr])'));
+}
+
+/** An element's own `--slow`, as the stylesheet resolves it. */
+async function slowOf(page: Page, selector: string) {
+  return page.evaluate(
+    (s) =>
+      getComputedStyle(document.querySelector(s) ?? document.body)
+        .getPropertyValue("--slow")
+        .trim(),
+    selector,
+  );
+}
+
+/** Each running animation on chapter 1's figure, by its turning group, with its duration. */
+async function figureAnimations(page: Page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll("#energy-figure .rot")].flatMap((group) =>
+      group
+        .getAnimations()
+        .filter((a) => a.playState === "running")
+        .map((a) => ({
+          group: [...group.classList].find((c) => c.startsWith("rot-")) ?? "?",
+          duration: Number(a.effect?.getComputedTiming().duration),
+        })),
+    ),
+  );
+}
+
+test.describe("chapter 1, on the chapter engine", () => {
+  test("scrolling activates each step in turn, and the figure's data-step and --e follow", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    const figure = page.locator("#energy-figure");
+    const lifted = page.locator("#energy-movement .lift-bridge");
+    const transforms: string[] = [];
+    for (const { step, e } of POSES) {
+      await readStep(page, step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect(page.locator("#energy .step.is-active")).toHaveAttribute("data-step", step);
+      expect(await figure.evaluate((el) => el.style.getPropertyValue("--e"))).toBe(e);
+      // The drawing takes the figure's pose: the barrel bridge rises with --e.
+      await expect
+        .poll(() =>
+          lifted.evaluate((el) =>
+            getComputedStyle(el.parentElement ?? el)
+              .getPropertyValue("--e")
+              .trim(),
+          ),
+        )
+        .toBe(e);
+      await page.waitForTimeout(500);
+      transforms.push(await lifted.evaluate((el) => getComputedStyle(el).transform));
+    }
+    expect(transforms[0]).not.toBe(transforms[3]);
+    expect(transforms[2]).not.toBe(transforms[3]);
+    expect(transforms[3]).toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
+  });
+
+  test("hovering or focusing a part name lights that part and ghosts every other", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    await readStep(page, "1", phone);
+    const figure = page.locator("#energy-figure");
+    const mainspring = page.locator("#energy").getByRole("button", { name: "mainspring", exact: true });
+    // Computed colours, read the way the drawing's own are: through an element filled and stroked with each token.
+    const colours = () =>
+      page.evaluate(() => {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        probe.style.fill = "var(--color-ghost-fill)";
+        probe.style.stroke = "var(--color-part-spring)";
+        svg.append(probe);
+        document.body.append(svg);
+        const cs = getComputedStyle(probe);
+        const found = { ghost: cs.fill, spring: cs.stroke };
+        svg.remove();
+        const drawing = document.querySelector("#energy-movement");
+        const others = [...(drawing?.querySelectorAll(".mv .fo, .mv .drum") ?? [])].filter(
+          (el) => !el.closest('[data-part="mainspring"]'),
+        );
+        return {
+          ...found,
+          lit: getComputedStyle(drawing?.querySelector(".p-spring .spring-f") ?? document.body).stroke,
+          unghosted: others.filter((el) => getComputedStyle(el).fill !== found.ghost).length,
+          others: others.length,
+        };
+      });
+    const check = async () => {
+      await expect(figure).toHaveAttribute("data-focus", "mainspring");
+      const c = await colours();
+      expect(c.others).toBeGreaterThan(30);
+      expect(c.unghosted, "parts the prose doesn't name, left in colour").toBe(0);
+      expect(c.lit).toBe(c.spring);
+    };
+
+    if (!phone) {
+      await mainspring.hover();
+      await check();
+      await page.mouse.move(2, 2);
+      await expect(figure).not.toHaveAttribute("data-focus");
+    }
+    await mainspring.focus();
+    await check();
+    await mainspring.blur();
+    await expect(figure).not.toHaveAttribute("data-focus");
+
+    // A part named in another step lights alone too, not the whole drawing ghosted.
+    await page.locator("#energy").getByRole("button", { name: "crown", exact: true }).focus();
+    await expect(figure).toHaveAttribute("data-focus", "crown");
+    expect(
+      await page.evaluate(() => {
+        const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        probe.style.fill = "var(--color-ghost-fill)";
+        document.querySelector("#energy-movement")?.append(probe);
+        const ghost = getComputedStyle(probe).fill;
+        probe.remove();
+        return (
+          getComputedStyle(document.querySelector('#energy-movement [data-part="crown"] .fo') ?? document.body).fill !==
+          ghost
+        );
+      }),
+      "the crown stays in colour",
+    ).toBe(true);
+  });
+
+  test('"1 Energy" is current in the header and the band only while chapter 1 holds the reading line', async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const marked = page.locator('[aria-current="true"]');
+    const energy = page.locator('.chapters a[href="#energy"], .contents-band a[href="#energy"]');
+    // In the hero nothing is marked.
+    await page.waitForTimeout(300);
+    await expect(marked).toHaveCount(0);
+
+    await page.evaluate(() => document.querySelector('#energy .step[data-step="2"]')?.scrollIntoView());
+    await expect(energy.nth(0)).toHaveAttribute("aria-current", "true");
+    await expect(energy.nth(1)).toHaveAttribute("aria-current", "true");
+    await expect(marked).toHaveCount(2);
+
+    // Past the chapter's end, it is no longer current.
+    await page.evaluate(() => {
+      const end = document.querySelector("#energy")?.getBoundingClientRect().bottom ?? 0;
+      window.scrollBy(0, end - innerHeight * 0.3);
+    });
+    await expect(energy.nth(0)).not.toHaveAttribute("aria-current");
+    await expect(energy.nth(1)).not.toHaveAttribute("aria-current");
+
+    // Back up in the hero, nothing.
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await expect(marked).toHaveCount(0);
+  });
+
+  test("the tray's Pause and the header's stay in step both ways", async ({ page }, info) => {
+    await trayReady(page, isPhone(info));
+    const html = page.locator("html");
+    const pause = page.locator("#energy-figure").getByRole("button", { name: "Pause", exact: true });
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+
+    await pause.click();
+    await expect(html).toHaveAttribute("data-playing", "false");
+    await expect(pause).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: "Play every moving drawing" })).toHaveCount(1);
+    expect(await figureAnimations(page)).toEqual([]);
+
+    await page.getByRole("button", { name: "Play every moving drawing" }).click();
+    await expect(html).toHaveAttribute("data-playing", "true");
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+
+    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    await expect(pause).toHaveAttribute("aria-pressed", "true");
+    await pause.click();
+    await expect(html).toHaveAttribute("data-playing", "true");
+    await expect(page.getByRole("button", { name: "Pause every moving drawing" })).toHaveCount(1);
+  });
+
+  test("Speed 1/10 makes the figure's animations ten times longer, and 1/100 a hundred", async ({ page }, info) => {
+    await trayReady(page, isPhone(info));
+    const speed = page.locator("#energy-figure").getByRole("radiogroup", { name: "Speed" });
+    await expect(speed.getByRole("radio", { name: "1×", exact: true })).toBeChecked();
+    const at1 = await figureAnimations(page);
+    expect(at1.find((a) => a.group === "rot-balance")?.duration).toBeCloseTo(166.667, 2);
+
+    for (const [name, factor] of [
+      ["1/10", 10],
+      ["1/100", 100],
+    ] as const) {
+      await speed.getByRole("radio", { name, exact: true }).click();
+      await expect(speed.getByRole("radio", { name, exact: true })).toBeChecked();
+      expect(await slowOf(page, "#energy-figure")).toBe(String(factor));
+      const slowed = await figureAnimations(page);
+      expect(slowed.map((a) => a.group)).toEqual(at1.map((a) => a.group));
+      for (const [i, a] of slowed.entries()) expect(a.duration).toBeCloseTo((at1[i]?.duration ?? NaN) * factor, 1);
+    }
+    // The hero keeps its own speed.
+    expect(await slowOf(page, ".hero-stage")).toBe("1");
+  });
+
+  test("Tab reaches every control, and the arrow keys move the speed", async ({ page }, info) => {
+    await trayReady(page, isPhone(info));
+    const chapter = page.locator("#energy");
+    const names = ["mainspring", "barrel", "crown", "ratchet wheel", "arbor", "click", "centre wheel"];
+    await chapter.getByRole("button", { name: "mainspring", exact: true }).focus();
+    for (const name of names.slice(1)) {
+      await page.keyboard.press("Tab");
+      await expect(chapter.getByRole("button", { name, exact: true })).toBeFocused();
+    }
+    await page.keyboard.press("Tab");
+    await expect(chapter.getByRole("button", { name: "Pause", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    const one = chapter.getByRole("radio", { name: "1×", exact: true });
+    await expect(one).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await expect(chapter.getByRole("radio", { name: "1/10", exact: true })).toBeChecked();
+    await expect(chapter.getByRole("radio", { name: "1/10", exact: true })).toBeFocused();
+    expect(await slowOf(page, "#energy-figure")).toBe("10");
+    await page.keyboard.press("ArrowLeft");
+    await expect(one).toBeChecked();
+    expect(await slowOf(page, "#energy-figure")).toBe("1");
+    await page.keyboard.press("Tab");
+    await expect(chapter.getByRole("link", { name: "Back to Contents" })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(chapter.getByRole("link", { name: "Next chapter 2. Wheels, hours into seconds" })).toBeFocused();
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the figure starts still, Play runs it, and a new step's pose jumps", async ({ page }, info) => {
+      const phone = isPhone(info);
+      await trayReady(page, phone);
+      await page.waitForTimeout(300);
+      expect(await figureAnimations(page)).toEqual([]);
+      const pause = page.locator("#energy-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      await pause.click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      await expect.poll(async () => (await figureAnimations(page)).map((a) => a.group)).toContain("rot-balance");
+
+      const lifted = page.locator("#energy-movement .lift-bridge");
+      await expect(lifted).toHaveCSS("transition-duration", "0s");
+      await readStep(page, "4", phone);
+      await expect(page.locator("#energy-figure")).toHaveAttribute("data-step", "4");
+      // No transition: the bridge is down at once.
+      expect(await lifted.evaluate((el) => getComputedStyle(el).transform)).toMatch(
+        /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/,
+      );
+    });
+  });
+});
+
 test.describe("without scripting", () => {
   test.use({ javaScriptEnabled: false });
+
+  test("chapter 1 reads in full, its figure is still, and its tray shows no control", async ({ page }) => {
+    await page.goto("/");
+    const steps = page.locator("#energy .step p");
+    await expect(steps).toHaveCount(4);
+    for (const step of await steps.all()) await expect(step).toBeVisible();
+    await expect(steps.nth(0)).toContainText("Everything here runs on one coiled spring, the mainspring.");
+    await expect(steps.nth(3)).toContainText("Chapter 3 shows what holds it back.");
+    await expect(page.getByRole("img", { name: /^Diagram of the barrel, opened/ })).toBeVisible();
+    expect(await figureAnimations(page)).toEqual([]);
+    await expect(page.locator("#energy-figure .tray")).toBeHidden();
+    await expect(page.getByRole("radio")).toHaveCount(0);
+    await expect(page.locator("#energy-figure").getByRole("button")).toHaveCount(0);
+    await expect(page.locator("#energy").getByRole("link", { name: "Back to Contents" })).toBeVisible();
+  });
 
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {
     await page.goto("/");
