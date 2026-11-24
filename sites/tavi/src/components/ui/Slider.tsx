@@ -64,10 +64,10 @@ export function Slider({
           <BaseSlider.Indicator className="rounded-pill bg-accent" />
           {/* The blued disc is painted by a pseudo-element, not the thumb's own ground: the focused element is Base UI's
               hidden range input inside the thumb, and its ring is read against the track, where the thumb's ring
-              shows. */}
+              shows. The thumb is raised over the track's tick marks. */}
           <BaseSlider.Thumb
             getAriaValueText={(_formatted, current) => getAriaValueText(current)}
-            className="size-5.5 rounded-full border-3 border-surface ring-1 ring-accent before:absolute before:inset-0 before:rounded-full before:bg-accent hover:ring-ink hover:before:bg-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus data-dragging:scale-108 motion-safe:transition-[scale] motion-safe:duration-(--dur-micro) motion-safe:ease-(--ease-out)"
+            className="z-(--z-raised) size-5.5 rounded-full border-3 border-surface ring-1 ring-accent before:absolute before:inset-0 before:rounded-full before:bg-accent hover:ring-ink hover:before:bg-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus data-dragging:scale-108 motion-safe:transition-[scale] motion-safe:duration-(--dur-micro) motion-safe:ease-(--ease-out)"
           />
         </BaseSlider.Track>
       </BaseSlider.Control>
