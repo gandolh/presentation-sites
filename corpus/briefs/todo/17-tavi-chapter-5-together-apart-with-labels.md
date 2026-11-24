@@ -35,6 +35,9 @@ figure, desktop keeps the labels with leader lines) and `critique.md` (weakest p
 - **The drawing takes apart too.** On rungs 2 and 3 (phone without 3D, no WebGL) the same tray takes the SVG poster
   apart through lift groups for the whole movement, from the same lift windows.
 
+**Copy (owner, 2026-11-24):** real, checked facts for every mechanism, part name, ratio, brand and bit of trivia,
+with sources in the outcome; anything about Tavi may be invented ([decisions-tavi.md](../../wiki/decisions-tavi.md), Copy).
+
 ## Files you OWN
 
 - `sites/tavi/src/components/together/` (the island's tray, the parts list), `sites/tavi/src/three/` (labels,

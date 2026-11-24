@@ -36,6 +36,9 @@ fourth wheel, where the table puts it.
    hour wheel of 32: twelve to one) carry the hour hand; the small seconds rides the fourth wheel's arbor. Blued
    Breguet hands.
 
+**Copy (owner, 2026-11-24):** real, checked facts for every mechanism, part name, ratio, brand and bit of trivia,
+with sources in the outcome; anything about Tavi may be invented ([decisions-tavi.md](../../wiki/decisions-tavi.md), Copy).
+
 ## Files you OWN
 
 - `sites/tavi/src/movement/`: the motion works and the hands in the table (`parts.ts`), their ratios in `clock.ts`, a

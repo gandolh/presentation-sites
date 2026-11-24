@@ -38,9 +38,8 @@ the `https://example.com` fallback that [decisions.md](decisions.md) records. Th
 the real origin, which repo text doesn't name, so the vps-deploy brief passes `PUBLIC_SITE` to every presentation
 site's build.
 
-*Not in v1:* a docs site. The other sites' docs sites render a business's brief, tokens and decisions; tavi's design
-record is `design/tavi/` and its decisions are here. A docs site would add a workspace, a build and a deploy step for
-few readers, and its `url` would need the origin. The owner can ask for one; `docs/adding-a-site.md` step 6 says how.
+*A docs site, later* (owner, 2026-11-24, revising the planner's "not in v1"): brief 21 adds it after the site is
+built, by `docs/adding-a-site.md` step 6, with a `tavi-docs` stack in vps-deploy.
 
 ## The stack
 
@@ -67,9 +66,12 @@ subcort's `src/lib/draft.ts` is the in-repo precedent: one model drives every gr
 
 ## The fallback ladder, and where the 3D lives
 
-**2026-11-24** — The SVG drawing is always the first paint. The 3D replaces it only in chapter 5 (Together), in the
-same box. The hero stays the drawing, ticking in CSS, so the first screen needs almost no JavaScript (planner's call;
-the owner can change it).
+**2026-11-24** — The SVG drawing is always the first paint. **Revised by the owner the same day: the 3D lives in the
+hero too**, not only in chapter 5 (Together). The hero's drawing paints first, ticking in CSS; the island loads after
+that first paint and replaces it in the same box, opening on the drawing's flat view; chapter 5 reuses the same
+scene and chunk. Rungs 1 and 2 below read with that: the hero's island loads on its own after first paint on any
+device with WebGL 2 (phones included); chapter 5's "Turn it in 3D" button stays for phones that scrolled past an
+unloaded hero.
 
 1. Desktop with WebGL 2: the island loads as chapter 5 nears and replaces the poster. It opens on the poster's flat
    top view, pixel-aligned, and tilts only on the first drag, so the swap doesn't jump.
@@ -98,7 +100,8 @@ header's Pause and the steps observer are plain module scripts, so they work bef
 
 ## Defaults the owner can change
 
-Each recorded 2026-11-24 by the planner, standing until the owner says otherwise.
+Each recorded 2026-11-24 by the planner; the owner confirmed all of them the same evening (small seconds at 8
+o'clock included).
 
 - **The repair line stays quiet**: in the footer and the contents band's chapter 7, not on the first screen.
 - **The movement stays the generic 21,600 vph NH35-class train**, swappable through the part table if the owner names
@@ -108,3 +111,12 @@ Each recorded 2026-11-24 by the planner, standing until the owner says otherwise
 - **Small seconds sits over the fourth wheel, where the table puts it**: about 8 o'clock seen from the dial. The
   direction says "at 6 o'clock", which would mean re-laying the whole train and redrawing the approved sketch.
 - **The ticking sound** is synthesised (no recording of a watch exists), off by default, behind a speaker toggle.
+
+## Copy: invented people, real watches
+
+**2026-11-24 (owner)** — "invent freely fictive data. But use real facts for real mechanisms. Like brands,
+mechanism, pieces names, matrices, etc. PII should be fictive, real informations and verified informations for
+wiki/trivia." So builders write every chapter's prose themselves, with no review step: anything about Tavi as a
+person (story, years at the bench, habits, quotes) may be invented and must never be a real person's data; anything
+about watches (calibres, brands, part names, tooth counts and ratios, beat rates, history and trivia) must be true
+and checked against a source, which the brief's outcome names.

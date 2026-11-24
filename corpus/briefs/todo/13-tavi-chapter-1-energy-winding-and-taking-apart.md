@@ -29,6 +29,9 @@ inline script (`springPath`, `setWind`, `setExplode`), and brief 10's `springPat
   `--color-muted` (critique, "Legibility"). Keep them, at no less than 15px, and make them read as hints to the
   controls, not as body text.
 
+**Copy (owner, 2026-11-24):** real, checked facts for every mechanism, part name, ratio, brand and bit of trivia,
+with sources in the outcome; anything about Tavi may be invented ([decisions-tavi.md](../../wiki/decisions-tavi.md), Copy).
+
 ## Files you OWN
 
 - `sites/tavi/src/components/chapter/` (chapter 1's tray controls), `sites/tavi/src/components/ui/Slider.tsx`,

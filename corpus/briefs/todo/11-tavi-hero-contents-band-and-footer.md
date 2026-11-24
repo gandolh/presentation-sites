@@ -43,6 +43,10 @@ The words, from the sketch:
   default the owner can change ([decisions-tavi.md](../../wiki/decisions-tavi.md)).
 - **No contact line** of any kind, and no promise of one.
 
+**Revised 2026-11-24 (owner): the 3D lives in the hero too.** This brief still builds the hero's figure as the
+SVG drawing ticking in CSS: it is the first paint and the poster that brief 16's island replaces in place. Keep the
+figure in one sized box (no layout shift when the island swaps in).
+
 ## Files you OWN
 
 - `sites/tavi/src/components/` (`Hero.astro`, `Contents.astro`, `Footer.astro`), `sites/tavi/src/pages/index.astro`,

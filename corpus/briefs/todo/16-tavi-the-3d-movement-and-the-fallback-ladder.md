@@ -44,6 +44,12 @@ movement ticking in chapter 5 at its flat first frame, with Pause and Speed.
 - **Lines at device pixel ratio 2** (critique, "Not checked"): the prototype's gear outlines are one-device-pixel
   lines, which look thinner than the bridges' on a HiDPI laptop or the owner's Android phone. Check and fix (step 6).
 
+**Revised 2026-11-24 (owner): the 3D lives in the hero too, not only in chapter 5.** Mount the same island in the
+hero's figure box as well (brief 11 sized it): the drawing paints first, the island loads after that first paint
+(idle, not on first scroll) on any device with WebGL 2, phones included, opens on the drawing's flat view and tilts
+on the first drag. Chapter 5 reuses the same three.js chunk and scene. The first screen must not wait on it: the
+page's first paint and the hero's text come before any three.js request. See decisions-tavi.md, the fallback ladder.
+
 ## Files you OWN
 
 - `sites/tavi/src/components/together/MovementFigure.tsx` (the island), `sites/tavi/src/three/` (scene, part
@@ -89,7 +95,10 @@ movement ticking in chapter 5 at its flat first frame, with Pause and Speed.
 - [ ] At 1280 x 800 with WebGL, the poster and the island's first frame line up: the plate's circle within 2 px in
       shots of each. The swap adds under 0.01 to the layout-shift score.
 - [ ] Before any drag the view stays flat; the first drag tilts it.
-- [ ] At 390 x 844 with touch, no three.js chunk is requested until "Turn it in 3D" is pressed; then it loads and
+- [ ] The hero: at 1280 x 800 and 390 x 844 with WebGL, the first paint is the drawing with no three.js request
+      before it; the island then replaces it with no layout shift and the poster alignment above.
+- [ ] At 390 x 844 with touch and the hero's island not loaded (scrolled straight to chapter 5), no three.js chunk is
+      requested until "Turn it in 3D" is pressed; then it loads and
       runs.
 - [ ] With WebGL unavailable the poster stays with its line; a forced context loss (`WEBGL_lose_context`) returns to
       the poster.

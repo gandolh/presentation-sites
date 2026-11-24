@@ -744,3 +744,11 @@ Chapters drawer below 64rem, mounted in the header as subcort's is; the chapter 
 island, button, title and X. The root `CLAUDE.md` and the sites rules carry tavi's English exception. Not deployed:
 vps-deploy has no `tavi` stack yet. Details in the
 [brief's outcome](briefs/done/09-tavi-the-workspace-the-shell-and-the-checks.md).
+
+## [2026-11-24] decision | The owner's answers on Tavi: 3D in the hero, a docs site later, invented people and real watches
+
+The owner confirmed the three defaults (quiet repair line, the generic 21,600 vph train, the placeholder for Tavi's
+line) and small seconds at 8 o'clock. Revised: the 3D movement lives in the hero too (briefs 11 and 16 updated), a
+docs site comes later (brief 21), and copy may invent anything about Tavi but must use real, checked facts for every
+mechanism, brand, part name and ratio (decisions-tavi.md, Copy; briefs 13-18 updated, brief 18's review step
+dropped). See [wiki/decisions-tavi.md](wiki/decisions-tavi.md).

@@ -22,7 +22,9 @@ tools, drawn."
 
 Nobody has sent words from Tavi yet, and his own line waits in the footer's placeholder
 ([todos/tavi-own-line.md](../../todos/tavi-own-line.md)). So the prose speaks about the tools and the work they do in
-a repair, plainly and accurately. It invents nothing about Tavi: no biography, no years at the bench, no quotes.
+a repair. **Revised 2026-11-24 (owner):** details about Tavi may be invented (fictive, never a real person's data);
+the tools, their names, makers and uses must be real and checked ([decisions-tavi.md](../../wiki/decisions-tavi.md),
+Copy). No review step.
 
 ## Files you OWN
 
@@ -53,14 +55,13 @@ a repair, plainly and accurately. It invents nothing about Tavi: no biography, n
 
 - [ ] Every tool has a name button in the prose that lights it in the drawing.
 - [ ] `git grep -nE "oklch|#[0-9a-fA-F]{6}\b|rgb\(" -- sites/tavi/src ':!*.css'` finds nothing.
-- [ ] No sentence states a fact about Tavi that the owner didn't give (the outcome quotes the chapter's prose in full
-      for the owner to read).
+- [ ] Anything about Tavi is fictive; every claim about a tool or a technique is real, with its source in the outcome.
 - [ ] Shots at 1280 x 800 and 390 x 844 (out of git); sloplint: no FAIL.
 - [ ] `npm run check` exits 0; `SITES=tavi npx playwright test -c e2e` passes; `bash corpus/lint.sh` passes.
 
 ## Owner steps
 
-- Read the chapter's prose in the outcome; say if anything about Tavi should change. End move: `done` while
+- End move: `done` while
   vps-deploy has no `tavi` stack; `ready_for_deploy` with `node cli.ts tavi deploy`, run from the vps-deploy checkout,
   once it has one. The controller says which.
 

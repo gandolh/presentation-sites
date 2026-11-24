@@ -33,6 +33,9 @@ its hairspring breathes with `hairPts(theta)`.
   a second (21,600 an hour); the spring opens and closes as it swings; the impulse comes only inside the lift window,
   so the swing keeps its own time.
 
+**Copy (owner, 2026-11-24):** real, checked facts for every mechanism, part name, ratio, brand and bit of trivia,
+with sources in the outcome; anything about Tavi may be invented ([decisions-tavi.md](../../wiki/decisions-tavi.md), Copy).
+
 ## Files you OWN
 
 - `sites/tavi/src/lib/clockFigure.ts` (new): the frame loop that applies `stateAt` to a drawing
