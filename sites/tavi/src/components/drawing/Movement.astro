@@ -1,0 +1,20 @@
+---
+// The movement drawn from the part table at build time: an inline <svg role="img"> with no script of its own. The
+// page's CSS colours it from the part tokens and ticks it while the page plays.
+import { movementSvg, type CalloutKey, type Pose } from "../../movement/svg/movement.ts";
+
+interface Props {
+  pose: Pose;
+  /** Unique on the page: the figure's scripts and the dev hook find the drawing by it. */
+  id: string;
+  viewBox: string;
+  /** What the drawing shows, for a screen reader. */
+  "aria-label": string;
+  /** The parts named on the drawing (the hero pose only). */
+  callouts?: CalloutKey[];
+}
+
+const { pose, id, viewBox, "aria-label": label, callouts = [] } = Astro.props;
+---
+
+<Fragment set:html={movementSvg({ pose, id, viewBox, label, callouts })} />
