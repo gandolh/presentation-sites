@@ -356,9 +356,33 @@
     display: none;
   }
 
-  /* The hero; the hero brief adds the lede, the button and the ticking drawing. */
+  /* The hero: the head on the left, the ticking drawing on the right at the sketch's size; the hero brief adds the
+     lede, the button and the caption. */
   .hero {
     padding-block: var(--space-xl) var(--space-2xl);
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-lg) var(--gap-columns);
+    align-items: center;
+  }
+  .hero-text {
+    grid-column: 1 / span 5;
+    display: grid;
+    gap: var(--space-lg);
+    justify-items: start;
+  }
+  .hero-fig {
+    grid-column: 6 / span 7;
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+  }
+  .hero-fig .movement {
+    width: 100%;
+    height: auto;
+    max-height: calc(100svh - var(--header-h) - 160px);
   }
   .hero h1 {
     font-size: var(--text-display);
@@ -411,6 +435,16 @@
     .chapters-menu {
       display: block;
     }
+    .hero .wrap {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-text,
+    .hero-fig {
+      grid-column: 1 / -1;
+    }
+    .hero-fig .movement {
+      max-height: none;
+    }
   }
   @media (max-width: 40rem) {
     .site-head {
@@ -438,5 +472,318 @@
     .chapters a {
       transition: none;
     }
+  }
+}
+
+/* ==========================================================================
+   The drawing: the movement from the part table (src/movement), drawn at build
+   time. Each part sets its fill and outline pair (--pf, --po) from the part
+   tokens; a ghosted part drops to the ghost pair. Taken apart, lifted groups
+   travel along one oblique axis (--lift, --e). Ticking: a beat is 1/6 s, a
+   figure's --slow stretches every duration, and nothing turns unless the page
+   is scripted and playing.
+   ========================================================================== */
+
+@layer components {
+  .movement {
+    overflow: visible;
+    --pr: var(--color-part-ruby);
+    --prl: var(--color-part-ruby-line);
+    --ph: var(--color-part-hair);
+  }
+  .movement .fo {
+    fill: var(--pf);
+    stroke: var(--po);
+    stroke-width: 1.1;
+    stroke-linejoin: round;
+  }
+  .movement .bo {
+    fill: none;
+    stroke: var(--po);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .movement .bf {
+    fill: none;
+    stroke: var(--pf);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .movement .bo-disc {
+    fill: var(--po);
+  }
+  .movement .bf-disc {
+    fill: var(--pf);
+  }
+  .p-plate {
+    --pf: var(--color-part-plate);
+    --po: var(--color-part-plate-line);
+  }
+  .p-plate .plate-ring {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.6;
+    stroke-dasharray: 2 3;
+    opacity: 0.7;
+  }
+  .p-plate .hole {
+    fill: var(--color-paper-3);
+    stroke: var(--po);
+    stroke-width: 0.8;
+  }
+  .p-bridge,
+  .click-body,
+  .fork-body {
+    --pf: var(--color-part-bridge);
+    --po: var(--color-part-bridge-line);
+  }
+  .p-barrel,
+  .p-barrel-inside {
+    --pf: var(--color-part-brass);
+    --po: var(--color-part-brass-line);
+  }
+  .p-barrel-inside .drum {
+    fill: var(--color-part-brass-deep);
+  }
+  .p-barrel .lid {
+    --pf: var(--color-part-brass);
+  }
+  .p-centre,
+  .p-third,
+  .p-fourth {
+    --pf: var(--color-part-gilt);
+    --po: var(--color-part-gilt-line);
+  }
+  .p-escape,
+  .p-pallet,
+  .p-ratchet,
+  .p-crownwheel,
+  .p-click,
+  .p-crown,
+  .p-arbor,
+  .pin {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  .fork-body {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  .p-pallet .stone {
+    fill: var(--pr);
+    stroke: var(--prl);
+    stroke-width: 0.7;
+  }
+  .p-pallet .fork-pin {
+    --pf: var(--color-part-steel-line);
+  }
+  .p-crown .flute {
+    stroke: var(--po);
+    stroke-width: 0.6;
+    opacity: 0.55;
+  }
+  .p-ratchet .ring {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.6;
+    opacity: 0.6;
+  }
+  .p-click .clickspring {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .p-balance {
+    --pf: var(--color-part-balance);
+    --po: var(--color-part-balance-line);
+  }
+  .p-balance .roller {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  .p-balance .impulse {
+    fill: var(--pr);
+  }
+  .p-balance .hair {
+    fill: none;
+    stroke: var(--ph);
+    stroke-width: 0.55;
+  }
+  .p-spring {
+    --pf: var(--color-part-spring);
+    --po: var(--color-part-spring-line);
+  }
+  .p-spring .spring-o {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 2.9;
+    stroke-linejoin: round;
+  }
+  .p-spring .spring-f {
+    fill: none;
+    stroke: var(--pf);
+    stroke-width: 1.3;
+    stroke-linejoin: round;
+  }
+  .screw {
+    --pf: var(--color-part-screw);
+    --po: var(--color-part-screw-line);
+    --ps: var(--color-part-screw-slot);
+  }
+  .screw .slot {
+    stroke: var(--ps);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+  }
+  .jewel {
+    --pf: var(--pr);
+    --po: var(--prl);
+    --pg: var(--color-part-ruby-glint);
+    --pc: var(--color-part-chaton);
+  }
+  .jewel .chaton {
+    fill: var(--pc);
+    stroke: var(--prl);
+    stroke-width: 0.5;
+  }
+  .jewel .glint {
+    fill: var(--pg);
+  }
+  .shock {
+    --po: var(--color-part-steel-line);
+  }
+  .shock .lyre {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .reg-o {
+    stroke: var(--po);
+    stroke-width: 4.6;
+    stroke-linecap: round;
+  }
+  .reg-f {
+    stroke: var(--pf);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+  .axis {
+    fill: none;
+    stroke: var(--color-rule-strong);
+    stroke-width: 0.9;
+    stroke-dasharray: 3 3;
+  }
+  .callout .dot {
+    fill: var(--color-ink);
+  }
+  .callout .leader {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 0.9;
+  }
+  .callout text {
+    font-family: var(--font-body);
+    font-size: 15px;
+    fill: var(--color-ink);
+  }
+
+  /* Focus by subtraction: on a figure's step (data-step) or a part the prose names (data-focus), every other part
+     falls back to the ghost pair. The chapter engine sets the attributes. */
+  .stage[data-step="1"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s1, .s1 *),
+  .stage[data-step="2"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s2, .s2 *),
+  .stage[data-step="3"] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.s3, .s3 *),
+  .stage[data-focus] .mv :is(.part, .screw, .jewel, .shock, .click-body, .fork-body):not(.is-focus, .is-focus *) {
+    --pf: var(--color-ghost-fill);
+    --po: var(--color-ghost-line);
+    --ps: var(--color-ghost-line);
+    --pg: var(--color-ghost-fill);
+    --pc: var(--color-ghost-fill);
+    --pr: var(--color-ghost-fill);
+    --prl: var(--color-ghost-line);
+    --ph: var(--color-ghost-line);
+  }
+  .movement .part {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+
+  /* Taken apart: lifted parts travel along one oblique axis. */
+  .lift {
+    transform: translate(calc(var(--e) * var(--lift) * 0.5px), calc(var(--e) * var(--lift) * -0.866px));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .dragging .lift {
+    transition: none;
+  }
+
+  /* Ticking. Each turning group pivots on its own centre (the translate around it). The balance swings once a beat;
+     the escape wheel steps half a tooth a beat, 30 steps to a turn in 5 s; the pallet fork flips each beat; the
+     fourth wheel steps a degree a beat, one turn a minute; the third and centre wheels creep. */
+  .rot {
+    transform-box: view-box;
+    transform-origin: 0 0;
+  }
+  .js:root[data-playing="true"] .rot-balance {
+    animation: swing calc(var(--beat) * var(--slow)) var(--ease-swing) calc(var(--beat) * var(--slow) * -0.5) infinite
+      alternate;
+  }
+  .js:root[data-playing="true"] .rot-escape {
+    animation: turn calc(5s * var(--slow)) steps(30, jump-start) infinite;
+  }
+  .js:root[data-playing="true"] .rot-pallet {
+    animation: flip calc(var(--beat) * 2 * var(--slow)) step-end infinite;
+  }
+  .js:root[data-playing="true"] .rot-fourth {
+    animation: turn-back calc(60s * var(--slow)) steps(360, jump-start) infinite;
+  }
+  .js:root[data-playing="true"] .rot-third {
+    animation: turn calc(450s * var(--slow)) linear infinite;
+  }
+  .js:root[data-playing="true"] .rot-centre {
+    animation: turn-back calc(3600s * var(--slow)) linear infinite;
+  }
+
+  @media (max-width: 40rem) {
+    .callout text {
+      font-size: 20px;
+    }
+  }
+  /* Reduced motion: the head script starts the page paused, so nothing turns until Play; moves between poses jump. */
+  @media (prefers-reduced-motion: reduce) {
+    .lift,
+    .movement .part {
+      transition: none;
+    }
+  }
+}
+
+@keyframes swing {
+  from {
+    transform: rotate(-140deg);
+  }
+  to {
+    transform: rotate(140deg);
+  }
+}
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes turn-back {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes flip {
+  0% {
+    transform: rotate(7deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+  100% {
+    transform: rotate(7deg);
   }
 }
