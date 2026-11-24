@@ -1,0 +1,442 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Tavi Ceasornicaru: "The workshop explained"
+   A wristwatch movement drawn as a flat technical illustration on warm paper.
+   Every part wears its own metal; blued steel is the only UI colour. Light
+   only, no theme switch. The tokens are the approved sketch's (design/tavi),
+   values copied exactly. DESIGN.md is the locked system.
+   ========================================================================== */
+
+@theme {
+  /* The site's own palette, type scale and radii only: Tailwind's defaults go. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+
+  /* ---- Ground and ink ---------------------------------------------------- */
+  --color-paper: oklch(96.6% 0.011 84); /* the page ground */
+  --color-paper-2: oklch(93.4% 0.014 84); /* contents band, tray, footer, hovers */
+  --color-paper-3: oklch(90.2% 0.016 84);
+  --color-surface: oklch(98.8% 0.005 84); /* the header, the sticky figure's card */
+  --color-rule: oklch(85.5% 0.014 84); /* hairlines */
+  --color-rule-strong: oklch(62% 0.016 84); /* control borders */
+  --color-ink: oklch(23% 0.016 258); /* heads */
+  --color-ink-2: oklch(35% 0.014 258); /* body */
+  --color-muted: oklch(46% 0.014 70); /* captions, readout labels */
+  --color-accent: oklch(43% 0.135 262); /* blued steel: the button, thumbs, the chosen speed, the current chapter */
+  --color-accent-ink: oklch(97.5% 0.008 84); /* text on the accent */
+  --color-accent-soft: oklch(92% 0.028 262); /* the current chapter's ground, the selection */
+  --color-focus: oklch(45% 0.19 262); /* the 2px focus ring */
+
+  /* ---- Type: Newsreader for everything that reads, Plex Mono for figures -- */
+  --font-display: "Newsreader Variable", ui-serif, Georgia, serif;
+  --font-body: "Newsreader Variable", ui-serif, Georgia, serif;
+  --font-figure: "IBM Plex Mono", ui-monospace, monospace;
+  --default-font-family: var(--font-body);
+  --default-mono-font-family: var(--font-figure);
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem; /* body, 17px */
+  --text-md--line-height: 1.6;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-step: 1.1875rem; /* a chapter step's prose, 19px */
+  --text-step--line-height: 1.62;
+  --text-lead: clamp(1.1875rem, 0.4vw + 1.05rem, 1.375rem);
+  --text-lead--line-height: 1.45;
+  --text-section: clamp(2.125rem, 2.2vw + 1.25rem, 3.25rem); /* chapter heads, at optical size 72 */
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.02em;
+  --text-display: clamp(2.75rem, 4.2vw + 1rem, 5.25rem); /* the hero's head, at optical size 72 */
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.025em;
+
+  /* ---- Spacing, 2 to 144px. Not --spacing-*: in Tailwind 4 those names would
+     also size max-w-lg and the like. Utilities use the 4px scale (p-6 = 24px). */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 144px;
+
+  /* ---- Radii by nesting level -------------------------------------------- */
+  --radius-control: 6px;
+  --radius-inner: 8px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --container-page: 1360px;
+
+  /* ---- Motion: transform and opacity move; colours, grounds and borders fade */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-swing: cubic-bezier(0.37, 0, 0.63, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  /* ---- The z scale -------------------------------------------------------- */
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+}
+
+/* The parts' colours: a flat fill, a darker outline of the same hue, and a
+   text-safe shade where the prose names the part. Emitted whether used or not,
+   because the 3D movement reads them from the stylesheet at runtime. */
+@theme static {
+  --color-part-plate: oklch(90.5% 0.012 84);
+  --color-part-plate-line: oklch(56% 0.016 84);
+  --color-part-bridge: oklch(86.5% 0.008 245);
+  --color-part-bridge-line: oklch(47% 0.014 245);
+  --color-part-brass: oklch(81% 0.088 82);
+  --color-part-brass-line: oklch(47% 0.08 70);
+  --color-part-brass-ink: oklch(44% 0.085 66);
+  --color-part-brass-deep: oklch(70% 0.09 76);
+  --color-part-gilt: oklch(87.5% 0.07 92);
+  --color-part-gilt-line: oklch(50% 0.075 84);
+  --color-part-gilt-ink: oklch(44% 0.08 80);
+  --color-part-steel: oklch(83% 0.01 245);
+  --color-part-steel-line: oklch(41% 0.016 245);
+  --color-part-steel-ink: oklch(40% 0.02 245);
+  --color-part-spring: oklch(70% 0.07 215);
+  --color-part-spring-line: oklch(37% 0.065 225);
+  --color-part-spring-ink: oklch(40% 0.075 225);
+  --color-part-balance: oklch(79% 0.075 52);
+  --color-part-balance-line: oklch(46% 0.085 42);
+  --color-part-balance-ink: oklch(44% 0.09 40);
+  --color-part-hair: oklch(36% 0.03 250);
+  --color-part-screw: oklch(47% 0.13 262);
+  --color-part-screw-line: oklch(29% 0.08 262);
+  --color-part-screw-slot: oklch(82% 0.035 262);
+  --color-part-ruby: oklch(54% 0.165 18);
+  --color-part-ruby-line: oklch(35% 0.11 18);
+  --color-part-ruby-glint: oklch(86% 0.05 18);
+  --color-part-chaton: oklch(89% 0.055 90);
+  /* Focus by subtraction: a part the prose doesn't name drops to this pair. */
+  --color-ghost-fill: oklch(94.6% 0.009 84);
+  --color-ghost-line: oklch(80% 0.012 84);
+}
+
+/* No-script: hide a control that only works with scripting (`no-js:hidden`). The head script sets `js` on <html>. */
+@custom-variant no-js (&:where(:root:not(.js) *));
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* Layout values that change on a phone (below). */
+    --gutter: clamp(16px, 4vw, 56px);
+    --gap-columns: 32px;
+    --header-h: 64px;
+    --section-gap: 144px;
+    /* The drawings' clock: a beat is 1/6 s at 21,600 vph; a figure's speed stretches it. */
+    --beat: 166.667ms;
+    --slow: 1;
+    scroll-padding-top: calc(var(--header-h) + var(--space-lg));
+    scrollbar-color: var(--color-rule-strong) var(--color-paper);
+  }
+  @media (max-width: 40rem) {
+    :root {
+      --header-h: 56px;
+      --section-gap: 72px;
+      --gap-columns: 16px;
+    }
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-md);
+    line-height: var(--text-md--line-height);
+    font-optical-sizing: auto;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    caret-color: var(--color-accent);
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  /* Every head is roman and one weight; italic is the wordmark's alone. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    overflow-wrap: break-word;
+    min-width: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Figures and readouts: Plex Mono, tabular, so a ticking number keeps its width. */
+  .fig {
+    font-family: var(--font-figure);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.92em;
+    letter-spacing: 0;
+  }
+}
+
+/* ==========================================================================
+   The page's frame: the column, the skip link, the header
+   ========================================================================== */
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .skip {
+    position: absolute;
+    left: var(--space-md);
+    top: var(--space-xs);
+    z-index: calc(var(--z-sticky-nav) + 1);
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: var(--radius-control);
+    transform: translateY(-200%);
+  }
+  .skip:focus-visible {
+    transform: none;
+  }
+
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky-nav);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-rule);
+    /* The Chapters drawer is mounted in the header and placed against it, sticky or not. */
+    contain: layout;
+  }
+  .site-head-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    min-height: var(--header-h);
+  }
+
+  /* Tavi's signature: the one italic on the page. */
+  .wordmark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-ink);
+    transition: color var(--dur-short) var(--ease-out);
+  }
+  .wordmark:hover {
+    color: var(--color-accent);
+  }
+
+  .chapters {
+    margin-left: auto;
+  }
+  .chapters ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-2xs);
+  }
+  .chapters a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: 0 var(--space-sm);
+    border-radius: var(--radius-control);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      color var(--dur-short) var(--ease-out);
+  }
+  .chapters a .n {
+    color: var(--color-muted);
+    font-variant-numeric: lining-nums;
+  }
+  .chapters a:hover {
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+  }
+  .chapters a[aria-current="true"] {
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+  .chapters a[aria-current="true"] .n {
+    color: var(--color-accent);
+  }
+
+  /* The phone's Chapters menu takes the links' place below 64rem (the island hydrates there too). */
+  .chapters-menu {
+    display: none;
+    margin-left: auto;
+  }
+
+  /* A quiet bordered button: the global Pause, a figure's tray. */
+  .quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: 0 var(--space-sm);
+    border-radius: var(--radius-control);
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      border-color var(--dur-short) var(--ease-out);
+  }
+  .quiet:hover {
+    background: var(--color-paper-2);
+    border-color: var(--color-ink-2);
+  }
+  .quiet:active {
+    background: var(--color-paper-3);
+  }
+  .quiet svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* What a play control shows follows the page's play state, from the first paint. */
+  :root[data-playing="false"] .if-playing,
+  :root:not([data-playing="false"]) .if-paused {
+    display: none;
+  }
+
+  /* The hero; the hero brief adds the lede, the button and the ticking drawing. */
+  .hero {
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+  .hero h1 {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+    font-variation-settings: "opsz" 72;
+  }
+
+  /* A chapter's head; the chapter briefs add the steps and the figure. */
+  .chapter {
+    padding-block: var(--section-gap) var(--space-3xl);
+  }
+  .chapter-head {
+    display: grid;
+    gap: var(--space-sm);
+    max-width: 40rem;
+    margin-bottom: var(--space-2xl);
+  }
+  .chapter h2 {
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    letter-spacing: var(--text-section--letter-spacing);
+    font-variation-settings: "opsz" 72;
+  }
+
+  /* The footer, chapter 7; the footer brief adds the name, its meaning and Tavi's line. */
+  .site-foot {
+    background: var(--color-paper-2);
+    border-top: 1px solid var(--color-rule);
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+  .site-foot h2 {
+    font-size: var(--text-xl);
+    line-height: 1.2;
+  }
+
+  @media (max-width: 75rem) {
+    .chapters a {
+      padding: 0 var(--space-xs);
+    }
+    .chapters a .n {
+      display: none;
+    }
+  }
+  /* Range syntax, so the fold and the island's client:media query meet at the same pixel. */
+  @media (width < 64rem) {
+    .chapters {
+      display: none;
+    }
+    .chapters-menu {
+      display: block;
+    }
+  }
+  @media (max-width: 40rem) {
+    .site-head {
+      position: static;
+    }
+    .site-head-row {
+      gap: var(--space-sm);
+    }
+    .wordmark {
+      font-size: 1.1875rem;
+    }
+    .global-pause .lbl {
+      display: none;
+    }
+    .hero {
+      padding-block: var(--space-lg) var(--space-xl);
+    }
+    .chapter-head {
+      margin-bottom: var(--space-lg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .quiet,
+    .wordmark,
+    .chapters a {
+      transition: none;
+    }
+  }
+}
