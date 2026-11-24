@@ -820,6 +820,78 @@ for (const viewport of [
   });
 }
 
+/**
+ * Scrolls through a chapter's steps a few pixels at a time, down to its end and back up, and records each change of
+ * the figure's step as it happens: which way the page was going, and where the new step and the figure stood.
+ */
+async function sweepSteps(page: Page, chapter: string) {
+  return page.evaluate(async (id) => {
+    const figure = document.querySelector<HTMLElement>(`#${id}-figure`);
+    const steps = document.querySelector(`#${id} .steps`);
+    if (!figure || !steps) return [];
+    const frame = () =>
+      new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
+    let going = "down";
+    let last = figure.dataset.step;
+    const changes: { step: string; going: string; text: number; foot: number; figure: number }[] = [];
+    new MutationObserver(() => {
+      const n = figure.dataset.step ?? "";
+      if (n === last) return;
+      last = n;
+      const step = document.querySelector(`#${id} .step[data-step="${n}"]`);
+      changes.push({
+        step: n,
+        going,
+        text: step?.querySelector("p")?.getBoundingClientRect().top ?? NaN,
+        foot: step?.getBoundingClientRect().bottom ?? NaN,
+        figure: figure.getBoundingClientRect().bottom,
+      });
+    }).observe(figure, { attributeFilter: ["data-step"] });
+    const by = 12;
+    const top = steps.getBoundingClientRect().top + scrollY - innerHeight;
+    const end = steps.getBoundingClientRect().bottom + scrollY - innerHeight / 2;
+    scrollTo(0, top);
+    await frame();
+    for (let y = top; y <= end; y += by) {
+      scrollTo(0, y);
+      await frame();
+    }
+    going = "up";
+    for (let y = end; y >= top; y -= by) {
+      scrollTo(0, y);
+      await frame();
+    }
+    return changes;
+  }, chapter);
+}
+
+// On a short screen in one column the sticky figure reaches past 64% of the screen, where the phone's reading line
+// sits: at 1000 x 600 it ends at 411 px, at 667 x 375 at 272 px. The reading line starts under the figure's foot
+// there, so a step becomes active only where it shows: going down, its text is below the figure; going back up, the
+// step above takes over only once it comes out from under the figure.
+for (const viewport of [
+  { width: 1000, height: 600 },
+  { width: 667, height: 375 },
+]) {
+  test.describe(`the reading line at ${viewport.width} x ${viewport.height}`, () => {
+    test.use({ viewport });
+
+    test("sits under the sticky figure: a step becomes active only where it shows below it", async ({ page }) => {
+      await page.goto("/");
+      await page.evaluate(() => document.fonts.ready);
+      const changes = await sweepSteps(page, "energy");
+      expect(changes.filter((c) => c.going === "down").map((c) => c.step)).toEqual(["2", "3", "4"]);
+      expect(changes.filter((c) => c.going === "up").map((c) => c.step)).toEqual(["3", "2", "1"]);
+      for (const c of changes) {
+        if (c.going === "down") expect(c.text, `step ${c.step}'s text, going down`).toBeGreaterThanOrEqual(c.figure);
+        else expect(c.foot, `step ${c.step}'s foot, going up`).toBeGreaterThan(c.figure);
+      }
+    });
+  });
+}
+
 test.describe("without scripting", () => {
   test.use({ javaScriptEnabled: false });
 
