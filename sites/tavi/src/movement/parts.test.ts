@@ -111,4 +111,47 @@ describe("the part table", () => {
     assert.deepEqual(partOf(MOVEMENT, "barrel").gear, { teeth: 72, r: 72 });
     assert.equal(partOf(MOVEMENT, "escape").pinion?.teeth, 7);
   });
+
+  test("the motion works: ten leaves into thirty, eight into thirty-two, twelve to one at one module", () => {
+    const { cannon, minuteWheel, hourWheel } = MOVEMENT.motionWorks;
+    assert.deepEqual([cannon.teeth, minuteWheel.teeth, minuteWheel.pinion.teeth, hourWheel.teeth], [10, 30, 8, 32]);
+    assert.equal((minuteWheel.teeth / cannon.teeth) * (hourWheel.teeth / minuteWheel.pinion.teeth), 12);
+    assert.ok(Math.abs(moduleOf(cannon) - moduleOf(minuteWheel)) < 1e-9, "cannon pinion and minute wheel");
+    assert.ok(Math.abs(moduleOf(minuteWheel.pinion) - moduleOf(hourWheel)) < 1e-9, "minute pinion and hour wheel");
+  });
+
+  test("the hour wheel rides the centre arbor with the cannon pinion: both meshes span one centre distance", () => {
+    const { cannon, minuteWheel, hourWheel } = MOVEMENT.motionWorks;
+    assert.deepEqual(cannon.at, MOVEMENT.centre.at);
+    assert.deepEqual(hourWheel.at, MOVEMENT.centre.at);
+    const span = distance(minuteWheel.at, MOVEMENT.centre.at);
+    assert.ok(Math.abs(span - (cannon.r + minuteWheel.r)) < 1e-9, "cannon pinion to minute wheel");
+    assert.ok(Math.abs(span - (minuteWheel.pinion.r + hourWheel.r)) < 1e-9, "minute pinion to hour wheel");
+  });
+
+  test("the hands ride their arbors, and the small seconds sits over the fourth wheel inside the dial", () => {
+    const m = MOVEMENT;
+    assert.deepEqual(partOf(m, "minute-hand").at, m.centre.at);
+    assert.deepEqual(partOf(m, "hour-hand").at, m.centre.at);
+    assert.deepEqual(partOf(m, "seconds-hand").at, m.fourth.at);
+    assert.deepEqual(m.dial.smallSeconds.at, m.fourth.at);
+    assert.ok(Math.hypot(...m.dial.smallSeconds.at) + m.dial.smallSeconds.r < m.dial.R);
+    assert.ok(m.hands.seconds <= m.dial.smallSeconds.r, "the seconds hand stays inside its dial");
+    assert.ok(m.hands.minute < m.dial.R && m.hands.hour < m.hands.minute);
+  });
+
+  test("the dial side sits under the plate, stays with it when taken apart, and has no 3D label", () => {
+    const dialSide = ["minute-hand", "seconds-hand", "hour-hand", "dial", "hour-wheel", "minute-wheel", "cannon"];
+    assert.deepEqual(PART_IDS.slice(0, dialSide.length), dialSide);
+    for (const id of dialSide) {
+      const p = partOf(MOVEMENT, id as (typeof PART_IDS)[number]);
+      assert.ok(p.z < 0, `${id} at z ${p.z}`);
+      assert.equal(p.explode.lift, 0, id);
+      assert.equal(p.anchor, null, id);
+    }
+    for (const p of MOVEMENT.parts) if (!dialSide.includes(p.id)) assert.ok(p.z >= 0, `${p.id} at z ${p.z}`);
+    assert.deepEqual(partOf(MOVEMENT, "cannon").pinion, { teeth: 10, r: 7.5 });
+    assert.equal(partOf(MOVEMENT, "cannon").gear, null);
+    assert.deepEqual(partOf(MOVEMENT, "minute-wheel").pinion, { teeth: 8, r: 6 });
+  });
 });

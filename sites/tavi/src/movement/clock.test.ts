@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { bankings, escEase, stateAt } from "./clock.ts";
+import { bankings, escEase, motionRatio, stateAt } from "./clock.ts";
 import { DEG } from "./geometry.ts";
 
 const near = (actual: number, expected: number, what: string) => {
@@ -64,5 +64,46 @@ describe("the clock", () => {
     near(degrees(swing), low, "the widest swing");
     near(degrees(stateAt(1, { amplitude: low }).train.escape), 72, "escape at 1 s");
     near(degrees(Math.abs(stateAt(0).balance)), 200, "the drawn amplitude by default");
+  });
+
+  test("the hands start at 10:10:30: the seconds at 180 degrees, the minutes at 63, the hours at 305.25", () => {
+    const { hands } = stateAt(0);
+    near(degrees(hands.seconds), 180, "seconds");
+    near(degrees(hands.minute), 63, "minute");
+    near(degrees(hands.hour), 305.25, "hour");
+    near(degrees(stateAt(0, { time: 0 }).hands.minute), 0, "minute at twelve");
+  });
+
+  test("the motion works make twelve to one: the hour hand turns once while the minute hand turns twelve times", () => {
+    near(1 / motionRatio(), 12, "the ratio");
+    const turned = (t: number) => {
+      const start = stateAt(0).hands;
+      const now = stateAt(t).hands;
+      return { hour: degrees(now.hour - start.hour), minute: degrees(now.minute - start.minute) };
+    };
+    near(turned(3600).hour, 30, "the hour hand in an hour");
+    near(turned(12 * 3600).hour, 360, "the hour hand in twelve hours");
+    near(turned(12 * 3600).minute, 360 * 12, "the minute hand in twelve hours");
+  });
+
+  test("the minute hand turns once in 3,600 s and the seconds hand once in 60 s, both clockwise on the dial", () => {
+    const start = stateAt(0).hands;
+    near(degrees(stateAt(3600).hands.minute - start.minute), 360, "minute");
+    near(degrees(stateAt(60).hands.seconds - start.seconds), 360, "seconds");
+    assert.ok(stateAt(1).hands.seconds > start.seconds, "the seconds hand goes clockwise");
+    assert.ok(stateAt(10).hands.minute > start.minute, "the minute hand goes clockwise");
+    // The hands are the back's wheels seen in a mirror: they turn the other way to the centre and fourth wheels.
+    near(stateAt(60).hands.seconds - start.seconds, -stateAt(60).train.fourth, "the fourth wheel's turn");
+  });
+
+  test("the seconds hand jumps a whole degree each beat and stands still between", () => {
+    const seconds = (t: number) => degrees(stateAt(t).hands.seconds) - 180;
+    for (let beat = 0; beat <= 360; beat++) {
+      near(seconds(beat / 6), beat, `at beat ${beat}`);
+      near(seconds((beat + 0.3) / 6), beat, `locked after beat ${beat}`);
+    }
+    // It moves inside a beat, as the escape wheel takes its impulse.
+    const mid = seconds(3.5 / 6);
+    assert.ok(mid > 3 && mid < 4, `mid-beat at ${mid}`);
   });
 });

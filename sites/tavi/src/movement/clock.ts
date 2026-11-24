@@ -1,6 +1,7 @@
 // The tick: the whole movement's pose as one pure function of time. The balance swings at the calibre's beat rate;
 // the escape wheel moves half a tooth each beat (a hair of recoil, the impulse, the drop, then lock); every other
-// wheel follows the escape wheel through the tooth ratios. Angles are radians, clockwise positive (y down).
+// wheel follows the escape wheel through the tooth ratios, and the hands follow the centre and fourth wheels. Angles
+// are radians, clockwise positive (y down): the train's as seen from the back, the hands' as seen on the dial.
 
 import type { Toothed, TrainId } from "./calibre.ts";
 import { angleTo, DEG, polar } from "./geometry.ts";
@@ -8,9 +9,21 @@ import { MOVEMENT, type Calibre } from "./parts.ts";
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
+/** The time the hands show at t = 0, in seconds after twelve: 10:10:30, as watches are set to be photographed. */
+export const HANDS_START = 10 * 3600 + 10 * 60 + 30;
+
 export interface ClockOptions {
   /** Degrees either side of rest. Defaults to the calibre's drawn amplitude; a spring running down lowers it. */
   readonly amplitude?: number;
+  /** The time the hands show at t = 0, in seconds after twelve. Defaults to 10:10:30. */
+  readonly time?: number;
+}
+
+/** The hands, each from twelve o'clock, clockwise as seen on the dial. */
+export interface Hands {
+  readonly hour: number;
+  readonly minute: number;
+  readonly seconds: number;
 }
 
 export interface ClockState {
@@ -24,6 +37,7 @@ export interface ClockState {
   readonly fork: number;
   /** Each wheel of the train, from its pose at t = 0. */
   readonly train: Readonly<Record<TrainId, number>>;
+  readonly hands: Hands;
 }
 
 /** Half the lift angle, in radians: the impulse pin is in the fork's notch while the balance is within this. */
@@ -82,6 +96,30 @@ export function trainRatios(calibre: Calibre = MOVEMENT): Readonly<Record<TrainI
   return { escape: 1, fourth: fourthTurns, third: thirdTurns, centre: centreTurns, barrel: barrelTurns };
 }
 
+/**
+ * The hour wheel's turn for one turn of the cannon pinion: the cannon pinion drives the minute wheel, whose pinion
+ * drives the hour wheel. Two meshes, so the hour hand turns the same way as the minute hand.
+ */
+export function motionRatio(calibre: Calibre = MOVEMENT): number {
+  const { cannon, minuteWheel, hourWheel } = calibre.motionWorks;
+  return (cannon.teeth / minuteWheel.teeth) * (minuteWheel.pinion.teeth / hourWheel.teeth);
+}
+
+/**
+ * The hands for the train's pose. The dial side is the back seen in a mirror, so a wheel turning anticlockwise from
+ * the back turns its hand clockwise on the dial: the minute hand rides the centre arbor (through the cannon pinion),
+ * the hour hand the hour wheel, and the small seconds the fourth wheel's arbor.
+ */
+function handsOf(train: Readonly<Record<TrainId, number>>, time: number, calibre: Calibre): Hands {
+  const turn = 2 * Math.PI;
+  const from = (period: number) => ((time % period) / period) * turn;
+  return {
+    hour: from(43_200) - train.centre * motionRatio(calibre),
+    minute: from(3600) - train.centre,
+    seconds: from(60) - train.fourth,
+  };
+}
+
 /** The movement's pose at `t` seconds. Pure: the same `t` and options give the same state. */
 export function stateAt(t: number, options: ClockOptions = {}, calibre: Calibre = MOVEMENT): ClockState {
   const amplitude = (options.amplitude ?? calibre.spec.escapement.amplitude) * DEG;
@@ -105,5 +143,6 @@ export function stateAt(t: number, options: ClockOptions = {}, calibre: Calibre 
     fourth: escape * r.fourth,
     escape,
   };
-  return { beats, steps, balance: theta, fork: forkAngle(theta, calibre), train };
+  const hands = handsOf(train, options.time ?? HANDS_START, calibre);
+  return { beats, steps, balance: theta, fork: forkAngle(theta, calibre), train, hands };
 }

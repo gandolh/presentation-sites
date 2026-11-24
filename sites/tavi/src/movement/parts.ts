@@ -8,11 +8,24 @@ import { DEG, lerp, polar, type Pt } from "./geometry.ts";
 /** Which token pair colours a part: `--color-part-<material>` and `--color-part-<material>-line`. */
 export type Material = "plate" | "bridge" | "brass" | "gilt" | "steel" | "spring" | "balance" | "screw" | "hair";
 
-/** The shade the prose names a part in, `--color-part-<ink>-ink`; null for the page's own ink. */
-export type Ink = "brass" | "gilt" | "steel" | "spring" | "balance" | null;
+/**
+ * The shade the prose names a part in, `--color-part-<ink>-ink`; null for the page's own ink. Blued steel (`screw`,
+ * the hands) has no `-ink` token: its prose shade is `--color-part-screw-line`, underlined in `--color-part-screw`.
+ */
+export type Ink = "brass" | "gilt" | "steel" | "spring" | "balance" | "screw" | null;
 
-/** Every part, bottom of the stack first. The ids are the drawing's `data-part` names. */
+/**
+ * Every part, bottom of the stack first. The ids are the drawing's `data-part` names. The first seven are the dial
+ * side, under the plate (a `z` below 0): the hands, the dial and the motion works.
+ */
 export const PART_IDS = [
+  "minute-hand",
+  "seconds-hand",
+  "hour-hand",
+  "dial",
+  "hour-wheel",
+  "minute-wheel",
+  "cannon",
   "plate",
   "crown",
   "barrel",
@@ -69,7 +82,10 @@ export interface Part {
   /** Teeth and pitch radius, for the parts that have them. */
   readonly gear: Toothed | null;
   readonly pinion: Toothed | null;
-  /** Its layer: the height its main body starts at, in plane units above the plate's underside. */
+  /**
+   * Its layer: the height its main body starts at, in plane units above the plate's underside. Below 0 is the dial
+   * side, under the plate.
+   */
   readonly z: number;
   readonly explode: Explode;
   readonly anchor: Anchor | null;
@@ -132,6 +148,12 @@ export const NH35_CLASS: CalibreSpec = {
     palletBridge: [64, 150],
     balanceCock: [-98, 146],
   },
+  dialSide: {
+    // Ten leaves into thirty, then eight into thirty-two: three times four, twelve to one. The drawing's numbers.
+    motionWorks: { module: 1.5, cannon: 10, minuteWheel: { teeth: 30, leaves: 8, at: 300 }, hourWheel: 32 },
+    dial: { R: 194, smallSeconds: 34 },
+    hands: { hour: 112, minute: 172, seconds: 30 },
+  },
 };
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -139,6 +161,13 @@ export const NH35_CLASS: CalibreSpec = {
 // ---------------------------------------------------------------------------------------------------------------
 
 const KINDS: Record<PartId, readonly [label: string | null, material: Material, ink: Ink]> = {
+  "minute-hand": ["Minute hand", "screw", "screw"],
+  "seconds-hand": ["Small seconds", "screw", "screw"],
+  "hour-hand": ["Hour hand", "screw", "screw"],
+  dial: ["Dial", "plate", null],
+  "hour-wheel": ["Hour wheel", "brass", "brass"],
+  "minute-wheel": ["Minute wheel", "steel", "steel"],
+  cannon: ["Cannon pinion", "steel", "steel"],
   plate: ["Main plate", "plate", null],
   crown: ["Crown", "steel", "steel"],
   barrel: ["Barrel", "brass", "brass"],
@@ -182,6 +211,14 @@ const screws = (rank: number, from: number, to: number): Explode =>
   lift(rank + 0.9, Math.max(0, from - 0.06), to - 0.08, 2);
 
 const EXPLODE: Record<PartId, Explode> = {
+  // The dial side stays with the plate: taking the movement apart lifts what is above it.
+  "minute-hand": lift(0, 0, 1),
+  "seconds-hand": lift(0, 0, 1),
+  "hour-hand": lift(0, 0, 1),
+  dial: lift(0, 0, 1),
+  "hour-wheel": lift(0, 0, 1),
+  "minute-wheel": lift(0, 0, 1),
+  cannon: lift(0, 0, 1),
   plate: lift(0, 0, 1),
   crown: lift(0, 0, 1),
   barrel: lift(1, 0.6, 0.96),
@@ -215,12 +252,20 @@ const EXPLODE: Record<PartId, Explode> = {
 function placesOf(g: Geometry) {
   const { barrel: b, centre: c, third: t, fourth: fo, escape: e, pallet: pa, balance: ba, crownWheel: cw } = g;
   const { barrelBridge, trainBridge, palletBridge, balanceCock } = g.feet;
+  const { cannon, minuteWheel, hourWheel } = g.motionWorks;
   const T = g.plate.thickness;
   /** The barrel bridge's top face, which carries the ratchet wheel, the crown wheel and the click. */
   const BB = T + 20.2;
   const click = polar(b.at, 50, -14 * DEG);
 
   const at: Record<PartId, Pt> = {
+    "minute-hand": c.at,
+    "seconds-hand": fo.at,
+    "hour-hand": c.at,
+    dial: [0, 0],
+    "hour-wheel": hourWheel.at,
+    "minute-wheel": minuteWheel.at,
+    cannon: cannon.at,
     plate: [0, 0],
     crown: [-218, g.stemY],
     barrel: b.at,
@@ -247,8 +292,17 @@ function placesOf(g: Geometry) {
     "cock-screws": balanceCock,
   };
 
-  // Each wheel clears the one it overlaps, and each pinion reaches up to the wheel that drives it.
+  // Each wheel clears the one it overlaps, and each pinion reaches up to the wheel that drives it. Under the plate, the
+  // minute wheel and the cannon pinion sit nearest it, the hour wheel over the cannon pinion's tube, then the dial and
+  // the hands, the minute hand furthest out.
   const z: Record<PartId, number> = {
+    "minute-hand": -11,
+    "seconds-hand": -10,
+    "hour-hand": -10,
+    dial: -8.5,
+    "hour-wheel": -6,
+    "minute-wheel": -3,
+    cannon: -6.5,
     plate: 0,
     crown: 5,
     barrel: T + 0.5,
@@ -306,9 +360,13 @@ function placesOf(g: Geometry) {
     escape: e,
     ratchet: g.ratchet,
     crownwheel: cw,
+    "minute-wheel": minuteWheel,
+    "hour-wheel": hourWheel,
   };
+  /** A part that is a pinion alone, with no wheel of its own. */
+  const pinion: Partial<Record<PartId, Toothed>> = { cannon: { teeth: cannon.teeth, r: cannon.r } };
 
-  return { at, z, anchor, gear };
+  return { at, z, anchor, gear, pinion };
 }
 
 /** The movement from its spec: the geometry from the meshing rules, then every part. */
@@ -325,7 +383,7 @@ export function buildCalibre(spec: CalibreSpec): Calibre {
       ink,
       at: places.at[id],
       gear: wheel ? { teeth: wheel.teeth, r: wheel.r } : null,
-      pinion: wheel?.pinion ?? null,
+      pinion: wheel?.pinion ?? places.pinion[id] ?? null,
       z: places.z[id],
       explode: EXPLODE[id],
       anchor: places.anchor[id] ?? null,

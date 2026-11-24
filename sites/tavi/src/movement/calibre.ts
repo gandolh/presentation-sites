@@ -75,6 +75,26 @@ export interface CalibreSpec {
     readonly palletBridge: Pt;
     readonly balanceCock: Pt;
   };
+  /**
+   * The dial side, under the plate. The motion works: the cannon pinion rides the centre arbor and drives the minute
+   * wheel, whose pinion drives the hour wheel back on the centre arbor; both pairs share one module, so the hour wheel
+   * sits coaxial with the cannon pinion. Then the dial, its small seconds over the fourth wheel, and the hands' lengths.
+   */
+  readonly dialSide: {
+    readonly motionWorks: {
+      readonly module: number;
+      /** Leaves of the cannon pinion. */
+      readonly cannon: number;
+      /** The minute wheel's teeth, its pinion's leaves, and the angle it sits at from the centre arbor (degrees). */
+      readonly minuteWheel: { readonly teeth: number; readonly leaves: number; readonly at: number };
+      /** Teeth of the hour wheel. */
+      readonly hourWheel: number;
+    };
+    /** The dial's radius, and the small seconds' radius, centred on the fourth wheel's arbor. */
+    readonly dial: { readonly R: number; readonly smallSeconds: number };
+    /** Each hand's length from its arbor to its tip. */
+    readonly hands: { readonly hour: number; readonly minute: number; readonly seconds: number };
+  };
 }
 
 /** The going train's wheels, in order of drive. */
@@ -100,6 +120,16 @@ export interface Geometry {
   readonly feet: CalibreSpec["feet"];
   /** Radians: the escapement's line. */
   readonly line: number;
+  /** The motion works, under the dial: the cannon pinion and the hour wheel on the centre arbor, the minute wheel
+   * beside them with its pinion. */
+  readonly motionWorks: {
+    readonly cannon: Wheel;
+    readonly minuteWheel: Arbor;
+    readonly hourWheel: Wheel;
+  };
+  /** The dial and the small seconds, centred on the fourth wheel's arbor. */
+  readonly dial: { readonly R: number; readonly smallSeconds: { readonly at: Pt; readonly r: number } };
+  readonly hands: CalibreSpec["dialSide"]["hands"];
 }
 
 /** A wheel's module: pitch diameter over teeth. Two toothed parts mesh only at the same module. */
@@ -149,6 +179,18 @@ export function buildGeometry(spec: CalibreSpec): Geometry {
     at: polar(barrel.at, w.ratchet.r + w.crownWheel.r, w.crownWheel.at * DEG),
   };
 
+  const d = spec.dialSide;
+  const mw = d.motionWorks;
+  const pitch = (teeth: number) => (teeth * mw.module) / 2;
+  const cannon: Wheel = { teeth: mw.cannon, r: pitch(mw.cannon), pinion: null, at: centre.at };
+  const minuteWheel: Arbor = {
+    teeth: mw.minuteWheel.teeth,
+    r: pitch(mw.minuteWheel.teeth),
+    pinion: { teeth: mw.minuteWheel.leaves, r: pitch(mw.minuteWheel.leaves) },
+    at: polar(centre.at, cannon.r + pitch(mw.minuteWheel.teeth), mw.minuteWheel.at * DEG),
+  };
+  const hourWheel: Wheel = { teeth: mw.hourWheel, r: pitch(mw.hourWheel), pinion: null, at: centre.at };
+
   return {
     spec,
     plate: spec.plate,
@@ -164,5 +206,8 @@ export function buildGeometry(spec: CalibreSpec): Geometry {
     stemY: crownWheel.at[1] + w.stemDrop,
     feet: spec.feet,
     line,
+    motionWorks: { cannon, minuteWheel, hourWheel },
+    dial: { R: d.dial.R, smallSeconds: { at: fourth.at, r: d.dial.smallSeconds } },
+    hands: d.hands,
   };
 }
