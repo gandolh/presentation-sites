@@ -41,11 +41,17 @@ const energyOpening = { e: 0.55 };
       <Step n={1} pose={energyOpening}>
         Everything here runs on one coiled spring, the <PartName part="mainspring">mainspring</PartName>. It lives
         inside the <PartName part="barrel">barrel</PartName>, the toothed drum beside the crown.
+        <Fragment slot="hint">
+          Slide <span class="ctl">Take apart</span> to see inside.
+        </Fragment>
       </Step>
       <Step n={2} pose={{ e: 0.55 }}>
         Turning the <PartName part="crown">crown</PartName> turns the <PartName part="ratchet">ratchet wheel</PartName>,
         and the spring coils tighter round its <PartName part="arbor">arbor</PartName>. The
         <PartName part="click">click</PartName> stops it slipping back.
+        <Fragment slot="hint">
+          Drag <span class="ctl">Wind</span> to coil it.
+        </Fragment>
       </Step>
       <Step n={3} pose={{ e: 0.2 }}>
         The spring presses on the barrel wall, so the barrel turns: in this movement, once every six hours. Its

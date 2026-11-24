@@ -554,6 +554,43 @@
     color: var(--color-ink);
   }
 
+  /* A hint under a step points at a control in the figure's tray: a small slider in the tray's own blued steel, then
+     the line, the control named in the weight of a label. Body ink at 15px, so it reads as a cue to the tray rather
+     than fading under the step's 19px prose. */
+  .try {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: var(--color-ink-2);
+  }
+  .try svg {
+    width: 28px;
+    height: 14px;
+    flex-shrink: 0;
+    fill: none;
+    stroke-linecap: round;
+  }
+  .try .track {
+    stroke: var(--color-rule-strong);
+    stroke-width: 2;
+  }
+  .try .moved {
+    stroke: var(--color-accent);
+    stroke-width: 2;
+  }
+  .try .thumb {
+    fill: var(--color-accent);
+    stroke: var(--color-paper);
+    stroke-width: 1.5;
+  }
+  .try .ctl {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
   /* A part named in the prose: its own text shade, underlined in its metal. A button inside a running sentence, so
      it keeps the sentence's line height. */
   .part-name {
