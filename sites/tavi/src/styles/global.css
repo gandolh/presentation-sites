@@ -355,6 +355,19 @@
   :root:not([data-playing="false"]) .if-paused {
     display: none;
   }
+  /* A quiet button's two labels share one cell and the idle one is only hidden, so the button keeps the width of the
+     longer word when Pause turns into Play, and nothing beside it moves. */
+  .quiet .lbl {
+    display: inline-grid;
+  }
+  .quiet .lbl > * {
+    grid-area: 1 / 1;
+  }
+  :root[data-playing="false"] .quiet .lbl > .if-playing,
+  :root:not([data-playing="false"]) .quiet .lbl > .if-paused {
+    display: inline;
+    visibility: hidden;
+  }
 
   /* The primary button: blued steel, the only saturated colour on the first screen. */
   .btn {
@@ -492,6 +505,8 @@
     font-size: var(--text-sm);
     line-height: 1.4;
     color: var(--color-muted);
+    /* Balanced, so a narrow cell doesn't end on a lone word. */
+    text-wrap: balance;
   }
   .contents-band a[aria-current="true"] .n {
     color: var(--color-accent);

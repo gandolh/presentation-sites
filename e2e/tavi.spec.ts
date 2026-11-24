@@ -83,6 +83,22 @@ test.describe("the global Pause", () => {
     await expect(page.getByRole("button", { name: "Pause every moving drawing" })).toBeVisible();
   });
 
+  test("keeps its width when Pause turns into Play, so the header's links stay put", async ({ page }, info) => {
+    test.skip(isPhone(info), "the phone shows the icon only");
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const where = () =>
+      page.evaluate(() => {
+        const button = document.querySelector(".global-pause")?.getBoundingClientRect();
+        const link = document.querySelector("header nav a")?.getBoundingClientRect();
+        return [button?.x, button?.width, link?.x];
+      });
+    const playing = await where();
+    await page.getByRole("button", { name: "Pause every moving drawing" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    expect(await where()).toEqual(playing);
+  });
+
   test.describe("with reduced motion", () => {
     test.use({ reducedMotion: "reduce" });
 
