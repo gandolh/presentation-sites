@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+
+// One long page: the hero, then the seven chapters in order. Each chapter's head is here; the chapter briefs add its
+// steps and its figure, and may reword the head.
+const chapters = [
+  { id: "energy", head: "1. Energy, wound into a spring" },
+  { id: "wheels", head: "2. Wheels, hours into seconds" },
+  { id: "escapement", head: "3. Escapement, let out tooth by tooth" },
+  { id: "balance", head: "4. Balance, six swings a second" },
+  { id: "together", head: "5. Together, apart and back again" },
+  { id: "bench", head: "6. The bench, Tavi’s tools" },
+];
+---
+
+<Base>
+  <Header />
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-head">
+      <div class="wrap">
+        <h1 id="hero-head">Six beats every second</h1>
+      </div>
+    </section>
+
+    {chapters.map((chapter) => (
+      <section class="chapter" id={chapter.id} aria-labelledby={`${chapter.id}-head`}>
+        <div class="wrap">
+          <div class="chapter-head">
+            <h2 id={`${chapter.id}-head`}>{chapter.head}</h2>
+          </div>
+        </div>
+      </section>
+    ))}
+  </main>
+
+  <footer class="site-foot" id="repairs" aria-labelledby="repairs-head">
+    <div class="wrap">
+      <h2 id="repairs-head">Tavi repairs wristwatches</h2>
+    </div>
+  </footer>
+</Base>
