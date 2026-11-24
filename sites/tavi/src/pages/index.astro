@@ -4,11 +4,15 @@ import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Contents from "../components/Contents.astro";
 import Footer from "../components/Footer.astro";
+import Chapter from "../components/chapter/Chapter.astro";
+import FigureTray from "../components/chapter/FigureTray.tsx";
+import PartName from "../components/chapter/PartName.astro";
+import Step from "../components/chapter/Step.astro";
+import Movement from "../components/drawing/Movement.astro";
 
-// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Each chapter's head
-// is here; the chapter briefs add its steps and its figure, and may reword the head.
+// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapter 1 is built
+// on the chapter engine (components/chapter); the others are still their heads, which their briefs fill in.
 const chapters = [
-  { id: "energy", head: "1. Energy, wound into a spring" },
   { id: "wheels", head: "2. Wheels, hours into seconds" },
   { id: "escapement", head: "3. Escapement, let out tooth by tooth" },
   { id: "balance", head: "4. Balance, six swings a second" },
@@ -22,6 +26,41 @@ const chapters = [
   <main id="top">
     <Hero />
     <Contents />
+
+    <Chapter
+      id="energy"
+      n={1}
+      head="1. Energy, wound into a spring"
+      caption="The barrel, opened: the mainspring coiled inside, the bridge, ratchet wheel and crown wheel lifted above it."
+      opening={{ e: 0.55 }}
+      next={{ href: "#wheels", head: "2. Wheels, hours into seconds" }}
+    >
+      <Step n={1} pose={{ e: 0.55 }}>
+        Everything here runs on one coiled spring, the <PartName part="mainspring">mainspring</PartName>. It lives
+        inside the <PartName part="barrel">barrel</PartName>, the toothed drum beside the crown.
+      </Step>
+      <Step n={2} pose={{ e: 0.55 }}>
+        Turning the <PartName part="crown">crown</PartName> turns the <PartName part="ratchet">ratchet wheel</PartName>,
+        and the spring coils tighter round its <PartName part="arbor">arbor</PartName>. The
+        <PartName part="click">click</PartName> stops it slipping back.
+      </Step>
+      <Step n={3} pose={{ e: 0.2 }}>
+        The spring presses on the barrel wall, so the barrel turns: in this movement, once every six hours. Its
+        <span class="fig">72</span> teeth drive the <PartName part="centre">centre wheel</PartName>.
+      </Step>
+      <Step n={4} pose={{ e: 0 }}>
+        Seven turns of the barrel hold about <span class="fig">41</span> hours. Left free, the spring would spend them
+        in seconds. Chapter 3 shows what holds it back.
+      </Step>
+      <Movement
+        slot="figure"
+        pose="chapter"
+        id="energy-movement"
+        viewBox="-255 -250 420 345"
+        aria-label="Diagram of the barrel, opened: the mainspring coiled round its arbor inside the toothed drum, with the barrel bridge, ratchet wheel, crown wheel and click lifted above it."
+      />
+      <FigureTray slot="tray" client:visible figure="energy-figure" />
+    </Chapter>
 
     {chapters.map((chapter) => (
       <section class="chapter" id={chapter.id} aria-labelledby={`${chapter.id}-head`}>
