@@ -1,0 +1,77 @@
+---
+import ChaptersMenu, { type ChapterLink } from "./ChaptersMenu.tsx";
+
+// The header: the wordmark, the seven chapters in page order, and one Pause for every moving drawing. Below 64rem
+// the links fold into the Chapters menu, whose island hydrates only there. Without scripting the menu's button and
+// the Pause are hidden; the contents band carries every chapter link.
+const links: ChapterLink[] = [
+  { href: "#energy", n: 1, label: "Energy" },
+  { href: "#wheels", n: 2, label: "Wheels" },
+  { href: "#escapement", n: 3, label: "Escapement" },
+  { href: "#balance", n: 4, label: "Balance" },
+  { href: "#together", n: 5, label: "Together" },
+  { href: "#bench", n: 6, label: "The bench" },
+  { href: "#repairs", n: 7, label: "Repairs" },
+];
+---
+
+<a class="skip" href="#energy">
+  Skip to the first chapter
+</a>
+<header class="site-head">
+  <div class="wrap site-head-row">
+    <a class="wordmark" href="#top" aria-label="Tavi Ceasornicaru, back to the top">
+      Tavi Ceasornicaru
+    </a>
+    <nav class="chapters" aria-label="Chapters">
+      <ol>
+        {links.map((link) => (
+          <li>
+            <a href={link.href}>
+              <span class="n">{link.n}</span> {link.label}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+    <div class="chapters-menu no-js:hidden">
+      <ChaptersMenu client:media="(width < 64rem)" links={links} />
+    </div>
+    <button
+      class="quiet global-pause no-js:hidden"
+      type="button"
+      data-toggle-play
+      aria-label="Pause every moving drawing"
+    >
+      <svg class="if-playing" viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M3 2h3v10H3zM8 2h3v10H8z"></path>
+      </svg>
+      <svg class="if-paused" viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M3 1.5v11l9.5-5.5z"></path>
+      </svg>
+      <span class="lbl">
+        <span class="if-playing">Pause</span>
+        <span class="if-paused">Play</span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<script>
+  import { isPlaying, setPlaying, subscribe } from "../lib/playback";
+
+  // The visible label and the icon follow `data-playing` in CSS from the first paint; the name a screen reader
+  // hears says what a press will do.
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-toggle-play]");
+  const name = (playing: boolean) => (playing ? "Pause every moving drawing" : "Play every moving drawing");
+  const show = (playing: boolean) => {
+    for (const button of buttons) button.setAttribute("aria-label", name(playing));
+  };
+  for (const button of buttons) {
+    button.addEventListener("click", () => {
+      setPlaying(!isPlaying());
+    });
+  }
+  show(isPlaying());
+  subscribe(show);
+</script>
