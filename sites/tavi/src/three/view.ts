@@ -323,7 +323,8 @@ export function startView(o: ViewOptions): View | null {
     }
     if (run) {
       const u = Math.min(1, Math.max(0, (now - run.t0) / run.ms));
-      apart = run.from + (run.to - run.from) * inOutCubic(u);
+      // A run ends on its target exactly: from + (to - from) can miss it by a rounding error.
+      apart = u >= 1 ? run.to : run.from + (run.to - run.from) * inOutCubic(u);
       if (u >= 1) run = null;
     }
     // A frame with nothing left to move is the last for now: every label's anchor is tested on it.

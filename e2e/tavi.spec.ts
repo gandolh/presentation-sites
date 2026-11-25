@@ -2287,6 +2287,149 @@ test.describe("chapter 5, together, apart and back", () => {
   });
 });
 
+// Chapter 6, the bench: the tools drawn top-down, each lit by its name in the prose and by its steps; nothing moves
+// but the loupe, which slides over the balance on step 3.
+const TOOLS = ["screwdrivers", "holder", "oil-cup", "oiler", "tweezers", "brass-tweezers", "loupe"];
+const BENCH_STEPS = [
+  { step: "1", lit: TOOLS },
+  { step: "2", lit: ["holder"] },
+  { step: "3", lit: ["holder", "loupe"] },
+  { step: "4", lit: ["screwdrivers"] },
+  { step: "5", lit: ["tweezers", "brass-tweezers"] },
+  { step: "6", lit: ["oil-cup", "oiler"] },
+];
+
+/** The bench's tools in colour, in the drawing's order: those whose first shape isn't filled with the ghost token. */
+async function benchLit(page: Page) {
+  return page.evaluate(() => {
+    const drawing = document.querySelector("#bench-drawing");
+    const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    probe.style.fill = "var(--color-ghost-fill)";
+    drawing?.append(probe);
+    const ghost = getComputedStyle(probe).fill;
+    probe.remove();
+    const fill = (el: Element | null | undefined) => (el ? getComputedStyle(el).fill : ghost);
+    const tools = [...(drawing?.querySelectorAll<SVGGElement>(".tool[data-part]") ?? [])];
+    return {
+      lit: tools.filter((t) => fill(t.querySelector(".m .fo")) !== ghost).map((t) => t.dataset.part),
+      // The movement in the holder ghosts with it: its plate and its balance.
+      movement: [".held [data-part='plate'] .fo", ".held [data-part='balance'] .fo"].map(
+        (s) => fill(drawing?.querySelector(s)) !== ghost,
+      ),
+    };
+  });
+}
+
+/** Where the loupe's lens is and where the balance is, on screen: each one's centre. */
+async function loupeOverBalance(page: Page) {
+  return page.evaluate(() => {
+    const centre = (s: string) => {
+      const r = document.querySelector(s)?.getBoundingClientRect();
+      return r ? [r.x + r.width / 2, r.y + r.height / 2] : [NaN, NaN];
+    };
+    const [lx = NaN, ly = NaN] = centre("#bench-drawing .t-loupe .rim");
+    const [bx = NaN, by = NaN] = centre("#bench-drawing .held .rot-balance");
+    return Math.hypot(lx - bx, ly - by);
+  });
+}
+
+test.describe("chapter 6, the bench, drawn", () => {
+  test("each tool's name lights that tool and drops every other to the ghost pair", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    await readStepOf(page, "bench", "4", phone);
+    const chapter = page.locator("#bench");
+    const figure = page.locator("#bench-figure");
+    const named = await chapter
+      .locator(".part-name[data-part]")
+      .evaluateAll((list) => list.map((b) => (b as HTMLElement).dataset.part ?? ""));
+    // Every tool in the drawing has a name in the prose.
+    expect(new Set(named)).toEqual(new Set(TOOLS));
+    for (const tool of TOOLS) {
+      // Focused where it is, without scrolling, so the step on the reading line stays.
+      await chapter
+        .locator(`.part-name[data-part="${tool}"]`)
+        .first()
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+      await expect(figure).toHaveAttribute("data-focus", tool);
+      const { lit, movement } = await benchLit(page);
+      expect(lit, `${tool} alone in colour`).toEqual([tool]);
+      expect(movement, "the movement lights only with its holder").toEqual(
+        tool === "holder" ? [true, true] : [false, false],
+      );
+    }
+    if (!phone) {
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement | null)?.blur();
+      });
+      await expect(figure).not.toHaveAttribute("data-focus");
+      await chapter.getByRole("button", { name: "oil cup", exact: true }).hover();
+      await expect(figure).toHaveAttribute("data-focus", "oil-cup");
+      await page.mouse.move(2, 2);
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement | null)?.blur();
+      });
+      await expect(figure).not.toHaveAttribute("data-focus");
+    }
+  });
+
+  test("the six steps light their tools in turn, and step 3 slides the loupe over the balance", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    const figure = page.locator("#bench-figure");
+    const slide = page.locator("#bench-drawing .slide");
+    for (const { step, lit } of BENCH_STEPS) {
+      await readStepOf(page, "bench", step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect.poll(async () => (await benchLit(page)).lit, `step ${step}'s tools`).toEqual(lit);
+      if (step === "3") {
+        await expect.poll(() => loupeOverBalance(page), "the lens over the balance").toBeLessThan(1.5);
+      } else {
+        await expect.poll(() => slide.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
+      }
+    }
+    await expect(page.locator('.contents-band a[href="#bench"]')).toHaveAttribute("aria-current", "true");
+  });
+
+  test("nothing on the bench moves on its own: no tray, no Pause, no running animation", async ({ page }, info) => {
+    await page.goto("/");
+    await readStepOf(page, "bench", "2", isPhone(info));
+    const figure = page.locator("#bench-figure");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    await expect(figure.locator(".tray")).toBeHidden();
+    await expect(figure.getByRole("button")).toHaveCount(0);
+    await page.waitForTimeout(600);
+    const running = await figure.evaluate(
+      (el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === "running").length,
+    );
+    expect(running).toBe(0);
+    await expect(
+      page.locator("#bench").getByRole("link", { name: "Next chapter 7. Repairs", exact: true }),
+    ).toHaveAttribute("href", "#repairs");
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the loupe jumps to the balance, and back", async ({ page }, info) => {
+      const phone = isPhone(info);
+      await page.goto("/");
+      const slide = page.locator("#bench-drawing .slide");
+      expect(await slide.evaluate((el) => getComputedStyle(el).transitionDuration)).toBe("0s");
+      await readStepOf(page, "bench", "3", phone);
+      await expect(page.locator("#bench-figure")).toHaveAttribute("data-step", "3");
+      expect(await loupeOverBalance(page)).toBeLessThan(1.5);
+      await readStepOf(page, "bench", "4", phone);
+      await expect(page.locator("#bench-figure")).toHaveAttribute("data-step", "4");
+      expect(await slide.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
+    });
+  });
+});
+
 test.describe("chapters 3 and 4 without scripting", () => {
   test.use({ javaScriptEnabled: false });
 
@@ -2457,6 +2600,23 @@ test.describe("without scripting", () => {
     await expect(page.locator("#together canvas, #together .turn-3d")).toHaveCount(0);
     await expect(page.locator("#together-figure .tray")).toBeHidden();
     await expect(page.locator("#together .parts-list")).toBeHidden();
+  });
+
+  test("chapter 6 reads in full beside the whole bench, with no tray, on to chapter 7", async ({ page }) => {
+    await page.goto("/");
+    const steps = page.locator("#bench .step p");
+    await expect(steps).toHaveCount(6);
+    for (const step of await steps.all()) await expect(step).toBeVisible();
+    await expect(steps.nth(0)).toContainText("This is Tavi’s bench from above");
+    const drawing = page.getByRole("img", { name: /^Diagram of Tavi’s bench from above/ });
+    await expect(drawing).toBeVisible();
+    await expect(drawing).toHaveAttribute("id", "bench-drawing");
+    // Step 1's pose, the whole bench in colour; every tool is named in the prose.
+    expect((await benchLit(page)).lit).toEqual(TOOLS);
+    for (const tool of TOOLS)
+      await expect(page.locator(`#bench .part-name[data-part="${tool}"]`).first()).toBeVisible();
+    await expect(page.locator("#bench-figure .tray")).toBeHidden();
+    await expect(page.locator("#bench").getByRole("link", { name: "Next chapter 7. Repairs" })).toBeVisible();
   });
 
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {

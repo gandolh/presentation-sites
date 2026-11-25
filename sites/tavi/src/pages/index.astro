@@ -10,14 +10,15 @@ import FigureTray from "../components/chapter/FigureTray.tsx";
 import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
+import ToolName from "../bench/ToolName.astro";
+import { benchSvg } from "../bench/svg.ts";
 import MovementFigure from "../components/together/MovementFigure.tsx";
 import TogetherTray from "../components/together/TogetherTray.tsx";
 import { dialSvg } from "../movement/svg/dial.ts";
 import { BALANCE_START, closeUpSvg, ESCAPEMENT_HOLDS, poseAt, readoutsAt } from "../movement/svg/escapement.ts";
 
-// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 to 5
-// are built on the chapter engine (components/chapter); chapter 6 is still its head, which its brief fills in.
-const chapters = [{ id: "bench", head: "6. The bench, Tavi’s tools" }];
+// One long page: the hero, the contents band, then the chapters in order, each on the chapter engine
+// (components/chapter); chapter 7 is the footer.
 
 // Chapter 1's figure opens half apart, as its first step stands; the tray's Take apart starts there too.
 const energyOpening = { e: 0.55 };
@@ -347,15 +348,85 @@ const togetherFrame = "-250 -205 450 410";
       <TogetherTray slot="tray" client:visible figure="together-figure" />
     </Chapter>
 
-    {chapters.map((chapter) => (
-      <section class="chapter" id={chapter.id} aria-labelledby={`${chapter.id}-head`}>
-        <div class="wrap">
-          <div class="chapter-head">
-            <h2 id={`${chapter.id}-head`}>{chapter.head}</h2>
-          </div>
-        </div>
-      </section>
-    ))}
+    <Chapter
+      id="bench"
+      n={6}
+      head="6. The bench, Tavi’s tools"
+      caption="Tavi’s bench from above: the movement in a two-jawed holder, the loupe, five screwdrivers with yellow, black, red, grey and violet caps, a steel and a brass pair of tweezers, an oiler with a red cap and an oil cup."
+      opening={still}
+      next={{ href: "#repairs", head: "7. Repairs" }}
+    >
+      <Step n={1} pose={still}>
+        This is Tavi’s bench from above, with the movement from chapter 5 out of its case. The tools he reaches for most
+        lie on this mat: the{" "}
+        <ToolName tool="holder" after=",">
+          movement holder
+        </ToolName>{" "}
+        the
+        <ToolName tool="loupe" after=",">
+          loupe
+        </ToolName>{" "}
+        the{" "}
+        <ToolName tool="screwdrivers" after=",">
+          screwdrivers
+        </ToolName>{" "}
+        two pairs of <ToolName tool="tweezers">tweezers</ToolName> and the{" "}
+        <ToolName tool="oiler" after=".">
+          oiler
+        </ToolName>{" "}
+        He puts each one back in the same place, so his hand finds it while his eye stays on the work.
+      </Step>
+      <Step n={2} pose={still}>
+        The <ToolName tool="holder">movement holder</ToolName> is a Bergeon 4040: two jaws that slide together and close
+        on the edge of the plate. Bergeon calls it extensible and reversible. The jaws open for any movement from
+        <span class="fig">20</span> to <span class="fig">43</span> mm across, and the NH35 is
+        <span class="fig">27.4</span>; the holder turns over to work on the dial side.
+      </Step>
+      <Step n={3} pose={still}>
+        The work is done under a{" "}
+        <ToolName tool="loupe" after=",">
+          loupe
+        </ToolName>{" "}
+        which sits in the eye socket so both hands stay free. Bergeon sells its eyeglasses by focal length: the 2-inch
+        one magnifies five times, the 1½-inch one
+        <span class="fig">6.7</span>, close to 250 mm over the focal length. Tavi keeps the 2-inch in his eye for most
+        of a service, here over the balance.
+      </Step>
+      <Step n={4} pose={still}>
+        The <ToolName tool="screwdrivers">screwdrivers</ToolName> are Bergeon’s 30081 set of five, with blades from
+        <span class="fig">0.8</span> to <span class="fig">1.6</span> mm, each width with its own colour on the cap:
+        yellow, black, red, grey and violet. The cap swivels. A forefinger rests on it, pressing the blade into the
+        slot, while the thumb and middle finger turn the handle. The blade should be as wide as the slot, or it can slip
+        and scar the screw head.
+      </Step>
+      <Step n={5} pose={still}>
+        Small parts are moved with{" "}
+        <ToolName tool="tweezers" after=".">
+          tweezers
+        </ToolName>{" "}
+        The steel pair is a Dumont No. 5 in Dumoxel, a stainless steel that won’t become magnetised, with the fine
+        points the No. 5 is made for. The
+        <ToolName tool="brass-tweezers">brass pair</ToolName> is softer than the steel parts it holds, so it can’t
+        scratch a polished one, and brass can’t be magnetised at all.
+      </Step>
+      <Step n={6} pose={still}>
+        Then the oil, a drop at a time. The <ToolName tool="oiler">oiler</ToolName> is Bergeon’s red 7013, whose point
+        is <span class="fig">0.18</span> mm across, the finest of its set of four. Dipped in the
+        <ToolName tool="oil-cup" after=",">
+          oil cup
+        </ToolName>{" "}
+        it carries a drop to a jewel: Moebius 9010 for the balance and escape wheel pivots, and 9415, a grease, for the
+        pallet stones.
+      </Step>
+      <Fragment
+        slot="figure"
+        set:html={benchSvg({
+          id: "bench-drawing",
+          label:
+            "Diagram of Tavi’s bench from above: the movement held by its edge between the two jaws of a movement holder, a loupe, five screwdrivers side by side with yellow, black, red, grey and violet caps, a steel and a brass pair of tweezers, an oiler with a red cap and a round oil cup.",
+        })}
+      />
+    </Chapter>
   </main>
 
   <Footer />

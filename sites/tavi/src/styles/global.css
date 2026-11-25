@@ -126,6 +126,21 @@
   --color-ghost-line: oklch(80% 0.012 84);
 }
 
+/* The tools' own materials, where the movement has none (chapter 6, the bench): the coloured plastics of Bergeon's
+   colour-coded caps, and the loupe's black body. A flat fill and a darker outline of the same hue, as the parts. */
+@theme {
+  --color-tool-black: oklch(33% 0.012 258);
+  --color-tool-black-line: oklch(19% 0.01 258);
+  --color-tool-yellow: oklch(87% 0.13 96);
+  --color-tool-yellow-line: oklch(53% 0.1 88);
+  --color-tool-red: oklch(57% 0.17 26);
+  --color-tool-red-line: oklch(37% 0.12 26);
+  --color-tool-grey: oklch(70% 0.008 258);
+  --color-tool-grey-line: oklch(43% 0.01 258);
+  --color-tool-violet: oklch(52% 0.13 305);
+  --color-tool-violet-line: oklch(34% 0.1 305);
+}
+
 /* No-script: hide a control that only works with scripting (`no-js:hidden`). The head script sets `js` on <html>. */
 @custom-variant no-js (&:where(:root:not(.js) *));
 
@@ -881,6 +896,10 @@
   .tray-row {
     grid-column: 1 / -1;
   }
+  /* A figure with nothing that moves (chapter 6) has no control, so no tray. */
+  .tray:not(:has(> *)) {
+    display: none;
+  }
   /* A figure's readout in its tray, as the sketch's: the label in the body face, muted, the figure in Plex Mono ink. */
   .readout {
     display: flex;
@@ -1577,7 +1596,8 @@
      (chapter 5's whole movement, which its step shows entire, keeps every colour);
      while a part named in the prose is pointed at (data-focus), every part but that one does, whichever step it is
      named in. The pieces that set their own colour (a pin, the roller, the drum) are listed too, so they ghost with
-     their part. lib/figure.ts sets the attributes. */
+     their part. On the bench (chapter 6) the unit is a tool: its materials and, in the holder, every piece of the
+     movement (the barrel's lid too) ghost with it; step 1 shows the whole bench. lib/figure.ts sets the attributes. */
   .stage[data-step="1"]:not([data-focus])
     :not(.mode-whole)
     > .mv
@@ -1612,7 +1632,31 @@
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .is-focus,
       .is-focus *
-    ) {
+    ),
+  .stage[data-step="2"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s2)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="3"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s3)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="4"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s4)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="5"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s5)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="6"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s6)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-focus]
+    .mode-bench
+    .tool:not(.is-focus)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin) {
     --pf: var(--color-ghost-fill);
     --po: var(--color-ghost-line);
     --ps: var(--color-ghost-line);
@@ -1674,6 +1718,100 @@
     transition: none;
   }
 
+  /* Chapter 6, the bench (src/bench): the tools top-down on the mat in the parts' style, each material setting its
+     fill and outline pair. The tools' outlines keep the drawing's weight on screen whatever the scale (non-scaling,
+     in CSS pixels); the movement in the holder is the hero's drawing at its real size, and stands still. */
+  /* The mat is whole, not a crop, so its edges don't fade; the drawing takes the mat's own shape, so the card holds no
+     empty band, at most the screen's height under the header, and in one column no more than a third of it. */
+  .stage .mode-bench {
+    mask-image: none;
+    height: auto;
+    aspect-ratio: 240 / 164;
+    max-height: calc(100svh - var(--header-h) - 120px);
+  }
+  @media (width < 64rem) {
+    .stage .mode-bench {
+      max-height: 34svh;
+    }
+  }
+  .mode-bench .mat {
+    fill: var(--color-paper);
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .m-steel {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  /* Chrome plate, the holder's and the oil cup's finish, takes the bridges' pair. */
+  .m-chrome {
+    --pf: var(--color-part-bridge);
+    --po: var(--color-part-bridge-line);
+  }
+  .m-brass {
+    --pf: var(--color-part-brass);
+    --po: var(--color-part-brass-line);
+  }
+  .m-black {
+    --pf: var(--color-tool-black);
+    --po: var(--color-tool-black-line);
+    --pg: var(--color-surface);
+  }
+  .m-yellow {
+    --pf: var(--color-tool-yellow);
+    --po: var(--color-tool-yellow-line);
+  }
+  .m-red {
+    --pf: var(--color-tool-red);
+    --po: var(--color-tool-red-line);
+  }
+  .m-grey {
+    --pf: var(--color-tool-grey);
+    --po: var(--color-tool-grey-line);
+  }
+  .m-violet {
+    --pf: var(--color-tool-violet);
+    --po: var(--color-tool-violet-line);
+  }
+  .mode-bench .m :is(.fo, .ln, .knurl, .rim, .glint) {
+    vector-effect: non-scaling-stroke;
+  }
+  /* At its real size the movement is a fifth of the hero's: its outlines would scale to a quarter of a pixel, so they
+     too keep a set weight on screen, finer than the tools'. */
+  .mode-bench .held .fo {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 0.6;
+  }
+  .mode-bench .m .ln,
+  .mode-bench .m .rim {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.8;
+  }
+  .mode-bench .m .rim {
+    stroke-width: 1.1;
+  }
+  .mode-bench .knurl {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.6;
+    opacity: 0.55;
+  }
+  .mode-bench .glint {
+    fill: none;
+    stroke: var(--pg);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  /* Step 3: the loupe slides from its place on the mat until its lens is over the balance. */
+  .mode-bench .slide {
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .stage[data-step="3"] .mode-bench .slide {
+    transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px));
+  }
+
   /* Ticking. Each turning group pivots on its own centre (the translate around it). The balance swings once a beat;
      the escape wheel steps half a tooth a beat, 30 steps to a turn in 5 s; the pallet fork flips each beat; the
      fourth wheel steps a degree a beat, one turn a minute; the third and centre wheels creep. */
@@ -1715,6 +1853,10 @@
   .js:root[data-playing="true"] .mode-train .rot-barrel {
     animation: turn calc(21600s * var(--slow)) linear infinite;
   }
+  /* The movement on the bench is let down, waiting for its service: nothing on the bench ticks or loops. */
+  .js:root[data-playing="true"] .mode-bench .rot {
+    animation: none;
+  }
 
   @media (max-width: 40rem) {
     .callout text {
@@ -1734,6 +1876,7 @@
     .lift-w,
     .lift-w .spin,
     .mode-whole > .mv,
+    .mode-bench .slide,
     .movement .part {
       transition: none;
     }
