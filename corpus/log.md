@@ -803,3 +803,8 @@ steps 1 and 2 point at the tray with a small slider glyph. The tray is two compa
 to 64rem. `tavi.spec.ts` covers both sliders, the keyboard, the phone tray, reduced motion and the short screens; 76
 passed. Not pushed. Details in the
 [brief's outcome](briefs/done/13-tavi-chapter-1-energy-winding-and-taking-apart.md).
+
+## [2026-11-25] todo | Task 22: Three sites build without the chunk-size warning
+
+Filed from the owner's ask to fix the build warnings in the most active repos (more than 10 commits outside the corpus
+in two days). design-study, subcort and tractari print Vite's 500 kB chunk warning from the prerender pass, whose output the browser never loads. The brief names the chunk, then fixes the import if a whole library is pulled in for one piece, or raises the limit for the prerender pass only.
