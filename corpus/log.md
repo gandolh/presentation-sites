@@ -840,3 +840,18 @@ weight at device pixel ratio 2. 80 draw calls; the scene chunk is 154.5 kB gzip,
 is now `position: relative`, so the Chapters drawer stays over the canvas. Chapter 5 has its head, one step and its
 tray; brief 17 adds the rest. The board was not updated: brief-board was not available in this session. Not pushed.
 Details in the [brief's outcome](briefs/done/16-tavi-the-3d-movement-and-the-fallback-ladder.md).
+
+## [2026-11-25] brief | 17 tavi, chapter 5: together, apart, with labels
+
+Chapter 5 takes the movement apart in seven steps, in the order watchmakers do and the part table's lift windows run
+(the balance cock and balance, the pallet bridge and fork with the winding parts, the two big bridges, the wheels and
+the barrel, everything apart, put back); steps 2 to 5 frame, light and label their own parts. Its tray has a Take apart
+/ Put back button that runs the slider over the prototype's timing (a jump under reduced motion), Take apart and Turn.
+On a desktop the 3D view labels the parts in two columns from a pure layout (`src/three/labels.ts`, `node:test`: no
+two leaders meet at 1280 x 800 and 1440 x 900, turned 0 and ±30 degrees), each label a button, fading while its anchor
+is behind another part; a click lights a part and ghosts the rest. Phones get a parts list under the figure that
+lights and frames a part with its label alone. Without the 3D view the poster comes apart through lift groups from the
+same windows. The figure keeps the choice and the turn (`data-pick`, `data-turn`). The steps' order deviates from the
+brief's list, which put the train before the pallet fork. The board was not updated: brief-board was not available in
+this session. Not pushed. Details in the
+[brief's outcome](briefs/done/17-tavi-chapter-5-together-apart-with-labels.md).
