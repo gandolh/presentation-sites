@@ -807,4 +807,4 @@ passed. Not pushed. Details in the
 ## [2026-11-25] todo | Task 22: Three sites build without the chunk-size warning
 
 Filed from the owner's ask to fix the build warnings in the most active repos (more than 10 commits outside the corpus
-in two days). design-study, subcort and tractari print Vite's 500 kB chunk warning from the prerender pass, whose output the browser never loads. The brief names the chunk, then fixes the import if a whole library is pulled in for one piece, or raises the limit for the prerender pass only.
+in two days). design-study, subcort and tractari print Vite's 500 kB chunk warning for their three.js scene chunks (519 to 885 kB), which already load on demand. The brief splits three.js by size, and moves a site's limit only for a single module that stays over 500 kB.

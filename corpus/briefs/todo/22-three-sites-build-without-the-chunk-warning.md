@@ -1,7 +1,7 @@
 # Task 22: Three sites build without the chunk-size warning
 
 **Depends on:** nothing.
-**Builder:** Sonnet ([routing.md](../../routing.md)): one warning, the same in three sites.
+**Builder:** Sonnet ([routing.md](../../routing.md)): one warning, the same cause in three sites.
 **Before you start:** run `brief-board guide`, then `brief-board show 22`.
 
 Filed 2026-11-25. The owner asked for the build warnings to be fixed in the most active repos (presentation-sites
@@ -10,51 +10,59 @@ had 47 commits outside the corpus in the two days before). `npm run build` exits
 ## Context
 
 From `npm run build` on 2026-11-25: design-study, subcort and tractari each print Vite's "Some chunks are larger than
-500 kB after minification". In each, the warning comes right after the first Vite pass of `astro build` ("Building
-static entrypoints", the prerender pass) and before the client pass. That pass renders the pages at build time; the
-browser never loads its output. auto-service, saloon and tavi build clean, as does churchix.
+500 kB after minification", for a browser chunk that carries three.js (0.185.1):
+
+- subcort: `_astro/tent-scene-*.js`, 519 kB, the hero's tent scene (`src/components/hero/tent-scene.ts`), which
+  `HeroScene.astro` loads with `await import()`.
+- tractari: `_astro/scene-*.js`, 531 kB, the hero scene (`src/components/hero/scene.ts`), which `HeroCanvas.tsx` loads
+  with `await import()`; the island is `client:only="react"`.
+- design-study: `_astro/Carousel-*.js`, 885 kB, the spatial theme's carousel (`src/themes/spatial/Carousel.tsx`,
+  react-three-fiber 9.7.0 and three.js), a `client:only="react"` island.
+
+All three already load on demand, after the page. auto-service, saloon and tavi build clean. churchix has its own
+build and wasn't part of this run.
 
 ## Decisions
 
 All settled. None of them is open.
 
-- **Find the chunk first.** Keep the prerender output of one site (a debug build or a reporter plugin, in a scratch
-  copy) and name the chunk and what fills it, then check the other two have the same cause.
-- **If the size comes from importing a whole library where the site uses a piece** (an icon set, a data file, a
-  utility library), import the piece. That fixes the cause in both passes.
-- **If it is a build-time-only dependency the site needs whole**, raise the limit for the prerender pass only (the
-  SSR environment's `build.chunkSizeWarningLimit` through the site's Astro `vite` config), with a comment naming the
-  chunk, its size and that it never ships. The client pass keeps the default 500 kB.
-- **If any of it reaches the browser**, split it with a dynamic `import()` instead.
+- **Split by size first.** In each of the three sites' Astro `vite` config, add a rolldown `codeSplitting` group for
+  `three` (and `@react-three` in design-study) with `maxSize: 500_000`. three.js ships as more than one module
+  (`three.core.js` and `three.module.js`), so the scene chunk can split at module boundaries. The pieces still load
+  only when the scene does.
+- **If a single module stays over 500 kB**, keep that piece whole and set that site's `build.chunkSizeWarningLimit`
+  to the next 100 kB above it, with a comment naming three.js, the size and that it loads only with the scene. Only
+  that site's limit moves.
+- Nothing about the scenes changes: same island directives, same lazy imports, same look.
 
 ## Files you OWN
 
-- `sites/design-study/`, `sites/subcort/`, `sites/tractari/`: their Astro configs, and source files only where an
-  import changes
+- `sites/design-study/astro.config.*`, `sites/subcort/astro.config.*`, `sites/tractari/astro.config.*`
 - `corpus/wiki/status.md`, `corpus/log.md`
 
 ## Files you must NOT touch
 
-- The other sites, `churchix/`, the docs sites, other repos.
+- The sites' source, the other sites, `churchix/`, the docs sites, other repos.
 
 ## Steps
 
-1. Find and name the chunk in each site.
-2. Apply the decision that fits the cause.
+1. Add the split to the three configs and rebuild.
+2. Where a piece stays over 500 kB, set that site's limit as decided.
 3. Rebuild all workspaces.
 
 ## Acceptance
 
-- [ ] `npm run build` exits 0 and prints no warning for any site.
+- [ ] `npm run build` exits 0 and prints no warning for any site; the outcome lists each site's three.js chunks
+      before and after.
 - [ ] `npm run check` exits 0.
-- [ ] Each changed site's pages render the same as before: its built HTML is unchanged, or the outcome lists every
-      difference and why.
+- [ ] In each site's preview: the scene renders and animates as before, with no failed chunk request and no console
+      error (design-study in its spatial theme).
 - [ ] `bash corpus/lint.sh` passes.
 
 ## Owner steps
 
-- If a site's built files changed: `node cli.ts <site> deploy` from vps-deploy for design-study, subcort and tractari.
-  The outcome says which. A change to the prerender pass's limit alone needs no deploy.
+- For each site whose built files changed (a split changes them; a limit alone doesn't): `node cli.ts <site> deploy`
+  from vps-deploy, for design-study, subcort and tractari. The outcome says which.
 
 ## Owner decisions
 
