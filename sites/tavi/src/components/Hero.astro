@@ -1,10 +1,12 @@
 ---
 import Movement from "./drawing/Movement.astro";
+import MovementFigure from "./together/MovementFigure.tsx";
 
 // The first screen: the head, the lede and the one blue button on the left; on the right the movement drawn from the
 // part table, ticking in CSS at the watch's own rate (six beats a second), stopped by the header's Pause. The drawing
-// sits in one sized box, `.hero-stage`, so whatever later takes its place (the 3D view) fills the same box and nothing
-// on the page moves. The repair line stays off this screen: it lives in the footer.
+// sits in one sized box, `.hero-stage`. The 3D movement's island hydrates there once the page is idle, after the first
+// paint, and on a device with WebGL 2 replaces the drawing in the same box, opening on its flat view, so nothing on the
+// page moves. The repair line stays off this screen: it lives in the footer.
 ---
 
 <section class="hero" aria-labelledby="hero-head">
@@ -20,15 +22,23 @@ import Movement from "./drawing/Movement.astro";
         Start with the mainspring
       </a>
     </div>
-    <figure class="hero-fig">
+    <figure class="hero-fig" id="hero-figure">
       <div class="hero-stage">
-        <Movement
-          pose="hero"
-          id="hero-movement"
-          viewBox="-250 -215 500 430"
-          aria-label="Diagram of a wristwatch movement seen from the back: the barrel and crown at the upper left, the wheel train across the middle, the escape wheel, pallet fork and balance at the bottom."
-          callouts={["barrel", "train", "balance", "escape"]}
-        />
+        <MovementFigure
+          client:idle
+          figure="hero-figure"
+          name="hero"
+          mode="hero"
+          label="A wristwatch movement in three dimensions, seen from the back and ticking six times a second. Drag sideways or use the arrow keys to turn it."
+        >
+          <Movement
+            pose="hero"
+            id="hero-movement"
+            viewBox="-250 -215 500 430"
+            aria-label="Diagram of a wristwatch movement seen from the back: the barrel and crown at the upper left, the wheel train across the middle, the escape wheel, pallet fork and balance at the bottom."
+            callouts={["barrel", "train", "balance", "escape"]}
+          />
+        </MovementFigure>
       </div>
       <figcaption>
         <span>

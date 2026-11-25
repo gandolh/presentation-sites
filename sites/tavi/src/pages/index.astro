@@ -10,15 +10,13 @@ import FigureTray from "../components/chapter/FigureTray.tsx";
 import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
+import MovementFigure from "../components/together/MovementFigure.tsx";
 import { dialSvg } from "../movement/svg/dial.ts";
 import { BALANCE_START, closeUpSvg, ESCAPEMENT_HOLDS, poseAt, readoutsAt } from "../movement/svg/escapement.ts";
 
-// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 to 4
-// are built on the chapter engine (components/chapter); the others are still their heads, which their briefs fill in.
-const chapters = [
-  { id: "together", head: "5. Together, apart and back again" },
-  { id: "bench", head: "6. The bench, Tavi’s tools" },
-];
+// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 to 5
+// are built on the chapter engine (components/chapter); chapter 6 is still its head, which its brief fills in.
+const chapters = [{ id: "bench", head: "6. The bench, Tavi’s tools" }];
 
 // Chapter 1's figure opens half apart, as its first step stands; the tray's Take apart starts there too.
 const energyOpening = { e: 0.55 };
@@ -34,6 +32,10 @@ const still = { e: 0 };
 const escapementStart = ESCAPEMENT_HOLDS["1"] ?? 0;
 const escapementReadouts = readoutsAt(poseAt(escapementStart));
 const balanceReadouts = readoutsAt(poseAt(BALANCE_START));
+
+// Chapter 5's poster is the whole movement assembled, framed with room round it; the 3D island opens on exactly this
+// frame and replaces the drawing in the same box.
+const togetherFrame = "-250 -205 450 410";
 ---
 
 <Base>
@@ -254,6 +256,37 @@ const balanceReadouts = readoutsAt(poseAt(BALANCE_START));
           {balanceReadouts.balance}
         </span>
       </p>
+    </Chapter>
+
+    <Chapter
+      id="together"
+      n={5}
+      head="5. Together, apart and back again"
+      caption="The whole movement assembled, seen from the back: the main plate and the crown, the barrel, the wheel train, the escape wheel, the pallet fork and the balance, under the barrel bridge, the train bridge, the pallet bridge and the balance cock with their screws and jewels."
+      opening={still}
+      next={{ href: "#bench", head: "6. The bench, Tavi’s tools" }}
+    >
+      <Step n={1} pose={still}>
+        Here is every part from the first four chapters at once, put together. The main plate is the floor; the barrel,
+        the wheels and the escapement turn on it, and the bridges screwed down over them hold the top pivots in
+        synthetic rubies. A Seiko NH35 has <span class="fig">24</span> of those jewels.
+      </Step>
+      <MovementFigure
+        slot="figure"
+        client:visible={{ rootMargin: "200px" }}
+        figure="together-figure"
+        name="together"
+        mode="chapter"
+        label="The whole movement in three dimensions, assembled and seen from the back. Drag sideways or use the arrow keys to turn it."
+      >
+        <Movement
+          pose="whole"
+          id="together-movement"
+          viewBox={togetherFrame}
+          aria-label="Diagram of the whole movement assembled, seen from the back: the barrel and the crown at the upper left under the barrel bridge, the train bridge across the middle, the pallet bridge and the balance cock at the bottom."
+        />
+      </MovementFigure>
+      <FigureTray slot="tray" client:visible figure="together-figure" />
     </Chapter>
 
     {chapters.map((chapter) => (

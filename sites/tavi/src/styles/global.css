@@ -430,7 +430,8 @@
     aspect-ratio: 500 / 430;
     max-height: calc(100svh - var(--header-h) - 160px);
   }
-  .hero-stage > .movement {
+  .hero-stage .movement-figure,
+  .hero-stage .movement {
     width: 100%;
     height: 100%;
   }
@@ -697,6 +698,71 @@
     visibility: visible;
   }
 
+  /* The 3D movement's island (components/together/MovementFigure.tsx): the poster in flow sizes the box, and the canvas
+     lies over it, shown once it has drawn its first frame, the poster's own flat view. Live, the drawing's body goes
+     and its callouts stay over the canvas until the view tilts. Chapter 5's poster is the whole movement, not a crop,
+     so its edges don't fade. */
+  .movement-figure {
+    position: relative;
+    border-radius: var(--radius-inner);
+  }
+  .stage .mode-whole {
+    mask-image: none;
+  }
+  .movement-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    touch-action: pan-y;
+    cursor: grab;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .movement-canvas:active {
+    cursor: grabbing;
+  }
+  .movement-canvas:focus-visible {
+    outline-offset: -3px;
+  }
+  .movement-figure[data-gl="live"] > .movement-canvas {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .movement-figure[data-gl="live"] .movement > .mv {
+    display: none;
+  }
+  .movement-figure[data-gl="live"] .movement {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .movement-figure .callout {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .movement-figure[data-tilted] .callout {
+    opacity: 0;
+  }
+  /* What the island says over the poster: the phone's "Turn it in 3D", the line where there is no WebGL, and the
+     hint once the 3D view is live. Each lies over the drawing's foot, so none moves the page when it comes. */
+  .turn-3d,
+  .gl-note,
+  .gl-hint {
+    position: absolute;
+    z-index: 2;
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+  }
+  .gl-note,
+  .gl-hint {
+    margin: 0;
+    max-width: calc(100% - var(--space-xl));
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+
   /* The figure's controls on the paper-2 ground: the Pause and the Speed across the top, a chapter's own controls
      in two cells under them. */
   .tray {
@@ -874,8 +940,10 @@
     }
   }
   @media (max-width: 40rem) {
+    /* The header scrolls away on a phone. Relative, not static, so its z-index still holds the Chapters drawer over
+       the page's positioned pieces (the 3D movement's canvas). */
     .site-head {
-      position: static;
+      position: relative;
     }
     .site-head-row {
       gap: var(--space-sm);
@@ -975,7 +1043,7 @@
      clear of the reading line. */
   @media (width < 64rem) and (height < 32rem) {
     .site-head {
-      position: static;
+      position: relative;
     }
     .stage {
       top: 0;
@@ -1387,24 +1455,28 @@
     --rl: var(--color-ghost-line);
   }
 
-  /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair;
+  /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair
+     (chapter 5's whole movement, which its step shows entire, keeps every colour);
      while a part named in the prose is pointed at (data-focus), every part but that one does, whichever step it is
      named in. The pieces that set their own colour (a pin, the roller, the drum) are listed too, so they ghost with
      their part. lib/figure.ts sets the attributes. */
   .stage[data-step="1"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s1,
       .s1 *
     ),
   .stage[data-step="2"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s2,
       .s2 *
     ),
   .stage[data-step="3"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s3,
       .s3 *

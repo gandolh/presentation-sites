@@ -5,7 +5,7 @@ import { isPhone, siteOf } from "./floor.js";
 // motion starts paused, the hero's drawing ticks at the movement's rate only while the page plays, the first screen
 // holds the hero and keeps the repair line off it, the contents band's links land and fold to two columns on a phone,
 // the footer shows Tavi's line as a placeholder, nothing works only with scripting, and no request leaves the origin.
-// The chapter briefs extend it. The Floor specs are shared (floor-*.spec.ts); the phone menu's behaviour is in mobile-menu.spec.ts.
+// The chapters' checks follow, then the 3D movement's on its fallback ladder (the hero and chapter 5). The Floor specs are shared (floor-*.spec.ts); the phone menu's behaviour is in mobile-menu.spec.ts.
 test.beforeEach(({ browserName: _browser }, info) => {
   test.skip(siteOf(info) !== "tavi", "tavi's own spec");
 });
@@ -158,7 +158,33 @@ async function heroAnimations(page: Page) {
   );
 }
 
+/** Whether the hero moves: its 3D view's clock runs on, or, where the drawing shows, its balance swings in CSS. */
+async function heroRuns(page: Page) {
+  const gl = await page.locator(".hero-stage .movement-figure").getAttribute("data-gl");
+  if (gl !== "live") return (await heroAnimations(page)).some((a) => a.group === "rot-balance");
+  const before = (await glStats(page, "hero")).t;
+  await page.waitForTimeout(300);
+  return (await glStats(page, "hero")).t > before;
+}
+
+/** Makes every canvas on the page find no WebGL, before the page's scripts run: the fallback ladder's third rung. */
+async function withoutWebGL(page: Page) {
+  await page.addInitScript(() => {
+    const get = HTMLCanvasElement.prototype.getContext;
+    const none = function (this: HTMLCanvasElement, type: string, ...rest: unknown[]) {
+      return /webgl/i.test(type) ? null : (get as (...a: unknown[]) => unknown).call(this, type, ...rest);
+    };
+    HTMLCanvasElement.prototype.getContext = none as typeof get;
+  });
+}
+
+// Where WebGL works, the 3D movement takes the drawing's place once the page is idle; these check the drawing itself,
+// so they run where it stays.
 test.describe("the hero's drawing", () => {
+  test.beforeEach(async ({ page }) => {
+    await withoutWebGL(page);
+  });
+
   test("ticks: the balance swings in 166.67 ms, the escape wheel turns in 5 s in 30 steps", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("#hero-movement")).toBeVisible();
@@ -1347,7 +1373,7 @@ test.describe("chapter 3, the escapement, drawn by the clock", () => {
     await page.evaluate(() => {
       window.scrollTo(0, 0);
     });
-    expect((await heroAnimations(page)).map((a) => a.group)).toContain("rot-balance");
+    await expect.poll(() => heroRuns(page)).toBe(true);
   });
 
   test("un-pressing the tray's Pause lets a held figure run on, and plays the page if it was paused", async ({
@@ -1479,8 +1505,9 @@ test.describe("chapter 4, the balance, drawn by the clock", () => {
     await pause.click();
     expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
 
+    // Away to chapter 2, which ticks in CSS: the hero's 3D view would ask for frames of its own at the top.
     await page.evaluate(() => {
-      window.scrollTo(0, 0);
+      document.getElementById("wheels")?.scrollIntoView();
     });
     await page.waitForTimeout(200);
     expect(await activity(page, "balance-figure", 1000), "scrolled away").toEqual({ frames: 0, writes: 0 });
@@ -1506,6 +1533,379 @@ test.describe("chapter 4, the balance, drawn by the clock", () => {
       await pause.click();
       await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
       expect((await activity(page, "balance-figure", 500)).writes).toBeGreaterThan(0);
+    });
+  });
+});
+
+// The 3D movement: one island on the hero and on chapter 5, climbing the fallback ladder (decisions-tavi.md). Its dev
+// hook, `taviPose(name, pose)`, holds a figure at `{ t }` and, given an empty pose, reads the view's numbers.
+interface GlStats {
+  frames: number;
+  calls: number;
+  triangles: number;
+  t: number;
+  apart: number;
+  tilt: number;
+  pixelRatio: number;
+}
+
+/** The 3D view's numbers through the dev hook; an empty pose changes nothing. */
+async function glStats(page: Page, name: string): Promise<GlStats> {
+  return page.evaluate(
+    (n) => (window as unknown as { taviPose: (id: string, pose: object) => GlStats }).taviPose(n, {}),
+    name,
+  );
+}
+
+/** Poses a 3D view through the dev hook and returns its numbers. */
+async function glPose(page: Page, name: string, pose: object): Promise<GlStats> {
+  return page.evaluate(
+    ({ n, p }) => (window as unknown as { taviPose: (id: string, pose: object) => GlStats }).taviPose(n, p),
+    { n: name, p: pose },
+  );
+}
+
+/** Scrolls chapter 5's figure to the middle of the screen, whole: its one step is shorter than the figure. */
+async function toTogether(page: Page) {
+  await page.evaluate(() => {
+    const figure = document.getElementById("together-figure");
+    if (figure) window.scrollBy(0, figure.getBoundingClientRect().top - (innerHeight - figure.offsetHeight) / 2);
+  });
+}
+
+/** A figure's island: the box the poster and the canvas share. */
+const island = (page: Page, name: "hero" | "together") =>
+  page.locator(name === "hero" ? ".hero-stage .movement-figure" : "#together .movement-figure");
+
+/** Waits until a figure's 3D view has drawn and replaced its poster. */
+async function glLive(page: Page, name: "hero" | "together") {
+  await expect(island(page, name)).toHaveAttribute("data-gl", "live", { timeout: 20_000 });
+}
+
+/** three.js or the scene built on it: a request the first screen must not wait on. */
+const THREE_REQUEST = /\/src\/three\/view\.ts|\.vite\/deps\/three|\/three\/(build|examples)\//;
+
+/** The half beat at which the 3D view starts: the balance passing rest, as the poster draws it. */
+const REST = 1 / 12;
+
+/**
+ * Where the plate's circle meets the lines through its centre in a shot of a figure's box, in pixels from the box's
+ * edges: the first pixel from each side that differs from the ground.
+ */
+async function plateEdges(page: Page, shot: Buffer, viewBox: string) {
+  return page.evaluate(
+    async ({ png, viewBox }) => {
+      const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob());
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const g = canvas.getContext("2d");
+      if (!g) return null;
+      g.drawImage(bitmap, 0, 0);
+      const { data, width, height } = g.getImageData(0, 0, bitmap.width, bitmap.height);
+      const [vx = 0, vy = 0, vw = 1, vh = 1] = viewBox.split(/\s+/).map(Number);
+      const s = Math.min(width / vw, height / vh);
+      const cx = Math.round((width - vw * s) / 2 - vx * s);
+      const cy = Math.round((height - vh * s) / 2 - vy * s);
+      const at = (x: number, y: number) => [0, 1, 2].map((k) => data[(y * width + x) * 4 + k] ?? 0);
+      const ground = at(cx, 2);
+      const differs = (x: number, y: number) =>
+        at(x, y).reduce((sum, v, k) => sum + Math.abs(v - (ground[k] ?? 0)), 0) > 90;
+      const scan = (from: number, to: number, pick: (i: number) => [number, number]) => {
+        for (let i = from; i !== to; i += Math.sign(to - from)) if (differs(...pick(i))) return i;
+        return NaN;
+      };
+      return {
+        left: scan(0, cx, (x) => [x, cy]),
+        right: scan(width - 1, cx, (x) => [x, cy]),
+        top: scan(0, cy, (y) => [cx, y]),
+        bottom: scan(height - 1, cy, (y) => [cx, y]),
+      };
+    },
+    { png: shot.toString("base64"), viewBox },
+  );
+}
+
+/** Shoots a live figure's box, then shows its poster in the same box and shoots that: the plate within 2 px. */
+async function expectPlateAligned(page: Page, name: "hero" | "together") {
+  const box = island(page, name);
+  await page.evaluate(() => document.fonts.ready);
+  await glPose(page, name, { t: REST });
+  const viewBox = (await box.locator("svg.movement").getAttribute("viewBox")) ?? "";
+  const gl = await plateEdges(page, await box.screenshot(), viewBox);
+  await box.evaluate((el) => {
+    el.dataset.gl = "poster";
+  });
+  const drawn = await plateEdges(page, await box.screenshot(), viewBox);
+  expect(gl).not.toBeNull();
+  expect(drawn).not.toBeNull();
+  for (const side of ["left", "right", "top", "bottom"] as const) {
+    const a = gl?.[side] ?? NaN;
+    const b = drawn?.[side] ?? NaN;
+    expect(Math.abs(a - b), `the plate's ${side} edge: 3D at ${a} px, the poster at ${b} px`).toBeLessThanOrEqual(2);
+  }
+}
+
+/** Records, from before the page's scripts run, every layout shift and when each island first left its poster. */
+async function watchShifts(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { taviShifts: { at: number; value: number }[]; taviSwaps: number[] };
+    w.taviShifts = [];
+    w.taviSwaps = [];
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean })[])
+        if (!entry.hadRecentInput) w.taviShifts.push({ at: entry.startTime, value: entry.value });
+    }).observe({ type: "layout-shift", buffered: true });
+    new MutationObserver((records) => {
+      for (const r of records)
+        if ((r.target as Element).getAttribute("data-gl") !== "poster") w.taviSwaps.push(performance.now());
+    }).observe(document, { attributeFilter: ["data-gl"], subtree: true });
+  });
+}
+
+/** The layout-shift score from the first time an island left its poster. */
+async function shiftSinceSwap(page: Page) {
+  return page.evaluate(() => {
+    const w = window as unknown as { taviShifts: { at: number; value: number }[]; taviSwaps: number[] };
+    const from = Math.min(...w.taviSwaps);
+    return w.taviShifts.filter((s) => s.at >= from - 50).reduce((sum, s) => sum + s.value, 0);
+  });
+}
+
+test.describe("the 3D movement, on the fallback ladder", () => {
+  test("the hero paints the drawing first, then the 3D view takes its box, flat, plate on plate, nothing shifting", async ({
+    page,
+  }) => {
+    await watchShifts(page);
+    await page.goto("/");
+    await glLive(page, "hero");
+    await page.waitForTimeout(500);
+    const timing = await page.evaluate((source) => {
+      const three = new RegExp(source);
+      const first = performance
+        .getEntriesByType("resource")
+        .filter((r) => three.test(r.name))
+        .map((r) => r.startTime);
+      const paint = performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? Infinity;
+      return { paint, three: Math.min(...first) };
+    }, THREE_REQUEST.source);
+    expect(timing.three, "three.js was requested").toBeLessThan(Infinity);
+    expect(timing.paint, "the first paint comes before any three.js request").toBeLessThan(timing.three);
+    expect(await shiftSinceSwap(page)).toBeLessThan(0.01);
+    // The hero's text came first and stays; the poster's callouts stay over the flat view.
+    await expect(page.getByRole("heading", { level: 1, name: /^Six beats\s*every second$/ })).toBeVisible();
+    await expect(page.locator("#hero-movement .callout").first()).toHaveCSS("opacity", "1");
+    await expect(page.getByRole("img", { name: /^A wristwatch movement in three dimensions/ })).toBeVisible();
+    const stats = await glStats(page, "hero");
+    expect(stats.tilt).toBe(0);
+    expect(stats.calls).toBeLessThan(150);
+    await expectPlateAligned(page, "hero");
+  });
+
+  test("chapter 5's view lines up with its poster, and stays flat until the first drag tilts it", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a phone turns chapter 5 on its button; the drag is a mouse's here");
+    await watchShifts(page);
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    expect(await shiftSinceSwap(page)).toBeLessThan(0.01);
+    await page.waitForTimeout(1200);
+    expect((await glStats(page, "together")).tilt, "still flat after a second of ticking").toBe(0);
+    await expectPlateAligned(page, "together");
+    await island(page, "together").evaluate((el) => {
+      el.dataset.gl = "live";
+    });
+
+    const canvas = page.locator("#together canvas");
+    const where = await canvas.boundingBox();
+    if (!where) throw new Error("no canvas");
+    await page.mouse.move(where.x + where.width / 2, where.y + where.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(where.x + where.width / 2 + 60, where.y + where.height / 2, { steps: 6 });
+    await page.mouse.up();
+    await expect(island(page, "together")).toHaveAttribute("data-tilted", "");
+    await expect.poll(async () => (await glStats(page, "together")).tilt).toBe(1);
+
+    // On the hero, an arrow key on the focused canvas tilts it the same way.
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await glLive(page, "hero");
+    expect((await glStats(page, "hero")).tilt).toBe(0);
+    await page.locator(".hero-stage canvas").focus();
+    await page.keyboard.press("ArrowLeft");
+    await expect.poll(async () => (await glStats(page, "hero")).tilt).toBe(1);
+    await expect(page.locator("#hero-movement .callout").first()).toHaveCSS("opacity", "0");
+  });
+
+  test("at device pixel ratio 3 the view draws at 2, in under 150 calls", async ({ browser }, info) => {
+    test.skip(isPhone(info), "one size is enough");
+    const context = await browser.newContext({
+      baseURL: info.project.use.baseURL,
+      viewport: { width: 1280, height: 800 },
+      deviceScaleFactor: 3,
+    });
+    const page = await context.newPage();
+    await page.goto("/");
+    await glLive(page, "hero");
+    const stats = await glStats(page, "hero");
+    expect(stats.pixelRatio).toBe(2);
+    expect(stats.calls).toBeLessThan(150);
+    await context.close();
+  });
+
+  test("opened straight at chapter 5 on a phone, no three.js comes until Turn it in 3D is pressed", async ({
+    page,
+  }, info) => {
+    test.skip(!isPhone(info), "the button is a phone's");
+    const asked: string[] = [];
+    page.on("request", (request) => {
+      if (THREE_REQUEST.test(request.url())) asked.push(request.url());
+    });
+    await page.goto("/#together");
+    const turn = page.getByRole("button", { name: "Turn it in 3D", exact: true });
+    await expect(turn).toBeVisible({ timeout: 15_000 });
+    await page.waitForTimeout(1500);
+    expect(asked).toEqual([]);
+    await expect(island(page, "hero")).toHaveAttribute("data-gl", "poster");
+    await expect(island(page, "together")).toHaveAttribute("data-gl", "offer");
+
+    await turn.click();
+    await glLive(page, "together");
+    expect(asked.length).toBeGreaterThan(0);
+    await expect(turn).toHaveCount(0);
+    const before = await glStats(page, "together");
+    await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(before.t);
+    expect(before.tilt).toBe(0);
+  });
+
+  test.describe("without WebGL", () => {
+    test.beforeEach(async ({ page }) => {
+      await withoutWebGL(page);
+    });
+
+    test("the posters stay, chapter 5's with its one quiet line", async ({ page }, info) => {
+      await page.goto("/");
+      await toTogether(page);
+      if (isPhone(info)) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+      await expect(island(page, "together")).toHaveAttribute("data-gl", "flat", { timeout: 15_000 });
+      await expect(page.locator("#together .gl-note")).toHaveText("This browser can’t turn it in 3D; here it is flat.");
+      await expect(page.locator("#together-movement .mv")).toBeVisible();
+      await expect(page.locator("#together canvas")).toHaveCount(0);
+      await page.evaluate(() => {
+        window.scrollTo(0, 0);
+      });
+      await page.waitForTimeout(1000);
+      await expect(island(page, "hero")).toHaveAttribute("data-gl", "poster");
+      await expect(page.locator(".hero-stage .gl-note")).toHaveCount(0);
+      await expect(page.locator("#hero-movement .mv")).toBeVisible();
+    });
+  });
+
+  test("a lost context brings the poster back, keeping the clock and the play state, until it returns", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "the same island on a phone");
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    const lose = (restore: boolean) =>
+      page.locator("#together canvas").evaluate((canvas, back) => {
+        const gl = (canvas as HTMLCanvasElement).getContext("webgl2");
+        const ext = gl?.getExtension("WEBGL_lose_context");
+        if (back) ext?.restoreContext();
+        else ext?.loseContext();
+        (window as unknown as { taviLose: unknown }).taviLose = ext;
+      }, restore);
+    await lose(false);
+    await expect(island(page, "together")).toHaveAttribute("data-gl", "lost");
+    await expect(page.locator("#together-movement .mv")).toBeVisible();
+    await expect(page.locator("#together canvas")).toHaveCSS("opacity", "0");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    const t = (await glStats(page, "together")).t;
+    await page.evaluate(() => {
+      (window as unknown as { taviLose: { restoreContext: () => void } }).taviLose.restoreContext();
+    });
+    await glLive(page, "together");
+    expect((await glStats(page, "together")).t).toBeGreaterThanOrEqual(t);
+  });
+
+  test("the view asks for no frame over 2 s while paused, scrolled away or in a hidden tab", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await countFrames(page);
+    await page.goto("/");
+    await toTogether(page);
+    if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+    await glLive(page, "together");
+    await page.waitForFunction(() =>
+      document.querySelector('#together-figure astro-island[component-url*="FigureTray"]:not([ssr])'),
+    );
+    const frames = async (ms: number) => {
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(ms);
+      return (await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)) - before;
+    };
+    expect(await frames(500), "playing").toBeGreaterThan(5);
+
+    const pause = page.locator("#together-figure").getByRole("button", { name: "Pause", exact: true });
+    await pause.click();
+    await page.waitForTimeout(100);
+    expect(await frames(2000), "paused").toBe(0);
+    await pause.click();
+    expect(await frames(300)).toBeGreaterThan(0);
+
+    await page.evaluate(() => {
+      document.getElementById("wheels")?.scrollIntoView();
+    });
+    await page.waitForTimeout(200);
+    expect(await frames(2000), "scrolled away").toBe(0);
+    await toTogether(page);
+    expect(await frames(300)).toBeGreaterThan(0);
+
+    await setHidden(page, true);
+    await page.waitForTimeout(100);
+    expect(await frames(2000), "hidden").toBe(0);
+    await setHidden(page, false);
+    expect(await frames(300)).toBeGreaterThan(0);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the view starts still until its Pause is released, and the first drag tilts it at once", async ({
+      page,
+    }, info) => {
+      test.skip(isPhone(info), "the same island on a phone");
+      await countFrames(page);
+      await page.goto("/");
+      await toTogether(page);
+      await glLive(page, "together");
+      await page.waitForFunction(() =>
+        document.querySelector('#together-figure astro-island[component-url*="FigureTray"]:not([ssr])'),
+      );
+      const pause = page.locator("#together-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      const t = (await glStats(page, "together")).t;
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(2000);
+      expect(await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)).toBe(before);
+      expect((await glStats(page, "together")).t).toBe(t);
+
+      const canvas = page.locator("#together canvas");
+      const where = await canvas.boundingBox();
+      if (!where) throw new Error("no canvas");
+      await page.mouse.move(where.x + 100, where.y + 100);
+      await page.mouse.down();
+      await page.mouse.move(where.x + 160, where.y + 100, { steps: 3 });
+      await page.mouse.up();
+      await page.waitForTimeout(50);
+      expect((await glStats(page, "together")).tilt, "a jump, not an ease").toBe(1);
+
+      await pause.click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(t);
     });
   });
 });
@@ -1668,6 +2068,16 @@ test.describe("without scripting", () => {
     await expect(
       page.locator("#wheels").getByRole("link", { name: "Next chapter 3. Escapement, let out tooth by tooth" }),
     ).toBeVisible();
+  });
+
+  test("chapter 5 reads beside its still poster, the whole movement, with no canvas and no control", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator("#together .step p")).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the whole movement assembled/ })).toBeVisible();
+    await expect(page.locator("#together canvas, #together .turn-3d")).toHaveCount(0);
+    await expect(page.locator("#together-figure .tray")).toBeHidden();
   });
 
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {
