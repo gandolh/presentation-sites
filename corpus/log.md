@@ -880,3 +880,13 @@ lid off, the 3D mainspring coils as it is wound, the ratchet wheel steps a tooth
 real time (hours and minutes in the readout, a deviation from chapter 1's whole hours). The board was not updated:
 brief-board was not available in this session. Not pushed. Details in the
 [brief's outcome](briefs/done/19-tavi-the-ticking-sound-and-the-spring-running-down.md).
+
+## [2026-11-25] brief | 22 three sites build without the chunk warning
+
+design-study, subcort and tractari, and tavi too (brief 16's 3D scene gave it the same warning), cut their three.js
+chunk with a rolldown `codeSplitting` group capped at 500,000 bytes. three.js splits at its module boundary into two
+or three pieces of 148 to 373 kB, loaded only with the scene, so no site needed a raised `chunkSizeWarningLimit` and
+`npm run build` prints no warning. Scenes, islands and lazy imports are untouched. Tavi's whole e2e suite: 155 passed,
+1 failed (brief 19's Wind check compares a spring value to 1 exactly; it fails without this change too). The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/22-three-sites-build-without-the-chunk-warning.md).

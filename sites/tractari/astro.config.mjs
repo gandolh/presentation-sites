@@ -20,8 +20,16 @@ export default defineConfig({
     // @sites/kit ships TypeScript source; Vite must compile it for the
     // static build instead of externalizing it as a node_modules dep.
     ssr: { noExternal: ["@sites/kit"] },
-    // three.js is large and non-tree-shakeable, but it is only imported inside
-    // the `client:only` HeroCanvas island, so Astro/Rollup already emits it as
-    // a separate lazy chunk fetched on mount — no manualChunks needed.
+    build: {
+      rolldownOptions: {
+        output: {
+          // three.js ships as several modules, so its chunk can split at module boundaries and stay under
+          // the 500 kB chunk warning. The pieces load together, only when the scene does.
+          codeSplitting: {
+            groups: [{ name: "three", test: /node_modules[\\/]three[\\/]/, maxSize: 500_000 }],
+          },
+        },
+      },
+    },
   },
 });

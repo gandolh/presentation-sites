@@ -68,3 +68,34 @@ All settled. None of them is open.
 
 - Settled 2026-11-25 (owner): "run build and fix all the warnings for the most active projects". Which repos count
   (more than 10 commits outside the corpus in two days) and how each warning is fixed are the controller's calls.
+
+## Outcome (2026-11-25)
+
+- **The split.** Each site's `astro.config.mjs` gains `vite.build.rolldownOptions.output.codeSplitting` with one group
+  named `three` (`/node_modules[\\/]three[\\/]/`; design-study also matches `@react-three`) and `maxSize: 500_000`. three.js
+  splits at its module boundary (`three.core.js`, `three.module.js`), so every piece is under 500 kB and no
+  `chunkSizeWarningLimit` was needed in any site. The old comments saying "no manualChunks needed" went, since the
+  config now says how the chunk is cut. Nothing in any site's source changed.
+- **Tavi was added** (the controller's scope note): brief 16's 3D scene made `npm run tavi:build` print the same warning
+  for `view.*.js` (621 kB, 154.5 kB gzip). The same rule fixed it, with no decision for the owner.
+- **Chunks, before and after** (minified bytes):
+
+  | Site | Before | After |
+  |---|---|---|
+  | design-study | `Carousel` 885,160 | `three` 373,472 + 356,293 + 148,638 (the scene code is under 60 kB) |
+  | subcort | `tent-scene` 518,721 | `three` 343,716 + 172,651 |
+  | tractari | `scene` 530,982 | `three` 343,714 + 182,639 |
+  | tavi | `view` 621,375 | `three` 352,601 + 220,272 |
+
+  The pieces are requested only with the scene (no `three.*.js` in any page's HTML). auto-service and saloon still build
+  with no warning.
+- **Previews.** design-study (`/spatial/`), subcort, tractari and tavi each loaded their `three.*` pieces with no failed
+  or 4xx request and no console or page error; the screenshots render (design-study's carousel, tractari's page, the
+  subcort and tavi canvases change between frames).
+- **Tavi's e2e, whole suite** (`npm run tavi:build`, then `SITES=tavi npx playwright test -c e2e`): 155 passed, 1
+  failed, 134 skipped, twice. The one failure is brief 19's `chapter 5's Wind` check: `up.spring` is
+  0.9999999943766937, not 1, once the reserve has begun to fall. It fails the same way with this change stashed, so it
+  isn't caused here. It is left for a follow-up (`toBeCloseTo` in `e2e/tavi.spec.ts:2798`).
+- **Owner steps.** The built files of all four sites changed, so each needs `node cli.ts <site> deploy` from vps-deploy:
+  design-study, subcort, tractari and tavi (tavi isn't deployed since brief 11 anyway). The board was not updated:
+  brief-board was not available in this session.

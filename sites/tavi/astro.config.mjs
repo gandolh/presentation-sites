@@ -21,5 +21,16 @@ export default defineConfig({
     // @sites/kit ships TypeScript source; Vite must compile it for the static build instead of externalizing it as
     // a node_modules dep.
     ssr: { noExternal: ["@sites/kit"] },
+    build: {
+      rolldownOptions: {
+        output: {
+          // three.js ships as several modules, so its chunk can split at module boundaries and stay under
+          // the 500 kB chunk warning. The pieces load together, only when the scene does.
+          codeSplitting: {
+            groups: [{ name: "three", test: /node_modules[\\/]three[\\/]/, maxSize: 500_000 }],
+          },
+        },
+      },
+    },
   },
 });
