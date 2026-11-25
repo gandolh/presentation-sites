@@ -73,8 +73,11 @@ reads the built site, so build first.
 the stylesheet's tokens, screenshots it in headless Chrome (`CHROME=/path/to/chrome` picks the binary) and writes the
 PNG with sharp. Run `npm run tavi:og` after a change to the drawing or a part colour.
 
-## Why English, and no docs site
+## Why English, and the docs site
 
 Every other site here is Romanian; Tavi's is English because the owner chose it
-([decisions-tavi.md](../../corpus/wiki/decisions-tavi.md)). It has no docs site yet: this README, PRODUCT.md and
-DESIGN.md are its docs, and the repo's [docs/](../../docs/README.md) lists it with the other sites.
+([decisions-tavi.md](../../corpus/wiki/decisions-tavi.md)). Its docs site is a Docusaurus build in
+[`docs-site/`](docs-site/), served at `/tavi/docs/`: it renders this README, PRODUCT.md and DESIGN.md and adds pages on
+the part table, the chapter engine, the 3D island and the copy rule. Build it from the repo root with
+`npm run tavi:docs` (output in `docs-site/dist/`); it sits outside lint, format and `npm run check`. The repo's
+[docs/](../../docs/README.md) lists it with the other sites.

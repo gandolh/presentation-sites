@@ -38,8 +38,10 @@ the `https://example.com` fallback that [decisions.md](decisions.md) records. Th
 the real origin, which repo text doesn't name, so the vps-deploy brief passes `PUBLIC_SITE` to every presentation
 site's build.
 
-*A docs site, later* (owner, 2026-11-24, revising the planner's "not in v1"): brief 21 adds it after the site is
-built, by `docs/adding-a-site.md` step 6, with a `tavi-docs` stack in vps-deploy.
+*A docs site, later* (owner, 2026-11-24, revising the planner's "not in v1"): built on 2026-11-25 at
+`sites/tavi/docs-site/` by `docs/adding-a-site.md` step 6, base `/tavi/docs/`, light only on the site's paper. It
+renders the README, PRODUCT.md and DESIGN.md and adds four pages written for it. It needs a `tavi-docs` stack in
+vps-deploy before it is live.
 
 ## The stack
 
@@ -106,7 +108,7 @@ header's Pause and the steps observer are plain module scripts, so they work bef
 
 **2026-11-25** — `sites/tavi/DESIGN.md` ("Where the site differs from `design/tavi/`") lists every departure from the
 sketch with its reason. The calls above stand; brief 20 added only the social card (the hero's drawing on paper,
-`npm run tavi:og`) and moved the site's docs to its README, PRODUCT.md and DESIGN.md, with no docs site until brief 21.
+`npm run tavi:og`) and moved the site's docs to its README, PRODUCT.md and DESIGN.md, with the docs site added the next day.
 
 ## Defaults the owner can change
 

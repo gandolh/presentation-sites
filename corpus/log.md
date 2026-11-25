@@ -902,3 +902,14 @@ and `docs/architecture.md` and `docs/adding-a-site.md` each got a line. Brief 14
 chapter 2 is described from the code. Not run: sloplint (the hallmark script is not in this container). The board was
 not updated: brief-board was not available in this session. Not pushed. Details in the
 [brief's outcome](briefs/done/20-tavi-readme-design-md-and-the-social-card.md).
+
+## [2026-11-25] brief | 21 tavi, a docs site
+
+`sites/tavi/docs-site/` is a Docusaurus site at `/tavi/docs/`, built with `npm run tavi:docs`. It renders the site's
+README, PRODUCT.md and DESIGN.md and adds four pages from the code: the part table and its two renderers, the chapter
+engine and the islands, the 3D island and its fallback ladder, and the copy rule. It is light only, in the site's paper
+and type. Unlike the other docs sites it has no diagrams step, and its sync script links no page to the repository's
+host. The build exits 0 and a Chromium walk of all eight pages found no broken link and no asset outside the base. It
+waits on a `tavi-docs` stack in vps-deploy. Brief 14 stays in `todo/`. Not run: sloplint (not in this container). The
+board was not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/21-tavi-a-docs-site.md).

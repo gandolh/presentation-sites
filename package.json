@@ -33,6 +33,7 @@
     "auto-service:docs": "npm run docs -w @sites/auto-service-docs",
     "subcort:docs": "npm run docs -w @sites/subcort-docs",
     "tractari:docs": "npm run docs -w @sites/tractari-docs",
+    "tavi:docs": "npm run docs -w @sites/tavi-docs",
     "design-study:docs": "npm run docs -w @sites/design-study-docs",
     "saloon:build:mock": "npm run build:mock -w ana-saloon",
     "auto-service:build:mock": "npm run build:mock -w bavauto-gorj",

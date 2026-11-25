@@ -1,0 +1,198 @@
+/*
+ * The docs wear the site's own world: warm paper, blued steel, Newsreader for text and IBM Plex Mono for labels, light
+ * only (docusaurus.config.ts sets the mode with no switch; the token block also covers [data-theme='dark'], so a
+ * crafted ?docusaurus-data-theme=dark paints the same paper). The values are the site's tokens from
+ * src/styles/global.css, copied here because the two builds share no stylesheet.
+ */
+
+@import '@fontsource-variable/newsreader';
+@import '@fontsource/ibm-plex-mono/400.css';
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --paper: oklch(96.6% 0.011 84);
+  --paper-2: oklch(93.4% 0.014 84);
+  --paper-3: oklch(90.2% 0.016 84);
+  --surface: oklch(98.8% 0.005 84);
+  --rule: oklch(85.5% 0.014 84);
+  --rule-strong: oklch(62% 0.016 84);
+  --ink: oklch(23% 0.016 258);
+  --ink-2: oklch(35% 0.014 258);
+  --accent: oklch(43% 0.135 262);
+  --accent-soft: oklch(92% 0.028 262);
+
+  --font-text: 'Newsreader Variable', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ifm-color-primary: var(--accent);
+  --ifm-color-primary-dark: oklch(40% 0.13 262);
+  --ifm-color-primary-darker: oklch(38% 0.125 262);
+  --ifm-color-primary-darkest: oklch(32% 0.11 262);
+  --ifm-color-primary-light: oklch(47% 0.14 262);
+  --ifm-color-primary-lighter: oklch(50% 0.14 262);
+  --ifm-color-primary-lightest: oklch(58% 0.13 262);
+
+  --ifm-color-emphasis-0: var(--paper);
+  --ifm-color-emphasis-100: var(--paper-2);
+  --ifm-color-emphasis-200: var(--paper-3);
+  --ifm-color-emphasis-300: var(--rule);
+  --ifm-color-emphasis-500: var(--rule-strong);
+  --ifm-color-emphasis-600: var(--ink-2);
+  --ifm-color-emphasis-900: var(--ink);
+  --ifm-color-emphasis-1000: var(--ink);
+
+  --ifm-background-color: var(--paper);
+  --ifm-background-surface-color: var(--paper);
+  --ifm-navbar-background-color: var(--surface);
+  --ifm-font-color-base: var(--ink-2);
+  --ifm-heading-color: var(--ink);
+  --ifm-color-content-secondary: var(--ink-2);
+  --ifm-link-color: var(--accent);
+  --ifm-link-hover-color: var(--ink);
+  --ifm-menu-color: var(--ink-2);
+  --ifm-menu-color-active: var(--accent);
+  --ifm-menu-color-background-active: var(--accent-soft);
+  --ifm-menu-color-background-hover: var(--paper-2);
+  --ifm-toc-border-color: var(--rule);
+  --ifm-hr-background-color: var(--rule);
+  --ifm-table-border-color: var(--rule);
+  --ifm-table-stripe-background: transparent;
+  --ifm-code-background: var(--paper-2);
+  --ifm-code-font-size: 0.86em;
+  --ifm-dropdown-background-color: var(--surface);
+  --docusaurus-highlighted-code-line-bg: var(--paper-3);
+
+  --ifm-font-family-base: var(--font-text);
+  --ifm-heading-font-family: var(--font-text);
+  --ifm-font-family-monospace: var(--font-mono);
+  --ifm-font-size-base: 112.5%;
+
+  --ifm-color-secondary-dark: var(--accent);
+  --ifm-color-secondary-contrast-background: var(--accent-soft);
+  --ifm-color-secondary-contrast-foreground: var(--ink);
+  --ifm-color-info-dark: var(--accent);
+  --ifm-color-info-contrast-background: var(--accent-soft);
+  --ifm-color-info-contrast-foreground: var(--ink);
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.navbar__title {
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+
+.markdown h2 {
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 0.9rem;
+}
+
+.markdown a:not(.hash-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.menu__link[aria-current='page'] {
+  font-weight: 700;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.markdown tr {
+  background: var(--surface);
+}
+
+.markdown th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 0;
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 0.45rem 0.7rem;
+}
+
+.markdown td {
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  background: var(--paper-2);
+  border: 0;
+  border-radius: 4px;
+  padding: 0.06em 0.34em;
+  font-variant-ligatures: none;
+}
+
+.theme-code-block {
+  --prism-background-color: var(--surface) !important;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.theme-code-block pre {
+  background-color: var(--surface) !important;
+}
+
+.markdown img {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.doc-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--accent);
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.doc-facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  padding-top: 0.2rem;
+}
+
+.doc-facts dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@media (width < 40rem) {
+  .doc-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

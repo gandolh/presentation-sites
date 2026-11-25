@@ -154,8 +154,12 @@ without revisiting [decisions.md](decisions.md).
 ## Docs sites
 
 Each site has a **Docusaurus docs site** at `sites/<site>/docs-site/` (Starlight
-until 2026-10-19), and churchix has its own at `churchix/docs-site/`. tavi has
-none in v1 ([decisions-tavi.md](decisions-tavi.md)).
+until 2026-10-19), and churchix has its own at `churchix/docs-site/`. tavi's
+was added on 2026-11-25 ([decisions-tavi.md](decisions-tavi.md)); it differs in
+three ways: it has no diagrams step, it writes four pages of its own besides the
+rendered three (the part table, the chapter engine, the 3D island, the copy rule),
+and its sync script copies an image into the docs and turns a link to any other
+repo file into its label, so no page names the repository's host or account.
 Each is a workspace of its own
 (`@sites/<site>-docs`), excluded from its parent site's `tsconfig.json` so
 `astro check` on the site does not walk its `.tsx` files.

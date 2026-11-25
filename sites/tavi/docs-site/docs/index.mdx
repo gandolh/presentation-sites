@@ -1,0 +1,56 @@
+---
+title: Tavi Ceasornicaru
+description: An interactive wristwatch movement on warm paper, for a friend who mends watches. What the site is and how it is built.
+slug: /
+hide_table_of_contents: true
+---
+
+**Tavi Ceasornicaru** is a presentation site for a friend who loves clocks and watches and mends wristwatches. It is an
+interactive watch movement on warm paper: you wind it, slow it down and take it apart, one chapter at a time. Astro,
+React islands and one three.js scene, static, in English.
+
+<dl class="doc-facts">
+  <dt>Runs at</dt>
+  <dd><code>/tavi</code> on the shared origin</dd>
+  <dt>One thing</dt>
+  <dd>Understand a watch by playing with one</dd>
+  <dt>World</dt>
+  <dd>Warm paper and blued steel, light only, drawn and modelled, never photographed</dd>
+  <dt>The movement</dt>
+  <dd>A 21,600 vph train of the NH35 class: six beats a second</dd>
+  <dt>Type</dt>
+  <dd>Newsreader (text) and IBM Plex Mono (labels), self-hosted, so the site makes no third-party request</dd>
+  <dt>Copy</dt>
+  <dd>English, the only English site in the repo</dd>
+</dl>
+
+## The page
+
+One page, seven chapters and one movement. A chapter is prose steps beside a sticky figure; the step at the reading
+line poses the figure.
+
+1. **Energy**: wind the mainspring, take the barrel apart.
+2. **Wheels**: the going train with each mesh's ratio, then the dial side.
+3. **Escapement**: a close-up, one phase of a beat per step.
+4. **Balance**: the hairspring breathing and the amplitude.
+5. **Together**: the whole movement in 3D, taken apart in seven steps with labels.
+6. **The bench**: Tavi's tools at real size.
+7. **Repairs**: the footer, with a quiet repair line.
+
+## The ideas worth knowing
+
+- **One part table, two renderers.** The SVG drawing and the 3D scene both read the same typed table, so a ratio, a
+  tooth count or a beat is written once. See [the part table](./parts.md).
+- **The drawing is always the first paint.** The 3D movement replaces it only where the browser allows, and every
+  other case keeps a working page. See [the 3D island and its fallback ladder](./three.md).
+- **Figures hold their own state.** A chapter's pose, speed, hold and reserve live on the figure element, so the
+  prose script and the control trays share them without a store. See [chapters and islands](./chapters.md).
+- **Everything can stop.** Every figure has a Pause, the header has one for the page, reduced motion starts still, and
+  sound is off until asked for.
+- **True about watches, free about Tavi.** See [the copy rule](./copy.md).
+
+## What these docs are
+
+The pages under **Start here** and **Design** are rendered from the site's own `README.md`, `PRODUCT.md` and
+`DESIGN.md` on every docs build, so they are the same text the repository holds. The pages under **How it is built**
+are written for these docs and describe the code as it is.
