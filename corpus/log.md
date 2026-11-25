@@ -869,3 +869,14 @@ steel, which no source showed. `three/view.ts` now ends a take-apart run exactly
 met once the page grew. The page's HTML is 131 kB gzip (107 before). The board was not updated: brief-board was not
 available in this session. Not pushed. Details and sources in the
 [brief's outcome](briefs/done/18-tavi-chapter-6-the-bench-drawn.md).
+
+## [2026-11-25] brief | 19 tavi, the ticking sound and the spring running down
+
+The header gets a Sound toggle, off on every visit, that loads `lib/sound.ts` on its first press and ticks a synthesised
+burst on the audio clock at the beat of the moving figure nearest the reading line: six a second at 1×, ten and a hundred
+times slower at 1/10 and 1/100, silent while paused, hidden, held or with no figure in view. The clock takes a reserve
+(0 to 41 h) that lowers the balance's amplitude and, at zero, stops it. Chapter 5's tray gains Wind: with the barrel's
+lid off, the 3D mainspring coils as it is wound, the ratchet wheel steps a tooth at a time, and the reserve falls in
+real time (hours and minutes in the readout, a deviation from chapter 1's whole hours). The board was not updated:
+brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/19-tavi-the-ticking-sound-and-the-spring-running-down.md).
