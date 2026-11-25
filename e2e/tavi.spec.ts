@@ -1135,6 +1135,406 @@ test.describe("chapter 2, the wheels and the dial", () => {
   });
 });
 
+// Chapters 3 and 4 are drawn by the clock, not by CSS: a frame loop per figure (lib/clockFigure.ts) writes each turning
+// group's rotation and the hairspring's path from stateAt(t). Chapter 3's steps hold the figure on one phase of a beat.
+const BEAT = 1 / 6;
+/** Half the lift window, in beats: the balance within 25 degrees of rest, of a swing of 200. */
+const HALF_WINDOW = Math.asin(25 / 200) / Math.PI;
+/** The time at a share of the lift window in beat `beat`, as the part table's clock reckons it. */
+const inWindow = (share: number, beat: number) => (beat + 0.5 - HALF_WINDOW + share * 2 * HALF_WINDOW) * BEAT;
+
+/** Poses a figure through the dev hook, as stills and tests do: it holds the figure at `t`. */
+async function poseFigure(page: Page, figure: string, t: number) {
+  await page.evaluate(
+    ({ figure, t }) => {
+      (window as unknown as { taviPose: (id: string, pose: { t: number }) => unknown }).taviPose(figure, { t });
+    },
+    { figure, t },
+  );
+}
+
+/** A turning group's rotation as the loop last drew it, in degrees: the first group under that name in a drawing. */
+async function drawn(page: Page, drawing: string, name: string) {
+  return page.evaluate(
+    ({ drawing, name }) =>
+      Number(
+        /rotate\(([-\d.e]+)\)/.exec(
+          document.querySelector(`#${drawing} [data-clock="${name}"]`)?.getAttribute("transform") ?? "",
+        )?.[1],
+      ),
+    { drawing, name },
+  );
+}
+
+/**
+ * Scrolls back up to a step as a visitor does. readStepOf puts a step's top on the reading line, which leaves the foot
+ * of the step above it there too, so a jump straight back would never bring that step in again: the page first goes
+ * past it, then comes back to it.
+ */
+async function backToStep(page: Page, chapter: string, step: string, phone: boolean) {
+  await page.evaluate(
+    ({ chapter, step }) => {
+      const el = document.querySelector(`#${chapter} .step[data-step="${step}"]`);
+      if (el) window.scrollBy(0, el.getBoundingClientRect().bottom - innerHeight * 0.3);
+    },
+    { chapter, step },
+  );
+  await page.waitForTimeout(150);
+  await readStepOf(page, chapter, step, phone);
+}
+
+/** The page with a chapter's tray island hydrated (from step 2 its figure is stuck whole on screen), then at `step`. */
+async function clockTrayReady(page: Page, chapter: string, phone: boolean, step = "2") {
+  await page.goto("/");
+  await readStepOf(page, chapter, "2", phone);
+  await page.waitForFunction(
+    (c) => document.querySelector(`#${c}-figure astro-island[component-url*="FigureTray"]:not([ssr])`),
+    chapter,
+  );
+  if (step !== "2") await backToStep(page, chapter, step, phone);
+  await expect(page.locator(`#${chapter}-figure`)).toHaveAttribute("data-step", step);
+}
+
+/** Counts every frame the page asks for, from before its scripts run. */
+async function countFrames(page: Page) {
+  await page.addInitScript(() => {
+    const ask = window.requestAnimationFrame.bind(window);
+    const w = window as unknown as { taviFrames: number };
+    w.taviFrames = 0;
+    window.requestAnimationFrame = (callback) => {
+      w.taviFrames += 1;
+      return ask(callback);
+    };
+  });
+}
+
+/** For `ms`: the frames the page asked for, and the writes to a figure (its drawing's attributes and its readouts). */
+async function activity(page: Page, figure: string, ms: number) {
+  return page.evaluate(
+    ({ figure, ms }) =>
+      new Promise<{ frames: number; writes: number }>((resolve) => {
+        const w = window as unknown as { taviFrames: number };
+        const before = w.taviFrames;
+        let writes = 0;
+        const watch = new MutationObserver((records) => {
+          writes += records.length;
+        });
+        const el = document.getElementById(figure);
+        if (el) {
+          watch.observe(el.querySelector("svg") ?? el, { attributes: true, subtree: true });
+          for (const readout of el.querySelectorAll("[data-readout]")) {
+            watch.observe(readout, { childList: true, characterData: true, subtree: true });
+          }
+        }
+        setTimeout(() => {
+          watch.disconnect();
+          resolve({ frames: w.taviFrames - before, writes });
+        }, ms);
+      }),
+    { figure, ms },
+  );
+}
+
+/** Whether the tab looks hidden to the page's scripts, and the event that tells them. */
+async function setHidden(page: Page, hidden: boolean) {
+  await page.evaluate((hide) => {
+    if (hide) Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "hidden" });
+    else delete (document as unknown as { visibilityState?: string }).visibilityState;
+    document.dispatchEvent(new Event("visibilitychange"));
+  }, hidden);
+}
+
+test.describe("chapter 3, the escapement, drawn by the clock", () => {
+  test("opens at 1/10, held on step 1: a tooth on a stone's locking face, the fork on its banking", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "escapement", isPhone(info), "1");
+    const figure = page.locator("#escapement-figure");
+    await expect(figure).toHaveAttribute("data-step", "1");
+    expect(await slowOf(page, "#escapement-figure")).toBe("10");
+    await expect(figure.getByRole("radio", { name: "1/10", exact: true })).toBeChecked();
+    expect(Number(await figure.getAttribute("data-hold"))).toBeCloseTo(2.25 * BEAT, 9);
+    expect(await drawn(page, "escapement-drawing", "escape")).toBe(24);
+    expect(await drawn(page, "escapement-drawing", "fork")).toBeCloseTo(-5.279, 3);
+    await expect(figure.locator('[data-readout="beats"]')).toHaveText("2");
+    await expect(figure.locator('[data-readout="escape"]')).toHaveText("24.0°");
+
+    // In the drawing's own units: some tooth's tip lies on the locking face of the stone that is in.
+    const gap = await page.evaluate(() => {
+      const svg = document.querySelector<SVGSVGElement>("#escapement-drawing");
+      const wheel = svg?.querySelector<SVGGElement>('[data-clock="escape"]');
+      const stones = [...(svg?.querySelectorAll<SVGPathElement>(".p-stones path") ?? [])];
+      if (!svg || !wheel || stones.length !== 2) return NaN;
+      const toSvg = (el: SVGGraphicsElement) =>
+        (svg.getScreenCTM()?.inverse() ?? new DOMMatrix()).multiply(el.getScreenCTM() ?? new DOMMatrix());
+      const points = (d: string) => [...d.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map((m) => [Number(m[1]), Number(m[2])]);
+      const wheelToSvg = toSvg(wheel);
+      // Each tooth's tip is the corner after its back's curve.
+      const tips = [
+        ...(wheel.querySelector("path")?.getAttribute("d") ?? "").matchAll(
+          /Q-?[\d.]+ -?[\d.]+ -?[\d.]+ -?[\d.]+ L(-?[\d.]+) (-?[\d.]+)/g,
+        ),
+      ].map((m) => new DOMPoint(Number(m[1]), Number(m[2])).matrixTransform(wheelToSvg));
+      let best = Infinity;
+      for (const stone of stones) {
+        const outline = points(stone.getAttribute("d") ?? "").map(([x = 0, y = 0]) =>
+          new DOMPoint(x, y).matrixTransform(toSvg(stone)),
+        );
+        // The locking face runs from the locking corner (the outline's first point) to its last.
+        const a = outline[0];
+        const b = outline.at(-1);
+        if (!a || !b) continue;
+        for (const q of tips) {
+          const u = Math.max(
+            0,
+            Math.min(
+              1,
+              ((q.x - a.x) * (b.x - a.x) + (q.y - a.y) * (b.y - a.y)) / ((b.x - a.x) ** 2 + (b.y - a.y) ** 2),
+            ),
+          );
+          best = Math.min(best, Math.hypot(q.x - a.x - u * (b.x - a.x), q.y - a.y - u * (b.y - a.y)));
+        }
+      }
+      return best;
+    });
+    expect(gap).toBeLessThan(0.05);
+  });
+
+  test("each step holds its phase; the steps never touch the page's play state, the header's Pause or the hero", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await clockTrayReady(page, "escapement", phone, "1");
+    const html = page.locator("html");
+    await page.evaluate(() => {
+      const w = window as unknown as { playingChanges: number };
+      w.playingChanges = 0;
+      new MutationObserver(() => {
+        w.playingChanges += 1;
+      }).observe(document.documentElement, { attributeFilter: ["data-playing"] });
+    });
+    const figure = page.locator("#escapement-figure");
+    const pause = figure.getByRole("button", { name: "Pause", exact: true });
+    const phases = [
+      { step: "1", escape: (a: number) => a === 24 },
+      { step: "2", escape: (a: number) => a < 24 && a > 23 },
+      { step: "3", escape: (a: number) => a > 24 && a < 36 },
+      { step: "4", escape: (a: number) => a === 36 },
+    ];
+    for (const [sweep, go] of [
+      [phases, readStepOf],
+      [[...phases].reverse().slice(1), backToStep],
+    ] as const) {
+      for (const { step, escape } of sweep) {
+        await go(page, "escapement", step, phone);
+        await expect(figure).toHaveAttribute("data-step", step);
+        await expect(figure).toHaveAttribute("data-hold", /^\d/);
+        await expect(pause).toHaveAttribute("aria-pressed", "true");
+        const angle = await drawn(page, "escapement-drawing", "escape");
+        expect(escape(angle), `step ${step} draws the escape wheel at ${angle}`).toBe(true);
+        await expect(html).toHaveAttribute("data-playing", "true");
+        await expect(globalPause(page)).toHaveAttribute("aria-pressed", "false");
+      }
+    }
+    // Step 5 holds nothing: the figure runs at its 1/10, the balance swinging.
+    await readStepOf(page, "escapement", "5", phone);
+    await expect(figure).toHaveAttribute("data-step", "5");
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+    const swing = await drawn(page, "escapement-drawing", "balance");
+    await expect.poll(() => drawn(page, "escapement-drawing", "balance")).not.toBe(swing);
+    expect(await page.evaluate(() => (window as unknown as { playingChanges: number }).playingChanges)).toBe(0);
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    expect((await heroAnimations(page)).map((a) => a.group)).toContain("rot-balance");
+  });
+
+  test("un-pressing the tray's Pause lets a held figure run on, and plays the page if it was paused", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    // From step 2 the figure, its tray too, is stuck whole on screen, so a click scrolls nothing.
+    await clockTrayReady(page, "escapement", phone);
+    const figure = page.locator("#escapement-figure");
+    const pause = figure.getByRole("button", { name: "Pause", exact: true });
+    await expect(pause).toHaveAttribute("aria-pressed", "true");
+    await pause.click();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+    // From the held moment on: the balance swings through rest from 21 degrees.
+    await expect.poll(() => drawn(page, "escapement-drawing", "balance")).toBeLessThan(0);
+
+    // Pressed again it pauses the page, as every Pause does.
+    await pause.click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    // A step holds the figure while the page is paused; releasing it plays the page.
+    await readStepOf(page, "escapement", "3", phone);
+    await expect(figure).toHaveAttribute("data-hold", /^\d/);
+    await pause.click();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    await expect(globalPause(page)).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("posed across one beat at 1/100, the escape wheel turns 12 degrees: a recoil first, the drop after", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "escapement", isPhone(info));
+    const figure = page.locator("#escapement-figure");
+    await figure.getByRole("radio", { name: "1/100", exact: true }).click();
+    expect(await slowOf(page, "#escapement-figure")).toBe("100");
+    const at = async (t: number) => {
+      await poseFigure(page, "escapement", t);
+      await expect(figure).toHaveAttribute("data-hold", String(t));
+      return drawn(page, "escapement-drawing", "escape");
+    };
+    const start = 7.25 * BEAT;
+    const before = await at(start);
+    expect((await at(start + BEAT)) - before).toBeCloseTo(12, 3);
+    expect((await at(inWindow(0.075, 7))) - before, "the recoil").toBeLessThan(-0.4);
+    expect((await at(inWindow(0.82, 7))) - before, "the impulse ends short").toBeCloseTo(9.84, 2);
+    expect((await at(inWindow(0.85, 7))) - before, "the drop").toBeGreaterThan(9.84);
+    expect((await at(inWindow(0.88, 7))) - before, "locked").toBeCloseTo(12, 3);
+    await expect(figure.locator('[data-readout="beats"]')).toHaveText("7");
+  });
+
+  test("a part name lights its piece: the stones alone, then the impulse pin alone", async ({ page }, info) => {
+    await page.goto("/");
+    await readStepOf(page, "escapement", "2", isPhone(info));
+    const figure = page.locator("#escapement-figure");
+    const lit = () =>
+      page.evaluate(() => {
+        const drawing = document.querySelector("#escapement-drawing");
+        const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        probe.style.fill = "var(--color-ghost-fill)";
+        drawing?.append(probe);
+        const ghost = getComputedStyle(probe).fill;
+        probe.remove();
+        const colour = (s: string) => getComputedStyle(drawing?.querySelector(s) ?? document.body).fill !== ghost;
+        return {
+          stones: colour(".p-stones path"),
+          fork: colour(".fork-body .fl"),
+          pin: colour(".p-impulse circle"),
+          wheel: colour(".p-escape .fo"),
+        };
+      });
+    const focus = (name: string) =>
+      page
+        .locator("#escapement")
+        .getByRole("button", { name, exact: true })
+        .first()
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+    await focus("pallet stones");
+    await expect(figure).toHaveAttribute("data-focus", "stones");
+    expect(await lit()).toEqual({ stones: true, fork: false, pin: false, wheel: false });
+    await focus("impulse pin");
+    await expect(figure).toHaveAttribute("data-focus", "impulse-pin");
+    expect(await lit()).toEqual({ stones: false, fork: false, pin: true, wheel: false });
+    await focus("pallet fork");
+    expect(await lit()).toEqual({ stones: true, fork: true, pin: false, wheel: false });
+  });
+});
+
+test.describe("chapter 4, the balance, drawn by the clock", () => {
+  test.beforeEach(async ({ page }) => {
+    await countFrames(page);
+  });
+
+  test("runs at 1×; the hairspring's path follows the balance, and the lift window and amplitude are shown", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "balance", isPhone(info));
+    const figure = page.locator("#balance-figure");
+    await expect(figure.getByRole("radio", { name: "1×", exact: true })).toBeChecked();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(figure.locator('[data-readout="amplitude"]')).toHaveText("200°");
+    await expect(page.locator("#balance-drawing .window text")).toHaveText("Lift window, 50°");
+    const hair = () => page.locator('#balance-drawing [data-clock="hair"]').getAttribute("d");
+    await poseFigure(page, "balance", 0);
+    const out = await hair();
+    expect(await drawn(page, "balance-drawing", "balance")).toBe(200);
+    await expect(figure.locator('[data-readout="balance"]')).toHaveText("+200°");
+    await poseFigure(page, "balance", BEAT);
+    expect(await drawn(page, "balance-drawing", "balance")).toBe(-200);
+    await expect(figure.locator('[data-readout="balance"]')).toHaveText("−200°");
+    expect(await hair()).not.toBe(out);
+  });
+
+  test("the loop asks for no frame and draws nothing while paused, scrolled away or hidden", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await clockTrayReady(page, "balance", phone, "1");
+    await page.waitForTimeout(300);
+    const running = await activity(page, "balance-figure", 500);
+    expect(running.writes).toBeGreaterThan(5);
+
+    // The figure's own Pause, on screen in its tray: it pauses the whole page.
+    const pause = page.locator("#balance-figure").getByRole("button", { name: "Pause", exact: true });
+    await pause.click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    await page.waitForTimeout(100);
+    expect(await activity(page, "balance-figure", 1000), "paused").toEqual({ frames: 0, writes: 0 });
+    await pause.click();
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(200);
+    expect(await activity(page, "balance-figure", 1000), "scrolled away").toEqual({ frames: 0, writes: 0 });
+    await readStepOf(page, "balance", "2", phone);
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+
+    await setHidden(page, true);
+    await page.waitForTimeout(100);
+    expect(await activity(page, "balance-figure", 1000), "hidden").toEqual({ frames: 0, writes: 0 });
+    await setHidden(page, false);
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("chapter 4 starts on a still frame until its Pause is released", async ({ page }, info) => {
+      await clockTrayReady(page, "balance", isPhone(info));
+      await page.waitForTimeout(300);
+      expect(await activity(page, "balance-figure", 1000)).toEqual({ frames: 0, writes: 0 });
+      const pause = page.locator("#balance-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      await pause.click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      expect((await activity(page, "balance-figure", 500)).writes).toBeGreaterThan(0);
+    });
+  });
+});
+
+test.describe("chapters 3 and 4 without scripting", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("read in full beside their still drawings, the trays hidden, the pagers on to chapters 4 and 5", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator("#escapement .step p")).toHaveCount(5);
+    await expect(page.locator("#balance .step p")).toHaveCount(5);
+    for (const step of await page.locator("#escapement .step p, #balance .step p").all())
+      await expect(step).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the escapement close up/ })).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the balance close up/ })).toBeVisible();
+    // Built at step 1's moment: locked, one tooth on.
+    expect(await drawn(page, "escapement-drawing", "escape")).toBe(24);
+    for (const id of ["escapement", "balance"]) await expect(page.locator(`#${id}-figure .tray`)).toBeHidden();
+    await expect(
+      page.locator("#escapement").getByRole("link", { name: "Next chapter 4. Balance, six swings a second" }),
+    ).toBeVisible();
+    await expect(
+      page.locator("#balance").getByRole("link", { name: "Next chapter 5. Together, apart and back again" }),
+    ).toBeVisible();
+  });
+});
+
 // A short screen in one column, a phone turned sideways, and a small laptop window: the sticky figure must leave the
 // step on the reading line readable. Both sizes take the one-column reading line, whichever project runs them.
 for (const viewport of [

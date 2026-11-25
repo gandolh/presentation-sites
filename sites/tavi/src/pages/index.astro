@@ -11,12 +11,11 @@ import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
 import { dialSvg } from "../movement/svg/dial.ts";
+import { BALANCE_START, closeUpSvg, ESCAPEMENT_HOLDS, poseAt, readoutsAt } from "../movement/svg/escapement.ts";
 
-// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 and 2
+// One long page: the hero, the contents band, then the chapters in order; chapter 7 is the footer. Chapters 1 to 4
 // are built on the chapter engine (components/chapter); the others are still their heads, which their briefs fill in.
 const chapters = [
-  { id: "escapement", head: "3. Escapement, let out tooth by tooth" },
-  { id: "balance", head: "4. Balance, six swings a second" },
   { id: "together", head: "5. Together, apart and back again" },
   { id: "bench", head: "6. The bench, Tavi’s tools" },
 ];
@@ -28,6 +27,13 @@ const wheelsPose = { e: 0 };
 // Both of chapter 2's faces frame the same stretch of the movement, mirrored about the centre arbor, so turning the
 // figure over keeps every part where it was.
 const wheelsFrame = "-245 -205 490 410";
+
+// Chapters 3 and 4 are drawn by the clock (lib/clockFigure.ts): their figures lift nothing. Chapter 3's steps each hold
+// one phase of a beat, so its drawing is built at step 1's moment, locked; chapter 4 runs from the start.
+const still = { e: 0 };
+const escapementStart = ESCAPEMENT_HOLDS["1"] ?? 0;
+const escapementReadouts = readoutsAt(poseAt(escapementStart));
+const balanceReadouts = readoutsAt(poseAt(BALANCE_START));
 ---
 
 <Base>
@@ -131,6 +137,125 @@ const wheelsFrame = "-245 -205 490 410";
       <FigureTray slot="tray" client:visible figure="wheels-figure" />
     </Chapter>
 
+    <Chapter
+      id="escapement"
+      n={3}
+      head="3. Escapement, let out tooth by tooth"
+      caption="A close-up of the escapement from the back, the bridges off and the balance cut away round its staff: the escape wheel, the pallet fork with its two ruby stones between two banking pins, and the roller with its ruby impulse pin in the fork’s notch."
+      opening={still}
+      speed={10}
+      next={{ href: "#balance", head: "4. Balance, six swings a second" }}
+    >
+      <Step n={1} pose={still}>
+        This is what holds the spring back. A tooth of the <PartName part="escape">escape wheel</PartName> rests on one
+        of the two <PartName part="stones">pallet stones</PartName>, and the whole train waits on it. The
+        <PartName part="pallet">pallet fork</PartName> that carries the stones lies against one of its banking pins.
+      </Step>
+      <Step n={2} pose={still}>
+        The <PartName part="balance">balance</PartName> swings back through the middle. Its
+        <PartName part="impulse-pin">impulse pin</PartName>, set in the <PartName part="roller">roller</PartName> on its
+        staff, catches the fork’s notch and turns the fork. The stone slides off the tooth, and the wheel even backs up
+        a hair: the recoil.
+      </Step>
+      <Step n={3} pose={still}>
+        Now the tooth pushes on the stone’s slanted end, its impulse face. The push runs through the fork to the
+        <PartName part="impulse-pin">impulse pin</PartName>, and the balance gets its kick for the next swing. Here the
+        wheel turns about ten degrees giving it.
+      </Step>
+      <Step n={4} pose={still}>
+        The tooth slips off the stone’s far corner and the wheel jumps free, the drop, until the other stone catches the
+        next tooth. Locked again, half a tooth on, and the fork rests against its other banking pin.
+      </Step>
+      <Step n={5} pose={still}>
+        Twelve degrees a beat: two beats let one of the <PartName part="escape">escape wheel</PartName>’s
+        <span class="fig">15</span> teeth pass, so it turns once in <span class="fig">30</span> beats, five seconds.
+        Thomas Mudge made the first lever escapement in England around 1755; nearly every mechanical watch made since
+        1900 has one.
+      </Step>
+      <Fragment
+        slot="figure"
+        set:html={closeUpSvg({
+          pose: "escapement",
+          id: "escapement-drawing",
+          viewBox: "-42 54 141 105",
+          label:
+            "Diagram of the escapement close up: the escape wheel’s fifteen teeth, the pallet fork with two ruby pallet stones, one holding a tooth, the banking pins either side of the fork, and the roller with its impulse pin.",
+          t: escapementStart,
+        })}
+      />
+      <FigureTray slot="tray" client:visible figure="escapement-figure" speed={10} />
+      <p slot="tray" class="readout">
+        <span>Beats</span>
+        <span class="fig" data-readout="beats">
+          {escapementReadouts.beats}
+        </span>
+      </p>
+      <p slot="tray" class="readout">
+        <span>Escape wheel</span>
+        <span class="fig" data-readout="escape">
+          {escapementReadouts.escape}
+        </span>
+      </p>
+    </Chapter>
+
+    <Chapter
+      id="balance"
+      n={4}
+      head="4. Balance, six swings a second"
+      caption="The balance close up from the back, its cock off: the rim with its three arms and four timing screws, the hairspring coiled on top from the collet out to its stud, the roller and impulse pin under it, the pallet fork beside it, and the lift window drawn as a thin arc towards the fork."
+      opening={still}
+      next={{ href: "#together", head: "5. Together, apart and back again" }}
+    >
+      <Step n={1} pose={still}>
+        The <PartName part="balance">balance</PartName> is the part that keeps the time. It swings one way until the
+        <PartName part="hairspring">hairspring</PartName> coiled on its staff pulls it back, then the other way until
+        the spring pushes it back again.
+      </Step>
+      <Step n={2} pose={still}>
+        Each swing is one beat: six a second, <span class="fig">21,600</span> an hour, three times out and back. That is
+        3 Hz, the rate of a Seiko NH35.
+      </Step>
+      <Step n={3} pose={still}>
+        As it swings, the <PartName part="hairspring">hairspring</PartName> breathes: its coils open out as the balance
+        unwinds it and close in as it winds it back. At 1/10 you can watch them.
+      </Step>
+      <Step n={4} pose={still}>
+        The <PartName part="pallet">pallet fork</PartName> can push only while the
+        <PartName part="impulse-pin">impulse pin</PartName> crosses the lift window, here
+        <span class="fig">50</span> degrees in the middle of a swing of <span class="fig">200</span> each way. The rest
+        of the time the balance swings free, so its rate is set by the balance and its spring, not by the push.
+      </Step>
+      <Step n={5} pose={still}>
+        Christiaan Huygens put a spiral spring on a watch balance in 1675, and watches came to keep time within about
+        ten minutes a day. A new NH35 is made to keep within <span class="fig">−20</span> and
+        <span class="fig">+40</span> seconds a day.
+      </Step>
+      <Fragment
+        slot="figure"
+        set:html={closeUpSvg({
+          pose: "balance",
+          id: "balance-drawing",
+          viewBox: "-62 76 150 112",
+          label:
+            "Diagram of the balance close up: the rim with three arms and four timing screws, the hairspring coiled on top, the roller and impulse pin under it, and a thin arc marking the lift window towards the pallet fork.",
+          t: BALANCE_START,
+        })}
+      />
+      <FigureTray slot="tray" client:visible figure="balance-figure" />
+      <p slot="tray" class="readout">
+        <span>Amplitude</span>
+        <span class="fig" data-readout="amplitude">
+          {balanceReadouts.amplitude}
+        </span>
+      </p>
+      <p slot="tray" class="readout">
+        <span>Balance</span>
+        <span class="fig" data-readout="balance">
+          {balanceReadouts.balance}
+        </span>
+      </p>
+    </Chapter>
+
     {chapters.map((chapter) => (
       <section class="chapter" id={chapter.id} aria-labelledby={`${chapter.id}-head`}>
         <div class="wrap">
@@ -144,3 +269,11 @@ const wheelsFrame = "-245 -205 490 410";
 
   <Footer />
 </Base>
+
+<script>
+  import { startClockFigure } from "../lib/clockFigure";
+  import { BALANCE_START, ESCAPEMENT_HOLDS } from "../movement/svg/escapement";
+
+  startClockFigure("escapement", { holds: ESCAPEMENT_HOLDS, start: ESCAPEMENT_HOLDS["1"] ?? 0 });
+  startClockFigure("balance", { start: BALANCE_START });
+</script>

@@ -711,6 +711,19 @@
   .tray-row {
     grid-column: 1 / -1;
   }
+  /* A figure's readout in its tray, as the sketch's: the label in the body face, muted, the figure in Plex Mono ink. */
+  .readout {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  .readout .fig {
+    font-size: 1rem;
+    color: var(--color-ink);
+  }
 
   /* Under a chapter: back to the contents, on to the next chapter. */
   .pager {
@@ -1290,6 +1303,81 @@
     fill: var(--po);
   }
 
+  /* The escapement close up (chapters 3 and 4), drawn four to five times the hero's scale. Its outlines keep the
+     hero's weight on screen whatever the zoom (non-scaling strokes, in CSS pixels). A piece made of overlapping
+     outlines draws every border (`.ol`) under every fill (`.fl`), so it reads as one piece. */
+  .closeup :is(.fo, .ol, .stone, .jewel-pin, .hair, .cut, .window path, .index-mark) {
+    vector-effect: non-scaling-stroke;
+  }
+  .closeup .fo {
+    stroke-width: 1.1;
+  }
+  .closeup .ol {
+    fill: var(--po);
+    stroke: var(--po);
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+  }
+  .closeup .fl {
+    fill: var(--pf);
+  }
+  .closeup .p-pallet .stone {
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* The pallet stones and the impulse pin are ruby, set in steel. Each declares its own ruby, so it keeps it when it
+     alone is named while the part round it falls to the ghost pair. */
+  .p-stones,
+  .p-impulse {
+    --pr: var(--color-part-ruby);
+    --prl: var(--color-part-ruby-line);
+  }
+  .closeup .jewel-pin {
+    fill: var(--pr);
+    stroke: var(--prl);
+    stroke-width: 1;
+  }
+  .p-roller,
+  .p-banking {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  /* The hairspring, a fine wire on top, and its steel stud. */
+  .p-hairspring {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  .closeup .hair {
+    fill: none;
+    stroke: var(--ph);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* Chapter 3 cuts the balance away round its staff: the cut edge is a dashed line, as an assembly axis is. */
+  .closeup .cut {
+    fill: none;
+    stroke: var(--color-rule-strong);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  /* Chapter 4's lift window, a thin arc in ink beside the fork, and the mark on the rim that reads against it. */
+  .closeup .window path {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .closeup .window text {
+    font-family: var(--font-body);
+    font-size: 3.5px;
+    fill: var(--color-ink);
+  }
+  .closeup .index-mark {
+    stroke: var(--color-ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+
   .stage[data-step="1"]:not([data-focus]) .mode-train .ratio:not(.s1),
   .stage[data-step="2"]:not([data-focus]) .mode-train .ratio:not(.s2),
   .stage[data-step="3"]:not([data-focus]) .mode-train .ratio:not(.s3),
@@ -1327,6 +1415,8 @@
       .s4,
       .s4 *
     ),
+  .stage[data-step="4"]:not([data-focus]) .closeup :is(.part, .fork-body, .pin):not(.s4, .s4 *),
+  .stage[data-step="5"]:not([data-focus]) .closeup :is(.part, .fork-body, .pin):not(.s5, .s5 *),
   .stage[data-focus]
     .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
@@ -1410,6 +1500,9 @@
   @media (max-width: 40rem) {
     .callout text {
       font-size: 20px;
+    }
+    .closeup .window text {
+      font-size: 5.6px;
     }
     .ratio text {
       font-size: 22px;

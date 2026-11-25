@@ -2,7 +2,9 @@
 // so the steps' module script and the tray's island read and write the same thing:
 // - the pose: `data-step` (which step's parts stay in colour) and `--e` (how far the lifted parts have risen);
 // - the part the prose points at: `data-focus`, and `is-focus` on that part's groups in the drawing;
-// - the speed: `--slow` (1, 10 or 100), which stretches every ticking duration in the stylesheet.
+// - the speed: `--slow` (1, 10 or 100), which stretches every ticking duration in the stylesheet;
+// - a hold: `data-hold`, the moment of the figure's clock it stands still at (seconds), when a step asks for one. A
+//   hold is the figure's own: it leaves the page's play state alone, and the tray's Pause shows pressed while it lasts.
 // Every change fires one `tavi:figure` event on the figure.
 
 export type Speed = 1 | 10 | 100;
@@ -48,6 +50,25 @@ export function setSpeed(figure: HTMLElement, speed: Speed): void {
 export function speedOf(figure: HTMLElement): Speed {
   const value = Number(figure.style.getPropertyValue("--slow"));
   return SPEEDS.find((speed) => speed === value) ?? 1;
+}
+
+/** Holds the figure still at `t` seconds of its clock (lib/clockFigure.ts), whether or not the page plays. */
+export function hold(figure: HTMLElement, t: number): void {
+  figure.dataset.hold = String(t);
+  changed(figure);
+}
+
+/** Lets a held figure run on from where it stood; a figure that isn't held is left as it is. */
+export function release(figure: HTMLElement): void {
+  if (figure.dataset.hold === undefined) return;
+  delete figure.dataset.hold;
+  changed(figure);
+}
+
+/** The moment the figure is held at, or null while it isn't held. */
+export function heldAt(figure: HTMLElement): number | null {
+  const value = figure.dataset.hold;
+  return value === undefined ? null : Number(value);
 }
 
 /** Calls `listener` after every change to the figure; returns the unsubscribe. */

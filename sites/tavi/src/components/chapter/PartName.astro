@@ -1,15 +1,21 @@
 ---
-import { MOVEMENT, partOf, type PartId } from "../../movement/parts.ts";
+import { MOVEMENT, partOf, type Ink, type PartId } from "../../movement/parts.ts";
 
 // A part named in the prose: a button in the part's own text shade (from the part table), underlined in its metal.
 // Hovering or focusing it lights the part on the chapter's figure and drops every other part to the ghost pair
 // (lib/chapters.ts). Without scripting it is coloured words.
+//
+// The escapement's close-up also names three pieces the part table keeps inside a part: the pallet stones (in the
+// pallet fork), the roller and the impulse pin (on the balance staff). The stones and the pin are ruby, which has no
+// prose shade, so they read in the page's ink.
+const PIECES = { stones: null, roller: "steel", "impulse-pin": null } as const satisfies Record<string, Ink>;
+
 interface Props {
-  part: PartId;
+  part: PartId | keyof typeof PIECES;
 }
 
 const { part } = Astro.props;
-const ink = partOf(MOVEMENT, part).ink;
+const ink = part in PIECES ? PIECES[part as keyof typeof PIECES] : partOf(MOVEMENT, part as PartId).ink;
 ---
 
 <button type="button" class:list={["part-name", ink && `k-${ink}`]} data-part={part}>

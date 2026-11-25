@@ -1,10 +1,11 @@
 // A moving figure's tray: its own Pause and its Speed, with room for a chapter's own controls (`children`). A React
 // island, hydrated when it scrolls into view. Nothing lives in React: the Pause is the page's play state
-// (lib/playback.ts) and the speed is the figure's `--slow` (lib/figure.ts), so the header's Pause and the steps'
-// script stay in step with it, both ways.
+// (lib/playback.ts) and the figure's hold, the speed is the figure's `--slow` (lib/figure.ts), so the header's Pause and
+// the steps' script stay in step with it, both ways. While a step holds the figure still, its Pause shows pressed;
+// un-pressing it lets the figure run, and plays the page if it was paused.
 
 import { useCallback, useSyncExternalStore, type ReactNode } from "react";
-import { onFigureChange, setSpeed, speedOf, type Speed } from "../../lib/figure";
+import { heldAt, onFigureChange, release, setSpeed, speedOf, type Speed } from "../../lib/figure";
 import { isPlaying, setPlaying, subscribe } from "../../lib/playback";
 import { RadioGroup } from "../ui/RadioGroup";
 import { Toggle } from "../ui/Toggle";
@@ -43,6 +44,14 @@ export default function FigureTray({ figure, speed: opening = 1, children }: Pro
     },
     () => opening,
   );
+  const held = useSyncExternalStore(
+    subscribeToFigure,
+    () => {
+      const el = element();
+      return el ? heldAt(el) !== null : false;
+    },
+    () => false,
+  );
 
   // The Pause and the Speed share the tray's first row; a chapter's own controls take the cells under it, or the
   // cells beside it where the tray is one row (`.tray` and `.tray-row` in the stylesheet).
@@ -50,12 +59,18 @@ export default function FigureTray({ figure, speed: opening = 1, children }: Pro
     <>
       <div className="tray-row flex flex-wrap items-center gap-x-6 gap-y-3 max-sm:gap-x-3 max-sm:gap-y-2">
         <Toggle
-          pressed={!playing}
+          pressed={!playing || held}
           onPressedChange={(pressed) => {
-            setPlaying(!pressed);
+            if (pressed) {
+              setPlaying(false);
+              return;
+            }
+            const el = element();
+            if (el) release(el);
+            setPlaying(true);
           }}
-          // Before the island hydrates, the page's play state already shows the pressed look.
-          className="in-data-[playing=false]:border-accent in-data-[playing=false]:bg-accent-soft in-data-[playing=false]:text-accent"
+          // Before the island hydrates, the page's play state and the figure's hold already show the pressed look.
+          className="in-data-hold:border-accent in-data-hold:bg-accent-soft in-data-hold:text-accent in-data-[playing=false]:border-accent in-data-[playing=false]:bg-accent-soft in-data-[playing=false]:text-accent"
         >
           <svg className="size-3.5 shrink-0 fill-current" viewBox="0 0 14 14" aria-hidden="true">
             <path d="M3 2h3v10H3zM8 2h3v10H8z" />
