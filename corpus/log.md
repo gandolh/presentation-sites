@@ -855,3 +855,17 @@ same windows. The figure keeps the choice and the turn (`data-pick`, `data-turn`
 brief's list, which put the train before the pallet fork. The board was not updated: brief-board was not available in
 this session. Not pushed. Details in the
 [brief's outcome](briefs/done/17-tavi-chapter-5-together-apart-with-labels.md).
+
+## [2026-11-25] brief | 18 tavi, chapter 6: the bench, drawn
+
+Chapter 6 draws Tavi's bench from above, at real size on a 240 x 164 mm mat: a typed tool table and its SVG builders
+in `sites/tavi/src/bench/` (`node:test`: every tool on the mat, none on another, the movement at the NH35's 27.4 mm,
+the loupe's lens over the balance). Bergeon's 4040 holder holds the hero's drawing, still; beside it a 2611 loupe, the
+30081 set of five screwdrivers in their colour code, a Dumont No. 5 and a brass pair of tweezers, a 7013 oiler and an
+oil cup. Six steps: the whole bench, then each tool lit by focus by subtraction; each tool's name in the prose lights
+it. Step 3 slides the loupe over the balance (a jump under reduced motion); nothing loops, so the figure has no tray.
+Ten `--color-tool-*` tokens carry the coloured caps and the loupe's body. The blades are steel, not the brief's blued
+steel, which no source showed. `three/view.ts` now ends a take-apart run exactly on its target, which a chapter 5 check
+met once the page grew. The page's HTML is 131 kB gzip (107 before). The board was not updated: brief-board was not
+available in this session. Not pushed. Details and sources in the
+[brief's outcome](briefs/done/18-tavi-chapter-6-the-bench-drawn.md).
