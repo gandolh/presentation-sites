@@ -825,3 +825,18 @@ and the amplitude. `window.taviPose` poses both in development. `tavi.spec.ts` c
 phases, the play state left alone, 12 degrees a beat, the loop's stops, reduced motion and no scripting. The board was
 not updated: brief-board was not available in this session. Not pushed. Details in the
 [brief's outcome](briefs/done/15-tavi-chapters-3-and-4-escapement-and-balance.md).
+
+## [2026-11-25] brief | 16 tavi, the 3D movement and the fallback ladder
+
+The prototype's three.js movement is in the site as one React island, `components/together/MovementFigure.tsx`,
+with the scene in `src/three/` on three.js 0.187.0 (bundled, imported only by the island; subcort, tractari and
+design-study stay on 0.185.1). It wraps the hero's drawing (`client:idle`, loading once the hero is on screen, phones
+included) and chapter 5's new `whole` poster (`client:visible`, 200px early; a phone gets "Turn it in 3D" unless the
+hero already loaded three.js). The scene reads the part table and the clock, and samples every outline from the
+drawing's own builders, so its first frame is the poster's flat view, the plate within 2 px; the first drag or
+arrow key eases to the prototype's tilt. Without WebGL the poster stays, with one line in chapter 5; a lost context
+swaps it back. Gear outlines are screen-width `LineSegments2` lines: one-pixel lines read at half the drawing's
+weight at device pixel ratio 2. 80 draw calls; the scene chunk is 154.5 kB gzip, the island 2.0 kB. The phone header
+is now `position: relative`, so the Chapters drawer stays over the canvas. Chapter 5 has its head, one step and its
+tray; brief 17 adds the rest. The board was not updated: brief-board was not available in this session. Not pushed.
+Details in the [brief's outcome](briefs/done/16-tavi-the-3d-movement-and-the-fallback-ladder.md).
