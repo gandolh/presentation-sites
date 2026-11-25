@@ -248,14 +248,55 @@ export function curtain(parent: Object3D, pts: readonly Pt[], z0: number, z1: nu
   const wall = new BufferGeometry();
   wall.setAttribute("position", new BufferAttribute(position, 3));
   wall.setIndex(index);
-  parent.add(new Mesh(wall, flatMaterial(paint.fill)));
-  const top = new LineSegmentsGeometry().setPositions(
+  const strip = new Mesh(wall, flatMaterial(paint.fill));
+  strip.name = CURTAIN_WALL;
+  parent.add(strip);
+  const top = new LineSegments2(topOf(pts, z1), lineMaterial(paint.line));
+  top.name = CURTAIN_TOP;
+  parent.add(top);
+}
+
+const CURTAIN_WALL = "curtain-wall";
+const CURTAIN_TOP = "curtain-top";
+
+function topOf(pts: readonly Pt[], z1: number) {
+  return new LineSegmentsGeometry().setPositions(
     pts.slice(1).flatMap((p, i) => {
       const q = pts[i] ?? p;
       return [q[0], -q[1], z1 + 0.05, p[0], -p[1], z1 + 0.05];
     }),
   );
-  parent.add(new LineSegments2(top, lineMaterial(paint.line)));
+}
+
+/**
+ * Moves a curtain made by `curtain` to a new spiral of as many points. The first call on a copy of the curtain gives
+ * it geometry of its own, so a view that winds its spring leaves the template's, and every other view's, alone.
+ */
+export function setCurtain(parent: Object3D, pts: readonly Pt[], z0: number, z1: number): void {
+  const wall = parent.getObjectByName(CURTAIN_WALL);
+  if (wall instanceof Mesh) {
+    if (!wall.userData["own"]) {
+      wall.geometry = wall.geometry.clone();
+      wall.userData["own"] = true;
+    }
+    const attr = wall.geometry.getAttribute("position");
+    const pos = attr.array as Float32Array;
+    const n = Math.min(pts.length, attr.count / 2);
+    for (let i = 0; i < n; i++) {
+      const p = pts[i];
+      if (p) pos.set([p[0], -p[1], z0, p[0], -p[1], z1], i * 6);
+    }
+    attr.needsUpdate = true;
+    wall.geometry.computeBoundingSphere();
+  }
+  const top = parent.getObjectByName(CURTAIN_TOP);
+  if (top instanceof LineSegments2) {
+    const was = top.geometry;
+    top.geometry = topOf(pts, z1);
+    // The template's geometry is shared with other views: only one this view made is freed.
+    if (top.userData["own"]) was.dispose();
+    top.userData["own"] = true;
+  }
 }
 
 /** A flat ribbon `width` wide along `n` points at height `z`; the returned function moves it to new points. */

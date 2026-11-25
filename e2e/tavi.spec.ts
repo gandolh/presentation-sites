@@ -1549,6 +1549,10 @@ interface GlStats {
   turn: number;
   lit: string | null;
   pixelRatio: number;
+  reserve: number;
+  spring: number;
+  ratchet: number;
+  balance: number;
 }
 
 /** The 3D view's numbers through the dev hook; an empty pose changes nothing. */
@@ -2654,4 +2658,185 @@ test("every request stays on the origin, and the only fonts are Newsreader and I
     fonts.some((url) => url.includes("newsreader")),
     "a Newsreader face loads",
   ).toBe(true);
+});
+
+// The ticking sound, off until the Sound toggle is pressed, and chapter 5's Wind. The sound counts the ticks it has
+// scheduled in `window.taviSound` in development builds.
+test.describe("the ticking sound", () => {
+  /** Counts every AudioContext the page makes, so a test can say none exists before the first press. */
+  async function spyOnAudio(page: Page) {
+    await page.addInitScript(() => {
+      const w = window as unknown as { AudioContext: typeof AudioContext; madeContexts: number };
+      w.madeContexts = 0;
+      const Real = w.AudioContext;
+      w.AudioContext = class extends Real {
+        constructor(...args: ConstructorParameters<typeof AudioContext>) {
+          super(...args);
+          w.madeContexts += 1;
+        }
+      };
+    });
+  }
+  const made = (page: Page) => page.evaluate(() => (window as unknown as { madeContexts: number }).madeContexts);
+  const ticks = (page: Page) =>
+    page.evaluate(() => (window as unknown as { taviSound?: { ticks: number } }).taviSound?.ticks ?? 0);
+  const toggle = (page: Page) => page.locator("[data-toggle-sound]");
+
+  test("is off on every visit: no audio object and no sound module until the toggle is pressed", async ({ page }) => {
+    await spyOnAudio(page);
+    const asked: string[] = [];
+    page.on("request", (request) => {
+      if (/lib\/sound/.test(request.url())) asked.push(request.url());
+    });
+    await page.goto("/");
+    await page.waitForTimeout(1500);
+    await expect(toggle(page)).toHaveAccessibleName("Sound");
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await made(page)).toBe(0);
+    expect(asked).toEqual([]);
+    expect(await ticks(page)).toBe(0);
+
+    await toggle(page).click();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "true");
+    expect(await made(page)).toBe(1);
+    await expect.poll(() => ticks(page)).toBeGreaterThan(0);
+    expect(asked.length).toBeGreaterThan(0);
+    // Nothing is kept: a reload starts off again.
+    await page.reload();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await made(page)).toBe(0);
+  });
+
+  test("ticks six times a second at 1×, none while paused, and a second press stops it", async ({ page }) => {
+    await page.goto("/");
+    // The 3D movement loads on idle; let it settle, as a visitor reading the first screen would.
+    await page.waitForTimeout(3000);
+    await toggle(page).click();
+    await expect.poll(() => ticks(page)).toBeGreaterThan(0);
+    const sample = () =>
+      page.evaluate(() => ({
+        n: (window as unknown as { taviSound?: { ticks: number } }).taviSound?.ticks ?? 0,
+        at: performance.now(),
+      }));
+    const from = await sample();
+    await page.waitForTimeout(3000);
+    const to = await sample();
+    const rate = ((to.n - from.n) / (to.at - from.at)) * 1000;
+    expect(rate, "ticks a second").toBeGreaterThan(5);
+    expect(rate, "ticks a second").toBeLessThan(7.2);
+
+    await page.locator("[data-toggle-play]").click();
+    await page.waitForTimeout(400);
+    const paused = await ticks(page);
+    await page.waitForTimeout(1000);
+    expect(await ticks(page), "no tick while paused").toBe(paused);
+    await page.locator("[data-toggle-play]").click();
+    await expect.poll(() => ticks(page)).toBeGreaterThan(paused);
+
+    await toggle(page).click();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    await page.waitForTimeout(300);
+    const stopped = await ticks(page);
+    await page.waitForTimeout(1000);
+    expect(await ticks(page), "no tick after the second press").toBe(stopped);
+  });
+
+  test("follows the speed: about 0.6 a second at 1/10", async ({ page }, info) => {
+    test.skip(isPhone(info), "the tray's speed is read on the desktop layout");
+    await page.goto("/#escapement");
+    await page.locator("#balance").scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      document.getElementById("balance")?.scrollIntoView({ block: "center" });
+    });
+    await toggle(page).click();
+    await expect.poll(() => ticks(page), { timeout: 10_000 }).toBeGreaterThan(0);
+    await page.evaluate(() => {
+      document.getElementById("balance-figure")?.style.setProperty("--slow", "10");
+    });
+    await page.waitForTimeout(500);
+    const from = await ticks(page);
+    await page.waitForTimeout(5000);
+    const rate = ((await ticks(page)) - from) / 5;
+    expect(rate, "ticks a second at 1/10").toBeGreaterThan(0.4);
+    expect(rate, "ticks a second at 1/10").toBeLessThan(0.9);
+  });
+
+  test("the toggle is not offered without scripting", async ({ browser }, info) => {
+    const context = await browser.newContext({ baseURL: info.project.use.baseURL, javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.locator("[data-toggle-sound]")).toBeHidden();
+    await context.close();
+  });
+});
+
+test.describe("chapter 5's Wind", () => {
+  test.beforeEach(({ page: _page }, info) => {
+    test.skip(isPhone(info), "the 3D view is a desktop's here");
+  });
+
+  test("winds the 3D spring and steps the ratchet wheel a tooth at a time, and the readout and the voice agree", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    const wind = page.locator("#together-figure").getByRole("slider", { name: "Wind" });
+    await expect(wind).toHaveAttribute("aria-valuenow", "100");
+    await expect(page.locator("#together-figure .tray")).toContainText("41:00 of 41 h");
+    await wind.focus();
+    await page.keyboard.press("Home");
+    await expect(wind).toHaveAttribute("aria-valuetext", "Wound to 0 of 41 hours");
+    await expect(page.locator("#together-figure .tray")).toContainText("0:00 of 41 h");
+    const down = await glPose(page, "together", { apart: 1 });
+    expect(down.reserve).toBe(0);
+    expect(down.spring).toBe(0);
+    expect(down.ratchet).toBeLessThan(0);
+    await page.keyboard.press("End");
+    await expect(page.locator("#together-figure .tray")).toContainText("41:00 of 41 h");
+    const up = await glStats(page, "together");
+    expect(up.spring).toBe(1);
+    expect(up.ratchet).toBe(0);
+    // One slider step is 0.41 h: the ratchet wheel is whole teeth at every value between.
+    const teeth = new Set<number>();
+    await wind.focus();
+    for (let i = 0; i < 12; i++) {
+      await page.keyboard.press("ArrowLeft");
+      teeth.add((await glStats(page, "together")).ratchet);
+    }
+    expect(teeth.size).toBeGreaterThan(1);
+    for (const n of teeth) expect(Number.isInteger(n)).toBe(true);
+  });
+
+  test("the reserve falls in real time at 1×, and a spring let down stills the balance", async ({ page }) => {
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    await page.evaluate(() => {
+      document.getElementById("together-figure")?.removeAttribute("data-hold");
+    });
+    await glPose(page, "together", { reserve: 10 });
+    await page.locator("[data-toggle-play]").evaluate((el) => {
+      if (el.getAttribute("aria-pressed") === "true") (el as HTMLButtonElement).click();
+    });
+    await page.waitForTimeout(3000);
+    const after = await glStats(page, "together");
+    const used = 10 - after.reserve;
+    expect(used, "hours used in about three seconds").toBeGreaterThan(1.5 / 3600);
+    expect(used, "hours used in about three seconds").toBeLessThan(4.5 / 3600);
+    // A full spring swings wider than a low one.
+    const swing = async (reserve: number) => {
+      let widest = 0;
+      for (const t of [0, 0.5 / 6]) {
+        const s = await glPose(page, "together", { reserve, t: t + 10 * 3600 });
+        widest = Math.max(widest, Math.abs(s.balance));
+      }
+      return widest;
+    };
+    expect(await swing(41)).toBeGreaterThan(await swing(5));
+    const still = await glPose(page, "together", { reserve: 0, t: 3 / 6 + 7 });
+    expect(still.balance).toBe(0);
+    await page.waitForTimeout(400);
+    expect((await glStats(page, "together")).t, "the clock stands with no power").toBe(still.t);
+  });
 });

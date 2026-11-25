@@ -12,9 +12,21 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 /** The time the hands show at t = 0, in seconds after twelve: 10:10:30, as watches are set to be photographed. */
 const HANDS_START = 10 * 3600 + 10 * 60 + 30;
 
+/** The mainspring's power reserve when fully wound, in hours (the NH35's "more than 41 hours"). */
+export const RESERVE_HOURS = 41;
+
+/** The share of the drawn amplitude the balance still swings to when the spring has almost run down. */
+const LOW_AMPLITUDE = 0.65;
+
 export interface ClockOptions {
-  /** Degrees either side of rest. Defaults to the calibre's drawn amplitude; a spring running down lowers it. */
+  /** Degrees either side of rest. Defaults to the calibre's drawn amplitude, lowered by `reserve`. */
   readonly amplitude?: number;
+  /**
+   * Hours of power left in the mainspring, 0 to 41 (`RESERVE_HOURS`); defaults to a full spring. The balance's
+   * amplitude falls with it, from the drawn amplitude when fully wound to 65% of it as the spring runs down, then
+   * eases to nothing over the last hour. At zero the balance stands still, and so does everything it drives.
+   */
+  readonly reserve?: number;
   /** The time the hands show at t = 0, in seconds after twelve. Defaults to 10:10:30. */
   readonly time?: number;
 }
@@ -120,17 +132,29 @@ function handsOf(train: Readonly<Record<TrainId, number>>, time: number, calibre
   };
 }
 
+/** The balance's amplitude in degrees for `reserve` hours of power: the drawn amplitude when fully wound. */
+export function amplitudeAt(reserve: number, calibre: Calibre = MOVEMENT): number {
+  const left = clamp(reserve, 0, RESERVE_HOURS);
+  const full = calibre.spec.escapement.amplitude;
+  const share = left / RESERVE_HOURS;
+  return full * (LOW_AMPLITUDE + (1 - LOW_AMPLITUDE) * share) * Math.min(1, left);
+}
+
 /** The movement's pose at `t` seconds. Pure: the same `t` and options give the same state. */
 export function stateAt(t: number, options: ClockOptions = {}, calibre: Calibre = MOVEMENT): ClockState {
-  const amplitude = (options.amplitude ?? calibre.spec.escapement.amplitude) * DEG;
+  const reserve = options.reserve ?? RESERVE_HOURS;
+  const stopped = reserve <= 0;
+  // A hair above nothing at the least, so the lift window below stays defined; a stopped balance is posed at rest.
+  const amplitude = Math.max((options.amplitude ?? amplitudeAt(reserve, calibre)) * DEG, 1e-6);
   const lift = halfLift(calibre);
   // Half the lift window, in beats: the share of a beat the balance spends within the lift angle of rest.
   const halfWindow = Math.asin(Math.min(1, lift / amplitude)) / Math.PI;
 
   const phi = (t * calibre.spec.vph) / 3600; // beats since t = 0
-  const theta = amplitude * Math.cos(Math.PI * phi); // through rest at every half beat
+  // A balance with no power left stands at rest, the escape wheel locked on a stone where the last beat left it.
+  const theta = stopped ? 0 : amplitude * Math.cos(Math.PI * phi); // through rest at every half beat
   const beats = Math.floor(phi);
-  const p = clamp((phi - beats - 0.5 + halfWindow) / (2 * halfWindow), 0, 1);
+  const p = stopped ? 0 : clamp((phi - beats - 0.5 + halfWindow) / (2 * halfWindow), 0, 1);
   const steps = beats + escEase(p);
 
   // The escape wheel moves half a tooth a beat: two beats let one tooth pass.

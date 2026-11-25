@@ -1,14 +1,18 @@
-// Chapter 5's tray: the figure's Pause and Speed, a Take apart / Put back button, and two sliders, Take apart and
-// Turn. A React island, hydrated when it scrolls into view. Nothing lives in React: Take apart is the figure's `--e`,
+// Chapter 5's tray: the figure's Pause and Speed, a Take apart / Put back button, and three sliders, Take apart,
+// Turn and Wind. A React island, hydrated when it scrolls into view. Nothing lives in React: Take apart is the figure's `--e`,
 // which the steps set too, and Turn is its `data-turn`, which a drag on the 3D view writes back (lib/figure.ts), so
 // the drawing, the 3D view and the steps all follow the same two values.
 // - The button runs Take apart to 100% or back to 0 over the prototype's timing, the slider moving with it; under
 //   reduced motion it jumps. A drag on the slider, or a new step, stops the run where it is.
+// - Wind is the mainspring's reserve, 0 to 41 hours, as chapter 1 has it: the figure's `data-reserve`, which the 3D view
+//   coils the spring to, steps the ratchet wheel to and runs down in real time. Its readout counts the hours and
+//   minutes left, so the fall shows. Like Turn it works on the 3D view only.
 // - Turn turns the 3D view, from -180 to 180 degrees about the view it opens on; it shows only while the 3D view does
 //   (the drawing can't turn), and its first move tilts the view from its flat first frame.
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { apartOf, onFigureChange, setPose, setTurn, turnOf } from "../../lib/figure";
+import { apartOf, onFigureChange, reserveOf, setPose, setReserve, setTurn, turnOf } from "../../lib/figure";
+import { RESERVE_HOURS } from "../../movement/clock";
 import { apartMs, inOutCubic } from "../../three/labelled";
 import FigureTray from "../chapter/FigureTray";
 import { Slider } from "../ui/Slider";
@@ -39,6 +43,10 @@ function useFigure<T>(figure: string, read: (el: HTMLElement) => T, server: T): 
 
 const readApart = (el: HTMLElement) => Math.round(apartOf(el) * 100);
 const readTurn = (el: HTMLElement) => Math.round(turnOf(el));
+const readWind = (el: HTMLElement) => Math.round((reserveOf(el) / RESERVE_HOURS) * 100);
+/** Whole minutes of power left, rounded up so a wound spring never reads as run down. */
+const readMinutes = (el: HTMLElement) => Math.ceil(reserveOf(el) * 60 - 1e-6);
+const clock = (minutes: number) => `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`;
 
 /** The run the button starts: Take apart moving to 0 or 1 frame by frame, stopped by anything else that moves it. */
 function useRun(figure: string) {
@@ -149,12 +157,33 @@ function Turn({ figure }: ControlProps) {
   );
 }
 
+/** Wind, 0 to 100 percent of the 41 hours: the figure's reserve. It counts down while the movement runs. */
+function Wind({ figure }: ControlProps) {
+  const wind = useFigure(figure, readWind, 100);
+  const minutes = useFigure(figure, readMinutes, RESERVE_HOURS * 60);
+  return (
+    <div className="wind-cell">
+      <Slider
+        label="Wind"
+        value={wind}
+        readout={`${clock(minutes)} of ${RESERVE_HOURS} h`}
+        getAriaValueText={(value) => `Wound to ${Math.round((value / 100) * RESERVE_HOURS)} of ${RESERVE_HOURS} hours`}
+        onValueChange={(value) => {
+          const el = document.getElementById(figure);
+          if (el) setReserve(el, (value / 100) * RESERVE_HOURS);
+        }}
+      />
+    </div>
+  );
+}
+
 export default function TogetherTray({ figure }: ControlProps) {
   const run = useRun(figure);
   return (
     <FigureTray figure={figure} actions={<ApartButton figure={figure} run={run} />}>
       <TakeApart figure={figure} run={run} />
       <Turn figure={figure} />
+      <Wind figure={figure} />
     </FigureTray>
   );
 }

@@ -14,7 +14,7 @@
 
 import { poseAt, readoutsAt } from "../movement/svg/escapement";
 import { hairspringAt } from "../movement/svg/pieces";
-import { heldAt, hold, onFigureChange, release, speedOf } from "./figure";
+import { heldAt, hold, markClock, onFigureChange, release, speedOf } from "./figure";
 import { isPlaying, subscribe } from "./playback";
 
 /** The longest step one frame may take, in seconds of real time. */
@@ -61,6 +61,7 @@ export function startClockFigure(name: string, { holds = {}, start = 0 }: ClockF
   let t = start;
   const render = () => {
     const pose = poseAt(t);
+    markClock(figure, t);
     const rotate = (els: readonly SVGElement[], deg: number) => {
       for (const el of els) el.setAttribute("transform", `rotate(${deg.toFixed(3)})`);
     };

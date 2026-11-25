@@ -358,6 +358,12 @@
   .quiet:active {
     background: var(--color-paper-3);
   }
+  .quiet svg .wave {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
   .quiet svg {
     width: 14px;
     height: 14px;
@@ -367,7 +373,8 @@
 
   /* The header's Pause is a toggle like a tray's: it keeps its word and glyph, and while the page is paused it shows
      pressed in blued steel, from the first paint (the head script sets data-playing before it). */
-  :root[data-playing="false"] .global-pause {
+  :root[data-playing="false"] .global-pause,
+  .sound-toggle[aria-pressed="true"] {
     border-color: var(--color-accent);
     background: var(--color-accent-soft);
     color: var(--color-accent);
@@ -874,9 +881,15 @@
     background: var(--color-paper-3);
     text-decoration-thickness: 3px;
   }
-  /* Turn turns the 3D view only: while the drawing shows, its cell keeps its place, empty. */
-  .stage:not(:has(.movement-figure[data-gl="live"])) .turn-cell {
+  /* Turn turns the 3D view only, and Wind coils its spring: while the drawing shows, their cells keep their place, empty. */
+  .stage:not(:has(.movement-figure[data-gl="live"])) :is(.turn-cell, .wind-cell) {
     visibility: hidden;
+  }
+  /* Below 50rem (a phone) Wind would add a row to the tray and push the sticky figure taller, so it is left out there. */
+  @media (width < 50rem) {
+    .wind-cell {
+      display: none;
+    }
   }
   .apart-run {
     margin-left: auto;
@@ -895,6 +908,13 @@
   }
   .tray-row {
     grid-column: 1 / -1;
+  }
+  /* Chapter 5's three sliders share one row where the tray is wide, so the sticky figure keeps its height. */
+  @media (width >= 64rem) {
+    .tray:has(.wind-cell) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--space-lg);
+    }
   }
   /* A figure with nothing that moves (chapter 6) has no control, so no tray. */
   .tray:not(:has(> *)) {
@@ -1074,7 +1094,8 @@
     .wordmark {
       font-size: 1.1875rem;
     }
-    .global-pause .lbl {
+    .global-pause .lbl,
+    .sound-toggle .lbl {
       display: none;
     }
     .hero {
@@ -1165,6 +1186,10 @@
       grid-template-columns: auto repeat(2, minmax(0, 1fr));
       column-gap: var(--space-lg);
       align-items: end;
+    }
+    .tray:has(.wind-cell) {
+      grid-template-columns: auto repeat(3, minmax(0, 1fr));
+      column-gap: var(--space-md);
     }
     .tray-row {
       grid-column: auto;

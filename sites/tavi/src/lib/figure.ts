@@ -8,7 +8,13 @@
 // - the speed: `--slow` (1, 10 or 100), which stretches every ticking duration in the stylesheet;
 // - a hold: `data-hold`, the moment of the figure's clock it stands still at (seconds), when a step asks for one. A
 //   hold is the figure's own: it leaves the page's play state alone, and the tray's Pause shows pressed while it lasts.
-// Every change fires one `tavi:figure` event on the figure.
+// - the mainspring's reserve in hours (chapter 5's Wind): `data-reserve`, absent while the spring is full. The 3D view
+//   runs it down in real time while the figure ticks; the tray's Wind sets it;
+// - the figure's clock, for a figure that keeps one (clockFigure.ts, the 3D view): the moment it shows and when it
+//   showed it, so the ticking sound can beat with what is on screen.
+// Every change fires one `tavi:figure` event on the figure, except the clock's, which is stamped every frame.
+
+import { RESERVE_HOURS } from "../movement/clock.ts";
 
 export type Speed = 1 | 10 | 100;
 
@@ -114,4 +120,45 @@ export function onFigureChange(figure: HTMLElement, listener: () => void): () =>
   return () => {
     figure.removeEventListener(EVENT, listener);
   };
+}
+
+/** Hours of power left in the figure's mainspring: the full reserve until something winds or runs it. */
+export function reserveOf(figure: HTMLElement): number {
+  const value = figure.dataset.reserve;
+  if (value === undefined) return RESERVE_HOURS;
+  const hours = Number(value);
+  return Number.isFinite(hours) ? Math.min(RESERVE_HOURS, Math.max(0, hours)) : RESERVE_HOURS;
+}
+
+/**
+ * Sets the figure's reserve in hours. A `quiet` write, for the run-down every frame, fires no event: the caller tells
+ * the tray itself when what it shows has changed.
+ */
+export function setReserve(figure: HTMLElement, hours: number, quiet = false): void {
+  figure.dataset.reserve = String(Math.min(RESERVE_HOURS, Math.max(0, hours)));
+  if (!quiet) changed(figure);
+}
+
+/** Tells everything following the figure that it changed, after a run of quiet writes. */
+export function announce(figure: HTMLElement): void {
+  changed(figure);
+}
+
+/** A figure's clock as last stamped: the moment it showed, and the page's `performance.now()` then. */
+export interface ClockStamp {
+  readonly t: number;
+  readonly at: number;
+}
+
+const stamps = new WeakMap<HTMLElement, ClockStamp>();
+
+/** Records that the figure shows `t` seconds of its clock right now. */
+export function markClock(figure: HTMLElement, t: number): void {
+  stamps.set(figure, { t, at: performance.now() });
+}
+
+/** The figure's clock as last stamped, or null if it keeps none or hasn't stamped it for `within` ms. */
+export function clockOf(figure: HTMLElement, within = 1000): ClockStamp | null {
+  const stamp = stamps.get(figure);
+  return stamp && performance.now() - stamp.at <= within ? stamp : null;
 }

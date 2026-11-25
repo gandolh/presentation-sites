@@ -37,6 +37,8 @@ export function buildBridges({ m, paint, group, pivot, z, screws, jewels }: Kit)
 
   const winding = z("ratchet");
   const ratchet = pivot("ratchet");
+  // The ratchet wheel turns with the winding, a tooth at a time (movement.ts).
+  ratchet.userData["wind"] = true;
   solid(ratchet, [shapeOf(ratchetOutline(m.ratchet.teeth, m.ratchet.r))], winding, 2.5, paint.steel);
   place(ratchet, screwGeometry(9, paint), winding + 2.5).rotation.z = -60 * DEG;
   const crownWheel = pivot("crownwheel");

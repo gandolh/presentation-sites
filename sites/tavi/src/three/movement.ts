@@ -28,14 +28,19 @@ import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import type { TrainId } from "../movement/calibre.ts";
 import type { ClockState } from "../movement/clock.ts";
 import { MOVEMENT, partOf, type Calibre, type PartId } from "../movement/parts.ts";
-import { hairspringAt } from "../movement/svg/pieces.ts";
-import { buildParts } from "./build.ts";
+import { hairspringAt, springPath } from "../movement/svg/pieces.ts";
+import { buildParts, BUILT_WIND } from "./build.ts";
 import { BUILT, HAIR_WIDTH, jewelGeometry, JEWEL_R, screwGeometry, SCREW_R, type Site } from "./kit.ts";
 import type { Vec3 } from "./camera.ts";
 import type { Paint, Palette } from "./colours.ts";
 import { liftOf, smooth } from "./labelled.ts";
 import { pathPoints } from "./path.ts";
-import { flatMaterial, lineMaterial, ribbon, setRibbon, SOLID } from "./shapes.ts";
+import { flatMaterial, lineMaterial, ribbon, setCurtain, setRibbon, SOLID } from "./shapes.ts";
+
+/** How far the mainspring's wind must move, 0 to 1, before its coils are drawn again. */
+const WIND_EPS = 0.002;
+/** How far the arbor, and the ratchet wheel squared on it, turns from a let-down spring to a full one, in radians. */
+const WIND_TURN = 4.1;
 
 /** A part's footprint: the circle round it in the plane and the heights it spans, assembled. */
 interface Bounds {
@@ -54,8 +59,14 @@ interface Template {
 
 export interface Movement {
   readonly root: Group;
-  /** Turns every part to the clock's state and lifts each by `apart` (0 assembled, 1 apart). */
-  pose(state: ClockState, apart: number): void;
+  /**
+   * Turns every part to the clock's state and lifts each by `apart` (0 assembled, 1 apart). `wind` (0 let down, 1
+   * fully wound) coils the mainspring to match and steps the ratchet wheel round to it a tooth at a time; left out, the
+   * spring stays as it was built and the ratchet wheel where it sits.
+   */
+  pose(state: ClockState, apart: number, wind?: number): void;
+  /** Where the winding stands: the spring's wind as drawn (0 to 1) and the teeth the ratchet wheel has turned back. */
+  winding(): { readonly wind: number; readonly teeth: number };
   /** Hides the parts named (by their table ids) and shows the rest. */
   hide(ids: readonly string[]): void;
   /** Points round every shown part at its current lift, for framing the tilted view; `only` narrows it to those parts. */
@@ -211,6 +222,15 @@ export function createMovement(palette: Palette, m: Calibre = MOVEMENT): Movemen
   const hair = root.getObjectByName("hair-ribbon");
   if (hair instanceof Mesh) hair.geometry = hair.geometry.clone();
   const hairZ = partOf(m, "hairspring").z;
+  // The mainspring and the ratchet wheel, wound by `pose`'s third argument.
+  const spring = root.getObjectByName("mainspring");
+  const springZ = [partOf(m, "mainspring").z, partOf(m, "lid").z - 0.5] as const;
+  const ratchets: Object3D[] = [];
+  root.traverse((o) => {
+    if (o.userData["wind"]) ratchets.push(o);
+  });
+  let wound = BUILT_WIND;
+  let stepped = 0;
   const sets = ["screws", "jewels", "screws-ghost", "jewels-ghost"].flatMap((name) => {
     const mesh = root.getObjectByName(name);
     return mesh instanceof InstancedMesh
@@ -280,14 +300,31 @@ export function createMovement(palette: Palette, m: Calibre = MOVEMENT): Movemen
 
   return {
     root,
-    pose(state, apart) {
+    pose(state, apart, wind) {
       for (const [name, pivot] of pivots) pivot.rotation.z = -angleOf(name, state);
+      if (wind !== undefined) {
+        // The coils are drawn again once the spring has moved a visible amount, however it got there.
+        if (spring && Math.abs(wind - wound) >= WIND_EPS) {
+          const [pts] = pathPoints(springPath(wind, m.barrel.at));
+          if (pts) setCurtain(spring, pts, ...springZ);
+          wound = wind;
+        }
+        // The arbor turns 4.1 radians between let down and fully wound (chapter 1's drawing); the ratchet wheel keeps to
+        // whole teeth, and stands where the full spring leaves it.
+        const tooth = (2 * Math.PI) / m.ratchet.teeth;
+        const turned = Math.floor((wind * WIND_TURN) / tooth + 1e-9) - Math.floor(WIND_TURN / tooth + 1e-9);
+        if (turned !== stepped) {
+          stepped = turned;
+          for (const r of ratchets) r.rotation.z = -turned * tooth;
+        }
+      }
       if (hair instanceof Mesh) {
         const [pts] = pathPoints(hairspringAt(state.balance, m));
         if (pts) setRibbon(hair, pts, HAIR_WIDTH, hairZ);
       }
       if (apart !== placed) place(apart);
     },
+    winding: () => ({ wind: wound, teeth: stepped }),
     hide(ids) {
       solids = null;
       hidden.clear();

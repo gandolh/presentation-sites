@@ -19,6 +19,9 @@ import { pathPoints } from "./path.ts";
 import { circle, curtain, discs, edges, extrude, HALF_LINE, lineMaterial, outlined, place, solid } from "./shapes.ts";
 import { buildTrain } from "./train.ts";
 
+/** How far the mainspring is wound as it is built, 0 to 1: the drawing's (`barrelCutaway`). */
+export const BUILT_WIND = 0.62;
+
 /** Builds every part into `root`; returns the screw and jewel sites for the instanced meshes. */
 export function buildParts(root: Object3D, m: Calibre, paint: Palette): { screws: Site[]; jewels: Site[] } {
   const kit = createKit(root, m, paint);
@@ -104,7 +107,7 @@ export function buildParts(root: Object3D, m: Calibre, paint: Palette): { screws
   const drumLines = edges(drumGeo, paint.brass.line);
   drumLines.position.z = z("barrel") + 2.5;
   drum.add(drumLines);
-  const [spring = []] = pathPoints(springPath(0.62, b.at));
+  const [spring = []] = pathPoints(springPath(BUILT_WIND, b.at));
   curtain(group("mainspring"), spring, z("mainspring"), lidZ - 0.5, paint.spring);
   discs(group("arbor"), [[b.at, 13]], z("arbor"), z("barrel-bridge") - z("arbor"), paint.steel);
   solid(group("lid"), [{ outer: circle(b.at, 62, 96), holes: [circle(b.at, 13.6, 40)] }], lidZ, 1.2, paint.brass);

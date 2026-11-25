@@ -17,24 +17,31 @@
 //   does in the drawings, while Take apart stands where the step put it; moved away, the view goes back to the whole
 //   movement. On a phone the lit part is framed instead. Each framing eases from the one before;
 // - it labels the parts, in two columns on a desktop, and on a phone the lit part alone, each label fading while its
-//   anchor is behind another part (a ray cast for a few labels each frame, and for all of them on a still frame).
+//   anchor is behind another part (a ray cast for a few labels each frame, and for all of them on a still frame);
+// - it winds: the figure's `data-reserve` (hours of power, 0 to 41, the tray's Wind) coils the mainspring, steps the
+//   ratchet wheel round a tooth at a time and sets the balance's amplitude, and it runs down in real time over the
+//   figure's speed while the clock runs. With no power the clock stands still.
 
 import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { registerPose } from "../lib/clockFigure.ts";
 import {
+  announce,
   apartOf,
   heldAt,
   hold,
+  markClock,
   onFigureChange,
   pickOf,
+  reserveOf,
   setPick,
   setPose,
+  setReserve,
   setTurn,
   speedOf,
   turnOf,
 } from "../lib/figure.ts";
 import { isPlaying, subscribe } from "../lib/playback.ts";
-import { stateAt } from "../movement/clock.ts";
+import { RESERVE_HOURS, stateAt } from "../movement/clock.ts";
 import { MOVEMENT, type PartId } from "../movement/parts.ts";
 import {
   cameraAt,
@@ -137,6 +144,9 @@ export function startView(o: ViewOptions): View | null {
   const phone = matchMedia(PHONE);
 
   let t = heldAt(figure) ?? REST;
+  // Hours of power left, chapter 5's alone: the hero's spring stays as drawn and its balance at the drawn amplitude.
+  let reserve = chapter ? reserveOf(figure) : RESERVE_HOURS;
+  let shownMinute = Math.ceil(reserve * 60);
   let tilt = 0;
   let tiltFrom: number | null = null;
   let turn = chapter ? turnOf(figure) : 0;
@@ -267,7 +277,8 @@ export function startView(o: ViewOptions): View | null {
 
   let still = true;
   const render = () => {
-    movement.pose(stateAt(t), apart);
+    movement.pose(stateAt(t, { reserve }), apart, chapter ? reserve / RESERVE_HOURS : undefined);
+    markClock(figure, t);
     const flat = flatFrame(viewBox, width, height, MOVEMENT.plate.thickness);
     const tiltDeg = tiltFor(apart);
     let tilted = flat;
@@ -303,7 +314,7 @@ export function startView(o: ViewOptions): View | null {
     frames += 1;
   };
 
-  const clockRuns = () => isPlaying() && heldAt(figure) === null;
+  const clockRuns = () => isPlaying() && heldAt(figure) === null && reserve > 0;
   const moving = () => tiltFrom !== null || run !== null || frameFrom !== null;
   const wants = () => !lost && onScreen && document.visibilityState === "visible" && (clockRuns() || moving());
 
@@ -315,7 +326,21 @@ export function startView(o: ViewOptions): View | null {
     // A frame's timestamp is when the frame began, which can come before the moment the loop was woken: never step back.
     const step = Math.min(Math.max(0, now - last) / 1000, MAX_STEP);
     last = now;
-    if (clockRuns()) t += step / speedOf(figure);
+    let tell = false;
+    if (clockRuns()) {
+      const slow = speedOf(figure);
+      t += step / slow;
+      if (chapter) {
+        // The spring gives up an hour of power in an hour of the figure's own time; the tray hears of it a minute at a time.
+        reserve = Math.max(0, reserve - step / slow / 3600);
+        setReserve(figure, reserve, true);
+        const minute = Math.ceil(reserve * 60);
+        if (minute !== shownMinute) {
+          shownMinute = minute;
+          tell = true;
+        }
+      }
+    }
     if (tiltFrom !== null) {
       const u = (now - tiltFrom) / TILT_MS;
       tilt = easeOut(u);
@@ -332,6 +357,8 @@ export function startView(o: ViewOptions): View | null {
     render();
     once = false;
     if (wants()) raf = requestAnimationFrame(frame);
+    // Told last, so the figure's own listener finds the loop already scheduled.
+    if (tell) announce(figure);
   };
   /** Runs the loop if something moves, stops it if nothing does. */
   const wake = () => {
@@ -364,6 +391,12 @@ export function startView(o: ViewOptions): View | null {
     }
     held = now;
     if (chapter) {
+      const power = reserveOf(figure);
+      if (power !== reserve) {
+        reserve = power;
+        shownMinute = Math.ceil(power * 60);
+        invalidate();
+      }
       const e = apartOf(figure);
       if (e !== apartTarget) {
         // Moved off the step's own value, the view frames and lights the whole movement again.
@@ -514,6 +547,10 @@ export function startView(o: ViewOptions): View | null {
     calls: renderer.info.render.calls,
     triangles: renderer.info.render.triangles,
     t,
+    reserve,
+    spring: movement.winding().wind,
+    ratchet: movement.winding().teeth,
+    balance: stateAt(t, { reserve }).balance,
     apart,
     tilt,
     turn,
@@ -522,7 +559,8 @@ export function startView(o: ViewOptions): View | null {
   });
   // For stills and tests: `{ t }` holds the figure at t seconds, `apart` lifts the parts (0 to 1) at once, `yaw`
   // (degrees) turns the tilted view to it and `turn` (degrees from the opening view) as the tray's Turn does, `hide`
-  // lists parts to leave out by their table ids. An empty pose reads the stats.
+  // lists parts to leave out by their table ids, `reserve` (hours) winds chapter 5's spring as the tray's Wind does. An
+  // empty pose reads the stats.
   registerPose(o.name, (pose) => {
     if (Object.keys(pose).length === 0) return stats();
     const tiltNow = () => {
@@ -548,6 +586,11 @@ export function startView(o: ViewOptions): View | null {
       tiltNow();
     }
     if (Array.isArray(pose["hide"])) movement.hide(pose["hide"].map(String));
+    if (pose["reserve"] !== undefined && chapter) {
+      reserve = Math.min(RESERVE_HOURS, Math.max(0, Number(pose["reserve"]) || 0));
+      shownMinute = Math.ceil(reserve * 60);
+      setReserve(figure, reserve);
+    }
     if (pose["t"] !== undefined) {
       const at = Number(pose["t"]);
       if (Number.isFinite(at)) hold(figure, at);
