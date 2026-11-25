@@ -2,7 +2,9 @@
 // the drawing's plane with y flipped (x right, y up, z out of the plate towards the back of the watch). Two frames:
 // - flat: straight down the movement's axis, framing exactly the poster's viewBox in the same box, the way an SVG fits
 //   its viewBox (`xMidYMid meet`). The field of view is so narrow that every layer prints at the poster's scale;
-// - tilted: the prototype's view, a field of view of 22 degrees at a tilt of 34, backed off until every part fits.
+// - tilted: the prototype's view, a field of view of 22 degrees at a tilt of 34, backed off until every part fits. As
+//   the movement comes apart the tilt grows to 68, so the lifted layers stand clear of each other, and the fit can
+//   keep a share of the width free for the labels' columns.
 // The first drag eases from one to the other; `cameraAt` blends them, field of view, tilt and framing together.
 
 /** A point or a direction in world units. */
@@ -41,6 +43,21 @@ export const FLAT_FOV = 0.5;
 /** The tilted view's field of view and tilt from straight down, in degrees: the prototype's. */
 export const TILT_FOV = 22;
 export const TILT = 34;
+/** How much more the view tilts with the movement fully apart, in degrees: the prototype's. */
+export const APART_TILT = 34;
+/** The yaw the tilted view opens at, in degrees: the prototype's. A turn of 0 is this view. */
+export const OPEN_YAW = -18;
+
+/** A turn in degrees, wrapped into (-180, 180]. */
+export function wrapTurn(deg: number): number {
+  const w = ((((deg + 180) % 360) + 360) % 360) - 180;
+  return w === -180 ? 180 : w;
+}
+
+/** The yaw, in radians, of a turn in degrees from the opening view: a drag to the right turns it up. */
+export function yawOf(turn: number): number {
+  return (OPEN_YAW - turn) * DEG;
+}
 /** The share of the tilted view the fitted movement may fill, as the prototype leaves it. */
 const FIT_MARGIN = 0.94;
 /** How far beyond the target the scene can reach, in plane units: the near and far planes keep that much. */
@@ -85,16 +102,31 @@ function screenAxes(dir: Vec3, yaw: number): { right: Vec3; up: Vec3 } {
   return { right, up: unit(cross(dir, right)) };
 }
 
+/** The tilted view's tilt from straight down at `apart` (0 assembled, 1 apart), in degrees. */
+export function tiltFor(apart: number): number {
+  const u = Math.min(1, Math.max(0, apart));
+  return TILT + APART_TILT * u * u * (3 - 2 * u);
+}
+
 /**
  * The frame that fits every point, seen along `dir` with a vertical field of view `fov` (degrees) in a box of
  * `aspect` (width over height): centred on the points' extent across the screen, backed off until the nearest of them
- * fits. The prototype's framing.
+ * fits. The prototype's framing. `room` is the share of the width kept free for labels: half of it each side, or all
+ * of it on the right.
  */
-export function fitFrame(points: readonly Vec3[], tilt: number, yaw: number, fov: number, aspect: number): Frame {
+export function fitFrame(
+  points: readonly Vec3[],
+  tilt: number,
+  yaw: number,
+  fov: number,
+  aspect: number,
+  room = 0,
+  side: "both" | "right" = "both",
+): Frame {
   const dir = viewDirection(tilt, yaw);
   const { right, up } = screenAxes(dir, yaw);
   const tanV = Math.tan((fov * DEG) / 2) * FIT_MARGIN;
-  const tanH = tanV * aspect;
+  const tanH = tanV * aspect * (1 - room);
   let r0 = Infinity;
   let r1 = -Infinity;
   let u0 = Infinity;
@@ -112,15 +144,23 @@ export function fitFrame(points: readonly Vec3[], tilt: number, yaw: number, fov
     const depth = dot(v, dir);
     d = Math.max(d, Math.abs(dot(v, right)) / tanH + depth, Math.abs(dot(v, up)) / tanV + depth);
   }
-  return { target, half: d * Math.tan((fov * DEG) / 2) };
+  // With the room on the right only, the view looks that much right of the points, so they sit to its left.
+  const shifted = side === "right" ? add(target, times(right, room * d * tanV * aspect)) : target;
+  return { target: shifted, half: d * Math.tan((fov * DEG) / 2) };
+}
+
+/** A frame `k` of the way from `a` to `b`: the target and the size of the view each move by `k`. */
+export function mixFrame(a: Frame, b: Frame, k: number): Frame {
+  return { target: mix3(a.target, b.target, k), half: mix(a.half, b.half, k) };
 }
 
 /**
- * The camera `k` of the way from the flat frame (0) to the tilted one (1): the tilt, the field of view, the target
- * and the size of the view at the target each move by `k`, and the distance follows from the last two.
+ * The camera `k` of the way from the flat frame (0) to the tilted one (1), which looks down at `tiltDeg`: the tilt, the
+ * field of view, the target and the size of the view at the target each move by `k`, and the distance follows from
+ * the last two.
  */
-export function cameraAt(flat: Frame, tilted: Frame, k: number, yaw: number): CameraPose {
-  const tilt = TILT * DEG * k;
+export function cameraAt(flat: Frame, tilted: Frame, k: number, yaw: number, tiltDeg = TILT): CameraPose {
+  const tilt = tiltDeg * DEG * k;
   const turn = yaw * k;
   const fov = mix(FLAT_FOV, TILT_FOV, k);
   const half = mix(flat.half, tilted.half, k);

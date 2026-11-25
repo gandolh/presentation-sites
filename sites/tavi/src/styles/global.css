@@ -762,6 +762,110 @@
     color: var(--color-muted);
     pointer-events: none;
   }
+  /* The hint goes once the labels come, which take its corner. */
+  .gl-hint {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .movement-figure[data-labels] .gl-hint {
+    opacity: 0;
+  }
+
+  /* Chapter 5's labels (three/labelLayer.ts): HTML over the canvas, placed each frame from the anchors, in two columns
+     on a desktop and one on a phone; the leaders in one SVG under them. Each label is a button that lights its part. A
+     label whose anchor is behind another part fades, and so do the others while one part is lit. */
+  .labels,
+  .leaders {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .leaders {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .leaders g {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .leaders path {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 0.9;
+  }
+  .leaders circle {
+    fill: var(--color-ink);
+  }
+  .leaders .is-lit path {
+    stroke: var(--color-ink);
+    stroke-width: 1.5;
+  }
+  .labels .label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 2px;
+    border: 0;
+    border-radius: 3px;
+    background: none;
+    font: inherit;
+    font-size: var(--text-sm);
+    line-height: 1.25;
+    color: var(--color-ink);
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .labels .label:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .labels .label.is-lit {
+    font-weight: 600;
+  }
+  .movement-figure:not([data-gl="live"]) :is(.labels, .leaders) {
+    display: none;
+  }
+
+  /* Chapter 5's parts list, under the figure: every labelled part as a toggle, in one row that scrolls sideways so the
+     stuck figure stays short, its far edge fading to say there is more; the padding keeps each toggle's focus ring
+     inside the row. A phone always shows it; a desktop only where the drawing stays, which gives up the row's height
+     for it. */
+  .parts-list {
+    display: none;
+    flex-wrap: nowrap;
+    gap: var(--space-2xs);
+    overflow-x: auto;
+    padding: 3px;
+    margin: -3px;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, var(--color-ink) calc(100% - 28px), transparent);
+  }
+  .parts-list::-webkit-scrollbar {
+    display: none;
+  }
+  .movement-figure[data-gl="flat"] ~ .parts-list {
+    display: flex;
+  }
+  @media (width >= 64rem) {
+    .stage .movement-figure[data-gl="flat"] .mode-whole {
+      height: min(440px, calc(100svh - var(--header-h) - 320px));
+    }
+  }
+  /* A part named in the prose lights with its part, however it was lit. */
+  .part-name.is-lit {
+    background: var(--color-paper-3);
+    text-decoration-thickness: 3px;
+  }
+  /* Turn turns the 3D view only: while the drawing shows, its cell keeps its place, empty. */
+  .stage:not(:has(.movement-figure[data-gl="live"])) .turn-cell {
+    visibility: hidden;
+  }
+  .apart-run {
+    margin-left: auto;
+  }
 
   /* The figure's controls on the paper-2 ground: the Pause and the Speed across the top, a chapter's own controls
      in two cells under them. */
@@ -1024,6 +1128,15 @@
     .pager .t {
       font-size: var(--text-md);
     }
+    .labels .label {
+      font-size: var(--text-xs);
+    }
+    .parts-list {
+      display: flex;
+    }
+    .apart-run {
+      margin-left: 0;
+    }
   }
   /* One column on a wide screen (a tablet, a small laptop window, a phone turned sideways): the tray is one row, the
      Pause and the Speed beside a chapter's own controls, so the sticky figure stays short enough to leave the step on
@@ -1062,7 +1175,12 @@
     .btn,
     .contents-band a,
     .step p,
-    .pager .t {
+    .pager .t,
+    .gl-hint,
+    .labels,
+    .leaders,
+    .leaders g,
+    .labels .label {
       transition: none;
     }
     /* The turn-over is a cross-fade: nothing turns, one face fades into the other. */
@@ -1526,6 +1644,35 @@
   .dragging .lift {
     transition: none;
   }
+  /* Chapter 5's poster taken apart: each part rises through its own window of --e (--w0 to --w1), eased in and out as
+     the 3D parts rise, a bridge's screws turning as they come out; the drawing shrinks, about its corner, into the frame
+     that holds the whole lifted stack (--fit-s, --fit-x, --fit-y, worked out at build time). */
+  .lift-w {
+    --u: clamp(0, (var(--e, 0) - var(--w0)) / (var(--w1) - var(--w0)), 1);
+    --k: calc(var(--u) * var(--u) * (3 - 2 * var(--u)));
+    transform: translate(calc(var(--k) * var(--lift) * 0.5px), calc(var(--k) * var(--lift) * -0.866px));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .lift-w .spin {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: rotate(calc(var(--k) * var(--spin, 0) * 360deg));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  /* The drawing has shrunk all the way by --e 0.5, when the highest parts have risen: from then on the stack only
+     fills the frame it has. */
+  .mode-whole > .mv {
+    --fu: clamp(0, var(--e, 0) / 0.5, 1);
+    --fk: calc(var(--fu) * var(--fu) * (3 - 2 * var(--fu)));
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: translate(calc(var(--fk) * var(--fit-x, 0) * 1px), calc(var(--fk) * var(--fit-y, 0) * 1px))
+      scale(calc(1 + var(--fk) * (var(--fit-s, 1) - 1)));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .dragging :is(.lift-w, .lift-w .spin, .mode-whole > .mv) {
+    transition: none;
+  }
 
   /* Ticking. Each turning group pivots on its own centre (the translate around it). The balance swings once a beat;
      the escape wheel steps half a tooth a beat, 30 steps to a turn in 5 s; the pallet fork flips each beat; the
@@ -1584,6 +1731,9 @@
      poses jump. */
   @media (prefers-reduced-motion: reduce) {
     .lift,
+    .lift-w,
+    .lift-w .spin,
+    .mode-whole > .mv,
     .movement .part {
       transition: none;
     }

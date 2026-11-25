@@ -1546,6 +1546,8 @@ interface GlStats {
   t: number;
   apart: number;
   tilt: number;
+  turn: number;
+  lit: string | null;
   pixelRatio: number;
 }
 
@@ -1565,7 +1567,7 @@ async function glPose(page: Page, name: string, pose: object): Promise<GlStats> 
   );
 }
 
-/** Scrolls chapter 5's figure to the middle of the screen, whole: its one step is shorter than the figure. */
+/** Scrolls chapter 5's figure to the middle of the screen, whole, beside its first step, which leaves it together. */
 async function toTogether(page: Page) {
   await page.evaluate(() => {
     const figure = document.getElementById("together-figure");
@@ -1840,7 +1842,7 @@ test.describe("the 3D movement, on the fallback ladder", () => {
     if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
     await glLive(page, "together");
     await page.waitForFunction(() =>
-      document.querySelector('#together-figure astro-island[component-url*="FigureTray"]:not([ssr])'),
+      document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
     );
     const frames = async (ms: number) => {
       const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
@@ -1883,7 +1885,7 @@ test.describe("the 3D movement, on the fallback ladder", () => {
       await toTogether(page);
       await glLive(page, "together");
       await page.waitForFunction(() =>
-        document.querySelector('#together-figure astro-island[component-url*="FigureTray"]:not([ssr])'),
+        document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
       );
       const pause = page.locator("#together-figure").getByRole("button", { name: "Pause", exact: true });
       await expect(pause).toHaveAttribute("aria-pressed", "true");
@@ -1905,6 +1907,381 @@ test.describe("the 3D movement, on the fallback ladder", () => {
 
       await pause.click();
       await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(t);
+    });
+  });
+});
+
+/** Chapter 5's labelled parts, in the order they come off: its parts list and its labels. */
+const TOGETHER_PARTS = [
+  "Balance cock",
+  "Balance",
+  "Hairspring",
+  "Pallet bridge",
+  "Pallet fork",
+  "Ratchet wheel",
+  "Crown wheel",
+  "Click",
+  "Train bridge",
+  "Barrel bridge",
+  "Escape wheel",
+  "Fourth wheel",
+  "Third wheel",
+  "Centre wheel",
+  "Barrel lid",
+  "Barrel",
+  "Mainspring",
+  "Main plate",
+  "Crown",
+];
+
+/**
+ * Chapter 5 with step `step` on the reading line and its tray hydrated; with `gl`, the 3D view live (a phone presses
+ * "Turn it in 3D" for it).
+ */
+async function togetherReady(page: Page, phone: boolean, { step = "2", gl = true } = {}) {
+  await page.goto("/");
+  // From step 2 the figure is stuck whole on screen, its tray in view, so the tray hydrates.
+  await readStepOf(page, "together", "2", phone);
+  await page.waitForFunction(() =>
+    document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
+  );
+  if (step !== "2") {
+    // A step already on the reading line's edge reports no change: come to it from the top of the page.
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(200);
+    await readStepOf(page, "together", step, phone);
+  }
+  await expect(page.locator("#together-figure")).toHaveAttribute("data-step", step);
+  if (!gl) return;
+  if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+  await glLive(page, "together");
+}
+
+/** Every leader shown over chapter 5's 3D view, read from its path, and every pair of them that meets. */
+async function leaders(page: Page) {
+  return page.locator("#together .leaders").evaluate((svg) => {
+    type P = [number, number];
+    const shown = [...svg.querySelectorAll<SVGGElement>("[data-leader]")].filter(
+      (g) => getComputedStyle(g).visibility !== "hidden",
+    );
+    const lines = shown.map((g) => {
+      const nums = (g.querySelector("path")?.getAttribute("d") ?? "").match(/-?[\d.]+/g)?.map(Number) ?? [];
+      const pts: P[] = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) pts.push([nums[i] ?? 0, nums[i + 1] ?? 0]);
+      return { id: g.dataset.leader ?? "", pts };
+    });
+    const cross = (o: P, a: P, b: P) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const on = (p: P, q: P, r: P) =>
+      Math.abs(cross(p, q, r)) < 1e-6 &&
+      r[0] >= Math.min(p[0], q[0]) &&
+      r[0] <= Math.max(p[0], q[0]) &&
+      r[1] >= Math.min(p[1], q[1]) &&
+      r[1] <= Math.max(p[1], q[1]);
+    const meet = (a: P, b: P, c: P, d: P) => {
+      const [d1, d2, d3, d4] = [cross(c, d, a), cross(c, d, b), cross(a, b, c), cross(a, b, d)];
+      return (d1 * d2 < 0 && d3 * d4 < 0) || on(c, d, a) || on(c, d, b) || on(a, b, c) || on(a, b, d);
+    };
+    const meets: string[] = [];
+    lines.forEach((p, i) =>
+      lines.slice(i + 1).forEach((q) => {
+        for (let s = 1; s < p.pts.length; s++)
+          for (let t = 1; t < q.pts.length; t++) {
+            const [a, b, c, d] = [p.pts[s - 1], p.pts[s], q.pts[t - 1], q.pts[t]];
+            if (a && b && c && d && meet(a, b, c, d)) {
+              meets.push(`${p.id} / ${q.id}`);
+              return;
+            }
+          }
+      }),
+    );
+    return { ids: lines.map((l) => l.id), meets };
+  });
+}
+
+/** How many pixels in a shot of chapter 5's figure box are in colour: the ghost pair and the paper are near grey. */
+async function colouredPixels(page: Page) {
+  const shot = await island(page, "together").screenshot();
+  return page.evaluate(async (png) => {
+    const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const g = canvas.getContext("2d");
+    if (!g) return 0;
+    g.drawImage(bitmap, 0, 0);
+    const { data } = g.getImageData(0, 0, bitmap.width, bitmap.height);
+    let n = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const [r = 0, gr = 0, b = 0] = [data[i], data[i + 1], data[i + 2]];
+      if (Math.max(r, gr, b) - Math.min(r, gr, b) > 40) n += 1;
+    }
+    return n;
+  }, shot.toString("base64"));
+}
+
+test.describe("chapter 5, together, apart and back", () => {
+  test("each step sets Take apart; a step's own parts are lit, framed and labelled alone", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await togetherReady(page, phone, { step: "1", gl: !phone });
+    const figure = page.locator("#together-figure");
+    const apart = figure.getByRole("slider", { name: "Take apart", exact: true });
+    const values = { "1": "0", "2": "45", "3": "58", "4": "68", "5": "96", "6": "100", "7": "0" };
+    for (const [step, value] of Object.entries(values)) {
+      await readStepOf(page, "together", step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect(apart).toHaveValue(value);
+    }
+    if (phone) return;
+    await readStepOf(page, "together", "2", phone);
+    await expect.poll(async () => (await glStats(page, "together")).apart).toBe(0.45);
+    await expect.poll(async () => (await leaders(page)).ids.sort()).toEqual(["balance", "balance-cock", "hairspring"]);
+    // Moved off the step's value, the whole movement is framed and labelled again.
+    await glPose(page, "together", { apart: 1 });
+    await expect.poll(async () => (await leaders(page)).ids.length).toBe(TOGETHER_PARTS.length);
+  });
+
+  test("apart 100% at 1280 x 800, turned 0° and ±30°: every part labelled, and no two leaders on the page meet", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a phone labels the lit part alone");
+    await togetherReady(page, false);
+    for (const turn of [0, 30, -30]) {
+      const stats = await glPose(page, "together", { apart: 1, turn });
+      expect(stats.turn).toBe(turn);
+      const { ids, meets } = await leaders(page);
+      expect(ids, `turned ${turn}°`).toHaveLength(TOGETHER_PARTS.length);
+      expect(meets, `turned ${turn}°`).toEqual([]);
+      // The labels stand in two columns inside the figure, none over another.
+      const boxes = await page.locator("#together .labels .label").evaluateAll((labels) =>
+        labels
+          .filter((l) => getComputedStyle(l).visibility !== "hidden")
+          .map((l) => {
+            const r = l.getBoundingClientRect();
+            return { x: r.x, y: r.y, w: r.width, h: r.height };
+          }),
+      );
+      const box = await island(page, "together").boundingBox();
+      if (!box) throw new Error("no figure");
+      for (const [i, a] of boxes.entries()) {
+        expect(a.x >= box.x && a.x + a.w <= box.x + box.width && a.y >= box.y && a.y + a.h <= box.y + box.height).toBe(
+          true,
+        );
+        for (const b of boxes.slice(i + 1))
+          expect(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y).toBe(true);
+      }
+      await expect(page.locator("#together-figure").getByRole("slider", { name: "Turn", exact: true })).toHaveValue(
+        String(turn),
+      );
+    }
+  });
+
+  test("a click on a part lights it, its name in the prose and its label; a click on the paper lets it go", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a mouse's click; a phone's tap is the parts list's test");
+    await togetherReady(page, false);
+    await glPose(page, "together", { apart: 1, turn: 0 });
+    const dot = await page
+      .locator('#together [data-leader="balance-cock"] circle')
+      .evaluate((c) => [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))]);
+    const canvas = page.locator("#together canvas");
+    await canvas.click({ position: { x: dot[0] ?? 0, y: dot[1] ?? 0 } });
+    await expect(page.locator("#together-figure")).toHaveAttribute("data-pick", "balance-cock");
+    expect((await glStats(page, "together")).lit).toBe("balance-cock");
+    await expect(page.locator('#together .part-name[data-part="balance-cock"]')).toHaveClass(/\bis-lit\b/);
+    await expect(page.locator('#together .labels [data-label="balance-cock"]')).toHaveClass(/\bis-lit\b/);
+    await expect(page.locator('#together .labels [data-label="balance-cock"]')).toHaveAttribute("aria-pressed", "true");
+    // Every other part drops to the ghost pair: little colour is left.
+    await page.mouse.move(0, 0);
+    const lit = await colouredPixels(page);
+    await canvas.click({ position: { x: 4, y: 4 } });
+    await expect(page.locator("#together-figure")).not.toHaveAttribute("data-pick", /./);
+    expect((await glStats(page, "together")).lit).toBeNull();
+    await page.waitForTimeout(100);
+    expect(lit).toBeLessThan((await colouredPixels(page)) * 0.4);
+  });
+
+  test("at 390 x 844 the parts list holds every labelled part as a button, and pressing one lights it", async ({
+    page,
+  }, info) => {
+    test.skip(!isPhone(info), "the list is a phone's");
+    await togetherReady(page, true, { gl: false });
+    const list = page.getByRole("group", { name: "The parts: choose one to light it" });
+    await expect(list.getByRole("button")).toHaveText(TOGETHER_PARTS);
+    await expect(list).toBeVisible();
+
+    // On the drawing, before any 3D: the part lights there, and its name in the prose.
+    const balance = list.getByRole("button", { name: "Balance", exact: true });
+    await balance.click();
+    await expect(balance).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('#together-movement .part[data-part="balance"]')).toHaveClass(/\bis-focus\b/);
+    await expect(page.locator('#together .part-name[data-part="balance"]').first()).toHaveClass(/\bis-lit\b/);
+    await balance.click();
+    await expect(balance).toHaveAttribute("aria-pressed", "false");
+
+    // In 3D: the part lights, it is framed, and its label is the only one in the figure.
+    await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+    await glLive(page, "together");
+    const fork = list.getByRole("button", { name: "Pallet fork", exact: true });
+    await fork.click();
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBe("pallet");
+    await expect(page.locator("#together .labels .label:visible")).toHaveText(["Pallet fork"]);
+    await expect.poll(async () => (await leaders(page)).ids).toEqual(["pallet"]);
+    await fork.click();
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBeNull();
+    await expect(page.locator("#together .labels .label:visible")).toHaveCount(0);
+  });
+
+  test("keyboard only: Take apart, Put back, Turn, and the labels or the parts list", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await togetherReady(page, phone);
+    const fig = page.locator("#together-figure");
+    const e = () => fig.evaluate((el) => el.style.getPropertyValue("--e"));
+
+    await fig.getByRole("button", { name: "Pause", exact: true }).focus();
+    await page.keyboard.press("Tab");
+    await expect(fig.getByRole("radio", { name: "1×", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    const run = fig.getByRole("button", { name: "Take apart", exact: true });
+    await expect(run).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect.poll(e).toBe("1");
+    const back = fig.getByRole("button", { name: "Put back", exact: true });
+    await expect(back).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect.poll(e).toBe("0");
+    await expect(run).toBeFocused();
+
+    await page.keyboard.press("Tab");
+    await expect(fig.getByRole("slider", { name: "Take apart", exact: true })).toBeFocused();
+    await page.keyboard.press("End");
+    await expect.poll(e).toBe("1");
+    await page.keyboard.press("Tab");
+    const turn = fig.getByRole("slider", { name: "Turn", exact: true });
+    await expect(turn).toBeFocused();
+    for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight");
+    await expect(turn).toHaveValue("3");
+    await expect.poll(async () => (await glStats(page, "together")).turn).toBe(3);
+    await page.keyboard.press("PageDown");
+    await expect.poll(async () => (await glStats(page, "together")).turn).toBe(-12);
+
+    // From the 3D view, Tab reaches each label on a desktop, and the parts list on a phone; Enter lights the part.
+    await page.locator("#together canvas").focus();
+    await page.keyboard.press("Tab");
+    const first = phone
+      ? page
+          .getByRole("group", { name: "The parts: choose one to light it" })
+          .getByRole("button", { name: "Balance cock" })
+      : page.locator('#together .labels [data-label="balance-cock"]');
+    await expect(first).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(fig).toHaveAttribute("data-pick", "balance-cock");
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBe("balance-cock");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
+    await expect(fig).toHaveAttribute("data-pick", "balance");
+    // Escape on the 3D view lets the part go.
+    await page.locator("#together canvas").focus();
+    await page.keyboard.press("Escape");
+    await expect(fig).not.toHaveAttribute("data-pick", /./);
+  });
+
+  test.describe("without WebGL", () => {
+    test.beforeEach(async ({ page }) => {
+      await withoutWebGL(page);
+    });
+
+    test("the same slider takes the drawing apart, and the parts list lights its parts", async ({ page }, info) => {
+      const phone = isPhone(info);
+      await togetherReady(page, phone, { gl: false });
+      if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+      await expect(island(page, "together")).toHaveAttribute("data-gl", "flat", { timeout: 15_000 });
+      const fig = page.locator("#together-figure");
+      // The drawing can't turn: Turn keeps its place, hidden.
+      await expect(fig.locator(".turn-cell")).toHaveCSS("visibility", "hidden");
+
+      const apart = fig.getByRole("slider", { name: "Take apart", exact: true });
+      await apart.focus();
+      await page.keyboard.press("End");
+      await expect(apart).toHaveValue("100");
+      // Every lift group rises its full drawn lift along the one oblique axis, and the drawing shrinks to hold them.
+      const groups = () =>
+        page.locator("#together-movement .lift-w").evaluateAll((list) =>
+          list.map((g) => {
+            const cs = getComputedStyle(g);
+            const m = new DOMMatrix(cs.transform === "none" ? undefined : cs.transform);
+            return { x: m.e, y: m.f, lift: Number(cs.getPropertyValue("--lift")) };
+          }),
+        );
+      const off = (to: number) => async () =>
+        Math.max(
+          ...(await groups()).map((g) => Math.abs(g.x - to * g.lift * 0.5) + Math.abs(g.y + to * g.lift * 0.866)),
+        );
+      await expect.poll(off(1)).toBeLessThan(0.05);
+      expect(await groups()).toHaveLength(20);
+      const scale = () =>
+        page.locator("#together-movement > .mv").evaluate((g) => {
+          const t = getComputedStyle(g).transform;
+          return new DOMMatrix(t === "none" ? undefined : t).a;
+        });
+      await expect.poll(scale).toBeLessThan(0.95);
+      await page.keyboard.press("Home");
+      await expect.poll(off(0)).toBeLessThan(0.05);
+      await expect.poll(scale).toBe(1);
+
+      const list = page.getByRole("group", { name: "The parts: choose one to light it" });
+      await expect(list).toBeVisible();
+      await list.getByRole("button", { name: "Train bridge", exact: true }).click();
+      await expect(page.locator('#together-movement .part[data-part="train-bridge"]').first()).toHaveClass(
+        /\bis-focus\b/,
+      );
+      // A bridge's screws light with it; every other part is ghosted.
+      await expect(page.locator('#together-movement .part[data-part="train-bridge"]')).toHaveCount(2);
+      await expect(page.locator('#together-movement .part[data-part="barrel"] .fo').first()).toHaveCSS(
+        "fill",
+        await page.evaluate(() => {
+          const probe = document.createElement("div");
+          probe.style.color = "var(--color-ghost-fill)";
+          document.body.append(probe);
+          const c = getComputedStyle(probe).color;
+          probe.remove();
+          return c;
+        }),
+      );
+    });
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("Take apart and the turn jump, and nothing moves until its Pause is released", async ({ page }, info) => {
+      test.skip(isPhone(info), "the same island on a phone");
+      await countFrames(page);
+      await togetherReady(page, false);
+      const fig = page.locator("#together-figure");
+      const pause = fig.getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      expect((await glStats(page, "together")).apart, "the step's value, at once").toBe(0.45);
+
+      await fig.getByRole("button", { name: "Take apart", exact: true }).click();
+      expect(await fig.evaluate((el) => el.style.getPropertyValue("--e"))).toBe("1");
+      expect((await glStats(page, "together")).apart).toBe(1);
+      const turn = fig.getByRole("slider", { name: "Turn", exact: true });
+      await turn.focus();
+      await page.keyboard.press("PageUp");
+      expect((await glStats(page, "together")).turn).toBe(15);
+
+      const t = (await glStats(page, "together")).t;
+      await page.waitForTimeout(300);
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(2000);
+      expect(await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)).toBe(before);
+      expect((await glStats(page, "together")).t).toBe(t);
+
+      await pause.click();
       await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(t);
     });
   });
@@ -2074,10 +2451,12 @@ test.describe("without scripting", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.locator("#together .step p")).toBeVisible();
+    await expect(page.locator("#together .step p")).toHaveCount(7);
+    await expect(page.locator("#together .step p").first()).toBeVisible();
     await expect(page.getByRole("img", { name: /^Diagram of the whole movement assembled/ })).toBeVisible();
     await expect(page.locator("#together canvas, #together .turn-3d")).toHaveCount(0);
     await expect(page.locator("#together-figure .tray")).toBeHidden();
+    await expect(page.locator("#together .parts-list")).toBeHidden();
   });
 
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {

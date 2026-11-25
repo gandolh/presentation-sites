@@ -2,6 +2,9 @@
 // so the steps' module script and the tray's island read and write the same thing:
 // - the pose: `data-step` (which step's parts stay in colour) and `--e` (how far the lifted parts have risen);
 // - the part the prose points at: `data-focus`, and `is-focus` on that part's groups in the drawing;
+// - the part the visitor chose (chapter 5, by a tap on the 3D view, a label or the parts list): `data-pick`. It stays
+//   lit whenever nothing else is pointed at;
+// - the turn of a figure that turns (chapter 5's 3D view): `data-turn`, in degrees from the view it opens on;
 // - the speed: `--slow` (1, 10 or 100), which stretches every ticking duration in the stylesheet;
 // - a hold: `data-hold`, the moment of the figure's clock it stands still at (seconds), when a step asks for one. A
 //   hold is the figure's own: it leaves the page's play state alone, and the tray's Pause shows pressed while it lasts.
@@ -30,14 +33,48 @@ export function setPose(figure: HTMLElement, name: string, { e }: Pose): void {
   changed(figure);
 }
 
-/** Lights one part and drops every other to the ghost pair; null lights the step's parts again. */
+/**
+ * Lights one part and drops every other to the ghost pair; null lights the chosen part again, or where none is chosen
+ * the step's parts.
+ */
 export function setFocus(figure: HTMLElement, part: string | null): void {
-  if (part === null) delete figure.dataset.focus;
-  else figure.dataset.focus = part;
+  const lit = part ?? figure.dataset.pick ?? null;
+  if (lit === null) delete figure.dataset.focus;
+  else figure.dataset.focus = lit;
   for (const group of figure.querySelectorAll<SVGGElement>(".part[data-part]")) {
-    group.classList.toggle("is-focus", part !== null && group.dataset.part === part);
+    group.classList.toggle("is-focus", lit !== null && group.dataset.part === lit);
   }
   changed(figure);
+}
+
+/** Chooses a part to keep lit, or none (null), and lights it. */
+export function setPick(figure: HTMLElement, part: string | null): void {
+  if (part === null) delete figure.dataset.pick;
+  else figure.dataset.pick = part;
+  setFocus(figure, part);
+}
+
+/** The part the visitor chose, or null. */
+export function pickOf(figure: HTMLElement): string | null {
+  return figure.dataset.pick ?? null;
+}
+
+/** Turns a figure that turns to `degrees` from the view it opens on. */
+export function setTurn(figure: HTMLElement, degrees: number): void {
+  const next = String(Math.round(degrees * 10) / 10);
+  if (figure.dataset.turn === next) return;
+  figure.dataset.turn = next;
+  changed(figure);
+}
+
+/** A figure's turn, in degrees from the view it opens on. */
+export function turnOf(figure: HTMLElement): number {
+  return Number(figure.dataset.turn ?? 0) || 0;
+}
+
+/** How far the figure's lifted parts have risen, 0 (assembled) to 1: its `--e`. */
+export function apartOf(figure: HTMLElement): number {
+  return Number(figure.style.getPropertyValue("--e")) || 0;
 }
 
 /** Slows every ticking part of the figure by `speed` (1, 10 or 100 times). */

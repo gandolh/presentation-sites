@@ -23,10 +23,12 @@ interface Props {
   figure: string;
   /** The speed the figure opens at, for the server's render. */
   speed?: Speed;
+  /** A chapter's own button, at the end of the first row. */
+  actions?: ReactNode;
   children?: ReactNode;
 }
 
-export default function FigureTray({ figure, speed: opening = 1, children }: Props) {
+export default function FigureTray({ figure, speed: opening = 1, actions, children }: Props) {
   const playing = useSyncExternalStore(subscribe, isPlaying, () => true);
   const element = () => document.getElementById(figure);
   const subscribeToFigure = useCallback(
@@ -87,6 +89,7 @@ export default function FigureTray({ figure, speed: opening = 1, children }: Pro
             if (el) setSpeed(el, Number(value) as Speed);
           }}
         />
+        {actions}
       </div>
       {children}
     </>

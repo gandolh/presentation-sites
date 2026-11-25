@@ -10,9 +10,16 @@
 // 4. under reduced motion the page starts paused, so the movement starts still until a Pause is released;
 // 5. without scripting the island never runs: the server's render is the poster.
 // three.js is imported only here, dynamically, so nothing else on the page waits on it.
+//
+// Chapter 5's island also carries the labels the 3D view places over its canvas (a button for each labelled part, a
+// leader for each in one SVG) and, under the figure, the parts list (PartsList.tsx), which works on every rung.
 
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { onFigureChange, pickOf, setPick } from "../../lib/figure";
+import type { PartId } from "../../movement/parts";
+import { LABELLED } from "../../three/labelled";
 import type { View } from "../../three/view";
+import { PartsList } from "./PartsList";
 
 /** Where the island stands on the ladder; `data-gl` on its box, which the stylesheet reads. */
 type Rung = "poster" | "offer" | "loading" | "live" | "lost" | "flat";
@@ -27,9 +34,13 @@ interface Props {
   mode: Mode;
   /** What the 3D view shows, for a screen reader. */
   label: string;
+  /** Chapter 5's steps: the parts each step frames, by the step's number; a step not named frames every part. */
+  frames?: Readonly<Record<string, readonly PartId[]>>;
   /** The poster: the movement drawn as SVG. */
   children: ReactNode;
 }
+
+const NO_FRAMES: Readonly<Record<string, readonly PartId[]>> = {};
 
 const DESKTOP = "(min-width: 64rem) and (pointer: fine)";
 
@@ -61,12 +72,29 @@ function createLadder() {
   };
 }
 
-export default function MovementFigure({ figure, name, mode, label, children }: Props) {
+export default function MovementFigure({ figure, name, mode, label, frames = NO_FRAMES, children }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const labels = useRef<HTMLDivElement>(null);
+  const leaders = useRef<SVGSVGElement>(null);
   const [ladder] = useState(createLadder);
   const rung = useSyncExternalStore(ladder.subscribe, ladder.get, () => "poster" as const);
   const fallback: Rung = mode === "chapter" ? "flat" : "poster";
+  const followFigure = useCallback(
+    (listener: () => void) => {
+      const el = document.getElementById(figure);
+      return el ? onFigureChange(el, listener) : () => undefined;
+    },
+    [figure],
+  );
+  const picked = useSyncExternalStore(
+    followFigure,
+    () => {
+      const el = document.getElementById(figure);
+      return el ? pickOf(el) : null;
+    },
+    () => null,
+  );
   const active = rung === "loading" || rung === "live" || rung === "lost";
 
   // Which rung, once hydrated: no WebGL 2 keeps the poster; a phone's chapter 5 offers the button; otherwise the scene
@@ -113,6 +141,10 @@ export default function MovementFigure({ figure, name, mode, label, children }: 
           figure: host,
           viewBox: poster.getAttribute("viewBox") ?? "",
           name,
+          chapter:
+            mode === "chapter" && labels.current && leaders.current
+              ? { labels: labels.current, leaders: leaders.current, frames }
+              : null,
           onLost: () => {
             ladder.set("lost");
           },
@@ -133,7 +165,7 @@ export default function MovementFigure({ figure, name, mode, label, children }: 
       gone = true;
       view?.dispose();
     };
-  }, [active, figure, name, ladder, fallback]);
+  }, [active, figure, name, mode, frames, ladder, fallback]);
 
   // While the canvas shows, it is the figure a screen reader meets; the poster comes back with the poster.
   useEffect(() => {
@@ -142,7 +174,8 @@ export default function MovementFigure({ figure, name, mode, label, children }: 
     else poster?.removeAttribute("aria-hidden");
   }, [rung]);
 
-  return (
+  const chapter = mode === "chapter";
+  const figureBox = (
     <div ref={box} className="movement-figure" data-gl={rung}>
       {children}
       {active && (
@@ -154,6 +187,36 @@ export default function MovementFigure({ figure, name, mode, label, children }: 
           aria-label={label}
           aria-hidden={rung === "live" ? undefined : true}
         />
+      )}
+      {chapter && active && (
+        <>
+          <svg ref={leaders} className="leaders" aria-hidden="true">
+            {LABELLED.map((part) => (
+              <g key={part.id} data-leader={part.id}>
+                <path />
+                <circle r="2.2" />
+              </g>
+            ))}
+          </svg>
+          {/* Each label is a button too: a click lights its part, as a click on the part does. */}
+          <div ref={labels} className="labels">
+            {LABELLED.map((part) => (
+              <button
+                key={part.id}
+                type="button"
+                className="label"
+                data-label={part.id}
+                aria-pressed={picked === part.id}
+                onClick={() => {
+                  const el = document.getElementById(figure);
+                  if (el) setPick(el, pickOf(el) === part.id ? null : part.id);
+                }}
+              >
+                {part.label}
+              </button>
+            ))}
+          </div>
+        </>
       )}
       {rung === "offer" && (
         <button
@@ -167,11 +230,19 @@ export default function MovementFigure({ figure, name, mode, label, children }: 
         </button>
       )}
       {rung === "flat" && <p className="gl-note">This browser can’t turn it in 3D; here it is flat.</p>}
-      {mode === "chapter" && rung === "live" && (
+      {chapter && rung === "live" && (
         <p className="gl-hint" aria-hidden="true">
-          Drag sideways to turn it.
+          <span className="max-sm:hidden">Drag sideways to turn it; click a part to light it.</span>
+          <span className="sm:hidden">Drag to turn it, tap a part to light it.</span>
         </p>
       )}
     </div>
+  );
+  if (!chapter) return figureBox;
+  return (
+    <>
+      {figureBox}
+      <PartsList figure={figure} />
+    </>
   );
 }

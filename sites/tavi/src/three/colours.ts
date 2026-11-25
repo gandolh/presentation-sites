@@ -29,7 +29,10 @@ const PAIRS = {
   chaton: ["chaton", "ruby-line"],
 } as const;
 
-export type PaintName = keyof typeof PAIRS;
+/** The ghost pair, which a part drops to while another is lit (focus by subtraction, as in the drawings). */
+const GHOST = ["--color-ghost-fill", "--color-ghost-line"] as const;
+
+export type PaintName = keyof typeof PAIRS | "ghost";
 export type Palette = Readonly<Record<PaintName, Paint>>;
 
 /** How far a wall's colour sits from its fill towards its line: the prototype's. */
@@ -42,21 +45,24 @@ export function readPalette(root: Element = document.documentElement): Palette {
   probe.width = 1;
   probe.height = 1;
   const px = probe.getContext("2d", { willReadFrequently: true });
-  const token = (name: string): Color => {
+  const token = (property: string): Color => {
     const colour = new Color();
     if (!px) return colour;
     px.clearRect(0, 0, 1, 1);
     // An unreadable token leaves the probe's last valid colour: start from a known one.
     px.fillStyle = "#000";
-    px.fillStyle = css.getPropertyValue(`--color-part-${name}`).trim();
+    px.fillStyle = css.getPropertyValue(property).trim();
     px.fillRect(0, 0, 1, 1);
     const [r = 0, g = 0, b = 0] = px.getImageData(0, 0, 1, 1).data;
     return colour.setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
   };
-  const entries = Object.entries(PAIRS).map(([key, [fill, line]]) => {
+  const paint = (fill: string, line: string): Paint => {
     const f = token(fill);
     const l = token(line);
-    return [key, { fill: f, line: l, side: f.clone().lerp(l, SIDE) }] as const;
-  });
-  return Object.fromEntries(entries) as Record<PaintName, Paint>;
+    return { fill: f, line: l, side: f.clone().lerp(l, SIDE) };
+  };
+  const entries = Object.entries(PAIRS).map(
+    ([key, [fill, line]]) => [key, paint(`--color-part-${fill}`, `--color-part-${line}`)] as const,
+  );
+  return { ...Object.fromEntries(entries), ghost: paint(...GHOST) } as Record<PaintName, Paint>;
 }

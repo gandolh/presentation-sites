@@ -11,6 +11,7 @@ import PartName from "../components/chapter/PartName.astro";
 import Step from "../components/chapter/Step.astro";
 import Movement from "../components/drawing/Movement.astro";
 import MovementFigure from "../components/together/MovementFigure.tsx";
+import TogetherTray from "../components/together/TogetherTray.tsx";
 import { dialSvg } from "../movement/svg/dial.ts";
 import { BALANCE_START, closeUpSvg, ESCAPEMENT_HOLDS, poseAt, readoutsAt } from "../movement/svg/escapement.ts";
 
@@ -34,7 +35,24 @@ const escapementReadouts = readoutsAt(poseAt(escapementStart));
 const balanceReadouts = readoutsAt(poseAt(BALANCE_START));
 
 // Chapter 5's poster is the whole movement assembled, framed with room round it; the 3D island opens on exactly this
-// frame and replaces the drawing in the same box.
+// frame and replaces the drawing in the same box. Its steps take the movement apart in the order a watchmaker does,
+// which is the order of the part table's lift windows: each step's Take apart is where its parts have just come off,
+// and the 3D view frames those parts (the rest of the steps frame the whole movement).
+const together = {
+  assembled: { e: 0 },
+  balance: { e: 0.45 },
+  pallets: { e: 0.58 },
+  bridges: { e: 0.68 },
+  wheels: { e: 0.96 },
+  apart: { e: 1 },
+  back: { e: 0 },
+};
+const togetherFrames = {
+  "2": ["balance-cock", "cock-screws", "balance", "hairspring"],
+  "3": ["pallet-bridge", "pallet-screws", "pallet", "ratchet", "crownwheel", "click"],
+  "4": ["train-bridge", "train-screws", "barrel-bridge", "barrel-screws"],
+  "5": ["escape", "fourth", "third", "centre", "lid", "barrel", "mainspring"],
+} as const;
 const togetherFrame = "-250 -205 450 410";
 ---
 
@@ -262,14 +280,53 @@ const togetherFrame = "-250 -205 450 410";
       id="together"
       n={5}
       head="5. Together, apart and back again"
-      caption="The whole movement assembled, seen from the back: the main plate and the crown, the barrel, the wheel train, the escape wheel, the pallet fork and the balance, under the barrel bridge, the train bridge, the pallet bridge and the balance cock with their screws and jewels."
-      opening={still}
+      caption="The whole movement seen from the back. Take apart lifts its parts off in the order a watchmaker takes them: the balance cock and the balance, the pallet bridge and the pallet fork, the ratchet wheel, the crown wheel and the click, the train bridge and the barrel bridge, then the escape, fourth, third and centre wheels, the barrel lid and the barrel, each named as it comes apart."
+      opening={together.assembled}
       next={{ href: "#bench", head: "6. The bench, Tavi’s tools" }}
     >
-      <Step n={1} pose={still}>
-        Here is every part from the first four chapters at once, put together. The main plate is the floor; the barrel,
-        the wheels and the escapement turn on it, and the bridges screwed down over them hold the top pivots in
-        synthetic rubies. A Seiko NH35 has <span class="fig">24</span> of those jewels.
+      <Step n={1} pose={together.assembled}>
+        Here is every part from the first four chapters at once, put together. The
+        <PartName part="plate">main plate</PartName> is the floor; the <PartName part="barrel">barrel</PartName>, the
+        wheels and the escapement turn on it, and the bridges screwed down over them hold the top pivots in synthetic
+        rubies. A Seiko NH35 has <span class="fig">24</span> of those jewels.
+        <Fragment slot="hint">
+          Press <span class="ctl">Take apart</span> to watch it come apart, or scroll on, a step at a time.
+        </Fragment>
+      </Step>
+      <Step n={2} pose={together.balance}>
+        Before anything comes off, a watchmaker lets the power down, easing the
+        <PartName part="click">click</PartName> back so the mainspring unwinds slowly. Then the
+        <PartName part="balance-cock">balance cock</PartName> comes off, and the
+        <PartName part="balance">balance</PartName> with its <PartName part="hairspring">hairspring</PartName>: the most
+        delicate parts, out of harm’s way first. It is called a cock, not a bridge, because it is held at one end only.
+      </Step>
+      <Step n={3} pose={together.pallets}>
+        Next the <PartName part="pallet-bridge">pallet bridge</PartName> and the
+        <PartName part="pallet">pallet fork</PartName> under it. With the fork out, nothing holds the wheels back, which
+        is why the power went down first. On the barrel bridge, the <PartName part="ratchet">ratchet wheel</PartName>,
+        the <PartName part="crownwheel">crown wheel</PartName> and the click come off their screws.
+      </Step>
+      <Step n={4} pose={together.bridges}>
+        Then the two big bridges, the <PartName part="train-bridge">train bridge</PartName> and the
+        <PartName part="barrel-bridge">barrel bridge</PartName>. Each holds the top pivots of the wheels under it in its
+        jewels, so once its screws are out it lifts straight off, and the wheels are free.
+      </Step>
+      <Step n={5} pose={together.wheels}>
+        The wheels come out from the top of the stack down: the <PartName part="escape">escape wheel</PartName>, the
+        <PartName part="fourth">fourth</PartName>, the <PartName part="third">third</PartName> and the
+        <PartName part="centre">centre wheel</PartName>. Last the barrel, whose
+        <PartName part="lid">lid</PartName> opens on the <PartName part="mainspring">mainspring</PartName>.
+      </Step>
+      <Step n={6} pose={together.apart}>
+        Everything apart, each part named. Tavi sets them out in this order in a tray of small covered dishes, top parts
+        on the left, so nothing rolls off the bench and no dust settles on them while they wait to be cleaned.
+        <Fragment slot="hint">Choose a part, on the figure or by its name, to light it.</Fragment>
+      </Step>
+      <Step n={7} pose={together.back}>
+        Putting it back runs the other way: the barrel and the wheels first, then the bridges, and a check that the
+        wheels spin freely before the <PartName part="pallet">pallet fork</PartName> goes in. The
+        <PartName part="balance">balance</PartName> goes in last, and once its impulse pin drops into the fork, the
+        watch starts.
       </Step>
       <MovementFigure
         slot="figure"
@@ -277,7 +334,8 @@ const togetherFrame = "-250 -205 450 410";
         figure="together-figure"
         name="together"
         mode="chapter"
-        label="The whole movement in three dimensions, assembled and seen from the back. Drag sideways or use the arrow keys to turn it."
+        frames={togetherFrames}
+        label="The whole movement in three dimensions, seen from the back. Drag sideways or use the arrow keys to turn it."
       >
         <Movement
           pose="whole"
@@ -286,7 +344,7 @@ const togetherFrame = "-250 -205 450 410";
           aria-label="Diagram of the whole movement assembled, seen from the back: the barrel and the crown at the upper left under the barrel bridge, the train bridge across the middle, the pallet bridge and the balance cock at the bottom."
         />
       </MovementFigure>
-      <FigureTray slot="tray" client:visible figure="together-figure" />
+      <TogetherTray slot="tray" client:visible figure="together-figure" />
     </Chapter>
 
     {chapters.map((chapter) => (
