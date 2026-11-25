@@ -808,3 +808,20 @@ passed. Not pushed. Details in the
 
 Filed from the owner's ask to fix the build warnings in the most active repos (more than 10 commits outside the corpus
 in two days). design-study, subcort and tractari print Vite's 500 kB chunk warning for their three.js scene chunks (519 to 885 kB), which already load on demand. The brief splits three.js by size, and moves a site's limit only for a single module that stays over 500 kB.
+
+## [2026-11-25] brief | 15 tavi, chapters 3 and 4: escapement and balance, driven by the clock
+
+Chapters 3 and 4 are drawn by the clock, not by CSS. `lib/clockFigure.ts` runs one frame loop per figure: it writes
+the escape wheel's, the pallet fork's and the balance's rotations and the hairspring's path from `stateAt(t)`, moves
+`t` by real time over the figure's `--slow` with a frame's step clamped at 0.25 s, and asks for frames only while the
+page plays, the figure is on screen and the tab is visible. A hold (`data-hold`, `lib/figure.ts`) is the figure's
+own: chapter 3's first four steps each hold one phase of a beat (locked, unlocking, the impulse, the other stone
+locked), the tray's Pause shows pressed while it lasts, and un-pressing it releases the hold and plays the page if it
+was paused. The close-up (`movement/svg/escapement.ts`) cuts the pallet stones from the clock's own motion, so a tooth
+rests on a locking face, slides down an impulse face and drops on the other stone at the moments the clock gives;
+`node:test` checks that no tooth runs into a stone or the fork and that the impulse pin leaves the notch clear.
+Chapter 3 opens at 1/10 with a beat counter; chapter 4 shows the hairspring breathing, the lift window as a thin arc
+and the amplitude. `window.taviPose` poses both in development. `tavi.spec.ts` covers the opening speed, the held
+phases, the play state left alone, 12 degrees a beat, the loop's stops, reduced motion and no scripting. The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/15-tavi-chapters-3-and-4-escapement-and-balance.md).
