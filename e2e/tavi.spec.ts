@@ -2795,7 +2795,8 @@ test.describe("chapter 5's Wind", () => {
     await page.keyboard.press("End");
     await expect(page.locator("#together-figure .tray")).toContainText("41:00 of 41 h");
     const up = await glStats(page, "together");
-    expect(up.spring).toBe(1);
+    // Fully wound, and already running down: the spring has lost the few milliseconds since the key press.
+    expect(up.spring).toBeCloseTo(1, 4);
     expect(up.ratchet).toBe(0);
     // One slider step is 0.41 h: the ratchet wheel is whole teeth at every value between.
     const teeth = new Set<number>();
