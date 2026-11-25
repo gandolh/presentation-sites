@@ -1,6 +1,6 @@
 ---
-summary: What presentation-sites is — a monorepo of independent Romanian marketing sites plus one English watch site (tavi, planned 2026-11-24), who each one is for, and what lives at the top level.
-updated: 2026-11-24
+summary: What presentation-sites is — a monorepo of independent Romanian marketing sites plus one English watch site (tavi, built 2026-11-24 to 25), who each one is for, and what lives at the top level.
+updated: 2026-11-25
 ---
 
 # Overview
@@ -26,7 +26,7 @@ exception: English, and for a person, not a business.
 | [`auto-service/`](../../sites/auto-service/) | **BavAuto Gorj** — independent BMW-specialist auto service, Târgu-Jiu. | `/auto-service` |
 | [`subcort/`](../../sites/subcort/) | **Subcort** — demo event-tent rental site for Gorj/Oltenia. | `/subcort` |
 | [`tractari/`](../../sites/tractari/) | **AXA Tractări** — demo car-towing site. Minimalist, with a Three.js night-road hero. | `/tractari` |
-| `tavi/` | **Tavi Ceasornicaru** — an interactive watch movement you wind, slow down and take apart, drawn on warm paper, for a friend who mends wristwatches. English, light only. Planned 2026-11-24 (briefs 09-20), not built; see [decisions-tavi.md](decisions-tavi.md). | `/tavi` |
+| [`tavi/`](../../sites/tavi/) | **Tavi Ceasornicaru** — an interactive watch movement you wind, slow down and take apart, drawn on warm paper, for a friend who mends wristwatches. English, light only. Built 2026-11-24 to 25 (briefs 09-20), not yet redeployed; see [decisions-tavi.md](decisions-tavi.md). | `/tavi` |
 | [`design-study/`](../../sites/design-study/) | **Fourteen Renderings** — not a marketing site but a UI/UX study: one fictional blog rendered in 14 design languages, content held constant. `noindex` by decision. | `/design-study` |
 | [`churchix/`](../../churchix/) | **Churchix** — a white-label *platform* for Orthodox church sites + giving. Its own npm-workspaces monorepo; the odd one out. | per-church |
 

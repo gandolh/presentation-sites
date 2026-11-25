@@ -1,12 +1,12 @@
 ---
-summary: The calls behind Tavi Ceasornicaru (sites/tavi, planned 2026-11-24) - an interactive watch movement on warm paper, English and light only, drawn not photographed; the stack (Astro, Base UI controls, vanilla three.js in one island), the one part table and its two renderers, the fallback ladder, the islands' shared play contract, and the defaults the owner can change. Read before any tavi brief.
-updated: 2026-11-24
+summary: The calls behind Tavi Ceasornicaru (sites/tavi, planned 2026-11-24, built by 2026-11-25) - an interactive watch movement on warm paper, English and light only, drawn not photographed; the stack (Astro, Base UI controls, vanilla three.js in one island), the one part table and its two renderers, the fallback ladder, the islands' shared play contract, and the defaults the owner can change. Read before any tavi brief.
+updated: 2026-11-25
 ---
 
 # Decisions: Tavi Ceasornicaru
 
 The other locked calls are in [decisions.md](decisions.md). The approved design is `design/tavi/`
-([its README](../../design/tavi/README.md) says which file wins). The briefs that build it are 09 to 20.
+([its README](../../design/tavi/README.md) says which file wins). The briefs that built it are 09 to 20.
 
 ## What the site is
 
@@ -101,6 +101,12 @@ header's Pause and the steps observer are plain module scripts, so they work bef
 - **Colours** reach three.js by reading the part tokens from the stylesheet at runtime (a 1×1 canvas probe turns each
   token into sRGB, as `prototype.html` does), never as colour literals in code. The tokens are emitted with
   `@theme static` so the island can read them.
+
+## What shipped differently
+
+**2026-11-25** — `sites/tavi/DESIGN.md` ("Where the site differs from `design/tavi/`") lists every departure from the
+sketch with its reason. The calls above stand; brief 20 added only the social card (the hero's drawing on paper,
+`npm run tavi:og`) and moved the site's docs to its README, PRODUCT.md and DESIGN.md, with no docs site until brief 21.
 
 ## Defaults the owner can change
 

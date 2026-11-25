@@ -890,3 +890,15 @@ or three pieces of 148 to 373 kB, loaded only with the scene, so no site needed 
 1 failed (brief 19's Wind check compares a spring value to 1 exactly; it fails without this change too). The board was
 not updated: brief-board was not available in this session. Not pushed. Details in the
 [brief's outcome](briefs/done/22-three-sites-build-without-the-chunk-warning.md).
+
+## [2026-11-25] brief | 20 tavi, README, PRODUCT.md, DESIGN.md and the social card
+
+The site's three docs were rewritten from what shipped (DESIGN.md gained the chapters table, the Sound and reserve
+contracts, the tool tokens, the ladder as built and a list of where the site differs from `design/tavi/`), and the
+site got its social card: `scripts/gen-og.mjs` draws the hero's movement with the page's own builder and the
+stylesheet's tokens, headless Chrome shoots it, and `npm run tavi:og` writes `public/images/og-image.png` (1200 x 630,
+50 KB). `Base.astro` carries absolute `og:image` and `twitter:*` tags. `docs/README.md` lists tavi (no docs site yet),
+and `docs/architecture.md` and `docs/adding-a-site.md` each got a line. Brief 14 (chapter 2) was left open in `todo/`;
+chapter 2 is described from the code. Not run: sloplint (the hallmark script is not in this container). The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/20-tavi-readme-design-md-and-the-social-card.md).

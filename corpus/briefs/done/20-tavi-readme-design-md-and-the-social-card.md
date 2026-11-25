@@ -67,3 +67,30 @@ second".
 ## Owner decisions
 
 - Settled 2026-11-24 (planner, the owner can change it): no docs site in v1.
+
+## Outcome (2026-11-25)
+
+- **The three docs** were rewritten from what shipped. `DESIGN.md` gained a chapters-and-figures table (chapter 2 as it
+  is in the code: the train's ratios, then the figure turning over to the dial side), the Sound and reserve contracts,
+  the ten `--color-tool-*` tokens, the ladder as built (hero island on `client:idle`, chapter 5 on `client:visible`) and
+  a section on where the site differs from `design/tavi/` and why. `PRODUCT.md` gained the copy rule (true about
+  watches, free about Tavi), the sound principle and the one shipped image. `README.md` was rewritten to the
+  readme-docs standard: a hero picture (the card), run and build at `/tavi`, the part table and its two renderers, the
+  five-rung ladder, the checks, the card, and why English with no docs site yet.
+- **The card.** `scripts/gen-og.mjs` and `scripts/og-card.html` follow subcort's. The card draws the hero's movement
+  with the page's own builder (`movementSvg`, pose `hero`, no callouts) and takes the colour tokens and the drawing's
+  rules from `src/styles/global.css`, so a part colour change reaches it on the next run. Newsreader (opsz, roman and
+  italic) and Plex Mono load from Fontsource. `npm run tavi:og` (root `tavi:og`) writes a 1200 x 630 palette PNG, 50 KB,
+  and fails over 300 KB. `sharp` 0.35.5, subcort's pin, is a devDependency.
+- **`Base.astro`** gained `og:image` (with width, height and alt) and `twitter:card`, `twitter:title`,
+  `twitter:description` and `twitter:image`, through `absoluteUrl()`. The built page carries
+  `https://<origin>/tavi/images/og-image.png` for both.
+- **The repo's docs.** `docs/README.md` has tavi's row ("none yet" for the docs site, since brief 21 follows);
+  `docs/architecture.md` says six sites; `docs/adding-a-site.md` step 6 says a docs site can follow the site. The
+  corpus overview, status and decisions-tavi say built, not planned.
+- **Brief 14** (chapter 2) is built on main but still sits in `todo/`; it was not closed here. Chapter 2 is described
+  from the code.
+- Not run: sloplint (the hallmark script is not in this container), left to the owner. The board was not updated:
+  brief-board was not available in this session.
+- **Owner steps.** Once the site is live, add its first screen to the main README's table. The site is not deployed
+  since brief 11: `node cli.ts tavi deploy` from vps-deploy ships the rest.

@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
+    "og": "node --experimental-strip-types scripts/gen-og.mjs",
     "test": "node --experimental-strip-types --test \"src/**/*.test.ts\""
   },
   "dependencies": {
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@types/node": "22.20.1",
+    "sharp": "0.35.5",
     "typescript": "6.0.3"
   }
 }
