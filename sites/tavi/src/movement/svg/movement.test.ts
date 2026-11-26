@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { movementSvg, type MovementOptions } from "./movement.ts";
+import { MOVEMENT } from "../parts.ts";
+import { apartFit, DRAWN_LIFT, movementSvg, type MovementOptions } from "./movement.ts";
 import { springPath } from "./pieces.ts";
 
 const base = { viewBox: "-250 -215 500 430", label: "A movement" } as const;
@@ -24,15 +25,40 @@ describe("the movement drawing", () => {
     assert.match(svg, /aria-label="The &quot;back&quot; &amp; &lt;side&gt;"/);
   });
 
-  test("the hero names its callouts; the whole pose names none and lifts nothing", () => {
+  test("the hero names its callouts and lifts nothing; the whole pose names none", () => {
     const hero = draw({ pose: "hero", id: "a", callouts: ["barrel", "train", "balance", "escape"] });
     assert.equal(count(hero, 'class="callout"'), 4);
     for (const text of ["Barrel", "Wheel train", "Balance", "Escape wheel"])
       assert.ok(hero.includes(`>${text}</text>`));
+    assert.equal(count(hero, 'class="lift'), 0);
     const whole = draw({ pose: "whole", id: "b", callouts: ["barrel"] });
     assert.equal(count(whole, 'class="callout"'), 0);
-    assert.equal(count(whole, 'class="lift'), 0);
     assert.ok(whole.includes('class="lid fo"'), "the barrel keeps its lid");
+  });
+
+  test("the whole pose lifts every part that comes apart, through the part table's own window", () => {
+    const whole = draw({ pose: "whole", id: "w" });
+    // The mainspring and the arbor ride in the barrel's group: the three share one lift.
+    const lifted = MOVEMENT.parts.filter((p) => p.explode.lift > 0 && p.id !== "mainspring" && p.id !== "arbor");
+    assert.equal(count(whole, 'class="lift-w"'), lifted.length);
+    for (const p of lifted) {
+      const [from, to] = p.explode.window;
+      const style = `--lift:${+(p.explode.lift * DRAWN_LIFT).toFixed(2)};--w0:${+from.toFixed(2)};--w1:${+to.toFixed(2)}`;
+      assert.ok(whole.includes(`style="${style}`), `${p.id}: ${style}`);
+    }
+    // Every bridge's screws turn as they come out, two turns as the 3D screws do.
+    assert.equal(count(whole, ";--spin:2"), 4);
+    assert.equal(count(whole, 'class="spin"'), 6);
+    // The bridges can be lit by name, their screws with them.
+    for (const id of ["barrel-bridge", "train-bridge", "pallet-bridge", "balance-cock"])
+      assert.equal(count(whole, `data-part="${id}"`), 2, id);
+  });
+
+  test("taken apart, the whole pose shrinks into a frame that holds the lifted stack", () => {
+    const fit = apartFit("-250 -205 450 410");
+    assert.ok(fit.s > 0.6 && fit.s < 1, `scale ${fit.s}`);
+    const svg = draw({ pose: "whole", id: "f", viewBox: "-250 -205 450 410" });
+    assert.match(svg, /^<svg [^>]*style="--fit-s:[\d.]+;--fit-x:-?[\d.]+;--fit-y:-?[\d.]+"/);
   });
 
   test("the chapter pose opens the barrel and lifts four groups", () => {

@@ -15,18 +15,22 @@ apart, chapter by chapter, framed by Tavi's story and his bench, with a quiet li
 ## The one thing
 
 **Understand a watch by playing with one.** Every chapter shows one part of the movement doing its job, slowly
-enough to see, and lets the visitor wind it, pause it, slow it down and take it apart.
+enough to see, and lets the visitor wind it, pause it, slow it down and take it apart. Five chapters do that, from the
+mainspring to the whole movement apart, and the sixth shows the bench it is mended on.
 
 ## Principles
 
 1. **Drawn, not photographed.** The movement, the bench and the tools are drawn or modelled in the site's style, from
    one part table. A real 21,600 vph train, so the ratios and the beat are true.
 2. **The repair line stays quiet.** It lives in the footer and the contents band's chapter 7, never on the first
-   screen. No contact details until the owner gives one.
-3. **English.** The only English site in this repo; the others are Romanian.
-4. **Light.** Warm paper, one look, no theme switch.
-5. **Everything can stop.** Every moving figure has a Pause, plus one in the header for the whole page; reduced motion
-   starts still; nothing moves without scripting.
+   screen. No contact details until the owner gives one, and Tavi's own line waits in a dashed slot until he sends it.
+3. **True about watches, free about Tavi.** Calibres, part names, tooth counts, brands and tool numbers are real and
+   checked; anything about Tavi as a person is invented and never a real person's data.
+4. **English.** The only English site in this repo; the others are Romanian.
+5. **Light.** Warm paper, one look, no theme switch.
+6. **Everything can stop, and sound is asked for.** Every moving figure has a Pause, plus one in the header for the
+   whole page; reduced motion starts still; nothing moves without scripting. The synthesised tick is off until the
+   visitor presses Sound.
 
 ## Anti-references
 
@@ -38,12 +42,13 @@ enough to see, and lets the visitor wind it, pause it, slow it down and take it 
 ## Accessibility
 
 English (`lang="en"`). Light only: body text at least 4.5:1 on paper, a 2px focus ring at least 3:1. Links and
-buttons at least 44px tall, except a part name inside running prose, which keeps the sentence's line. Reduced motion starts every figure paused; with scripting off the page reads in full and every chapter
-link works.
+buttons at least 44px tall, except a part name inside running prose, which keeps the sentence's line. Reduced motion starts every figure paused; with scripting off the page reads in full and every
+chapter link works.
 
 ## Stack
 
 Astro 7.3.5 (static), React 19 islands for the controls and the 3D movement, Base UI 1.9.0 through
 `src/components/ui/`, Tailwind 4 with one stylesheet. Fonts self-hosted through Fontsource; the site makes no
 third-party request. three.js 0.187.0 inside one island, loaded only where the fallback ladder allows. Served under
-`/tavi` (`PUBLIC_BASE`), on the origin from `PUBLIC_SITE`.
+`/tavi` (`PUBLIC_BASE`), on the origin from `PUBLIC_SITE`. One image ships, the social card
+(`public/images/og-image.png`, from `npm run tavi:og`); everything else is drawn.

@@ -808,3 +808,108 @@ passed. Not pushed. Details in the
 
 Filed from the owner's ask to fix the build warnings in the most active repos (more than 10 commits outside the corpus
 in two days). design-study, subcort and tractari print Vite's 500 kB chunk warning for their three.js scene chunks (519 to 885 kB), which already load on demand. The brief splits three.js by size, and moves a site's limit only for a single module that stays over 500 kB.
+
+## [2026-11-25] brief | 15 tavi, chapters 3 and 4: escapement and balance, driven by the clock
+
+Chapters 3 and 4 are drawn by the clock, not by CSS. `lib/clockFigure.ts` runs one frame loop per figure: it writes
+the escape wheel's, the pallet fork's and the balance's rotations and the hairspring's path from `stateAt(t)`, moves
+`t` by real time over the figure's `--slow` with a frame's step clamped at 0.25 s, and asks for frames only while the
+page plays, the figure is on screen and the tab is visible. A hold (`data-hold`, `lib/figure.ts`) is the figure's
+own: chapter 3's first four steps each hold one phase of a beat (locked, unlocking, the impulse, the other stone
+locked), the tray's Pause shows pressed while it lasts, and un-pressing it releases the hold and plays the page if it
+was paused. The close-up (`movement/svg/escapement.ts`) cuts the pallet stones from the clock's own motion, so a tooth
+rests on a locking face, slides down an impulse face and drops on the other stone at the moments the clock gives;
+`node:test` checks that no tooth runs into a stone or the fork and that the impulse pin leaves the notch clear.
+Chapter 3 opens at 1/10 with a beat counter; chapter 4 shows the hairspring breathing, the lift window as a thin arc
+and the amplitude. `window.taviPose` poses both in development. `tavi.spec.ts` covers the opening speed, the held
+phases, the play state left alone, 12 degrees a beat, the loop's stops, reduced motion and no scripting. The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/15-tavi-chapters-3-and-4-escapement-and-balance.md).
+
+## [2026-11-25] brief | 16 tavi, the 3D movement and the fallback ladder
+
+The prototype's three.js movement is in the site as one React island, `components/together/MovementFigure.tsx`,
+with the scene in `src/three/` on three.js 0.187.0 (bundled, imported only by the island; subcort, tractari and
+design-study stay on 0.185.1). It wraps the hero's drawing (`client:idle`, loading once the hero is on screen, phones
+included) and chapter 5's new `whole` poster (`client:visible`, 200px early; a phone gets "Turn it in 3D" unless the
+hero already loaded three.js). The scene reads the part table and the clock, and samples every outline from the
+drawing's own builders, so its first frame is the poster's flat view, the plate within 2 px; the first drag or
+arrow key eases to the prototype's tilt. Without WebGL the poster stays, with one line in chapter 5; a lost context
+swaps it back. Gear outlines are screen-width `LineSegments2` lines: one-pixel lines read at half the drawing's
+weight at device pixel ratio 2. 80 draw calls; the scene chunk is 154.5 kB gzip, the island 2.0 kB. The phone header
+is now `position: relative`, so the Chapters drawer stays over the canvas. Chapter 5 has its head, one step and its
+tray; brief 17 adds the rest. The board was not updated: brief-board was not available in this session. Not pushed.
+Details in the [brief's outcome](briefs/done/16-tavi-the-3d-movement-and-the-fallback-ladder.md).
+
+## [2026-11-25] brief | 17 tavi, chapter 5: together, apart, with labels
+
+Chapter 5 takes the movement apart in seven steps, in the order watchmakers do and the part table's lift windows run
+(the balance cock and balance, the pallet bridge and fork with the winding parts, the two big bridges, the wheels and
+the barrel, everything apart, put back); steps 2 to 5 frame, light and label their own parts. Its tray has a Take apart
+/ Put back button that runs the slider over the prototype's timing (a jump under reduced motion), Take apart and Turn.
+On a desktop the 3D view labels the parts in two columns from a pure layout (`src/three/labels.ts`, `node:test`: no
+two leaders meet at 1280 x 800 and 1440 x 900, turned 0 and ±30 degrees), each label a button, fading while its anchor
+is behind another part; a click lights a part and ghosts the rest. Phones get a parts list under the figure that
+lights and frames a part with its label alone. Without the 3D view the poster comes apart through lift groups from the
+same windows. The figure keeps the choice and the turn (`data-pick`, `data-turn`). The steps' order deviates from the
+brief's list, which put the train before the pallet fork. The board was not updated: brief-board was not available in
+this session. Not pushed. Details in the
+[brief's outcome](briefs/done/17-tavi-chapter-5-together-apart-with-labels.md).
+
+## [2026-11-25] brief | 18 tavi, chapter 6: the bench, drawn
+
+Chapter 6 draws Tavi's bench from above, at real size on a 240 x 164 mm mat: a typed tool table and its SVG builders
+in `sites/tavi/src/bench/` (`node:test`: every tool on the mat, none on another, the movement at the NH35's 27.4 mm,
+the loupe's lens over the balance). Bergeon's 4040 holder holds the hero's drawing, still; beside it a 2611 loupe, the
+30081 set of five screwdrivers in their colour code, a Dumont No. 5 and a brass pair of tweezers, a 7013 oiler and an
+oil cup. Six steps: the whole bench, then each tool lit by focus by subtraction; each tool's name in the prose lights
+it. Step 3 slides the loupe over the balance (a jump under reduced motion); nothing loops, so the figure has no tray.
+Ten `--color-tool-*` tokens carry the coloured caps and the loupe's body. The blades are steel, not the brief's blued
+steel, which no source showed. `three/view.ts` now ends a take-apart run exactly on its target, which a chapter 5 check
+met once the page grew. The page's HTML is 131 kB gzip (107 before). The board was not updated: brief-board was not
+available in this session. Not pushed. Details and sources in the
+[brief's outcome](briefs/done/18-tavi-chapter-6-the-bench-drawn.md).
+
+## [2026-11-25] brief | 19 tavi, the ticking sound and the spring running down
+
+The header gets a Sound toggle, off on every visit, that loads `lib/sound.ts` on its first press and ticks a synthesised
+burst on the audio clock at the beat of the moving figure nearest the reading line: six a second at 1×, ten and a hundred
+times slower at 1/10 and 1/100, silent while paused, hidden, held or with no figure in view. The clock takes a reserve
+(0 to 41 h) that lowers the balance's amplitude and, at zero, stops it. Chapter 5's tray gains Wind: with the barrel's
+lid off, the 3D mainspring coils as it is wound, the ratchet wheel steps a tooth at a time, and the reserve falls in
+real time (hours and minutes in the readout, a deviation from chapter 1's whole hours). The board was not updated:
+brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/19-tavi-the-ticking-sound-and-the-spring-running-down.md).
+
+## [2026-11-25] brief | 22 three sites build without the chunk warning
+
+design-study, subcort and tractari, and tavi too (brief 16's 3D scene gave it the same warning), cut their three.js
+chunk with a rolldown `codeSplitting` group capped at 500,000 bytes. three.js splits at its module boundary into two
+or three pieces of 148 to 373 kB, loaded only with the scene, so no site needed a raised `chunkSizeWarningLimit` and
+`npm run build` prints no warning. Scenes, islands and lazy imports are untouched. Tavi's whole e2e suite: 155 passed,
+1 failed (brief 19's Wind check compares a spring value to 1 exactly; it fails without this change too). The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/22-three-sites-build-without-the-chunk-warning.md).
+
+## [2026-11-25] brief | 20 tavi, README, PRODUCT.md, DESIGN.md and the social card
+
+The site's three docs were rewritten from what shipped (DESIGN.md gained the chapters table, the Sound and reserve
+contracts, the tool tokens, the ladder as built and a list of where the site differs from `design/tavi/`), and the
+site got its social card: `scripts/gen-og.mjs` draws the hero's movement with the page's own builder and the
+stylesheet's tokens, headless Chrome shoots it, and `npm run tavi:og` writes `public/images/og-image.png` (1200 x 630,
+50 KB). `Base.astro` carries absolute `og:image` and `twitter:*` tags. `docs/README.md` lists tavi (no docs site yet),
+and `docs/architecture.md` and `docs/adding-a-site.md` each got a line. Brief 14 (chapter 2) was left open in `todo/`;
+chapter 2 is described from the code. Not run: sloplint (the hallmark script is not in this container). The board was
+not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/20-tavi-readme-design-md-and-the-social-card.md).
+
+## [2026-11-25] brief | 21 tavi, a docs site
+
+`sites/tavi/docs-site/` is a Docusaurus site at `/tavi/docs/`, built with `npm run tavi:docs`. It renders the site's
+README, PRODUCT.md and DESIGN.md and adds four pages from the code: the part table and its two renderers, the chapter
+engine and the islands, the 3D island and its fallback ladder, and the copy rule. It is light only, in the site's paper
+and type. Unlike the other docs sites it has no diagrams step, and its sync script links no page to the repository's
+host. The build exits 0 and a Chromium walk of all eight pages found no broken link and no asset outside the base. It
+waits on a `tavi-docs` stack in vps-deploy. Brief 14 stays in `todo/`. Not run: sloplint (not in this container). The
+board was not updated: brief-board was not available in this session. Not pushed. Details in the
+[brief's outcome](briefs/done/21-tavi-a-docs-site.md).

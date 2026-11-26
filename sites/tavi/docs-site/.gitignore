@@ -1,0 +1,6 @@
+# Docusaurus cache and build output.
+.docusaurus/
+dist/
+
+# Generated on every docs build: scripts/sync-corpus.mjs renders the site's own markdown into here.
+docs/wiki/

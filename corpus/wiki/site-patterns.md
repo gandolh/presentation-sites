@@ -1,6 +1,6 @@
 ---
-summary: The as-built patterns several sites share, from the 2026-09-27 improvements audit fixes (2026-10-01/02) and later rounds. Social cards as screenshotted HTML, opening hours from one HOURS list, the phone menus on Base UI and how a link closes them, pausing a WebGL hero off-screen, design-study's carousel keys, the saloon bots webhook body cap, and the dependency hygiene rules (no dead Vite overrides, audit at the root and in churchix). Read before copying a fix from one site to another.
-updated: 2026-11-13
+summary: The as-built patterns several sites share, from the 2026-09-27 improvements audit fixes (2026-10-01/02) and later rounds. Social cards as screenshotted HTML, opening hours from one HOURS list, the phone menus on Base UI and how a link closes them, pausing a WebGL scene off-screen (tractari, and tavi rendering on demand), design-study's carousel keys, the saloon bots webhook body cap, and the dependency hygiene rules (no dead Vite overrides, audit at the root and in churchix). Read before copying a fix from one site to another.
+updated: 2026-11-25
 ---
 
 # Patterns the sites share
@@ -78,6 +78,22 @@ the tab is visible. The loop itself returns without rescheduling when not
 visible or `document.hidden`, so a frame already in flight can't re-arm it.
 Measured 2026-10-01: zero frames while scrolled away. With reduced motion the
 scene chunk isn't even requested.
+
+tavi's 3D movement (`sites/tavi/src/three/view.ts`, since 2026-11-25) keeps
+the same stops but renders on demand rather than every frame: it asks for a
+frame only while the page plays (`lib/playback.ts`), the figure isn't held,
+the canvas is on screen and the tab is visible, or while its first tilt eases;
+a resize or a drag while it is still draws one frame. Reduced motion doesn't
+skip the scene there: the page starts paused, so the scene loads and stands
+still until a Pause is released. Its frame step is clamped to 0 to 0.25 s: a
+frame's timestamp can come before the moment the loop was woken, which would
+step the clock back. Measured: zero frames over 2 s paused, scrolled away and
+hidden (`e2e/tavi.spec.ts`).
+
+A positioned canvas over a figure paints above a `position: static` header that
+holds its own popup (tavi's Chapters drawer, mounted in a header with
+`contain: layout`): a static element's z-index doesn't apply. tavi's phone
+header is `position: relative` for that reason, so it still scrolls away.
 
 ## design-study's arrow keys
 

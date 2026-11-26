@@ -5,7 +5,7 @@ import { isPhone, siteOf } from "./floor.js";
 // motion starts paused, the hero's drawing ticks at the movement's rate only while the page plays, the first screen
 // holds the hero and keeps the repair line off it, the contents band's links land and fold to two columns on a phone,
 // the footer shows Tavi's line as a placeholder, nothing works only with scripting, and no request leaves the origin.
-// The chapter briefs extend it. The Floor specs are shared (floor-*.spec.ts); the phone menu's behaviour is in mobile-menu.spec.ts.
+// The chapters' checks follow, then the 3D movement's on its fallback ladder (the hero and chapter 5). The Floor specs are shared (floor-*.spec.ts); the phone menu's behaviour is in mobile-menu.spec.ts.
 test.beforeEach(({ browserName: _browser }, info) => {
   test.skip(siteOf(info) !== "tavi", "tavi's own spec");
 });
@@ -158,7 +158,33 @@ async function heroAnimations(page: Page) {
   );
 }
 
+/** Whether the hero moves: its 3D view's clock runs on, or, where the drawing shows, its balance swings in CSS. */
+async function heroRuns(page: Page) {
+  const gl = await page.locator(".hero-stage .movement-figure").getAttribute("data-gl");
+  if (gl !== "live") return (await heroAnimations(page)).some((a) => a.group === "rot-balance");
+  const before = (await glStats(page, "hero")).t;
+  await page.waitForTimeout(300);
+  return (await glStats(page, "hero")).t > before;
+}
+
+/** Makes every canvas on the page find no WebGL, before the page's scripts run: the fallback ladder's third rung. */
+async function withoutWebGL(page: Page) {
+  await page.addInitScript(() => {
+    const get = HTMLCanvasElement.prototype.getContext;
+    const none = function (this: HTMLCanvasElement, type: string, ...rest: unknown[]) {
+      return /webgl/i.test(type) ? null : (get as (...a: unknown[]) => unknown).call(this, type, ...rest);
+    };
+    HTMLCanvasElement.prototype.getContext = none as typeof get;
+  });
+}
+
+// Where WebGL works, the 3D movement takes the drawing's place once the page is idle; these check the drawing itself,
+// so they run where it stays.
 test.describe("the hero's drawing", () => {
+  test.beforeEach(async ({ page }) => {
+    await withoutWebGL(page);
+  });
+
   test("ticks: the balance swings in 166.67 ms, the escape wheel turns in 5 s in 30 steps", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("#hero-movement")).toBeVisible();
@@ -1135,6 +1161,1304 @@ test.describe("chapter 2, the wheels and the dial", () => {
   });
 });
 
+// Chapters 3 and 4 are drawn by the clock, not by CSS: a frame loop per figure (lib/clockFigure.ts) writes each turning
+// group's rotation and the hairspring's path from stateAt(t). Chapter 3's steps hold the figure on one phase of a beat.
+const BEAT = 1 / 6;
+/** Half the lift window, in beats: the balance within 25 degrees of rest, of a swing of 200. */
+const HALF_WINDOW = Math.asin(25 / 200) / Math.PI;
+/** The time at a share of the lift window in beat `beat`, as the part table's clock reckons it. */
+const inWindow = (share: number, beat: number) => (beat + 0.5 - HALF_WINDOW + share * 2 * HALF_WINDOW) * BEAT;
+
+/** Poses a figure through the dev hook, as stills and tests do: it holds the figure at `t`. */
+async function poseFigure(page: Page, figure: string, t: number) {
+  await page.evaluate(
+    ({ figure, t }) => {
+      (window as unknown as { taviPose: (id: string, pose: { t: number }) => unknown }).taviPose(figure, { t });
+    },
+    { figure, t },
+  );
+}
+
+/** A turning group's rotation as the loop last drew it, in degrees: the first group under that name in a drawing. */
+async function drawn(page: Page, drawing: string, name: string) {
+  return page.evaluate(
+    ({ drawing, name }) =>
+      Number(
+        /rotate\(([-\d.e]+)\)/.exec(
+          document.querySelector(`#${drawing} [data-clock="${name}"]`)?.getAttribute("transform") ?? "",
+        )?.[1],
+      ),
+    { drawing, name },
+  );
+}
+
+/**
+ * Scrolls back up to a step as a visitor does. readStepOf puts a step's top on the reading line, which leaves the foot
+ * of the step above it there too, so a jump straight back would never bring that step in again: the page first goes
+ * past it, then comes back to it.
+ */
+async function backToStep(page: Page, chapter: string, step: string, phone: boolean) {
+  await page.evaluate(
+    ({ chapter, step }) => {
+      const el = document.querySelector(`#${chapter} .step[data-step="${step}"]`);
+      if (el) window.scrollBy(0, el.getBoundingClientRect().bottom - innerHeight * 0.3);
+    },
+    { chapter, step },
+  );
+  await page.waitForTimeout(150);
+  await readStepOf(page, chapter, step, phone);
+}
+
+/** The page with a chapter's tray island hydrated (from step 2 its figure is stuck whole on screen), then at `step`. */
+async function clockTrayReady(page: Page, chapter: string, phone: boolean, step = "2") {
+  await page.goto("/");
+  await readStepOf(page, chapter, "2", phone);
+  await page.waitForFunction(
+    (c) => document.querySelector(`#${c}-figure astro-island[component-url*="FigureTray"]:not([ssr])`),
+    chapter,
+  );
+  if (step !== "2") await backToStep(page, chapter, step, phone);
+  await expect(page.locator(`#${chapter}-figure`)).toHaveAttribute("data-step", step);
+}
+
+/** Counts every frame the page asks for, from before its scripts run. */
+async function countFrames(page: Page) {
+  await page.addInitScript(() => {
+    const ask = window.requestAnimationFrame.bind(window);
+    const w = window as unknown as { taviFrames: number };
+    w.taviFrames = 0;
+    window.requestAnimationFrame = (callback) => {
+      w.taviFrames += 1;
+      return ask(callback);
+    };
+  });
+}
+
+/** For `ms`: the frames the page asked for, and the writes to a figure (its drawing's attributes and its readouts). */
+async function activity(page: Page, figure: string, ms: number) {
+  return page.evaluate(
+    ({ figure, ms }) =>
+      new Promise<{ frames: number; writes: number }>((resolve) => {
+        const w = window as unknown as { taviFrames: number };
+        const before = w.taviFrames;
+        let writes = 0;
+        const watch = new MutationObserver((records) => {
+          writes += records.length;
+        });
+        const el = document.getElementById(figure);
+        if (el) {
+          watch.observe(el.querySelector("svg") ?? el, { attributes: true, subtree: true });
+          for (const readout of el.querySelectorAll("[data-readout]")) {
+            watch.observe(readout, { childList: true, characterData: true, subtree: true });
+          }
+        }
+        setTimeout(() => {
+          watch.disconnect();
+          resolve({ frames: w.taviFrames - before, writes });
+        }, ms);
+      }),
+    { figure, ms },
+  );
+}
+
+/** Whether the tab looks hidden to the page's scripts, and the event that tells them. */
+async function setHidden(page: Page, hidden: boolean) {
+  await page.evaluate((hide) => {
+    if (hide) Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "hidden" });
+    else delete (document as unknown as { visibilityState?: string }).visibilityState;
+    document.dispatchEvent(new Event("visibilitychange"));
+  }, hidden);
+}
+
+test.describe("chapter 3, the escapement, drawn by the clock", () => {
+  test("opens at 1/10, held on step 1: a tooth on a stone's locking face, the fork on its banking", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "escapement", isPhone(info), "1");
+    const figure = page.locator("#escapement-figure");
+    await expect(figure).toHaveAttribute("data-step", "1");
+    expect(await slowOf(page, "#escapement-figure")).toBe("10");
+    await expect(figure.getByRole("radio", { name: "1/10", exact: true })).toBeChecked();
+    expect(Number(await figure.getAttribute("data-hold"))).toBeCloseTo(2.25 * BEAT, 9);
+    expect(await drawn(page, "escapement-drawing", "escape")).toBe(24);
+    expect(await drawn(page, "escapement-drawing", "fork")).toBeCloseTo(-5.279, 3);
+    await expect(figure.locator('[data-readout="beats"]')).toHaveText("2");
+    await expect(figure.locator('[data-readout="escape"]')).toHaveText("24.0°");
+
+    // In the drawing's own units: some tooth's tip lies on the locking face of the stone that is in.
+    const gap = await page.evaluate(() => {
+      const svg = document.querySelector<SVGSVGElement>("#escapement-drawing");
+      const wheel = svg?.querySelector<SVGGElement>('[data-clock="escape"]');
+      const stones = [...(svg?.querySelectorAll<SVGPathElement>(".p-stones path") ?? [])];
+      if (!svg || !wheel || stones.length !== 2) return NaN;
+      const toSvg = (el: SVGGraphicsElement) =>
+        (svg.getScreenCTM()?.inverse() ?? new DOMMatrix()).multiply(el.getScreenCTM() ?? new DOMMatrix());
+      const points = (d: string) => [...d.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map((m) => [Number(m[1]), Number(m[2])]);
+      const wheelToSvg = toSvg(wheel);
+      // Each tooth's tip is the corner after its back's curve.
+      const tips = [
+        ...(wheel.querySelector("path")?.getAttribute("d") ?? "").matchAll(
+          /Q-?[\d.]+ -?[\d.]+ -?[\d.]+ -?[\d.]+ L(-?[\d.]+) (-?[\d.]+)/g,
+        ),
+      ].map((m) => new DOMPoint(Number(m[1]), Number(m[2])).matrixTransform(wheelToSvg));
+      let best = Infinity;
+      for (const stone of stones) {
+        const outline = points(stone.getAttribute("d") ?? "").map(([x = 0, y = 0]) =>
+          new DOMPoint(x, y).matrixTransform(toSvg(stone)),
+        );
+        // The locking face runs from the locking corner (the outline's first point) to its last.
+        const a = outline[0];
+        const b = outline.at(-1);
+        if (!a || !b) continue;
+        for (const q of tips) {
+          const u = Math.max(
+            0,
+            Math.min(
+              1,
+              ((q.x - a.x) * (b.x - a.x) + (q.y - a.y) * (b.y - a.y)) / ((b.x - a.x) ** 2 + (b.y - a.y) ** 2),
+            ),
+          );
+          best = Math.min(best, Math.hypot(q.x - a.x - u * (b.x - a.x), q.y - a.y - u * (b.y - a.y)));
+        }
+      }
+      return best;
+    });
+    expect(gap).toBeLessThan(0.05);
+  });
+
+  test("each step holds its phase; the steps never touch the page's play state, the header's Pause or the hero", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await clockTrayReady(page, "escapement", phone, "1");
+    const html = page.locator("html");
+    await page.evaluate(() => {
+      const w = window as unknown as { playingChanges: number };
+      w.playingChanges = 0;
+      new MutationObserver(() => {
+        w.playingChanges += 1;
+      }).observe(document.documentElement, { attributeFilter: ["data-playing"] });
+    });
+    const figure = page.locator("#escapement-figure");
+    const pause = figure.getByRole("button", { name: "Pause", exact: true });
+    const phases = [
+      { step: "1", escape: (a: number) => a === 24 },
+      { step: "2", escape: (a: number) => a < 24 && a > 23 },
+      { step: "3", escape: (a: number) => a > 24 && a < 36 },
+      { step: "4", escape: (a: number) => a === 36 },
+    ];
+    for (const [sweep, go] of [
+      [phases, readStepOf],
+      [[...phases].reverse().slice(1), backToStep],
+    ] as const) {
+      for (const { step, escape } of sweep) {
+        await go(page, "escapement", step, phone);
+        await expect(figure).toHaveAttribute("data-step", step);
+        await expect(figure).toHaveAttribute("data-hold", /^\d/);
+        await expect(pause).toHaveAttribute("aria-pressed", "true");
+        const angle = await drawn(page, "escapement-drawing", "escape");
+        expect(escape(angle), `step ${step} draws the escape wheel at ${angle}`).toBe(true);
+        await expect(html).toHaveAttribute("data-playing", "true");
+        await expect(globalPause(page)).toHaveAttribute("aria-pressed", "false");
+      }
+    }
+    // Step 5 holds nothing: the figure runs at its 1/10, the balance swinging.
+    await readStepOf(page, "escapement", "5", phone);
+    await expect(figure).toHaveAttribute("data-step", "5");
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+    const swing = await drawn(page, "escapement-drawing", "balance");
+    await expect.poll(() => drawn(page, "escapement-drawing", "balance")).not.toBe(swing);
+    expect(await page.evaluate(() => (window as unknown as { playingChanges: number }).playingChanges)).toBe(0);
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await expect.poll(() => heroRuns(page)).toBe(true);
+  });
+
+  test("un-pressing the tray's Pause lets a held figure run on, and plays the page if it was paused", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    // From step 2 the figure, its tray too, is stuck whole on screen, so a click scrolls nothing.
+    await clockTrayReady(page, "escapement", phone);
+    const figure = page.locator("#escapement-figure");
+    const pause = figure.getByRole("button", { name: "Pause", exact: true });
+    await expect(pause).toHaveAttribute("aria-pressed", "true");
+    await pause.click();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(pause).toHaveAttribute("aria-pressed", "false");
+    // From the held moment on: the balance swings through rest from 21 degrees.
+    await expect.poll(() => drawn(page, "escapement-drawing", "balance")).toBeLessThan(0);
+
+    // Pressed again it pauses the page, as every Pause does.
+    await pause.click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    // A step holds the figure while the page is paused; releasing it plays the page.
+    await readStepOf(page, "escapement", "3", phone);
+    await expect(figure).toHaveAttribute("data-hold", /^\d/);
+    await pause.click();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    await expect(globalPause(page)).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("posed across one beat at 1/100, the escape wheel turns 12 degrees: a recoil first, the drop after", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "escapement", isPhone(info));
+    const figure = page.locator("#escapement-figure");
+    await figure.getByRole("radio", { name: "1/100", exact: true }).click();
+    expect(await slowOf(page, "#escapement-figure")).toBe("100");
+    const at = async (t: number) => {
+      await poseFigure(page, "escapement", t);
+      await expect(figure).toHaveAttribute("data-hold", String(t));
+      return drawn(page, "escapement-drawing", "escape");
+    };
+    const start = 7.25 * BEAT;
+    const before = await at(start);
+    expect((await at(start + BEAT)) - before).toBeCloseTo(12, 3);
+    expect((await at(inWindow(0.075, 7))) - before, "the recoil").toBeLessThan(-0.4);
+    expect((await at(inWindow(0.82, 7))) - before, "the impulse ends short").toBeCloseTo(9.84, 2);
+    expect((await at(inWindow(0.85, 7))) - before, "the drop").toBeGreaterThan(9.84);
+    expect((await at(inWindow(0.88, 7))) - before, "locked").toBeCloseTo(12, 3);
+    await expect(figure.locator('[data-readout="beats"]')).toHaveText("7");
+  });
+
+  test("a part name lights its piece: the stones alone, then the impulse pin alone", async ({ page }, info) => {
+    await page.goto("/");
+    await readStepOf(page, "escapement", "2", isPhone(info));
+    const figure = page.locator("#escapement-figure");
+    const lit = () =>
+      page.evaluate(() => {
+        const drawing = document.querySelector("#escapement-drawing");
+        const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        probe.style.fill = "var(--color-ghost-fill)";
+        drawing?.append(probe);
+        const ghost = getComputedStyle(probe).fill;
+        probe.remove();
+        const colour = (s: string) => getComputedStyle(drawing?.querySelector(s) ?? document.body).fill !== ghost;
+        return {
+          stones: colour(".p-stones path"),
+          fork: colour(".fork-body .fl"),
+          pin: colour(".p-impulse circle"),
+          wheel: colour(".p-escape .fo"),
+        };
+      });
+    const focus = (name: string) =>
+      page
+        .locator("#escapement")
+        .getByRole("button", { name, exact: true })
+        .first()
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+    await focus("pallet stones");
+    await expect(figure).toHaveAttribute("data-focus", "stones");
+    expect(await lit()).toEqual({ stones: true, fork: false, pin: false, wheel: false });
+    await focus("impulse pin");
+    await expect(figure).toHaveAttribute("data-focus", "impulse-pin");
+    expect(await lit()).toEqual({ stones: false, fork: false, pin: true, wheel: false });
+    await focus("pallet fork");
+    expect(await lit()).toEqual({ stones: true, fork: true, pin: false, wheel: false });
+  });
+});
+
+test.describe("chapter 4, the balance, drawn by the clock", () => {
+  test.beforeEach(async ({ page }) => {
+    await countFrames(page);
+  });
+
+  test("runs at 1×; the hairspring's path follows the balance, and the lift window and amplitude are shown", async ({
+    page,
+  }, info) => {
+    await clockTrayReady(page, "balance", isPhone(info));
+    const figure = page.locator("#balance-figure");
+    await expect(figure.getByRole("radio", { name: "1×", exact: true })).toBeChecked();
+    await expect(figure).not.toHaveAttribute("data-hold");
+    await expect(figure.locator('[data-readout="amplitude"]')).toHaveText("200°");
+    await expect(page.locator("#balance-drawing .window text")).toHaveText("Lift window, 50°");
+    const hair = () => page.locator('#balance-drawing [data-clock="hair"]').getAttribute("d");
+    await poseFigure(page, "balance", 0);
+    const out = await hair();
+    expect(await drawn(page, "balance-drawing", "balance")).toBe(200);
+    await expect(figure.locator('[data-readout="balance"]')).toHaveText("+200°");
+    await poseFigure(page, "balance", BEAT);
+    expect(await drawn(page, "balance-drawing", "balance")).toBe(-200);
+    await expect(figure.locator('[data-readout="balance"]')).toHaveText("−200°");
+    expect(await hair()).not.toBe(out);
+  });
+
+  test("the loop asks for no frame and draws nothing while paused, scrolled away or hidden", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await clockTrayReady(page, "balance", phone, "1");
+    await page.waitForTimeout(300);
+    const running = await activity(page, "balance-figure", 500);
+    expect(running.writes).toBeGreaterThan(5);
+
+    // The figure's own Pause, on screen in its tray: it pauses the whole page.
+    const pause = page.locator("#balance-figure").getByRole("button", { name: "Pause", exact: true });
+    await pause.click();
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "false");
+    await page.waitForTimeout(100);
+    expect(await activity(page, "balance-figure", 1000), "paused").toEqual({ frames: 0, writes: 0 });
+    await pause.click();
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+
+    // Away to chapter 2, which ticks in CSS: the hero's 3D view would ask for frames of its own at the top.
+    await page.evaluate(() => {
+      document.getElementById("wheels")?.scrollIntoView();
+    });
+    await page.waitForTimeout(200);
+    expect(await activity(page, "balance-figure", 1000), "scrolled away").toEqual({ frames: 0, writes: 0 });
+    await readStepOf(page, "balance", "2", phone);
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+
+    await setHidden(page, true);
+    await page.waitForTimeout(100);
+    expect(await activity(page, "balance-figure", 1000), "hidden").toEqual({ frames: 0, writes: 0 });
+    await setHidden(page, false);
+    expect((await activity(page, "balance-figure", 300)).writes).toBeGreaterThan(0);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("chapter 4 starts on a still frame until its Pause is released", async ({ page }, info) => {
+      await clockTrayReady(page, "balance", isPhone(info));
+      await page.waitForTimeout(300);
+      expect(await activity(page, "balance-figure", 1000)).toEqual({ frames: 0, writes: 0 });
+      const pause = page.locator("#balance-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      await pause.click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      expect((await activity(page, "balance-figure", 500)).writes).toBeGreaterThan(0);
+    });
+  });
+});
+
+// The 3D movement: one island on the hero and on chapter 5, climbing the fallback ladder (decisions-tavi.md). Its dev
+// hook, `taviPose(name, pose)`, holds a figure at `{ t }` and, given an empty pose, reads the view's numbers.
+interface GlStats {
+  frames: number;
+  calls: number;
+  triangles: number;
+  t: number;
+  apart: number;
+  tilt: number;
+  turn: number;
+  lit: string | null;
+  pixelRatio: number;
+  reserve: number;
+  spring: number;
+  ratchet: number;
+  balance: number;
+}
+
+/** The 3D view's numbers through the dev hook; an empty pose changes nothing. */
+async function glStats(page: Page, name: string): Promise<GlStats> {
+  return page.evaluate(
+    (n) => (window as unknown as { taviPose: (id: string, pose: object) => GlStats }).taviPose(n, {}),
+    name,
+  );
+}
+
+/** Poses a 3D view through the dev hook and returns its numbers. */
+async function glPose(page: Page, name: string, pose: object): Promise<GlStats> {
+  return page.evaluate(
+    ({ n, p }) => (window as unknown as { taviPose: (id: string, pose: object) => GlStats }).taviPose(n, p),
+    { n: name, p: pose },
+  );
+}
+
+/** Scrolls chapter 5's figure to the middle of the screen, whole, beside its first step, which leaves it together. */
+async function toTogether(page: Page) {
+  await page.evaluate(() => {
+    const figure = document.getElementById("together-figure");
+    if (figure) window.scrollBy(0, figure.getBoundingClientRect().top - (innerHeight - figure.offsetHeight) / 2);
+  });
+}
+
+/** A figure's island: the box the poster and the canvas share. */
+const island = (page: Page, name: "hero" | "together") =>
+  page.locator(name === "hero" ? ".hero-stage .movement-figure" : "#together .movement-figure");
+
+/** Waits until a figure's 3D view has drawn and replaced its poster. */
+async function glLive(page: Page, name: "hero" | "together") {
+  await expect(island(page, name)).toHaveAttribute("data-gl", "live", { timeout: 20_000 });
+}
+
+/** three.js or the scene built on it: a request the first screen must not wait on. */
+const THREE_REQUEST = /\/src\/three\/view\.ts|\.vite\/deps\/three|\/three\/(build|examples)\//;
+
+/** The half beat at which the 3D view starts: the balance passing rest, as the poster draws it. */
+const REST = 1 / 12;
+
+/**
+ * Where the plate's circle meets the lines through its centre in a shot of a figure's box, in pixels from the box's
+ * edges: the first pixel from each side that differs from the ground.
+ */
+async function plateEdges(page: Page, shot: Buffer, viewBox: string) {
+  return page.evaluate(
+    async ({ png, viewBox }) => {
+      const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob());
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const g = canvas.getContext("2d");
+      if (!g) return null;
+      g.drawImage(bitmap, 0, 0);
+      const { data, width, height } = g.getImageData(0, 0, bitmap.width, bitmap.height);
+      const [vx = 0, vy = 0, vw = 1, vh = 1] = viewBox.split(/\s+/).map(Number);
+      const s = Math.min(width / vw, height / vh);
+      const cx = Math.round((width - vw * s) / 2 - vx * s);
+      const cy = Math.round((height - vh * s) / 2 - vy * s);
+      const at = (x: number, y: number) => [0, 1, 2].map((k) => data[(y * width + x) * 4 + k] ?? 0);
+      const ground = at(cx, 2);
+      const differs = (x: number, y: number) =>
+        at(x, y).reduce((sum, v, k) => sum + Math.abs(v - (ground[k] ?? 0)), 0) > 90;
+      const scan = (from: number, to: number, pick: (i: number) => [number, number]) => {
+        for (let i = from; i !== to; i += Math.sign(to - from)) if (differs(...pick(i))) return i;
+        return NaN;
+      };
+      return {
+        left: scan(0, cx, (x) => [x, cy]),
+        right: scan(width - 1, cx, (x) => [x, cy]),
+        top: scan(0, cy, (y) => [cx, y]),
+        bottom: scan(height - 1, cy, (y) => [cx, y]),
+      };
+    },
+    { png: shot.toString("base64"), viewBox },
+  );
+}
+
+/** Shoots a live figure's box, then shows its poster in the same box and shoots that: the plate within 2 px. */
+async function expectPlateAligned(page: Page, name: "hero" | "together") {
+  const box = island(page, name);
+  await page.evaluate(() => document.fonts.ready);
+  await glPose(page, name, { t: REST });
+  const viewBox = (await box.locator("svg.movement").getAttribute("viewBox")) ?? "";
+  const gl = await plateEdges(page, await box.screenshot(), viewBox);
+  await box.evaluate((el) => {
+    el.dataset.gl = "poster";
+  });
+  const drawn = await plateEdges(page, await box.screenshot(), viewBox);
+  expect(gl).not.toBeNull();
+  expect(drawn).not.toBeNull();
+  for (const side of ["left", "right", "top", "bottom"] as const) {
+    const a = gl?.[side] ?? NaN;
+    const b = drawn?.[side] ?? NaN;
+    expect(Math.abs(a - b), `the plate's ${side} edge: 3D at ${a} px, the poster at ${b} px`).toBeLessThanOrEqual(2);
+  }
+}
+
+/** Records, from before the page's scripts run, every layout shift and when each island first left its poster. */
+async function watchShifts(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { taviShifts: { at: number; value: number }[]; taviSwaps: number[] };
+    w.taviShifts = [];
+    w.taviSwaps = [];
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean })[])
+        if (!entry.hadRecentInput) w.taviShifts.push({ at: entry.startTime, value: entry.value });
+    }).observe({ type: "layout-shift", buffered: true });
+    new MutationObserver((records) => {
+      for (const r of records)
+        if ((r.target as Element).getAttribute("data-gl") !== "poster") w.taviSwaps.push(performance.now());
+    }).observe(document, { attributeFilter: ["data-gl"], subtree: true });
+  });
+}
+
+/** The layout-shift score from the first time an island left its poster. */
+async function shiftSinceSwap(page: Page) {
+  return page.evaluate(() => {
+    const w = window as unknown as { taviShifts: { at: number; value: number }[]; taviSwaps: number[] };
+    const from = Math.min(...w.taviSwaps);
+    return w.taviShifts.filter((s) => s.at >= from - 50).reduce((sum, s) => sum + s.value, 0);
+  });
+}
+
+test.describe("the 3D movement, on the fallback ladder", () => {
+  test("the hero paints the drawing first, then the 3D view takes its box, flat, plate on plate, nothing shifting", async ({
+    page,
+  }) => {
+    await watchShifts(page);
+    await page.goto("/");
+    await glLive(page, "hero");
+    await page.waitForTimeout(500);
+    const timing = await page.evaluate((source) => {
+      const three = new RegExp(source);
+      const first = performance
+        .getEntriesByType("resource")
+        .filter((r) => three.test(r.name))
+        .map((r) => r.startTime);
+      const paint = performance.getEntriesByName("first-contentful-paint")[0]?.startTime ?? Infinity;
+      return { paint, three: Math.min(...first) };
+    }, THREE_REQUEST.source);
+    expect(timing.three, "three.js was requested").toBeLessThan(Infinity);
+    expect(timing.paint, "the first paint comes before any three.js request").toBeLessThan(timing.three);
+    expect(await shiftSinceSwap(page)).toBeLessThan(0.01);
+    // The hero's text came first and stays; the poster's callouts stay over the flat view.
+    await expect(page.getByRole("heading", { level: 1, name: /^Six beats\s*every second$/ })).toBeVisible();
+    await expect(page.locator("#hero-movement .callout").first()).toHaveCSS("opacity", "1");
+    await expect(page.getByRole("img", { name: /^A wristwatch movement in three dimensions/ })).toBeVisible();
+    const stats = await glStats(page, "hero");
+    expect(stats.tilt).toBe(0);
+    expect(stats.calls).toBeLessThan(150);
+    await expectPlateAligned(page, "hero");
+  });
+
+  test("chapter 5's view lines up with its poster, and stays flat until the first drag tilts it", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a phone turns chapter 5 on its button; the drag is a mouse's here");
+    await watchShifts(page);
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    expect(await shiftSinceSwap(page)).toBeLessThan(0.01);
+    await page.waitForTimeout(1200);
+    expect((await glStats(page, "together")).tilt, "still flat after a second of ticking").toBe(0);
+    await expectPlateAligned(page, "together");
+    await island(page, "together").evaluate((el) => {
+      el.dataset.gl = "live";
+    });
+
+    const canvas = page.locator("#together canvas");
+    const where = await canvas.boundingBox();
+    if (!where) throw new Error("no canvas");
+    await page.mouse.move(where.x + where.width / 2, where.y + where.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(where.x + where.width / 2 + 60, where.y + where.height / 2, { steps: 6 });
+    await page.mouse.up();
+    await expect(island(page, "together")).toHaveAttribute("data-tilted", "");
+    await expect.poll(async () => (await glStats(page, "together")).tilt).toBe(1);
+
+    // On the hero, an arrow key on the focused canvas tilts it the same way.
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await glLive(page, "hero");
+    expect((await glStats(page, "hero")).tilt).toBe(0);
+    await page.locator(".hero-stage canvas").focus();
+    await page.keyboard.press("ArrowLeft");
+    await expect.poll(async () => (await glStats(page, "hero")).tilt).toBe(1);
+    await expect(page.locator("#hero-movement .callout").first()).toHaveCSS("opacity", "0");
+  });
+
+  test("at device pixel ratio 3 the view draws at 2, in under 150 calls", async ({ browser }, info) => {
+    test.skip(isPhone(info), "one size is enough");
+    const context = await browser.newContext({
+      baseURL: info.project.use.baseURL,
+      viewport: { width: 1280, height: 800 },
+      deviceScaleFactor: 3,
+    });
+    const page = await context.newPage();
+    await page.goto("/");
+    await glLive(page, "hero");
+    const stats = await glStats(page, "hero");
+    expect(stats.pixelRatio).toBe(2);
+    expect(stats.calls).toBeLessThan(150);
+    await context.close();
+  });
+
+  test("opened straight at chapter 5 on a phone, no three.js comes until Turn it in 3D is pressed", async ({
+    page,
+  }, info) => {
+    test.skip(!isPhone(info), "the button is a phone's");
+    const asked: string[] = [];
+    page.on("request", (request) => {
+      if (THREE_REQUEST.test(request.url())) asked.push(request.url());
+    });
+    await page.goto("/#together");
+    const turn = page.getByRole("button", { name: "Turn it in 3D", exact: true });
+    await expect(turn).toBeVisible({ timeout: 15_000 });
+    await page.waitForTimeout(1500);
+    expect(asked).toEqual([]);
+    await expect(island(page, "hero")).toHaveAttribute("data-gl", "poster");
+    await expect(island(page, "together")).toHaveAttribute("data-gl", "offer");
+
+    await turn.click();
+    await glLive(page, "together");
+    expect(asked.length).toBeGreaterThan(0);
+    await expect(turn).toHaveCount(0);
+    const before = await glStats(page, "together");
+    await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(before.t);
+    expect(before.tilt).toBe(0);
+  });
+
+  test.describe("without WebGL", () => {
+    test.beforeEach(async ({ page }) => {
+      await withoutWebGL(page);
+    });
+
+    test("the posters stay, chapter 5's with its one quiet line", async ({ page }, info) => {
+      await page.goto("/");
+      await toTogether(page);
+      if (isPhone(info)) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+      await expect(island(page, "together")).toHaveAttribute("data-gl", "flat", { timeout: 15_000 });
+      await expect(page.locator("#together .gl-note")).toHaveText("This browser can’t turn it in 3D; here it is flat.");
+      await expect(page.locator("#together-movement .mv")).toBeVisible();
+      await expect(page.locator("#together canvas")).toHaveCount(0);
+      await page.evaluate(() => {
+        window.scrollTo(0, 0);
+      });
+      await page.waitForTimeout(1000);
+      await expect(island(page, "hero")).toHaveAttribute("data-gl", "poster");
+      await expect(page.locator(".hero-stage .gl-note")).toHaveCount(0);
+      await expect(page.locator("#hero-movement .mv")).toBeVisible();
+    });
+  });
+
+  test("a lost context brings the poster back, keeping the clock and the play state, until it returns", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "the same island on a phone");
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    const lose = (restore: boolean) =>
+      page.locator("#together canvas").evaluate((canvas, back) => {
+        const gl = (canvas as HTMLCanvasElement).getContext("webgl2");
+        const ext = gl?.getExtension("WEBGL_lose_context");
+        if (back) ext?.restoreContext();
+        else ext?.loseContext();
+        (window as unknown as { taviLose: unknown }).taviLose = ext;
+      }, restore);
+    await lose(false);
+    await expect(island(page, "together")).toHaveAttribute("data-gl", "lost");
+    await expect(page.locator("#together-movement .mv")).toBeVisible();
+    await expect(page.locator("#together canvas")).toHaveCSS("opacity", "0");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    const t = (await glStats(page, "together")).t;
+    await page.evaluate(() => {
+      (window as unknown as { taviLose: { restoreContext: () => void } }).taviLose.restoreContext();
+    });
+    await glLive(page, "together");
+    expect((await glStats(page, "together")).t).toBeGreaterThanOrEqual(t);
+  });
+
+  test("the view asks for no frame over 2 s while paused, scrolled away or in a hidden tab", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await countFrames(page);
+    await page.goto("/");
+    await toTogether(page);
+    if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+    await glLive(page, "together");
+    await page.waitForFunction(() =>
+      document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
+    );
+    const frames = async (ms: number) => {
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(ms);
+      return (await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)) - before;
+    };
+    expect(await frames(500), "playing").toBeGreaterThan(5);
+
+    const pause = page.locator("#together-figure").getByRole("button", { name: "Pause", exact: true });
+    await pause.click();
+    await page.waitForTimeout(100);
+    expect(await frames(2000), "paused").toBe(0);
+    await pause.click();
+    expect(await frames(300)).toBeGreaterThan(0);
+
+    await page.evaluate(() => {
+      document.getElementById("wheels")?.scrollIntoView();
+    });
+    await page.waitForTimeout(200);
+    expect(await frames(2000), "scrolled away").toBe(0);
+    await toTogether(page);
+    expect(await frames(300)).toBeGreaterThan(0);
+
+    await setHidden(page, true);
+    await page.waitForTimeout(100);
+    expect(await frames(2000), "hidden").toBe(0);
+    await setHidden(page, false);
+    expect(await frames(300)).toBeGreaterThan(0);
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the view starts still until its Pause is released, and the first drag tilts it at once", async ({
+      page,
+    }, info) => {
+      test.skip(isPhone(info), "the same island on a phone");
+      await countFrames(page);
+      await page.goto("/");
+      await toTogether(page);
+      await glLive(page, "together");
+      await page.waitForFunction(() =>
+        document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
+      );
+      const pause = page.locator("#together-figure").getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      const t = (await glStats(page, "together")).t;
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(2000);
+      expect(await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)).toBe(before);
+      expect((await glStats(page, "together")).t).toBe(t);
+
+      const canvas = page.locator("#together canvas");
+      const where = await canvas.boundingBox();
+      if (!where) throw new Error("no canvas");
+      await page.mouse.move(where.x + 100, where.y + 100);
+      await page.mouse.down();
+      await page.mouse.move(where.x + 160, where.y + 100, { steps: 3 });
+      await page.mouse.up();
+      await page.waitForTimeout(50);
+      expect((await glStats(page, "together")).tilt, "a jump, not an ease").toBe(1);
+
+      await pause.click();
+      await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+      await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(t);
+    });
+  });
+});
+
+/** Chapter 5's labelled parts, in the order they come off: its parts list and its labels. */
+const TOGETHER_PARTS = [
+  "Balance cock",
+  "Balance",
+  "Hairspring",
+  "Pallet bridge",
+  "Pallet fork",
+  "Ratchet wheel",
+  "Crown wheel",
+  "Click",
+  "Train bridge",
+  "Barrel bridge",
+  "Escape wheel",
+  "Fourth wheel",
+  "Third wheel",
+  "Centre wheel",
+  "Barrel lid",
+  "Barrel",
+  "Mainspring",
+  "Main plate",
+  "Crown",
+];
+
+/**
+ * Chapter 5 with step `step` on the reading line and its tray hydrated; with `gl`, the 3D view live (a phone presses
+ * "Turn it in 3D" for it).
+ */
+async function togetherReady(page: Page, phone: boolean, { step = "2", gl = true } = {}) {
+  await page.goto("/");
+  // From step 2 the figure is stuck whole on screen, its tray in view, so the tray hydrates.
+  await readStepOf(page, "together", "2", phone);
+  await page.waitForFunction(() =>
+    document.querySelector('#together-figure astro-island[component-url*="TogetherTray"]:not([ssr])'),
+  );
+  if (step !== "2") {
+    // A step already on the reading line's edge reports no change: come to it from the top of the page.
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(200);
+    await readStepOf(page, "together", step, phone);
+  }
+  await expect(page.locator("#together-figure")).toHaveAttribute("data-step", step);
+  if (!gl) return;
+  if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+  await glLive(page, "together");
+}
+
+/** Every leader shown over chapter 5's 3D view, read from its path, and every pair of them that meets. */
+async function leaders(page: Page) {
+  return page.locator("#together .leaders").evaluate((svg) => {
+    type P = [number, number];
+    const shown = [...svg.querySelectorAll<SVGGElement>("[data-leader]")].filter(
+      (g) => getComputedStyle(g).visibility !== "hidden",
+    );
+    const lines = shown.map((g) => {
+      const nums = (g.querySelector("path")?.getAttribute("d") ?? "").match(/-?[\d.]+/g)?.map(Number) ?? [];
+      const pts: P[] = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) pts.push([nums[i] ?? 0, nums[i + 1] ?? 0]);
+      return { id: g.dataset.leader ?? "", pts };
+    });
+    const cross = (o: P, a: P, b: P) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const on = (p: P, q: P, r: P) =>
+      Math.abs(cross(p, q, r)) < 1e-6 &&
+      r[0] >= Math.min(p[0], q[0]) &&
+      r[0] <= Math.max(p[0], q[0]) &&
+      r[1] >= Math.min(p[1], q[1]) &&
+      r[1] <= Math.max(p[1], q[1]);
+    const meet = (a: P, b: P, c: P, d: P) => {
+      const [d1, d2, d3, d4] = [cross(c, d, a), cross(c, d, b), cross(a, b, c), cross(a, b, d)];
+      return (d1 * d2 < 0 && d3 * d4 < 0) || on(c, d, a) || on(c, d, b) || on(a, b, c) || on(a, b, d);
+    };
+    const meets: string[] = [];
+    lines.forEach((p, i) =>
+      lines.slice(i + 1).forEach((q) => {
+        for (let s = 1; s < p.pts.length; s++)
+          for (let t = 1; t < q.pts.length; t++) {
+            const [a, b, c, d] = [p.pts[s - 1], p.pts[s], q.pts[t - 1], q.pts[t]];
+            if (a && b && c && d && meet(a, b, c, d)) {
+              meets.push(`${p.id} / ${q.id}`);
+              return;
+            }
+          }
+      }),
+    );
+    return { ids: lines.map((l) => l.id), meets };
+  });
+}
+
+/** How many pixels in a shot of chapter 5's figure box are in colour: the ghost pair and the paper are near grey. */
+async function colouredPixels(page: Page) {
+  const shot = await island(page, "together").screenshot();
+  return page.evaluate(async (png) => {
+    const bitmap = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const g = canvas.getContext("2d");
+    if (!g) return 0;
+    g.drawImage(bitmap, 0, 0);
+    const { data } = g.getImageData(0, 0, bitmap.width, bitmap.height);
+    let n = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const [r = 0, gr = 0, b = 0] = [data[i], data[i + 1], data[i + 2]];
+      if (Math.max(r, gr, b) - Math.min(r, gr, b) > 40) n += 1;
+    }
+    return n;
+  }, shot.toString("base64"));
+}
+
+test.describe("chapter 5, together, apart and back", () => {
+  test("each step sets Take apart; a step's own parts are lit, framed and labelled alone", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await togetherReady(page, phone, { step: "1", gl: !phone });
+    const figure = page.locator("#together-figure");
+    const apart = figure.getByRole("slider", { name: "Take apart", exact: true });
+    const values = { "1": "0", "2": "45", "3": "58", "4": "68", "5": "96", "6": "100", "7": "0" };
+    for (const [step, value] of Object.entries(values)) {
+      await readStepOf(page, "together", step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect(apart).toHaveValue(value);
+    }
+    if (phone) return;
+    await readStepOf(page, "together", "2", phone);
+    await expect.poll(async () => (await glStats(page, "together")).apart).toBe(0.45);
+    await expect.poll(async () => (await leaders(page)).ids.sort()).toEqual(["balance", "balance-cock", "hairspring"]);
+    // Moved off the step's value, the whole movement is framed and labelled again.
+    await glPose(page, "together", { apart: 1 });
+    await expect.poll(async () => (await leaders(page)).ids.length).toBe(TOGETHER_PARTS.length);
+  });
+
+  test("apart 100% at 1280 x 800, turned 0° and ±30°: every part labelled, and no two leaders on the page meet", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a phone labels the lit part alone");
+    await togetherReady(page, false);
+    for (const turn of [0, 30, -30]) {
+      const stats = await glPose(page, "together", { apart: 1, turn });
+      expect(stats.turn).toBe(turn);
+      const { ids, meets } = await leaders(page);
+      expect(ids, `turned ${turn}°`).toHaveLength(TOGETHER_PARTS.length);
+      expect(meets, `turned ${turn}°`).toEqual([]);
+      // The labels stand in two columns inside the figure, none over another.
+      const boxes = await page.locator("#together .labels .label").evaluateAll((labels) =>
+        labels
+          .filter((l) => getComputedStyle(l).visibility !== "hidden")
+          .map((l) => {
+            const r = l.getBoundingClientRect();
+            return { x: r.x, y: r.y, w: r.width, h: r.height };
+          }),
+      );
+      const box = await island(page, "together").boundingBox();
+      if (!box) throw new Error("no figure");
+      for (const [i, a] of boxes.entries()) {
+        expect(a.x >= box.x && a.x + a.w <= box.x + box.width && a.y >= box.y && a.y + a.h <= box.y + box.height).toBe(
+          true,
+        );
+        for (const b of boxes.slice(i + 1))
+          expect(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y).toBe(true);
+      }
+      await expect(page.locator("#together-figure").getByRole("slider", { name: "Turn", exact: true })).toHaveValue(
+        String(turn),
+      );
+    }
+  });
+
+  test("a click on a part lights it, its name in the prose and its label; a click on the paper lets it go", async ({
+    page,
+  }, info) => {
+    test.skip(isPhone(info), "a mouse's click; a phone's tap is the parts list's test");
+    await togetherReady(page, false);
+    await glPose(page, "together", { apart: 1, turn: 0 });
+    const dot = await page
+      .locator('#together [data-leader="balance-cock"] circle')
+      .evaluate((c) => [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))]);
+    const canvas = page.locator("#together canvas");
+    await canvas.click({ position: { x: dot[0] ?? 0, y: dot[1] ?? 0 } });
+    await expect(page.locator("#together-figure")).toHaveAttribute("data-pick", "balance-cock");
+    expect((await glStats(page, "together")).lit).toBe("balance-cock");
+    await expect(page.locator('#together .part-name[data-part="balance-cock"]')).toHaveClass(/\bis-lit\b/);
+    await expect(page.locator('#together .labels [data-label="balance-cock"]')).toHaveClass(/\bis-lit\b/);
+    await expect(page.locator('#together .labels [data-label="balance-cock"]')).toHaveAttribute("aria-pressed", "true");
+    // Every other part drops to the ghost pair: little colour is left.
+    await page.mouse.move(0, 0);
+    const lit = await colouredPixels(page);
+    await canvas.click({ position: { x: 4, y: 4 } });
+    await expect(page.locator("#together-figure")).not.toHaveAttribute("data-pick", /./);
+    expect((await glStats(page, "together")).lit).toBeNull();
+    await page.waitForTimeout(100);
+    expect(lit).toBeLessThan((await colouredPixels(page)) * 0.4);
+  });
+
+  test("at 390 x 844 the parts list holds every labelled part as a button, and pressing one lights it", async ({
+    page,
+  }, info) => {
+    test.skip(!isPhone(info), "the list is a phone's");
+    await togetherReady(page, true, { gl: false });
+    const list = page.getByRole("group", { name: "The parts: choose one to light it" });
+    await expect(list.getByRole("button")).toHaveText(TOGETHER_PARTS);
+    await expect(list).toBeVisible();
+
+    // On the drawing, before any 3D: the part lights there, and its name in the prose.
+    const balance = list.getByRole("button", { name: "Balance", exact: true });
+    await balance.click();
+    await expect(balance).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('#together-movement .part[data-part="balance"]')).toHaveClass(/\bis-focus\b/);
+    await expect(page.locator('#together .part-name[data-part="balance"]').first()).toHaveClass(/\bis-lit\b/);
+    await balance.click();
+    await expect(balance).toHaveAttribute("aria-pressed", "false");
+
+    // In 3D: the part lights, it is framed, and its label is the only one in the figure.
+    await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+    await glLive(page, "together");
+    const fork = list.getByRole("button", { name: "Pallet fork", exact: true });
+    await fork.click();
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBe("pallet");
+    await expect(page.locator("#together .labels .label:visible")).toHaveText(["Pallet fork"]);
+    await expect.poll(async () => (await leaders(page)).ids).toEqual(["pallet"]);
+    await fork.click();
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBeNull();
+    await expect(page.locator("#together .labels .label:visible")).toHaveCount(0);
+  });
+
+  test("keyboard only: Take apart, Put back, Turn, and the labels or the parts list", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await togetherReady(page, phone);
+    const fig = page.locator("#together-figure");
+    const e = () => fig.evaluate((el) => el.style.getPropertyValue("--e"));
+
+    await fig.getByRole("button", { name: "Pause", exact: true }).focus();
+    await page.keyboard.press("Tab");
+    await expect(fig.getByRole("radio", { name: "1×", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    const run = fig.getByRole("button", { name: "Take apart", exact: true });
+    await expect(run).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect.poll(e).toBe("1");
+    const back = fig.getByRole("button", { name: "Put back", exact: true });
+    await expect(back).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect.poll(e).toBe("0");
+    await expect(run).toBeFocused();
+
+    await page.keyboard.press("Tab");
+    await expect(fig.getByRole("slider", { name: "Take apart", exact: true })).toBeFocused();
+    await page.keyboard.press("End");
+    await expect.poll(e).toBe("1");
+    await page.keyboard.press("Tab");
+    const turn = fig.getByRole("slider", { name: "Turn", exact: true });
+    await expect(turn).toBeFocused();
+    for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight");
+    await expect(turn).toHaveValue("3");
+    await expect.poll(async () => (await glStats(page, "together")).turn).toBe(3);
+    await page.keyboard.press("PageDown");
+    await expect.poll(async () => (await glStats(page, "together")).turn).toBe(-12);
+
+    // From the 3D view, Tab reaches each label on a desktop, and the parts list on a phone; Enter lights the part.
+    await page.locator("#together canvas").focus();
+    await page.keyboard.press("Tab");
+    const first = phone
+      ? page
+          .getByRole("group", { name: "The parts: choose one to light it" })
+          .getByRole("button", { name: "Balance cock" })
+      : page.locator('#together .labels [data-label="balance-cock"]');
+    await expect(first).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(fig).toHaveAttribute("data-pick", "balance-cock");
+    await expect.poll(async () => (await glStats(page, "together")).lit).toBe("balance-cock");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
+    await expect(fig).toHaveAttribute("data-pick", "balance");
+    // Escape on the 3D view lets the part go.
+    await page.locator("#together canvas").focus();
+    await page.keyboard.press("Escape");
+    await expect(fig).not.toHaveAttribute("data-pick", /./);
+  });
+
+  test.describe("without WebGL", () => {
+    test.beforeEach(async ({ page }) => {
+      await withoutWebGL(page);
+    });
+
+    test("the same slider takes the drawing apart, and the parts list lights its parts", async ({ page }, info) => {
+      const phone = isPhone(info);
+      await togetherReady(page, phone, { gl: false });
+      if (phone) await page.getByRole("button", { name: "Turn it in 3D", exact: true }).click();
+      await expect(island(page, "together")).toHaveAttribute("data-gl", "flat", { timeout: 15_000 });
+      const fig = page.locator("#together-figure");
+      // The drawing can't turn: Turn keeps its place, hidden.
+      await expect(fig.locator(".turn-cell")).toHaveCSS("visibility", "hidden");
+
+      const apart = fig.getByRole("slider", { name: "Take apart", exact: true });
+      await apart.focus();
+      await page.keyboard.press("End");
+      await expect(apart).toHaveValue("100");
+      // Every lift group rises its full drawn lift along the one oblique axis, and the drawing shrinks to hold them.
+      const groups = () =>
+        page.locator("#together-movement .lift-w").evaluateAll((list) =>
+          list.map((g) => {
+            const cs = getComputedStyle(g);
+            const m = new DOMMatrix(cs.transform === "none" ? undefined : cs.transform);
+            return { x: m.e, y: m.f, lift: Number(cs.getPropertyValue("--lift")) };
+          }),
+        );
+      const off = (to: number) => async () =>
+        Math.max(
+          ...(await groups()).map((g) => Math.abs(g.x - to * g.lift * 0.5) + Math.abs(g.y + to * g.lift * 0.866)),
+        );
+      await expect.poll(off(1)).toBeLessThan(0.05);
+      expect(await groups()).toHaveLength(20);
+      const scale = () =>
+        page.locator("#together-movement > .mv").evaluate((g) => {
+          const t = getComputedStyle(g).transform;
+          return new DOMMatrix(t === "none" ? undefined : t).a;
+        });
+      await expect.poll(scale).toBeLessThan(0.95);
+      await page.keyboard.press("Home");
+      await expect.poll(off(0)).toBeLessThan(0.05);
+      await expect.poll(scale).toBe(1);
+
+      const list = page.getByRole("group", { name: "The parts: choose one to light it" });
+      await expect(list).toBeVisible();
+      await list.getByRole("button", { name: "Train bridge", exact: true }).click();
+      await expect(page.locator('#together-movement .part[data-part="train-bridge"]').first()).toHaveClass(
+        /\bis-focus\b/,
+      );
+      // A bridge's screws light with it; every other part is ghosted.
+      await expect(page.locator('#together-movement .part[data-part="train-bridge"]')).toHaveCount(2);
+      await expect(page.locator('#together-movement .part[data-part="barrel"] .fo').first()).toHaveCSS(
+        "fill",
+        await page.evaluate(() => {
+          const probe = document.createElement("div");
+          probe.style.color = "var(--color-ghost-fill)";
+          document.body.append(probe);
+          const c = getComputedStyle(probe).color;
+          probe.remove();
+          return c;
+        }),
+      );
+    });
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("Take apart and the turn jump, and nothing moves until its Pause is released", async ({ page }, info) => {
+      test.skip(isPhone(info), "the same island on a phone");
+      await countFrames(page);
+      await togetherReady(page, false);
+      const fig = page.locator("#together-figure");
+      const pause = fig.getByRole("button", { name: "Pause", exact: true });
+      await expect(pause).toHaveAttribute("aria-pressed", "true");
+      expect((await glStats(page, "together")).apart, "the step's value, at once").toBe(0.45);
+
+      await fig.getByRole("button", { name: "Take apart", exact: true }).click();
+      expect(await fig.evaluate((el) => el.style.getPropertyValue("--e"))).toBe("1");
+      expect((await glStats(page, "together")).apart).toBe(1);
+      const turn = fig.getByRole("slider", { name: "Turn", exact: true });
+      await turn.focus();
+      await page.keyboard.press("PageUp");
+      expect((await glStats(page, "together")).turn).toBe(15);
+
+      const t = (await glStats(page, "together")).t;
+      await page.waitForTimeout(300);
+      const before = await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames);
+      await page.waitForTimeout(2000);
+      expect(await page.evaluate(() => (window as unknown as { taviFrames: number }).taviFrames)).toBe(before);
+      expect((await glStats(page, "together")).t).toBe(t);
+
+      await pause.click();
+      await expect.poll(async () => (await glStats(page, "together")).t).toBeGreaterThan(t);
+    });
+  });
+});
+
+// Chapter 6, the bench: the tools drawn top-down, each lit by its name in the prose and by its steps; nothing moves
+// but the loupe, which slides over the balance on step 3.
+const TOOLS = ["screwdrivers", "holder", "oil-cup", "oiler", "tweezers", "brass-tweezers", "loupe"];
+const BENCH_STEPS = [
+  { step: "1", lit: TOOLS },
+  { step: "2", lit: ["holder"] },
+  { step: "3", lit: ["holder", "loupe"] },
+  { step: "4", lit: ["screwdrivers"] },
+  { step: "5", lit: ["tweezers", "brass-tweezers"] },
+  { step: "6", lit: ["oil-cup", "oiler"] },
+];
+
+/** The bench's tools in colour, in the drawing's order: those whose first shape isn't filled with the ghost token. */
+async function benchLit(page: Page) {
+  return page.evaluate(() => {
+    const drawing = document.querySelector("#bench-drawing");
+    const probe = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    probe.style.fill = "var(--color-ghost-fill)";
+    drawing?.append(probe);
+    const ghost = getComputedStyle(probe).fill;
+    probe.remove();
+    const fill = (el: Element | null | undefined) => (el ? getComputedStyle(el).fill : ghost);
+    const tools = [...(drawing?.querySelectorAll<SVGGElement>(".tool[data-part]") ?? [])];
+    return {
+      lit: tools.filter((t) => fill(t.querySelector(".m .fo")) !== ghost).map((t) => t.dataset.part),
+      // The movement in the holder ghosts with it: its plate and its balance.
+      movement: [".held [data-part='plate'] .fo", ".held [data-part='balance'] .fo"].map(
+        (s) => fill(drawing?.querySelector(s)) !== ghost,
+      ),
+    };
+  });
+}
+
+/** Where the loupe's lens is and where the balance is, on screen: each one's centre. */
+async function loupeOverBalance(page: Page) {
+  return page.evaluate(() => {
+    const centre = (s: string) => {
+      const r = document.querySelector(s)?.getBoundingClientRect();
+      return r ? [r.x + r.width / 2, r.y + r.height / 2] : [NaN, NaN];
+    };
+    const [lx = NaN, ly = NaN] = centre("#bench-drawing .t-loupe .rim");
+    const [bx = NaN, by = NaN] = centre("#bench-drawing .held .rot-balance");
+    return Math.hypot(lx - bx, ly - by);
+  });
+}
+
+test.describe("chapter 6, the bench, drawn", () => {
+  test("each tool's name lights that tool and drops every other to the ghost pair", async ({ page }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    await readStepOf(page, "bench", "4", phone);
+    const chapter = page.locator("#bench");
+    const figure = page.locator("#bench-figure");
+    const named = await chapter
+      .locator(".part-name[data-part]")
+      .evaluateAll((list) => list.map((b) => (b as HTMLElement).dataset.part ?? ""));
+    // Every tool in the drawing has a name in the prose.
+    expect(new Set(named)).toEqual(new Set(TOOLS));
+    for (const tool of TOOLS) {
+      // Focused where it is, without scrolling, so the step on the reading line stays.
+      await chapter
+        .locator(`.part-name[data-part="${tool}"]`)
+        .first()
+        .evaluate((el) => {
+          (el as HTMLElement).focus({ preventScroll: true });
+        });
+      await expect(figure).toHaveAttribute("data-focus", tool);
+      const { lit, movement } = await benchLit(page);
+      expect(lit, `${tool} alone in colour`).toEqual([tool]);
+      expect(movement, "the movement lights only with its holder").toEqual(
+        tool === "holder" ? [true, true] : [false, false],
+      );
+    }
+    if (!phone) {
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement | null)?.blur();
+      });
+      await expect(figure).not.toHaveAttribute("data-focus");
+      await chapter.getByRole("button", { name: "oil cup", exact: true }).hover();
+      await expect(figure).toHaveAttribute("data-focus", "oil-cup");
+      await page.mouse.move(2, 2);
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement | null)?.blur();
+      });
+      await expect(figure).not.toHaveAttribute("data-focus");
+    }
+  });
+
+  test("the six steps light their tools in turn, and step 3 slides the loupe over the balance", async ({
+    page,
+  }, info) => {
+    const phone = isPhone(info);
+    await page.goto("/");
+    const figure = page.locator("#bench-figure");
+    const slide = page.locator("#bench-drawing .slide");
+    for (const { step, lit } of BENCH_STEPS) {
+      await readStepOf(page, "bench", step, phone);
+      await expect(figure).toHaveAttribute("data-step", step);
+      await expect.poll(async () => (await benchLit(page)).lit, `step ${step}'s tools`).toEqual(lit);
+      if (step === "3") {
+        await expect.poll(() => loupeOverBalance(page), "the lens over the balance").toBeLessThan(1.5);
+      } else {
+        await expect.poll(() => slide.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
+      }
+    }
+    await expect(page.locator('.contents-band a[href="#bench"]')).toHaveAttribute("aria-current", "true");
+  });
+
+  test("nothing on the bench moves on its own: no tray, no Pause, no running animation", async ({ page }, info) => {
+    await page.goto("/");
+    await readStepOf(page, "bench", "2", isPhone(info));
+    const figure = page.locator("#bench-figure");
+    await expect(page.locator("html")).toHaveAttribute("data-playing", "true");
+    await expect(figure.locator(".tray")).toBeHidden();
+    await expect(figure.getByRole("button")).toHaveCount(0);
+    await page.waitForTimeout(600);
+    const running = await figure.evaluate(
+      (el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === "running").length,
+    );
+    expect(running).toBe(0);
+    await expect(
+      page.locator("#bench").getByRole("link", { name: "Next chapter 7. Repairs", exact: true }),
+    ).toHaveAttribute("href", "#repairs");
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("the loupe jumps to the balance, and back", async ({ page }, info) => {
+      const phone = isPhone(info);
+      await page.goto("/");
+      const slide = page.locator("#bench-drawing .slide");
+      expect(await slide.evaluate((el) => getComputedStyle(el).transitionDuration)).toBe("0s");
+      await readStepOf(page, "bench", "3", phone);
+      await expect(page.locator("#bench-figure")).toHaveAttribute("data-step", "3");
+      expect(await loupeOverBalance(page)).toBeLessThan(1.5);
+      await readStepOf(page, "bench", "4", phone);
+      await expect(page.locator("#bench-figure")).toHaveAttribute("data-step", "4");
+      expect(await slide.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
+    });
+  });
+});
+
+test.describe("chapters 3 and 4 without scripting", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("read in full beside their still drawings, the trays hidden, the pagers on to chapters 4 and 5", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator("#escapement .step p")).toHaveCount(5);
+    await expect(page.locator("#balance .step p")).toHaveCount(5);
+    for (const step of await page.locator("#escapement .step p, #balance .step p").all())
+      await expect(step).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the escapement close up/ })).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the balance close up/ })).toBeVisible();
+    // Built at step 1's moment: locked, one tooth on.
+    expect(await drawn(page, "escapement-drawing", "escape")).toBe(24);
+    for (const id of ["escapement", "balance"]) await expect(page.locator(`#${id}-figure .tray`)).toBeHidden();
+    await expect(
+      page.locator("#escapement").getByRole("link", { name: "Next chapter 4. Balance, six swings a second" }),
+    ).toBeVisible();
+    await expect(
+      page.locator("#balance").getByRole("link", { name: "Next chapter 5. Together, apart and back again" }),
+    ).toBeVisible();
+  });
+});
+
 // A short screen in one column, a phone turned sideways, and a small laptop window: the sticky figure must leave the
 // step on the reading line readable. Both sizes take the one-column reading line, whichever project runs them.
 for (const viewport of [
@@ -1270,6 +2594,35 @@ test.describe("without scripting", () => {
     ).toBeVisible();
   });
 
+  test("chapter 5 reads beside its still poster, the whole movement, with no canvas and no control", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator("#together .step p")).toHaveCount(7);
+    await expect(page.locator("#together .step p").first()).toBeVisible();
+    await expect(page.getByRole("img", { name: /^Diagram of the whole movement assembled/ })).toBeVisible();
+    await expect(page.locator("#together canvas, #together .turn-3d")).toHaveCount(0);
+    await expect(page.locator("#together-figure .tray")).toBeHidden();
+    await expect(page.locator("#together .parts-list")).toBeHidden();
+  });
+
+  test("chapter 6 reads in full beside the whole bench, with no tray, on to chapter 7", async ({ page }) => {
+    await page.goto("/");
+    const steps = page.locator("#bench .step p");
+    await expect(steps).toHaveCount(6);
+    for (const step of await steps.all()) await expect(step).toBeVisible();
+    await expect(steps.nth(0)).toContainText("This is Tavi’s bench from above");
+    const drawing = page.getByRole("img", { name: /^Diagram of Tavi’s bench from above/ });
+    await expect(drawing).toBeVisible();
+    await expect(drawing).toHaveAttribute("id", "bench-drawing");
+    // Step 1's pose, the whole bench in colour; every tool is named in the prose.
+    expect((await benchLit(page)).lit).toEqual(TOOLS);
+    for (const tool of TOOLS)
+      await expect(page.locator(`#bench .part-name[data-part="${tool}"]`).first()).toBeVisible();
+    await expect(page.locator("#bench-figure .tray")).toBeHidden();
+    await expect(page.locator("#bench").getByRole("link", { name: "Next chapter 7. Repairs" })).toBeVisible();
+  });
+
   test("the hero's drawing is in the HTML, labelled, still", async ({ page }) => {
     await page.goto("/");
     const drawing = page.getByRole("img", { name: /^Diagram of a wristwatch movement seen from the back/ });
@@ -1305,4 +2658,186 @@ test("every request stays on the origin, and the only fonts are Newsreader and I
     fonts.some((url) => url.includes("newsreader")),
     "a Newsreader face loads",
   ).toBe(true);
+});
+
+// The ticking sound, off until the Sound toggle is pressed, and chapter 5's Wind. The sound counts the ticks it has
+// scheduled in `window.taviSound` in development builds.
+test.describe("the ticking sound", () => {
+  /** Counts every AudioContext the page makes, so a test can say none exists before the first press. */
+  async function spyOnAudio(page: Page) {
+    await page.addInitScript(() => {
+      const w = window as unknown as { AudioContext: typeof AudioContext; madeContexts: number };
+      w.madeContexts = 0;
+      const Real = w.AudioContext;
+      w.AudioContext = class extends Real {
+        constructor(...args: ConstructorParameters<typeof AudioContext>) {
+          super(...args);
+          w.madeContexts += 1;
+        }
+      };
+    });
+  }
+  const made = (page: Page) => page.evaluate(() => (window as unknown as { madeContexts: number }).madeContexts);
+  const ticks = (page: Page) =>
+    page.evaluate(() => (window as unknown as { taviSound?: { ticks: number } }).taviSound?.ticks ?? 0);
+  const toggle = (page: Page) => page.locator("[data-toggle-sound]");
+
+  test("is off on every visit: no audio object and no sound module until the toggle is pressed", async ({ page }) => {
+    await spyOnAudio(page);
+    const asked: string[] = [];
+    page.on("request", (request) => {
+      if (/lib\/sound/.test(request.url())) asked.push(request.url());
+    });
+    await page.goto("/");
+    await page.waitForTimeout(1500);
+    await expect(toggle(page)).toHaveAccessibleName("Sound");
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await made(page)).toBe(0);
+    expect(asked).toEqual([]);
+    expect(await ticks(page)).toBe(0);
+
+    await toggle(page).click();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "true");
+    expect(await made(page)).toBe(1);
+    await expect.poll(() => ticks(page)).toBeGreaterThan(0);
+    expect(asked.length).toBeGreaterThan(0);
+    // Nothing is kept: a reload starts off again.
+    await page.reload();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await made(page)).toBe(0);
+  });
+
+  test("ticks six times a second at 1×, none while paused, and a second press stops it", async ({ page }) => {
+    await page.goto("/");
+    // The 3D movement loads on idle; let it settle, as a visitor reading the first screen would.
+    await page.waitForTimeout(3000);
+    await toggle(page).click();
+    await expect.poll(() => ticks(page)).toBeGreaterThan(0);
+    const sample = () =>
+      page.evaluate(() => ({
+        n: (window as unknown as { taviSound?: { ticks: number } }).taviSound?.ticks ?? 0,
+        at: performance.now(),
+      }));
+    const from = await sample();
+    await page.waitForTimeout(3000);
+    const to = await sample();
+    const rate = ((to.n - from.n) / (to.at - from.at)) * 1000;
+    expect(rate, "ticks a second").toBeGreaterThan(5);
+    expect(rate, "ticks a second").toBeLessThan(7.2);
+
+    await page.locator("[data-toggle-play]").click();
+    await page.waitForTimeout(400);
+    const paused = await ticks(page);
+    await page.waitForTimeout(1000);
+    expect(await ticks(page), "no tick while paused").toBe(paused);
+    await page.locator("[data-toggle-play]").click();
+    await expect.poll(() => ticks(page)).toBeGreaterThan(paused);
+
+    await toggle(page).click();
+    await expect(toggle(page)).toHaveAttribute("aria-pressed", "false");
+    await page.waitForTimeout(300);
+    const stopped = await ticks(page);
+    await page.waitForTimeout(1000);
+    expect(await ticks(page), "no tick after the second press").toBe(stopped);
+  });
+
+  test("follows the speed: about 0.6 a second at 1/10", async ({ page }, info) => {
+    test.skip(isPhone(info), "the tray's speed is read on the desktop layout");
+    await page.goto("/#escapement");
+    await page.locator("#balance").scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      document.getElementById("balance")?.scrollIntoView({ block: "center" });
+    });
+    await toggle(page).click();
+    await expect.poll(() => ticks(page), { timeout: 10_000 }).toBeGreaterThan(0);
+    await page.evaluate(() => {
+      document.getElementById("balance-figure")?.style.setProperty("--slow", "10");
+    });
+    await page.waitForTimeout(500);
+    const from = await ticks(page);
+    await page.waitForTimeout(5000);
+    const rate = ((await ticks(page)) - from) / 5;
+    expect(rate, "ticks a second at 1/10").toBeGreaterThan(0.4);
+    expect(rate, "ticks a second at 1/10").toBeLessThan(0.9);
+  });
+
+  test("the toggle is not offered without scripting", async ({ browser }, info) => {
+    const context = await browser.newContext({ baseURL: info.project.use.baseURL, javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.locator("[data-toggle-sound]")).toBeHidden();
+    await context.close();
+  });
+});
+
+test.describe("chapter 5's Wind", () => {
+  test.beforeEach(({ page: _page }, info) => {
+    test.skip(isPhone(info), "the 3D view is a desktop's here");
+  });
+
+  test("winds the 3D spring and steps the ratchet wheel a tooth at a time, and the readout and the voice agree", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    const wind = page.locator("#together-figure").getByRole("slider", { name: "Wind" });
+    await expect(wind).toHaveAttribute("aria-valuenow", "100");
+    await expect(page.locator("#together-figure .tray")).toContainText("41:00 of 41 h");
+    await wind.focus();
+    await page.keyboard.press("Home");
+    await expect(wind).toHaveAttribute("aria-valuetext", "Wound to 0 of 41 hours");
+    await expect(page.locator("#together-figure .tray")).toContainText("0:00 of 41 h");
+    const down = await glPose(page, "together", { apart: 1 });
+    expect(down.reserve).toBe(0);
+    expect(down.spring).toBe(0);
+    expect(down.ratchet).toBeLessThan(0);
+    await page.keyboard.press("End");
+    await expect(page.locator("#together-figure .tray")).toContainText("41:00 of 41 h");
+    const up = await glStats(page, "together");
+    // Fully wound, and already running down: the spring has lost the few milliseconds since the key press.
+    expect(up.spring).toBeCloseTo(1, 4);
+    expect(up.ratchet).toBe(0);
+    // One slider step is 0.41 h: the ratchet wheel is whole teeth at every value between.
+    const teeth = new Set<number>();
+    await wind.focus();
+    for (let i = 0; i < 12; i++) {
+      await page.keyboard.press("ArrowLeft");
+      teeth.add((await glStats(page, "together")).ratchet);
+    }
+    expect(teeth.size).toBeGreaterThan(1);
+    for (const n of teeth) expect(Number.isInteger(n)).toBe(true);
+  });
+
+  test("the reserve falls in real time at 1×, and a spring let down stills the balance", async ({ page }) => {
+    await page.goto("/");
+    await toTogether(page);
+    await glLive(page, "together");
+    await page.evaluate(() => {
+      document.getElementById("together-figure")?.removeAttribute("data-hold");
+    });
+    await glPose(page, "together", { reserve: 10 });
+    await page.locator("[data-toggle-play]").evaluate((el) => {
+      if (el.getAttribute("aria-pressed") === "true") (el as HTMLButtonElement).click();
+    });
+    await page.waitForTimeout(3000);
+    const after = await glStats(page, "together");
+    const used = 10 - after.reserve;
+    expect(used, "hours used in about three seconds").toBeGreaterThan(1.5 / 3600);
+    expect(used, "hours used in about three seconds").toBeLessThan(4.5 / 3600);
+    // A full spring swings wider than a low one.
+    const swing = async (reserve: number) => {
+      let widest = 0;
+      for (const t of [0, 0.5 / 6]) {
+        const s = await glPose(page, "together", { reserve, t: t + 10 * 3600 });
+        widest = Math.max(widest, Math.abs(s.balance));
+      }
+      return widest;
+    };
+    expect(await swing(41)).toBeGreaterThan(await swing(5));
+    const still = await glPose(page, "together", { reserve: 0, t: 3 / 6 + 7 });
+    expect(still.balance).toBe(0);
+    await page.waitForTimeout(400);
+    expect((await glStats(page, "together")).t, "the clock stands with no power").toBe(still.t);
+  });
 });

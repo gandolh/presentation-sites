@@ -126,6 +126,21 @@
   --color-ghost-line: oklch(80% 0.012 84);
 }
 
+/* The tools' own materials, where the movement has none (chapter 6, the bench): the coloured plastics of Bergeon's
+   colour-coded caps, and the loupe's black body. A flat fill and a darker outline of the same hue, as the parts. */
+@theme {
+  --color-tool-black: oklch(33% 0.012 258);
+  --color-tool-black-line: oklch(19% 0.01 258);
+  --color-tool-yellow: oklch(87% 0.13 96);
+  --color-tool-yellow-line: oklch(53% 0.1 88);
+  --color-tool-red: oklch(57% 0.17 26);
+  --color-tool-red-line: oklch(37% 0.12 26);
+  --color-tool-grey: oklch(70% 0.008 258);
+  --color-tool-grey-line: oklch(43% 0.01 258);
+  --color-tool-violet: oklch(52% 0.13 305);
+  --color-tool-violet-line: oklch(34% 0.1 305);
+}
+
 /* No-script: hide a control that only works with scripting (`no-js:hidden`). The head script sets `js` on <html>. */
 @custom-variant no-js (&:where(:root:not(.js) *));
 
@@ -343,6 +358,12 @@
   .quiet:active {
     background: var(--color-paper-3);
   }
+  .quiet svg .wave {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
   .quiet svg {
     width: 14px;
     height: 14px;
@@ -352,7 +373,8 @@
 
   /* The header's Pause is a toggle like a tray's: it keeps its word and glyph, and while the page is paused it shows
      pressed in blued steel, from the first paint (the head script sets data-playing before it). */
-  :root[data-playing="false"] .global-pause {
+  :root[data-playing="false"] .global-pause,
+  .sound-toggle[aria-pressed="true"] {
     border-color: var(--color-accent);
     background: var(--color-accent-soft);
     color: var(--color-accent);
@@ -430,7 +452,8 @@
     aspect-ratio: 500 / 430;
     max-height: calc(100svh - var(--header-h) - 160px);
   }
-  .hero-stage > .movement {
+  .hero-stage .movement-figure,
+  .hero-stage .movement {
     width: 100%;
     height: 100%;
   }
@@ -697,6 +720,181 @@
     visibility: visible;
   }
 
+  /* The 3D movement's island (components/together/MovementFigure.tsx): the poster in flow sizes the box, and the canvas
+     lies over it, shown once it has drawn its first frame, the poster's own flat view. Live, the drawing's body goes
+     and its callouts stay over the canvas until the view tilts. Chapter 5's poster is the whole movement, not a crop,
+     so its edges don't fade. */
+  .movement-figure {
+    position: relative;
+    border-radius: var(--radius-inner);
+  }
+  .stage .mode-whole {
+    mask-image: none;
+  }
+  .movement-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    touch-action: pan-y;
+    cursor: grab;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .movement-canvas:active {
+    cursor: grabbing;
+  }
+  .movement-canvas:focus-visible {
+    outline-offset: -3px;
+  }
+  .movement-figure[data-gl="live"] > .movement-canvas {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .movement-figure[data-gl="live"] .movement > .mv {
+    display: none;
+  }
+  .movement-figure[data-gl="live"] .movement {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .movement-figure .callout {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .movement-figure[data-tilted] .callout {
+    opacity: 0;
+  }
+  /* What the island says over the poster: the phone's "Turn it in 3D", the line where there is no WebGL, and the
+     hint once the 3D view is live. Each lies over the drawing's foot, so none moves the page when it comes. */
+  .turn-3d,
+  .gl-note,
+  .gl-hint {
+    position: absolute;
+    z-index: 2;
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+  }
+  .gl-note,
+  .gl-hint {
+    margin: 0;
+    max-width: calc(100% - var(--space-xl));
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+  /* The hint goes once the labels come, which take its corner. */
+  .gl-hint {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .movement-figure[data-labels] .gl-hint {
+    opacity: 0;
+  }
+
+  /* Chapter 5's labels (three/labelLayer.ts): HTML over the canvas, placed each frame from the anchors, in two columns
+     on a desktop and one on a phone; the leaders in one SVG under them. Each label is a button that lights its part. A
+     label whose anchor is behind another part fades, and so do the others while one part is lit. */
+  .labels,
+  .leaders {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .leaders {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .leaders g {
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .leaders path {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 0.9;
+  }
+  .leaders circle {
+    fill: var(--color-ink);
+  }
+  .leaders .is-lit path {
+    stroke: var(--color-ink);
+    stroke-width: 1.5;
+  }
+  .labels .label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 2px;
+    border: 0;
+    border-radius: 3px;
+    background: none;
+    font: inherit;
+    font-size: var(--text-sm);
+    line-height: 1.25;
+    color: var(--color-ink);
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity var(--dur-short) var(--ease-out);
+  }
+  .labels .label:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .labels .label.is-lit {
+    font-weight: 600;
+  }
+  .movement-figure:not([data-gl="live"]) :is(.labels, .leaders) {
+    display: none;
+  }
+
+  /* Chapter 5's parts list, under the figure: every labelled part as a toggle, in one row that scrolls sideways so the
+     stuck figure stays short, its far edge fading to say there is more; the padding keeps each toggle's focus ring
+     inside the row. A phone always shows it; a desktop only where the drawing stays, which gives up the row's height
+     for it. */
+  .parts-list {
+    display: none;
+    flex-wrap: nowrap;
+    gap: var(--space-2xs);
+    overflow-x: auto;
+    padding: 3px;
+    margin: -3px;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, var(--color-ink) calc(100% - 28px), transparent);
+  }
+  .parts-list::-webkit-scrollbar {
+    display: none;
+  }
+  .movement-figure[data-gl="flat"] ~ .parts-list {
+    display: flex;
+  }
+  @media (width >= 64rem) {
+    .stage .movement-figure[data-gl="flat"] .mode-whole {
+      height: min(440px, calc(100svh - var(--header-h) - 320px));
+    }
+  }
+  /* A part named in the prose lights with its part, however it was lit. */
+  .part-name.is-lit {
+    background: var(--color-paper-3);
+    text-decoration-thickness: 3px;
+  }
+  /* Turn turns the 3D view only, and Wind coils its spring: while the drawing shows, their cells keep their place, empty. */
+  .stage:not(:has(.movement-figure[data-gl="live"])) :is(.turn-cell, .wind-cell) {
+    visibility: hidden;
+  }
+  /* Below 50rem (a phone) Wind would add a row to the tray and push the sticky figure taller, so it is left out there. */
+  @media (width < 50rem) {
+    .wind-cell {
+      display: none;
+    }
+  }
+  .apart-run {
+    margin-left: auto;
+  }
+
   /* The figure's controls on the paper-2 ground: the Pause and the Speed across the top, a chapter's own controls
      in two cells under them. */
   .tray {
@@ -710,6 +908,30 @@
   }
   .tray-row {
     grid-column: 1 / -1;
+  }
+  /* Chapter 5's three sliders share one row where the tray is wide, so the sticky figure keeps its height. */
+  @media (width >= 64rem) {
+    .tray:has(.wind-cell) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--space-lg);
+    }
+  }
+  /* A figure with nothing that moves (chapter 6) has no control, so no tray. */
+  .tray:not(:has(> *)) {
+    display: none;
+  }
+  /* A figure's readout in its tray, as the sketch's: the label in the body face, muted, the figure in Plex Mono ink. */
+  .readout {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  .readout .fig {
+    font-size: 1rem;
+    color: var(--color-ink);
   }
 
   /* Under a chapter: back to the contents, on to the next chapter. */
@@ -861,8 +1083,10 @@
     }
   }
   @media (max-width: 40rem) {
+    /* The header scrolls away on a phone. Relative, not static, so its z-index still holds the Chapters drawer over
+       the page's positioned pieces (the 3D movement's canvas). */
     .site-head {
-      position: static;
+      position: relative;
     }
     .site-head-row {
       gap: var(--space-sm);
@@ -870,7 +1094,8 @@
     .wordmark {
       font-size: 1.1875rem;
     }
-    .global-pause .lbl {
+    .global-pause .lbl,
+    .sound-toggle .lbl {
       display: none;
     }
     .hero {
@@ -943,6 +1168,15 @@
     .pager .t {
       font-size: var(--text-md);
     }
+    .labels .label {
+      font-size: var(--text-xs);
+    }
+    .parts-list {
+      display: flex;
+    }
+    .apart-run {
+      margin-left: 0;
+    }
   }
   /* One column on a wide screen (a tablet, a small laptop window, a phone turned sideways): the tray is one row, the
      Pause and the Speed beside a chapter's own controls, so the sticky figure stays short enough to leave the step on
@@ -953,6 +1187,10 @@
       column-gap: var(--space-lg);
       align-items: end;
     }
+    .tray:has(.wind-cell) {
+      grid-template-columns: auto repeat(3, minmax(0, 1fr));
+      column-gap: var(--space-md);
+    }
     .tray-row {
       grid-column: auto;
     }
@@ -962,7 +1200,7 @@
      clear of the reading line. */
   @media (width < 64rem) and (height < 32rem) {
     .site-head {
-      position: static;
+      position: relative;
     }
     .stage {
       top: 0;
@@ -981,7 +1219,12 @@
     .btn,
     .contents-band a,
     .step p,
-    .pager .t {
+    .pager .t,
+    .gl-hint,
+    .labels,
+    .leaders,
+    .leaders g,
+    .labels .label {
       transition: none;
     }
     /* The turn-over is a cross-fade: nothing turns, one face fades into the other. */
@@ -1290,6 +1533,81 @@
     fill: var(--po);
   }
 
+  /* The escapement close up (chapters 3 and 4), drawn four to five times the hero's scale. Its outlines keep the
+     hero's weight on screen whatever the zoom (non-scaling strokes, in CSS pixels). A piece made of overlapping
+     outlines draws every border (`.ol`) under every fill (`.fl`), so it reads as one piece. */
+  .closeup :is(.fo, .ol, .stone, .jewel-pin, .hair, .cut, .window path, .index-mark) {
+    vector-effect: non-scaling-stroke;
+  }
+  .closeup .fo {
+    stroke-width: 1.1;
+  }
+  .closeup .ol {
+    fill: var(--po);
+    stroke: var(--po);
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+  }
+  .closeup .fl {
+    fill: var(--pf);
+  }
+  .closeup .p-pallet .stone {
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* The pallet stones and the impulse pin are ruby, set in steel. Each declares its own ruby, so it keeps it when it
+     alone is named while the part round it falls to the ghost pair. */
+  .p-stones,
+  .p-impulse {
+    --pr: var(--color-part-ruby);
+    --prl: var(--color-part-ruby-line);
+  }
+  .closeup .jewel-pin {
+    fill: var(--pr);
+    stroke: var(--prl);
+    stroke-width: 1;
+  }
+  .p-roller,
+  .p-banking {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  /* The hairspring, a fine wire on top, and its steel stud. */
+  .p-hairspring {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  .closeup .hair {
+    fill: none;
+    stroke: var(--ph);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* Chapter 3 cuts the balance away round its staff: the cut edge is a dashed line, as an assembly axis is. */
+  .closeup .cut {
+    fill: none;
+    stroke: var(--color-rule-strong);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  /* Chapter 4's lift window, a thin arc in ink beside the fork, and the mark on the rim that reads against it. */
+  .closeup .window path {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .closeup .window text {
+    font-family: var(--font-body);
+    font-size: 3.5px;
+    fill: var(--color-ink);
+  }
+  .closeup .index-mark {
+    stroke: var(--color-ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+
   .stage[data-step="1"]:not([data-focus]) .mode-train .ratio:not(.s1),
   .stage[data-step="2"]:not([data-focus]) .mode-train .ratio:not(.s2),
   .stage[data-step="3"]:not([data-focus]) .mode-train .ratio:not(.s3),
@@ -1299,24 +1617,29 @@
     --rl: var(--color-ghost-line);
   }
 
-  /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair;
+  /* Focus by subtraction: on a figure's step (data-step), every part outside the step falls back to the ghost pair
+     (chapter 5's whole movement, which its step shows entire, keeps every colour);
      while a part named in the prose is pointed at (data-focus), every part but that one does, whichever step it is
      named in. The pieces that set their own colour (a pin, the roller, the drum) are listed too, so they ghost with
-     their part. lib/figure.ts sets the attributes. */
+     their part. On the bench (chapter 6) the unit is a tool: its materials and, in the holder, every piece of the
+     movement (the barrel's lid too) ghost with it; step 1 shows the whole bench. lib/figure.ts sets the attributes. */
   .stage[data-step="1"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s1,
       .s1 *
     ),
   .stage[data-step="2"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s2,
       .s2 *
     ),
   .stage[data-step="3"]:not([data-focus])
-    .mv
+    :not(.mode-whole)
+    > .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .s3,
       .s3 *
@@ -1327,12 +1650,38 @@
       .s4,
       .s4 *
     ),
+  .stage[data-step="4"]:not([data-focus]) .closeup :is(.part, .fork-body, .pin):not(.s4, .s4 *),
+  .stage[data-step="5"]:not([data-focus]) .closeup :is(.part, .fork-body, .pin):not(.s5, .s5 *),
   .stage[data-focus]
     .mv
     :is(.part, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin, .index, .subdial):not(
       .is-focus,
       .is-focus *
-    ) {
+    ),
+  .stage[data-step="2"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s2)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="3"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s3)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="4"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s4)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="5"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s5)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-step="6"]:not([data-focus])
+    .mode-bench
+    .tool:not(.s6)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin),
+  .stage[data-focus]
+    .mode-bench
+    .tool:not(.is-focus)
+    :is(.m, .part, .lid, .screw, .jewel, .shock, .click-body, .fork-body, .fork-pin, .roller, .pin) {
     --pf: var(--color-ghost-fill);
     --po: var(--color-ghost-line);
     --ps: var(--color-ghost-line);
@@ -1363,6 +1712,129 @@
   }
   .dragging .lift {
     transition: none;
+  }
+  /* Chapter 5's poster taken apart: each part rises through its own window of --e (--w0 to --w1), eased in and out as
+     the 3D parts rise, a bridge's screws turning as they come out; the drawing shrinks, about its corner, into the frame
+     that holds the whole lifted stack (--fit-s, --fit-x, --fit-y, worked out at build time). */
+  .lift-w {
+    --u: clamp(0, (var(--e, 0) - var(--w0)) / (var(--w1) - var(--w0)), 1);
+    --k: calc(var(--u) * var(--u) * (3 - 2 * var(--u)));
+    transform: translate(calc(var(--k) * var(--lift) * 0.5px), calc(var(--k) * var(--lift) * -0.866px));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .lift-w .spin {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: rotate(calc(var(--k) * var(--spin, 0) * 360deg));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  /* The drawing has shrunk all the way by --e 0.5, when the highest parts have risen: from then on the stack only
+     fills the frame it has. */
+  .mode-whole > .mv {
+    --fu: clamp(0, var(--e, 0) / 0.5, 1);
+    --fk: calc(var(--fu) * var(--fu) * (3 - 2 * var(--fu)));
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: translate(calc(var(--fk) * var(--fit-x, 0) * 1px), calc(var(--fk) * var(--fit-y, 0) * 1px))
+      scale(calc(1 + var(--fk) * (var(--fit-s, 1) - 1)));
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .dragging :is(.lift-w, .lift-w .spin, .mode-whole > .mv) {
+    transition: none;
+  }
+
+  /* Chapter 6, the bench (src/bench): the tools top-down on the mat in the parts' style, each material setting its
+     fill and outline pair. The tools' outlines keep the drawing's weight on screen whatever the scale (non-scaling,
+     in CSS pixels); the movement in the holder is the hero's drawing at its real size, and stands still. */
+  /* The mat is whole, not a crop, so its edges don't fade; the drawing takes the mat's own shape, so the card holds no
+     empty band, at most the screen's height under the header, and in one column no more than a third of it. */
+  .stage .mode-bench {
+    mask-image: none;
+    height: auto;
+    aspect-ratio: 240 / 164;
+    max-height: calc(100svh - var(--header-h) - 120px);
+  }
+  @media (width < 64rem) {
+    .stage .mode-bench {
+      max-height: 34svh;
+    }
+  }
+  .mode-bench .mat {
+    fill: var(--color-paper);
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .m-steel {
+    --pf: var(--color-part-steel);
+    --po: var(--color-part-steel-line);
+  }
+  /* Chrome plate, the holder's and the oil cup's finish, takes the bridges' pair. */
+  .m-chrome {
+    --pf: var(--color-part-bridge);
+    --po: var(--color-part-bridge-line);
+  }
+  .m-brass {
+    --pf: var(--color-part-brass);
+    --po: var(--color-part-brass-line);
+  }
+  .m-black {
+    --pf: var(--color-tool-black);
+    --po: var(--color-tool-black-line);
+    --pg: var(--color-surface);
+  }
+  .m-yellow {
+    --pf: var(--color-tool-yellow);
+    --po: var(--color-tool-yellow-line);
+  }
+  .m-red {
+    --pf: var(--color-tool-red);
+    --po: var(--color-tool-red-line);
+  }
+  .m-grey {
+    --pf: var(--color-tool-grey);
+    --po: var(--color-tool-grey-line);
+  }
+  .m-violet {
+    --pf: var(--color-tool-violet);
+    --po: var(--color-tool-violet-line);
+  }
+  .mode-bench .m :is(.fo, .ln, .knurl, .rim, .glint) {
+    vector-effect: non-scaling-stroke;
+  }
+  /* At its real size the movement is a fifth of the hero's: its outlines would scale to a quarter of a pixel, so they
+     too keep a set weight on screen, finer than the tools'. */
+  .mode-bench .held .fo {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 0.6;
+  }
+  .mode-bench .m .ln,
+  .mode-bench .m .rim {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.8;
+  }
+  .mode-bench .m .rim {
+    stroke-width: 1.1;
+  }
+  .mode-bench .knurl {
+    fill: none;
+    stroke: var(--po);
+    stroke-width: 0.6;
+    opacity: 0.55;
+  }
+  .mode-bench .glint {
+    fill: none;
+    stroke: var(--pg);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  /* Step 3: the loupe slides from its place on the mat until its lens is over the balance. */
+  .mode-bench .slide {
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+  .stage[data-step="3"] .mode-bench .slide {
+    transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px));
   }
 
   /* Ticking. Each turning group pivots on its own centre (the translate around it). The balance swings once a beat;
@@ -1406,10 +1878,17 @@
   .js:root[data-playing="true"] .mode-train .rot-barrel {
     animation: turn calc(21600s * var(--slow)) linear infinite;
   }
+  /* The movement on the bench is let down, waiting for its service: nothing on the bench ticks or loops. */
+  .js:root[data-playing="true"] .mode-bench .rot {
+    animation: none;
+  }
 
   @media (max-width: 40rem) {
     .callout text {
       font-size: 20px;
+    }
+    .closeup .window text {
+      font-size: 5.6px;
     }
     .ratio text {
       font-size: 22px;
@@ -1419,6 +1898,10 @@
      poses jump. */
   @media (prefers-reduced-motion: reduce) {
     .lift,
+    .lift-w,
+    .lift-w .spin,
+    .mode-whole > .mv,
+    .mode-bench .slide,
     .movement .part {
       transition: none;
     }

@@ -45,3 +45,27 @@ and its islands, the fallback ladder, the copy rule (invented people, real watch
 ## Owner decisions
 
 - 2026-11-24 (owner): a docs site, later, after the site is built.
+
+## Outcome (2026-11-25)
+
+- **`sites/tavi/docs-site/`** follows `docs/adding-a-site.md` step 6: package `@sites/tavi-docs`, base `/tavi/docs/`
+  (`DOCS_BASE` overrides), root script `tavi:docs`, light only on the site's paper with Newsreader and IBM Plex Mono.
+  `tsconfig.json` already excluded `docs-site`. `package-lock.json` gained the two workspace entries by hand, because
+  this container's npm strips the `libc` fields from every other entry.
+- **Pages.** Rendered from the site's own files: README, PRODUCT, DESIGN. Written for the docs, from the code: the part
+  table and its two renderers, the chapter engine and the islands, the 3D island and its five-rung ladder, the copy
+  rule. The landing page is `docs/index.mdx`.
+- **Differences from saloon's docs site.** No diagrams script (nothing to draw). `sync-corpus.mjs` copies the README's
+  social card into the docs and turns a link to any other repo file into its label, so no page names the host or
+  account (the others link to GitHub, and set `url` to the real origin; tavi's `url` is `https://example.com`, the
+  site's own fallback, since it is only used for the sitemap). The navbar has no GitHub link.
+- **Checked.** `npm run tavi:docs` exits 0 with `onBrokenLinks: 'throw'`. Served from a folder mapped to `/tavi/docs/`
+  and walked in Chromium: 8 pages, every internal link resolves, no 4xx, every asset under `/tavi/docs/`, no external
+  link. `docusaurus serve` itself 302s font files when `trailingSlash` is on; the files are in `dist/`. No domain,
+  machine path or account name in the new files.
+- The README's last section and `docs/README.md`'s row now point at the docs site; `docs/adding-a-site.md` says tavi's
+  "did" follow the site. Brief 14 (chapter 2) was left in `todo/`.
+- Not run: sloplint (the hallmark script is not in this container), left to the owner. The board was not updated:
+  brief-board was not available in this session.
+- **Owner steps.** Once the controller's vps-deploy brief adds `DocsStack(estate, "tavi", ...)`:
+  `node cli.ts tavi-docs deploy`.

@@ -44,6 +44,40 @@ export function hairspring(m: Calibre = MOVEMENT) {
   return d + ` Q${P(polar(c, 29.5, 120 * DEG))} ${P(stud)}`;
 }
 
+/** How far the hairspring's middle coils move out at the full swing, in plane units. */
+const BREATH = 1.1;
+
+/** Where the hairspring's outer end is pinned: the stud, beside the outer coil. */
+export const STUD = { r: 31, at: 200 * DEG } as const;
+
+/**
+ * The hairspring at a balance angle `theta` (radians from rest, clockwise positive), drawn for the close-ups. Its
+ * inner end turns with the collet and its outer end stays at the stud. Turned clockwise the spiral loses part of a
+ * turn, so its coils open out; turned back it gains one and they close in. That is the spring breathing. Its eleven
+ * turns are `hairspring()`'s; past them the outer coil runs on round the outside to the stud, where the hero's small
+ * drawing takes a short curve across.
+ */
+export function hairspringAt(theta: number, m: Calibre = MOVEMENT) {
+  const c = m.balance.at;
+  const turns = 11;
+  const n = 700;
+  const k = theta / (m.spec.escapement.amplitude * DEG);
+  let d = "";
+  for (let i = 0; i <= n; i++) {
+    const u = i / n;
+    const p = polar(c, 6.5 + 20 * u + BREATH * k * Math.sin(Math.PI * u), u * turns * 2 * Math.PI + theta * (1 - u));
+    d += `${i ? "L" : "M"}${f(p[0])} ${f(p[1])}`;
+  }
+  // The terminal curve: on round from the last turn's end, easing out to the stud's radius.
+  const tail = 48;
+  for (let i = 1; i <= tail; i++) {
+    const w = i / tail;
+    const p = polar(c, 26.5 + (STUD.r - 26.5) * w * w * (3 - 2 * w), turns * 2 * Math.PI + w * STUD.at);
+    d += `L${f(p[0])} ${f(p[1])}`;
+  }
+  return d;
+}
+
 /** The pallet fork about its pivot: two arms with their stones, the lever to the balance, the notch and guard pin. */
 export function palletFork(m: Calibre = MOVEMENT) {
   // Local frame: the pivot at the origin, the balance along +x.

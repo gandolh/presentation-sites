@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
+    "og": "node --experimental-strip-types scripts/gen-og.mjs",
     "test": "node --experimental-strip-types --test \"src/**/*.test.ts\""
   },
   "dependencies": {
@@ -23,14 +24,17 @@
     "@tailwindcss/vite": "4.3.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
+    "@types/three": "0.187.0",
     "astro": "7.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tailwindcss": "4.3.3"
+    "tailwindcss": "4.3.3",
+    "three": "0.187.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@types/node": "22.20.1",
+    "sharp": "0.35.5",
     "typescript": "6.0.3"
   }
 }

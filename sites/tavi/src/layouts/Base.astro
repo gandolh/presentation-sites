@@ -23,6 +23,7 @@ const {
 
 // Absolute on the configured `site` origin: scrapers need full URLs.
 const canonical = absoluteUrl(path);
+const ogImage = absoluteUrl("/images/og-image.png");
 ---
 
 <!doctype html>
@@ -44,6 +45,18 @@ const canonical = absoluteUrl(path);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="A wristwatch movement drawn on warm paper, with the words Six beats every second."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Before the first paint: scripting is on, and the drawings play unless the visitor asked for less motion. -->
     <script is:inline>

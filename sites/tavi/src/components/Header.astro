@@ -1,7 +1,8 @@
 ---
 import ChaptersMenu, { type ChapterLink } from "./ChaptersMenu.tsx";
 
-// The header: the wordmark, the seven chapters in page order, and one Pause for every moving drawing. Below 64rem
+// The header: the wordmark, the seven chapters in page order, a Sound toggle for the synthesised tick (off on every
+// visit, nothing stored) and one Pause for every moving drawing. Below 64rem
 // the links fold into the Chapters menu, whose island hydrates only there. Without scripting the menu's button and
 // the Pause are hidden; the contents band carries every chapter link.
 const links: ChapterLink[] = [
@@ -38,6 +39,19 @@ const links: ChapterLink[] = [
       <ChaptersMenu client:media="(width < 64rem)" links={links} />
     </div>
     <button
+      class="quiet sound-toggle no-js:hidden"
+      type="button"
+      data-toggle-sound
+      aria-label="Sound"
+      aria-pressed="false"
+    >
+      <svg viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M1 5h2.5L7 2v10L3.5 9H1z"></path>
+        <path class="wave" d="M9 4.5a3.5 3.5 0 0 1 0 5M10.8 2.8a6 6 0 0 1 0 8.4"></path>
+      </svg>
+      <span class="lbl">Sound</span>
+    </button>
+    <button
       class="quiet global-pause no-js:hidden"
       type="button"
       data-toggle-play
@@ -51,6 +65,43 @@ const links: ChapterLink[] = [
     </button>
   </div>
 </header>
+
+<script>
+  import type { Sound } from "../lib/sound";
+
+  // The Sound toggle. The AudioContext is made and resumed here, inside the click, because a browser opens audio only
+  // for a visitor's own gesture; the module that schedules the ticks loads on the first press. Without an
+  // AudioContext the button isn't offered.
+  const soundButton = document.querySelector<HTMLButtonElement>("[data-toggle-sound]");
+  if (soundButton && typeof window.AudioContext === "undefined") soundButton.hidden = true;
+  else if (soundButton) {
+    let context: AudioContext | null = null;
+    let sound: Sound | null = null;
+    let loading = false;
+    soundButton.addEventListener("click", () => {
+      const on = soundButton.getAttribute("aria-pressed") !== "true";
+      soundButton.setAttribute("aria-pressed", String(on));
+      if (!on) {
+        sound?.stop();
+        return;
+      }
+      context ??= new AudioContext();
+      void context.resume();
+      if (sound) {
+        sound.start();
+        return;
+      }
+      if (loading) return;
+      loading = true;
+      const made = context;
+      void import("../lib/sound").then(({ createSound }) => {
+        sound = createSound(made);
+        loading = false;
+        if (soundButton.getAttribute("aria-pressed") === "true") sound.start();
+      });
+    });
+  }
+</script>
 
 <script>
   import { isPlaying, setPlaying, subscribe } from "../lib/playback";

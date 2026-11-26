@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { bankings, escEase, motionRatio, stateAt } from "./clock.ts";
+import { amplitudeAt, bankings, escEase, forkAngle, motionRatio, RESERVE_HOURS, stateAt } from "./clock.ts";
 import { DEG } from "./geometry.ts";
 
 const near = (actual: number, expected: number, what: string) => {
@@ -64,6 +64,33 @@ describe("the clock", () => {
     near(degrees(swing), low, "the widest swing");
     near(degrees(stateAt(1, { amplitude: low }).train.escape), 72, "escape at 1 s");
     near(degrees(Math.abs(stateAt(0).balance)), 200, "the drawn amplitude by default");
+  });
+
+  test("a full reserve gives today's amplitude and every pose the default gives", () => {
+    for (const t of [0, 0.05, 1.234, 77.7, 3600]) assert.deepEqual(stateAt(t, { reserve: 41 }), stateAt(t));
+    near(amplitudeAt(RESERVE_HOURS), 200, "the drawn amplitude when fully wound");
+  });
+
+  test("the amplitude falls as the reserve does, and the wheels keep time while it lasts", () => {
+    const widest = (reserve: number) =>
+      degrees(Math.max(...Array.from({ length: 400 }, (_, i) => Math.abs(stateAt(i / 400, { reserve }).balance))));
+    let before = Infinity;
+    for (const reserve of [41, 30, 20, 10, 2, 1, 0.5, 0.1]) {
+      const now = widest(reserve);
+      assert.ok(now < before, `${reserve} h swings to ${now}, less than ${before}`);
+      before = now;
+    }
+    near(widest(20), amplitudeAt(20), "the swing at 20 h is the amplitude for 20 h");
+    near(degrees(stateAt(1, { reserve: 5 }).train.escape), 72, "escape at 1 s on a low spring");
+  });
+
+  test("with no reserve the balance stands still", () => {
+    for (const t of [0, 0.05, 0.1, 1.7, 100.3]) {
+      const state = stateAt(t, { reserve: 0 });
+      assert.equal(state.balance, 0, `balance at ${t}`);
+      near(state.fork, forkAngle(0), `fork at ${t}`);
+    }
+    assert.equal(stateAt(1, { reserve: -3 }).balance, 0);
   });
 
   test("the hands start at 10:10:30: the seconds at 180 degrees, the minutes at 63, the hours at 305.25", () => {

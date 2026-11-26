@@ -1,0 +1,22 @@
+---
+import { toolOf, type ToolId } from "./tools.ts";
+
+// A tool named in chapter 6's prose: a button like a part name (components/chapter/PartName.astro), in its metal's
+// text shade, that lights the tool on the bench and drops every other to the ghost pair (lib/chapters.ts). Without
+// scripting it is coloured words. A button is laid out as a block in the line, so a line could break between it and
+// the comma after it: the punctuation that follows the name comes in as `after`, kept on the name's line.
+interface Props {
+  tool: ToolId;
+  after?: string;
+}
+
+const { tool, after = "" } = Astro.props;
+const { ink } = toolOf(tool);
+---
+
+<span class="whitespace-nowrap">
+  <button type="button" class:list={["part-name", ink && `k-${ink}`]} data-part={tool}>
+    <slot />
+  </button>
+  {after}
+</span>
